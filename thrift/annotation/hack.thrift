@@ -16,7 +16,14 @@
 
 include "thrift/annotation/scope.thrift"
 
-namespace hack facebook_thrift_annotation
+namespace cpp2 facebook.thrift.annotation.hack
+namespace hack facebook.thrift.annotation
+namespace py3 facebook.thrift.annotation.hack
+namespace py thrift.annotation.hack
+namespace java.swift com.facebook.thrift.annotation.hack
+namespace java com.facebook.thrift.annotation.hack_deprecated
+namespace py.asyncio facebook_thrift_asyncio.annotation.hack
+namespace go thrift.annotation.hack
 
 // An experimental annotation that applies a Hack wrapper to fields.
 // For example:
