@@ -36,7 +36,7 @@ void mergeFieldPatch(P1& lhs, const P2& rhs) {
 }
 template <FieldId Id, typename P, typename T>
 void forwardToFieldPatch(P& patch, T&& val) {
-  op::getById<Id>(patch)->assign(*op::getById<Id>(std::forward<T>(val)));
+  op::getById<Id>(patch)->assign(op::getById<Id>(std::forward<T>(val)));
 }
 template <typename F>
 struct FieldPatch;

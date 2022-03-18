@@ -41,9 +41,18 @@ class BasePatch {
   void reset() { op::clear<type::struct_t<Patch>>(patch_); }
 
   // Automatically dereference non-optional fields.
-  template <typename T>
-  void apply(const field_ref<T>& field) const {
+  template <typename U>
+  void apply(const field_ref<U>& field) const {
     derived().apply(*field);
+  }
+  template <typename U>
+  void assign(const field_ref<U>& val) {
+    derived().assign(std::forward<U>(*val));
+  }
+  template <typename U>
+  Derived& operator=(const field_ref<U>& field) {
+    derived().assign(std::forward<U>(*field));
+    return derived();
   }
 
  protected:
@@ -68,6 +77,8 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
 
  public:
   using value_type = std::decay_t<decltype(*std::declval<Patch>().assign())>;
+  using Base::assign;
+  using Base::operator=;
   using Base::Base;
 
   template <typename U = value_type>

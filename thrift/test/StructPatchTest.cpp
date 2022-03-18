@@ -43,6 +43,20 @@ MyStruct testValue() {
   return val;
 }
 
+TestStructPatch testPatch() {
+  auto val = testValue();
+  TestStructPatch patch;
+  patch.patch().boolVal() = !op::BoolPatch{};
+  *patch->byteVal() = val.byteVal();
+  *patch->i16Val() += 2;
+  *patch->i32Val() += 3;
+  *patch->i64Val() += 4;
+  *patch->floatVal() += 5;
+  *patch->doubleVal() += 6;
+  patch->stringVal() = "_" + op::StringPatch{} + "_";
+  return patch;
+}
+
 TEST(StructPatchTest, Noop) {
   // Empty patch does nothing.
   TestStructPatch patch;
@@ -73,15 +87,7 @@ TEST(StructPatchTest, Clear) {
 }
 
 TEST(StructPatchTest, Patch) {
-  TestStructPatch patch;
-  patch.patch().boolVal() = !op::BoolPatch{};
-  *patch->byteVal() += 1;
-  *patch->i16Val() += 2;
-  *patch->i32Val() += 3;
-  *patch->i64Val() += 4;
-  *patch->floatVal() += 5;
-  *patch->doubleVal() += 6;
-  patch->stringVal() = "_" + op::StringPatch{} + "_";
+  auto patch = testPatch();
 
   MyStruct val;
   val.stringVal() = "hi";
@@ -89,7 +95,7 @@ TEST(StructPatchTest, Patch) {
   MyStruct expected1, expected2;
   expected1.boolVal() = true;
   expected2.boolVal() = false;
-  expected1.byteVal() = 1;
+  expected1.byteVal() = 2;
   expected2.byteVal() = 2;
   expected1.i16Val() = 2;
   expected2.i16Val() = 4;
