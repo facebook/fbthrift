@@ -31,12 +31,7 @@ namespace util {
 
 namespace detail {
 
-template <
-    class T,
-    class CursorT,
-    typename std::enable_if<
-        std::is_constructible<folly::io::Cursor, const CursorT&>::value,
-        bool>::type = false>
+template <class T, class CursorT>
 void readVarintSlow(CursorT& c, T& value) {
   // ceil(sizeof(T) * 8) / 7
   static const size_t maxSize = (8 * sizeof(T) + 6) / 7;
@@ -64,12 +59,7 @@ void readVarintSlow(CursorT& c, T& value) {
 // which gives us 5% perf win (even when the exception is not actually thrown).
 [[noreturn]] void throwInvalidVarint();
 
-template <
-    class T,
-    class CursorT,
-    typename std::enable_if<
-        std::is_constructible<folly::io::Cursor, const CursorT&>::value,
-        bool>::type = false>
+template <class T, class CursorT>
 void readVarintMediumSlow(CursorT& c, T& value, const uint8_t* p, size_t len) {
   enum { maxSize = (8 * sizeof(T) + 6) / 7 };
 
@@ -106,12 +96,7 @@ void readVarintMediumSlow(CursorT& c, T& value, const uint8_t* p, size_t len) {
 
 } // namespace detail
 
-template <
-    class T,
-    class CursorT,
-    typename std::enable_if<
-        std::is_constructible<folly::io::Cursor, const CursorT&>::value,
-        bool>::type = false>
+template <class T, class CursorT>
 void readVarint(CursorT& c, T& value) {
   const uint8_t* p = c.data();
   size_t len = c.length();
@@ -123,12 +108,7 @@ void readVarint(CursorT& c, T& value) {
   }
 }
 
-template <
-    class T,
-    class CursorT,
-    typename std::enable_if<
-        std::is_constructible<folly::io::Cursor, const CursorT&>::value,
-        bool>::type = false>
+template <class T, class CursorT>
 T readVarint(CursorT& c) {
   T value;
   readVarint(c, value);
