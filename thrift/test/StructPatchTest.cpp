@@ -26,6 +26,7 @@ namespace apache::thrift {
 using test::patch::MyStruct;
 using test::patch::MyStructPatch;
 using test::patch::MyStructValuePatch;
+using test::patch::TestFields;
 
 using TestStructPatch = op::detail::StructPatch<MyStructValuePatch>;
 
@@ -87,8 +88,6 @@ TEST(StructPatchTest, Clear) {
 }
 
 TEST(StructPatchTest, Patch) {
-  auto patch = testPatch();
-
   MyStruct val;
   val.stringVal() = "hi";
 
@@ -110,6 +109,7 @@ TEST(StructPatchTest, Patch) {
   expected1.stringVal() = "_hi_";
   expected2.stringVal() = "__hi__";
 
+  auto patch = testPatch();
   test::expectPatch(patch, val, expected1, expected2);
 
   patch.merge(TestStructPatch::createClear());
@@ -135,6 +135,50 @@ TEST(StructPatchTest, AssignClear) {
   // stronger in the presense of non-terse non-optional fields).
   EXPECT_FALSE(patch.hasAssign());
   EXPECT_TRUE(*patch.get().clear());
+}
+
+TEST(StructPatchTest, OptionalFields) {
+  TestStructPatch patch = testPatch();
+  TestFields fields;
+
+  // Applying a value patch to void does nothing.
+  EXPECT_TRUE(empty(fields));
+  patch->boolVal()->apply(fields.optBoolVal());
+  patch->byteVal()->apply(fields.optByteVal());
+  patch->i16Val()->apply(fields.optI16Val());
+  patch->i32Val()->apply(fields.optI32Val());
+  patch->i64Val()->apply(fields.optI64Val());
+  patch->floatVal()->apply(fields.optFloatVal());
+  patch->doubleVal()->apply(fields.optDoubleVal());
+  patch->stringVal()->apply(fields.optStringVal());
+  EXPECT_TRUE(empty(fields));
+
+  // Applying a value patch to values, patches.
+  fields.optBoolVal().ensure();
+  fields.optByteVal().ensure();
+  fields.optI16Val().ensure();
+  fields.optI32Val().ensure();
+  fields.optI64Val().ensure();
+  fields.optFloatVal().ensure();
+  fields.optDoubleVal().ensure();
+  fields.optStringVal().ensure();
+  EXPECT_FALSE(empty(fields));
+  patch->boolVal()->apply(fields.optBoolVal());
+  patch->byteVal()->apply(fields.optByteVal());
+  patch->i16Val()->apply(fields.optI16Val());
+  patch->i32Val()->apply(fields.optI32Val());
+  patch->i64Val()->apply(fields.optI64Val());
+  patch->floatVal()->apply(fields.optFloatVal());
+  patch->doubleVal()->apply(fields.optDoubleVal());
+  patch->stringVal()->apply(fields.optStringVal());
+  EXPECT_EQ(*fields.optBoolVal(), true);
+  EXPECT_EQ(*fields.optByteVal(), 2);
+  EXPECT_EQ(*fields.optI16Val(), 2);
+  EXPECT_EQ(*fields.optI32Val(), 3);
+  EXPECT_EQ(*fields.optI64Val(), 4);
+  EXPECT_EQ(*fields.optFloatVal(), 5);
+  EXPECT_EQ(*fields.optDoubleVal(), 6);
+  EXPECT_EQ(*fields.optStringVal(), "__");
 }
 
 } // namespace apache::thrift

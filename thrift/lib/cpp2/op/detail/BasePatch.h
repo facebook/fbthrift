@@ -77,6 +77,7 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
 
  public:
   using value_type = std::decay_t<decltype(*std::declval<Patch>().assign())>;
+  using Base::apply;
   using Base::assign;
   using Base::operator=;
   using Base::Base;
@@ -91,6 +92,20 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
   bool hasAssign() const noexcept { return patch_.assign().has_value(); }
   void assign(const value_type& val) { resetAnd().assign().emplace(val); }
   void assign(value_type&& val) { resetAnd().assign().emplace(std::move(val)); }
+
+  template <typename U>
+  void apply(optional_field_ref<U> field) const {
+    if (field.has_value()) {
+      derived().apply(std::forward<U>(*field));
+    }
+  }
+
+  template <typename U>
+  void apply(optional_boxed_field_ref<U> field) const {
+    if (field.has_value()) {
+      derived().apply(std::forward<U>(*field));
+    }
+  }
 
   Derived& operator=(const value_type& val) { return (assign(val), derived()); }
   Derived& operator=(value_type&& val) {
