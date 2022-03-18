@@ -49,8 +49,8 @@ from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_
 
 cimport module.types as _module_types
 import module.types as _module_types
-cimport hack.types as _hack_types
-import hack.types as _hack_types
+cimport facebook.thrift.annotation.hack.hack.types as _facebook_thrift_annotation_hack_hack_types
+import facebook.thrift.annotation.hack.hack.types as _facebook_thrift_annotation_hack_hack_types
 
 cimport module.services_reflection as _services_reflection
 

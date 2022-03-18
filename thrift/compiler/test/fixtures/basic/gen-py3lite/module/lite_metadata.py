@@ -7,7 +7,7 @@
 import apache.thrift.metadata.lite_types as _fbthrift_metadata
 
 
-import hack.lite_metadata
+import facebook.thrift.annotation.hack.hack.lite_metadata
 
 # TODO (ffrancet): This general pattern can be optimized by using tuples and dicts
 # instead of re-generating thrift structs

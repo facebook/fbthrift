@@ -53,8 +53,8 @@ from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
 cimport module.types as _module_types
 import module.types as _module_types
-import hack.types as _hack_types
-cimport hack.types as _hack_types
+import facebook.thrift.annotation.hack.hack.types as _facebook_thrift_annotation_hack_hack_types
+cimport facebook.thrift.annotation.hack.hack.types as _facebook_thrift_annotation_hack_hack_types
 
 cimport module.services_reflection as _services_reflection
 

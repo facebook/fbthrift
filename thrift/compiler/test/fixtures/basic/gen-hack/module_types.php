@@ -322,7 +322,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'fields' => dict[
         'floatSet' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation\SkipCodegen' => \facebook_thrift_annotation\SkipCodegen::fromShape(
+            '\facebook\thrift\annotation\SkipCodegen' => \facebook\thrift\annotation\SkipCodegen::fromShape(
               shape(
                 "reason" => "Invalid key type",
               )
@@ -795,7 +795,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
       'fields' => dict[
         'floatSet' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation\SkipCodegen' => \facebook_thrift_annotation\SkipCodegen::fromShape(
+            '\facebook\thrift\annotation\SkipCodegen' => \facebook\thrift\annotation\SkipCodegen::fromShape(
               shape(
                 "reason" => "Invalid key type",
               )

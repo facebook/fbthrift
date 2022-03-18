@@ -12,7 +12,7 @@ import enum
 import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
-import hack.lite_types
+import facebook.thrift.annotation.hack.hack.lite_types
 
 
 class MyEnum(_fbthrift_py3lite_types.Enum, enum.Enum):

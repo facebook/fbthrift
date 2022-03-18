@@ -6,7 +6,7 @@
  *  @generated
  */
 
-namespace facebook_thrift_annotation;
+namespace facebook\thrift\annotation;
 
 /**
  * Original thrift struct:-
@@ -136,7 +136,7 @@ class FieldWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * SkipCodegen
  */
-class SkipCodegen implements \IThriftSyncStruct {
+class SkipCodegen implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -153,6 +153,9 @@ class SkipCodegen implements \IThriftSyncStruct {
     ?'reason' => ?string,
   );
 
+  const type TShape = shape(
+    'reason' => string,
+  );
   const int STRUCTURAL_ID = 3707764047816594739;
   /**
    * Original thrift field:-
@@ -171,6 +174,13 @@ class SkipCodegen implements \IThriftSyncStruct {
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'reason'),
+    );
+  }
+
+  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'reason'),
     );
   }
 
@@ -217,6 +227,21 @@ class SkipCodegen implements \IThriftSyncStruct {
     );
   }
 
+  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
+    return Dict\map_keys($m, $key ==> (string)$key);
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['reason'],
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'reason' => $this->reason,
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }

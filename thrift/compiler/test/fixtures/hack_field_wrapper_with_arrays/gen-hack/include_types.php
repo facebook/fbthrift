@@ -62,7 +62,7 @@ class AnnotationStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
           shape(
           )
         ),
-        '\facebook_thrift_annotation\FieldWrapper' => \facebook_thrift_annotation\FieldWrapper::fromShape(
+        '\facebook\thrift\annotation\FieldWrapper' => \facebook\thrift\annotation\FieldWrapper::fromShape(
           shape(
             "name" => "\MyFieldWrapper",
           )
@@ -406,7 +406,7 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
       'fields' => dict[
         'wrapped_field' => shape(
           'field' => dict[
-            '\facebook_thrift_annotation\FieldWrapper' => \facebook_thrift_annotation\FieldWrapper::fromShape(
+            '\facebook\thrift\annotation\FieldWrapper' => \facebook\thrift\annotation\FieldWrapper::fromShape(
               shape(
                 "name" => "\MyFieldWrapper",
               )

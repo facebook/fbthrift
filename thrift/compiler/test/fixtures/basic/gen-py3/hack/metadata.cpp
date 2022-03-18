@@ -7,7 +7,10 @@
 
 #include "thrift/annotation/gen-py3/hack/metadata.h"
 
-namespace cpp2 {
+namespace facebook {
+namespace thrift {
+namespace annotation {
+namespace hack {
 ::apache::thrift::metadata::ThriftMetadata hack_getThriftModuleMetadata() {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
@@ -15,4 +18,7 @@ namespace cpp2 {
   ::apache::thrift::detail::md::StructMetadata<SkipCodegen>::gen(metadata);
   return metadata;
 }
-} // namespace cpp2
+} // namespace facebook
+} // namespace thrift
+} // namespace annotation
+} // namespace hack

@@ -4211,7 +4211,7 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
       'service' => dict[],
       'functions' => dict[
         'invalid_return_for_hack' => dict[
-          '\facebook_thrift_annotation\SkipCodegen' => \facebook_thrift_annotation\SkipCodegen::fromShape(
+          '\facebook\thrift\annotation\SkipCodegen' => \facebook\thrift\annotation\SkipCodegen::fromShape(
             shape(
               "reason" => "Invalid key type",
             )

@@ -16,7 +16,7 @@ import sys
 if sys.version_info[0] >= 3:
   long = int
 
-import hack.ttypes
+import thrift.annotation.hack.ttypes
 
 
 import pprint

@@ -6,7 +6,7 @@
  *  @generated
  */
 
-namespace facebook_thrift_annotation;
+namespace facebook\thrift\annotation;
 
 /**
  * Original thrift struct:-

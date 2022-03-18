@@ -10,7 +10,7 @@ import (
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
-	hack0 "hack"
+	hack0 "thrift/annotation/hack"
 
 )
 

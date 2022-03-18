@@ -15,7 +15,7 @@ from thrift.py3lite.server import ServiceInterface, oneway, PythonUserException
 
 import module.lite_types
 import module.lite_metadata
-import hack.lite_types
+import facebook.thrift.annotation.hack.hack.lite_types
 
 class MyServiceInterface(
     ServiceInterface,

@@ -20,28 +20,28 @@ namespace py3 {
 
 
 template<>
-void reset_field<::cpp2::FieldWrapper>(
-    ::cpp2::FieldWrapper& obj, uint16_t index) {
+void reset_field<::facebook::thrift::annotation::hack::FieldWrapper>(
+    ::facebook::thrift::annotation::hack::FieldWrapper& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.name_ref().copy_from(default_inst<::cpp2::FieldWrapper>().name_ref());
+      obj.name_ref().copy_from(default_inst<::facebook::thrift::annotation::hack::FieldWrapper>().name_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::SkipCodegen>(
-    ::cpp2::SkipCodegen& obj, uint16_t index) {
+void reset_field<::facebook::thrift::annotation::hack::SkipCodegen>(
+    ::facebook::thrift::annotation::hack::SkipCodegen& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.reason_ref().copy_from(default_inst<::cpp2::SkipCodegen>().reason_ref());
+      obj.reason_ref().copy_from(default_inst<::facebook::thrift::annotation::hack::SkipCodegen>().reason_ref());
       return;
   }
 }
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::FieldWrapper>::namesmap() {
+    ::facebook::thrift::annotation::hack::FieldWrapper>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -51,7 +51,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::SkipCodegen>::namesmap() {
+    ::facebook::thrift::annotation::hack::SkipCodegen>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

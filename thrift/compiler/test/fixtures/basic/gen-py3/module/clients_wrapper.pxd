@@ -26,7 +26,7 @@ from thrift.py3.client cimport cClientWrapper
 
 cimport module.types as _module_types
 
-cimport hack.types as _hack_types
+cimport facebook.thrift.annotation.hack.hack.types as _facebook_thrift_annotation_hack_hack_types
 
 cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
   cdef cppclass cMyServiceAsyncClient "::cpp2::MyServiceAsyncClient":

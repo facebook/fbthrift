@@ -11,6 +11,12 @@
 
 #include "thrift/annotation/gen-cpp2/hack_metadata.h"
 
-namespace cpp2 {
+namespace facebook {
+namespace thrift {
+namespace annotation {
+namespace hack {
 ::apache::thrift::metadata::ThriftMetadata hack_getThriftModuleMetadata();
-} // namespace cpp2
+} // namespace facebook
+} // namespace thrift
+} // namespace annotation
+} // namespace hack
