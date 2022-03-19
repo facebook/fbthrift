@@ -112,8 +112,7 @@ FOLLY_ERASE constexpr S make_constant(
   S s;
   void(
       _{0,
-        (void(assign_struct_field(
-             invoke_reffer<A>{}(s), static_cast<T>(arg.ref))),
+        (void(assign_struct_field(access_field<A>(s), static_cast<T>(arg.ref))),
          0)...});
   return s;
 }
@@ -125,8 +124,7 @@ FOLLY_ERASE constexpr S make_constant(
   S s;
   void(
       _{0,
-        (void(assign_struct_field(
-             invoke_reffer<A>{}(s), static_cast<T>(arg.ref))),
+        (void(assign_struct_field(access_field<A>(s), static_cast<T>(arg.ref))),
          0)...});
   return s;
 }
