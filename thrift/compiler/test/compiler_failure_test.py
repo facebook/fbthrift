@@ -1773,3 +1773,49 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift:7] Interactions are not allowed in this position\n"
             "[FAILURE:foo.thrift:8] Interactions are not allowed in this position\n",
         )
+
+    # Time complexity of for_each_transitive_field should be O(1)
+    def test_time_complexity_of_for_each_transitive_field(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct S_01 { 1: i32 i; }
+                struct S_02 { 1: optional S_01 a (thrift.box); 2: optional S_01 b (thrift.box); }
+                struct S_03 { 1: optional S_02 a (thrift.box); 2: optional S_02 b (thrift.box); }
+                struct S_04 { 1: optional S_03 a (thrift.box); 2: optional S_03 b (thrift.box); }
+                struct S_05 { 1: optional S_04 a (thrift.box); 2: optional S_04 b (thrift.box); }
+                struct S_06 { 1: optional S_05 a (thrift.box); 2: optional S_05 b (thrift.box); }
+                struct S_07 { 1: optional S_06 a (thrift.box); 2: optional S_06 b (thrift.box); }
+                struct S_08 { 1: optional S_07 a (thrift.box); 2: optional S_07 b (thrift.box); }
+                struct S_09 { 1: optional S_08 a (thrift.box); 2: optional S_08 b (thrift.box); }
+                struct S_10 { 1: optional S_09 a (thrift.box); 2: optional S_09 b (thrift.box); }
+                struct S_11 { 1: optional S_10 a (thrift.box); 2: optional S_10 b (thrift.box); }
+                struct S_12 { 1: optional S_11 a (thrift.box); 2: optional S_11 b (thrift.box); }
+                struct S_13 { 1: optional S_12 a (thrift.box); 2: optional S_12 b (thrift.box); }
+                struct S_14 { 1: optional S_13 a (thrift.box); 2: optional S_13 b (thrift.box); }
+                struct S_15 { 1: optional S_14 a (thrift.box); 2: optional S_14 b (thrift.box); }
+                struct S_16 { 1: optional S_15 a (thrift.box); 2: optional S_15 b (thrift.box); }
+                struct S_17 { 1: optional S_16 a (thrift.box); 2: optional S_16 b (thrift.box); }
+                struct S_18 { 1: optional S_17 a (thrift.box); 2: optional S_17 b (thrift.box); }
+                struct S_19 { 1: optional S_18 a (thrift.box); 2: optional S_18 b (thrift.box); }
+                struct S_20 { 1: optional S_19 a (thrift.box); 2: optional S_19 b (thrift.box); }
+                struct S_21 { 1: optional S_20 a (thrift.box); 2: optional S_20 b (thrift.box); }
+                struct S_22 { 1: optional S_21 a (thrift.box); 2: optional S_21 b (thrift.box); }
+                struct S_23 { 1: optional S_22 a (thrift.box); 2: optional S_22 b (thrift.box); }
+                struct S_24 { 1: optional S_23 a (thrift.box); 2: optional S_23 b (thrift.box); }
+                struct S_25 { 1: optional S_24 a (thrift.box); 2: optional S_24 b (thrift.box); }
+                struct S_26 { 1: optional S_25 a (thrift.box); 2: optional S_25 b (thrift.box); }
+                struct S_27 { 1: optional S_26 a (thrift.box); 2: optional S_26 b (thrift.box); }
+                struct S_28 { 1: optional S_27 a (thrift.box); 2: optional S_27 b (thrift.box); }
+                struct S_29 { 1: optional S_28 a (thrift.box); 2: optional S_28 b (thrift.box); }
+                struct S_30 { 1: optional S_29 a (thrift.box); 2: optional S_29 b (thrift.box); }
+                struct S_31 { 1: optional S_30 a (thrift.box); 2: optional S_30 b (thrift.box); }
+                struct S_32 { 1: optional S_31 a (thrift.box); 2: optional S_31 b (thrift.box); }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 0)

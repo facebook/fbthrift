@@ -134,14 +134,16 @@ class is_eligible_for_constexpr {
   std::unordered_map<const t_type*, bool> cache_;
 };
 
-// Invokes f on each field of s and nested structs. The traversal is performed
-// transitively in a depth-first order and interrupted if f returns false.
+// Invokes f once on each field of s and nested structs. The traversal is
+// performed transitively in a depth-first order and interrupted if f returns
+// false.
 template <typename F>
 void for_each_transitive_field(const t_struct* s, F f) {
   struct field_info {
     const t_struct* owner;
     size_t index;
   };
+  std::unordered_set<const t_field*> seen;
   auto fields = std::vector<field_info>{1, {s, 0}};
   while (!fields.empty()) {
     auto& fi = fields.back();
@@ -150,10 +152,13 @@ void for_each_transitive_field(const t_struct* s, F f) {
       continue;
     }
     const t_field* field = fi.owner->get_field(fi.index);
+    ++fi.index;
+    if (seen.emplace(field).second == false) {
+      continue;
+    }
     if (!f(field)) {
       return;
     }
-    ++fi.index;
     if (const auto* sub = dynamic_cast<const t_struct*>(field->get_type())) {
       fields.push_back({sub, 0});
     }
