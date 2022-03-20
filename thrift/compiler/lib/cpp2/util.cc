@@ -486,7 +486,7 @@ bool is_cpp_ref_unique_either(const t_field* f) {
   return cpp2::is_unique_ref(f) || cpp2::is_implicit_ref(f->get_type());
 }
 
-bool is_terse_writes(const t_field* field) {
+bool deprecated_terse_writes(const t_field* field) {
   // Add terse writes for unqualified fields when comparison is cheap:
   // (e.g. i32/i64, empty strings/list/map)
   auto t = field->get_type()->get_true_type();

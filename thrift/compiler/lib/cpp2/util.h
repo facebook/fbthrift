@@ -228,7 +228,7 @@ std::string sha256_hex(std::string const& in);
 
 bool is_cpp_ref_unique_either(const t_field* f);
 
-bool is_terse_writes(const t_field* field);
+bool deprecated_terse_writes(const t_field* field);
 
 } // namespace cpp2
 } // namespace compiler

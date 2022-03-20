@@ -614,7 +614,8 @@ class mstch_cpp2_field : public mstch_field {
             {"field:zero_copy_arg", &mstch_cpp2_field::zero_copy_arg},
             {"field:cpp_noncopyable?", &mstch_cpp2_field::cpp_noncopyable},
             {"field:enum_has_value", &mstch_cpp2_field::enum_has_value},
-            {"field:terse_writes?", &mstch_cpp2_field::terse_writes},
+            {"field:deprecated_terse_writes?",
+             &mstch_cpp2_field::deprecated_terse_writes},
             {"field:fatal_annotations?",
              &mstch_cpp2_field::has_fatal_annotations},
             {"field:fatal_annotations", &mstch_cpp2_field::fatal_annotations},
@@ -770,8 +771,8 @@ class mstch_cpp2_field : public mstch_field {
               pos_)
         : mstch::node("");
   }
-  mstch::node terse_writes() {
-    return has_option("terse_writes") && cpp2::is_terse_writes(field_);
+  mstch::node deprecated_terse_writes() {
+    return has_option("terse_writes") && cpp2::deprecated_terse_writes(field_);
   }
   mstch::node zero_copy_arg() {
     switch (field_->get_type()->get_type_value()) {
@@ -1155,7 +1156,8 @@ class mstch_cpp2_struct : public mstch_struct {
         fields.begin(),
         fields.end(),
         [enabled_terse_write = has_option("terse_writes")](auto& field) {
-          return (!enabled_terse_write || !cpp2::is_terse_writes(&field)) &&
+          return (!enabled_terse_write ||
+                  !cpp2::deprecated_terse_writes(&field)) &&
               field.get_req() != t_field::e_req::optional;
         });
   }
