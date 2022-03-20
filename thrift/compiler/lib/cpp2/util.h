@@ -96,7 +96,7 @@ inline bool is_ref(const t_field* f) {
 
 inline bool field_has_isset(const t_field* field) {
   return field->get_req() != t_field::e_req::required &&
-      !is_explicit_ref(field);
+      field->get_req() != t_field::e_req::terse && !is_explicit_ref(field);
 }
 
 inline bool is_lazy(const t_field* field) {

@@ -160,8 +160,7 @@ StructLevelTerseStruct::StructLevelTerseStruct(StructLevelTerseStruct&& other) n
     __fbthrift_field_list_field(std::move(other.__fbthrift_field_list_field)),
     __fbthrift_field_set_field(std::move(other.__fbthrift_field_set_field)),
     __fbthrift_field_map_field(std::move(other.__fbthrift_field_map_field)),
-    __fbthrift_field_struct_field(std::move(other.__fbthrift_field_struct_field)),
-    __isset(other.__isset) {
+    __fbthrift_field_struct_field(std::move(other.__fbthrift_field_struct_field)) {
 }
 
 StructLevelTerseStruct& StructLevelTerseStruct::operator=(FOLLY_MAYBE_UNUSED StructLevelTerseStruct&& other) noexcept {
@@ -179,7 +178,6 @@ StructLevelTerseStruct& StructLevelTerseStruct::operator=(FOLLY_MAYBE_UNUSED Str
     this->__fbthrift_field_set_field = std::move(other.__fbthrift_field_set_field);
     this->__fbthrift_field_map_field = std::move(other.__fbthrift_field_map_field);
     this->__fbthrift_field_struct_field = std::move(other.__fbthrift_field_struct_field);
-    __isset = other.__isset;
     return *this;
 }
 
@@ -199,20 +197,6 @@ StructLevelTerseStruct::StructLevelTerseStruct(apache::thrift::FragileConstructo
     __fbthrift_field_set_field(std::move(set_field__arg)),
     __fbthrift_field_map_field(std::move(map_field__arg)),
     __fbthrift_field_struct_field(std::move(struct_field__arg)) {
-  __isset.set(folly::index_constant<0>(), true);
-  __isset.set(folly::index_constant<1>(), true);
-  __isset.set(folly::index_constant<2>(), true);
-  __isset.set(folly::index_constant<3>(), true);
-  __isset.set(folly::index_constant<4>(), true);
-  __isset.set(folly::index_constant<5>(), true);
-  __isset.set(folly::index_constant<6>(), true);
-  __isset.set(folly::index_constant<7>(), true);
-  __isset.set(folly::index_constant<8>(), true);
-  __isset.set(folly::index_constant<9>(), true);
-  __isset.set(folly::index_constant<10>(), true);
-  __isset.set(folly::index_constant<11>(), true);
-  __isset.set(folly::index_constant<12>(), true);
-  __isset.set(folly::index_constant<13>(), true);
 }
 
 
@@ -231,7 +215,6 @@ void StructLevelTerseStruct::__fbthrift_clear() {
   this->__fbthrift_field_list_field.clear();
   this->__fbthrift_field_set_field.clear();
   this->__fbthrift_field_map_field.clear();
-  __isset = {};
 }
 
 bool StructLevelTerseStruct::__fbthrift_is_empty() const {
@@ -385,7 +368,6 @@ void swap(StructLevelTerseStruct& a, StructLevelTerseStruct& b) {
   swap(a.set_field_ref().value(), b.set_field_ref().value());
   swap(a.map_field_ref().value(), b.map_field_ref().value());
   swap(a.struct_field_ref().value(), b.struct_field_ref().value());
-  swap(a.__isset, b.__isset);
 }
 
 template void StructLevelTerseStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -569,20 +551,6 @@ FieldLevelTerseStruct::FieldLevelTerseStruct(apache::thrift::FragileConstructor,
   __isset.set(folly::index_constant<11>(), true);
   __isset.set(folly::index_constant<12>(), true);
   __isset.set(folly::index_constant<13>(), true);
-  __isset.set(folly::index_constant<14>(), true);
-  __isset.set(folly::index_constant<15>(), true);
-  __isset.set(folly::index_constant<16>(), true);
-  __isset.set(folly::index_constant<17>(), true);
-  __isset.set(folly::index_constant<18>(), true);
-  __isset.set(folly::index_constant<19>(), true);
-  __isset.set(folly::index_constant<20>(), true);
-  __isset.set(folly::index_constant<21>(), true);
-  __isset.set(folly::index_constant<22>(), true);
-  __isset.set(folly::index_constant<23>(), true);
-  __isset.set(folly::index_constant<24>(), true);
-  __isset.set(folly::index_constant<25>(), true);
-  __isset.set(folly::index_constant<26>(), true);
-  __isset.set(folly::index_constant<27>(), true);
 }
 
 
