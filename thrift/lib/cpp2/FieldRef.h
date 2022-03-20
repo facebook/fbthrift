@@ -1608,5 +1608,198 @@ bool operator>=(const U& a, union_field_ref<T> b) {
   return b <= a;
 }
 
+// A reference to a terse field of the possibly const-qualified type
+// std::remove_reference_t<T> in a Thrift-generated struct. Note, a terse field
+// does not need isset since we do not need to distinguish if the field is set
+// or unset.
+template <typename T>
+class terse_field_ref {
+  static_assert(std::is_reference<T>::value, "not a reference");
+
+  template <typename U>
+  friend class terse_field_ref;
+
+ public:
+  using value_type = std::remove_reference_t<T>;
+  using reference_type = T;
+
+  FOLLY_ERASE terse_field_ref(reference_type value) noexcept : value_(value) {}
+
+  template <
+      typename U,
+      std::enable_if_t<
+          std::is_same<
+              std::add_const_t<std::remove_reference_t<U>>,
+              value_type>{} &&
+              !(std::is_rvalue_reference<T>{} && std::is_lvalue_reference<U>{}),
+          int> = 0>
+  FOLLY_ERASE /* implicit */ terse_field_ref(
+      const terse_field_ref<U>& other) noexcept
+      : value_(other.value_) {}
+
+  template <
+      typename U,
+      std::enable_if_t<
+          std::is_same<T, U&&>{} || std::is_same<T, const U&&>{},
+          int> = 0>
+  FOLLY_ERASE explicit terse_field_ref(
+      const terse_field_ref<U&>& other) noexcept
+      : value_(other.value_) {}
+
+  template <typename U = value_type>
+  FOLLY_ERASE std::
+      enable_if_t<std::is_assignable<value_type&, U&&>::value, terse_field_ref&>
+      operator=(U&& value) noexcept(
+          std::is_nothrow_assignable<value_type&, U&&>::value) {
+    value_ = static_cast<U&&>(value);
+    return *this;
+  }
+
+  // Workaround for https://bugs.llvm.org/show_bug.cgi?id=49442
+  FOLLY_ERASE terse_field_ref& operator=(value_type&& value) noexcept(
+      std::is_nothrow_move_assignable<value_type>::value) {
+    value_ = static_cast<value_type&&>(value);
+    return *this;
+    value.~value_type(); // Force emit destructor...
+  }
+
+  template <typename U>
+  FOLLY_ERASE void copy_from(const terse_field_ref<U>& other) noexcept(
+      std::is_nothrow_assignable<value_type&, U>::value) {
+    value_ = other.value_;
+  }
+
+  template <typename U>
+  FOLLY_ERASE void move_from(terse_field_ref<U> other) noexcept(
+      std::is_nothrow_assignable<value_type&, std::remove_reference_t<U>&&>::
+          value) {
+    value_ = static_cast<std::remove_reference_t<U>&&>(other.value_);
+  }
+
+  FOLLY_ERASE reference_type value() const noexcept {
+    return static_cast<reference_type>(value_);
+  }
+
+  FOLLY_ERASE reference_type operator*() const noexcept {
+    return static_cast<reference_type>(value_);
+  }
+
+  FOLLY_ERASE value_type* operator->() const noexcept { return &value_; }
+
+  template <typename Index>
+  FOLLY_ERASE auto operator[](const Index& index) const -> decltype(auto) {
+    return value_[index];
+  }
+
+  template <typename... Args>
+  FOLLY_ERASE value_type& emplace(Args&&... args) {
+    value_ = value_type(static_cast<Args&&>(args)...);
+    return value_;
+  }
+
+  template <class U, class... Args>
+  FOLLY_ERASE std::enable_if_t<
+      std::is_constructible<value_type, std::initializer_list<U>, Args&&...>::
+          value,
+      value_type&>
+  emplace(std::initializer_list<U> ilist, Args&&... args) {
+    value_ = value_type(ilist, static_cast<Args&&>(args)...);
+    return value_;
+  }
+
+ private:
+  value_type& value_;
+};
+
+template <typename T, typename U>
+bool operator==(terse_field_ref<T> lhs, terse_field_ref<U> rhs) {
+  return *lhs == *rhs;
+}
+
+template <typename T, typename U>
+bool operator!=(terse_field_ref<T> lhs, terse_field_ref<U> rhs) {
+  return *lhs != *rhs;
+}
+
+template <typename T, typename U>
+bool operator<(terse_field_ref<T> lhs, terse_field_ref<U> rhs) {
+  return *lhs < *rhs;
+}
+
+template <typename T, typename U>
+bool operator>(terse_field_ref<T> lhs, terse_field_ref<U> rhs) {
+  return *lhs > *rhs;
+}
+
+template <typename T, typename U>
+bool operator<=(terse_field_ref<T> lhs, terse_field_ref<U> rhs) {
+  return *lhs <= *rhs;
+}
+
+template <typename T, typename U>
+bool operator>=(terse_field_ref<T> lhs, terse_field_ref<U> rhs) {
+  return *lhs >= *rhs;
+}
+
+template <typename T, typename U>
+bool operator==(terse_field_ref<T> lhs, const U& rhs) {
+  return *lhs == rhs;
+}
+
+template <typename T, typename U>
+bool operator!=(terse_field_ref<T> lhs, const U& rhs) {
+  return *lhs != rhs;
+}
+
+template <typename T, typename U>
+bool operator<(terse_field_ref<T> lhs, const U& rhs) {
+  return *lhs < rhs;
+}
+
+template <typename T, typename U>
+bool operator>(terse_field_ref<T> lhs, const U& rhs) {
+  return *lhs > rhs;
+}
+
+template <typename T, typename U>
+bool operator<=(terse_field_ref<T> lhs, const U& rhs) {
+  return *lhs <= rhs;
+}
+
+template <typename T, typename U>
+bool operator>=(terse_field_ref<T> lhs, const U& rhs) {
+  return *lhs >= rhs;
+}
+
+template <typename T, typename U>
+bool operator==(const T& lhs, terse_field_ref<U> rhs) {
+  return lhs == *rhs;
+}
+
+template <typename T, typename U>
+bool operator!=(const T& lhs, terse_field_ref<U> rhs) {
+  return lhs != *rhs;
+}
+
+template <typename T, typename U>
+bool operator<(const T& lhs, terse_field_ref<U> rhs) {
+  return lhs < *rhs;
+}
+
+template <typename T, typename U>
+bool operator>(const T& lhs, terse_field_ref<U> rhs) {
+  return lhs > *rhs;
+}
+
+template <typename T, typename U>
+bool operator<=(const T& lhs, terse_field_ref<U> rhs) {
+  return lhs <= *rhs;
+}
+
+template <typename T, typename U>
+bool operator>=(const T& lhs, terse_field_ref<U> rhs) {
+  return lhs >= *rhs;
+}
+
 } // namespace thrift
 } // namespace apache

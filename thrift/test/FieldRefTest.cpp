@@ -30,6 +30,7 @@ using apache::thrift::bad_field_access;
 using apache::thrift::field_ref;
 using apache::thrift::optional_boxed_field_ref;
 using apache::thrift::optional_field_ref;
+using apache::thrift::terse_field_ref;
 using apache::thrift::detail::boxed_value_ptr;
 
 // A struct which is assignable but not constructible from int or other types
@@ -84,6 +85,16 @@ class TestStruct {
     return {std::move(name_), __isset.at(folly::index_constant<0>())};
   }
 
+  terse_field_ref<std::string&> terse_name() & { return {name_}; }
+
+  terse_field_ref<std::string&&> terse_name() && { return {std::move(name_)}; }
+
+  terse_field_ref<const std::string&> terse_name() const& { return {name_}; }
+
+  terse_field_ref<const std::string&&> terse_name() const&& {
+    return {static_cast<const std::string&&>(name_)};
+  }
+
   field_ref<IntAssignable&> int_assign() {
     return {int_assign_, __isset.at(folly::index_constant<1>())};
   }
@@ -91,6 +102,8 @@ class TestStruct {
   optional_field_ref<IntAssignable&> opt_int_assign() {
     return {int_assign_, __isset.at(folly::index_constant<1>())};
   }
+
+  terse_field_ref<IntAssignable&> terse_int_assign() { return {int_assign_}; }
 
   optional_field_ref<std::shared_ptr<int>&> ptr_ref() {
     return {ptr_, __isset.at(folly::index_constant<2>())};
@@ -124,8 +137,20 @@ class TestStruct {
     return {vec_, __isset.at(folly::index_constant<5>())};
   }
 
+  terse_field_ref<std::vector<bool>&> terse_vec() & { return {vec_}; }
+
   optional_field_ref<Nested&> opt_nested() & {
     return {nested_, __isset.at(folly::index_constant<5>())};
+  }
+
+  terse_field_ref<int&> terse_int_val() & { return {int_val_}; }
+
+  terse_field_ref<int&&> terse_int_val() && { return {std::move(int_val_)}; }
+
+  terse_field_ref<const int&> terse_int_val() const& { return {int_val_}; }
+
+  terse_field_ref<const int&&> terse_int_val() const&& {
+    return {static_cast<const int&&>(int_val_)};
   }
 
  private:
@@ -734,4 +759,79 @@ TYPED_TEST(optional_field_ref_typed_test, rvalue_ref_method) {
   std::unique_ptr<int> p = *ref;
   EXPECT_EQ(*p, 10);
   EXPECT_FALSE(*ref);
+}
+
+TEST(terse_field_ref_test, access_default_value) {
+  auto s = TestStruct();
+  EXPECT_EQ(s.terse_name(), "default");
+  EXPECT_EQ(s.terse_int_val(), 0);
+}
+
+TEST(terse_field_ref_test, is_assignable) {
+  check_is_assignable<terse_field_ref>();
+}
+
+TEST(terse_field_ref_test, assign) {
+  auto s = TestStruct();
+  EXPECT_EQ(*s.terse_name(), "default");
+  s.terse_name() = "foo";
+  EXPECT_EQ(*s.terse_name(), "foo");
+}
+
+TEST(terse_field_ref_test, copy_from) {
+  auto s = TestStruct();
+  auto s2 = TestStruct();
+  s2.terse_name() = "foo";
+  s.terse_name().copy_from(s2.terse_name());
+  EXPECT_EQ(*s.terse_name(), "foo");
+}
+
+TEST(terse_field_ref_test, move_from) {
+  auto s = TestStruct();
+  auto s2 = TestStruct();
+  s2.terse_name() = "foo";
+  s.terse_name().move_from(s2.terse_name());
+  EXPECT_EQ(*s.terse_name(), "foo");
+}
+
+TEST(terse_field_ref_test, access) {
+  auto s = TestStruct();
+  EXPECT_EQ(*s.terse_name(), "default");
+  EXPECT_EQ(s.terse_name().value(), "default");
+}
+
+TEST(terse_field_ref_test, subscript) {
+  TestStruct s;
+  s.terse_vec() = {false};
+  EXPECT_FALSE(s.terse_vec()[0]);
+  s.terse_vec()[0] = true;
+  EXPECT_TRUE(s.terse_vec()[0]);
+}
+
+TEST(terse_field_ref_test, assign_forwards) {
+  auto s = TestStruct();
+  s.terse_int_assign() = 42;
+  EXPECT_EQ(s.terse_int_assign()->value, 42);
+}
+
+TEST(terse_field_ref_test, emplace) {
+  TestStruct s;
+  s.terse_name().emplace({'f', 'o', 'o'});
+  EXPECT_EQ(s.terse_name(), "foo");
+  s.terse_name().emplace({'b', 'a', 'r'});
+  EXPECT_EQ(s.terse_name(), "bar");
+  s.terse_name().emplace({'b', 'a', 'z'}, std::allocator<char>());
+  EXPECT_EQ(s.terse_name(), "baz");
+}
+
+template <typename From, typename To>
+struct TerseFieldRefConversionChecker {
+  static_assert(
+      std::is_convertible<From, To>() ==
+          std::is_convertible<terse_field_ref<From>, terse_field_ref<To>>(),
+      "inconsistent implicit conversion");
+};
+
+TEST(terse_field_ref_test, conversions) {
+  test_conversions<TerseFieldRefConversionChecker>();
 }
