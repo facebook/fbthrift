@@ -166,7 +166,9 @@ void freezeToFile(const T& x, folly::File file) {
   writeRange.advance(schemaStr.size());
   ByteRangeFreezer::freeze(*layout, x, writeRange);
   size_t finalBufferSize = writeRange.begin() - mappingRange.begin();
-  ftruncate(file.fd(), finalBufferSize);
+  folly::checkUnixError(
+      ftruncate(file.fd(), finalBufferSize),
+      "MallocFreezer: ftruncate() failed");
 }
 
 template <class T>
