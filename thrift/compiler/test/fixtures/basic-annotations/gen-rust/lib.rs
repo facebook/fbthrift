@@ -2300,8 +2300,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.ping"));
 
             async move {
@@ -2342,8 +2343,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.getRandomData"));
 
             async move {
@@ -2386,8 +2388,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.hasDataById"));
 
             async move {
@@ -2430,8 +2433,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.getDataById"));
 
             async move {
@@ -2476,8 +2480,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.putDataById"));
 
             async move {
@@ -2522,8 +2527,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.lobDataById"));
 
             async move {
@@ -2564,8 +2570,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.doNothing"));
 
             async move {
@@ -2802,8 +2809,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyServicePrioParent.ping"));
 
             async move {
@@ -2844,8 +2852,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyServicePrioParent.pong"));
 
             async move {
@@ -3035,8 +3044,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyServicePrioChild.pang"));
 
             async move {
@@ -3208,8 +3218,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "BadInteraction.foo"));
 
             async move {
@@ -3401,8 +3412,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "BadService.bar"));
 
             async move {

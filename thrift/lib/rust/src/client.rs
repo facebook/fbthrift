@@ -44,11 +44,14 @@ pub trait ClientFactory {
 }
 
 pub trait Transport: Framing + Send + Sized + 'static {
+    type RpcOptions: Default;
+
     fn call(
         &self,
         service_name: &'static CStr,
         fn_name: &'static CStr,
         req: FramingEncodedFinal<Self>,
+        rpc_options: &Self::RpcOptions,
     ) -> Pin<Box<dyn Future<Output = Result<FramingDecoded<Self>, anyhow::Error>> + Send + 'static>>;
 
     fn call_stream(
