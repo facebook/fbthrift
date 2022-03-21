@@ -35,6 +35,7 @@ struct MyNestedStruct {
 
 struct MyComplexStruct {
   1: map<string, MyStruct> map_of_string_to_MyStruct;
+  @hack.FieldWrapper{name = "\MyFieldWrapper"}
   2: map<string, list<MyStruct>> map_of_string_to_list_of_MyStruct;
   3: map<string, map<string, i32>> map_of_string_to_map_of_string_to_i32;
   4: map<

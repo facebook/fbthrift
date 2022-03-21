@@ -546,19 +546,16 @@ class MyService_func_args implements \IThriftSyncStruct, \IThriftShapishAsyncStr
     return new Map($new);
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      $shape['arg1'],
-      Shapes::idx($shape, 'arg2') === null ? null : (MyStruct::__fromShape($shape['arg2'])),
-    );
+  public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {
+    $obj = new static();
+    $obj->arg1 = $shape['arg1'];
+    $arg2 = Shapes::idx($shape, 'arg2');
+    if ($arg2 !== null) {
+      $obj->arg2 = await MyStruct::__genFromShape($arg2);
+    }
+    return $obj;
   }
 
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'arg1' => $this->arg1,
-      'arg2' => $this->arg2?->__toShape(),
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -781,19 +778,16 @@ class MyService_func1_args implements \IThriftSyncStruct, \IThriftShapishAsyncSt
     return new Map($new);
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      $shape['arg1'],
-      Shapes::idx($shape, 'arg2') === null ? null : (MyStruct::__fromShape($shape['arg2'])),
-    );
+  public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {
+    $obj = new static();
+    $obj->arg1 = $shape['arg1'];
+    $arg2 = Shapes::idx($shape, 'arg2');
+    if ($arg2 !== null) {
+      $obj->arg2 = await MyStruct::__genFromShape($arg2);
+    }
+    return $obj;
   }
 
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'arg1' => $this->arg1,
-      'arg2' => $this->arg2?->__toShape(),
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }

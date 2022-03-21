@@ -205,17 +205,15 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      Shapes::idx($shape, 'nested_struct') === null ? null : (MyNestedStruct::__fromShape($shape['nested_struct'])),
-    );
+  public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {
+    $obj = new static();
+    $nested_struct = Shapes::idx($shape, 'nested_struct');
+    if ($nested_struct !== null) {
+      $obj->nested_struct = await MyNestedStruct::__genFromShape($nested_struct);
+    }
+    return $obj;
   }
 
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'nested_struct' => $this->nested_struct?->__toShape(),
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -431,21 +429,14 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      $shape['wrapped_field'],
-      $shape['annotated_field'],
-      $shape['adapted_type'],
-    );
+  public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {
+    $obj = new static();
+    await $obj->get_wrapped_field()->genWrap($shape['wrapped_field']);
+    await $obj->get_annotated_field()->genWrap($shape['annotated_field']);
+    $obj->adapted_type = $shape['adapted_type'];
+    return $obj;
   }
 
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'wrapped_field' => $this->wrapped_field,
-      'annotated_field' => $this->annotated_field,
-      'adapted_type' => $this->adapted_type,
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -952,112 +943,77 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      self::__stringifyMapKeys($shape['map_of_string_to_MyStruct']
-        |> Dict\map(
-          $$,
-          $_val0 ==> $_val0
-            |> MyStruct::__fromShape($$),
-        )),
-      self::__stringifyMapKeys($shape['map_of_string_to_list_of_MyStruct']
-        |> Dict\map(
-          $$,
-          $_val1 ==> $_val1
-            |> Vec\map(
-              $$,
-              $_val2 ==> $_val2
-                |> MyStruct::__fromShape($$),
-            ),
-        )),
-      self::__stringifyMapKeys($shape['map_of_string_to_map_of_string_to_i32']),
-      self::__stringifyMapKeys($shape['map_of_string_to_map_of_string_to_MyStruct']
-        |> Dict\map(
-          $$,
-          $_val3 ==> $_val3
-            |> Dict\map(
-              $$,
-              $_val4 ==> $_val4
-                |> MyStruct::__fromShape($$),
-            ),
-        )),
-      $shape['list_of_map_of_string_to_list_of_MyStruct']
-        |> Vec\map(
-          $$,
-          $_val5 ==> $_val5
-            |> Dict\map(
-              $$,
-              $_val6 ==> $_val6
-                |> Vec\map(
-                  $$,
-                  $_val7 ==> $_val7
-                    |> MyStruct::__fromShape($$),
-                ),
-            ),
-        ),
-      $shape['list_of_map_of_string_to_MyStruct']
-        |> Vec\map(
-          $$,
-          $_val8 ==> $_val8
-            |> Dict\map(
-              $$,
-              $_val9 ==> $_val9
-                |> MyStruct::__fromShape($$),
-            ),
-        ),
+  public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {
+    $obj = new static();
+    $obj->map_of_string_to_MyStruct = self::__stringifyMapKeys(
+      await Dict\map_async(
+        $shape['map_of_string_to_MyStruct'],
+        async $val0 ==> 
+          await MyStruct::__genFromShape($val0)
+      )
     );
+    $obj->map_of_string_to_list_of_MyStruct = self::__stringifyMapKeys(
+      await Dict\map_async(
+        $shape['map_of_string_to_list_of_MyStruct'],
+        async $val1 ==> 
+          await Vec\map_async(
+            $val1,
+            async $val2 ==> 
+              await MyStruct::__genFromShape($val2)
+          )
+      )
+    );
+    $obj->map_of_string_to_map_of_string_to_i32 = self::__stringifyMapKeys(
+      Dict\map(
+        $shape['map_of_string_to_map_of_string_to_i32'],
+        $val3 ==> 
+          self::__stringifyMapKeys(
+            $val3
+          )
+      )
+    );
+    $obj->map_of_string_to_map_of_string_to_MyStruct = self::__stringifyMapKeys(
+      await Dict\map_async(
+        $shape['map_of_string_to_map_of_string_to_MyStruct'],
+        async $val4 ==> 
+          self::__stringifyMapKeys(
+            await Dict\map_async(
+              $val4,
+              async $val5 ==> 
+                await MyStruct::__genFromShape($val5)
+            )
+          )
+      )
+    );
+    $obj->list_of_map_of_string_to_list_of_MyStruct = await Vec\map_async(
+      $shape['list_of_map_of_string_to_list_of_MyStruct'],
+      async $val6 ==> 
+        self::__stringifyMapKeys(
+          await Dict\map_async(
+            $val6,
+            async $val7 ==> 
+              await Vec\map_async(
+                $val7,
+                async $val8 ==> 
+                  await MyStruct::__genFromShape($val8)
+              )
+          )
+        )
+    );
+    $obj->list_of_map_of_string_to_MyStruct = await Vec\map_async(
+      $shape['list_of_map_of_string_to_MyStruct'],
+      async $val9 ==> 
+        self::__stringifyMapKeys(
+          await Dict\map_async(
+            $val9,
+            async $val10 ==> 
+              await MyStruct::__genFromShape($val10)
+          )
+        )
+    );
+    return $obj;
   }
 
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'map_of_string_to_MyStruct' => $this->map_of_string_to_MyStruct
-        |> Dict\map(
-          $$,
-          ($_val0) ==> $_val0->__toShape(),
-        ),
-      'map_of_string_to_list_of_MyStruct' => $this->map_of_string_to_list_of_MyStruct
-        |> Dict\map(
-          $$,
-          ($_val0) ==> $_val0
-            |> Vec\map(
-              $$,
-              ($_val1) ==> $_val1->__toShape(),
-            ),
-        ),
-      'map_of_string_to_map_of_string_to_i32' => $this->map_of_string_to_map_of_string_to_i32,
-      'map_of_string_to_map_of_string_to_MyStruct' => $this->map_of_string_to_map_of_string_to_MyStruct
-        |> Dict\map(
-          $$,
-          ($_val0) ==> $_val0
-            |> Dict\map(
-              $$,
-              ($_val1) ==> $_val1->__toShape(),
-            ),
-        ),
-      'list_of_map_of_string_to_list_of_MyStruct' => $this->list_of_map_of_string_to_list_of_MyStruct
-        |> Vec\map(
-          $$,
-          ($_val0) ==> $_val0
-            |> Dict\map(
-              $$,
-              ($_val1) ==> $_val1
-                |> Vec\map(
-                  $$,
-                  ($_val2) ==> $_val2->__toShape(),
-                ),
-            ),
-        ),
-      'list_of_map_of_string_to_MyStruct' => $this->list_of_map_of_string_to_MyStruct
-        |> Vec\map(
-          $$,
-          ($_val0) ==> $_val0
-            |> Dict\map(
-              $$,
-              ($_val1) ==> $_val1->__toShape(),
-            ),
-        ),
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }

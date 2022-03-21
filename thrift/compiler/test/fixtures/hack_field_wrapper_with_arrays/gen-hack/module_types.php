@@ -331,19 +331,21 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      Shapes::idx($shape, 'union_annotated_field'),
-      Shapes::idx($shape, 'union_adapted_type'),
-    );
+  public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {
+    $obj = new static();
+    $union_annotated_field = Shapes::idx($shape, 'union_annotated_field');
+    if ($union_annotated_field !== null) {
+      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, this>($union_annotated_field, 1, $obj);
+      $obj->_type = MyUnionEnum::union_annotated_field;
+    }
+    $union_adapted_type = Shapes::idx($shape, 'union_adapted_type');
+    if ($union_adapted_type !== null) {
+      $obj->union_adapted_type = $union_adapted_type;
+      $obj->_type = MyUnionEnum::union_adapted_type;
+    }
+    return $obj;
   }
 
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'union_annotated_field' => $this->union_annotated_field,
-      'union_adapted_type' => $this->union_adapted_type,
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }

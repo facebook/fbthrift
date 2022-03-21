@@ -48,6 +48,14 @@ class t_name_generator {
     return prefix + std::to_string(counter_++);
   }
 
+  void decrement_counter() {
+    if (counter_ == 0) {
+      throw std::runtime_error(
+          "Name generator error, counter value is already 0");
+    }
+    counter_--;
+  }
+
  private:
   int counter_ = 0;
 };
@@ -2835,6 +2843,182 @@ void t_hack_generator::generate_php_struct_shape_methods(
   indent(out) << "}\n";
 }
 
+bool t_hack_generator::generate_php_struct_async_fromShape_method_helper(
+    std::ostream& out,
+    const t_type* ttype,
+    t_name_generator& namer,
+    std::string val) {
+  if (const auto* tstruct = dynamic_cast<const t_struct*>(ttype)) {
+    bool is_async = is_async_shapish_struct(tstruct);
+    if (is_async) {
+      out << "await " << hack_name(tstruct) << "::__genFromShape(" << val
+          << ")";
+    } else {
+      out << hack_name(tstruct) << "::__fromShape(" << val << ")";
+    }
+    return is_async;
+  } else if (ttype->is_container()) {
+    if (ttype->is_set()) {
+      if (arraysets_ || arrays_ || no_use_hack_collections_) {
+        out << val;
+      } else {
+        out << "new Set(Keyset\\keys(" << val << "))";
+      }
+      return false;
+    }
+    std::string prefix = "";
+    std::string suffix = "";
+    std::string container_type = "";
+    bool stringify_map_keys = false;
+    const t_type* val_type;
+
+    if (ttype->is_map()) {
+      container_type = "Dict\\";
+      if (shape_arraykeys_) {
+        const t_type* key_type =
+            static_cast<const t_map*>(ttype)->get_key_type();
+        if (key_type->is_base_type() && key_type->is_string_or_binary()) {
+          stringify_map_keys = true;
+          indent_up();
+          out << "self::__stringifyMapKeys(\n" << indent();
+        }
+      }
+      if (!(arrays_ || no_use_hack_collections_)) {
+        prefix = prefix + "new Map(";
+        suffix = ")" + suffix;
+      }
+      val_type = static_cast<const t_map*>(ttype)->get_val_type();
+    } else {
+      container_type = "Vec\\";
+      if (!(arrays_ || no_use_hack_collections_)) {
+        prefix = "new Vector(";
+        suffix = ")";
+      }
+      val_type = static_cast<const t_list*>(ttype)->get_elem_type();
+    }
+
+    val_type = val_type->get_true_type();
+    std::stringstream inner;
+    bool is_async = false;
+    std::string inner_val = namer("$val");
+    indent_up();
+    indent_up();
+    is_async = generate_php_struct_async_fromShape_method_helper(
+        inner, val_type, namer, inner_val);
+    indent_down();
+    auto val_map_method = inner.str();
+    if (inner_val == val_map_method) {
+      // Since value doesn't need mapping, 'inner_val' will be unused.
+      // Decrement the counter so that we don't skip namer values.
+      namer.decrement_counter();
+      indent_down();
+      out << prefix << val << suffix;
+      if (stringify_map_keys) {
+        indent_down();
+        out << "\n" << indent() << ")";
+      }
+      return false;
+    }
+    out << prefix << (is_async ? "await " : "") << container_type
+        << (is_async ? "map_async" : "map") << "(\n";
+
+    out << indent() << val << ",\n"
+        << indent() << (is_async ? "async " : "") << inner_val << " ==> \n";
+
+    indent_up();
+    out << indent() << inner.str() << "\n";
+    indent_down();
+
+    indent_down();
+    out << indent() << ")" << suffix;
+
+    if (stringify_map_keys) {
+      indent_down();
+      out << "\n" << indent() << ")";
+    }
+    return is_async;
+  } else {
+    out << val;
+    return false;
+  }
+}
+
+void t_hack_generator::generate_php_struct_async_shape_methods(
+    std::ofstream& out,
+    const t_struct* tstruct,
+    const std::string& struct_hack_name) {
+  generate_php_struct_stringifyMapKeys_method(out);
+
+  indent(out)
+      << "public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {\n";
+  indent_up();
+  indent(out) << "$obj = new static();\n";
+
+  t_name_generator namer;
+  for (const auto& field : tstruct->fields()) {
+    const t_type* t = field.type()->get_true_type();
+
+    std::string dval = "";
+    if (field.default_value() != nullptr &&
+        !(t->is_struct() || t->is_xception())) {
+      dval = render_const_value(t, field.default_value());
+    } else {
+      dval = render_default_value(t);
+    }
+
+    bool nullable =
+        field_is_nullable(tstruct, &field, dval) || nullable_everything_;
+
+    std::string field_ref = "$shape['" + field.name() + "']";
+    if (tstruct->is_union() || nullable) {
+      field_ref = "$" + field.name();
+      out << indent() << field_ref << " = "
+          << "Shapes::idx($shape, '" << field.name() << "');\n"
+          << indent() << "if (" << field_ref << " !== null) {\n";
+      indent_up();
+    }
+    std::stringstream source;
+    bool is_async = generate_php_struct_async_fromShape_method_helper(
+        source, t, namer, field_ref);
+
+    if (const auto* field_wrapper = find_hack_wrapper(field)) {
+      auto source_str = source.str();
+      // await statements need to be in separate line,
+      // so we need to assign the value to a temp variable
+      // and then pass it to the wrapper for assignment
+      if (is_async || source_str != field_ref) {
+        out << indent() << "$" << field.name() << " = " << source_str << ";\n";
+        source_str = "$" + field.name();
+      }
+
+      if (tstruct->is_union()) {
+        out << indent() << "$obj->" << field.name() << " = await "
+            << *field_wrapper << "::genFromThrift<"
+            << type_to_typehint(field.get_type()) << ", this>(" << source_str
+            << ", " << field.get_key() << ", $obj);\n";
+      } else {
+        out << indent() << "await $obj->get_" << field.name() << "()->genWrap("
+            << source_str << ");\n";
+      }
+    } else {
+      out << indent() << "$obj->" << field.name() << " = " << source.str()
+          << ";\n";
+    }
+    if (tstruct->is_union() || nullable) {
+      if (tstruct->is_union()) {
+        out << indent() << "$obj->_type = "
+            << union_field_to_enum(tstruct, &field, struct_hack_name) << ";\n";
+      }
+      indent_down();
+      out << indent() << "}\n";
+    }
+  }
+  indent(out) << "return $obj;\n";
+  indent_down();
+  indent(out) << "}\n";
+  out << "\n";
+}
+
 /**
  * Generates the structural ID definition, see generate_structural_id()
  * for information about the structural ID.
@@ -3140,7 +3324,7 @@ void t_hack_generator::generate_php_struct_methods(
     ThriftStructType type,
     const std::string& name,
     bool is_async_struct,
-    bool) {
+    bool is_async_shapish_struct) {
   if (is_async_struct) {
     generate_php_struct_default_constructor(out, tstruct, type, name);
     generate_php_struct_withDefaultValues_method(out);
@@ -3192,7 +3376,11 @@ void t_hack_generator::generate_php_struct_methods(
 
   if (shapes_ && type != ThriftStructType::EXCEPTION &&
       type != ThriftStructType::RESULT) {
-    generate_php_struct_shape_methods(out, tstruct);
+    if (is_async_shapish_struct) {
+      generate_php_struct_async_shape_methods(out, tstruct, name);
+    } else {
+      generate_php_struct_shape_methods(out, tstruct);
+    }
   }
   generate_instance_key(out);
   generate_json_reader(out, tstruct);
