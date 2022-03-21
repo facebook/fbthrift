@@ -794,7 +794,7 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   static std::size_t writeMapValueBegin(Protocol& protocol) {
     const auto writeMapValueBeginFunc =
         std::get<map_value_api_v<Protocol&>>(std::make_pair(
-            [](auto&) { return 0; },
+            [](auto&) { return 0u; },
             [](auto& protocolWithMapValueApi) {
               return protocolWithMapValueApi.writeMapValueBegin();
             }));
@@ -805,7 +805,7 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   static std::size_t writeMapValueEnd(Protocol& protocol) {
     const auto writeMapValueEndFunc =
         std::get<map_value_api_v<Protocol&>>(std::make_pair(
-            [](auto&) { return 0; },
+            [](auto&) { return 0u; },
             [](auto& protocolWithMapValueApi) {
               return protocolWithMapValueApi.writeMapValueEnd();
             }));
