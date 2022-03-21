@@ -82,6 +82,11 @@ ServerRequest RoundRobinRequestPile::dequeueImpl(
 
 std::optional<ServerRequestRejection> RoundRobinRequestPile::enqueue(
     ServerRequest&& request) {
+  // record the enqueue time
+  auto& info =
+      apache::thrift::detail::ServerRequestHelper::processInfo(request);
+  info.queueBegin = std::chrono::steady_clock::now();
+
   unsigned pri = 0, bucket = 0;
   if (opts_.pileSelectionFunction) {
     std::tie(pri, bucket) = opts_.pileSelectionFunction(request);
@@ -97,11 +102,6 @@ std::optional<ServerRequestRejection> RoundRobinRequestPile::enqueue(
     singleBucketRequestQueues_[pri].enqueue(std::move(request));
     return std::nullopt;
   }
-
-  auto& info =
-      apache::thrift::detail::ServerRequestHelper::processInfo(request);
-
-  info.queueBegin = std::chrono::steady_clock::now();
 
   RequestPileBase::onEnqueued(request);
 
