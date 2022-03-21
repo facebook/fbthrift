@@ -214,6 +214,16 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
     return $obj;
   }
 
+  public async function __genToShape()[zoned]: Awaitable<self::TShape> {
+    return shape(
+      'nested_struct' => await ($this->nested_struct === null 
+        ? null 
+        : (
+        $this->nested_struct->__genToShape()
+        )
+      ),
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -437,6 +447,15 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     return $obj;
   }
 
+  public async function __genToShape()[zoned]: Awaitable<self::TShape> {
+    $wrapped_field = await ($this->wrapped_field as nonnull)->genUnwrap();
+    $annotated_field = await ($this->annotated_field as nonnull)->genUnwrap();
+    return shape(
+      'wrapped_field' => $wrapped_field,
+      'annotated_field' => $annotated_field,
+      'adapted_type' => $this->adapted_type,
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -1014,6 +1033,60 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
     return $obj;
   }
 
+  public async function __genToShape()[zoned]: Awaitable<self::TShape> {
+    return shape(
+      'map_of_string_to_MyStruct' => await Dict\map_async(
+        $this->map_of_string_to_MyStruct,
+        async $val0 ==> 
+          await $val0->__genToShape()
+      ),
+      'map_of_string_to_list_of_MyStruct' => await Dict\map_async(
+        $this->map_of_string_to_list_of_MyStruct,
+        async $val0 ==> 
+          await Vec\map_async(
+            $val0,
+            async $val1 ==> 
+              await $val1->__genToShape()
+          )
+      ),
+      'map_of_string_to_map_of_string_to_i32' => Dict\map(
+        $this->map_of_string_to_map_of_string_to_i32,
+        $val0 ==> 
+          dict($val0)
+      ),
+      'map_of_string_to_map_of_string_to_MyStruct' => await Dict\map_async(
+        $this->map_of_string_to_map_of_string_to_MyStruct,
+        async $val0 ==> 
+          await Dict\map_async(
+            $val0,
+            async $val1 ==> 
+              await $val1->__genToShape()
+          )
+      ),
+      'list_of_map_of_string_to_list_of_MyStruct' => await Vec\map_async(
+        $this->list_of_map_of_string_to_list_of_MyStruct,
+        async $val0 ==> 
+          await Dict\map_async(
+            $val0,
+            async $val1 ==> 
+              await Vec\map_async(
+                $val1,
+                async $val2 ==> 
+                  await $val2->__genToShape()
+              )
+          )
+      ),
+      'list_of_map_of_string_to_MyStruct' => await Vec\map_async(
+        $this->list_of_map_of_string_to_MyStruct,
+        async $val0 ==> 
+          await Dict\map_async(
+            $val0,
+            async $val1 ==> 
+              await $val1->__genToShape()
+          )
+      ),
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }

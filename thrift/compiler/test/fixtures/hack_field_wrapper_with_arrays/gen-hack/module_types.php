@@ -346,6 +346,13 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
     return $obj;
   }
 
+  public async function __genToShape()[zoned]: Awaitable<self::TShape> {
+    $union_annotated_field = await $this->union_annotated_field?->genUnwrap();
+    return shape(
+      'union_annotated_field' => $union_annotated_field,
+      'union_adapted_type' => $this->union_adapted_type,
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }

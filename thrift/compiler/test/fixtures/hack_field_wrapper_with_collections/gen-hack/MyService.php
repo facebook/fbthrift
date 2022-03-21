@@ -556,6 +556,17 @@ class MyService_func_args implements \IThriftSyncStruct, \IThriftShapishAsyncStr
     return $obj;
   }
 
+  public async function __genToShape()[zoned]: Awaitable<self::TShape> {
+    return shape(
+      'arg1' => $this->arg1,
+      'arg2' => await ($this->arg2 === null 
+        ? null 
+        : (
+        $this->arg2->__genToShape()
+        )
+      ),
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
@@ -788,6 +799,17 @@ class MyService_func1_args implements \IThriftSyncStruct, \IThriftShapishAsyncSt
     return $obj;
   }
 
+  public async function __genToShape()[zoned]: Awaitable<self::TShape> {
+    return shape(
+      'arg1' => $this->arg1,
+      'arg2' => await ($this->arg2 === null 
+        ? null 
+        : (
+        $this->arg2->__genToShape()
+        )
+      ),
+    );
+  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
   }
