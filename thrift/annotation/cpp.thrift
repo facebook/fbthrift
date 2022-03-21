@@ -66,3 +66,8 @@ struct Adapter {
 struct PackIsset {
   1: bool atomic = true;
 } (thrift.uri = "facebook.com/thrift/annotation/cpp/PackIsset")
+
+@scope.Struct
+struct MinimizePadding {} (
+  thrift.uri = "facebook.com/thrift/annotation/cpp/MinimizePadding",
+)

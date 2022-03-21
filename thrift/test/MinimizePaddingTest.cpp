@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,7 @@ size_t thrift_member_offset(Ret (T::*func)() &) {
 TEST(minimize_padding_test, reorder_nonoptimal) {
   EXPECT_EQ(sizeof(optimal), sizeof(nonoptimal));
   EXPECT_EQ(sizeof(nonoptimal_struct), 12);
+  EXPECT_EQ(sizeof(nonoptimal_struct_with_structured_annotation), 12);
   EXPECT_EQ(thrift_member_offset(&nonoptimal_struct::big_ref<>), 0);
 }
 

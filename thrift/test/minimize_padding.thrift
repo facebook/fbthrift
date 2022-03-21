@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/cpp.thrift"
+
 namespace cpp2 apache.thrift.test
 
 struct out_of_order_struct {
@@ -64,6 +66,13 @@ struct nonoptimal_struct {
   2: required big_align big;
   3: required small_align medium;
 } (cpp.minimize_padding)
+
+@cpp.MinimizePadding
+struct nonoptimal_struct_with_structured_annotation {
+  1: required byte small;
+  2: required big_align big;
+  3: required small_align medium;
+}
 
 struct same_sizes {
   1: required i32 a;

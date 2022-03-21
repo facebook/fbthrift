@@ -1235,7 +1235,9 @@ class mstch_cpp2_struct : public mstch_struct {
       return fields_in_layout_order_;
     }
 
-    if (!strct_->has_annotation("cpp.minimize_padding")) {
+    if (!strct_->has_annotation("cpp.minimize_padding") &&
+        !strct_->find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/cpp/MinimizePadding")) {
       return fields_in_layout_order_ = strct_->fields().copy();
     }
 
