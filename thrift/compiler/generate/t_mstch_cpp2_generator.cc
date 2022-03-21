@@ -1201,14 +1201,9 @@ class mstch_cpp2_struct : public mstch_struct {
       case t_type::type::t_struct: {
         size_t align = 1;
         const size_t kMaxAlign = 8;
-        t_struct const* strct = dynamic_cast<t_struct const*>(type);
-        if (!strct) {
-          throw std::runtime_error(
-              "cpp.minimize_padding requires struct definitions to be "
-              "topologically sorted. Move definition of `" +
-              type->get_name() + "` before its use in field `" +
-              field->get_name() + "`.");
-        }
+        t_struct const* strct =
+            dynamic_cast<t_struct const*>(type->get_true_type());
+        assert(strct);
         for (auto const& field : strct->fields()) {
           size_t field_align = compute_alignment(&field, memo);
           if (field_align == 0) {
