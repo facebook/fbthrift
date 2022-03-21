@@ -24,6 +24,8 @@
 
 #include <folly/CPortability.h>
 #include <folly/Traits.h>
+#include <folly/container/F14Map.h>
+#include <folly/container/F14Set.h>
 #include <folly/synchronization/Lock.h>
 #include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/FieldRef.h>
