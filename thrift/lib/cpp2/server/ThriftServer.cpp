@@ -580,7 +580,7 @@ void ThriftServer::setup() {
                 cachedServiceHealth_.store(*value, std::memory_order_relaxed);
               }
             });
-        asyncScope_->add(std::move(loop).scheduleOn(threadManager_.get()));
+        asyncScope_->add(std::move(loop).scheduleOn(getExecutor()));
       }
     }
 #endif
