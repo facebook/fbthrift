@@ -88,12 +88,10 @@ auto IsEmpty() {
 template <
     typename P,
     typename T1 = typename P::value_type,
-    typename T2 = typename P::value_type>
+    typename T2 = T1,
+    typename T3 = T2>
 void expectPatch(
-    P patch,
-    const typename P::value_type& actual,
-    const T1& expected1,
-    const T2& expected2) {
+    P patch, const T1& actual, const T2& expected1, const T3& expected2) {
   { // Applying twice produces the expected results.
     auto actual1 = actual;
     patch.apply(actual1);
@@ -119,9 +117,8 @@ void expectPatch(
     EXPECT_EQ(actual3, actual);
   }
 }
-template <typename P, typename T = typename P::value_type>
-void expectPatch(
-    P patch, const typename P::value_type& actual, const T& expected) {
+template <typename P, typename T1 = typename P::value_type, typename T2 = T1>
+void expectPatch(P patch, const T1& actual, const T2& expected) {
   expectPatch(std::move(patch), actual, expected, expected);
 }
 

@@ -57,20 +57,20 @@ void testNumberPatch() {
 
   // Empty patch does nothing.
   EXPECT_TRUE(patch.empty());
-  test::expectPatch(patch, 7, 7);
+  test::expectPatch(patch, {7}, 7);
 
   // Incrementing patch increments.
   patch = 1 + NPatch::createAdd(1);
-  test::expectPatch(patch, 7, 9, 11);
+  test::expectPatch(patch, {7}, 9, 11);
   patch.merge(NPatch::createSubtract(2));
   EXPECT_TRUE(patch.empty());
-  test::expectPatch(patch, 7, 7);
+  test::expectPatch(patch, {7}, 7);
 
   // Assigning patch assigns.
   patch = 2;
-  test::expectPatch(patch, 7, 2);
+  test::expectPatch(patch, {7}, 2);
   patch -= 2;
-  test::expectPatch(patch, 7, 0);
+  test::expectPatch(patch, {7}, 0);
 }
 
 TEST(PatchTest, NumberPatch) {
@@ -87,23 +87,23 @@ TEST(PatchTest, StringPatch) {
 
   // Empty patch does nothing.
   EXPECT_TRUE(patch.empty());
-  test::expectPatch(patch, "hi", "hi");
+  test::expectPatch(patch, {"hi"}, "hi");
 
   // Relative patch patches.
   patch = StringPatch::createPrepend("_");
   patch += "_";
-  test::expectPatch(patch, "hi", "_hi_", "__hi__");
+  test::expectPatch(patch, {"hi"}, "_hi_", "__hi__");
   patch.prepend("$");
   patch.merge(StringPatch::createAppend("^"));
-  test::expectPatch(patch, "hi", "$_hi_^", "$_$_hi_^_^");
+  test::expectPatch(patch, {"hi"}, "$_hi_^", "$_$_hi_^_^");
 
   // Assign patch assigns.
   patch = "bye";
-  test::expectPatch(patch, "hi", "bye");
+  test::expectPatch(patch, {"hi"}, "bye");
   patch = "__" + std::move(patch) + "__";
-  test::expectPatch(patch, "hi", "__bye__");
+  test::expectPatch(patch, {"hi"}, "__bye__");
   patch = "";
-  test::expectPatch(patch, "hi", "");
+  test::expectPatch(patch, {"hi"}, "");
 }
 
 TEST(PatchTest, BinaryPatch) {

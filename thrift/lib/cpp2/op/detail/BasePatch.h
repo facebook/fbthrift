@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <type_traits>
+
 #include <folly/Portability.h>
 #include <thrift/lib/cpp2/FieldRef.h>
 #include <thrift/lib/cpp2/op/Clear.h>
@@ -24,6 +26,23 @@ namespace apache {
 namespace thrift {
 namespace op {
 namespace detail {
+
+// Helpers for detecting compatible optional types.
+template <typename T>
+struct is_optional_type : std::false_type {};
+template <typename T>
+struct is_optional_type<optional_field_ref<T>> : std::true_type {};
+template <typename T>
+struct is_optional_type<optional_boxed_field_ref<T>> : std::true_type {};
+#ifdef THRIFT_HAS_OPTIONAL
+template <typename T>
+struct is_optional_type<std::optional<T>> : std::true_type {};
+#endif
+
+template <typename T, typename R = void>
+using if_opt_type = std::enable_if_t<is_optional_type<T>::value, R>;
+template <typename T, typename R = void>
+using if_not_opt_type = std::enable_if_t<!is_optional_type<T>::value, R>;
 
 // Base class for all patch types.
 // - Patch: The Thrift struct representation for the patch.
@@ -42,15 +61,15 @@ class BasePatch {
 
   // Automatically dereference non-optional fields.
   template <typename U>
-  void apply(const field_ref<U>& field) const {
+  void apply(field_ref<U> field) const {
     derived().apply(*field);
   }
   template <typename U>
-  void assign(const field_ref<U>& val) {
+  void assign(field_ref<U> val) {
     derived().assign(std::forward<U>(*val));
   }
   template <typename U>
-  Derived& operator=(const field_ref<U>& field) {
+  Derived& operator=(field_ref<U> field) {
     derived().assign(std::forward<U>(*field));
     return derived();
   }
@@ -94,16 +113,9 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
   void assign(value_type&& val) { resetAnd().assign().emplace(std::move(val)); }
 
   template <typename U>
-  void apply(optional_field_ref<U> field) const {
+  if_opt_type<std::decay_t<U>> apply(U&& field) const {
     if (field.has_value()) {
-      derived().apply(std::forward<U>(*field));
-    }
-  }
-
-  template <typename U>
-  void apply(optional_boxed_field_ref<U> field) const {
-    if (field.has_value()) {
-      derived().apply(std::forward<U>(*field));
+      derived().apply(*std::forward<U>(field));
     }
   }
 

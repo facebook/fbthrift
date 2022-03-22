@@ -19,6 +19,7 @@
 #include <type_traits>
 #include <utility>
 
+#include <thrift/lib/cpp2/op/detail/BasePatch.h>
 #include <thrift/lib/cpp2/op/detail/ValuePatch.h>
 
 namespace apache {
@@ -32,18 +33,6 @@ class bad_optional_patch_access : public std::bad_optional_access {
     return "Patch guarantees optional value is unset.";
   }
 };
-
-// Helpers for detecting compatible optional types.
-template <typename T>
-struct is_optional_type : std::false_type {};
-template <typename T>
-struct is_optional_type<optional_field_ref<T>> : std::true_type {};
-template <typename T>
-struct is_optional_type<optional_boxed_field_ref<T>> : std::true_type {};
-template <typename T, typename R = void>
-using if_opt_type = std::enable_if_t<is_optional_type<T>::value, R>;
-template <typename T, typename R = void>
-using if_not_opt_type = std::enable_if_t<!is_optional_type<T>::value, R>;
 
 // A patch for an 'optional' value.
 //
@@ -113,6 +102,13 @@ class OptionalPatch : public BasePatch<Patch, OptionalPatch<Patch>> {
       clear();
     }
   }
+#ifdef THRIFT_HAS_OPTIONAL
+  void assign(std::nullopt_t) { clear(); }
+  OptionalPatch& operator=(std::nullopt_t) {
+    clear();
+    return *this;
+  }
+#endif
   OptionalPatch& operator=(const value_type& val) {
     assign(val);
     return *this;

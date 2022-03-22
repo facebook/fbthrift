@@ -140,6 +140,7 @@ TEST(StructPatchTest, AssignClear) {
 TEST(StructPatchTest, OptionalFields) {
   TestStructPatch patch = testPatch();
   TestFields fields;
+  std::optional<std::string> optStr;
 
   // Applying a value patch to void does nothing.
   EXPECT_TRUE(empty(fields));
@@ -151,7 +152,9 @@ TEST(StructPatchTest, OptionalFields) {
   patch->floatVal()->apply(fields.optFloatVal());
   patch->doubleVal()->apply(fields.optDoubleVal());
   patch->stringVal()->apply(fields.optStringVal());
+  patch->stringVal()->apply(optStr);
   EXPECT_TRUE(empty(fields));
+  EXPECT_FALSE(optStr.has_value());
 
   // Applying a value patch to values, patches.
   fields.optBoolVal().ensure();
@@ -162,6 +165,10 @@ TEST(StructPatchTest, OptionalFields) {
   fields.optFloatVal().ensure();
   fields.optDoubleVal().ensure();
   fields.optStringVal().ensure();
+
+  optStr = "hi";
+  test::expectPatch(*patch->stringVal(), optStr, "_hi_", "__hi__");
+
   EXPECT_FALSE(empty(fields));
   patch->boolVal()->apply(fields.optBoolVal());
   patch->byteVal()->apply(fields.optByteVal());
@@ -171,6 +178,7 @@ TEST(StructPatchTest, OptionalFields) {
   patch->floatVal()->apply(fields.optFloatVal());
   patch->doubleVal()->apply(fields.optDoubleVal());
   patch->stringVal()->apply(fields.optStringVal());
+  patch->stringVal()->apply(optStr);
   EXPECT_EQ(*fields.optBoolVal(), true);
   EXPECT_EQ(*fields.optByteVal(), 2);
   EXPECT_EQ(*fields.optI16Val(), 2);
@@ -179,10 +187,12 @@ TEST(StructPatchTest, OptionalFields) {
   EXPECT_EQ(*fields.optFloatVal(), 5);
   EXPECT_EQ(*fields.optDoubleVal(), 6);
   EXPECT_EQ(*fields.optStringVal(), "__");
+  EXPECT_EQ(*optStr, "_hi_");
 }
 
-TEST(StructPatchTest, OptionalBool) {
+TEST(StructPatchTest, OptionalPatch) {
   op::OptionalBoolPatch patch;
+  std::optional<bool> actual;
   TestFields fields;
   op::OptionalBoolPatch restorePatch;
   restorePatch = fields.optBoolVal();
@@ -190,19 +200,28 @@ TEST(StructPatchTest, OptionalBool) {
   // = -> ensure + assign.
   patch = true;
   test::expectPatch(patch, false, true);
+  test::expectPatch(patch, actual, true);
   patch.apply(fields.optBoolVal());
+  patch.apply(actual);
   EXPECT_EQ(fields.optBoolVal(), true);
+  EXPECT_EQ(actual, true);
 
   // Restore the original state.
+  test::expectPatch(restorePatch, actual, std::nullopt);
   restorePatch.apply(fields.optBoolVal());
+  restorePatch.apply(actual);
   EXPECT_FALSE(fields.optBoolVal().has_value());
+  EXPECT_FALSE(actual.has_value());
   patch.reset();
 
   // Complex patch:
-  // set -> invert
-  // unset -> true.
-  patch.patch().invert();
+  // set -> invert -> invert
+  // unset -> true -> false.
+  patch->invert();
   patch.ensure(true);
+  test::expectPatch(patch, actual, true, false);
+  test::expectPatch(patch, std::make_optional(true), false, true);
+  test::expectPatch(patch, std::make_optional(false), true, false);
   patch.apply(fields.optBoolVal());
   ASSERT_TRUE(fields.optBoolVal().has_value());
   EXPECT_TRUE(*fields.optBoolVal());
