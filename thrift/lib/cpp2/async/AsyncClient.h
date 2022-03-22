@@ -23,6 +23,7 @@
 
 namespace apache {
 namespace thrift {
+class InteractionHandle;
 
 class GeneratedAsyncClient : public TClientBase {
  public:
@@ -44,6 +45,9 @@ class GeneratedAsyncClient : public TClientBase {
   }
 
  protected:
+  static void setInteraction(
+      const InteractionHandle& handle, RpcOptions& rpcOptions);
+
   std::shared_ptr<RequestChannel> channel_;
 };
 
@@ -59,13 +63,15 @@ class InteractionHandle : public GeneratedAsyncClient {
   const InteractionId& getInteractionId();
 
  protected:
-  void setInteraction(RpcOptions& rpcOptions);
+  void setInteraction(RpcOptions& rpcOptions) const;
 
  private:
   void terminate();
 
  protected:
   InteractionId interactionId_;
+
+  friend class GeneratedAsyncClient;
 };
 
 } // namespace thrift

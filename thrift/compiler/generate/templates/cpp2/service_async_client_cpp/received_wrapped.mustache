@@ -18,7 +18,7 @@
 %>folly::exception_wrapper <% > service_common/client_class_name%>::recv_wrapped_<%function:cpp_name%>(::apache::thrift::ClientReceiveState& state) {
 <%/type:void?%>
 <%^type:void?%>
-folly::exception_wrapper <% > service_common/client_class_name%>::recv_wrapped_<%function:cpp_name%>(<% > types/return_type_client%>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper <% > service_common/client_class_name%>::recv_wrapped_<%function:cpp_name%>(<% > types/return_type_client_no_handle%>& _return, ::apache::thrift::ClientReceiveState& state) {
 <%/type:void?%>
   if (state.isException()) {
     return std::move(state.exception());

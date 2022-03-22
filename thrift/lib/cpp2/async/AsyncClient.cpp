@@ -33,6 +33,11 @@ GeneratedAsyncClient::GeneratedAsyncClient(
     std::shared_ptr<RequestChannel> channel)
     : channel_(std::move(channel)) {}
 
+void GeneratedAsyncClient::setInteraction(
+    const InteractionHandle& handle, RpcOptions& rpcOptions) {
+  handle.setInteraction(rpcOptions);
+}
+
 InteractionHandle::InteractionHandle(
     std::shared_ptr<RequestChannel> channel, folly::StringPiece methodName)
     : GeneratedAsyncClient(channel),
@@ -58,7 +63,7 @@ InteractionHandle& InteractionHandle::operator=(InteractionHandle&& other) {
   return *this;
 }
 
-void InteractionHandle::setInteraction(RpcOptions& rpcOptions) {
+void InteractionHandle::setInteraction(RpcOptions& rpcOptions) const {
   DCHECK(interactionId_);
   DCHECK(rpcOptions.getInteractionId() == 0);
   rpcOptions.setInteractionId(interactionId_);

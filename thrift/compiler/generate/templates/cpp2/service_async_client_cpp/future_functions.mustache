@@ -53,9 +53,24 @@ folly::SemiFuture<<% > types/return_type_client_lift_unit%>> <% > service_common
 <%^function:oneway?%>
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_<%function:cpp_name%>, channel_);
 <%/function:oneway?%>
+<%#function:creates_interaction?%>
+  <%function:created_interaction%> handle(channel_, "<%function:created_interaction%>");
+<%/function:creates_interaction?%>
   auto callback = std::move(callbackAndFuture.first);
-  <%function:cpp_name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
+  <%function:cpp_name%>(rpcOptions, std::move(callback)<%#function:creates_interaction?%>, handle<%/function:creates_interaction?%><%function:comma%><% > service_common/param_list%>);
+<%^function:creates_interaction?%>
   return std::move(callbackAndFuture.second);
+<%/function:creates_interaction?%>
+<%#function:creates_interaction?%>
+  return std::move(callbackAndFuture.second).deferValue([handle = std::move(handle)](auto&&<%^type:void?%> val<%/type:void?%>) mutable {
+  <%^type:void?%>
+    return std::make_pair(std::move(handle), std::move(val));
+  <%/type:void?%>
+  <%#type:void?%>
+    return std::move(handle);
+  <%/type:void?%>
+  });
+<%/function:creates_interaction?%>
 }
 
 <%^function:oneway?%><%^service:reduced_client?%><%^function:creates_interaction?%>

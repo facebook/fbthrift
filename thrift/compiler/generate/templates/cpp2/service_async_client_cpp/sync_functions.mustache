@@ -14,29 +14,29 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%^type:resolves_to_complex_return?%>
+%><%^function:sync_returns_by_outparam?%>
 <% > types/return_type_client%> <% > service_common/client_class_name%>::sync_<%function:cpp_name%>(<% > service_common/function_param_list_client%>) {
   ::apache::thrift::RpcOptions rpcOptions;
-<%#type:void?%>
+<%#function:void?%>
   sync_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
-<%/type:void?%>
-<%^type:void?%>
+<%/function:void?%>
+<%^function:void?%>
   return sync_<%function:cpp_name%>(rpcOptions<%function:comma%><% > service_common/param_list%>);
-<%/type:void?%>
-<%/type:resolves_to_complex_return?%>
-<%#type:resolves_to_complex_return?%>
+<%/function:void?%>
+<%/function:sync_returns_by_outparam?%>
+<%#function:sync_returns_by_outparam?%>
 void <% > service_common/client_class_name%>::sync_<%function:cpp_name%>(<%type:cpp_type%>& _return<%function:comma%><% > service_common/function_param_list_client%>) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_<%function:cpp_name%>(rpcOptions, _return<%function:comma%><% > service_common/param_list%>);
-<%/type:resolves_to_complex_return?%>
+<%/function:sync_returns_by_outparam?%>
 }
 
-<%^type:resolves_to_complex_return?%>
+<%^function:sync_returns_by_outparam?%>
 <% > types/return_type_client%> <% > service_common/client_class_name%>::sync_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_client%>) {
-<%/type:resolves_to_complex_return?%>
-<%#type:resolves_to_complex_return?%>
+<%/function:sync_returns_by_outparam?%>
+<%#function:sync_returns_by_outparam?%>
 void <% > service_common/client_class_name%>::sync_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions, <%type:cpp_type%>& _return<%function:comma%><% > service_common/function_param_list_client%>) {
-<%/type:resolves_to_complex_return?%>
+<%/function:sync_returns_by_outparam?%>
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<<%#function:oneway?%>true<%/function:oneway?%><%^function:oneway?%>false<%/function:oneway?%>> callback(&returnState);
 <%^function:oneway?%>
@@ -51,10 +51,13 @@ void <% > service_common/client_class_name%>::sync_<%function:cpp_name%>(apache:
     apache::thrift::RequestClientCallback::Ptr(&callback),
     rpcOptions.getBufferOptions());
 <%/function:returns_stream?%>
+<%#function:creates_interaction?%>
+  <%function:created_interaction%> handle(channel_, "<%function:created_interaction%>");
+<%/function:creates_interaction?%>
   callback.waitUntilDone(
     evb,
     [&] {
-      <%function:cpp_name%>Impl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
+      <%function:cpp_name%>Impl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback)<%#function:creates_interaction?%>, handle<%/function:creates_interaction?%><%function:comma%><% > service_common/param_list%>);
     });
 
   if (returnState.isException()) {
@@ -69,17 +72,31 @@ void <% > service_common/client_class_name%>::sync_<%function:cpp_name%>(apache:
     }
   };
   return folly::fibers::runInMainContext([&] {
-    <%^type:resolves_to_complex_return?%>
-    <%#type:void?%>
+  <%^function:sync_returns_by_outparam?%>
+    <%#function:void?%>
       recv_<%function:cpp_name%>(returnState);
-    <%/type:void?%>
-    <%^type:void?%>
+    <%/function:void?%>
+    <%^function:void?%>
+    <%^function:creates_interaction?%>
       return recv_<%function:cpp_name%>(returnState);
-    <%/type:void?%>
-    <%/type:resolves_to_complex_return?%>
-    <%#type:resolves_to_complex_return?%>
+    <%/function:creates_interaction?%>
+    <%#function:creates_interaction?%>
+      <%^type:void?%>
+      return std::make_pair(
+        std::move(handle),
+        recv_<%function:cpp_name%>(returnState)
+      );
+      <%/type:void?%>
+      <%#type:void?%>
+      recv_<%function:cpp_name%>(returnState);
+      return std::move(handle);
+      <%/type:void?%>
+    <%/function:creates_interaction?%>
+    <%/function:void?%>
+  <%/function:sync_returns_by_outparam?%>
+  <%#function:sync_returns_by_outparam?%>
       recv_<%function:cpp_name%>(_return, returnState);
-    <%/type:resolves_to_complex_return?%>
+  <%/function:sync_returns_by_outparam?%>
   });
 <%/function:oneway?%>
 }

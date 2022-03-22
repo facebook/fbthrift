@@ -14,32 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#type:streamresponse?%><%!
-  %><%#type:stream_has_first_response?%>apache::thrift::ResponseAndClientBufferedStream<<%!
-  %><%#type:stream_first_response_type%><%type:cpp_type%><%/type:stream_first_response_type%>,<%!
-  %><%#type:stream_elem_type%><%type:cpp_type%><%/type:stream_elem_type%>><%!
-  %><%/type:stream_has_first_response?%><%!
-  %><%^type:stream_has_first_response?%>apache::thrift::ClientBufferedStream<<%!
-  %><%#type:stream_elem_type%><%type:cpp_type%><%/type:stream_elem_type%>><%!
-  %><%/type:stream_has_first_response?%><%!
-%><%/type:streamresponse?%><%!
-
-%><%^type:streamresponse?%><%!
-  %><%#type:sink?%><%!
-    %><%#type:sink_has_first_response?%><%!
-      %>apache::thrift::ResponseAndClientSink<<%!
-      %><%#type:sink_first_response_type%><%type:cpp_type%><%/type:sink_first_response_type%>, <%!
-      %><%#type:sink_elem_type%><%type:cpp_type%><%/type:sink_elem_type%>, <%!
-      %><%#type:sink_final_response_type%><%type:cpp_type%><%/type:sink_final_response_type%>><%!
-    %><%/type:sink_has_first_response?%><%!
-
-    %><%^type:sink_has_first_response?%><%!
-      %>apache::thrift::ClientSink<<%!
-      %><%#type:sink_elem_type%><%type:cpp_type%><%/type:sink_elem_type%>, <%!
-      %><%#type:sink_final_response_type%><%type:cpp_type%><%/type:sink_final_response_type%>><%!
-    %><%/type:sink_has_first_response?%><%!
-  %><%/type:sink?%><%!
-  %><%^type:sink?%><%!
-    %><%type:cpp_type%><%!
-  %><%/type:sink?%><%!
-%><%/type:streamresponse?%>
+%><%^function:creates_interaction?%><%!
+  %><% > types/return_type_client_no_handle%><%!
+%><%/function:creates_interaction?%><%!
+%><%#function:creates_interaction?%><%!
+  %><%#type:void?%><%!
+    %><%service:parent_service_cpp_name%>AsyncClient::<%function:created_interaction%><%!
+  %><%/type:void?%><%!
+  %><%^type:void?%><%!
+    %>std::pair<<%service:parent_service_cpp_name%>AsyncClient::<%function:created_interaction%>, <% > types/return_type_client_no_handle%>><%!
+  %><%/type:void?%><%!
+%><%/function:creates_interaction?%>

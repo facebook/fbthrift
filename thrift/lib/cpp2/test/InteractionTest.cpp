@@ -18,6 +18,7 @@
 
 #include <folly/experimental/coro/BlockingWait.h>
 #include <folly/experimental/coro/Collect.h>
+#include <folly/experimental/coro/GtestHelpers.h>
 #include <folly/experimental/coro/Sleep.h>
 #include <folly/experimental/coro/Task.h>
 #include <folly/portability/GMock.h>
@@ -951,107 +952,45 @@ TEST(InteractionCodegenTest, ErrorEB) {
 #endif
 }
 
-// temporary setup code until client-side codegen is implemented for factories
-auto factoryClientsSetup(std::shared_ptr<RequestChannel> channel) {
-  struct SingleInteractionChannel : public RequestChannel {
-    std::shared_ptr<RequestChannel> inner;
-    InteractionId id;
+CO_TEST(InteractionCodegenTest, Factory) {
+  auto client = makeTestClient<CalculatorAsyncClient>(
+      std::make_shared<SemiCalculatorHandler>());
 
-    explicit SingleInteractionChannel(std::shared_ptr<RequestChannel> c)
-        : inner(std::move(c)) {}
-    ~SingleInteractionChannel() override {
-      inner->terminateInteraction(std::move(id));
-    }
+  {
+    auto [adder, ret] = client->sync_initializedAddition(42);
+    EXPECT_EQ(ret, 42);
+    adder.sync_accumulatePrimitive(1);
+    EXPECT_EQ(adder.sync_getPrimitive(), 43);
+  }
 
-    void sendRequestResponse(
-        const RpcOptions& rpcOptions,
-        MethodMetadata&& md,
-        SerializedRequest&& sr,
-        std::shared_ptr<apache::thrift::transport::THeader> hd,
-        RequestClientCallback::Ptr cb) override {
-      inner->sendRequestResponse(
-          rpcOptions,
-          std::move(md),
-          std::move(sr),
-          std::move(hd),
-          std::move(cb));
-    }
+  {
+    auto [adder, ret] = co_await client->semifuture_initializedAddition(42);
+    EXPECT_EQ(ret, 42);
+    co_await adder.semifuture_accumulatePrimitive(1);
+    EXPECT_EQ(co_await adder.semifuture_getPrimitive(), 43);
+  }
 
-    void setCloseCallback(CloseCallback*) override { std::terminate(); }
-
-    folly::EventBase* getEventBase() const override {
-      return inner->getEventBase();
-    }
-
-    uint16_t getProtocolId() override { return inner->getProtocolId(); }
-
-    void terminateInteraction(InteractionId id) override {
-      releaseInteractionId(std::move(id));
-    }
-
-    // registers a new interaction with the channel
-    // returns id of created interaction (always nonzero)
-    InteractionId createInteraction(ManagedStringView&& name) override {
-      if (!id) {
-        id = inner->createInteraction(std::move(name));
-      }
-      return createInteractionId(id);
-    }
-  };
-
-  auto wrappedChannel = std::make_shared<SingleInteractionChannel>(channel);
-  RpcOptions opts;
-  auto interaction = wrappedChannel->createInteraction("Addition");
-  opts.setInteractionId(interaction);
-  auto guard = folly::makeGuard(
-      [interaction = std::move(interaction), wrappedChannel]() mutable {
-        wrappedChannel->terminateInteraction(std::move(interaction));
-      });
-  return std::make_tuple(
-      CalculatorAsyncClient(wrappedChannel),
-      DummyAsyncClient(wrappedChannel),
-      opts,
-      std::move(guard));
+  {
+    auto [adder, ret] = co_await client->co_initializedAddition(42);
+    EXPECT_EQ(ret, 42);
+    co_await adder.co_accumulatePrimitive(1);
+    EXPECT_EQ(co_await adder.co_getPrimitive(), 43);
+  }
 }
 
-TEST(InteractionCodegenTest, Factory) {
-  // TODO: use proper client codegen when implemented
-  auto [wrappedClient, dummyClient, opts, guard] =
-      factoryClientsSetup(ScopedServerInterfaceThread::makeTestClientChannel(
-          std::make_shared<SemiCalculatorHandler>(), nullptr));
-
-  auto ret = dummyClient.sync_initializedAddition(opts, 42);
-  EXPECT_EQ(ret, 42);
-
-  auto adder = wrappedClient.createAddition();
-  adder.sync_accumulatePrimitive(1);
-  EXPECT_EQ(adder.sync_getPrimitive(), 43);
-}
-
-TEST(InteractionCodegenTest, FactoryError) {
-  // TODO: use proper client codegen when implemented
-  auto [wrappedClient, dummyClient, opts, guard] =
-      factoryClientsSetup(ScopedServerInterfaceThread::makeTestClientChannel(
-          std::make_shared<SemiCalculatorHandler>(), nullptr));
+CO_TEST(InteractionCodegenTest, FactoryError) {
+  auto client = makeTestClient<CalculatorAsyncClient>(
+      std::make_shared<SemiCalculatorHandler>());
 
   // unimplemented in handler
-  EXPECT_THROW(dummyClient.sync_newAddition(opts), TApplicationException);
-  auto adder = wrappedClient.createAddition();
-  EXPECT_THROW(adder.sync_accumulatePrimitive(1), TApplicationException);
+  EXPECT_THROW(client->sync_newAddition(), TApplicationException);
+  EXPECT_THROW(
+      co_await client->semifuture_newAddition(), TApplicationException);
+  EXPECT_THROW(co_await client->co_newAddition(), TApplicationException);
 }
 
 TEST(InteractionCodegenTest, FactoryHandlerCallback) {
-  struct HandlerBase : CalculatorSvIf {
-    std::unique_ptr<AdditionIf> createAddition() override { std::terminate(); }
-    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
-      std::terminate();
-    }
-    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
-      std::terminate();
-    }
-  };
-
-  struct HandlerResult : HandlerBase {
+  struct HandlerResult : CalculatorSvIf {
     void async_tm_newAddition(
         std::unique_ptr<
             apache::thrift::HandlerCallback<TileAndResponse<AdditionIf, void>>>
@@ -1083,7 +1022,7 @@ TEST(InteractionCodegenTest, FactoryHandlerCallback) {
     }
   };
 
-  struct HandlerComplete : HandlerBase {
+  struct HandlerComplete : CalculatorSvIf {
     void async_tm_newAddition(
         std::unique_ptr<
             apache::thrift::HandlerCallback<TileAndResponse<AdditionIf, void>>>
@@ -1119,7 +1058,7 @@ TEST(InteractionCodegenTest, FactoryHandlerCallback) {
     }
   };
 
-  struct HandlerException : HandlerBase {
+  struct HandlerException : CalculatorSvIf {
     void async_tm_newAddition(
         std::unique_ptr<
             apache::thrift::HandlerCallback<TileAndResponse<AdditionIf, void>>>
@@ -1135,7 +1074,7 @@ TEST(InteractionCodegenTest, FactoryHandlerCallback) {
     }
   };
 
-  struct HandlerDrop : HandlerBase {
+  struct HandlerDrop : CalculatorSvIf {
     void async_tm_newAddition(
         std::unique_ptr<
             apache::thrift::HandlerCallback<TileAndResponse<AdditionIf, void>>>
@@ -1153,103 +1092,75 @@ TEST(InteractionCodegenTest, FactoryHandlerCallback) {
 
   // Result
   {
-    auto [wrappedClient, dummyClient, opts, guard] =
-        factoryClientsSetup(ScopedServerInterfaceThread::makeTestClientChannel(
-            std::make_shared<HandlerResult>(), nullptr));
-    dummyClient.sync_newAddition(opts);
-    auto adder = wrappedClient.createAddition();
+    auto client = makeTestClient<CalculatorAsyncClient>(
+        std::make_shared<HandlerResult>());
+    auto adder = client->sync_newAddition();
     adder.sync_accumulatePrimitive(1);
     EXPECT_EQ(adder.sync_getPrimitive(), 1);
   }
   {
-    auto [wrappedClient, dummyClient, opts, guard] =
-        factoryClientsSetup(ScopedServerInterfaceThread::makeTestClientChannel(
-            std::make_shared<HandlerResult>(), nullptr));
-    auto ret = dummyClient.sync_initializedAddition(opts, 42);
+    auto client = makeTestClient<CalculatorAsyncClient>(
+        std::make_shared<HandlerResult>());
+    auto [adder, ret] = client->sync_initializedAddition(42);
     EXPECT_EQ(ret, 42);
-    auto adder = wrappedClient.createAddition();
     adder.sync_accumulatePrimitive(1);
     EXPECT_EQ(adder.sync_getPrimitive(), 43);
   }
   {
-    auto [wrappedClient, dummyClient, opts, guard] =
-        factoryClientsSetup(ScopedServerInterfaceThread::makeTestClientChannel(
-            std::make_shared<HandlerResult>(), nullptr));
-    std::string ret;
-    dummyClient.sync_stringifiedAddition(opts, ret, 42);
+    auto client = makeTestClient<CalculatorAsyncClient>(
+        std::make_shared<HandlerResult>());
+    auto [adder, ret] = client->sync_stringifiedAddition(42);
     EXPECT_EQ(ret, "42");
-    auto adder = wrappedClient.createAddition();
     adder.sync_accumulatePrimitive(1);
     EXPECT_EQ(adder.sync_getPrimitive(), 43);
   }
 
   // Complete
   {
-    auto [wrappedClient, dummyClient, opts, guard] =
-        factoryClientsSetup(ScopedServerInterfaceThread::makeTestClientChannel(
-            std::make_shared<HandlerComplete>(), nullptr));
-    dummyClient.sync_newAddition(opts);
-    auto adder = wrappedClient.createAddition();
+    auto client = makeTestClient<CalculatorAsyncClient>(
+        std::make_shared<HandlerComplete>());
+    auto adder = client->sync_newAddition();
     adder.sync_accumulatePrimitive(1);
     EXPECT_EQ(adder.sync_getPrimitive(), 1);
   }
   {
-    auto [wrappedClient, dummyClient, opts, guard] =
-        factoryClientsSetup(ScopedServerInterfaceThread::makeTestClientChannel(
-            std::make_shared<HandlerComplete>(), nullptr));
-    auto ret = dummyClient.sync_initializedAddition(opts, 42);
+    auto client = makeTestClient<CalculatorAsyncClient>(
+        std::make_shared<HandlerComplete>());
+    auto [adder, ret] = client->sync_initializedAddition(42);
     EXPECT_EQ(ret, 42);
-    auto adder = wrappedClient.createAddition();
     adder.sync_accumulatePrimitive(1);
     EXPECT_EQ(adder.sync_getPrimitive(), 43);
   }
   {
-    auto [wrappedClient, dummyClient, opts, guard] =
-        factoryClientsSetup(ScopedServerInterfaceThread::makeTestClientChannel(
-            std::make_shared<HandlerComplete>(), nullptr));
-    std::string ret;
-    dummyClient.sync_stringifiedAddition(opts, ret, 42);
+    auto client = makeTestClient<CalculatorAsyncClient>(
+        std::make_shared<HandlerComplete>());
+    auto [adder, ret] = client->sync_stringifiedAddition(42);
     EXPECT_EQ(ret, "42");
-    auto adder = wrappedClient.createAddition();
     adder.sync_accumulatePrimitive(1);
     EXPECT_EQ(adder.sync_getPrimitive(), 43);
   }
 
   // Exception
   {
-    auto [wrappedClient, dummyClient, opts, guard] =
-        factoryClientsSetup(ScopedServerInterfaceThread::makeTestClientChannel(
-            std::make_shared<HandlerException>(), nullptr));
-    EXPECT_THROW(dummyClient.sync_newAddition(opts), TApplicationException);
-    auto adder = wrappedClient.createAddition();
-    EXPECT_THROW(adder.sync_accumulatePrimitive(1), TApplicationException);
+    auto client = makeTestClient<CalculatorAsyncClient>(
+        std::make_shared<HandlerException>());
+    EXPECT_THROW(client->sync_newAddition(), TApplicationException);
   }
   {
-    auto [wrappedClient, dummyClient, opts, guard] =
-        factoryClientsSetup(ScopedServerInterfaceThread::makeTestClientChannel(
-            std::make_shared<HandlerException>(), nullptr));
-    EXPECT_THROW(
-        dummyClient.sync_initializedAddition(opts, 42), TApplicationException);
-    auto adder = wrappedClient.createAddition();
-    EXPECT_THROW(adder.sync_accumulatePrimitive(1), TApplicationException);
+    auto client = makeTestClient<CalculatorAsyncClient>(
+        std::make_shared<HandlerException>());
+    EXPECT_THROW(client->sync_initializedAddition(42), TApplicationException);
   }
 
   // Drop
   {
-    auto [wrappedClient, dummyClient, opts, guard] =
-        factoryClientsSetup(ScopedServerInterfaceThread::makeTestClientChannel(
-            std::make_shared<HandlerDrop>(), nullptr));
-    EXPECT_THROW(dummyClient.sync_newAddition(opts), TApplicationException);
-    auto adder = wrappedClient.createAddition();
-    EXPECT_THROW(adder.sync_accumulatePrimitive(1), TApplicationException);
+    auto client =
+        makeTestClient<CalculatorAsyncClient>(std::make_shared<HandlerDrop>());
+    EXPECT_THROW(client->sync_newAddition(), TApplicationException);
   }
   {
-    auto [wrappedClient, dummyClient, opts, guard] =
-        factoryClientsSetup(ScopedServerInterfaceThread::makeTestClientChannel(
-            std::make_shared<HandlerDrop>(), nullptr));
-    EXPECT_THROW(
-        dummyClient.sync_initializedAddition(opts, 42), TApplicationException);
-    auto adder = wrappedClient.createAddition();
-    EXPECT_THROW(adder.sync_accumulatePrimitive(1), TApplicationException);
+    auto client =
+        makeTestClient<CalculatorAsyncClient>(std::make_shared<HandlerDrop>());
+    EXPECT_THROW(client->sync_initializedAddition(42), TApplicationException);
   }
 }

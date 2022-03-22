@@ -14,26 +14,26 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%^type:resolves_to_complex_return?%>
-<% > types/return_type_client%> <% > service_common/client_class_name%>::recv_<%function:cpp_name%>(::apache::thrift::ClientReceiveState& state) {
+%><%^function:sync_returns_by_outparam?%>
+<% > types/return_type_client_no_handle%> <% > service_common/client_class_name%>::recv_<%function:cpp_name%>(::apache::thrift::ClientReceiveState& state) {
 <%#type:void?%>
   auto ew = recv_wrapped_<%function:cpp_name%>(state);
 <%/type:void?%>
 <%^type:void?%>
-  <% > types/return_type_client%> _return;
+  <% > types/return_type_client_no_handle%> _return;
   auto ew = recv_wrapped_<%function:cpp_name%>(_return, state);
 <%/type:void?%>
-<%/type:resolves_to_complex_return?%>
-<%#type:resolves_to_complex_return?%>
+<%/function:sync_returns_by_outparam?%>
+<%#function:sync_returns_by_outparam?%>
 void <% > service_common/client_class_name%>::recv_<%function:cpp_name%>(<%type:cpp_type%>& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_<%function:cpp_name%>(_return, state);
-<%/type:resolves_to_complex_return?%>
+<%/function:sync_returns_by_outparam?%>
   if (ew) {
     ew.throw_exception();
   }
-<%^type:resolves_to_complex_return?%>
+<%^function:sync_returns_by_outparam?%>
 <%^type:void?%>
   return _return;
 <%/type:void?%>
-<%/type:resolves_to_complex_return?%>
+<%/function:sync_returns_by_outparam?%>
 }
