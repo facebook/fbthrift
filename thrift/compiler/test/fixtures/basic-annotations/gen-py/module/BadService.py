@@ -279,6 +279,15 @@ class Client(Iface):
         pass
 
 
+  def get_persistent_headers(self):
+    if self._fbthrift_cpp_transport:
+      return self._fbthrift_cpp_transport.get_persistent_headers()
+    try:
+      return self._oprot.trans.get_write_persistent_headers()
+    except AttributeError:
+      return {}
+
+
   def set_onetime_header(self, key, value):
     if self._fbthrift_cpp_transport:
       self._fbthrift_cpp_transport.set_onetime_header(key, value)

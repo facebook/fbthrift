@@ -35,6 +35,10 @@ class SyncClientTests(unittest.TestCase):
                 )
                 self.assertEqual(
                     "PERSISTENT_HEADER_VALUE",
+                    client.get_persistent_headers()["PERSISTENT_HEADER_KEY"],
+                )
+                self.assertEqual(
+                    "PERSISTENT_HEADER_VALUE",
                     client.readHeader("PERSISTENT_HEADER_KEY"),
                 )
 
@@ -63,6 +67,10 @@ class SyncClientTests(unittest.TestCase):
                 self.assertEqual(
                     "ONETIME_HEADER_VALUE",
                     client.readHeader("HEADER_KEY"),
+                )
+                self.assertEqual(
+                    "PERSISTENT_HEADER_VALUE",
+                    client.get_persistent_headers()["HEADER_KEY"],
                 )
                 self.assertEqual(
                     "PERSISTENT_HEADER_VALUE",
