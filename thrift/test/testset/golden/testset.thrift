@@ -2,6 +2,7 @@
 # @generated
 
 namespace cpp2 apache.thrift.test.testset
+namespace py3 thrift.test
 
 struct struct_empty {
 } (thrift.uri="facebook.com/thrift/test/testset/struct_empty")
