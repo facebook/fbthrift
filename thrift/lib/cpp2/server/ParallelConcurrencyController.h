@@ -20,12 +20,12 @@
 #include <folly/lang/Align.h>
 #include <folly/synchronization/RelaxedAtomic.h>
 
-#include <thrift/lib/cpp2/server/ConcurrencyControllerInterface.h>
+#include <thrift/lib/cpp2/server/ConcurrencyControllerBase.h>
 #include <thrift/lib/cpp2/server/RequestPileInterface.h>
 
 namespace apache::thrift {
 
-class ParallelConcurrencyController : public ConcurrencyControllerInterface {
+class ParallelConcurrencyController : public ConcurrencyControllerBase {
  public:
   ParallelConcurrencyController(RequestPileInterface& pile, folly::Executor& ex)
       : pile_(pile),
@@ -33,6 +33,8 @@ class ParallelConcurrencyController : public ConcurrencyControllerInterface {
             folly::getKeepAliveToken(ex))) {}
 
   void setExecutionLimitRequests(uint64_t limit) override;
+
+  using ConcurrencyControllerBase::setObserver;
 
   uint64_t getExecutionLimitRequests() const override {
     return executionLimit_.load();

@@ -184,6 +184,7 @@ add_library(
   server/AdaptiveConcurrency.cpp
   server/BaseThriftServer.cpp
   server/ConcurrencyControllerInterface.cpp
+  server/ConcurrencyControllerBase.cpp
   server/Cpp2ConnContext.cpp
   server/Cpp2Connection.cpp
   server/Cpp2Worker.cpp

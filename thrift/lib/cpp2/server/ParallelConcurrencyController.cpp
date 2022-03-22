@@ -131,13 +131,10 @@ void ParallelConcurrencyController::executeRequest() {
       serverRequest.setRequestPileNotification(&pile_, userData.value());
     }
     serverRequest.setConcurrencyControllerNotification(this, 0);
-    PerRequestStats stats;
-    if (auto observer = ConcurrencyControllerInterface::getGlobalObserver()) {
-      stats = observer->onExecute(*req);
-    }
+    auto stats = ConcurrencyControllerBase::onExecute(serverRequest);
     AsyncProcessorHelper::executeRequest(std::move(*req));
-    if (auto observer = ConcurrencyControllerInterface::getGlobalObserver()) {
-      observer->onFinishExecution(stats);
+    if (stats) {
+      ConcurrencyControllerBase::onFinishExecution(stats.value());
     }
     return;
 
