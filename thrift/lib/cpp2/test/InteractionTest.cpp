@@ -18,6 +18,7 @@
 
 #include <folly/experimental/coro/BlockingWait.h>
 #include <folly/experimental/coro/Collect.h>
+#include <folly/experimental/coro/FutureUtil.h>
 #include <folly/experimental/coro/GtestHelpers.h>
 #include <folly/experimental/coro/Sleep.h>
 #include <folly/experimental/coro/Task.h>
@@ -202,6 +203,173 @@ TEST(InteractionTest, QueueTimeout) {
        f2 = adder.semifuture_getPrimitive();
   EXPECT_FALSE(std::move(f1).getTry().hasException());
   EXPECT_TRUE(std::move(f2).getTry().hasException());
+}
+
+TEST(InteractionTest, OnTermination) {
+  struct TerminationHandler : CalculatorSvIf {
+    folly::coro::Baton create;
+    folly::coro::Baton terminate;
+    folly::coro::Baton terminated;
+    folly::coro::Baton destroyed;
+    struct AdditionHandler : CalculatorSvIf::AdditionIf {
+      TerminationHandler& handler;
+
+      explicit AdditionHandler(TerminationHandler& parent) : handler(parent) {}
+      ~AdditionHandler() override { handler.destroyed.post(); }
+
+      folly::coro::Task<void> co_onTermination() override {
+        co_await handler.terminate;
+        handler.terminated.post();
+      }
+
+      folly::coro::Task<void> co_accumulatePrimitive(int32_t a) override {
+        co_return;
+      }
+
+      folly::coro::Task<int32_t> co_getPrimitive() override {
+        co_await handler.terminated;
+        co_return 42;
+      }
+    };
+
+    struct AdditionFastHandler : CalculatorSvIf::AdditionFastIf {
+      TerminationHandler& handler;
+
+      explicit AdditionFastHandler(TerminationHandler& parent)
+          : handler(parent) {}
+      ~AdditionFastHandler() override { handler.destroyed.post(); }
+
+      folly::coro::Task<void> co_onTermination() override {
+        co_await handler.terminate;
+        handler.terminated.post();
+      }
+
+      void async_eb_accumulatePrimitive(
+          std::unique_ptr<HandlerCallback<void>> cb, int32_t) override {
+        cb->done();
+      }
+
+      void async_eb_getPrimitive(
+          std::unique_ptr<HandlerCallback<int32_t>> cb) override {
+        folly::coro::toSemiFuture(std::ref(handler.terminated))
+            .toUnsafeFuture()
+            .thenValue([cb = std::move(cb)](auto&&) { cb->result(42); });
+      }
+    };
+
+    std::unique_ptr<AdditionIf> createAddition() override {
+      return std::make_unique<AdditionHandler>(*this);
+    }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      return std::make_unique<AdditionFastHandler>(*this);
+    }
+
+    folly::SemiFuture<
+        apache::thrift::TileAndResponse<CalculatorSvIf::AdditionIf, void>>
+    semifuture_newAddition() override {
+      return folly::coro::toSemiFuture(std::ref(create))
+          .deferValue([&](auto&&) {
+            return apache::thrift::
+                TileAndResponse<CalculatorSvIf::AdditionIf, void>{
+                    std::make_unique<AdditionHandler>(*this)};
+          });
+    }
+
+    folly::SemiFuture<int32_t> semifuture_addPrimitive(
+        int32_t a, int32_t b) override {
+      return a + b;
+    }
+  };
+
+  auto handler = std::make_shared<TerminationHandler>();
+  auto client = makeTestClient<CalculatorAsyncClient>(handler);
+  handler->terminate.post();
+  auto checkAndReset = [](auto& baton) {
+    EXPECT_TRUE(baton.ready());
+    baton.reset();
+  };
+
+  // No active request
+  {
+    auto adder = client->createAddition();
+    adder.sync_accumulatePrimitive(0);
+  }
+  client->sync_addPrimitive(0, 0);
+  checkAndReset(handler->terminated);
+  checkAndReset(handler->destroyed);
+
+  // Active request
+  auto fut = folly::SemiFuture<int>::makeEmpty();
+  {
+    auto adder = client->createAddition();
+    fut = adder.semifuture_getPrimitive();
+    client->sync_addPrimitive(0, 0);
+  }
+  client->sync_addPrimitive(0, 0);
+  checkAndReset(handler->terminated);
+  checkAndReset(handler->destroyed);
+  std::move(fut).get();
+
+  // Client crash
+  {
+    ScopedServerInterfaceThread runner{handler};
+    folly::EventBase eb;
+    folly::AsyncSocket* sock = new folly::AsyncSocket(&eb, runner.getAddress());
+    CalculatorAsyncClient localClient(
+        RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(sock)));
+
+    auto adder = localClient.createAddition();
+    adder.sync_accumulatePrimitive(0);
+    sock->closeNow();
+    folly::coro::blockingWait(handler->destroyed);
+    checkAndReset(handler->destroyed);
+    EXPECT_FALSE(handler->terminated.ready());
+  }
+
+  // Slow onTermination
+  {
+    handler->terminate.reset();
+    auto adder = client->createAddition();
+    adder.sync_accumulatePrimitive(0);
+  }
+  for (int i = 0; i < 10; i++) {
+    client->sync_addPrimitive(0, 0);
+    EXPECT_FALSE(handler->destroyed.ready());
+  }
+  handler->terminate.post();
+  folly::coro::blockingWait(handler->destroyed);
+  checkAndReset(handler->terminated);
+  checkAndReset(handler->destroyed);
+
+  // Slow factory
+  RpcOptions opts;
+  std::ignore = client->eager_semifuture_newAddition(opts);
+  client->sync_addPrimitive(0, 0);
+  EXPECT_FALSE(handler->terminated.ready());
+  handler->create.post();
+  folly::coro::blockingWait(handler->destroyed);
+  checkAndReset(handler->terminated);
+  checkAndReset(handler->destroyed);
+
+  // No active request, eb
+  {
+    auto adder = client->createAdditionFast();
+    adder.sync_accumulatePrimitive(0);
+  }
+  client->sync_addPrimitive(0, 0);
+  checkAndReset(handler->terminated);
+  checkAndReset(handler->destroyed);
+
+  // Active request, eb
+  {
+    auto adder = client->createAdditionFast();
+    fut = adder.semifuture_getPrimitive();
+    client->sync_addPrimitive(0, 0);
+  }
+  client->sync_addPrimitive(0, 0);
+  checkAndReset(handler->terminated);
+  checkAndReset(handler->destroyed);
+  std::move(fut).get();
 }
 
 struct CalculatorHandler : CalculatorSvIf {

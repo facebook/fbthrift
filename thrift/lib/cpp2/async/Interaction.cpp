@@ -56,6 +56,29 @@ void Tile::decRef(folly::EventBase& eb, InteractionReleaseEvent event) {
   }
 }
 
+#if FOLLY_HAS_COROUTINES
+// Called as soon as termination signal is received
+// Destructor may or may not run as soon as this completes
+// Not called if connection closes before termination received
+folly::coro::Task<void> Tile::co_onTermination() {
+  co_return;
+}
+#endif
+
+void Tile::__fbthrift_onTermination(TilePtr ptr, folly::EventBase& eb) {
+#if FOLLY_HAS_COROUTINES
+  eb.dcheckIsInEventBaseThread();
+  auto* tile = ptr.get();
+  if (tile->tm_) {
+    tile->co_onTermination().scheduleOn(tile->tm_).start(
+        [ptr = std::move(ptr)](auto&&) {});
+  } else {
+    tile->co_onTermination().scheduleOn(&eb).startInlineUnsafe(
+        [ptr = std::move(ptr)](auto&&) {});
+  }
+#endif
+}
+
 bool TilePromise::__fbthrift_maybeEnqueue(
     std::unique_ptr<concurrency::Runnable>&& task,
     const concurrency::ThreadManager::ExecutionScope& scope) {
@@ -78,6 +101,9 @@ bool TilePromise::__fbthrift_maybeEnqueue(
 void TilePromise::fulfill(
     Tile& tile, concurrency::ThreadManager& tm, folly::EventBase& eb) {
   tile.tm_ = &tm;
+  if (terminated_) {
+    Tile::__fbthrift_onTermination({&tile, &eb}, eb);
+  }
 
   // Inline destruction of this is possible at the setTile()
   auto continuations = std::move(continuations_);
@@ -105,6 +131,14 @@ void TilePromise::failWith(
     continuations.pop();
   }
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<void> TilePromise::co_onTermination() {
+  DCHECK(!tm_);
+  terminated_ = true;
+  co_return;
+}
+#endif
 
 bool SerialInteractionTile::__fbthrift_maybeEnqueue(
     std::unique_ptr<concurrency::Runnable>&& task,

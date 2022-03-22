@@ -215,7 +215,9 @@ void GeneratedAsyncProcessor::terminateInteraction(
     int64_t id, Cpp2ConnContext& conn, folly::EventBase& eb) noexcept {
   eb.dcheckIsInEventBaseThread();
 
-  conn.removeTile(id);
+  if (auto tile = conn.removeTile(id)) {
+    Tile::__fbthrift_onTermination(std::move(tile), eb);
+  }
 }
 
 void GeneratedAsyncProcessor::destroyAllInteractions(
@@ -232,7 +234,7 @@ void GeneratedAsyncProcessor::destroyAllInteractions(
     ids.push_back(id);
   }
   for (auto id : ids) {
-    terminateInteraction(id, conn, eb);
+    conn.removeTile(id);
   }
 }
 

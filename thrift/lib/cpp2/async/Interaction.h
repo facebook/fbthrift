@@ -19,6 +19,7 @@
 #include <forward_list>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/experimental/coro/Task.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
@@ -71,6 +72,8 @@ enum class InteractionReleaseEvent {
   STREAM_END,
 };
 
+class TilePtr;
+
 class Tile {
  public:
   virtual ~Tile() { DCHECK_EQ(refCount_, 0); }
@@ -79,6 +82,15 @@ class Tile {
   virtual bool __fbthrift_maybeEnqueue(
       std::unique_ptr<concurrency::Runnable>&& task,
       const concurrency::ThreadManager::ExecutionScope& scope);
+
+#if FOLLY_HAS_COROUTINES
+  // Called as soon as termination signal is received
+  // Destructor may or may not run as soon as this completes
+  // Not called if connection closes before termination received
+  virtual folly::coro::Task<void> co_onTermination();
+#endif
+
+  static void __fbthrift_onTermination(TilePtr tile, folly::EventBase& eb);
 
  private:
   void incRef(folly::EventBase& eb) {
@@ -120,8 +132,13 @@ class TilePromise final : public Tile {
 
   void failWith(folly::exception_wrapper ew, const std::string& exCode);
 
+#if FOLLY_HAS_COROUTINES
+  folly::coro::Task<void> co_onTermination() override;
+#endif
+
  private:
   detail::InteractionTaskQueue continuations_;
+  bool terminated_{false};
   bool factoryPending_;
 
   struct FactoryException {
