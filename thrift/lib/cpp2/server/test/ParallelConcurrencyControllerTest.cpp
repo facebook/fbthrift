@@ -123,11 +123,12 @@ namespace {
 ServerRequest getRequest(AsyncProcessor* ap, folly::EventBase* eb) {
   static ServiceRequestInfo requestInfo{
       false, RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, "function", std::nullopt};
+  static Cpp2RequestContext ctx = Cpp2RequestContext(nullptr);
   ServerRequest req(
       ResponseChannelRequest::UniquePtr(new MockResponseChannelRequest),
       SerializedCompressedRequest(std::unique_ptr<folly::IOBuf>{}),
       eb,
-      nullptr, /* ctx  */
+      &ctx, /* ctx  */
       static_cast<protocol::PROTOCOL_TYPES>(0),
       nullptr, /* requestContext  */
       ap,
