@@ -26,10 +26,10 @@ class DiagnosticTest : public ::testing::Test {};
 TEST_F(DiagnosticTest, Str) {
   EXPECT_EQ(
       diagnostic(diagnostic_level::debug, "m", "f", 1, "t").str(),
-      "[DEBUG:f:1] (last token was 't') m");
+      "[DEBUG:f:1] m");
   EXPECT_EQ(
       diagnostic(diagnostic_level::failure, "m", "f", 0, "t").str(),
-      "[FAILURE:f] (last token was 't') m");
+      "[FAILURE:f] m");
   EXPECT_EQ(
       diagnostic(diagnostic_level::info, "m", "f", 1).str(), "[INFO:f:1] m");
   EXPECT_EQ(

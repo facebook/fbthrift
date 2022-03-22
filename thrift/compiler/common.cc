@@ -185,52 +185,10 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
   diagnostic_results results;
   diagnostic_context ctx{results, std::move(dparams)};
   auto program = parse_and_mutate_program(ctx, path, std::move(pparams));
-  dump_diagnostics(results.diagnostics());
-  return program;
-}
-
-void dump_diagnostics(const std::vector<diagnostic>& diagnostic_messages) {
-  char lineno[16];
-  for (auto const& message : diagnostic_messages) {
-    if (message.lineno() > 0) {
-      sprintf(lineno, ":%d", message.lineno());
-    } else {
-      *lineno = '\0';
-    }
-    switch (message.level()) {
-      case diagnostic_level::parse_error:
-        fprintf(
-            stderr,
-            "[ERROR:%s%s] (last token was '%s')\n%s\n",
-            message.file().c_str(),
-            lineno,
-            message.token().c_str(),
-            message.message().c_str());
-        break;
-      case diagnostic_level::warning:
-        fprintf(
-            stderr,
-            "[WARNING:%s%s] %s\n",
-            message.file().c_str(),
-            lineno,
-            message.message().c_str());
-        break;
-      case diagnostic_level::info:
-        fprintf(stderr, "%s", message.message().c_str());
-        break;
-      case diagnostic_level::debug:
-        fprintf(stderr, "[PARSE%s] %s\n", lineno, message.message().c_str());
-        break;
-      case diagnostic_level::failure:
-        fprintf(
-            stderr,
-            "[FAILURE:%s%s] %s\n",
-            message.file().c_str(),
-            lineno,
-            message.message().c_str());
-        break;
-    }
+  for (const auto& diag : results.diagnostics()) {
+    std::cerr << diag << "\n";
   }
+  return program;
 }
 
 void mark_file_executable(std::string const& path) {

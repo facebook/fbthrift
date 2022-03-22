@@ -16,12 +16,12 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 
 #include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/t_program_bundle.h>
-#include <thrift/compiler/parse/parsing_driver.h>
 
 namespace apache {
 namespace thrift {
@@ -38,14 +38,14 @@ struct compile_result {
 };
 
 /**
- * Parse it up, then just spit back out the program_bundle it generated.
+ * Runs the Thrift parser with the specified (command-line) arguments and
+ * returns the program bundle.
  */
 std::unique_ptr<t_program_bundle> parse_and_get_program(
     const std::vector<std::string>& arguments);
 
 /**
- * Parse it up, then spit it back out, in pretty much every language. Alright
- * not that many languages, but the cool ones that we care about.
+ * Runs the Thrift compiler with the specified (command-line) arguments.
  */
 compile_result compile(const std::vector<std::string>& arguments);
 

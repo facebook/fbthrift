@@ -49,12 +49,12 @@ std::string diagnostic::str() const {
 
 std::ostream& operator<<(std::ostream& os, const diagnostic& e) {
   os << "[" << level_to_string(e.level()) << ":" << e.file();
-  if (e.lineno() != 0) {
+  if (e.lineno() > 0) {
     os << ":" << e.lineno();
   }
   os << "] ";
-  if (!e.token().empty()) {
-    os << "(last token was '" << e.token() << "') ";
+  if (e.level() == diagnostic_level::parse_error && !e.token().empty()) {
+    os << "(last token was '" << e.token() << "')\n";
   }
   os << e.message();
   if (!e.name().empty()) {

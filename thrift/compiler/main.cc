@@ -24,15 +24,15 @@
  *
  */
 
-#include <string>
-#include <vector>
-#include <thrift/compiler/common.h>
+#include <iostream>
 #include <thrift/compiler/compiler.h>
 
 using namespace apache::thrift::compiler;
 
 int main(int argc, char** argv) {
-  auto result = compile(std::vector<std::string>(argv, argv + argc));
-  dump_diagnostics(result.detail.diagnostics());
-  return (int)result.retcode;
+  auto result = compile({argv, argv + argc});
+  for (const auto& diag : result.detail.diagnostics()) {
+    std::cerr << diag << "\n";
+  }
+  return static_cast<int>(result.retcode);
 }

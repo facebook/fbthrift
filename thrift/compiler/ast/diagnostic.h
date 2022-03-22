@@ -17,8 +17,9 @@
 #pragma once
 
 #include <array>
-#include <memory>
+#include <iosfwd>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <thrift/compiler/ast/t_node.h>
