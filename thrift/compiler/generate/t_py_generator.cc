@@ -2310,7 +2310,11 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
       << "    self._fbthrift_cpp_transport.set_persistent_header(key, value)"
       << endl
       << indent() << "  else:" << endl
-      << indent() << "    self._oprot.trans.set_persistent_header(key, value)"
+      << indent() << "    try:" << endl
+      << indent() << "      self._oprot.trans.set_persistent_header(key, value)"
+      << endl
+      << indent() << "    except AttributeError:" << endl
+      << indent() << "      pass" << endl
       << endl
       << endl;
 
@@ -2321,7 +2325,10 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
       << "    self._fbthrift_cpp_transport.set_onetime_header(key, value)"
       << endl
       << indent() << "  else:" << endl
-      << indent() << "    self._oprot.trans.set_header(key, value)" << endl
+      << indent() << "    try:" << endl
+      << indent() << "      self._oprot.trans.set_header(key, value)" << endl
+      << indent() << "    except AttributeError:" << endl
+      << indent() << "      pass" << endl
       << endl;
 
   // Generate client method implementations

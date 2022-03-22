@@ -470,13 +470,20 @@ class Client(Iface):
     if self._fbthrift_cpp_transport:
       self._fbthrift_cpp_transport.set_persistent_header(key, value)
     else:
-      self._oprot.trans.set_persistent_header(key, value)
+      try:
+        self._oprot.trans.set_persistent_header(key, value)
+      except AttributeError:
+        pass
+
 
   def set_onetime_header(self, key, value):
     if self._fbthrift_cpp_transport:
       self._fbthrift_cpp_transport.set_onetime_header(key, value)
     else:
-      self._oprot.trans.set_header(key, value)
+      try:
+        self._oprot.trans.set_header(key, value)
+      except AttributeError:
+        pass
 
   def query(self, s=None, i=None):
     """
