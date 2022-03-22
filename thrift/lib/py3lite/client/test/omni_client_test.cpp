@@ -43,10 +43,10 @@ const std::string kTestHeaderValue = "headerValue";
 /**
  * A simple Scaffold service that will be used to test the Thrift OmniClient.
  */
-class TestService : virtual public TestServiceSvIf {
+class TestServiceHandler : virtual public TestServiceSvIf {
  public:
-  TestService() {}
-  virtual ~TestService() override {}
+  TestServiceHandler() {}
+  virtual ~TestServiceHandler() override {}
   int add(int num1, int num2) override { return num1 + num2; }
   void oneway() override {}
   void readHeader(
@@ -97,7 +97,7 @@ class OmniClientTest : public ::testing::Test {
     server_->setServerEventHandler(
         std::make_shared<ServerEventHandler>(addressPromise_));
     server_->setAddress(addr);
-    server_->setInterface(std::make_shared<TestService>());
+    server_->setInterface(std::make_shared<TestServiceHandler>());
     serverThread_ = std::thread([this]() { server_->run(); });
 
     // Wait for the server to be ready.
@@ -234,7 +234,7 @@ class OmniClientSinkTest : public OmniClientTest {
     server_->setServerEventHandler(
         std::make_shared<ServerEventHandler>(addressPromise_));
     server_->setAddress(addr);
-    server_->setInterface(std::make_shared<TestService>());
+    server_->setInterface(std::make_shared<TestServiceHandler>());
     serverThread_ = std::thread([this]() { server_->run(); });
 
     // Wait for the server to be ready.
