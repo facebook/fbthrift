@@ -759,6 +759,10 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
   folly::SemiFuture<MyServiceAsyncClient::MyInteraction> semifuture_interact(::std::int32_t p_arg);
   folly::SemiFuture<MyServiceAsyncClient::MyInteraction> semifuture_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg);
+  std::pair<
+    MyServiceAsyncClient::MyInteraction,
+    folly::SemiFuture<folly::Unit>
+  > eager_semifuture_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg);
 
 #if FOLLY_HAS_COROUTINES
 #if __clang__
@@ -844,6 +848,10 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
   folly::SemiFuture<std::pair<MyServiceAsyncClient::MyInteractionFast, ::std::int32_t>> semifuture_interactFast();
   folly::SemiFuture<std::pair<MyServiceAsyncClient::MyInteractionFast, ::std::int32_t>> semifuture_interactFast(apache::thrift::RpcOptions& rpcOptions);
+  std::pair<
+    MyServiceAsyncClient::MyInteractionFast,
+    folly::SemiFuture<::std::int32_t>
+  > eager_semifuture_interactFast(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
 #if __clang__
@@ -930,6 +938,10 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
   folly::SemiFuture<std::pair<MyServiceAsyncClient::SerialInteraction, apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>>> semifuture_serialize();
   folly::SemiFuture<std::pair<MyServiceAsyncClient::SerialInteraction, apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>>> semifuture_serialize(apache::thrift::RpcOptions& rpcOptions);
+  std::pair<
+    MyServiceAsyncClient::SerialInteraction,
+    folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>>
+  > eager_semifuture_serialize(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
 #if __clang__

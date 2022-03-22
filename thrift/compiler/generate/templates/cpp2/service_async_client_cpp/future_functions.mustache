@@ -73,6 +73,19 @@ folly::SemiFuture<<% > types/return_type_client_lift_unit%>> <% > service_common
 <%/function:creates_interaction?%>
 }
 
+<%#function:creates_interaction?%>
+std::pair<
+  <%service:parent_service_cpp_name%>AsyncClient::<%function:created_interaction%>,
+  folly::SemiFuture<<%^type:void?%><% > types/return_type_client_no_handle%><%/type:void?%><%#type:void?%>folly::Unit<%/type:void?%>>
+> <% > service_common/client_class_name%>::eager_semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_client%>) {
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_<%function:cpp_name%>, channel_);
+  <%function:created_interaction%> handle(channel_, "<%function:created_interaction%>");
+  auto callback = std::move(callbackAndFuture.first);
+  <%function:cpp_name%>(rpcOptions, std::move(callback)<%#function:creates_interaction?%>, handle<%/function:creates_interaction?%><%function:comma%><% > service_common/param_list%>);
+  return std::make_pair(std::move(handle), std::move(callbackAndFuture.second));
+}
+
+<%/function:creates_interaction?%>
 <%^function:oneway?%><%^service:reduced_client?%><%^function:creates_interaction?%>
 <%^type:streamresponse?%>
 folly::Future<std::pair<<% > types/return_type_client_lift_unit%>, std::unique_ptr<apache::thrift::transport::THeader>>> <% > service_common/client_class_name%>::header_future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_client%>) {

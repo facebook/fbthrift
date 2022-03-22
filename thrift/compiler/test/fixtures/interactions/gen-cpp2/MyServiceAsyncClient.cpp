@@ -395,6 +395,17 @@ folly::SemiFuture<MyServiceAsyncClient::MyInteraction> MyServiceAsyncClient::sem
   });
 }
 
+std::pair<
+  MyServiceAsyncClient::MyInteraction,
+  folly::SemiFuture<folly::Unit>
+> MyServiceAsyncClient::eager_semifuture_interact(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_arg) {
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_interact, channel_);
+  MyInteraction handle(channel_, "MyInteraction");
+  auto callback = std::move(callbackAndFuture.first);
+  interact(rpcOptions, std::move(callback), handle, p_arg);
+  return std::make_pair(std::move(handle), std::move(callbackAndFuture.second));
+}
+
 
 
 #if FOLLY_HAS_COROUTINES
@@ -547,6 +558,17 @@ folly::SemiFuture<std::pair<MyServiceAsyncClient::MyInteractionFast, ::std::int3
   return std::move(callbackAndFuture.second).deferValue([handle = std::move(handle)](auto&& val) mutable {
     return std::make_pair(std::move(handle), std::move(val));
   });
+}
+
+std::pair<
+  MyServiceAsyncClient::MyInteractionFast,
+  folly::SemiFuture<::std::int32_t>
+> MyServiceAsyncClient::eager_semifuture_interactFast(apache::thrift::RpcOptions& rpcOptions) {
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_interactFast, channel_);
+  MyInteractionFast handle(channel_, "MyInteractionFast");
+  auto callback = std::move(callbackAndFuture.first);
+  interactFast(rpcOptions, std::move(callback), handle);
+  return std::make_pair(std::move(handle), std::move(callbackAndFuture.second));
 }
 
 
@@ -707,6 +729,17 @@ folly::SemiFuture<std::pair<MyServiceAsyncClient::SerialInteraction, apache::thr
   return std::move(callbackAndFuture.second).deferValue([handle = std::move(handle)](auto&& val) mutable {
     return std::make_pair(std::move(handle), std::move(val));
   });
+}
+
+std::pair<
+  MyServiceAsyncClient::SerialInteraction,
+  folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t>>
+> MyServiceAsyncClient::eager_semifuture_serialize(apache::thrift::RpcOptions& rpcOptions) {
+  auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_serialize, channel_);
+  SerialInteraction handle(channel_, "SerialInteraction");
+  auto callback = std::move(callbackAndFuture.first);
+  serialize(rpcOptions, std::move(callback), handle);
+  return std::make_pair(std::move(handle), std::move(callbackAndFuture.second));
 }
 
 

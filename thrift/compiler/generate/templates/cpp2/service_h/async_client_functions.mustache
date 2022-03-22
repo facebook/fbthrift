@@ -46,6 +46,12 @@
   virtual folly::Future<<% > types/return_type_client_lift_unit%>> future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_client%>);
 <%/type:streamresponse?%><%/function:creates_interaction?%><%/service:reduced_client?%>
   <%^service:reduced_client?%><%^function:creates_interaction?%>virtual <%/function:creates_interaction?%><%/service:reduced_client?%>folly::SemiFuture<<% > types/return_type_client_lift_unit%>> semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_client%>);
+<%#function:creates_interaction?%>
+  std::pair<
+    <%service:parent_service_cpp_name%>AsyncClient::<%function:created_interaction%>,
+    folly::SemiFuture<<%^type:void?%><% > types/return_type_client_no_handle%><%/type:void?%><%#type:void?%>folly::Unit<%/type:void?%>>
+  > eager_semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_client%>);
+<%/function:creates_interaction?%>
 <%^function:oneway?%>
 <%^service:reduced_client?%><%^function:creates_interaction?%>
 <%^type:streamresponse?%>

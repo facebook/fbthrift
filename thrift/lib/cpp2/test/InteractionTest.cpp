@@ -989,6 +989,22 @@ CO_TEST(InteractionCodegenTest, FactoryError) {
   EXPECT_THROW(co_await client->co_newAddition(), TApplicationException);
 }
 
+CO_TEST(InteractionCodegenTest, FactoryEager) {
+  auto client = makeTestClient<CalculatorAsyncClient>(
+      std::make_shared<SemiCalculatorHandler>());
+
+  {
+    RpcOptions opts;
+    auto [adder, sf1] = client->eager_semifuture_initializedAddition(opts, 42);
+    auto sf2 = adder.semifuture_accumulatePrimitive(1);
+    EXPECT_FALSE(sf1.isReady());
+    auto [ret1, ret2] =
+        co_await folly::coro::collectAll(std::move(sf1), std::move(sf2));
+    EXPECT_EQ(ret1, 42);
+    EXPECT_EQ(co_await adder.co_getPrimitive(), 43);
+  }
+}
+
 TEST(InteractionCodegenTest, FactoryHandlerCallback) {
   struct HandlerResult : CalculatorSvIf {
     void async_tm_newAddition(
