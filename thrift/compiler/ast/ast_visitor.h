@@ -140,7 +140,9 @@ class basic_ast_visitor {
     visit_children_ptrs(node.services(), args...);
     visit_children_ptrs(node.interactions(), args...);
     // TODO(afuller): Split structs and unions in t_program accessors.
-    for (auto* struct_or_union : node.structs()) {
+    // Note: Loop must be resilient to visitor causing push_back calls.
+    for (size_t i = 0; i < node.structs().size(); ++i) {
+      auto* struct_or_union = node.structs()[i];
       if (auto* tunion = ast_detail::as<t_union>(struct_or_union)) {
         this->operator()(args..., *tunion);
       } else {
@@ -151,7 +153,9 @@ class basic_ast_visitor {
     visit_children_ptrs(node.typedefs(), args...);
     visit_children_ptrs(node.enums(), args...);
     visit_children_ptrs(node.consts(), args...);
-    for (auto& type_inst : node.type_instantiations()) {
+    // Note: Loop must be resilient to visitor causing push_back calls.
+    for (size_t i = 0; i < node.type_instantiations().size(); ++i) {
+      auto& type_inst = node.type_instantiations()[i];
       if (auto* set_node = ast_detail::as<t_set>(&type_inst)) {
         visit_child(*set_node, args...);
       } else if (auto* list_node = ast_detail::as<t_list>(&type_inst)) {
@@ -294,14 +298,16 @@ class basic_ast_visitor {
 
   template <typename C>
   void visit_children(const C& children, Args... args) const {
-    for (auto&& child : children) {
-      operator()(args..., child);
+    // Note: Loop must be resilient to visitor causing push_back calls.
+    for (size_t i = 0; i < children.size(); ++i) {
+      operator()(args..., children[i]);
     }
   }
   template <typename C>
   void visit_children_ptrs(const C& children, Args... args) const {
-    for (auto* child : children) {
-      operator()(args..., *child);
+    // Note: Loop must be resilient to visitor causing push_back calls.
+    for (size_t i = 0; i < children.size(); ++i) {
+      operator()(args..., *children[i]);
     }
   }
 };

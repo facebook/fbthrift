@@ -16,6 +16,7 @@
 
 #include <thrift/compiler/ast/ast_visitor.h>
 
+#include <cctype>
 #include <memory>
 
 #include <folly/portability/GMock.h>
@@ -497,6 +498,32 @@ TEST(ObserverTest, VisitContext) {
   EXPECT_EQ(ctx.parent(), nullptr);
   visitor(ctx, program);
   EXPECT_EQ(calls, 3);
+}
+
+TEST(AstVisitorTest, Modifications) {
+  t_program program("path/to/program.thrift");
+  program.add_struct(std::make_unique<t_union>(&program, "Union1"));
+  program.add_struct(std::make_unique<t_union>(&program, "Union2"));
+  std::vector<std::string> seen;
+
+  ast_visitor visitor;
+  visitor.add_union_visitor([&](t_union& node) {
+    seen.emplace_back(node.name());
+    // Add some more nodes, which will actually show up in the current
+    // traversal.
+    if (std::isdigit(node.name().back())) { // Don't recurse indefinitely.
+      program.add_struct(
+          std::make_unique<t_union>(&program, node.name() + "a"));
+      program.add_struct(
+          std::make_unique<t_union>(&program, node.name() + "b"));
+    }
+  });
+  visitor(program);
+
+  EXPECT_THAT(
+      seen,
+      ::testing::ElementsAre(
+          "Union1", "Union2", "Union1a", "Union1b", "Union2a", "Union2b"));
 }
 
 } // namespace
