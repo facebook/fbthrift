@@ -26,6 +26,13 @@ cdef class BoolPatch_Builder(thrift.py3.builder.StructBuilder):
     cdef public pbool invert
 
 
+cdef class OptionalBoolPatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public pbool ensure
+    cdef public object patchAfter
+
+
 cdef class BytePatch_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint assign
     cdef public pint add

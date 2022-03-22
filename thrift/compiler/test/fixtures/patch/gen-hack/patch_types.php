@@ -239,6 +239,245 @@ class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
 /**
  * Original thrift struct:-
+ * OptionalBoolPatch
+ */
+class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    2 => shape(
+      'var' => 'clear',
+      'type' => \TType::BOOL,
+    ),
+    3 => shape(
+      'var' => 'patch',
+      'type' => \TType::STRUCT,
+      'class' => BoolPatch::class,
+    ),
+    1 => shape(
+      'var' => 'ensure',
+      'type' => \TType::BOOL,
+    ),
+    4 => shape(
+      'var' => 'patchAfter',
+      'type' => \TType::STRUCT,
+      'class' => BoolPatch::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'clear' => 2,
+    'patch' => 3,
+    'ensure' => 1,
+    'patchAfter' => 4,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'clear' => ?bool,
+    ?'patch' => ?BoolPatch,
+    ?'ensure' => ?bool,
+    ?'patchAfter' => ?BoolPatch,
+  );
+
+  const type TShape = shape(
+    'clear' => bool,
+    ?'patch' => ?BoolPatch::TShape,
+    ?'ensure' => ?bool,
+    ?'patchAfter' => ?BoolPatch::TShape,
+    ...
+  );
+  const int STRUCTURAL_ID = 8412672391935815140;
+  /**
+   * Original thrift field:-
+   * 2: bool clear
+   */
+  public bool $clear;
+  /**
+   * Original thrift field:-
+   * 3: struct patch.BoolPatch patch
+   */
+  public ?BoolPatch $patch;
+  /**
+   * Original thrift field:-
+   * 1: bool ensure
+   */
+  public ?bool $ensure;
+  /**
+   * Original thrift field:-
+   * 4: struct patch.BoolPatch patchAfter
+   */
+  public ?BoolPatch $patchAfter;
+
+  public function __construct(?bool $clear = null, ?BoolPatch $patch = null, ?bool $ensure = null, ?BoolPatch $patchAfter = null  )[] {
+    $this->clear = $clear ?? false;
+    $this->patch = $patch;
+    $this->ensure = $ensure;
+    $this->patchAfter = $patchAfter;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'clear'),
+      Shapes::idx($shape, 'patch'),
+      Shapes::idx($shape, 'ensure'),
+      Shapes::idx($shape, 'patchAfter'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'OptionalBoolPatch';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "patch.OptionalBoolPatch",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "clear",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "patch.BoolPatch",
+                    )
+                  ),
+                )
+              ),
+              "name" => "patch",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "ensure",
+              "is_optional" => true,
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "patch.BoolPatch",
+                    )
+                  ),
+                )
+              ),
+              "name" => "patchAfter",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+        'patch' => shape(
+          'field' => dict[],
+          'type' => dict[
+            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+              shape(
+              )
+            ),
+          ],
+        ),
+        'patchAfter' => shape(
+          'field' => dict[],
+          'type' => dict[
+            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+              shape(
+              )
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['clear'],
+      Shapes::idx($shape, 'patch') === null ? null : (BoolPatch::__fromShape($shape['patch'])),
+      Shapes::idx($shape, 'ensure'),
+      Shapes::idx($shape, 'patchAfter') === null ? null : (BoolPatch::__fromShape($shape['patchAfter'])),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'clear' => $this->clear,
+      'patch' => $this->patch?->__toShape(),
+      'ensure' => $this->ensure,
+      'patchAfter' => $this->patchAfter?->__toShape(),
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'clear') !== null) {
+      $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
+    }    
+    if (idx($parsed, 'patch') !== null) {
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
+      $_tmp1 = BoolPatch::withDefaultValues();
+      $_tmp1->readFromJson($_tmp0);
+      $this->patch = $_tmp1;
+    }    
+    if (idx($parsed, 'ensure') !== null) {
+      $this->ensure = /* HH_FIXME[4110] */ $parsed['ensure'];
+    }    
+    if (idx($parsed, 'patchAfter') !== null) {
+      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
+      $_tmp3 = BoolPatch::withDefaultValues();
+      $_tmp3->readFromJson($_tmp2);
+      $this->patchAfter = $_tmp3;
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
  * BytePatch
  */
 class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {

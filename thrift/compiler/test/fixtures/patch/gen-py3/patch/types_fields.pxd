@@ -67,6 +67,20 @@ cdef class __BoolPatch_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_1(self, _fbthrift_value) except *
 
 
+ctypedef void (*__OptionalBoolPatch_FieldsSetterFunc)(__OptionalBoolPatch_FieldsSetter, object) except *
+
+cdef class __OptionalBoolPatch_FieldsSetter(__StructFieldsSetter):
+    cdef _patch_types.cOptionalBoolPatch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __OptionalBoolPatch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __OptionalBoolPatch_FieldsSetter _fbthrift_create(_patch_types.cOptionalBoolPatch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+
+
 ctypedef void (*__BytePatch_FieldsSetterFunc)(__BytePatch_FieldsSetter, object) except *
 
 cdef class __BytePatch_FieldsSetter(__StructFieldsSetter):

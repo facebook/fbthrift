@@ -56,6 +56,48 @@ class BoolPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
+class OptionalBoolPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(BoolPatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(BoolPatch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "patch.OptionalBoolPatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalBoolPatch()
+
+
+
 class BytePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -287,6 +329,8 @@ def _fbthrift_metadata__struct_GeneratePatch():
     return patch.lite_metadata.gen_metadata_struct_GeneratePatch()
 def _fbthrift_metadata__struct_BoolPatch():
     return patch.lite_metadata.gen_metadata_struct_BoolPatch()
+def _fbthrift_metadata__struct_OptionalBoolPatch():
+    return patch.lite_metadata.gen_metadata_struct_OptionalBoolPatch()
 def _fbthrift_metadata__struct_BytePatch():
     return patch.lite_metadata.gen_metadata_struct_BytePatch()
 def _fbthrift_metadata__struct_I16Patch():
@@ -309,6 +353,7 @@ def _fbthrift_metadata__struct_BinaryPatch():
 _fbthrift_py3lite_types.fill_specs(
     GeneratePatch,
     BoolPatch,
+    OptionalBoolPatch,
     BytePatch,
     I16Patch,
     I32Patch,

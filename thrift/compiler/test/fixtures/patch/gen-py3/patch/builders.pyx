@@ -17,6 +17,15 @@ cdef class BoolPatch_Builder(thrift.py3.builder.StructBuilder):
         yield "assign", self.assign
         yield "invert", self.invert
 
+cdef class OptionalBoolPatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _patch_types.OptionalBoolPatch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
 cdef class BytePatch_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _patch_types.BytePatch
 

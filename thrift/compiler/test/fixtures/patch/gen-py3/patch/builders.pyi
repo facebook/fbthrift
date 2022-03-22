@@ -30,6 +30,15 @@ class BoolPatch_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
+class OptionalBoolPatch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Optional[bool]
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
 class BytePatch_Builder(thrift.py3.builder.StructBuilder):
     assign: _typing.Optional[int]
     add: _typing.Optional[int]

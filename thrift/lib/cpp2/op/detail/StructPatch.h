@@ -80,7 +80,7 @@ class StructPatch : public BaseValuePatch<Patch, StructPatch<Patch>> {
     return patch;
   }
 
-  void clear() { *patch_.clear() = true; }
+  void clear() { resetAnd().clear() = true; }
 
   // Convert to a patch, if needed, and return the
   // patch object.
@@ -92,6 +92,7 @@ class StructPatch : public BaseValuePatch<Patch, StructPatch<Patch>> {
         // TODO(afuller): Use terse writes and switch to op::empty.
         *patch_.patch() == patch_type{};
   }
+
   void apply(T& val) const {
     if (applyAssign(val)) {
       return;

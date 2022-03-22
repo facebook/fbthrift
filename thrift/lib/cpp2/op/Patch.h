@@ -34,6 +34,9 @@ NumberPatch<FloatPatchStruct> patchType(type::float_t);
 NumberPatch<DoublePatchStruct> patchType(type::double_t);
 StringPatch<StringPatchStruct> patchType(type::string_t);
 AssignPatch<BinaryPatchStruct> patchType(type::binary_t);
+
+OptionalPatch<OptionalBoolPatchStruct> optPatchType(type::bool_t);
+
 } // namespace detail
 
 // The patch represenations for the base thrift types.
@@ -56,10 +59,14 @@ AssignPatch<BinaryPatchStruct> patchType(type::binary_t);
 template <typename Tag>
 using patch_type = decltype(detail::patchType(Tag{}));
 
+template <typename Tag>
+using optional_patch_type = decltype(detail::optPatchType(Tag{}));
+
 // A patch for a boolean, which additionally supports:
 // - invert() - Inverts the patch, in place.
 // - operator!(BoolPatch) - Returns an inverted version of the given patch.
 using BoolPatch = patch_type<type::bool_t>;
+using OptionalBoolPatch = optional_patch_type<type::bool_t>;
 
 // Patches for number types, which additionally support:
 // - add(T value) - Update to the patch to additionally add the given value.

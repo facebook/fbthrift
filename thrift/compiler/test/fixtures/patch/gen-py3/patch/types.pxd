@@ -88,6 +88,21 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" name
         __field_ref[cbool] invert_ref()
 
 
+    cdef cppclass cOptionalBoolPatch "::apache::thrift::op::OptionalBoolPatch":
+        cOptionalBoolPatch() except +
+        cOptionalBoolPatch(const cOptionalBoolPatch&) except +
+        bint operator==(cOptionalBoolPatch&)
+        bint operator!=(cOptionalBoolPatch&)
+        bint operator<(cOptionalBoolPatch&)
+        bint operator>(cOptionalBoolPatch&)
+        bint operator<=(cOptionalBoolPatch&)
+        bint operator>=(cOptionalBoolPatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cBoolPatch] patch_ref()
+        __optional_field_ref[cbool] ensure_ref()
+        __field_ref[cBoolPatch] patchAfter_ref()
+
+
     cdef cppclass cBytePatch "::apache::thrift::op::BytePatch":
         cBytePatch() except +
         cBytePatch(const cBytePatch&) except +
@@ -211,6 +226,21 @@ cdef class BoolPatch(thrift.py3.types.Struct):
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cBoolPatch])
+
+
+
+cdef class OptionalBoolPatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cOptionalBoolPatch] _cpp_obj
+    cdef _fbthrift_types_fields.__OptionalBoolPatch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef BoolPatch __fbthrift_cached_patch
+    cdef BoolPatch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalBoolPatch])
 
 
 

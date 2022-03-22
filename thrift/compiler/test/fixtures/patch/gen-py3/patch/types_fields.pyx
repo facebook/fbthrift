@@ -73,6 +73,63 @@ cdef class __BoolPatch_FieldsSetter(__StructFieldsSetter):
 
 
 @__cython.auto_pickle(False)
+cdef class __OptionalBoolPatch_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __OptionalBoolPatch_FieldsSetter _fbthrift_create(_patch_types.cOptionalBoolPatch* struct_cpp_obj):
+        cdef __OptionalBoolPatch_FieldsSetter __fbthrift_inst = __OptionalBoolPatch_FieldsSetter.__new__(__OptionalBoolPatch_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        __fbthrift_inst._setters[__cstring_view(<const char*>"clear")] = __OptionalBoolPatch_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"patch")] = __OptionalBoolPatch_FieldsSetter._set_field_1
+        __fbthrift_inst._setters[__cstring_view(<const char*>"ensure")] = __OptionalBoolPatch_FieldsSetter._set_field_2
+        __fbthrift_inst._setters[__cstring_view(<const char*>"patchAfter")] = __OptionalBoolPatch_FieldsSetter._set_field_3
+        return __fbthrift_inst
+
+    cdef void set_field(__OptionalBoolPatch_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __OptionalBoolPatch_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
+
+    cdef void _set_field_0(self, _fbthrift_value) except *:
+        # for field clear
+        if _fbthrift_value is None:
+            __reset_field[_patch_types.cOptionalBoolPatch](deref(self._struct_cpp_obj), 0)
+            return
+        if not isinstance(_fbthrift_value, bool):
+            raise TypeError(f'clear is not a { bool !r}.')
+        deref(self._struct_cpp_obj).clear_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_1(self, _fbthrift_value) except *:
+        # for field patch
+        if _fbthrift_value is None:
+            __reset_field[_patch_types.cOptionalBoolPatch](deref(self._struct_cpp_obj), 1)
+            return
+        if not isinstance(_fbthrift_value, _patch_types.BoolPatch):
+            raise TypeError(f'patch is not a { _patch_types.BoolPatch !r}.')
+        deref(self._struct_cpp_obj).patch_ref().assign(deref((<_patch_types.BoolPatch?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_2(self, _fbthrift_value) except *:
+        # for field ensure
+        if _fbthrift_value is None:
+            __reset_field[_patch_types.cOptionalBoolPatch](deref(self._struct_cpp_obj), 2)
+            return
+        if not isinstance(_fbthrift_value, bool):
+            raise TypeError(f'ensure is not a { bool !r}.')
+        deref(self._struct_cpp_obj).ensure_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_3(self, _fbthrift_value) except *:
+        # for field patchAfter
+        if _fbthrift_value is None:
+            __reset_field[_patch_types.cOptionalBoolPatch](deref(self._struct_cpp_obj), 3)
+            return
+        if not isinstance(_fbthrift_value, _patch_types.BoolPatch):
+            raise TypeError(f'patchAfter is not a { _patch_types.BoolPatch !r}.')
+        deref(self._struct_cpp_obj).patchAfter_ref().assign(deref((<_patch_types.BoolPatch?> _fbthrift_value)._cpp_obj))
+
+
+@__cython.auto_pickle(False)
 cdef class __BytePatch_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod

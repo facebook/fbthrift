@@ -40,6 +40,25 @@ void reset_field<::apache::thrift::op::BoolPatch>(
 }
 
 template<>
+void reset_field<::apache::thrift::op::OptionalBoolPatch>(
+    ::apache::thrift::op::OptionalBoolPatch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::apache::thrift::op::OptionalBoolPatch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::apache::thrift::op::OptionalBoolPatch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::apache::thrift::op::OptionalBoolPatch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::apache::thrift::op::OptionalBoolPatch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
 void reset_field<::apache::thrift::op::BytePatch>(
     ::apache::thrift::op::BytePatch& obj, uint16_t index) {
   switch (index) {
@@ -156,6 +175,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::apache::thrift::op::BoolPatch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::apache::thrift::op::OptionalBoolPatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

@@ -18,6 +18,8 @@ cdef __StructSpec get_reflection__GeneratePatch()
 
 cdef __StructSpec get_reflection__BoolPatch()
 
+cdef __StructSpec get_reflection__OptionalBoolPatch()
+
 cdef __StructSpec get_reflection__BytePatch()
 
 cdef __StructSpec get_reflection__I16Patch()

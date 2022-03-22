@@ -43,6 +43,25 @@ struct BoolPatch {
   cpp.adapter = "::apache::thrift::op::detail::BoolPatchAdapter",
 )
 
+// A patch for an optional boolean value.
+@thrift.Experimental
+struct OptionalBoolPatch {
+  // If the optional value should be cleared. Applied first.
+  2: bool clear;
+
+  // The patch to apply to any set value. Applied second.
+  3: BoolPatch patch;
+
+  // The value with which to initialized any unset value. Applied third.
+  1: optional bool ensure;
+
+  // The patch to apply to any set value, including newly set values. Applied forth.
+  4: BoolPatch patchAfter;
+} (
+  cpp.name = "OptionalBoolPatchStruct",
+  cpp.adapter = "::apache::thrift::op::detail::OptionalPatchAdapter",
+)
+
 // A patch for an 8-bit integer value.
 @thrift.Experimental
 struct BytePatch {

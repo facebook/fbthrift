@@ -75,6 +75,67 @@ cdef __StructSpec get_reflection__BoolPatch():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__OptionalBoolPatch():
+    cdef _patch_types.OptionalBoolPatch defaults = _patch_types.OptionalBoolPatch._fbthrift_create(
+        constant_shared_ptr[_patch_types.cOptionalBoolPatch](
+            default_inst[_patch_types.cOptionalBoolPatch]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="OptionalBoolPatch",
+        kind=__StructType.STRUCT,
+        annotations={
+            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",            """cpp.name""": """OptionalBoolPatchStruct""",        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="clear",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=3,
+            name="patch",
+            type=_patch_types.BoolPatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=1,
+            name="ensure",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=4,
+            name="patchAfter",
+            type=_patch_types.BoolPatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__BytePatch():
     cdef _patch_types.BytePatch defaults = _patch_types.BytePatch._fbthrift_create(
         constant_shared_ptr[_patch_types.cBytePatch](

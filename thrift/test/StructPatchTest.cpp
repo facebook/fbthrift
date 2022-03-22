@@ -181,4 +181,48 @@ TEST(StructPatchTest, OptionalFields) {
   EXPECT_EQ(*fields.optStringVal(), "__");
 }
 
+TEST(StructPatchTest, OptionalBool) {
+  op::OptionalBoolPatch patch;
+  TestFields fields;
+  op::OptionalBoolPatch restorePatch;
+  restorePatch = fields.optBoolVal();
+
+  // = -> ensure + assign.
+  patch = true;
+  test::expectPatch(patch, false, true);
+  patch.apply(fields.optBoolVal());
+  EXPECT_EQ(fields.optBoolVal(), true);
+
+  // Restore the original state.
+  restorePatch.apply(fields.optBoolVal());
+  EXPECT_FALSE(fields.optBoolVal().has_value());
+  patch.reset();
+
+  // Complex patch:
+  // set -> invert
+  // unset -> true.
+  patch.patch().invert();
+  patch.ensure(true);
+  patch.apply(fields.optBoolVal());
+  ASSERT_TRUE(fields.optBoolVal().has_value());
+  EXPECT_TRUE(*fields.optBoolVal());
+  patch.apply(fields.optBoolVal());
+  ASSERT_TRUE(fields.optBoolVal().has_value());
+  EXPECT_FALSE(*fields.optBoolVal());
+}
+
+TEST(StructPatchTest, OptionalPatch_BadAccess) {
+  op::OptionalBoolPatch patch;
+  patch.clear();
+  // The field is guaranteed to be empty, so throw a bad optional access
+  // exception.
+  EXPECT_THROW(patch.patch(), std::bad_optional_access);
+
+  // If the patch is ensured, patch access no longer throws.
+  patch.ensure();
+  patch.patch() = true;
+  // And clear is still set.
+  EXPECT_TRUE(*patch.get().clear());
+}
+
 } // namespace apache::thrift

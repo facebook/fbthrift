@@ -15,6 +15,7 @@ namespace op {
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::StructMetadata<GeneratePatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<BoolPatch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<OptionalBoolPatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<BytePatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<I16Patch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<I32Patch>::gen(metadata);
