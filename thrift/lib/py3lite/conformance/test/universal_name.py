@@ -29,7 +29,7 @@ from thrift.py3lite.conformance.universal_name import (
 )
 
 
-class UnionTests(unittest.TestCase):
+class UniversalNameTests(unittest.TestCase):
     def test_validate_universal_name(self) -> None:
         validate_universal_name("foo.com/my/type")
         with self.assertRaises(ValueError):
