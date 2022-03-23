@@ -19,3 +19,5 @@ cdef __StructSpec get_reflection__MyStruct()
 cdef __StructSpec get_reflection__MyStructPatch()
 
 cdef __StructSpec get_reflection__MyStructValuePatch()
+
+cdef __StructSpec get_reflection__OptionalMyStructValuePatch()

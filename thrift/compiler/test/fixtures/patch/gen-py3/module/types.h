@@ -104,6 +104,25 @@ void reset_field<::cpp2::MyStructValuePatch>(
 }
 
 template<>
+void reset_field<::cpp2::OptionalMyStructValuePatch>(
+    ::cpp2::OptionalMyStructValuePatch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::cpp2::OptionalMyStructValuePatch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::cpp2::OptionalMyStructValuePatch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::cpp2::OptionalMyStructValuePatch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::cpp2::OptionalMyStructValuePatch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::MyStruct>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -126,6 +145,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::MyStructValuePatch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::OptionalMyStructValuePatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

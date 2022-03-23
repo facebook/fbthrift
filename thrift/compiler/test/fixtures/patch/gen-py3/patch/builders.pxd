@@ -21,16 +21,13 @@ cdef class GeneratePatch_Builder(thrift.py3.builder.StructBuilder):
     pass
 
 
+cdef class GenerateOptionalPatch_Builder(thrift.py3.builder.StructBuilder):
+    pass
+
+
 cdef class BoolPatch_Builder(thrift.py3.builder.StructBuilder):
     cdef public pbool assign
     cdef public pbool invert
-
-
-cdef class OptionalBoolPatch_Builder(thrift.py3.builder.StructBuilder):
-    cdef public pbool clear
-    cdef public object patch
-    cdef public pbool ensure
-    cdef public object patchAfter
 
 
 cdef class BytePatch_Builder(thrift.py3.builder.StructBuilder):
@@ -71,5 +68,68 @@ cdef class StringPatch_Builder(thrift.py3.builder.StructBuilder):
 
 cdef class BinaryPatch_Builder(thrift.py3.builder.StructBuilder):
     cdef public bytes assign
+
+
+cdef class OptionalBoolPatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public pbool ensure
+    cdef public object patchAfter
+
+
+cdef class OptionalBytePatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public pint ensure
+    cdef public object patchAfter
+
+
+cdef class OptionalI16Patch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public pint ensure
+    cdef public object patchAfter
+
+
+cdef class OptionalI32Patch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public pint ensure
+    cdef public object patchAfter
+
+
+cdef class OptionalI64Patch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public pint ensure
+    cdef public object patchAfter
+
+
+cdef class OptionalFloatPatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public pfloat ensure
+    cdef public object patchAfter
+
+
+cdef class OptionalDoublePatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public pfloat ensure
+    cdef public object patchAfter
+
+
+cdef class OptionalStringPatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public str ensure
+    cdef public object patchAfter
+
+
+cdef class OptionalBinaryPatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public bytes ensure
+    cdef public object patchAfter
 
 

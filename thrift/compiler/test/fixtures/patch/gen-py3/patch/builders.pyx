@@ -10,21 +10,18 @@ cdef class GeneratePatch_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self):
         pass
 
+cdef class GenerateOptionalPatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _patch_types.GenerateOptionalPatch
+
+    def __iter__(self):
+        pass
+
 cdef class BoolPatch_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _patch_types.BoolPatch
 
     def __iter__(self):
         yield "assign", self.assign
         yield "invert", self.invert
-
-cdef class OptionalBoolPatch_Builder(thrift.py3.builder.StructBuilder):
-    _struct_type = _patch_types.OptionalBoolPatch
-
-    def __iter__(self):
-        yield "clear", self.clear
-        yield "patch", self.patch
-        yield "ensure", self.ensure
-        yield "patchAfter", self.patchAfter
 
 cdef class BytePatch_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _patch_types.BytePatch
@@ -81,4 +78,85 @@ cdef class BinaryPatch_Builder(thrift.py3.builder.StructBuilder):
 
     def __iter__(self):
         yield "assign", self.assign
+
+cdef class OptionalBoolPatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _patch_types.OptionalBoolPatch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
+cdef class OptionalBytePatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _patch_types.OptionalBytePatch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
+cdef class OptionalI16Patch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _patch_types.OptionalI16Patch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
+cdef class OptionalI32Patch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _patch_types.OptionalI32Patch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
+cdef class OptionalI64Patch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _patch_types.OptionalI64Patch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
+cdef class OptionalFloatPatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _patch_types.OptionalFloatPatch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
+cdef class OptionalDoublePatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _patch_types.OptionalDoublePatch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
+cdef class OptionalStringPatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _patch_types.OptionalStringPatch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
+cdef class OptionalBinaryPatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _patch_types.OptionalBinaryPatch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
 

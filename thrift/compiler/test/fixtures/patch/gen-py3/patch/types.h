@@ -27,6 +27,13 @@ void reset_field<::apache::thrift::op::GeneratePatch>(
 }
 
 template<>
+void reset_field<::apache::thrift::op::GenerateOptionalPatch>(
+    ::apache::thrift::op::GenerateOptionalPatch& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
 void reset_field<::apache::thrift::op::BoolPatch>(
     ::apache::thrift::op::BoolPatch& obj, uint16_t index) {
   switch (index) {
@@ -35,25 +42,6 @@ void reset_field<::apache::thrift::op::BoolPatch>(
       return;
     case 1:
       obj.invert_ref().copy_from(default_inst<::apache::thrift::op::BoolPatch>().invert_ref());
-      return;
-  }
-}
-
-template<>
-void reset_field<::apache::thrift::op::OptionalBoolPatch>(
-    ::apache::thrift::op::OptionalBoolPatch& obj, uint16_t index) {
-  switch (index) {
-    case 0:
-      obj.clear_ref().copy_from(default_inst<::apache::thrift::op::OptionalBoolPatch>().clear_ref());
-      return;
-    case 1:
-      obj.patch_ref().copy_from(default_inst<::apache::thrift::op::OptionalBoolPatch>().patch_ref());
-      return;
-    case 2:
-      obj.ensure_ref().copy_from(default_inst<::apache::thrift::op::OptionalBoolPatch>().ensure_ref());
-      return;
-    case 3:
-      obj.patchAfter_ref().copy_from(default_inst<::apache::thrift::op::OptionalBoolPatch>().patchAfter_ref());
       return;
   }
 }
@@ -163,6 +151,177 @@ void reset_field<::apache::thrift::op::BinaryPatch>(
 }
 
 template<>
+void reset_field<::apache::thrift::op::OptionalBoolPatch>(
+    ::apache::thrift::op::OptionalBoolPatch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::apache::thrift::op::OptionalBoolPatch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::apache::thrift::op::OptionalBoolPatch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::apache::thrift::op::OptionalBoolPatch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::apache::thrift::op::OptionalBoolPatch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::apache::thrift::op::OptionalBytePatch>(
+    ::apache::thrift::op::OptionalBytePatch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::apache::thrift::op::OptionalBytePatch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::apache::thrift::op::OptionalBytePatch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::apache::thrift::op::OptionalBytePatch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::apache::thrift::op::OptionalBytePatch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::apache::thrift::op::OptionalI16Patch>(
+    ::apache::thrift::op::OptionalI16Patch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::apache::thrift::op::OptionalI16Patch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::apache::thrift::op::OptionalI16Patch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::apache::thrift::op::OptionalI16Patch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::apache::thrift::op::OptionalI16Patch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::apache::thrift::op::OptionalI32Patch>(
+    ::apache::thrift::op::OptionalI32Patch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::apache::thrift::op::OptionalI32Patch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::apache::thrift::op::OptionalI32Patch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::apache::thrift::op::OptionalI32Patch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::apache::thrift::op::OptionalI32Patch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::apache::thrift::op::OptionalI64Patch>(
+    ::apache::thrift::op::OptionalI64Patch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::apache::thrift::op::OptionalI64Patch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::apache::thrift::op::OptionalI64Patch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::apache::thrift::op::OptionalI64Patch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::apache::thrift::op::OptionalI64Patch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::apache::thrift::op::OptionalFloatPatch>(
+    ::apache::thrift::op::OptionalFloatPatch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::apache::thrift::op::OptionalFloatPatch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::apache::thrift::op::OptionalFloatPatch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::apache::thrift::op::OptionalFloatPatch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::apache::thrift::op::OptionalFloatPatch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::apache::thrift::op::OptionalDoublePatch>(
+    ::apache::thrift::op::OptionalDoublePatch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::apache::thrift::op::OptionalDoublePatch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::apache::thrift::op::OptionalDoublePatch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::apache::thrift::op::OptionalDoublePatch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::apache::thrift::op::OptionalDoublePatch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::apache::thrift::op::OptionalStringPatch>(
+    ::apache::thrift::op::OptionalStringPatch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::apache::thrift::op::OptionalStringPatch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::apache::thrift::op::OptionalStringPatch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::apache::thrift::op::OptionalStringPatch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::apache::thrift::op::OptionalStringPatch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::apache::thrift::op::OptionalBinaryPatch>(
+    ::apache::thrift::op::OptionalBinaryPatch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::apache::thrift::op::OptionalBinaryPatch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::apache::thrift::op::OptionalBinaryPatch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::apache::thrift::op::OptionalBinaryPatch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::apache::thrift::op::OptionalBinaryPatch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::apache::thrift::op::GeneratePatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -174,7 +333,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::apache::thrift::op::BoolPatch>::namesmap() {
+    ::apache::thrift::op::GenerateOptionalPatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -184,7 +343,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::apache::thrift::op::OptionalBoolPatch>::namesmap() {
+    ::apache::thrift::op::BoolPatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -265,6 +424,96 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::apache::thrift::op::BinaryPatch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::apache::thrift::op::OptionalBoolPatch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::apache::thrift::op::OptionalBytePatch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::apache::thrift::op::OptionalI16Patch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::apache::thrift::op::OptionalI32Patch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::apache::thrift::op::OptionalI64Patch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::apache::thrift::op::OptionalFloatPatch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::apache::thrift::op::OptionalDoublePatch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::apache::thrift::op::OptionalStringPatch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::apache::thrift::op::OptionalBinaryPatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

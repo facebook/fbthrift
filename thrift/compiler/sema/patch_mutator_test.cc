@@ -22,7 +22,6 @@
 #include <thrift/compiler/ast/diagnostic_context.h>
 
 namespace apache::thrift::compiler {
-namespace {
 
 class PatchGeneratorTest : public ::testing::Test {
  public:
@@ -34,6 +33,12 @@ class PatchGeneratorTest : public ::testing::Test {
     gen_ = std::make_unique<patch_generator>(ctx_, program_);
   }
 
+  // Give tests access to this funciton.
+  template <typename... Args>
+  std::string prefix_uri_name(Args&&... args) {
+    return patch_generator::prefix_uri_name(std::forward<Args>(args)...);
+  }
+
  protected:
   t_program program_{"path/to/file.thrift"};
   diagnostic_results results_;
@@ -41,11 +46,20 @@ class PatchGeneratorTest : public ::testing::Test {
   std::unique_ptr<patch_generator> gen_;
 };
 
+namespace {
+
 TEST_F(PatchGeneratorTest, Empty) {
   // We do not error when the patch types cannot be found.
   EXPECT_FALSE(results_.has_failure());
   // We should have gotten a warning per type.
   EXPECT_EQ(results_.count(diagnostic_level::warning), 9);
+}
+
+TEST_F(PatchGeneratorTest, PrefixUriName) {
+  EXPECT_EQ(prefix_uri_name("", "Foo"), "");
+  EXPECT_EQ(prefix_uri_name("Bar", "Foo"), "");
+  EXPECT_EQ(prefix_uri_name("Baz/Bar", "Foo"), "Baz/FooBar");
+  EXPECT_EQ(prefix_uri_name("Buk/Baz/Bar", "Foo"), "Buk/Baz/FooBar");
 }
 
 } // namespace

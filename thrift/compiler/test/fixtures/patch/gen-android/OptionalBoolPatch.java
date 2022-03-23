@@ -29,9 +29,21 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
   private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.BOOL, (short)1);
   private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)4);
 
+  /**
+   * If the optional value should be cleared. Applied first.
+   */
   public final Boolean clear;
+  /**
+   * The patch to apply to any set value. Applied second.
+   */
   public final BoolPatch patch;
+  /**
+   * The value with which to initialize any unset value. Applied third.
+   */
   public final Boolean ensure;
+  /**
+   * The patch to apply to any set value, including newly set values. Applied forth.
+   */
   public final BoolPatch patchAfter;
   public static final int CLEAR = 2;
   public static final int PATCH = 3;
@@ -79,6 +91,9 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
     return new OptionalBoolPatch(this);
   }
 
+  /**
+   * If the optional value should be cleared. Applied first.
+   */
   public Boolean isClear() {
     return this.clear;
   }
@@ -88,6 +103,9 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
     return this.clear != null;
   }
 
+  /**
+   * The patch to apply to any set value. Applied second.
+   */
   public BoolPatch getPatch() {
     return this.patch;
   }
@@ -97,6 +115,9 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
     return this.patch != null;
   }
 
+  /**
+   * The value with which to initialize any unset value. Applied third.
+   */
   public Boolean isEnsure() {
     return this.ensure;
   }
@@ -106,6 +127,9 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
     return this.ensure != null;
   }
 
+  /**
+   * The patch to apply to any set value, including newly set values. Applied forth.
+   */
   public BoolPatch getPatchAfter() {
     return this.patchAfter;
   }

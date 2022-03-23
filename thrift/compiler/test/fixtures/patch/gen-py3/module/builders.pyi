@@ -52,3 +52,12 @@ class MyStructValuePatch_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
+class OptionalMyStructValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Any
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+

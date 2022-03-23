@@ -315,3 +315,64 @@ cdef __StructSpec get_reflection__MyStructValuePatch():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__OptionalMyStructValuePatch():
+    cdef _module_types.OptionalMyStructValuePatch defaults = _module_types.OptionalMyStructValuePatch._fbthrift_create(
+        constant_shared_ptr[_module_types.cOptionalMyStructValuePatch](
+            default_inst[_module_types.cOptionalMyStructValuePatch]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="OptionalMyStructValuePatch",
+        kind=__StructType.STRUCT,
+        annotations={
+            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="clear",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=3,
+            name="patch",
+            type=_module_types.MyStructValuePatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=1,
+            name="ensure",
+            type=_module_types.MyStruct,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """thrift.box""": "1",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=4,
+            name="patchAfter",
+            type=_module_types.MyStructValuePatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec

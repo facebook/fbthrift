@@ -214,6 +214,55 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 27
+      },
+      "OptionalMyStructValuePatch" : {
+        "name" : "OptionalMyStructValuePatch",
+        "fields" : {
+          "clear" : {
+            "name" : "clear",
+            "docstring" : "If the optional value should be cleared. Applied first.",
+            "key" : 2,
+            "lineno" : 27,
+            "required" : "opt-in-req-out",
+            "type" : "bool"
+          },
+          "patch" : {
+            "name" : "patch",
+            "docstring" : "The patch to apply to any set value. Applied second.",
+            "key" : 3,
+            "lineno" : 27,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "MyStructValuePatch"
+}
+          },
+          "ensure" : {
+            "name" : "ensure",
+            "docstring" : "The value with which to initialize any unset value. Applied third.",
+            "key" : 1,
+            "lineno" : 27,
+            "required" : "optional",
+            "type" : {
+  "type" : "struct",
+  "name" : "MyStruct"
+}
+          },
+          "patchAfter" : {
+            "name" : "patchAfter",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied forth.",
+            "key" : 4,
+            "lineno" : 27,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "MyStructValuePatch"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 27
       }
       },
   "source_path" : "src/module",

@@ -724,6 +724,191 @@ static_assert(
 
 } // cpp2
 
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::OptionalMyStructValuePatch>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::cpp2::OptionalMyStructValuePatch>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace cpp2 {
+
+const char* OptionalMyStructValuePatch::__fbthrift_cpp2_gen_thrift_uri() {
+  return "test.dev/fixtures/patch/OptionalMyStructValuePatch";
+}
+
+OptionalMyStructValuePatch::OptionalMyStructValuePatch(const OptionalMyStructValuePatch&) = default;
+OptionalMyStructValuePatch& OptionalMyStructValuePatch::operator=(const OptionalMyStructValuePatch&) = default;
+OptionalMyStructValuePatch::OptionalMyStructValuePatch(OptionalMyStructValuePatch&& other) noexcept  :
+    __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
+    __fbthrift_field_patch(std::move(other.__fbthrift_field_patch)),
+    __fbthrift_field_ensure(std::move(other.__fbthrift_field_ensure)),
+    __fbthrift_field_patchAfter(std::move(other.__fbthrift_field_patchAfter)),
+    __isset(other.__isset) {
+}
+
+OptionalMyStructValuePatch& OptionalMyStructValuePatch::operator=(FOLLY_MAYBE_UNUSED OptionalMyStructValuePatch&& other) noexcept {
+    this->__fbthrift_field_clear = std::move(other.__fbthrift_field_clear);
+    this->__fbthrift_field_patch = std::move(other.__fbthrift_field_patch);
+    this->__fbthrift_field_ensure = std::move(other.__fbthrift_field_ensure);
+    this->__fbthrift_field_patchAfter = std::move(other.__fbthrift_field_patchAfter);
+    __isset = other.__isset;
+    return *this;
+}
+
+
+OptionalMyStructValuePatch::OptionalMyStructValuePatch(apache::thrift::FragileConstructor, bool clear__arg, ::cpp2::MyStructValuePatch patch__arg, ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyStruct> ensure__arg, ::cpp2::MyStructValuePatch patchAfter__arg) :
+    __fbthrift_field_clear(std::move(clear__arg)),
+    __fbthrift_field_patch(std::move(patch__arg)),
+    __fbthrift_field_ensure(std::move(ensure__arg)),
+    __fbthrift_field_patchAfter(std::move(patchAfter__arg)) {
+  __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
+  __isset.set(folly::index_constant<2>(), true);
+}
+
+
+void OptionalMyStructValuePatch::__fbthrift_clear() {
+  // clear all fields
+  this->__fbthrift_field_clear = bool();
+    apache::thrift::clear(this->__fbthrift_field_patch);
+
+  this->__fbthrift_field_ensure.reset();
+    apache::thrift::clear(this->__fbthrift_field_patchAfter);
+  __isset = {};
+}
+
+bool OptionalMyStructValuePatch::__fbthrift_is_empty() const {
+  return false;
+}
+
+bool OptionalMyStructValuePatch::operator==(const OptionalMyStructValuePatch& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.clear_ref() == rhs.clear_ref())) {
+    return false;
+  }
+  if (!(lhs.patch_ref() == rhs.patch_ref())) {
+    return false;
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.ensure_ref(), rhs.ensure_ref()))) {
+    return false;
+  }
+  if (!(lhs.patchAfter_ref() == rhs.patchAfter_ref())) {
+    return false;
+  }
+  return true;
+}
+
+bool OptionalMyStructValuePatch::operator<(const OptionalMyStructValuePatch& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.clear_ref() == rhs.clear_ref())) {
+    return lhs.clear_ref() < rhs.clear_ref();
+  }
+  if (!(lhs.patch_ref() == rhs.patch_ref())) {
+    return lhs.patch_ref() < rhs.patch_ref();
+  }
+  if ((!::apache::thrift::detail::pointer_equal(lhs.ensure_ref(), rhs.ensure_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.ensure_ref(), rhs.ensure_ref());
+  }
+  if (!(lhs.patchAfter_ref() == rhs.patchAfter_ref())) {
+    return lhs.patchAfter_ref() < rhs.patchAfter_ref();
+  }
+  return false;
+}
+
+const ::cpp2::MyStructValuePatch& OptionalMyStructValuePatch::get_patch() const& {
+  return __fbthrift_field_patch;
+}
+
+::cpp2::MyStructValuePatch OptionalMyStructValuePatch::get_patch() && {
+  return std::move(__fbthrift_field_patch);
+}
+
+const ::cpp2::MyStructValuePatch& OptionalMyStructValuePatch::get_patchAfter() const& {
+  return __fbthrift_field_patchAfter;
+}
+
+::cpp2::MyStructValuePatch OptionalMyStructValuePatch::get_patchAfter() && {
+  return std::move(__fbthrift_field_patchAfter);
+}
+
+
+void swap(OptionalMyStructValuePatch& a, OptionalMyStructValuePatch& b) {
+  using ::std::swap;
+  swap(a.clear_ref().value(), b.clear_ref().value());
+  swap(a.patch_ref().value(), b.patch_ref().value());
+  swap(a.__fbthrift_field_ensure, b.__fbthrift_field_ensure);
+  swap(a.patchAfter_ref().value(), b.patchAfter_ref().value());
+  swap(a.__isset, b.__isset);
+}
+
+template void OptionalMyStructValuePatch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t OptionalMyStructValuePatch::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t OptionalMyStructValuePatch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t OptionalMyStructValuePatch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void OptionalMyStructValuePatch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t OptionalMyStructValuePatch::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t OptionalMyStructValuePatch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t OptionalMyStructValuePatch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        OptionalMyStructValuePatch,
+        ::apache::thrift::type_class::structure,
+        ::cpp2::MyStructValuePatch>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        OptionalMyStructValuePatch,
+        ::apache::thrift::type_class::structure,
+        ::cpp2::MyStruct>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        OptionalMyStructValuePatch,
+        ::apache::thrift::type_class::structure,
+        ::cpp2::MyStructValuePatch>,
+    "inconsistent use of json option");
+
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        OptionalMyStructValuePatch,
+        ::apache::thrift::type_class::structure,
+        ::cpp2::MyStructValuePatch>,
+    "inconsistent use of nimble option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        OptionalMyStructValuePatch,
+        ::apache::thrift::type_class::structure,
+        ::cpp2::MyStruct>,
+    "inconsistent use of nimble option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        OptionalMyStructValuePatch,
+        ::apache::thrift::type_class::structure,
+        ::cpp2::MyStructValuePatch>,
+    "inconsistent use of nimble option");
+
+} // cpp2
+
 namespace cpp2 { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::BoolPatchAdapter, 1, ::apache::thrift::op::BoolPatchStruct, ::cpp2::MyStructPatch>();

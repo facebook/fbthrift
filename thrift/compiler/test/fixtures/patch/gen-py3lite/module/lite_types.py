@@ -200,6 +200,48 @@ class MyStructValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_MyStructValuePatch()
 
 
+
+class OptionalMyStructValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructValuePatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStruct),  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructValuePatch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.OptionalMyStructValuePatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalMyStructValuePatch()
+
+
 # This unfortunately has to be down here to prevent circular imports
 import module.lite_metadata
 
@@ -210,6 +252,8 @@ def _fbthrift_metadata__struct_MyStructPatch():
     return module.lite_metadata.gen_metadata_struct_MyStructPatch()
 def _fbthrift_metadata__struct_MyStructValuePatch():
     return module.lite_metadata.gen_metadata_struct_MyStructValuePatch()
+def _fbthrift_metadata__struct_OptionalMyStructValuePatch():
+    return module.lite_metadata.gen_metadata_struct_OptionalMyStructValuePatch()
 
 
 
@@ -217,4 +261,5 @@ _fbthrift_py3lite_types.fill_specs(
     MyStruct,
     MyStructPatch,
     MyStructValuePatch,
+    OptionalMyStructValuePatch,
 )

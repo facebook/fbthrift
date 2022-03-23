@@ -14,6 +14,7 @@ namespace cpp2 {
   ::apache::thrift::detail::md::StructMetadata<MyStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStructPatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStructValuePatch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<OptionalMyStructValuePatch>::gen(metadata);
   return metadata;
 }
 } // namespace cpp2

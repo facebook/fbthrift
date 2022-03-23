@@ -55,6 +55,16 @@ cdef class __GeneratePatch_FieldsSetter(__StructFieldsSetter):
     cdef __GeneratePatch_FieldsSetter _fbthrift_create(_patch_types.cGeneratePatch* struct_cpp_obj)
 
 
+ctypedef void (*__GenerateOptionalPatch_FieldsSetterFunc)(__GenerateOptionalPatch_FieldsSetter, object) except *
+
+cdef class __GenerateOptionalPatch_FieldsSetter(__StructFieldsSetter):
+    cdef _patch_types.cGenerateOptionalPatch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __GenerateOptionalPatch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __GenerateOptionalPatch_FieldsSetter _fbthrift_create(_patch_types.cGenerateOptionalPatch* struct_cpp_obj)
+
+
 ctypedef void (*__BoolPatch_FieldsSetterFunc)(__BoolPatch_FieldsSetter, object) except *
 
 cdef class __BoolPatch_FieldsSetter(__StructFieldsSetter):
@@ -65,20 +75,6 @@ cdef class __BoolPatch_FieldsSetter(__StructFieldsSetter):
     cdef __BoolPatch_FieldsSetter _fbthrift_create(_patch_types.cBoolPatch* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
-
-
-ctypedef void (*__OptionalBoolPatch_FieldsSetterFunc)(__OptionalBoolPatch_FieldsSetter, object) except *
-
-cdef class __OptionalBoolPatch_FieldsSetter(__StructFieldsSetter):
-    cdef _patch_types.cOptionalBoolPatch* _struct_cpp_obj
-    cdef cumap[__cstring_view, __OptionalBoolPatch_FieldsSetterFunc] _setters
-
-    @staticmethod
-    cdef __OptionalBoolPatch_FieldsSetter _fbthrift_create(_patch_types.cOptionalBoolPatch* struct_cpp_obj)
-    cdef void _set_field_0(self, _fbthrift_value) except *
-    cdef void _set_field_1(self, _fbthrift_value) except *
-    cdef void _set_field_2(self, _fbthrift_value) except *
-    cdef void _set_field_3(self, _fbthrift_value) except *
 
 
 ctypedef void (*__BytePatch_FieldsSetterFunc)(__BytePatch_FieldsSetter, object) except *
@@ -175,4 +171,130 @@ cdef class __BinaryPatch_FieldsSetter(__StructFieldsSetter):
     @staticmethod
     cdef __BinaryPatch_FieldsSetter _fbthrift_create(_patch_types.cBinaryPatch* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
+
+
+ctypedef void (*__OptionalBoolPatch_FieldsSetterFunc)(__OptionalBoolPatch_FieldsSetter, object) except *
+
+cdef class __OptionalBoolPatch_FieldsSetter(__StructFieldsSetter):
+    cdef _patch_types.cOptionalBoolPatch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __OptionalBoolPatch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __OptionalBoolPatch_FieldsSetter _fbthrift_create(_patch_types.cOptionalBoolPatch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+
+
+ctypedef void (*__OptionalBytePatch_FieldsSetterFunc)(__OptionalBytePatch_FieldsSetter, object) except *
+
+cdef class __OptionalBytePatch_FieldsSetter(__StructFieldsSetter):
+    cdef _patch_types.cOptionalBytePatch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __OptionalBytePatch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __OptionalBytePatch_FieldsSetter _fbthrift_create(_patch_types.cOptionalBytePatch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+
+
+ctypedef void (*__OptionalI16Patch_FieldsSetterFunc)(__OptionalI16Patch_FieldsSetter, object) except *
+
+cdef class __OptionalI16Patch_FieldsSetter(__StructFieldsSetter):
+    cdef _patch_types.cOptionalI16Patch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __OptionalI16Patch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __OptionalI16Patch_FieldsSetter _fbthrift_create(_patch_types.cOptionalI16Patch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+
+
+ctypedef void (*__OptionalI32Patch_FieldsSetterFunc)(__OptionalI32Patch_FieldsSetter, object) except *
+
+cdef class __OptionalI32Patch_FieldsSetter(__StructFieldsSetter):
+    cdef _patch_types.cOptionalI32Patch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __OptionalI32Patch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __OptionalI32Patch_FieldsSetter _fbthrift_create(_patch_types.cOptionalI32Patch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+
+
+ctypedef void (*__OptionalI64Patch_FieldsSetterFunc)(__OptionalI64Patch_FieldsSetter, object) except *
+
+cdef class __OptionalI64Patch_FieldsSetter(__StructFieldsSetter):
+    cdef _patch_types.cOptionalI64Patch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __OptionalI64Patch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __OptionalI64Patch_FieldsSetter _fbthrift_create(_patch_types.cOptionalI64Patch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+
+
+ctypedef void (*__OptionalFloatPatch_FieldsSetterFunc)(__OptionalFloatPatch_FieldsSetter, object) except *
+
+cdef class __OptionalFloatPatch_FieldsSetter(__StructFieldsSetter):
+    cdef _patch_types.cOptionalFloatPatch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __OptionalFloatPatch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __OptionalFloatPatch_FieldsSetter _fbthrift_create(_patch_types.cOptionalFloatPatch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+
+
+ctypedef void (*__OptionalDoublePatch_FieldsSetterFunc)(__OptionalDoublePatch_FieldsSetter, object) except *
+
+cdef class __OptionalDoublePatch_FieldsSetter(__StructFieldsSetter):
+    cdef _patch_types.cOptionalDoublePatch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __OptionalDoublePatch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __OptionalDoublePatch_FieldsSetter _fbthrift_create(_patch_types.cOptionalDoublePatch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+
+
+ctypedef void (*__OptionalStringPatch_FieldsSetterFunc)(__OptionalStringPatch_FieldsSetter, object) except *
+
+cdef class __OptionalStringPatch_FieldsSetter(__StructFieldsSetter):
+    cdef _patch_types.cOptionalStringPatch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __OptionalStringPatch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __OptionalStringPatch_FieldsSetter _fbthrift_create(_patch_types.cOptionalStringPatch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+
+
+ctypedef void (*__OptionalBinaryPatch_FieldsSetterFunc)(__OptionalBinaryPatch_FieldsSetter, object) except *
+
+cdef class __OptionalBinaryPatch_FieldsSetter(__StructFieldsSetter):
+    cdef _patch_types.cOptionalBinaryPatch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __OptionalBinaryPatch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __OptionalBinaryPatch_FieldsSetter _fbthrift_create(_patch_types.cOptionalBinaryPatch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
 

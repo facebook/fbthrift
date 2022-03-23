@@ -26,6 +26,8 @@ namespace compiler {
 namespace {
 
 constexpr auto kGeneratePatchUri = "facebook.com/thrift/op/GeneratePatch";
+constexpr auto kGenerateOptionalPatchUri =
+    "facebook.com/thrift/op/GenerateOptionalPatch";
 
 // Helper for generating a struct.
 struct StructGen {
@@ -46,7 +48,10 @@ struct StructGen {
   // A fluent function to box a given field.
   static t_field& box(t_field& node) {
     node.set_qualifier(t_field_qualifier::optional);
-    node.set_annotation("thrift.box");
+    // Box the field, if the underlying type is a struct.
+    if (dynamic_cast<const t_struct*>(node.type()->get_true_type())) {
+      node.set_annotation("thrift.box");
+    }
     return node;
   }
 };
@@ -55,14 +60,21 @@ struct StructGen {
 struct PatchGen : StructGen {
   // Standardized patch field ids.
   enum t_patch_field_id : t_field_id {
-    kAssignId = 1,
+    kAssignId = 1, // Value Patch
+    kEnsureId = 1, // Optional Patch
     kClearId = 2,
     kPatchId = 3,
+    kPatchAfterId = 4,
   };
 
   // 1: optional {type} assign (thrift.box);
   t_field& assign(t_type_ref type) {
     return box(field(kAssignId, type, "assign"));
+  }
+
+  // 1: optional {type} ensure (thrift.box);
+  t_field& ensure(t_type_ref type) {
+    return box(field(kEnsureId, type, "ensure"));
   }
 
   // 2: bool clear;
@@ -72,21 +84,54 @@ struct PatchGen : StructGen {
   t_field& patch(t_type_ref patch_type) {
     return field(kPatchId, patch_type, "patch");
   }
+
+  // 4: {patch_type} patchAfter;
+  t_field& patchAfter(t_type_ref patch_type) {
+    return field(kPatchAfterId, patch_type, "patchAfter");
+  }
 };
+
+t_type_ref resolve_value_type(t_struct& patch_type) {
+  // All patch types must have an 'optional Value assign' field.
+  t_type_ref result;
+  if (const t_field* field = patch_type.get_field_by_name("assign")) {
+    // The field type is the value_type.
+    result = field->type();
+  }
+  return result;
+}
+
+// Generates an optional patch representation for any patch with the
+// @patch.GenerateOptionalPatch annotation.
+void generate_optional_patch(
+    diagnostic_context& ctx, mutator_context& mctx, t_struct& node) {
+  if (auto* annot =
+          node.find_structured_annotation_or_null(kGenerateOptionalPatchUri)) {
+    // Add a 'optional patch' for the given patch type..
+    if (t_type_ref value_type = resolve_value_type(node)) {
+      patch_generator::get_for(ctx, mctx).add_optional_patch(
+          *annot, value_type, node);
+    } else {
+      ctx.failure(
+          "Could not resolve the 'value' type, needed to generate the optional patch struct.");
+    }
+  }
+}
 
 // Generates a patch representation for any struct with the @patch.GeneratePatch
 // annotation.
 void generate_struct_patch(
     diagnostic_context& ctx, mutator_context& mctx, t_struct& node) {
-  auto* annot = node.find_structured_annotation_or_null(kGeneratePatchUri);
-  if (annot == nullptr) {
-    return;
-  }
+  if (auto* annot =
+          node.find_structured_annotation_or_null(kGeneratePatchUri)) {
+    // Add a 'structure patch' and 'struct value patch' using it.
+    auto generator = patch_generator::get_for(ctx, mctx);
+    auto& struct_patch = generator.add_structure_patch(*annot, node);
+    auto& patch = generator.add_struct_value_patch(*annot, node, struct_patch);
 
-  // Add a 'structure patch' and 'struct value patch' using it.
-  auto generator = patch_generator::get_for(ctx, mctx);
-  generator.add_struct_value_patch(
-      *annot, node, generator.add_structure_patch(*annot, node));
+    // Add an 'optional patch' based on the added patch type.
+    generator.add_optional_patch(*annot, node, patch);
+  }
 }
 
 } // namespace
@@ -94,6 +139,7 @@ void generate_struct_patch(
 void add_patch_mutators(ast_mutators& mutators) {
   auto& mutator = mutators[standard_mutator_stage::plugin];
   mutator.add_struct_visitor(&generate_struct_patch);
+  mutator.add_struct_visitor(&generate_optional_patch);
 }
 
 patch_generator& patch_generator::get_for(
@@ -104,11 +150,38 @@ patch_generator& patch_generator::get_for(
   });
 }
 
+t_struct& patch_generator::add_optional_patch(
+    const t_node& annot, t_type_ref value_type, t_struct& patch_type) {
+  t_struct& generated = gen_struct(
+      annot,
+      "Optional" + patch_type.name(),
+      prefix_uri_name(patch_type.uri(), "Optional"));
+  // Set relevant annotations.
+  generated.set_annotation(
+      "cpp.adapter", "::apache::thrift::op::detail::OptionalPatchAdapter");
+  if (const auto* cpp_name = patch_type.find_annotation_or_null("cpp.name")) {
+    generated.set_annotation("cpp.name", "Optional" + *cpp_name);
+  }
+
+  PatchGen gen{{annot, generated}};
+  gen.clear().set_doc(
+      "If the optional value should be cleared. Applied first.");
+  gen.patch(patch_type)
+      .set_doc("The patch to apply to any set value. Applied second.");
+  gen.ensure(value_type)
+      .set_doc(
+          "The value with which to initialize any unset value. Applied third.");
+  gen.patchAfter(patch_type)
+      .set_doc(
+          "The patch to apply to any set value, including newly set values. Applied forth.");
+  return generated;
+}
+
 t_struct& patch_generator::add_structure_patch(
     const t_node& annot, t_structured& orig) {
   StructGen gen{annot, gen_struct_with_suffix(annot, orig, "Patch")};
   for (const auto& field : orig.fields()) {
-    if (t_type_ref patch_type = find_patch_type(*field.type())) {
+    if (t_type_ref patch_type = find_patch_type(field)) {
       gen.field(field.id(), patch_type, field.name());
     } else {
       ctx_.warning(field, "Could not resolve patch type for field.");
@@ -119,7 +192,6 @@ t_struct& patch_generator::add_structure_patch(
 
 t_struct& patch_generator::add_struct_value_patch(
     const t_node& annot, t_struct& value_type, t_type_ref patch_type) {
-  // TODO(afuller): Consider making the name configurable via the annotation.
   PatchGen gen{
       {annot, gen_struct_with_suffix(annot, value_type, "ValuePatch")}};
   gen.assign(value_type)
@@ -130,13 +202,13 @@ t_struct& patch_generator::add_struct_value_patch(
   return gen.generated;
 }
 
-t_type_ref patch_generator::find_patch_type(const t_type& orig) const {
+t_type_ref patch_generator::find_patch_type(const t_field& field) const {
   // Base types use a shared representation defined in patch.thrift.
   //
   // These type should always be availabile because the are defined along side
   // the annoation used to trigger patch generation.
   if (auto* base_type =
-          dynamic_cast<const t_base_type*>(orig.get_true_type())) {
+          dynamic_cast<const t_base_type*>(field.type()->get_true_type())) {
     auto itr = patch_types_.find(base_type->base_type());
     if (itr != patch_types_.end()) {
       return itr->second;

@@ -40,3 +40,12 @@ cdef class MyStructValuePatch_Builder(thrift.py3.builder.StructBuilder):
         yield "clear", self.clear
         yield "patch", self.patch
 
+cdef class OptionalMyStructValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.OptionalMyStructValuePatch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+

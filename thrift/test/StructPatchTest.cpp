@@ -20,6 +20,7 @@
 #include <thrift/lib/cpp2/op/Testing.h>
 #include <thrift/lib/cpp2/op/detail/StructPatch.h>
 #include <thrift/lib/cpp2/type/Field.h>
+#include <thrift/lib/cpp2/type/Testing.h>
 #include <thrift/test/gen-cpp2/StructPatchTest_types.h>
 
 namespace apache::thrift {
@@ -242,6 +243,12 @@ TEST(StructPatchTest, OptionalPatch_BadAccess) {
   patch.patch() = true;
   // And clear is still set.
   EXPECT_TRUE(*patch.get().clear());
+}
+
+TEST(StructPatchTest, PrimitivesNotBoxed) {
+  test::same_type<
+      decltype(std::declval<op::OptionalBinaryPatchStruct>().ensure()),
+      optional_field_ref<folly::IOBuf&&>>;
 }
 
 } // namespace apache::thrift

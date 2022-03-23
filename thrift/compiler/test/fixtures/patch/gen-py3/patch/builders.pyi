@@ -23,18 +23,14 @@ class GeneratePatch_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
-class BoolPatch_Builder(thrift.py3.builder.StructBuilder):
-    assign: _typing.Optional[bool]
-    invert: _typing.Optional[bool]
+class GenerateOptionalPatch_Builder(thrift.py3.builder.StructBuilder):
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
-class OptionalBoolPatch_Builder(thrift.py3.builder.StructBuilder):
-    clear: _typing.Optional[bool]
-    patch: _typing.Any
-    ensure: _typing.Optional[bool]
-    patchAfter: _typing.Any
+class BoolPatch_Builder(thrift.py3.builder.StructBuilder):
+    assign: _typing.Optional[bool]
+    invert: _typing.Optional[bool]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
@@ -91,6 +87,87 @@ class StringPatch_Builder(thrift.py3.builder.StructBuilder):
 
 class BinaryPatch_Builder(thrift.py3.builder.StructBuilder):
     assign: _typing.Optional[bytes]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class OptionalBoolPatch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Optional[bool]
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class OptionalBytePatch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Optional[int]
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class OptionalI16Patch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Optional[int]
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class OptionalI32Patch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Optional[int]
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class OptionalI64Patch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Optional[int]
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class OptionalFloatPatch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Optional[float]
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class OptionalDoublePatch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Optional[float]
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class OptionalStringPatch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Optional[str]
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class OptionalBinaryPatch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Optional[bytes]
+    patchAfter: _typing.Any
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

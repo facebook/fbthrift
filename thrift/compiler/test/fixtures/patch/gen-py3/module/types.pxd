@@ -115,6 +115,21 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[cMyStructPatch] patch_ref()
 
 
+    cdef cppclass cOptionalMyStructValuePatch "::cpp2::OptionalMyStructValuePatch":
+        cOptionalMyStructValuePatch() except +
+        cOptionalMyStructValuePatch(const cOptionalMyStructValuePatch&) except +
+        bint operator==(cOptionalMyStructValuePatch&)
+        bint operator!=(cOptionalMyStructValuePatch&)
+        bint operator<(cOptionalMyStructValuePatch&)
+        bint operator>(cOptionalMyStructValuePatch&)
+        bint operator<=(cOptionalMyStructValuePatch&)
+        bint operator>=(cOptionalMyStructValuePatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cMyStructValuePatch] patch_ref()
+        __optional_field_ref[cMyStruct] ensure_ref()
+        __field_ref[cMyStructValuePatch] patchAfter_ref()
+
+
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
@@ -173,6 +188,22 @@ cdef class MyStructValuePatch(thrift.py3.types.Struct):
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStructValuePatch])
+
+
+
+cdef class OptionalMyStructValuePatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cOptionalMyStructValuePatch] _cpp_obj
+    cdef _fbthrift_types_fields.__OptionalMyStructValuePatch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef MyStructValuePatch __fbthrift_cached_patch
+    cdef MyStruct __fbthrift_cached_ensure
+    cdef MyStructValuePatch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalMyStructValuePatch])
 
 
 

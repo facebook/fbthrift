@@ -45,3 +45,10 @@ cdef class MyStructValuePatch_Builder(thrift.py3.builder.StructBuilder):
     cdef public object patch
 
 
+cdef class OptionalMyStructValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public object ensure
+    cdef public object patchAfter
+
+

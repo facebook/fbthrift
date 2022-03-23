@@ -96,5 +96,24 @@ const std::array<protocol::TType, 3> TStructDataStorage<::cpp2::MyStructValuePat
   TType::T_STRUCT,
 }};
 
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::OptionalMyStructValuePatch>::fields_names = {{
+  "clear",
+  "patch",
+  "ensure",
+  "patchAfter",
+}};
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::OptionalMyStructValuePatch>::fields_ids = {{
+  2,
+  3,
+  1,
+  4,
+}};
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::OptionalMyStructValuePatch>::fields_types = {{
+  TType::T_BOOL,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
+
 } // namespace thrift
 } // namespace apache

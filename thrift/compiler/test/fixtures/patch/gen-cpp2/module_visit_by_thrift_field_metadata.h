@@ -87,6 +87,25 @@ struct VisitByFieldId<::cpp2::MyStructValuePatch> {
     }
   }
 };
+
+template <>
+struct VisitByFieldId<::cpp2::OptionalMyStructValuePatch> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 2:
+      return f(0, static_cast<T&&>(t).clear_ref());
+    case 3:
+      return f(1, static_cast<T&&>(t).patch_ref());
+    case 1:
+      return f(2, static_cast<T&&>(t).ensure_ref());
+    case 4:
+      return f(3, static_cast<T&&>(t).patchAfter_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::OptionalMyStructValuePatch");
+    }
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

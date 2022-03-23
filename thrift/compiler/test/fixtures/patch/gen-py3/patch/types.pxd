@@ -75,6 +75,17 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" name
         bint operator>=(cGeneratePatch&)
 
 
+    cdef cppclass cGenerateOptionalPatch "::apache::thrift::op::GenerateOptionalPatch":
+        cGenerateOptionalPatch() except +
+        cGenerateOptionalPatch(const cGenerateOptionalPatch&) except +
+        bint operator==(cGenerateOptionalPatch&)
+        bint operator!=(cGenerateOptionalPatch&)
+        bint operator<(cGenerateOptionalPatch&)
+        bint operator>(cGenerateOptionalPatch&)
+        bint operator<=(cGenerateOptionalPatch&)
+        bint operator>=(cGenerateOptionalPatch&)
+
+
     cdef cppclass cBoolPatch "::apache::thrift::op::BoolPatch":
         cBoolPatch() except +
         cBoolPatch(const cBoolPatch&) except +
@@ -86,21 +97,6 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" name
         bint operator>=(cBoolPatch&)
         __optional_field_ref[cbool] assign_ref()
         __field_ref[cbool] invert_ref()
-
-
-    cdef cppclass cOptionalBoolPatch "::apache::thrift::op::OptionalBoolPatch":
-        cOptionalBoolPatch() except +
-        cOptionalBoolPatch(const cOptionalBoolPatch&) except +
-        bint operator==(cOptionalBoolPatch&)
-        bint operator!=(cOptionalBoolPatch&)
-        bint operator<(cOptionalBoolPatch&)
-        bint operator>(cOptionalBoolPatch&)
-        bint operator<=(cOptionalBoolPatch&)
-        bint operator>=(cOptionalBoolPatch&)
-        __field_ref[cbool] clear_ref()
-        __field_ref[cBoolPatch] patch_ref()
-        __optional_field_ref[cbool] ensure_ref()
-        __field_ref[cBoolPatch] patchAfter_ref()
 
 
     cdef cppclass cBytePatch "::apache::thrift::op::BytePatch":
@@ -207,6 +203,141 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" name
         __optional_field_ref[_folly_IOBuf] assign_ref()
 
 
+    cdef cppclass cOptionalBoolPatch "::apache::thrift::op::OptionalBoolPatch":
+        cOptionalBoolPatch() except +
+        cOptionalBoolPatch(const cOptionalBoolPatch&) except +
+        bint operator==(cOptionalBoolPatch&)
+        bint operator!=(cOptionalBoolPatch&)
+        bint operator<(cOptionalBoolPatch&)
+        bint operator>(cOptionalBoolPatch&)
+        bint operator<=(cOptionalBoolPatch&)
+        bint operator>=(cOptionalBoolPatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cBoolPatch] patch_ref()
+        __optional_field_ref[cbool] ensure_ref()
+        __field_ref[cBoolPatch] patchAfter_ref()
+
+
+    cdef cppclass cOptionalBytePatch "::apache::thrift::op::OptionalBytePatch":
+        cOptionalBytePatch() except +
+        cOptionalBytePatch(const cOptionalBytePatch&) except +
+        bint operator==(cOptionalBytePatch&)
+        bint operator!=(cOptionalBytePatch&)
+        bint operator<(cOptionalBytePatch&)
+        bint operator>(cOptionalBytePatch&)
+        bint operator<=(cOptionalBytePatch&)
+        bint operator>=(cOptionalBytePatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cBytePatch] patch_ref()
+        __optional_field_ref[cint8_t] ensure_ref()
+        __field_ref[cBytePatch] patchAfter_ref()
+
+
+    cdef cppclass cOptionalI16Patch "::apache::thrift::op::OptionalI16Patch":
+        cOptionalI16Patch() except +
+        cOptionalI16Patch(const cOptionalI16Patch&) except +
+        bint operator==(cOptionalI16Patch&)
+        bint operator!=(cOptionalI16Patch&)
+        bint operator<(cOptionalI16Patch&)
+        bint operator>(cOptionalI16Patch&)
+        bint operator<=(cOptionalI16Patch&)
+        bint operator>=(cOptionalI16Patch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cI16Patch] patch_ref()
+        __optional_field_ref[cint16_t] ensure_ref()
+        __field_ref[cI16Patch] patchAfter_ref()
+
+
+    cdef cppclass cOptionalI32Patch "::apache::thrift::op::OptionalI32Patch":
+        cOptionalI32Patch() except +
+        cOptionalI32Patch(const cOptionalI32Patch&) except +
+        bint operator==(cOptionalI32Patch&)
+        bint operator!=(cOptionalI32Patch&)
+        bint operator<(cOptionalI32Patch&)
+        bint operator>(cOptionalI32Patch&)
+        bint operator<=(cOptionalI32Patch&)
+        bint operator>=(cOptionalI32Patch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cI32Patch] patch_ref()
+        __optional_field_ref[cint32_t] ensure_ref()
+        __field_ref[cI32Patch] patchAfter_ref()
+
+
+    cdef cppclass cOptionalI64Patch "::apache::thrift::op::OptionalI64Patch":
+        cOptionalI64Patch() except +
+        cOptionalI64Patch(const cOptionalI64Patch&) except +
+        bint operator==(cOptionalI64Patch&)
+        bint operator!=(cOptionalI64Patch&)
+        bint operator<(cOptionalI64Patch&)
+        bint operator>(cOptionalI64Patch&)
+        bint operator<=(cOptionalI64Patch&)
+        bint operator>=(cOptionalI64Patch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cI64Patch] patch_ref()
+        __optional_field_ref[cint64_t] ensure_ref()
+        __field_ref[cI64Patch] patchAfter_ref()
+
+
+    cdef cppclass cOptionalFloatPatch "::apache::thrift::op::OptionalFloatPatch":
+        cOptionalFloatPatch() except +
+        cOptionalFloatPatch(const cOptionalFloatPatch&) except +
+        bint operator==(cOptionalFloatPatch&)
+        bint operator!=(cOptionalFloatPatch&)
+        bint operator<(cOptionalFloatPatch&)
+        bint operator>(cOptionalFloatPatch&)
+        bint operator<=(cOptionalFloatPatch&)
+        bint operator>=(cOptionalFloatPatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cFloatPatch] patch_ref()
+        __optional_field_ref[float] ensure_ref()
+        __field_ref[cFloatPatch] patchAfter_ref()
+
+
+    cdef cppclass cOptionalDoublePatch "::apache::thrift::op::OptionalDoublePatch":
+        cOptionalDoublePatch() except +
+        cOptionalDoublePatch(const cOptionalDoublePatch&) except +
+        bint operator==(cOptionalDoublePatch&)
+        bint operator!=(cOptionalDoublePatch&)
+        bint operator<(cOptionalDoublePatch&)
+        bint operator>(cOptionalDoublePatch&)
+        bint operator<=(cOptionalDoublePatch&)
+        bint operator>=(cOptionalDoublePatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cDoublePatch] patch_ref()
+        __optional_field_ref[double] ensure_ref()
+        __field_ref[cDoublePatch] patchAfter_ref()
+
+
+    cdef cppclass cOptionalStringPatch "::apache::thrift::op::OptionalStringPatch":
+        cOptionalStringPatch() except +
+        cOptionalStringPatch(const cOptionalStringPatch&) except +
+        bint operator==(cOptionalStringPatch&)
+        bint operator!=(cOptionalStringPatch&)
+        bint operator<(cOptionalStringPatch&)
+        bint operator>(cOptionalStringPatch&)
+        bint operator<=(cOptionalStringPatch&)
+        bint operator>=(cOptionalStringPatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cStringPatch] patch_ref()
+        __optional_field_ref[string] ensure_ref()
+        __field_ref[cStringPatch] patchAfter_ref()
+
+
+    cdef cppclass cOptionalBinaryPatch "::apache::thrift::op::OptionalBinaryPatch":
+        cOptionalBinaryPatch() except +
+        cOptionalBinaryPatch(const cOptionalBinaryPatch&) except +
+        bint operator==(cOptionalBinaryPatch&)
+        bint operator!=(cOptionalBinaryPatch&)
+        bint operator<(cOptionalBinaryPatch&)
+        bint operator>(cOptionalBinaryPatch&)
+        bint operator<=(cOptionalBinaryPatch&)
+        bint operator>=(cOptionalBinaryPatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cBinaryPatch] patch_ref()
+        __optional_field_ref[_folly_IOBuf] ensure_ref()
+        __field_ref[cBinaryPatch] patchAfter_ref()
+
+
 
 
 cdef class GeneratePatch(thrift.py3.types.Struct):
@@ -218,6 +349,15 @@ cdef class GeneratePatch(thrift.py3.types.Struct):
 
 
 
+cdef class GenerateOptionalPatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cGenerateOptionalPatch] _cpp_obj
+    cdef _fbthrift_types_fields.__GenerateOptionalPatch_FieldsSetter _fields_setter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cGenerateOptionalPatch])
+
+
+
 cdef class BoolPatch(thrift.py3.types.Struct):
     cdef shared_ptr[cBoolPatch] _cpp_obj
     cdef _fbthrift_types_fields.__BoolPatch_FieldsSetter _fields_setter
@@ -226,21 +366,6 @@ cdef class BoolPatch(thrift.py3.types.Struct):
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cBoolPatch])
-
-
-
-cdef class OptionalBoolPatch(thrift.py3.types.Struct):
-    cdef shared_ptr[cOptionalBoolPatch] _cpp_obj
-    cdef _fbthrift_types_fields.__OptionalBoolPatch_FieldsSetter _fields_setter
-    cdef inline object clear_impl(self)
-    cdef inline object patch_impl(self)
-    cdef inline object ensure_impl(self)
-    cdef inline object patchAfter_impl(self)
-    cdef BoolPatch __fbthrift_cached_patch
-    cdef BoolPatch __fbthrift_cached_patchAfter
-
-    @staticmethod
-    cdef _fbthrift_create(shared_ptr[cOptionalBoolPatch])
 
 
 
@@ -329,6 +454,141 @@ cdef class BinaryPatch(thrift.py3.types.Struct):
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cBinaryPatch])
+
+
+
+cdef class OptionalBoolPatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cOptionalBoolPatch] _cpp_obj
+    cdef _fbthrift_types_fields.__OptionalBoolPatch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef BoolPatch __fbthrift_cached_patch
+    cdef BoolPatch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalBoolPatch])
+
+
+
+cdef class OptionalBytePatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cOptionalBytePatch] _cpp_obj
+    cdef _fbthrift_types_fields.__OptionalBytePatch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef BytePatch __fbthrift_cached_patch
+    cdef BytePatch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalBytePatch])
+
+
+
+cdef class OptionalI16Patch(thrift.py3.types.Struct):
+    cdef shared_ptr[cOptionalI16Patch] _cpp_obj
+    cdef _fbthrift_types_fields.__OptionalI16Patch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef I16Patch __fbthrift_cached_patch
+    cdef I16Patch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalI16Patch])
+
+
+
+cdef class OptionalI32Patch(thrift.py3.types.Struct):
+    cdef shared_ptr[cOptionalI32Patch] _cpp_obj
+    cdef _fbthrift_types_fields.__OptionalI32Patch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef I32Patch __fbthrift_cached_patch
+    cdef I32Patch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalI32Patch])
+
+
+
+cdef class OptionalI64Patch(thrift.py3.types.Struct):
+    cdef shared_ptr[cOptionalI64Patch] _cpp_obj
+    cdef _fbthrift_types_fields.__OptionalI64Patch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef I64Patch __fbthrift_cached_patch
+    cdef I64Patch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalI64Patch])
+
+
+
+cdef class OptionalFloatPatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cOptionalFloatPatch] _cpp_obj
+    cdef _fbthrift_types_fields.__OptionalFloatPatch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef FloatPatch __fbthrift_cached_patch
+    cdef FloatPatch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalFloatPatch])
+
+
+
+cdef class OptionalDoublePatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cOptionalDoublePatch] _cpp_obj
+    cdef _fbthrift_types_fields.__OptionalDoublePatch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef DoublePatch __fbthrift_cached_patch
+    cdef DoublePatch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalDoublePatch])
+
+
+
+cdef class OptionalStringPatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cOptionalStringPatch] _cpp_obj
+    cdef _fbthrift_types_fields.__OptionalStringPatch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef StringPatch __fbthrift_cached_patch
+    cdef StringPatch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalStringPatch])
+
+
+
+cdef class OptionalBinaryPatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cOptionalBinaryPatch] _cpp_obj
+    cdef _fbthrift_types_fields.__OptionalBinaryPatch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef BinaryPatch __fbthrift_cached_patch
+    cdef BinaryPatch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalBinaryPatch])
 
 
 

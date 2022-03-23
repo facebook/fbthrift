@@ -28,7 +28,14 @@ namespace java2 com.facebook.thrift.op
 @thrift.Experimental
 struct GeneratePatch {} (thrift.uri = "facebook.com/thrift/op/GeneratePatch")
 
+@scope.Struct
+@thrift.Experimental
+struct GenerateOptionalPatch {} (
+  thrift.uri = "facebook.com/thrift/op/GenerateOptionalPatch",
+)
+
 // A patch for a boolean value.
+@GenerateOptionalPatch
 @thrift.Experimental
 struct BoolPatch {
   // Assign to a given value.
@@ -43,26 +50,8 @@ struct BoolPatch {
   cpp.adapter = "::apache::thrift::op::detail::BoolPatchAdapter",
 )
 
-// A patch for an optional boolean value.
-@thrift.Experimental
-struct OptionalBoolPatch {
-  // If the optional value should be cleared. Applied first.
-  2: bool clear;
-
-  // The patch to apply to any set value. Applied second.
-  3: BoolPatch patch;
-
-  // The value with which to initialized any unset value. Applied third.
-  1: optional bool ensure;
-
-  // The patch to apply to any set value, including newly set values. Applied forth.
-  4: BoolPatch patchAfter;
-} (
-  cpp.name = "OptionalBoolPatchStruct",
-  cpp.adapter = "::apache::thrift::op::detail::OptionalPatchAdapter",
-)
-
 // A patch for an 8-bit integer value.
+@GenerateOptionalPatch
 @thrift.Experimental
 struct BytePatch {
   // Assign to a given value.
@@ -78,6 +67,7 @@ struct BytePatch {
 )
 
 // A patch for a 16-bit integer value.
+@GenerateOptionalPatch
 @thrift.Experimental
 struct I16Patch {
   // Assign to a given value.
@@ -93,6 +83,7 @@ struct I16Patch {
 )
 
 // A patch for a 32-bit integer value.
+@GenerateOptionalPatch
 @thrift.Experimental
 struct I32Patch {
   // Assign to a given value.
@@ -108,6 +99,7 @@ struct I32Patch {
 )
 
 // A patch for a 64-bit integer value.
+@GenerateOptionalPatch
 @thrift.Experimental
 struct I64Patch {
   // Assign to a given value.
@@ -123,6 +115,7 @@ struct I64Patch {
 )
 
 // A patch for a 32-bit floating point value.
+@GenerateOptionalPatch
 @thrift.Experimental
 struct FloatPatch {
   // Assign to a given value.
@@ -138,6 +131,7 @@ struct FloatPatch {
 )
 
 // A patch for an 64-bit floating point value.
+@GenerateOptionalPatch
 @thrift.Experimental
 struct DoublePatch {
   // Assign to a given value.
@@ -153,6 +147,7 @@ struct DoublePatch {
 )
 
 // A patch for a string value.
+@GenerateOptionalPatch
 @thrift.Experimental
 struct StringPatch {
   // Assign to a given value.
@@ -171,6 +166,7 @@ struct StringPatch {
 )
 
 // A patch for a binary value.
+@GenerateOptionalPatch
 @thrift.Experimental
 struct BinaryPatch {
   // Assign to a given value.

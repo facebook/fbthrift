@@ -28,6 +28,20 @@ class GeneratePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 
 
+class GenerateOptionalPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "patch.GenerateOptionalPatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_GenerateOptionalPatch()
+
+
+
 class BoolPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -53,48 +67,6 @@ class BoolPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_BoolPatch()
-
-
-
-class OptionalBoolPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
-    _fbthrift_SPEC = (
-        (
-            2,  # id
-            True,  # isUnqualified
-            "clear",  # name
-            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
-            None,  # default value
-        ),
-        (
-            3,  # id
-            True,  # isUnqualified
-            "patch",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(BoolPatch),  # typeinfo
-            None,  # default value
-        ),
-        (
-            1,  # id
-            False,  # isUnqualified
-            "ensure",  # name
-            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
-            None,  # default value
-        ),
-        (
-            4,  # id
-            True,  # isUnqualified
-            "patchAfter",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(BoolPatch),  # typeinfo
-            None,  # default value
-        ),
-    )
-
-    @staticmethod
-    def __get_thrift_name__() -> str:
-        return "patch.OptionalBoolPatch"
-
-    @staticmethod
-    def __get_metadata__():
-        return _fbthrift_metadata__struct_OptionalBoolPatch()
 
 
 
@@ -321,16 +293,394 @@ class BinaryPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_BinaryPatch()
 
 
+
+class OptionalBoolPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(BoolPatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(BoolPatch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "patch.OptionalBoolPatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalBoolPatch()
+
+
+
+class OptionalBytePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(BytePatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(BytePatch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "patch.OptionalBytePatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalBytePatch()
+
+
+
+class OptionalI16Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(I16Patch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(I16Patch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "patch.OptionalI16Patch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalI16Patch()
+
+
+
+class OptionalI32Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(I32Patch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(I32Patch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "patch.OptionalI32Patch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalI32Patch()
+
+
+
+class OptionalI64Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(I64Patch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(I64Patch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "patch.OptionalI64Patch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalI64Patch()
+
+
+
+class OptionalFloatPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(FloatPatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            _fbthrift_py3lite_types.typeinfo_float,  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(FloatPatch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "patch.OptionalFloatPatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalFloatPatch()
+
+
+
+class OptionalDoublePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(DoublePatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(DoublePatch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "patch.OptionalDoublePatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalDoublePatch()
+
+
+
+class OptionalStringPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(StringPatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(StringPatch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "patch.OptionalStringPatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalStringPatch()
+
+
+
+class OptionalBinaryPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(BinaryPatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(BinaryPatch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "patch.OptionalBinaryPatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalBinaryPatch()
+
+
 # This unfortunately has to be down here to prevent circular imports
 import patch.lite_metadata
 
 
 def _fbthrift_metadata__struct_GeneratePatch():
     return patch.lite_metadata.gen_metadata_struct_GeneratePatch()
+def _fbthrift_metadata__struct_GenerateOptionalPatch():
+    return patch.lite_metadata.gen_metadata_struct_GenerateOptionalPatch()
 def _fbthrift_metadata__struct_BoolPatch():
     return patch.lite_metadata.gen_metadata_struct_BoolPatch()
-def _fbthrift_metadata__struct_OptionalBoolPatch():
-    return patch.lite_metadata.gen_metadata_struct_OptionalBoolPatch()
 def _fbthrift_metadata__struct_BytePatch():
     return patch.lite_metadata.gen_metadata_struct_BytePatch()
 def _fbthrift_metadata__struct_I16Patch():
@@ -347,13 +697,31 @@ def _fbthrift_metadata__struct_StringPatch():
     return patch.lite_metadata.gen_metadata_struct_StringPatch()
 def _fbthrift_metadata__struct_BinaryPatch():
     return patch.lite_metadata.gen_metadata_struct_BinaryPatch()
+def _fbthrift_metadata__struct_OptionalBoolPatch():
+    return patch.lite_metadata.gen_metadata_struct_OptionalBoolPatch()
+def _fbthrift_metadata__struct_OptionalBytePatch():
+    return patch.lite_metadata.gen_metadata_struct_OptionalBytePatch()
+def _fbthrift_metadata__struct_OptionalI16Patch():
+    return patch.lite_metadata.gen_metadata_struct_OptionalI16Patch()
+def _fbthrift_metadata__struct_OptionalI32Patch():
+    return patch.lite_metadata.gen_metadata_struct_OptionalI32Patch()
+def _fbthrift_metadata__struct_OptionalI64Patch():
+    return patch.lite_metadata.gen_metadata_struct_OptionalI64Patch()
+def _fbthrift_metadata__struct_OptionalFloatPatch():
+    return patch.lite_metadata.gen_metadata_struct_OptionalFloatPatch()
+def _fbthrift_metadata__struct_OptionalDoublePatch():
+    return patch.lite_metadata.gen_metadata_struct_OptionalDoublePatch()
+def _fbthrift_metadata__struct_OptionalStringPatch():
+    return patch.lite_metadata.gen_metadata_struct_OptionalStringPatch()
+def _fbthrift_metadata__struct_OptionalBinaryPatch():
+    return patch.lite_metadata.gen_metadata_struct_OptionalBinaryPatch()
 
 
 
 _fbthrift_py3lite_types.fill_specs(
     GeneratePatch,
+    GenerateOptionalPatch,
     BoolPatch,
-    OptionalBoolPatch,
     BytePatch,
     I16Patch,
     I32Patch,
@@ -362,4 +730,13 @@ _fbthrift_py3lite_types.fill_specs(
     DoublePatch,
     StringPatch,
     BinaryPatch,
+    OptionalBoolPatch,
+    OptionalBytePatch,
+    OptionalI16Patch,
+    OptionalI32Patch,
+    OptionalI64Patch,
+    OptionalFloatPatch,
+    OptionalDoublePatch,
+    OptionalStringPatch,
+    OptionalBinaryPatch,
 )
