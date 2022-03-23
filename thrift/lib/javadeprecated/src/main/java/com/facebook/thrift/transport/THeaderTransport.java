@@ -723,11 +723,13 @@ public class THeaderTransport extends TFramedTransport {
 
   private static String getClientMetadata() {
     return String.format(
-        "{\"agent\":\"javadeprecated.THeaderTransport.java\",\"otherMetadata\":{\"build_rule\":\"%s\",\"tw_cluster\":\"%s\",\"tw_user\":\"%s\",\"tw_job\":\"%s\"}}",
+        "{\"agent\":\"javadeprecated.THeaderTransport.java\",\"otherMetadata\":{\"build_rule\":\"%s\",\"tw_cluster\":\"%s\",\"tw_user\":\"%s\",\"tw_job\":\"%s\"},\"tw_task\":\"%s\",\"tw_oncall_team\":\"%s\"}}",
         getClientBuildRule(),
         nullSafe(System.getenv("TW_JOB_CLUSTER")),
         nullSafe(System.getenv("TW_JOB_USER")),
-        nullSafe(System.getenv("TW_JOB_NAME")));
+        nullSafe(System.getenv("TW_JOB_NAME")),
+        nullSafe(System.getenv("TW_TASK_ID")),
+        nullSafe(System.getenv("TW_ONCALL_TEAM")));
   }
 
   private static String nullSafe(String s) {
@@ -744,9 +746,11 @@ public class THeaderTransport extends TFramedTransport {
           THeaderTransport.class.getClassLoader().getResources("META-INF/MANIFEST.MF");
       while (resources.hasMoreElements()) {
         Manifest manifest = new Manifest(resources.nextElement().openStream());
-        Attributes attr = manifest.getMainAttributes();
-        if (attr.containsKey(FBCODE_BUILD_RULE_MANIFEST_ATTR)) {
-          return attr.getValue("Fbcode-Build-Rule");
+        Attributes attrs = manifest.getMainAttributes();
+
+        Attributes.Name buildRuleName = new Attributes.Name(FBCODE_BUILD_RULE_MANIFEST_ATTR);
+        if (attrs.containsKey(buildRuleName)) {
+          return attrs.getValue(buildRuleName);
         }
       }
     } catch (IOException e) {
