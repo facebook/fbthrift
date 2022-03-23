@@ -40,6 +40,7 @@
 #include <thrift/compiler/ast/t_program_bundle.h>
 #include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_union.h>
+#include <thrift/compiler/parse/t_ref.h>
 #include <thrift/compiler/parse/yy_scanner.h>
 
 /**
@@ -52,20 +53,6 @@
 
 #include LOCATION_HH
 
-namespace {
-
-/**
- * YYLTYPE evaluates to a class named 'location', which has:
- *   position begin;
- *   position end;
- * The class 'position', in turn, has:
- *   std::string* filename;
- *   unsigned line;
- *   unsigned column;
- */
-using YYLTYPE = apache::thrift::compiler::yy::location;
-using YYSTYPE = int;
-
 /**
  * Provide the custom fbthrift_compiler_parse_lex signature to flex.
  */
@@ -77,8 +64,6 @@ using YYSTYPE = int;
       YYSTYPE* yylval_param,                            \
       YYLTYPE* yylloc_param)
 
-} // namespace
-
 namespace apache {
 namespace thrift {
 namespace compiler {
@@ -88,7 +73,6 @@ class parser;
 }
 
 // Parsing only representations.
-using t_struct_annotations = node_list<t_const>;
 struct t_annotations {
   std::map<std::string, annotation_value> strings;
   std::map<std::string, std::shared_ptr<const t_const>> objects;
@@ -97,46 +81,11 @@ using t_doc = boost::optional<std::string>;
 // TODO (partisan): Rename to t_stmt_attrs.
 struct t_def_attrs {
   t_doc doc;
-  std::unique_ptr<t_struct_annotations> struct_annotations;
+  std::unique_ptr<node_list<t_const>> struct_annotations;
 };
 
-// A const pointer to an AST node.
-//
-// This is needed to avoid ambiguity in the parser code gen for const pointers.
 template <typename T>
-class t_ref {
- public:
-  constexpr t_ref() = default;
-  constexpr t_ref(const t_ref&) noexcept = default;
-  constexpr t_ref(std::nullptr_t) noexcept {}
-
-  template <typename U>
-  constexpr /* implicit */ t_ref(const t_ref<U>& u) noexcept : ptr_(u.get()) {}
-
-  // Require an explicit cast for a non-const pointer, as non-const pointers
-  // likely need to be owned, so this is probably a bug.
-  template <typename U, std::enable_if_t<std::is_const<U>::value, int> = 0>
-  constexpr /* implicit */ t_ref(U* ptr) : ptr_(ptr) {}
-  template <typename U, std::enable_if_t<!std::is_const<U>::value, int> = 0>
-  constexpr explicit t_ref(U* ptr) : ptr_(ptr) {}
-
-  constexpr const T* get() const { return ptr_; }
-
-  constexpr const T* operator->() const {
-    assert(ptr_ != nullptr);
-    return ptr_;
-  }
-  constexpr const T& operator*() const {
-    assert(ptr_ != nullptr);
-    return *ptr_;
-  }
-
-  constexpr explicit operator bool() const { return bool(ptr_); }
-  constexpr /* implicit */ operator const T*() const { return ptr_; }
-
- private:
-  const T* ptr_ = nullptr;
-};
+class t_ref;
 
 enum class parsing_mode {
   INCLUDES = 1,
@@ -244,14 +193,16 @@ class parsing_driver {
   std::unique_ptr<t_program_bundle> parse();
 
   /**
-   * Bison's type (default is int).
+   * Bison's type.
    */
-  YYSTYPE yylval_{};
+  using YYSTYPE = int;
+  YYSTYPE yylval_ = 0;
 
   /**
    * Bison's structure to store location.
    */
-  YYLTYPE yylloc_{};
+  using YYLTYPE = apache::thrift::compiler::yy::location;
+  YYLTYPE yylloc_;
 
   /**
    * Diagnostic message callbacks.

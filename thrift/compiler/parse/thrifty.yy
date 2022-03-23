@@ -75,12 +75,50 @@ std::unique_ptr<T> own(T* ptr) {
 %code requires
 {
 
+#include <thrift/compiler/ast/t_enum_value.h>
+#include <thrift/compiler/ast/t_exception.h>
+#include <thrift/compiler/ast/t_function.h>
+#include <thrift/compiler/parse/t_ref.h>
+
+namespace apache { namespace thrift { namespace compiler { namespace yy {
+class location;
+}}}}
+
+/**
+ * YYLTYPE evaluates to a class named 'location', which has:
+ *   position begin;
+ *   position end;
+ * The class 'position', in turn, has:
+ *   std::string* filename;
+ *   unsigned line;
+ *   unsigned column;
+ */
+using YYLTYPE = apache::thrift::compiler::yy::location;
+using YYSTYPE = int;
+
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-using t_typethrowspair = std::pair<t_type_ref, t_throws*>;
+struct t_annotations;
+struct t_def_attrs;
+
+class t_base_type;
+class t_container;
 class t_container_type;
+class t_interaction;
+class t_service;
+class t_sink;
+class t_stream_response;
+class t_throws;
+class t_typedef;
+class t_union;
+
+class parsing_driver;
+
+using t_docstring = boost::optional<std::string>;
+using t_struct_annotations = node_list<t_const>;
+using t_typethrowspair = std::pair<t_type_ref, t_throws*>;
 
 } // namespace compiler
 } // namespace thrift
@@ -96,7 +134,7 @@ class t_container_type;
 
 %param
     {apache::thrift::compiler::parsing_driver& driver}
-    {apache::thrift::compiler::yyscan_t raw_scanner}
+    {void* raw_scanner}
     {YYSTYPE * yylval_param}
     {YYLTYPE * yylloc_param}
 
@@ -105,8 +143,8 @@ class t_container_type;
  */
 %token<std::string>     tok_identifier
 %token<std::string>     tok_literal
-%token<t_doc>           tok_doctext
-%token<t_doc>           tok_inline_doc
+%token<t_docstring>     tok_doctext
+%token<t_docstring>     tok_inline_doc
 
 /**
  * Constant values
@@ -285,8 +323,8 @@ class t_container_type;
 %type<t_ref<t_service>>            Extends
 %type<t_function_qualifier>        FunctionQualifier
 
-%type<t_doc>                       CaptureDocText
-%type<t_doc>                       InlineDocOptional
+%type<t_docstring>                 CaptureDocText
+%type<t_docstring>                 InlineDocOptional
 %type<std::string>                 IntOrLiteral
 
 %type<bool>                        CommaOrSemicolonOptional
