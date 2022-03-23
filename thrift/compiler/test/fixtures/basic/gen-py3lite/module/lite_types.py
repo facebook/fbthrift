@@ -79,6 +79,10 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.MyStruct"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/basic/MyStruct"
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStruct()
 
@@ -91,6 +95,10 @@ class MyDataItem(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyDataItem"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/basic/MyDataItem"
 
     @staticmethod
     def __get_metadata__():
@@ -133,6 +141,10 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyUnion"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/basic/MyUnion"
 
     @staticmethod
     def __get_metadata__():

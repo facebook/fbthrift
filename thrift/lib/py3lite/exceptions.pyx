@@ -213,3 +213,7 @@ cdef class GeneratedError(Error):
         cdef GeneratedError inst = cls.__new__(cls)
         inst._fbthrift_data = data
         return inst
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return NotImplementedError()

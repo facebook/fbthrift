@@ -84,6 +84,10 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.MyStruct"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/MyStruct"
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStruct()
 
@@ -161,6 +165,10 @@ class MyStructPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.MyStructPatch"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/MyStructPatch"
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStructPatch()
 
@@ -194,6 +202,10 @@ class MyStructValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyStructValuePatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/MyStructValuePatch"
 
     @staticmethod
     def __get_metadata__():
@@ -236,6 +248,10 @@ class OptionalMyStructValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.OptionalMyStructValuePatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/OptionalMyStructValuePatch"
 
     @staticmethod
     def __get_metadata__():

@@ -459,6 +459,10 @@ cdef class Struct(StructOrUnion):
     def __get_thrift_name__() -> str:
         return NotImplementedError()
 
+    @staticmethod
+    def __get_thrift_uri__():
+        return NotImplementedError()
+
 
 cdef class Union(StructOrUnion):
     def __cinit__(self):
@@ -491,6 +495,10 @@ cdef class Union(StructOrUnion):
 
     @staticmethod
     def __get_thrift_name__() -> str:
+        return NotImplementedError()
+
+    @staticmethod
+    def __get_thrift_uri__() -> typing.Optional[str]:
         return NotImplementedError()
 
     cdef void _fbthrift_update_type_value(self, type_value, value) except *:

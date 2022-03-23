@@ -61,6 +61,10 @@ class ComplexUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         return "module.ComplexUnion"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_ComplexUnion()
 
@@ -89,6 +93,10 @@ class ListUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         return "module.ListUnion"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_ListUnion()
 
@@ -115,6 +123,10 @@ class DataUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.DataUnion"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -152,6 +164,10 @@ class Val(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.Val"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_Val()
 
@@ -178,6 +194,10 @@ class ValUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.ValUnion"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -208,6 +228,10 @@ class VirtualComplexUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         return "module.VirtualComplexUnion"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_VirtualComplexUnion()
 
@@ -229,6 +253,10 @@ class NonCopyableStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.NonCopyableStruct"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_NonCopyableStruct()
 
@@ -248,6 +276,10 @@ class NonCopyableUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.NonCopyableUnion"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():

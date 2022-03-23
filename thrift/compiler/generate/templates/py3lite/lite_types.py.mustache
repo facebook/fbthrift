@@ -61,6 +61,11 @@ class {{struct:name}}(metaclass={{!
         return "{{program:name}}.{{struct:name}}"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return {{#struct:thrift_uri}}"{{struct:thrift_uri}}"{{/struct:thrift_uri}}{{!
+            }}{{^struct:thrift_uri}}None{{/struct:thrift_uri}}
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{struct:name}}()
 

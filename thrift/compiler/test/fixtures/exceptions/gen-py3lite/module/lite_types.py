@@ -26,6 +26,10 @@ class Fiery(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
         return "module.Fiery"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__exception_Fiery()
 
@@ -52,6 +56,10 @@ class Serious(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.Serious"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -89,6 +97,10 @@ class ComplexFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMet
         return "module.ComplexFieldNames"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__exception_ComplexFieldNames()
 
@@ -122,6 +134,10 @@ class CustomFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.CustomFieldNames"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -159,6 +175,10 @@ class ExceptionWithPrimitiveField(metaclass=_fbthrift_py3lite_exceptions.Generat
         return "module.ExceptionWithPrimitiveField"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__exception_ExceptionWithPrimitiveField()
 
@@ -178,6 +198,10 @@ class Banal(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.Banal"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():

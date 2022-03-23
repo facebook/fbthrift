@@ -26,6 +26,10 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.Foo"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_Foo()
 

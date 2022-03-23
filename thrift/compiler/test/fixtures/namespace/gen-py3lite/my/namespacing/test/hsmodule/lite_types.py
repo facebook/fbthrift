@@ -26,6 +26,10 @@ class HsFoo(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "hsmodule.HsFoo"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_HsFoo()
 

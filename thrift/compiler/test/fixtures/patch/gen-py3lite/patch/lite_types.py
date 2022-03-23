@@ -23,6 +23,10 @@ class GeneratePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "patch.GeneratePatch"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return "facebook.com/thrift/op/GeneratePatch"
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_GeneratePatch()
 
@@ -35,6 +39,10 @@ class GenerateOptionalPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "patch.GenerateOptionalPatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "facebook.com/thrift/op/GenerateOptionalPatch"
 
     @staticmethod
     def __get_metadata__():
@@ -65,6 +73,10 @@ class BoolPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "patch.BoolPatch"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_BoolPatch()
 
@@ -91,6 +103,10 @@ class BytePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "patch.BytePatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -121,6 +137,10 @@ class I16Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "patch.I16Patch"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_I16Patch()
 
@@ -147,6 +167,10 @@ class I32Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "patch.I32Patch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -177,6 +201,10 @@ class I64Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "patch.I64Patch"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_I64Patch()
 
@@ -205,6 +233,10 @@ class FloatPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "patch.FloatPatch"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_FloatPatch()
 
@@ -231,6 +263,10 @@ class DoublePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "patch.DoublePatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -268,6 +304,10 @@ class StringPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "patch.StringPatch"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_StringPatch()
 
@@ -287,6 +327,10 @@ class BinaryPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "patch.BinaryPatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -331,6 +375,10 @@ class OptionalBoolPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "patch.OptionalBoolPatch"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalBoolPatch()
 
@@ -371,6 +419,10 @@ class OptionalBytePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "patch.OptionalBytePatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -415,6 +467,10 @@ class OptionalI16Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "patch.OptionalI16Patch"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalI16Patch()
 
@@ -455,6 +511,10 @@ class OptionalI32Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "patch.OptionalI32Patch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -499,6 +559,10 @@ class OptionalI64Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "patch.OptionalI64Patch"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalI64Patch()
 
@@ -539,6 +603,10 @@ class OptionalFloatPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "patch.OptionalFloatPatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -583,6 +651,10 @@ class OptionalDoublePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "patch.OptionalDoublePatch"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalDoublePatch()
 
@@ -625,6 +697,10 @@ class OptionalStringPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "patch.OptionalStringPatch"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalStringPatch()
 
@@ -665,6 +741,10 @@ class OptionalBinaryPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "patch.OptionalBinaryPatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():

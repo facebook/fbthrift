@@ -56,6 +56,10 @@ class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.Internship"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_Internship()
 
@@ -84,6 +88,10 @@ class Range(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.Range"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_Range()
 
@@ -110,6 +118,10 @@ class struct1(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.struct1"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -154,6 +166,10 @@ class struct2(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.struct2"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_struct2()
 
@@ -187,6 +203,10 @@ class struct3(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.struct3"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -224,6 +244,10 @@ class struct4(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.struct4"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_struct4()
 
@@ -250,6 +274,10 @@ class union1(metaclass=_fbthrift_py3lite_types.UnionMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.union1"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -292,6 +320,10 @@ class union2(metaclass=_fbthrift_py3lite_types.UnionMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.union2"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():

@@ -49,6 +49,10 @@ class MyStructFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.MyStructFloatFieldThrowExp"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStructFloatFieldThrowExp()
 
@@ -75,6 +79,10 @@ class MyStructMapFloatThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyStructMapFloatThrowExp"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -287,6 +295,10 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.MyStruct"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStruct()
 
@@ -313,6 +325,10 @@ class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.SimpleStruct"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -483,6 +499,10 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.defaultStruct"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_defaultStruct()
 
@@ -560,6 +580,10 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.MyStructTypeDef"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStructTypeDef()
 
@@ -572,6 +596,10 @@ class MyDataItem(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyDataItem"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -630,6 +658,10 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         return "module.MyUnion"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyUnion()
 
@@ -670,6 +702,10 @@ class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.UnionMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.MyUnionFloatFieldThrowExp"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -812,6 +848,10 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.ComplexNestedStruct"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_ComplexNestedStruct()
 
@@ -854,6 +894,10 @@ class TypeRemapped(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.TypeRemapped"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_TypeRemapped()
 
@@ -866,6 +910,10 @@ class emptyXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.emptyXcep"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -896,6 +944,10 @@ class reqXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
         return "module.reqXcep"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__exception_reqXcep()
 
@@ -922,6 +974,10 @@ class optXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.optXcep"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -978,6 +1034,10 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.complexException"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():

@@ -28,6 +28,10 @@ class SimpleException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta)
         return "module.SimpleException"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__exception_SimpleException()
 
@@ -47,6 +51,10 @@ class OptionalRefStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.OptionalRefStruct"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -117,6 +125,10 @@ class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.SimpleStruct"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
@@ -196,6 +208,10 @@ class ComplexStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         return "module.ComplexStruct"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_ComplexStruct()
 
@@ -217,6 +233,10 @@ class BinaryUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         return "module.BinaryUnion"
 
     @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_BinaryUnion()
 
@@ -236,6 +256,10 @@ class BinaryUnionStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_thrift_name__() -> str:
         return "module.BinaryUnionStruct"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
 
     @staticmethod
     def __get_metadata__():
