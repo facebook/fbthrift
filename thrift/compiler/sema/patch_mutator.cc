@@ -209,9 +209,37 @@ t_type_ref patch_generator::find_patch_type(const t_field& field) const {
   // the annoation used to trigger patch generation.
   if (auto* base_type =
           dynamic_cast<const t_base_type*>(field.type()->get_true_type())) {
-    auto itr = patch_types_.find(base_type->base_type());
-    if (itr != patch_types_.end()) {
-      return itr->second;
+    // TODO(afuller): Index all types by uri, and find them that way.
+    switch (base_type->base_type()) {
+      case t_base_type::type::t_bool:
+        return t_type_ref::from_ptr(
+            program_.scope()->find_type("patch.BoolPatch"));
+      case t_base_type::type::t_byte:
+        return t_type_ref::from_ptr(
+            program_.scope()->find_type("patch.BytePatch"));
+      case t_base_type::type::t_i16:
+        return t_type_ref::from_ptr(
+            program_.scope()->find_type("patch.I16Patch"));
+      case t_base_type::type::t_i32:
+        return t_type_ref::from_ptr(
+            program_.scope()->find_type("patch.I32Patch"));
+      case t_base_type::type::t_i64:
+        return t_type_ref::from_ptr(
+            program_.scope()->find_type("patch.I64Patch"));
+      case t_base_type::type::t_float:
+        return t_type_ref::from_ptr(
+            program_.scope()->find_type("patch.FloatPatch"));
+      case t_base_type::type::t_double:
+        return t_type_ref::from_ptr(
+            program_.scope()->find_type("patch.DoublePatch"));
+      case t_base_type::type::t_string:
+        return t_type_ref::from_ptr(
+            program_.scope()->find_type("patch.StringPatch"));
+      case t_base_type::type::t_binary:
+        return t_type_ref::from_ptr(
+            program_.scope()->find_type("patch.BinaryPatch"));
+      default:
+        break;
     }
   }
 
@@ -235,33 +263,6 @@ t_struct& patch_generator::gen_struct_with_suffix(
   ctx_.failure_if(
       orig.uri().empty(), annot, "URI required to support patching.");
   return gen_struct(annot, orig.name() + suffix, orig.uri() + suffix);
-}
-
-auto patch_generator::index_patch_types(
-    diagnostic_context& ctx, const t_scope& scope) -> patch_type_index {
-  patch_type_index index;
-  auto add = [&](const std::string& name, t_base_type::type type) {
-    if (auto patch_type = scope.find_type(name)) {
-      index[type] = *patch_type;
-    } else {
-      ctx.warning([&](auto& os) {
-        os << "Could not find patch type, '" << name << "' for "
-           << t_base_type::type_name(type);
-      });
-    }
-  };
-
-  // TODO(afuller): Index all types by uri, and find them that way.
-  add("patch.BoolPatch", t_base_type::type::t_bool);
-  add("patch.BytePatch", t_base_type::type::t_byte);
-  add("patch.I16Patch", t_base_type::type::t_i16);
-  add("patch.I32Patch", t_base_type::type::t_i32);
-  add("patch.I64Patch", t_base_type::type::t_i64);
-  add("patch.FloatPatch", t_base_type::type::t_float);
-  add("patch.DoublePatch", t_base_type::type::t_double);
-  add("patch.StringPatch", t_base_type::type::t_string);
-  add("patch.BinaryPatch", t_base_type::type::t_binary);
-  return index;
 }
 
 } // namespace compiler

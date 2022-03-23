@@ -39,9 +39,7 @@ class patch_generator {
       diagnostic_context& ctx, mutator_context& mctx);
 
   explicit patch_generator(diagnostic_context& ctx, t_program& program)
-      : ctx_(ctx),
-        program_(program),
-        patch_types_(index_patch_types(ctx, *program.scope())) {}
+      : ctx_(ctx), program_(program) {}
 
   // Add a struct with fields 1:1 with the given node, attributing the new node
   // to the given annotation, and return a reference to it.
@@ -106,15 +104,9 @@ class patch_generator {
 
  private:
   friend class PatchGeneratorTest;
-  using patch_type_index = std::unordered_map<t_base_type::type, t_type_ref>;
 
   diagnostic_context& ctx_;
   t_program& program_;
-  patch_type_index patch_types_;
-
-  // Find and index any patch definitions found in the given scope.
-  static patch_type_index index_patch_types(
-      diagnostic_context& ctx, const t_scope& scope);
 
   // Adds a new struct to the program, and return a reference to it.
   t_struct& gen_struct(const t_node& annot, std::string name, std::string uri);
