@@ -48,8 +48,7 @@ inline std::string_view qualifierToString(FunctionQualifier fq) {
 }
 
 /*
- * A move-only structure for storing thrift method metadata.
- * Metadata : method name & function qualifier.
+ * A structure for storing thrift method metadata.
  * When created from static data, the structure creates a view of the data
  * When created from temporary data, the structure takes the ownership of
  * the data by creating a dynamic storage for it.
@@ -62,8 +61,6 @@ class MethodMetadata {
     std::string methodName;
     FunctionQualifier functionQualifier;
   };
-
-  MethodMetadata() = delete;
 
   MethodMetadata(const MethodMetadata& that) {
     if (that.isOwning()) {
@@ -86,11 +83,9 @@ class MethodMetadata {
     } else {
       if (isOwning()) {
         delete data_;
-        data_ = that.data_;
         isOwning_ = false;
-      } else {
-        data_ = that.data_;
       }
+      data_ = that.data_;
     }
     return *this;
   }
@@ -112,30 +107,33 @@ class MethodMetadata {
   }
 
   /* implicit */ MethodMetadata(std::string_view methodName)
-      : isOwning_(true),
-        data_(new Data(
-            std::string(methodName), FunctionQualifier::Unspecified)) {}
+      : MethodMetadata(
+            std::in_place,
+            std::string(methodName),
+            FunctionQualifier::Unspecified) {}
 
   /* implicit */ MethodMetadata(std::string&& methodName)
-      : isOwning_(true),
-        data_(new Data(std::move(methodName), FunctionQualifier::Unspecified)) {
-  }
+      : MethodMetadata(
+            std::in_place,
+            std::move(methodName),
+            FunctionQualifier::Unspecified) {}
 
   /* implicit */ MethodMetadata(const std::string& methodName)
-      : isOwning_(true),
-        data_(new Data(methodName, FunctionQualifier::Unspecified)) {}
+      : MethodMetadata(
+            std::in_place, methodName, FunctionQualifier::Unspecified) {}
 
   /* implicit */ MethodMetadata(const char* methodName)
-      : isOwning_(true),
-        data_(new Data(methodName, FunctionQualifier::Unspecified)) {}
+      : MethodMetadata(
+            std::in_place, methodName, FunctionQualifier::Unspecified) {}
 
   /* implicit */ MethodMetadata(folly::StringPiece methodName)
-      : isOwning_(true),
-        data_(new Data(
-            std::string(methodName), FunctionQualifier::Unspecified)) {}
+      : MethodMetadata(
+            std::in_place,
+            std::string(methodName),
+            FunctionQualifier::Unspecified) {}
 
   /* implicit */ MethodMetadata(const Data& data)
-      : isOwning_(true), data_(new Data(data)) {}
+      : MethodMetadata(std::in_place, data) {}
 
   static MethodMetadata from_static(Data* mPtr) {
     return MethodMetadata(mPtr, NonOwningTag{});
@@ -173,20 +171,19 @@ class MethodMetadata {
 
  private:
   struct NonOwningTag {};
-  struct OwningTag {};
-
-  MethodMetadata(Data* mPtr, OwningTag)
-      : isOwning_(true), data_(new Data(*mPtr)) {}
-
   MethodMetadata(Data* mPtr, NonOwningTag) : isOwning_(false), data_(mPtr) {}
+
+  template <typename... Args>
+  MethodMetadata(std::in_place_t, Args... args)
+      : isOwning_(true), data_(new Data(std::forward<Args>(args)...)) {}
 
   friend void swap(MethodMetadata& left, MethodMetadata& right) noexcept {
     std::swap(left.isOwning_, right.isOwning_);
     std::swap(left.data_, right.data_);
   }
 
-  bool isOwning_{false};
-  Data* data_{nullptr};
+  bool isOwning_;
+  Data* data_;
 };
 
 } // namespace apache::thrift
