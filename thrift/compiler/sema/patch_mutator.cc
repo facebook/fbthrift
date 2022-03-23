@@ -27,71 +27,50 @@ namespace {
 
 constexpr auto kGeneratePatchUri = "facebook.com/thrift/op/GeneratePatch";
 
+// Helper for generating a struct.
 struct StructGen {
   // The annotation we are generating for.
   const t_node& annot;
+  // The struct to add fields to.
+  t_struct& generated;
 
-  // Generate a new field.
-  std::unique_ptr<t_field> field(
-      t_field_id id, t_type_ref type, std::string name) {
-    auto result = std::make_unique<t_field>(type, std::move(name), id);
-    result->set_lineno(annot.lineno());
+  // Add a new field to generated, and return it.
+  t_field& field(t_field_id id, t_type_ref type, std::string name) {
+    generated.append_field(
+        std::make_unique<t_field>(type, std::move(name), id));
+    t_field& result = generated.fields().back();
+    result.set_lineno(annot.lineno());
     return result;
   }
 
-  // A fluent function to add a doc string to a node.
-  template <typename N>
-  static std::unique_ptr<N> withDoc(std::string doc, std::unique_ptr<N> node) {
-    node->set_doc(std::move(doc));
-    return node;
-  }
-
   // A fluent function to box a given field.
-  static std::unique_ptr<t_field> box(std::unique_ptr<t_field> node) {
-    node->set_qualifier(t_field_qualifier::optional);
-    node->set_annotation("thrift.box");
+  static t_field& box(t_field& node) {
+    node.set_qualifier(t_field_qualifier::optional);
+    node.set_annotation("thrift.box");
     return node;
   }
 };
 
-// Standardized field ids.
-enum t_op_field_id : t_field_id {
-  // ValuePatch
-  kAssignId = 1,
+// Helper for generating patch structs.
+struct PatchGen : StructGen {
+  // Standardized patch field ids.
+  enum t_patch_field_id : t_field_id {
+    kAssignId = 1,
+    kClearId = 2,
+    kPatchId = 3,
+  };
 
-  // StructValuePatch
-  kClearId = 2,
-  kPatchId = 3,
-};
-
-// Generate for shared patch fields.
-struct ValuePatchGen : StructGen {
-  const char* valueName;
-  /**
-   *  // Assigns to a given struct. If set, all other operations are ignored.
-   *  1: optional MyStruct assign (thrift.box);
-   */
-  std::unique_ptr<t_field> assign(t_type_ref type) {
-    return withDoc(
-        std::string("Assigns to a given ") + valueName +
-            ". If set, all other operations are ignored.\n",
-        box(field(kAssignId, type, "assign")));
-  }
-};
-
-// Generator for a 'StructValuePatch`, see
-// patch_generator::add_struct_value_patch.
-struct StructValuePatchGen : ValuePatchGen {
-  std::unique_ptr<t_field> clear() {
-    return withDoc(
-        std::string("Clears a given ") + valueName + ". Applied first.\n",
-        field(kClearId, t_base_type::t_bool(), "clear"));
+  // 1: optional {type} assign (thrift.box);
+  t_field& assign(t_type_ref type) {
+    return box(field(kAssignId, type, "assign"));
   }
 
-  std::unique_ptr<t_field> patch(t_type_ref patch_type) {
-    return withDoc(
-        std::string("Patches a given ") + valueName + ". Applied second.\n",
-        field(kPatchId, patch_type, "patch"));
+  // 2: bool clear;
+  t_field& clear() { return field(kClearId, t_base_type::t_bool(), "clear"); }
+
+  // 3: {patch_type} patch;
+  t_field& patch(t_type_ref patch_type) {
+    return field(kPatchId, patch_type, "patch");
   }
 };
 
@@ -104,13 +83,8 @@ void generate_struct_patch(
     return;
   }
 
-  // Get the generator for the current program.
-  t_program& program = dynamic_cast<t_program&>(*mctx.root());
-  auto generator = ctx.cache().get(program, [&]() {
-    return std::make_unique<patch_generator>(ctx, program);
-  });
-
   // Add a 'structure patch' and 'struct value patch' using it.
+  auto generator = patch_generator::get_for(ctx, mctx);
   generator.add_struct_value_patch(
       *annot, node, generator.add_structure_patch(*annot, node));
 }
@@ -122,37 +96,38 @@ void add_patch_mutators(ast_mutators& mutators) {
   mutator.add_struct_visitor(&generate_struct_patch);
 }
 
+patch_generator& patch_generator::get_for(
+    diagnostic_context& ctx, mutator_context& mctx) {
+  t_program& program = dynamic_cast<t_program&>(*mctx.root());
+  return ctx.cache().get(program, [&]() {
+    return std::make_unique<patch_generator>(ctx, program);
+  });
+}
+
 t_struct& patch_generator::add_structure_patch(
     const t_node& annot, t_structured& orig) {
-  // TODO(afuller): Consider making the name configurable via the annotation.
-  auto& generated = gen_struct(annot, orig, "Patch");
+  StructGen gen{annot, gen_struct_with_suffix(annot, orig, "Patch")};
   for (const auto& field : orig.fields()) {
-    if (auto patch_field = gen_patch_field(annot, field)) {
-      ctx_.try_or_failure(
-          [&] { generated.append_field(std::move(patch_field)); });
+    if (t_type_ref patch_type = find_patch_type(*field.type())) {
+      gen.field(field.id(), patch_type, field.name());
+    } else {
+      ctx_.warning(field, "Could not resolve patch type for field.");
     }
   }
-  return generated;
+  return gen.generated;
 }
 
 t_struct& patch_generator::add_struct_value_patch(
-    const t_node& annot, t_struct& orig, t_type_ref patch_type) {
-  StructValuePatchGen gen{{{annot}, "struct"}};
+    const t_node& annot, t_struct& value_type, t_type_ref patch_type) {
   // TODO(afuller): Consider making the name configurable via the annotation.
-  auto& generated = gen_struct(annot, orig, "ValuePatch");
-  ctx_.try_or_failure([&] { generated.append_field(gen.assign(orig)); });
-  ctx_.try_or_failure([&] { generated.append_field(gen.clear()); });
-  ctx_.try_or_failure([&] { generated.append_field(gen.patch(patch_type)); });
-  return generated;
-}
-
-std::unique_ptr<t_field> patch_generator::gen_patch_field(
-    const t_node& annot, const t_field& orig) {
-  if (t_type_ref patch_type = find_patch_type(*orig.type())) {
-    return StructGen{annot}.field(orig.id(), patch_type, orig.name());
-  }
-  ctx_.warning(orig, "Could not resolve patch type for field.");
-  return nullptr;
+  PatchGen gen{
+      {annot, gen_struct_with_suffix(annot, value_type, "ValuePatch")}};
+  gen.assign(value_type)
+      .set_doc(
+          "Assigns to a given struct. If set, all other operations are ignored.\n");
+  gen.clear().set_doc("Clears a given struct. Applied first.\n");
+  gen.patch(patch_type).set_doc("Patches a given struct. Applied second.\n");
+  return gen.generated;
 }
 
 t_type_ref patch_generator::find_patch_type(const t_type& orig) const {
@@ -181,6 +156,13 @@ t_struct& patch_generator::gen_struct(
   generated->set_lineno(annot.lineno());
   program_.add_definition(std::move(generated));
   return *ptr;
+}
+
+t_struct& patch_generator::gen_struct_with_suffix(
+    const t_node& annot, const t_named& orig, const std::string& suffix) {
+  ctx_.failure_if(
+      orig.uri().empty(), annot, "URI required to support patching.");
+  return gen_struct(annot, orig.name() + suffix, orig.uri() + suffix);
 }
 
 auto patch_generator::index_patch_types(

@@ -34,6 +34,10 @@ void add_patch_mutators(ast_mutators& mutators);
 // and add them into the given program.
 class patch_generator {
  public:
+  // Gets the patch_generator for the given context.
+  static patch_generator& get_for(
+      diagnostic_context& ctx, mutator_context& mctx);
+
   explicit patch_generator(diagnostic_context& ctx, t_program& program)
       : ctx_(ctx),
         program_(program),
@@ -73,7 +77,7 @@ class patch_generator {
   //    3: Patch patch;
   //  }
   t_struct& add_struct_value_patch(
-      const t_node& annot, t_struct& node, t_type_ref patch_type);
+      const t_node& annot, t_struct& value_type, t_type_ref patch_type);
 
  private:
   using patch_type_index = std::unordered_map<t_base_type::type, t_type_ref>;
@@ -87,19 +91,9 @@ class patch_generator {
       diagnostic_context& ctx, const t_scope& scope);
 
   // Adds a new struct to the program, and return a reference to it.
-  t_struct& gen_struct(
-      const t_node& annot, const t_named& orig, const std::string& suffix) {
-    ctx_.failure_if(
-        orig.uri().empty(), annot, "URI required to support patching.");
-    return gen_struct(annot, orig.name() + suffix, orig.uri() + suffix);
-  }
   t_struct& gen_struct(const t_node& annot, std::string name, std::string uri);
-
-  // Create a patch version of the given field.
-  //
-  // Returns nullptr if no associated patch type can be found.
-  std::unique_ptr<t_field> gen_patch_field(
-      const t_node& annot, const t_field& orig);
+  t_struct& gen_struct_with_suffix(
+      const t_node& annot, const t_named& orig, const std::string& suffix);
 
   // Attempts to resolve the associated patch type for the given type.
   //
