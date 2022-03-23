@@ -25,7 +25,13 @@ void <%service:parent_service_cpp_name%>AsyncProcessor::setUpAndProcess_<%#servi
   ctx->setRequestExecutionScope(std::move(scope));
   processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, <% > types/function_kind%>, &<%service:parent_service_cpp_name%>AsyncProcessor::process_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
 <%/function:eb%><%#function:eb%>
+  <%#function:in_or_creates_interaction?%>
+  (void)tm;
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, <% > types/function_kind%>, &<%service:parent_service_cpp_name%>AsyncProcessor::process_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
+  <%/function:in_or_creates_interaction?%>
+  <%^function:in_or_creates_interaction?%>
   process_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+  <%/function:in_or_creates_interaction?%>
 <%/function:eb%>
 }
 

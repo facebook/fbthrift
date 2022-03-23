@@ -27,7 +27,6 @@
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Calculator.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/Dummy.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Streamer.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -70,6 +69,29 @@ struct SemiCalculatorHandler : CalculatorSvIf {
     auto handler = std::make_unique<SemiAdditionHandler>();
     handler->acc_ = x;
     return {std::move(handler), x};
+  }
+
+  struct FastAdditionHandler : CalculatorSvIf::AdditionFastIf {
+    int acc_{0};
+    void async_eb_accumulatePrimitive(
+        std::unique_ptr<HandlerCallback<void>> cb, int32_t a) override {
+      acc_ += a;
+      cb->exception(std::runtime_error("Not Implemented Yet"));
+    }
+    void async_eb_getPrimitive(
+        std::unique_ptr<HandlerCallback<int32_t>> cb) override {
+      cb->result(acc_);
+    }
+  };
+
+  TileAndResponse<AdditionFastIf, void> fastAddition() override {
+    return {std::make_unique<FastAdditionHandler>()};
+  }
+
+  void async_eb_veryFastAddition(
+      std::unique_ptr<HandlerCallback<TileAndResponse<AdditionFastIf, void>>>
+          cb) override {
+    cb->result({std::make_unique<FastAdditionHandler>()});
   }
 };
 
@@ -1170,6 +1192,47 @@ CO_TEST(InteractionCodegenTest, FactoryEager) {
         co_await folly::coro::collectAll(std::move(sf1), std::move(sf2));
     EXPECT_EQ(ret1, 42);
     EXPECT_EQ(co_await adder.co_getPrimitive(), 43);
+  }
+}
+
+TEST(InteractionCodegenTest, FactoryEb) {
+  auto client = makeTestClient<CalculatorAsyncClient>(
+      std::make_shared<SemiCalculatorHandler>());
+
+  {
+    auto adder = client->sync_fastAddition();
+    EXPECT_THROW(adder.sync_accumulatePrimitive(1), TApplicationException);
+    EXPECT_EQ(adder.sync_getPrimitive(), 1);
+  }
+
+  {
+    auto adder = client->sync_veryFastAddition();
+    EXPECT_THROW(adder.sync_accumulatePrimitive(1), TApplicationException);
+    EXPECT_EQ(adder.sync_getPrimitive(), 1);
+  }
+
+  {
+    RpcOptions opts;
+    auto [adder, sf1] = client->eager_semifuture_fastAddition(opts);
+    auto sf2 = adder.semifuture_accumulatePrimitive(1);
+    auto sf3 = adder.semifuture_getPrimitive();
+    auto [res1, res2, res3] =
+        folly::collectAll(std::move(sf1), std::move(sf2), std::move(sf3)).get();
+    EXPECT_TRUE(sf1.hasValue());
+    EXPECT_FALSE(sf2.hasValue());
+    EXPECT_TRUE(sf3.hasValue());
+  }
+
+  {
+    RpcOptions opts;
+    auto [adder, sf1] = client->eager_semifuture_veryFastAddition(opts);
+    auto sf2 = adder.semifuture_accumulatePrimitive(1);
+    auto sf3 = adder.semifuture_getPrimitive();
+    auto [res1, res2, res3] =
+        folly::collectAll(std::move(sf1), std::move(sf2), std::move(sf3)).get();
+    EXPECT_TRUE(sf1.hasValue());
+    EXPECT_FALSE(sf2.hasValue());
+    EXPECT_TRUE(sf3.hasValue());
   }
 }
 

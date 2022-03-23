@@ -1616,13 +1616,17 @@ void GeneratedAsyncProcessor::processInThread(
     return;
   }
 
-  using Source = concurrency::ThreadManager::Source;
-  auto source = tile && !ctx->getInteractionCreate()
-      ? Source::EXISTING_INTERACTION
-      : Source::UPSTREAM;
-  tm->getKeepAlive(std::move(scope), source)->add([task = std::move(task)] {
+  if (tm) {
+    using Source = concurrency::ThreadManager::Source;
+    auto source = tile && !ctx->getInteractionCreate()
+        ? Source::EXISTING_INTERACTION
+        : Source::UPSTREAM;
+    tm->getKeepAlive(std::move(scope), source)->add([task = std::move(task)] {
+      task->run();
+    });
+  } else {
     task->run();
-  });
+  }
 }
 
 template <class F>

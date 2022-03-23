@@ -852,7 +852,8 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_frobnicate(apach
   if (!setUpRequestProcessing(req, ctx, eb, nullptr, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, iface_, "MyInteractionFast")) {
     return;
   }
-  process_MyInteractionFast_frobnicate<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+  (void)tm;
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_MyInteractionFast_frobnicate<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -949,7 +950,8 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_ping(apache::thr
   if (!setUpRequestProcessing(req, ctx, eb, nullptr, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, iface_, "MyInteractionFast")) {
     return;
   }
-  process_MyInteractionFast_ping<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+  (void)tm;
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &MyServiceAsyncProcessor::process_MyInteractionFast_ping<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1010,7 +1012,8 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_truthify(apache:
   if (!setUpRequestProcessing(req, ctx, eb, nullptr, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, iface_, "MyInteractionFast")) {
     return;
   }
-  process_MyInteractionFast_truthify<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+  (void)tm;
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &MyServiceAsyncProcessor::process_MyInteractionFast_truthify<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -1110,7 +1113,8 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_encode(apache::t
   if (!setUpRequestProcessing(req, ctx, eb, nullptr, apache::thrift::RpcKind::SINK, iface_, "MyInteractionFast")) {
     return;
   }
-  process_MyInteractionFast_encode<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+  (void)tm;
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, apache::thrift::RpcKind::SINK, &MyServiceAsyncProcessor::process_MyInteractionFast_encode<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

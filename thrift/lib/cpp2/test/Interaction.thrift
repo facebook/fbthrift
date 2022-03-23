@@ -52,12 +52,8 @@ service Calculator {
   Addition newAddition();
   Addition, i32 initializedAddition(1: i32 a);
   Addition, string stringifiedAddition(1: i32 a);
-}
-
-service Dummy {
-  void newAddition();
-  i32 initializedAddition(1: i32 a);
-  string stringifiedAddition(1: i32 a);
+  AdditionFast fastAddition();
+  AdditionFast veryFastAddition() (thread = 'eb');
 }
 
 interaction Streaming {
