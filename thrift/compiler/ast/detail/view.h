@@ -33,10 +33,10 @@ class base_view {
   using value_type = std::remove_cv_t<T>;
 
   constexpr auto rbegin() const noexcept {
-    std::make_reverse_iterator(derived().end());
+    return std::make_reverse_iterator(derived().end());
   }
   constexpr auto rend() const noexcept {
-    std::make_reverse_iterator(derived().begin());
+    return std::make_reverse_iterator(derived().begin());
   }
   constexpr bool empty() const noexcept { return derived().size() == 0; }
 

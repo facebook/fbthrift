@@ -70,8 +70,13 @@ class node_list_view : public ast_detail::base_view<node_list_view<T>, T*> {
     reference operator[](difference_type n) const noexcept { return *itr_[n]; }
 
     iterator operator++(int) noexcept { return {itr_++}; }
+    iterator operator--(int) noexcept { return {itr_--}; }
     iterator& operator++() noexcept {
       ++itr_;
+      return *this;
+    }
+    iterator& operator--() noexcept {
+      --itr_;
       return *this;
     }
     iterator& operator+=(difference_type n) noexcept {

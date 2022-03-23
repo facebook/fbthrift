@@ -41,8 +41,9 @@ class ast_mutator
 
   void mutate(diagnostic_context& ctx, t_program_bundle& bundle) {
     mutator_context mctx;
-    for (auto& program : bundle.programs()) {
-      operator()(ctx, mctx, program);
+    for (auto itr = bundle.programs().rbegin(); itr != bundle.programs().rend();
+         ++itr) {
+      operator()(ctx, mctx, *itr);
     }
   }
 };
