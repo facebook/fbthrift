@@ -21,6 +21,7 @@
 #include <cstring>
 #include <map>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 #include <boost/optional.hpp>
@@ -214,7 +215,7 @@ class t_templated_type : public t_type {
 class t_type_ref final {
  public:
   t_type_ref() = default;
-  /* implicit */ t_type_ref(const t_type& type) : type_(&type) {}
+  /* implicit */ t_type_ref(const t_type& type) : t_type_ref(&type) {}
   /* implicit */ t_type_ref(t_type&&) = delete;
 
   // Returns the resolved type being referenced.
@@ -229,9 +230,21 @@ class t_type_ref final {
   bool empty() const noexcept { return type_ == nullptr; }
   explicit operator bool() const { return !empty(); }
 
+  // Helpers for constructing from pointers.
+  static t_type_ref from_ptr(const t_type* type) { return t_type_ref(type); }
+  static t_type_ref from_req_ptr(const t_type* type) {
+    if (type == nullptr) {
+      throw std::runtime_error("type required");
+    }
+    return from_ptr(type);
+  }
+
  private:
   friend class t_placeholder_typedef;
   const t_type* type_ = nullptr;
+
+  // Note: Use from_ptr or from_req_ptr for public access.
+  explicit t_type_ref(const t_type* type) : type_(type) {}
 
   void set_type(const t_type* type) { type_ = type; }
 
@@ -239,16 +252,6 @@ class t_type_ref final {
   // for backwards compatibility.
  public:
   const t_type* get_type() const { return type_; }
-
-  static boost::optional<t_type_ref> from_ptr(const t_type* type) {
-    if (type == nullptr) {
-      return boost::none;
-    }
-    return t_type_ref(*type);
-  }
-  static t_type_ref from_req_ptr(const t_type* type) {
-    return from_ptr(type).value();
-  }
 };
 
 } // namespace compiler
