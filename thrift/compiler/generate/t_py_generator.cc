@@ -2322,7 +2322,6 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
       << endl
       << indent() << "    except AttributeError:" << endl
       << indent() << "      pass" << endl
-      << endl
       << endl;
 
   f_service_
@@ -2336,7 +2335,6 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
       << "    return self._oprot.trans.get_write_persistent_headers()" << endl
       << indent() << "  except AttributeError:" << endl
       << indent() << "    return {}" << endl
-      << endl
       << endl;
 
   f_service_ << indent() << "def clear_persistent_headers(self):" << endl
@@ -2350,7 +2348,6 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
              << endl
              << indent() << "    except AttributeError:" << endl
              << indent() << "      pass" << endl
-             << endl
              << endl;
 
   f_service_
@@ -2365,6 +2362,17 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
       << indent() << "    except AttributeError:" << endl
       << indent() << "      pass" << endl
       << endl;
+
+  f_service_ << indent() << "def set_max_frame_size(self, size):" << endl
+             << indent() << "  if self._fbthrift_cpp_transport:" << endl
+             << indent() << "    pass" << endl
+             << indent() << "  else:" << endl
+             << indent() << "    try:" << endl
+             << indent() << "      self._oprot.trans.set_max_frame_size(size)"
+             << endl
+             << indent() << "    except AttributeError:" << endl
+             << indent() << "      pass" << endl
+             << endl;
 
   // Generate client method implementations
   const auto& functions = get_functions(tservice);

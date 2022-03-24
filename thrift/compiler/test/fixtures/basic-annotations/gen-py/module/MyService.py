@@ -1456,7 +1456,6 @@ class Client(Iface):
       except AttributeError:
         pass
 
-
   def get_persistent_headers(self):
     if self._fbthrift_cpp_transport:
       return self._fbthrift_cpp_transport.get_persistent_headers()
@@ -1464,7 +1463,6 @@ class Client(Iface):
       return self._oprot.trans.get_write_persistent_headers()
     except AttributeError:
       return {}
-
 
   def clear_persistent_headers(self):
     if self._fbthrift_cpp_transport:
@@ -1475,13 +1473,21 @@ class Client(Iface):
       except AttributeError:
         pass
 
-
   def set_onetime_header(self, key, value):
     if self._fbthrift_cpp_transport:
       self._fbthrift_cpp_transport.set_onetime_header(key, value)
     else:
       try:
         self._oprot.trans.set_header(key, value)
+      except AttributeError:
+        pass
+
+  def set_max_frame_size(self, size):
+    if self._fbthrift_cpp_transport:
+      pass
+    else:
+      try:
+        self._oprot.trans.set_max_frame_size(size)
       except AttributeError:
         pass
 
