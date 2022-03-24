@@ -142,6 +142,12 @@ class t_hack_generator : public t_oop_generator {
       const t_type* type,
       const t_const_value* value,
       bool immutable_collections = false);
+  std::string render_const_value_helper(
+      const t_type* type,
+      const t_const_value* value,
+      std::ostream& temp_var_initializations_out,
+      t_name_generator& namer,
+      bool immutable_collections = false);
   std::string render_default_value(const t_type* type);
 
   /**
@@ -660,7 +666,9 @@ class t_hack_generator : public t_oop_generator {
   std::string render_service_metadata_response(
       const t_service* service, const bool mangle);
   std::string render_structured_annotations(
-      const std::vector<const t_const*>& annotations);
+      const std::vector<const t_const*>& annotations,
+      std::ostream& temp_var_initializations_out,
+      t_name_generator& namer);
 
  private:
   /**
@@ -1208,17 +1216,27 @@ void t_hack_generator::close_generator() {
               << "public static function getAllStructuredAnnotations()[]: "
                  "dict<string, dict<string, \\IThriftStruct>> {\n";
     indent_up();
-    f_consts_ << indent() << "return dict[\n";
+
+    std::stringstream annotations_out;
+    std::stringstream annotations_temp_var_initializations_out;
+    t_name_generator namer;
+
+    annotations_out << indent() << "return dict[\n";
     indent_up();
     for (const auto& tconst : program_->consts()) {
       if (tconst->structured_annotations().empty()) {
         continue;
       }
-      f_consts_ << indent() << "'" << tconst->name() << "' => "
-                << render_structured_annotations(
-                       tconst->structured_annotations())
-                << ",\n";
+      annotations_out << indent() << "'" << tconst->name() << "' => "
+                      << render_structured_annotations(
+                             tconst->structured_annotations(),
+                             annotations_temp_var_initializations_out,
+                             namer)
+                      << ",\n";
     }
+
+    f_consts_ << annotations_temp_var_initializations_out.str();
+    f_consts_ << annotations_out.str();
     indent_down();
     f_consts_ << indent() << "];\n";
     indent_down();
@@ -1311,22 +1329,35 @@ void t_hack_generator::generate_enum(const t_enum* tenum) {
            << "public static function getAllStructuredAnnotations()[]: "
               "\\TEnumAnnotations {\n";
   indent_up();
-  f_types_ << indent() << "return shape(\n";
+
+  std::stringstream annotations_out;
+  std::stringstream annotations_temp_var_initializations_out;
+  t_name_generator namer;
+
+  annotations_out << indent() << "return shape(\n";
   indent_up();
-  f_types_ << indent() << "'enum' => "
-           << render_structured_annotations(tenum->structured_annotations())
-           << ",\n";
-  f_types_ << indent() << "'constants' => dict[\n";
+  annotations_out << indent() << "'enum' => "
+                  << render_structured_annotations(
+                         tenum->structured_annotations(),
+                         annotations_temp_var_initializations_out,
+                         namer)
+                  << ",\n";
+  annotations_out << indent() << "'constants' => dict[\n";
   indent_up();
   for (const auto& constant : tenum->get_enum_values()) {
     if (constant->structured_annotations().empty()) {
       continue;
     }
-    f_types_ << indent() << "'" << constant->name() << "' => "
-             << render_structured_annotations(
-                    constant->structured_annotations())
-             << ",\n";
+    annotations_out << indent() << "'" << constant->name() << "' => "
+                    << render_structured_annotations(
+                           constant->structured_annotations(),
+                           annotations_temp_var_initializations_out,
+                           namer)
+                    << ",\n";
   }
+
+  f_types_ << annotations_temp_var_initializations_out.str();
+  f_types_ << annotations_out.str();
   indent_down();
   f_types_ << indent() << "],\n";
   indent_down();
@@ -1349,6 +1380,11 @@ void t_hack_generator::generate_const(const t_const* tconst) {
   generate_php_docstring(f_consts_, tconst);
   bool is_hack_const = is_hack_const_type(type);
   f_consts_ << indent();
+
+  std::stringstream consts_out;
+  std::stringstream consts_temp_var_initializations_out;
+  t_name_generator namer;
+
   // for base hack types, use const (guarantees optimization in hphp)
   if (is_hack_const) {
     f_consts_ << "const " << type_to_typehint(type) << " " << name << " = ";
@@ -1359,9 +1395,15 @@ void t_hack_generator::generate_const(const t_const* tconst) {
               << "()[]: " << type_to_typehint(type, false, false, true)
               << "{\n";
     indent_up();
-    f_consts_ << indent() << "return ";
+    consts_out << indent() << "return ";
   }
-  f_consts_ << render_const_value(type, value, true) << ";\n";
+  consts_out
+      << render_const_value_helper(
+             type, value, consts_temp_var_initializations_out, namer, true)
+      << ";\n";
+
+  f_consts_ << consts_temp_var_initializations_out.str();
+  f_consts_ << consts_out.str();
   if (!is_hack_const) {
     indent_down();
     f_consts_ << indent() << "}\n";
@@ -1415,6 +1457,22 @@ std::string t_hack_generator::render_const_value(
     const t_const_value* value,
     bool immutable_collections) {
   std::ostringstream out;
+  std::ostringstream initialization_out;
+  t_name_generator namer;
+  auto const_val = render_const_value_helper(
+      type, value, initialization_out, namer, immutable_collections);
+  out << initialization_out.str();
+  out << const_val;
+  return out.str();
+}
+
+std::string t_hack_generator::render_const_value_helper(
+    const t_type* type,
+    const t_const_value* value,
+    std::ostream& temp_var_initializations_out,
+    t_name_generator& namer,
+    bool immutable_collections) {
+  std::ostringstream out;
   type = type->get_true_type();
   if (const auto* tbase_type = dynamic_cast<const t_base_type*>(type)) {
     switch (tbase_type->get_base()) {
@@ -1456,37 +1514,89 @@ std::string t_hack_generator::render_const_value(
       out << hack_name(tenum) << "::coerce(" << value->get_integer() << ")";
     }
   } else if (const auto* tstruct = dynamic_cast<const t_struct*>(type)) {
-    out << hack_name(type) << "::fromShape(\n";
-    indent_up();
-    indent(out) << "shape(\n";
-    indent_up();
-
-    for (const auto& entry : value->get_map()) {
-      const auto* field = tstruct->get_field_by_name(entry.first->get_string());
-      if (field == nullptr) {
-        throw std::runtime_error(
-            "type error: " + type->name() + " has no field " +
-            entry.first->get_string());
-      }
-    }
-    for (const auto& field : tstruct->fields()) {
-      t_const_value* k = nullptr;
-      t_const_value* v = nullptr;
+    auto struct_name = hack_name(type);
+    if (is_async_struct(tstruct)) {
+      auto temp_val = namer(("$" + struct_name).c_str());
+      int preserved_indent_size = get_indent();
+      set_indent(2);
+      temp_var_initializations_out << indent() << temp_val << " = "
+                                   << hack_name(type)
+                                   << "::withDefaultValues();\n";
       for (const auto& entry : value->get_map()) {
-        if (field.name() == entry.first->get_string()) {
-          k = entry.first;
-          v = entry.second;
+        const auto* field =
+            tstruct->get_field_by_name(entry.first->get_string());
+        if (field == nullptr) {
+          throw std::runtime_error(
+              "type error: " + type->name() + " has no field " +
+              entry.first->get_string());
+        }
+        t_const_value* v = entry.second;
+        std::stringstream inner;
+        if (v) {
+          auto* field_wrapper = find_hack_wrapper(*field);
+          if (field_wrapper) {
+            inner << indent() << temp_val << "->get_" << field->name()
+                  << "()->setValue_DO_NOT_USE_THRIFT_INTERNAL(";
+          } else {
+            inner << indent() << temp_val << "->" << field->name() << " = ";
+          }
+          inner << render_const_value_helper(
+              field->get_type(), v, temp_var_initializations_out, namer);
+          if (field_wrapper) {
+            inner << ");\n";
+          } else {
+            inner << ";\n";
+          }
+        }
+        temp_var_initializations_out << inner.str() << "\n";
+      }
+      out << temp_val;
+
+      set_indent(preserved_indent_size);
+    } else {
+      out << hack_name(type) << "::fromShape(\n";
+      indent_up();
+      indent(out) << "shape(\n";
+      indent_up();
+
+      for (const auto& entry : value->get_map()) {
+        const auto* field =
+            tstruct->get_field_by_name(entry.first->get_string());
+        if (field == nullptr) {
+          throw std::runtime_error(
+              "type error: " + type->name() + " has no field " +
+              entry.first->get_string());
         }
       }
-      if (v != nullptr) {
-        indent(out) << render_const_value(&t_base_type::t_string(), k) << " => "
-                    << render_const_value(field.get_type(), v) << ",\n";
+      for (const auto& field : tstruct->fields()) {
+        t_const_value* k = nullptr;
+        t_const_value* v = nullptr;
+        for (const auto& entry : value->get_map()) {
+          if (field.name() == entry.first->get_string()) {
+            k = entry.first;
+            v = entry.second;
+          }
+        }
+        if (v != nullptr) {
+          indent(out) << render_const_value_helper(
+                             &t_base_type::t_string(),
+                             k,
+                             temp_var_initializations_out,
+                             namer)
+                      << " => "
+                      << render_const_value_helper(
+                             field.get_type(),
+                             v,
+                             temp_var_initializations_out,
+                             namer)
+                      << ",\n";
+        }
       }
+      indent_down();
+      indent(out) << ")\n";
+      indent_down();
+      indent(out) << ")";
     }
-    indent_down();
-    indent(out) << ")\n";
-    indent_down();
-    indent(out) << ")";
   } else if (const auto* tmap = dynamic_cast<const t_map*>(type)) {
     const t_type* ktype = tmap->get_key_type();
     const t_type* vtype = tmap->get_val_type();
@@ -1500,9 +1610,19 @@ std::string t_hack_generator::render_const_value(
     indent_up();
     for (const auto& entry : value->get_map()) {
       out << indent();
-      out << render_const_value(ktype, entry.first, immutable_collections);
+      out << render_const_value_helper(
+          ktype,
+          entry.first,
+          temp_var_initializations_out,
+          namer,
+          immutable_collections);
       out << " => ";
-      out << render_const_value(vtype, entry.second, immutable_collections);
+      out << render_const_value_helper(
+          vtype,
+          entry.second,
+          temp_var_initializations_out,
+          namer,
+          immutable_collections);
       out << ",\n";
     }
     indent_down();
@@ -1523,7 +1643,12 @@ std::string t_hack_generator::render_const_value(
     indent_up();
     for (const auto* val : value->get_list()) {
       out << indent();
-      out << render_const_value(etype, val, immutable_collections);
+      out << render_const_value_helper(
+          etype,
+          val,
+          temp_var_initializations_out,
+          namer,
+          immutable_collections);
       out << ",\n";
     }
     indent_down();
@@ -1540,7 +1665,12 @@ std::string t_hack_generator::render_const_value(
       out << "keyset[\n";
       for (const auto* val : vals) {
         out << indent();
-        out << render_const_value(etype, val, immutable_collections);
+        out << render_const_value_helper(
+            etype,
+            val,
+            temp_var_initializations_out,
+            namer,
+            immutable_collections);
         out << ",\n";
       }
       indent_down();
@@ -1549,7 +1679,12 @@ std::string t_hack_generator::render_const_value(
       out << "dict[\n";
       for (const auto* val : vals) {
         out << indent();
-        out << render_const_value(etype, val, immutable_collections);
+        out << render_const_value_helper(
+            etype,
+            val,
+            temp_var_initializations_out,
+            namer,
+            immutable_collections);
         out << " => true";
         out << ",\n";
       }
@@ -1559,7 +1694,12 @@ std::string t_hack_generator::render_const_value(
       out << (immutable_collections ? "Imm" : "") << "Set {\n";
       for (const auto* val : vals) {
         out << indent();
-        out << render_const_value(etype, val, immutable_collections);
+        out << render_const_value_helper(
+            etype,
+            val,
+            temp_var_initializations_out,
+            namer,
+            immutable_collections);
         out << ",\n";
       }
       indent_down();
@@ -3715,31 +3855,46 @@ void t_hack_generator::generate_php_struct_structured_annotations_method(
   indent(out) << "public static function getAllStructuredAnnotations()[]: "
                  "\\TStructAnnotations {\n";
   indent_up();
-  indent(out) << "return shape(\n";
+
+  std::stringstream annotations_out;
+  std::stringstream annotations_temp_var_initializations_out;
+  t_name_generator namer;
+
+  indent(annotations_out) << "return shape(\n";
   indent_up();
-  indent(out) << "'struct' => "
-              << render_structured_annotations(
-                     tstruct->structured_annotations())
-              << ",\n";
-  indent(out) << "'fields' => dict[\n";
+  indent(annotations_out) << "'struct' => "
+                          << render_structured_annotations(
+                                 tstruct->structured_annotations(),
+                                 annotations_temp_var_initializations_out,
+                                 namer)
+                          << ",\n";
+  indent(annotations_out) << "'fields' => dict[\n";
   indent_up();
   for (auto&& field : tstruct->fields()) {
     if (field.structured_annotations().empty() &&
         field.type()->structured_annotations().empty()) {
       continue;
     }
-    indent(out) << "'" << field.name() << "' => shape(\n";
+    indent(annotations_out) << "'" << field.name() << "' => shape(\n";
     indent_up();
-    indent(out) << "'field' => "
-                << render_structured_annotations(field.structured_annotations())
-                << ",\n";
-    indent(out) << "'type' => "
-                << render_structured_annotations(
-                       field.type()->structured_annotations())
-                << ",\n";
+    indent(annotations_out) << "'field' => "
+                            << render_structured_annotations(
+                                   field.structured_annotations(),
+                                   annotations_temp_var_initializations_out,
+                                   namer)
+                            << ",\n";
+    indent(annotations_out) << "'type' => "
+                            << render_structured_annotations(
+                                   field.type()->structured_annotations(),
+                                   annotations_temp_var_initializations_out,
+                                   namer)
+                            << ",\n";
     indent_down();
-    indent(out) << "),\n";
+    indent(annotations_out) << "),\n";
   }
+
+  out << annotations_temp_var_initializations_out.str();
+  out << annotations_out.str();
   indent_down();
   indent(out) << "],\n";
   indent_down();
@@ -3955,7 +4110,9 @@ std::string t_hack_generator::render_service_metadata_response(
 }
 
 std::string t_hack_generator::render_structured_annotations(
-    const std::vector<const t_const*>& annotations) {
+    const std::vector<const t_const*>& annotations,
+    std::ostream& temp_var_initializations_out,
+    t_name_generator& namer) {
   std::ostringstream out;
   out << "dict[";
   if (!annotations.empty()) {
@@ -3963,8 +4120,11 @@ std::string t_hack_generator::render_structured_annotations(
     indent_up();
     for (const auto& annotation : annotations) {
       indent(out) << "'" << hack_name(annotation->get_type()) << "' => "
-                  << render_const_value(
-                         annotation->get_type(), annotation->get_value())
+                  << render_const_value_helper(
+                         annotation->get_type(),
+                         annotation->get_value(),
+                         temp_var_initializations_out,
+                         namer)
                   << ",\n";
     }
     indent_down();
@@ -4681,23 +4841,36 @@ void t_hack_generator::generate_service_helpers(
              << "public static function getAllStructuredAnnotations()[]: "
                 "\\TServiceAnnotations {\n";
   indent_up();
-  f_service_ << indent() << "return shape(\n";
+
+  std::stringstream annotations_out;
+  std::stringstream annotations_temp_var_initializations_out;
+  t_name_generator namer;
+
+  annotations_out << indent() << "return shape(\n";
   indent_up();
-  f_service_ << indent() << "'service' => "
-             << render_structured_annotations(
-                    tservice->structured_annotations())
-             << ",\n";
-  f_service_ << indent() << "'functions' => dict[\n";
+  annotations_out << indent() << "'service' => "
+                  << render_structured_annotations(
+                         tservice->structured_annotations(),
+                         annotations_temp_var_initializations_out,
+                         namer)
+                  << ",\n";
+  annotations_out << indent() << "'functions' => dict[\n";
   indent_up();
   for (const auto& function : get_supported_client_functions(tservice)) {
     if (function->structured_annotations().empty()) {
       continue;
     }
-    f_service_ << indent() << "'" << function->name() << "' => "
-               << render_structured_annotations(
-                      function->structured_annotations())
-               << ",\n";
+    annotations_out << indent() << "'" << function->name() << "' => "
+                    << render_structured_annotations(
+                           function->structured_annotations(),
+                           annotations_temp_var_initializations_out,
+                           namer)
+                    << ",\n";
   }
+
+  f_service_ << annotations_temp_var_initializations_out.str();
+  f_service_ << annotations_out.str();
+
   indent_down();
   f_service_ << indent() << "],\n";
   indent_down();

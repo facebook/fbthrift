@@ -312,48 +312,47 @@ class MyService_second_args implements \IThriftSyncStruct, \IThriftShapishSyncSt
   }
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    $structured_annotation_recursive0 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive0->name = "abc_service_method";
+
+    $structured_annotation_recursive1 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive1->name = "cba_service_method";
+
+    $structured_annotation_recursive0->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive1);
+
+    $structured_annotation_recursive0->default = structured_annotation_with_default::fromShape(
+      shape(
+        "count" => 3,
+      )
+    );
+
+    $structured_annotation_recursive2 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive2->name = "key_service_method1";
+
+    $structured_annotation_recursive3 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive3->name = "def_service_method";
+
+    $structured_annotation_recursive2->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive3);
+
+    $structured_annotation_recursive4 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive4->name = "key_service_method2";
+
+    $structured_annotation_recursive5 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive5->name = "fed_service_method";
+
+    $structured_annotation_recursive4->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive5);
+
+    $structured_annotation_recursive0->recurse_map = dict[
+      "key_service_method1" => $structured_annotation_recursive2,
+      "key_servic_methode2" => $structured_annotation_recursive4,
+    ];
+
     return shape(
       'struct' => dict[],
       'fields' => dict[
         'count' => shape(
           'field' => dict[
-            'structured_annotation_recursive' => structured_annotation_recursive::fromShape(
-              shape(
-                "name" => "abc_service_method",
-                "recurse" => structured_annotation_recursive::fromShape(
-                  shape(
-                    "name" => "cba_service_method",
-                  )
-                ),
-                "default" => structured_annotation_with_default::fromShape(
-                  shape(
-                    "count" => 3,
-                  )
-                ),
-                "recurse_map" => dict[
-                  "key_service_method1" => structured_annotation_recursive::fromShape(
-                    shape(
-                      "name" => "key_service_method1",
-                      "recurse" => structured_annotation_recursive::fromShape(
-                        shape(
-                          "name" => "def_service_method",
-                        )
-                      ),
-                    )
-                  ),
-                  "key_servic_methode2" => structured_annotation_recursive::fromShape(
-                    shape(
-                      "name" => "key_service_method2",
-                      "recurse" => structured_annotation_recursive::fromShape(
-                        shape(
-                          "name" => "fed_service_method",
-                        )
-                      ),
-                    )
-                  ),
-                ],
-              )
-            ),
+            'structured_annotation_recursive' => $structured_annotation_recursive0,
           ],
           'type' => dict[],
         ),
@@ -550,85 +549,83 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   }
 
   public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
+    $structured_annotation_recursive0 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive0->name = "abc_service";
+
+    $structured_annotation_recursive1 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive1->name = "cba_service";
+
+    $structured_annotation_recursive0->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive1);
+
+    $structured_annotation_recursive0->default = structured_annotation_with_default::fromShape(
+      shape(
+        "count" => 3,
+      )
+    );
+
+    $structured_annotation_recursive2 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive2->name = "key_service1";
+
+    $structured_annotation_recursive3 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive3->name = "def_service";
+
+    $structured_annotation_recursive2->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive3);
+
+    $structured_annotation_recursive4 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive4->name = "key_service2";
+
+    $structured_annotation_recursive5 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive5->name = "fed_service";
+
+    $structured_annotation_recursive4->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive5);
+
+    $structured_annotation_recursive0->recurse_map = dict[
+      "key_service1" => $structured_annotation_recursive2,
+      "key_service2" => $structured_annotation_recursive4,
+    ];
+
+    $structured_annotation_recursive6 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive6->name = "abc_service_method";
+
+    $structured_annotation_recursive7 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive7->name = "cba_service_method";
+
+    $structured_annotation_recursive6->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive7);
+
+    $structured_annotation_recursive6->default = structured_annotation_with_default::fromShape(
+      shape(
+        "count" => 3,
+      )
+    );
+
+    $structured_annotation_recursive8 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive8->name = "key_service_method1";
+
+    $structured_annotation_recursive9 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive9->name = "def_service_method";
+
+    $structured_annotation_recursive8->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive9);
+
+    $structured_annotation_recursive10 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive10->name = "key_service_method2";
+
+    $structured_annotation_recursive11 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive11->name = "fed_service_method";
+
+    $structured_annotation_recursive10->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive11);
+
+    $structured_annotation_recursive6->recurse_map = dict[
+      "key_service_method1" => $structured_annotation_recursive8,
+      "key_servic_methode2" => $structured_annotation_recursive10,
+    ];
+
     return shape(
       'service' => dict[
-        'structured_annotation_recursive' => structured_annotation_recursive::fromShape(
-          shape(
-            "name" => "abc_service",
-            "recurse" => structured_annotation_recursive::fromShape(
-              shape(
-                "name" => "cba_service",
-              )
-            ),
-            "default" => structured_annotation_with_default::fromShape(
-              shape(
-                "count" => 3,
-              )
-            ),
-            "recurse_map" => dict[
-              "key_service1" => structured_annotation_recursive::fromShape(
-                shape(
-                  "name" => "key_service1",
-                  "recurse" => structured_annotation_recursive::fromShape(
-                    shape(
-                      "name" => "def_service",
-                    )
-                  ),
-                )
-              ),
-              "key_service2" => structured_annotation_recursive::fromShape(
-                shape(
-                  "name" => "key_service2",
-                  "recurse" => structured_annotation_recursive::fromShape(
-                    shape(
-                      "name" => "fed_service",
-                    )
-                  ),
-                )
-              ),
-            ],
-          )
-        ),
+        'structured_annotation_recursive' => $structured_annotation_recursive0,
       ],
       'functions' => dict[
         'second' => dict[
-          'structured_annotation_recursive' => structured_annotation_recursive::fromShape(
-            shape(
-              "name" => "abc_service_method",
-              "recurse" => structured_annotation_recursive::fromShape(
-                shape(
-                  "name" => "cba_service_method",
-                )
-              ),
-              "default" => structured_annotation_with_default::fromShape(
-                shape(
-                  "count" => 3,
-                )
-              ),
-              "recurse_map" => dict[
-                "key_service_method1" => structured_annotation_recursive::fromShape(
-                  shape(
-                    "name" => "key_service_method1",
-                    "recurse" => structured_annotation_recursive::fromShape(
-                      shape(
-                        "name" => "def_service_method",
-                      )
-                    ),
-                  )
-                ),
-                "key_servic_methode2" => structured_annotation_recursive::fromShape(
-                  shape(
-                    "name" => "key_service_method2",
-                    "recurse" => structured_annotation_recursive::fromShape(
-                      shape(
-                        "name" => "fed_service_method",
-                      )
-                    ),
-                  )
-                ),
-              ],
-            )
-          ),
+          'structured_annotation_recursive' => $structured_annotation_recursive6,
         ],
       ],
     );

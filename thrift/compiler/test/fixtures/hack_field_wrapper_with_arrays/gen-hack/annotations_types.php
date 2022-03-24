@@ -29,47 +29,46 @@ class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
   }
 
   public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+    $structured_annotation_recursive0 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive0->name = "abc_enum";
+
+    $structured_annotation_recursive1 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive1->name = "cba_enum";
+
+    $structured_annotation_recursive0->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive1);
+
+    $structured_annotation_recursive0->default = structured_annotation_with_default::fromShape(
+      shape(
+        "count" => 3,
+      )
+    );
+
+    $structured_annotation_recursive2 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive2->name = "key_enum1";
+
+    $structured_annotation_recursive3 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive3->name = "def_enum";
+
+    $structured_annotation_recursive2->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive3);
+
+    $structured_annotation_recursive4 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive4->name = "key_enum2";
+
+    $structured_annotation_recursive5 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive5->name = "fed_enum";
+
+    $structured_annotation_recursive4->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive5);
+
+    $structured_annotation_recursive0->recurse_map = dict[
+      "key_enum1" => $structured_annotation_recursive2,
+      "key_enum2" => $structured_annotation_recursive4,
+    ];
+
     return shape(
       'enum' => dict[],
       'constants' => dict[
         'UNKNOWN' => dict[
-          'structured_annotation_recursive' => structured_annotation_recursive::fromShape(
-            shape(
-              "name" => "abc_enum",
-              "recurse" => structured_annotation_recursive::fromShape(
-                shape(
-                  "name" => "cba_enum",
-                )
-              ),
-              "default" => structured_annotation_with_default::fromShape(
-                shape(
-                  "count" => 3,
-                )
-              ),
-              "recurse_map" => dict[
-                "key_enum1" => structured_annotation_recursive::fromShape(
-                  shape(
-                    "name" => "key_enum1",
-                    "recurse" => structured_annotation_recursive::fromShape(
-                      shape(
-                        "name" => "def_enum",
-                      )
-                    ),
-                  )
-                ),
-                "key_enum2" => structured_annotation_recursive::fromShape(
-                  shape(
-                    "name" => "key_enum2",
-                    "recurse" => structured_annotation_recursive::fromShape(
-                      shape(
-                        "name" => "fed_enum",
-                      )
-                    ),
-                  )
-                ),
-              ],
-            )
-          ),
+          'structured_annotation_recursive' => $structured_annotation_recursive0,
         ],
       ],
     );
@@ -632,86 +631,84 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   }
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    $structured_annotation_recursive0 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive0->name = "abc_struct";
+
+    $structured_annotation_recursive1 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive1->name = "cba_struct";
+
+    $structured_annotation_recursive0->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive1);
+
+    $structured_annotation_recursive0->default = structured_annotation_with_default::fromShape(
+      shape(
+        "count" => 3,
+      )
+    );
+
+    $structured_annotation_recursive2 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive2->name = "key_struct1";
+
+    $structured_annotation_recursive3 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive3->name = "def_struct";
+
+    $structured_annotation_recursive2->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive3);
+
+    $structured_annotation_recursive4 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive4->name = "key_struct2";
+
+    $structured_annotation_recursive5 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive5->name = "fed_struct";
+
+    $structured_annotation_recursive4->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive5);
+
+    $structured_annotation_recursive0->recurse_map = dict[
+      "key_struct1" => $structured_annotation_recursive2,
+      "key_struct2" => $structured_annotation_recursive4,
+    ];
+
+    $structured_annotation_recursive6 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive6->name = "abc_struct_field";
+
+    $structured_annotation_recursive7 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive7->name = "cba_struct_field";
+
+    $structured_annotation_recursive6->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive7);
+
+    $structured_annotation_recursive6->default = structured_annotation_with_default::fromShape(
+      shape(
+        "count" => 3,
+      )
+    );
+
+    $structured_annotation_recursive8 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive8->name = "key_struct_field1";
+
+    $structured_annotation_recursive9 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive9->name = "def_struct_field";
+
+    $structured_annotation_recursive8->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive9);
+
+    $structured_annotation_recursive10 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive10->name = "key_struct_field2";
+
+    $structured_annotation_recursive11 = structured_annotation_recursive::withDefaultValues();
+    $structured_annotation_recursive11->name = "fed_struct_field";
+
+    $structured_annotation_recursive10->get_recurse()->setValue_DO_NOT_USE_THRIFT_INTERNAL($structured_annotation_recursive11);
+
+    $structured_annotation_recursive6->recurse_map = dict[
+      "key_struct_field1" => $structured_annotation_recursive8,
+      "key_struct_field2" => $structured_annotation_recursive10,
+    ];
+
     return shape(
       'struct' => dict[
-        'structured_annotation_recursive' => structured_annotation_recursive::fromShape(
-          shape(
-            "name" => "abc_struct",
-            "recurse" => structured_annotation_recursive::fromShape(
-              shape(
-                "name" => "cba_struct",
-              )
-            ),
-            "default" => structured_annotation_with_default::fromShape(
-              shape(
-                "count" => 3,
-              )
-            ),
-            "recurse_map" => dict[
-              "key_struct1" => structured_annotation_recursive::fromShape(
-                shape(
-                  "name" => "key_struct1",
-                  "recurse" => structured_annotation_recursive::fromShape(
-                    shape(
-                      "name" => "def_struct",
-                    )
-                  ),
-                )
-              ),
-              "key_struct2" => structured_annotation_recursive::fromShape(
-                shape(
-                  "name" => "key_struct2",
-                  "recurse" => structured_annotation_recursive::fromShape(
-                    shape(
-                      "name" => "fed_struct",
-                    )
-                  ),
-                )
-              ),
-            ],
-          )
-        ),
+        'structured_annotation_recursive' => $structured_annotation_recursive0,
       ],
       'fields' => dict[
         'annotated_recursive' => shape(
           'field' => dict[
-            'structured_annotation_recursive' => structured_annotation_recursive::fromShape(
-              shape(
-                "name" => "abc_struct_field",
-                "recurse" => structured_annotation_recursive::fromShape(
-                  shape(
-                    "name" => "cba_struct_field",
-                  )
-                ),
-                "default" => structured_annotation_with_default::fromShape(
-                  shape(
-                    "count" => 3,
-                  )
-                ),
-                "recurse_map" => dict[
-                  "key_struct_field1" => structured_annotation_recursive::fromShape(
-                    shape(
-                      "name" => "key_struct_field1",
-                      "recurse" => structured_annotation_recursive::fromShape(
-                        shape(
-                          "name" => "def_struct_field",
-                        )
-                      ),
-                    )
-                  ),
-                  "key_struct_field2" => structured_annotation_recursive::fromShape(
-                    shape(
-                      "name" => "key_struct_field2",
-                      "recurse" => structured_annotation_recursive::fromShape(
-                        shape(
-                          "name" => "fed_struct_field",
-                        )
-                      ),
-                    )
-                  ),
-                ],
-              )
-            ),
+            'structured_annotation_recursive' => $structured_annotation_recursive6,
           ],
           'type' => dict[],
         ),

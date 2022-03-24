@@ -18,15 +18,18 @@ class constants_CONSTANTS implements \IThriftConstants {
    */
   <<__Memoize>>
   public static function instagram()[]: Internship{
-    return Internship::fromShape(
-      shape(
-        "weeks" => 12,
-        "title" => "Software Engineer",
-        "employer" => Company::INSTAGRAM,
-        "compensation" => 1200.0,
-        "school" => "Monters University",
-      )
-    );
+    $Internship0 = Internship::withDefaultValues();
+    $Internship0->weeks = 12;
+
+    $Internship0->title = "Software Engineer";
+
+    $Internship0->employer = Company::INSTAGRAM;
+
+    $Internship0->get_compensation()->setValue_DO_NOT_USE_THRIFT_INTERNAL(1200.0);
+
+    $Internship0->school = "Monters University";
+
+    return $Internship0;
   }
 
   /**
@@ -35,24 +38,29 @@ class constants_CONSTANTS implements \IThriftConstants {
    */
   <<__Memoize>>
   public static function internList()[]: vec<Internship>{
+    $Internship0 = Internship::withDefaultValues();
+    $Internship0->weeks = 12;
+
+    $Internship0->title = "Software Engineer";
+
+    $Internship0->employer = Company::INSTAGRAM;
+
+    $Internship0->get_compensation()->setValue_DO_NOT_USE_THRIFT_INTERNAL(1200.0);
+
+    $Internship0->school = "Monters University";
+
+    $Internship1 = Internship::withDefaultValues();
+    $Internship1->weeks = 10;
+
+    $Internship1->title = "Sales Intern";
+
+    $Internship1->employer = Company::FACEBOOK;
+
+    $Internship1->get_compensation()->setValue_DO_NOT_USE_THRIFT_INTERNAL(1000.0);
+
     return vec[
-      Internship::fromShape(
-        shape(
-          "weeks" => 12,
-          "title" => "Software Engineer",
-          "employer" => Company::INSTAGRAM,
-          "compensation" => 1200.0,
-          "school" => "Monters University",
-        )
-      ),
-      Internship::fromShape(
-        shape(
-          "weeks" => 10,
-          "title" => "Sales Intern",
-          "employer" => Company::FACEBOOK,
-          "compensation" => 1000.0,
-        )
-      ),
+      $Internship0,
+      $Internship1,
     ];
   }
 

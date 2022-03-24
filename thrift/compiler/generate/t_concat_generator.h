@@ -180,6 +180,11 @@ class t_concat_generator : public t_generator {
   int get_indent() const { return indent_; }
 
   /**
+   * Set current indentation level.
+   */
+  void set_indent(int indent) { indent_ = indent; }
+
+  /**
    * Indentation level modifiers
    */
 
