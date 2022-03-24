@@ -179,6 +179,9 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
   public ?\AdapterTestIntToString::THackType $union_adapted_type;
   protected MyUnionEnum $_type = MyUnionEnum::_EMPTY_;
 
+  public function __construct()[] {
+  }
+
   public static function withDefaultValues()[]: this {
     return new static();
   }

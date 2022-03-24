@@ -3791,37 +3791,31 @@ void t_hack_generator::generate_php_struct_default_constructor(
     const t_struct* tstruct,
     ThriftStructType type,
     const std::string& name) {
-  // For Union, all fields are nullable and by default will be null.
-  // So we can skip constructor for union
-  if (tstruct->is_union()) {
-    return;
-  }
   out << indent() << "public function __construct()[] {\n";
-
   indent_up();
+  if (!tstruct->is_union()) {
+    if (type == ThriftStructType::EXCEPTION) {
+      out << indent() << "parent::__construct();\n";
+    }
 
-  if (type == ThriftStructType::EXCEPTION) {
-    out << indent() << "parent::__construct();\n";
-  }
-
-  std::vector<const t_field*> wrapped_fields;
-  if (type != ThriftStructType::RESULT) {
-    for (const auto& field : tstruct->fields()) {
-      // Fields with FieldWrappr annotation are nullable and need to be set
-      // at the end after all non-nullable fields are set.
-      if (find_hack_wrapper(field)) {
-        wrapped_fields.push_back(&field);
-      } else {
+    std::vector<const t_field*> wrapped_fields;
+    if (type != ThriftStructType::RESULT) {
+      for (const auto& field : tstruct->fields()) {
+        // Fields with FieldWrappr annotation are nullable and need to be set
+        // at the end after all non-nullable fields are set.
+        if (find_hack_wrapper(field)) {
+          wrapped_fields.push_back(&field);
+        } else {
+          generate_php_struct_constructor_field_assignment(
+              out, field, tstruct, name, true);
+        }
+      }
+      for (const auto& field : wrapped_fields) {
         generate_php_struct_constructor_field_assignment(
-            out, field, tstruct, name, true);
+            out, *field, tstruct, name, true);
       }
     }
-    for (const auto& field : wrapped_fields) {
-      generate_php_struct_constructor_field_assignment(
-          out, *field, tstruct, name, true);
-    }
   }
-
   scope_down(out);
   out << "\n";
 }
