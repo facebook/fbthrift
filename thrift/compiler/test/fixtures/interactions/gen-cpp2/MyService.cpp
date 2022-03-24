@@ -113,6 +113,20 @@ folly::Future<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, vo
   return apache::thrift::detail::si::future(semifuture_interact(p_arg), getInternalKeepAlive());
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void>> MyServiceSvIf::co_interact(::std::int32_t p_arg) {
+  auto expected{apache::thrift::detail::si::InvocationType::Coro};
+  __fbthrift_invocation_interact.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+  return folly::coro::toTask(future_interact(p_arg));
+}
+
+folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void>> MyServiceSvIf::co_interact(apache::thrift::RequestParams /* params */, ::std::int32_t p_arg) {
+  auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
+  __fbthrift_invocation_interact.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
+  return co_interact(p_arg);
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void MyServiceSvIf::async_tm_interact(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void>>> callback, ::std::int32_t p_arg) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
@@ -124,8 +138,17 @@ void MyServiceSvIf::async_tm_interact(std::unique_ptr<apache::thrift::HandlerCal
     switch (invocationType) {
       case apache::thrift::detail::si::InvocationType::AsyncTm:
       {
+#if FOLLY_HAS_COROUTINES
+        __fbthrift_invocation_interact.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
+        auto task = co_interact(params, p_arg);
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
+        return;
+#else // FOLLY_HAS_COROUTINES
         __fbthrift_invocation_interact.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
         FOLLY_FALLTHROUGH;
+#endif // FOLLY_HAS_COROUTINES
       }
       case apache::thrift::detail::si::InvocationType::Future:
       {
@@ -139,6 +162,22 @@ void MyServiceSvIf::async_tm_interact(std::unique_ptr<apache::thrift::HandlerCal
         apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
         return;
       }
+#if FOLLY_HAS_COROUTINES
+      case apache::thrift::detail::si::InvocationType::CoroParam:
+      {
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
+        auto task = co_interact(params, p_arg);
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Coro:
+      {
+        auto task = co_interact(p_arg);
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
+        return;
+      }
+#endif // FOLLY_HAS_COROUTINES
       case apache::thrift::detail::si::InvocationType::Sync:
       {
         callback->result(interact(p_arg));
@@ -170,6 +209,20 @@ folly::Future<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf
   return apache::thrift::detail::si::future(semifuture_interactFast(), getInternalKeepAlive());
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t>> MyServiceSvIf::co_interactFast() {
+  auto expected{apache::thrift::detail::si::InvocationType::Coro};
+  __fbthrift_invocation_interactFast.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+  return folly::coro::toTask(future_interactFast());
+}
+
+folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t>> MyServiceSvIf::co_interactFast(apache::thrift::RequestParams /* params */) {
+  auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
+  __fbthrift_invocation_interactFast.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
+  return co_interactFast();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void MyServiceSvIf::async_tm_interactFast(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
@@ -181,8 +234,17 @@ void MyServiceSvIf::async_tm_interactFast(std::unique_ptr<apache::thrift::Handle
     switch (invocationType) {
       case apache::thrift::detail::si::InvocationType::AsyncTm:
       {
+#if FOLLY_HAS_COROUTINES
+        __fbthrift_invocation_interactFast.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
+        auto task = co_interactFast(params);
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
+        return;
+#else // FOLLY_HAS_COROUTINES
         __fbthrift_invocation_interactFast.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
         FOLLY_FALLTHROUGH;
+#endif // FOLLY_HAS_COROUTINES
       }
       case apache::thrift::detail::si::InvocationType::Future:
       {
@@ -196,6 +258,22 @@ void MyServiceSvIf::async_tm_interactFast(std::unique_ptr<apache::thrift::Handle
         apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
         return;
       }
+#if FOLLY_HAS_COROUTINES
+      case apache::thrift::detail::si::InvocationType::CoroParam:
+      {
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
+        auto task = co_interactFast(params);
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Coro:
+      {
+        auto task = co_interactFast();
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
+        return;
+      }
+#endif // FOLLY_HAS_COROUTINES
       case apache::thrift::detail::si::InvocationType::Sync:
       {
         callback->result(interactFast());
@@ -227,6 +305,20 @@ folly::Future<apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf
   return apache::thrift::detail::si::future(semifuture_serialize(), getInternalKeepAlive());
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> MyServiceSvIf::co_serialize() {
+  auto expected{apache::thrift::detail::si::InvocationType::Coro};
+  __fbthrift_invocation_serialize.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+  return folly::coro::toTask(future_serialize());
+}
+
+folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> MyServiceSvIf::co_serialize(apache::thrift::RequestParams /* params */) {
+  auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
+  __fbthrift_invocation_serialize.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
+  return co_serialize();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void MyServiceSvIf::async_tm_serialize(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
@@ -238,8 +330,17 @@ void MyServiceSvIf::async_tm_serialize(std::unique_ptr<apache::thrift::HandlerCa
     switch (invocationType) {
       case apache::thrift::detail::si::InvocationType::AsyncTm:
       {
+#if FOLLY_HAS_COROUTINES
+        __fbthrift_invocation_serialize.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
+        auto task = co_serialize(params);
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
+        return;
+#else // FOLLY_HAS_COROUTINES
         __fbthrift_invocation_serialize.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
         FOLLY_FALLTHROUGH;
+#endif // FOLLY_HAS_COROUTINES
       }
       case apache::thrift::detail::si::InvocationType::Future:
       {
@@ -253,6 +354,22 @@ void MyServiceSvIf::async_tm_serialize(std::unique_ptr<apache::thrift::HandlerCa
         apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
         return;
       }
+#if FOLLY_HAS_COROUTINES
+      case apache::thrift::detail::si::InvocationType::CoroParam:
+      {
+        apache::thrift::RequestParams params{callback->getRequestContext(),
+          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
+        auto task = co_serialize(params);
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Coro:
+      {
+        auto task = co_serialize();
+        apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
+        return;
+      }
+#endif // FOLLY_HAS_COROUTINES
       case apache::thrift::detail::si::InvocationType::Sync:
       {
         callback->result(serialize());

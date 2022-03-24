@@ -1318,6 +1318,7 @@ class mstch_cpp2_function : public mstch_function {
   }
   mstch::node coroutine() {
     return function_->has_annotation("cpp.coroutine") ||
+        function_->returned_interaction().is_initialized() ||
         function_->is_interaction_member();
   }
   mstch::node event_based() {
