@@ -309,9 +309,9 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
    * Original thrift field:-
    * 1: i64 wrapped_field
    */
-  private ?\MyFieldWrapper<int, this> $wrapped_field;
+  private ?\MyFieldWrapper<int, MyNestedStruct> $wrapped_field;
 
-  public function get_wrapped_field()[]: \MyFieldWrapper<int, this> {
+  public function get_wrapped_field()[]: \MyFieldWrapper<int, MyNestedStruct> {
     return $this->wrapped_field as nonnull;
   }
 
@@ -319,9 +319,9 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
    * Original thrift field:-
    * 2: i64 annotated_field
    */
-  private ?\MyFieldWrapper<int, this> $annotated_field;
+  private ?\MyFieldWrapper<int, MyNestedStruct> $annotated_field;
 
-  public function get_annotated_field()[]: \MyFieldWrapper<int, this> {
+  public function get_annotated_field()[]: \MyFieldWrapper<int, MyNestedStruct> {
     return $this->annotated_field as nonnull;
   }
 
@@ -334,9 +334,9 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
    * Original thrift field:-
    * 4: i64 adapted__and_wrapped_type
    */
-  private ?\MyFieldWrapper<\MyAdapter::THackType, this> $adapted__and_wrapped_type;
+  private ?\MyFieldWrapper<\MyAdapter::THackType, MyNestedStruct> $adapted__and_wrapped_type;
 
-  public function get_adapted__and_wrapped_type()[]: \MyFieldWrapper<\MyAdapter::THackType, this> {
+  public function get_adapted__and_wrapped_type()[]: \MyFieldWrapper<\MyAdapter::THackType, MyNestedStruct> {
     return $this->adapted__and_wrapped_type as nonnull;
   }
 
@@ -344,19 +344,19 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
    * Original thrift field:-
    * 5: i64 optional_adapted_and_wrapped_type
    */
-  private ?\MyFieldWrapper<?\MyAdapter1::THackType, this> $optional_adapted_and_wrapped_type;
+  private ?\MyFieldWrapper<?\MyAdapter1::THackType, MyNestedStruct> $optional_adapted_and_wrapped_type;
 
-  public function get_optional_adapted_and_wrapped_type()[]: \MyFieldWrapper<?\MyAdapter1::THackType, this> {
+  public function get_optional_adapted_and_wrapped_type()[]: \MyFieldWrapper<?\MyAdapter1::THackType, MyNestedStruct> {
     return $this->optional_adapted_and_wrapped_type as nonnull;
   }
 
 
   public function __construct()[] {
     $this->adapted_type = \MyAdapter::fromThrift(0);
-    $this->wrapped_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, this>(0, 1, $this);
-    $this->annotated_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, this>(0, 2, $this);
-    $this->adapted__and_wrapped_type = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\MyAdapter::THackType, this>(\MyAdapter::fromThrift(0), 4, $this);
-    $this->optional_adapted_and_wrapped_type = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?\MyAdapter1::THackType, this>(null, 5, $this);
+    $this->wrapped_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, MyNestedStruct>(0, 1, $this);
+    $this->annotated_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, MyNestedStruct>(0, 2, $this);
+    $this->adapted__and_wrapped_type = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\MyAdapter::THackType, MyNestedStruct>(\MyAdapter::fromThrift(0), 4, $this);
+    $this->optional_adapted_and_wrapped_type = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?\MyAdapter1::THackType, MyNestedStruct>(null, 5, $this);
   }
 
   public static function withDefaultValues()[]: this {

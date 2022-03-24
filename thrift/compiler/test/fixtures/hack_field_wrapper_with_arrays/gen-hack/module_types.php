@@ -171,7 +171,7 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
    * Original thrift field:-
    * 1: i64 union_annotated_field
    */
-  private ?\MyFieldWrapper<int, this> $union_annotated_field;
+  private ?\MyFieldWrapper<int, MyUnion> $union_annotated_field;
   /**
    * Original thrift field:-
    * 3: i64 union_adapted_type
@@ -190,7 +190,7 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
     $obj = new static();
     $union_annotated_field = Shapes::idx($shape, 'union_annotated_field');
     if ($union_annotated_field !== null) {
-      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, this>($union_annotated_field, 1, $obj);
+      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, MyUnion>($union_annotated_field, 1, $obj);
       $obj->_type = MyUnionEnum::union_annotated_field;
     }
     $union_adapted_type = Shapes::idx($shape, 'union_adapted_type');
@@ -206,7 +206,7 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
     $union_annotated_field = idx($map, 'union_annotated_field');
     if ($union_annotated_field !== null) {
       /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, this>($union_annotated_field, 1, $obj);
+      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, MyUnion>($union_annotated_field, 1, $obj);
       $obj->_type = MyUnionEnum::union_annotated_field;
     }
     $union_adapted_type = idx($map, 'union_adapted_type');
@@ -243,15 +243,15 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
   public function set_union_annotated_field(int $union_annotated_field)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::union_annotated_field;
-    $this->union_annotated_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, this>($union_annotated_field, 1, $this);
+    $this->union_annotated_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, MyUnion>($union_annotated_field, 1, $this);
     return $this;
   }
 
-  public function get_union_annotated_field()[]: ?\MyFieldWrapper<int, this> {
+  public function get_union_annotated_field()[]: ?\MyFieldWrapper<int, MyUnion> {
     return $this->union_annotated_field;
   }
 
-  public function getx_union_annotated_field()[]: \MyFieldWrapper<int, this> {
+  public function getx_union_annotated_field()[]: \MyFieldWrapper<int, MyUnion> {
     invariant(
       $this->_type === MyUnionEnum::union_annotated_field,
       'get_union_annotated_field called on an instance of MyUnion whose current type is %s',
@@ -338,7 +338,7 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
     $obj = new static();
     $union_annotated_field = Shapes::idx($shape, 'union_annotated_field');
     if ($union_annotated_field !== null) {
-      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, this>($union_annotated_field, 1, $obj);
+      $obj->union_annotated_field = await \MyFieldWrapper::genFromThrift<int, MyUnion>($union_annotated_field, 1, $obj);
       $obj->_type = MyUnionEnum::union_annotated_field;
     }
     $union_adapted_type = Shapes::idx($shape, 'union_adapted_type');
@@ -433,9 +433,9 @@ class MyException extends \TException implements \IThriftAsyncStruct {
    * Original thrift field:-
    * 3: string annotated_message
    */
-  private ?\MyFieldWrapper<string, this> $annotated_message;
+  private ?\MyFieldWrapper<string, MyException> $annotated_message;
 
-  public function get_annotated_message()[]: \MyFieldWrapper<string, this> {
+  public function get_annotated_message()[]: \MyFieldWrapper<string, MyException> {
     return $this->annotated_message as nonnull;
   }
 
@@ -444,7 +444,7 @@ class MyException extends \TException implements \IThriftAsyncStruct {
     parent::__construct();
     $this->code = 0;
     $this->message = '';
-    $this->annotated_message = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<string, this>('', 3, $this);
+    $this->annotated_message = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<string, MyException>('', 3, $this);
   }
 
   public static function withDefaultValues()[]: this {

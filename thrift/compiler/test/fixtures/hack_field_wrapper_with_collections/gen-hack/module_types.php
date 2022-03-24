@@ -287,9 +287,9 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
    * Original thrift field:-
    * 1: i64 wrapped_field
    */
-  private ?\MyFieldWrapper<int, this> $wrapped_field;
+  private ?\MyFieldWrapper<int, MyNestedStruct> $wrapped_field;
 
-  public function get_wrapped_field()[]: \MyFieldWrapper<int, this> {
+  public function get_wrapped_field()[]: \MyFieldWrapper<int, MyNestedStruct> {
     return $this->wrapped_field as nonnull;
   }
 
@@ -297,9 +297,9 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
    * Original thrift field:-
    * 2: i64 annotated_field
    */
-  private ?\MyFieldWrapper<int, this> $annotated_field;
+  private ?\MyFieldWrapper<int, MyNestedStruct> $annotated_field;
 
-  public function get_annotated_field()[]: \MyFieldWrapper<int, this> {
+  public function get_annotated_field()[]: \MyFieldWrapper<int, MyNestedStruct> {
     return $this->annotated_field as nonnull;
   }
 
@@ -311,8 +311,8 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
 
   public function __construct()[] {
     $this->adapted_type = \MyAdapter::fromThrift(0);
-    $this->wrapped_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, this>(0, 1, $this);
-    $this->annotated_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, this>(0, 2, $this);
+    $this->wrapped_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, MyNestedStruct>(0, 1, $this);
+    $this->annotated_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, MyNestedStruct>(0, 2, $this);
   }
 
   public static function withDefaultValues()[]: this {
@@ -631,9 +631,9 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
    * Original thrift field:-
    * 2: map<string, list<struct module.MyStruct>> map_of_string_to_list_of_MyStruct
    */
-  private ?\MyFieldWrapper<Map<string, Vector<MyStruct>>, this> $map_of_string_to_list_of_MyStruct;
+  private ?\MyFieldWrapper<Map<string, Vector<MyStruct>>, MyComplexStruct> $map_of_string_to_list_of_MyStruct;
 
-  public function get_map_of_string_to_list_of_MyStruct()[]: \MyFieldWrapper<Map<string, Vector<MyStruct>>, this> {
+  public function get_map_of_string_to_list_of_MyStruct()[]: \MyFieldWrapper<Map<string, Vector<MyStruct>>, MyComplexStruct> {
     return $this->map_of_string_to_list_of_MyStruct as nonnull;
   }
 
@@ -664,7 +664,7 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
     $this->map_of_string_to_map_of_string_to_MyStruct = Map {};
     $this->list_of_map_of_string_to_list_of_MyStruct = Vector {};
     $this->list_of_map_of_string_to_MyStruct = Vector {};
-    $this->map_of_string_to_list_of_MyStruct = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<Map<string, Vector<MyStruct>>, this>(Map {}, 2, $this);
+    $this->map_of_string_to_list_of_MyStruct = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<Map<string, Vector<MyStruct>>, MyComplexStruct>(Map {}, 2, $this);
   }
 
   public static function withDefaultValues()[]: this {

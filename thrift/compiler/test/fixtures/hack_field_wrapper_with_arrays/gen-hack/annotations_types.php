@@ -267,9 +267,9 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
    * Original thrift field:-
    * 2: struct annotations.structured_annotation_recursive recurse
    */
-  private ?MyFieldWrapper<?structured_annotation_recursive, this> $recurse;
+  private ?MyFieldWrapper<?structured_annotation_recursive, structured_annotation_recursive> $recurse;
 
-  public function get_recurse()[]: MyFieldWrapper<?structured_annotation_recursive, this> {
+  public function get_recurse()[]: MyFieldWrapper<?structured_annotation_recursive, structured_annotation_recursive> {
     return $this->recurse as nonnull;
   }
 
@@ -287,7 +287,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
   public function __construct()[] {
     $this->name = '';
     $this->recurse_map = dict[];
-    $this->recurse = MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?structured_annotation_recursive, this>(null, 2, $this);
+    $this->recurse = MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?structured_annotation_recursive, structured_annotation_recursive>(null, 2, $this);
   }
 
   public static function withDefaultValues()[]: this {

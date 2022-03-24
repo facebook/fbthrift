@@ -254,16 +254,24 @@ class t_hack_generator : public t_oop_generator {
 
   void generate_php_union_enum(
       std::ofstream& out, const t_struct* tstruct, const std::string& name);
-  void generate_php_union_methods(std::ofstream& out, const t_struct* tstruct);
+  void generate_php_union_methods(
+      std::ofstream& out,
+      const t_struct* tstruct,
+      const std::string& struct_hack_name);
   void generate_php_struct_fields(
       std::ofstream& out,
       const t_struct* tstruct,
+      const std::string& struct_hack_name,
       ThriftStructType type = ThriftStructType::STRUCT);
 
   void generate_php_struct_field_methods(
       std::ofstream& out, const t_field* field, bool is_exception);
   void generate_php_field_wrapper_methods(
-      std::ofstream& out, const t_field& field, bool is_union, bool nullable);
+      std::ofstream& out,
+      const t_field& field,
+      bool is_union,
+      bool nullable,
+      const std::string& struct_class_name);
   void generate_php_struct_methods(
       std::ofstream& out,
       const t_struct* tstruct,
@@ -530,6 +538,7 @@ class t_hack_generator : public t_oop_generator {
 
   std::string field_to_typehint(
       const t_field& tfield,
+      const std::string& struct_class_name,
       bool is_field_nullable = false,
       bool is_type_nullable = false,
       bool shape = false,
@@ -3383,7 +3392,9 @@ void t_hack_generator::generate_php_struct_definition(
 }
 
 void t_hack_generator::generate_php_union_methods(
-    std::ofstream& out, const t_struct* tstruct) {
+    std::ofstream& out,
+    const t_struct* tstruct,
+    const std::string& struct_hack_name) {
   auto enumName = union_enum_name(tstruct);
 
   indent(out) << "public function getType()[]: " << enumName << " {\n";
@@ -3420,8 +3431,9 @@ void t_hack_generator::generate_php_union_methods(
     indent(out) << "$this->" << fieldName << " = ";
     if (const auto* field_wrapper = find_hack_wrapper(field)) {
       out << *field_wrapper << "::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<"
-          << typehint << ", this>($" << fieldName << ", " << field.get_key()
-          << ", $this);\n";
+          << typehint << ", "
+          << hack_name(struct_hack_name, tstruct->program(), true) << ">($"
+          << fieldName << ", " << field.get_key() << ", $this);\n";
     } else {
       out << "$" << fieldName << ";\n";
     }
@@ -3429,7 +3441,10 @@ void t_hack_generator::generate_php_union_methods(
     indent_down();
     indent(out) << "}\n\n";
 
-    typehint = field_to_typehint(field, /* is_field_nullable */ false);
+    typehint = field_to_typehint(
+        field,
+        hack_name(struct_hack_name, tstruct->program(), true),
+        /* is_field_nullable */ false);
 
     // get_<fieldName>()
     indent(out) << "public function get_" << fieldName << "()[]: ?" << typehint
@@ -3459,7 +3474,12 @@ void t_hack_generator::generate_php_union_methods(
 }
 
 void t_hack_generator::generate_php_struct_fields(
-    std::ofstream& out, const t_struct* tstruct, ThriftStructType type) {
+    std::ofstream& out,
+    const t_struct* tstruct,
+    const std::string& struct_hack_name,
+    ThriftStructType type) {
+  auto struct_class_name =
+      hack_name(struct_hack_name, tstruct->program(), true);
   for (const auto& field : tstruct->fields()) {
     bool is_base_exception_field = type == ThriftStructType::EXCEPTION &&
         is_base_exception_property(&field);
@@ -3501,7 +3521,9 @@ void t_hack_generator::generate_php_struct_fields(
     // Compute typehint before resolving typedefs to avoid missing any adapter
     // annotations.
     std::string typehint = field_to_typehint(
-        field, nullable && !tstruct->is_union() /* is_field_nullable */);
+        field,
+        struct_class_name,
+        nullable && !tstruct->is_union() /* is_field_nullable */);
 
     if (nullable || field_wrapper) {
       typehint = "?" + typehint;
@@ -3544,13 +3566,17 @@ void t_hack_generator::generate_php_struct_fields(
 
     if (field_wrapper) {
       generate_php_field_wrapper_methods(
-          out, field, tstruct->is_union(), nullable);
+          out, field, tstruct->is_union(), nullable, struct_class_name);
     }
   }
 }
 
 void t_hack_generator::generate_php_field_wrapper_methods(
-    std::ofstream& out, const t_field& field, bool is_union, bool nullable) {
+    std::ofstream& out,
+    const t_field& field,
+    bool is_union,
+    bool nullable,
+    const std::string& struct_class_name) {
   if (is_union) {
     return;
   }
@@ -3559,7 +3585,10 @@ void t_hack_generator::generate_php_field_wrapper_methods(
 
   // get_<fieldName>()
   indent(out) << "public function get_" << fieldName << "()[]: "
-              << field_to_typehint(field, /*is_field_nullable*/ nullable)
+              << field_to_typehint(
+                     field,
+                     struct_class_name,
+                     /*is_field_nullable*/ nullable)
               << " {\n";
   indent_up();
   indent(out) << "return $this->" << fieldName << " as nonnull;\n";
@@ -3627,7 +3656,7 @@ void t_hack_generator::generate_php_struct_methods(
       << indent() << "  return '" << name << "';\n"
       << indent() << "}\n\n";
   if (tstruct->is_union()) {
-    generate_php_union_methods(out, tstruct);
+    generate_php_union_methods(out, tstruct, name);
   }
   if (type == ThriftStructType::EXCEPTION) {
     const auto& value = tstruct->get_annotation("message");
@@ -3717,8 +3746,9 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
     if (const auto* field_wrapper = find_hack_wrapper(field)) {
       out << indent() << "$this->" << field_name << " = " << *field_wrapper
           << "::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<" << (nullable ? "?" : "")
-          << true_type << ", this>(" << (nullable ? "null" : dval) << ", "
-          << field.get_key() << ", $this);\n";
+          << true_type << ", " << hack_name(name, tstruct->program(), true)
+          << ">(" << (nullable ? "null" : dval) << ", " << field.get_key()
+          << ", $this);\n";
     } else if (!nullable) {
       out << indent() << "$this->" << field_name << " = " << dval << ";\n";
     }
@@ -4231,7 +4261,7 @@ void t_hack_generator::_generate_php_struct_definition(
   }
 
   generate_php_structural_id(out, tstruct, generateAsTrait);
-  generate_php_struct_fields(out, tstruct, type);
+  generate_php_struct_fields(out, tstruct, name, type);
 
   if (tstruct->is_union()) {
     // Generate _type to store which field is set and initialize it to _EMPTY_
@@ -4340,8 +4370,9 @@ void t_hack_generator::
   if (const auto* field_wrapper = find_hack_wrapper(field)) {
     if (tstruct->is_union()) {
       out << indent() << "$obj->" << name << " = await " << *field_wrapper
-          << "::genFromThrift<" << type_to_typehint(field.get_type())
-          << ", this>(" << field_ref << ", " << field.get_key() << ", $obj);\n";
+          << "::genFromThrift<" << type_to_typehint(field.get_type()) << ", "
+          << hack_name(struct_hack_name, tstruct->program(), true) << ">("
+          << field_ref << ", " << field.get_key() << ", $obj);\n";
     } else {
       out << indent() << "await $obj->get_" << name << "()->genWrap("
           << field_ref << ");\n";
@@ -5491,6 +5522,7 @@ std::string t_hack_generator::type_to_typehint(
 
 std::string t_hack_generator::field_to_typehint(
     const t_field& tfield,
+    const std::string& struct_class_name,
     bool is_field_nullable,
     bool is_type_nullable,
     bool shape,
@@ -5504,7 +5536,7 @@ std::string t_hack_generator::field_to_typehint(
       ignore_adapter);
   if (const auto* field_wrapper = find_hack_wrapper(tfield)) {
     typehint = *field_wrapper + "<" + (is_field_nullable ? "?" : "") +
-        typehint + ", this>";
+        typehint + ", " + struct_class_name + ">";
   }
   return typehint;
 }

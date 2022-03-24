@@ -121,9 +121,9 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
    * Original thrift field:-
    * 4: double compensation
    */
-  private ?\MyFieldWrapper<?float, this> $compensation;
+  private ?\MyFieldWrapper<?float, Internship> $compensation;
 
-  public function get_compensation()[]: \MyFieldWrapper<?float, this> {
+  public function get_compensation()[]: \MyFieldWrapper<?float, Internship> {
     return $this->compensation as nonnull;
   }
 
@@ -136,7 +136,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
   public function __construct()[] {
     $this->weeks = 0;
     $this->title = '';
-    $this->compensation = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?float, this>(null, 4, $this);
+    $this->compensation = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?float, Internship>(null, 4, $this);
   }
 
   public static function withDefaultValues()[]: this {
