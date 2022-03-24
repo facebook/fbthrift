@@ -268,25 +268,43 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
       'adapter' => \MyAdapter::class,
       'type' => \TType::I64,
     ),
+    4 => shape(
+      'var' => 'adapted__and_wrapped_type',
+      'is_wrapped' => true,
+      'adapter' => \MyAdapter::class,
+      'type' => \TType::I64,
+    ),
+    5 => shape(
+      'var' => 'optional_adapted_and_wrapped_type',
+      'is_wrapped' => true,
+      'adapter' => \MyAdapter1::class,
+      'type' => \TType::I64,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'wrapped_field' => 1,
     'annotated_field' => 2,
     'adapted_type' => 3,
+    'adapted__and_wrapped_type' => 4,
+    'optional_adapted_and_wrapped_type' => 5,
   ];
 
   const type TConstructorShape = shape(
     ?'wrapped_field' => ?int,
     ?'annotated_field' => ?int,
     ?'adapted_type' => ?\MyAdapter::THackType,
+    ?'adapted__and_wrapped_type' => ?\MyAdapter::THackType,
+    ?'optional_adapted_and_wrapped_type' => ?\MyAdapter1::THackType,
   );
 
   const type TShape = shape(
     'wrapped_field' => int,
     'annotated_field' => int,
     'adapted_type' => \MyAdapter::THackType,
+    'adapted__and_wrapped_type' => \MyAdapter::THackType,
+    ?'optional_adapted_and_wrapped_type' => ?\MyAdapter1::THackType,
   );
-  const int STRUCTURAL_ID = 3672151039112827748;
+  const int STRUCTURAL_ID = 9035067595372477432;
   /**
    * Original thrift field:-
    * 1: i64 wrapped_field
@@ -312,11 +330,33 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
    * 3: i64 adapted_type
    */
   public \MyAdapter::THackType $adapted_type;
+  /**
+   * Original thrift field:-
+   * 4: i64 adapted__and_wrapped_type
+   */
+  private ?\MyFieldWrapper<\MyAdapter::THackType, this> $adapted__and_wrapped_type;
+
+  public function get_adapted__and_wrapped_type()[]: \MyFieldWrapper<\MyAdapter::THackType, this> {
+    return $this->adapted__and_wrapped_type as nonnull;
+  }
+
+  /**
+   * Original thrift field:-
+   * 5: i64 optional_adapted_and_wrapped_type
+   */
+  private ?\MyFieldWrapper<?\MyAdapter1::THackType, this> $optional_adapted_and_wrapped_type;
+
+  public function get_optional_adapted_and_wrapped_type()[]: \MyFieldWrapper<?\MyAdapter1::THackType, this> {
+    return $this->optional_adapted_and_wrapped_type as nonnull;
+  }
+
 
   public function __construct()[] {
     $this->adapted_type = \MyAdapter::fromThrift(0);
     $this->wrapped_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, this>(0, 1, $this);
     $this->annotated_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, this>(0, 2, $this);
+    $this->adapted__and_wrapped_type = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\MyAdapter::THackType, this>(\MyAdapter::fromThrift(0), 4, $this);
+    $this->optional_adapted_and_wrapped_type = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?\MyAdapter1::THackType, this>(null, 5, $this);
   }
 
   public static function withDefaultValues()[]: this {
@@ -337,6 +377,14 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     if ($adapted_type !== null) {
       $obj->adapted_type = $adapted_type;
     }
+    $adapted__and_wrapped_type = Shapes::idx($shape, 'adapted__and_wrapped_type');
+    if ($adapted__and_wrapped_type !== null) {
+      await $obj->get_adapted__and_wrapped_type()->genWrap($adapted__and_wrapped_type);
+    }
+    $optional_adapted_and_wrapped_type = Shapes::idx($shape, 'optional_adapted_and_wrapped_type');
+    if ($optional_adapted_and_wrapped_type !== null) {
+      await $obj->get_optional_adapted_and_wrapped_type()->genWrap($optional_adapted_and_wrapped_type);
+    }
     return $obj;
   }
 
@@ -356,6 +404,16 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     if ($adapted_type !== null) {
       /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
       $obj->adapted_type = $adapted_type;
+    }
+    $adapted__and_wrapped_type = idx($map, 'adapted__and_wrapped_type');
+    if ($adapted__and_wrapped_type !== null) {
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      await $obj->get_adapted__and_wrapped_type()->genWrap($adapted__and_wrapped_type);
+    }
+    $optional_adapted_and_wrapped_type = idx($map, 'optional_adapted_and_wrapped_type');
+    if ($optional_adapted_and_wrapped_type !== null) {
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      await $obj->get_optional_adapted_and_wrapped_type()->genWrap($optional_adapted_and_wrapped_type);
     }
     return $obj;
   }
@@ -402,6 +460,38 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
               "name" => "adapted_type",
             )
           ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "adapted__and_wrapped_type",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "include.i64WithAdapter",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "optional_adapted_and_wrapped_type",
+              "is_optional" => true,
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -431,6 +521,26 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
           ],
           'type' => dict[],
         ),
+        'adapted__and_wrapped_type' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\FieldWrapper' => \facebook\thrift\annotation\FieldWrapper::fromShape(
+              shape(
+                "name" => "\MyFieldWrapper",
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
+        'optional_adapted_and_wrapped_type' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\FieldWrapper' => \facebook\thrift\annotation\FieldWrapper::fromShape(
+              shape(
+                "name" => "\MyFieldWrapper",
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
       ],
     );
   }
@@ -444,16 +554,25 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     await $obj->get_wrapped_field()->genWrap($shape['wrapped_field']);
     await $obj->get_annotated_field()->genWrap($shape['annotated_field']);
     $obj->adapted_type = $shape['adapted_type'];
+    await $obj->get_adapted__and_wrapped_type()->genWrap($shape['adapted__and_wrapped_type']);
+    $optional_adapted_and_wrapped_type = Shapes::idx($shape, 'optional_adapted_and_wrapped_type');
+    if ($optional_adapted_and_wrapped_type !== null) {
+      await $obj->get_optional_adapted_and_wrapped_type()->genWrap($optional_adapted_and_wrapped_type);
+    }
     return $obj;
   }
 
   public async function __genToShape()[zoned]: Awaitable<self::TShape> {
     $wrapped_field = await ($this->wrapped_field as nonnull)->genUnwrap();
     $annotated_field = await ($this->annotated_field as nonnull)->genUnwrap();
+    $adapted__and_wrapped_type = await ($this->adapted__and_wrapped_type as nonnull)->genUnwrap();
+    $optional_adapted_and_wrapped_type = await ($this->optional_adapted_and_wrapped_type as nonnull)->genUnwrap();
     return shape(
       'wrapped_field' => $wrapped_field,
       'annotated_field' => $annotated_field,
       'adapted_type' => $this->adapted_type,
+      'adapted__and_wrapped_type' => $adapted__and_wrapped_type,
+      'optional_adapted_and_wrapped_type' => $optional_adapted_and_wrapped_type,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -476,10 +595,17 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     if (idx($parsed, 'adapted_type') !== null) {
       $this->adapted_type = /* HH_FIXME[4110] */ $parsed['adapted_type'];
     }    
+    if (idx($parsed, 'adapted__and_wrapped_type') !== null) {
+      $this->adapted__and_wrapped_type = /* HH_FIXME[4110] */ $parsed['adapted__and_wrapped_type'];
+    }    
+    if (idx($parsed, 'optional_adapted_and_wrapped_type') !== null) {
+      $this->optional_adapted_and_wrapped_type = /* HH_FIXME[4110] */ $parsed['optional_adapted_and_wrapped_type'];
+    }    
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
     \ThriftUtil::requireSameType<\MyAdapter::TThriftType, int>();
+    \ThriftUtil::requireSameType<\MyAdapter1::TThriftType, int>();
   }
 
 }

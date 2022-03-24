@@ -3671,7 +3671,7 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
     const std::string& name,
     bool is_default_assignment) {
   const t_type* t = field.type()->get_true_type();
-  const auto true_type = type_to_typehint(t, false, false, false, true);
+  const auto true_type = type_to_typehint(t, false, false, false, false);
   std::string dval = "";
   bool is_exception = tstruct->is_exception();
   if (field.default_value() != nullptr &&
@@ -5508,11 +5508,9 @@ std::string t_hack_generator::field_to_typehint(
       shape,
       immutable_collections,
       ignore_adapter);
-  if (!ignore_adapter) {
-    if (const auto* field_wrapper = find_hack_wrapper(tfield)) {
-      typehint = *field_wrapper + "<" + (is_field_nullable ? "?" : "") +
-          typehint + ", this>";
-    }
+  if (const auto* field_wrapper = find_hack_wrapper(tfield)) {
+    typehint = *field_wrapper + "<" + (is_field_nullable ? "?" : "") +
+        typehint + ", this>";
   }
   return typehint;
 }

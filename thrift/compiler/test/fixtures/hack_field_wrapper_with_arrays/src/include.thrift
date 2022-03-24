@@ -25,12 +25,18 @@ struct MyStruct {
   1: MyNestedStruct nested_struct;
 }
 
+typedef i64 (hack.adapter = "\MyAdapter1") i64WithAdapter
+
 struct MyNestedStruct {
   @hack.FieldWrapper{name = "\MyFieldWrapper"}
   1: i64 wrapped_field;
   @AnnotationStruct
   2: i64 annotated_field;
   3: i64 (hack.adapter = "\MyAdapter") adapted_type;
+  @hack.FieldWrapper{name = "\MyFieldWrapper"}
+  4: i64 (hack.adapter = "\MyAdapter") adapted__and_wrapped_type;
+  @hack.FieldWrapper{name = "\MyFieldWrapper"}
+  5: optional i64WithAdapter optional_adapted_and_wrapped_type;
 }
 
 struct MyComplexStruct {
