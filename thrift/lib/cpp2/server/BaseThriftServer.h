@@ -434,8 +434,12 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   //! The type of thread manager to create.
   ThreadManagerType threadManagerType_{ThreadManagerType::PRIORITY};
 
-  //! The ResourcePoolsSet used by this ThriftServer (if in ResourcePools are
-  //! enabled).
+  //! The thread pool sizes for priority thread manager.
+  std::array<size_t, concurrency::N_PRIORITIES> threadManagerPoolSizes_{
+      {0, 0, 0, 0, 0}};
+
+  //! The ResourcePoolsSet used by this ThriftServer (if in ResourcePools
+  //! are enabled).
   ResourcePoolSet resourcePoolSet_;
 
   /**
@@ -583,6 +587,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   void setThreadFactory(
       std::shared_ptr<concurrency::ThreadFactory> threadFactory) {
     CHECK(configMutable());
+    std::lock_guard<std::mutex> lock(threadManagerMutex_);
     CHECK(!threadManager_);
     threadFactory_ = std::move(threadFactory);
   }
@@ -592,8 +597,20 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setThreadManagerType(ThreadManagerType threadManagerType) {
     CHECK(configMutable());
+    std::lock_guard<std::mutex> lock(threadManagerMutex_);
     CHECK(!threadManager_);
     threadManagerType_ = threadManagerType;
+  }
+
+  /**
+   * Set the size of thread pools when using ThreadManagerType::PRIORITY
+   */
+  void setThreadManagerPoolSizes(
+      const std::array<size_t, concurrency::N_PRIORITIES>& poolSizes) {
+    CHECK(configMutable());
+    std::lock_guard<std::mutex> lock(threadManagerMutex_);
+    CHECK(!threadManager_);
+    threadManagerPoolSizes_ = poolSizes;
   }
 
   /**

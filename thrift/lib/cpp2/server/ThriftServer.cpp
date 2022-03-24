@@ -611,8 +611,17 @@ void ThriftServer::setupThreadManager() {
     std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager;
     switch (threadManagerType_) {
       case ThreadManagerType::PRIORITY:
-        threadManager = PriorityThreadManager::newPriorityThreadManager(
-            getNumCPUWorkerThreads());
+        if (std::any_of(
+                std::begin(threadManagerPoolSizes_),
+                std::end(threadManagerPoolSizes_),
+                [](std::size_t c) { return c != 0; })) {
+          // The priorities were specified using setThreadManagerPoolSizes
+          threadManager = PriorityThreadManager::newPriorityThreadManager(
+              threadManagerPoolSizes_);
+        } else {
+          threadManager = PriorityThreadManager::newPriorityThreadManager(
+              getNumCPUWorkerThreads());
+        }
         break;
       case ThreadManagerType::SIMPLE:
         threadManager =
