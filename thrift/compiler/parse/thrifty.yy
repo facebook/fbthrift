@@ -258,9 +258,9 @@ using t_typethrowspair = std::pair<t_type_ref, t_throws*>;
 %type<std::string>                 Identifier
 %type<std::string>                 FieldTypeIdentifier
 %type<t_def_attrs*>                StatementAttrs
-%type<t_named*>                    Header
+%type<t_header_type>               Header
 %type<t_named*>                    Definition
-%type<t_named*>                    Statement
+%type<std::pair<t_statement_type, t_named*>> Statement
 %type<t_named*>                    StatementAnnotated
 
 %type<t_typedef*>                  Typedef
@@ -401,13 +401,13 @@ Header:
     {
       driver.debug("Header -> tok_include tok_literal");
       driver.add_include(std::move($2));
-      $$ = nullptr;
+      $$ = t_header_type::standard;
     }
 | tok_package tok_literal
     {
       driver.debug("Header -> tok_package tok_literal");
       driver.set_package(std::move($2));
-      $$ = nullptr;
+      $$ = t_header_type::program;
     }
 | tok_namespace Identifier Identifier
     {
@@ -415,7 +415,7 @@ Header:
       if (driver.mode == parsing_mode::PROGRAM) {
         driver.program->set_namespace(std::move($2), std::move($3));
       }
-      $$ = nullptr;
+      $$ = t_header_type::standard;
     }
 | tok_namespace Identifier tok_literal
     {
@@ -423,7 +423,7 @@ Header:
       if (driver.mode == parsing_mode::PROGRAM) {
         driver.program->set_namespace(std::move($2), std::move($3));
       }
-      $$ = nullptr;
+      $$ = t_header_type::standard;
     }
 | tok_cpp_include tok_literal
     {
@@ -431,13 +431,13 @@ Header:
       if (driver.mode == parsing_mode::PROGRAM) {
         driver.program->add_cpp_include($2);
       }
-      $$ = nullptr;
+      $$ = t_header_type::standard;
     }
 | tok_hs_include tok_literal
     {
       driver.debug("Header -> tok_hs_include tok_literal");
       // Do nothing. This syntax is handled by the hs compiler
-      $$ = nullptr;
+      $$ = t_header_type::standard;
     }
 
 Definition:
@@ -455,26 +455,32 @@ Statement:
     {
       driver.debug("Statement -> ProgramDocText Header");
       driver.validate_header_location();
-      $$ = $2;
+      $$ = std::make_pair(static_cast<t_statement_type>($2), nullptr);
     }
 | Definition
     {
       driver.debug("Statement -> Definition");
       driver.set_parsed_definition();
-      $$ = $1;
+      $$ = std::make_pair(t_statement_type::definition, $1);
     }
 
 StatementAnnotated:
   StatementAttrs Statement Annotations
     {
       driver.debug("StatementAnnotated -> StatementAttrs Statement Annotations");
-      if ($2 == nullptr) {
-        driver.validate_annotations_on_null_statement($1, $3);
-        $$ = nullptr;
-      } else {
-        driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
-        $$ = $2;
-        driver.set_attributes(*$$, own($1), own($3), @$);
+      switch ($2.first) {
+        case t_statement_type::standard_header:
+          driver.validate_header_annotations(own($1), own($3));
+          $$ = nullptr;
+          break;
+        case t_statement_type::program_header:
+          driver.set_program_annotations(own($1), own($3), @$);
+          $$ = nullptr;
+          break;
+        case t_statement_type::definition:
+          driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
+          $$ = $2.second;
+          driver.set_attributes(*$$, own($1), own($3), @$);
       }
     }
 

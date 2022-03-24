@@ -33,7 +33,7 @@
 #include <thrift/compiler/ast/t_interaction.h>
 #include <thrift/compiler/ast/t_list.h>
 #include <thrift/compiler/ast/t_map.h>
-#include <thrift/compiler/ast/t_node.h>
+#include <thrift/compiler/ast/t_named.h>
 #include <thrift/compiler/ast/t_package.h>
 #include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_service.h>
@@ -47,10 +47,23 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+enum class t_statement_type {
+  standard_header,
+  program_header,
+  definition,
+};
+
+enum class t_header_type {
+  standard = int(t_statement_type::standard_header),
+  // All annotations on headers of these types are
+  // attributed to the program.
+  program = int(t_statement_type::program_header),
+};
+
 /**
  * Top level class representing an entire thrift program.
  */
-class t_program : public t_node {
+class t_program : public t_named {
  public:
   // The value used when an offset is not specified/unknown.
   static constexpr auto noffset = static_cast<size_t>(-1);

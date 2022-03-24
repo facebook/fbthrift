@@ -288,9 +288,6 @@ class parsing_driver {
    */
   void validate_not_ambiguous_enum(const std::string& name);
 
-  void validate_annotations_on_null_statement(
-      t_def_attrs* statement_attrs, t_annotations* annotations);
-
   /**
    * Clears any previously stored doctext string.
    * Also prints a warning if we are discarding information.
@@ -433,6 +430,13 @@ class parsing_driver {
 
   void set_parsed_definition();
   void validate_header_location();
+  void validate_header_annotations(
+      std::unique_ptr<t_def_attrs> statement_attrs,
+      std::unique_ptr<t_annotations> annotations);
+  void set_program_annotations(
+      std::unique_ptr<t_def_attrs> statement_attrs,
+      std::unique_ptr<t_annotations> annotations,
+      const YYLTYPE& loc);
 
  private:
   class deleter {

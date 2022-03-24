@@ -247,23 +247,6 @@ void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
   }
 }
 
-void parsing_driver::validate_annotations_on_null_statement(
-    t_def_attrs* statement_attrs, t_annotations* annotations) {
-  // Ideally the failures below have to be handled by a grammar, but it's not
-  // expressive enough to avoid conflicts when doing so.
-  if (statement_attrs != nullptr) {
-    bool has_annotations = statement_attrs->struct_annotations.get() != nullptr;
-    delete statement_attrs;
-    if (has_annotations) {
-      failure("Structured annotations are not supported for a given entity.");
-    }
-  }
-  if (annotations != nullptr) {
-    delete annotations;
-    failure("Annotations are not supported for a given entity.");
-  }
-}
-
 void parsing_driver::clear_doctext() {
   if (doctext && mode == parsing_mode::PROGRAM) {
     warning_strict([&](auto& o) {
@@ -971,6 +954,30 @@ void parsing_driver::validate_header_location() {
       programs_that_parsed_definition_.end()) {
     failure("Headers must be specified before definitions.");
   }
+}
+
+void parsing_driver::validate_header_annotations(
+    std::unique_ptr<t_def_attrs> statement_attrs,
+    std::unique_ptr<t_annotations> annotations) {
+  // Ideally the failures below have to be handled by a grammar, but it's not
+  // expressive enough to avoid conflicts when doing so.
+  if (statement_attrs) {
+    bool has_annotations = statement_attrs->struct_annotations.get() != nullptr;
+    if (has_annotations) {
+      failure("Structured annotations are not supported for a given entity.");
+    }
+  }
+  if (annotations) {
+    failure("Annotations are not supported for a given entity.");
+  }
+}
+
+void parsing_driver::set_program_annotations(
+    std::unique_ptr<t_def_attrs> statement_attrs,
+    std::unique_ptr<t_annotations> annotations,
+    const YYLTYPE& loc) {
+  set_attributes(
+      *program, std::move(statement_attrs), std::move(annotations), loc);
 }
 
 } // namespace compiler

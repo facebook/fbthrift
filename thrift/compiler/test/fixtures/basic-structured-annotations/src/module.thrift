@@ -17,8 +17,7 @@
 include "included.thrift"
 include "namespaced.thrift"
 
-// TODO(afuller): Support structured annotations on package.
-// @included.structured_annotation_included{name = 'aba'}
+@included.structured_annotation_included{name = 'aba'}
 package "test.dev/fixtures/basic-structured-annotations"
 
 struct structured_annotation_inline {
