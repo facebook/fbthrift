@@ -2248,9 +2248,16 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
   // Context Handlers
   if (!gen_asyncio_) {
     f_service_ << indent() << "def __enter__(self):" << endl
+               << indent() << "  if self._fbthrift_cpp_transport:" << endl
+               << indent() << "    self._fbthrift_cpp_transport.__enter__()"
+               << endl
                << indent() << "  return self" << endl
                << endl;
     f_service_ << indent() << "def __exit__(self, type, value, tb):" << endl
+               << indent() << "  if self._fbthrift_cpp_transport:" << endl
+               << indent()
+               << "    self._fbthrift_cpp_transport.__exit__(type, value, tb)"
+               << endl
                << indent() << "  if self._iprot:" << endl
                << indent() << "    self._iprot.trans.close()" << endl
                << indent()

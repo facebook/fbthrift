@@ -82,3 +82,14 @@ class SyncClientTests(unittest.TestCase):
                     "PERSISTENT_HEADER_VALUE",
                     client.readHeader("HEADER_KEY"),
                 )
+
+    def test_reuse_client(self) -> None:
+        with server_in_another_process() as path:
+            client = get_client(TestService.Client, path=path)
+            with client:
+                self.assertEqual(3, client.add(1, 2))
+            with self.assertRaises(RuntimeError):
+                with client:
+                    pass
+            with self.assertRaises(RuntimeError):
+                client.add(1, 2)

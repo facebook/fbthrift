@@ -55,9 +55,13 @@ class Client(Iface):
   _fbthrift_force_cpp_transport = False
 
   def __enter__(self):
+    if self._fbthrift_cpp_transport:
+      self._fbthrift_cpp_transport.__enter__()
     return self
 
   def __exit__(self, type, value, tb):
+    if self._fbthrift_cpp_transport:
+      self._fbthrift_cpp_transport.__exit__(type, value, tb)
     if self._iprot:
       self._iprot.trans.close()
     if self._oprot and self._iprot is not self._oprot:
