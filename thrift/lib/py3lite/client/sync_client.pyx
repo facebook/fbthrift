@@ -32,11 +32,12 @@ cdef class SyncClient:
         self._omni_client = make_unique[cOmniClient](cmove(channel._cpp_obj))
 
     def __enter__(SyncClient self):
+        if not self._omni_client:
+            raise RuntimeError("Connection already closed")
         return self
 
     def __exit__(SyncClient self, exec_type, exc_value, traceback):
-        # TODO: close channel
-        pass
+        self._omni_client.reset()
 
     def _send_request(
         SyncClient self,
@@ -45,6 +46,9 @@ cdef class SyncClient:
         args,
         response_cls,
     ):
+        if not self._omni_client:
+            raise RuntimeError("Connection already closed")
+
         protocol = deref(self._omni_client).getChannelProtocolId()
         cdef IOBuf args_iobuf = serialize_iobuf(args, protocol=protocol)
         if response_cls is None:
