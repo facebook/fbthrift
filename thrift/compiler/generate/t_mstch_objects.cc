@@ -536,10 +536,6 @@ mstch::node mstch_struct::fields() {
   return generate_fields(strct_->get_members());
 }
 
-mstch::node mstch_struct::thrift_uri() {
-  return strct_->uri();
-}
-
 mstch::node mstch_struct::exception_safety() {
   if (!strct_->is_xception()) {
     return std::string("");

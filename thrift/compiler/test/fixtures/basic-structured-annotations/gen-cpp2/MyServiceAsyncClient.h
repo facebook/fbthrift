@@ -28,6 +28,10 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     return "MyService";
   }
 
+  static const char* __fbthrift_cpp2_gen_thrift_uri() {
+    return "test.dev/fixtures/basic-structured-annotations/MyService";
+  }
+
 
   virtual void first(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void first(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);

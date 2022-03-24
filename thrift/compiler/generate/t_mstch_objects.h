@@ -1031,10 +1031,10 @@ class mstch_struct : public mstch_base {
     return !strct_->is_xception() && !strct_->is_union();
   }
   mstch::node annotations() { return mstch_base::annotations(strct_); }
-  mstch::node thrift_uri();
   mstch::node structured_annotations() {
     return mstch_base::structured_annotations(strct_);
   }
+  mstch::node thrift_uri() { return strct_->uri(); }
 
   mstch::node exception_safety();
 
@@ -1211,6 +1211,7 @@ class mstch_service : public mstch_base {
             {"service:streams?", &mstch_service::has_streams},
             {"service:sinks?", &mstch_service::has_sinks},
             {"service:annotations", &mstch_service::annotations},
+            {"service:thrift_uri", &mstch_service::thrift_uri},
             {"service:parent", &mstch_service::parent},
             {"service:interaction?", &mstch_service::is_interaction},
             {"service:interactions", &mstch_service::interactions},
@@ -1241,6 +1242,7 @@ class mstch_service : public mstch_base {
   mstch::node functions();
   mstch::node extends();
   mstch::node annotations() { return mstch_base::annotations(service_); }
+  mstch::node thrift_uri() { return service_->uri(); }
 
   mstch::node parent() {
     return cache_->parsed_options_["parent_service_name"];

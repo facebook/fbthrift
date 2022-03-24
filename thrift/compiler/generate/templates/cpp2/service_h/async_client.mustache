@@ -21,6 +21,12 @@
   char const* getServiceName() const noexcept override {
     return "<%service:parent_service_name%>";
   }
+<%#service:thrift_uri%>
+
+  static const char* __fbthrift_cpp2_gen_thrift_uri() {
+    return "<%service:thrift_uri%>";
+  }
+<%/service:thrift_uri%>
 
 <%#service:interactions%>
 <% > service_h/interaction_async_client%>

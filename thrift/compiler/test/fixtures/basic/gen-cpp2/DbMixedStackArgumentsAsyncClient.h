@@ -27,6 +27,10 @@ class DbMixedStackArgumentsAsyncClient : public apache::thrift::GeneratedAsyncCl
     return "DbMixedStackArguments";
   }
 
+  static const char* __fbthrift_cpp2_gen_thrift_uri() {
+    return "test.dev/fixtures/basic/DbMixedStackArguments";
+  }
+
 
   virtual void getDataByKey0(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_key);
   virtual void getDataByKey0(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_key);
