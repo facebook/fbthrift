@@ -16,7 +16,7 @@
 
 %><%#service:functions%><%#function:return_type%><%^function:starts_interaction?%>
 template <typename Protocol_, typename RpcOptions>
-void <% > service_common/client_class_name%>::<%function:cpp_name%>T(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, <% > types/callback_type%> callback<%#function:creates_interaction?%>, const InteractionHandle& handle<%/function:creates_interaction?%><%function:comma%><% > service_common/function_param_list_client%>) {
+void <% > service_common/client_class_name%>::<%function:cpp_name%>T(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, <% > types/callback_type%> callback<%#function:creates_interaction?%>, const apache::thrift::InteractionHandle& handle<%/function:creates_interaction?%><%function:comma%><% > service_common/function_param_list_client%>) {
   <%#function:in_or_creates_interaction?%>
   apache::thrift::RpcOptions rpcOpts(std::forward<RpcOptions>(rpcOptions));
   setInteraction(<%#function:creates_interaction?%>handle, <%/function:creates_interaction?%>rpcOpts);

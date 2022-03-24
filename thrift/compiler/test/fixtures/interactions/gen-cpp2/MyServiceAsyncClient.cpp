@@ -37,7 +37,7 @@ void MyServiceAsyncClient::fooT(Protocol_* prot, RpcOptions&& rpcOptions, std::s
 }
 
 template <typename Protocol_, typename RpcOptions>
-void MyServiceAsyncClient::interactT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const InteractionHandle& handle, ::std::int32_t p_arg) {
+void MyServiceAsyncClient::interactT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const apache::thrift::InteractionHandle& handle, ::std::int32_t p_arg) {
   apache::thrift::RpcOptions rpcOpts(std::forward<RpcOptions>(rpcOptions));
   setInteraction(handle, rpcOpts);
 
@@ -54,7 +54,7 @@ void MyServiceAsyncClient::interactT(Protocol_* prot, RpcOptions&& rpcOptions, s
 }
 
 template <typename Protocol_, typename RpcOptions>
-void MyServiceAsyncClient::interactFastT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const InteractionHandle& handle) {
+void MyServiceAsyncClient::interactFastT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const apache::thrift::InteractionHandle& handle) {
   apache::thrift::RpcOptions rpcOpts(std::forward<RpcOptions>(rpcOptions));
   setInteraction(handle, rpcOpts);
 
@@ -70,7 +70,7 @@ void MyServiceAsyncClient::interactFastT(Protocol_* prot, RpcOptions&& rpcOption
 }
 
 template <typename Protocol_, typename RpcOptions>
-void MyServiceAsyncClient::serializeT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::StreamClientCallback* callback, const InteractionHandle& handle) {
+void MyServiceAsyncClient::serializeT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::StreamClientCallback* callback, const apache::thrift::InteractionHandle& handle) {
   apache::thrift::RpcOptions rpcOpts(std::forward<RpcOptions>(rpcOptions));
   setInteraction(handle, rpcOpts);
 
@@ -285,7 +285,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_foo(::apach
 }
 
 
-void MyServiceAsyncClient::interact(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const InteractionHandle& handle, ::std::int32_t p_arg) {
+void MyServiceAsyncClient::interact(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const apache::thrift::InteractionHandle& handle, ::std::int32_t p_arg) {
   auto [ctx, header] = interactCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -298,7 +298,7 @@ void MyServiceAsyncClient::interact(apache::thrift::RpcOptions& rpcOptions, std:
   interactImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), handle, p_arg);
 }
 
-void MyServiceAsyncClient::interactImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const InteractionHandle& handle, ::std::int32_t p_arg, bool stealRpcOptions) {
+void MyServiceAsyncClient::interactImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const apache::thrift::InteractionHandle& handle, ::std::int32_t p_arg, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -448,7 +448,7 @@ void MyServiceAsyncClient::recv_interact(::apache::thrift::ClientReceiveState& s
 
 
 
-void MyServiceAsyncClient::interactFast(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const InteractionHandle& handle) {
+void MyServiceAsyncClient::interactFast(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const apache::thrift::InteractionHandle& handle) {
   auto [ctx, header] = interactFastCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -461,7 +461,7 @@ void MyServiceAsyncClient::interactFast(apache::thrift::RpcOptions& rpcOptions, 
   interactFastImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), handle);
 }
 
-void MyServiceAsyncClient::interactFastImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const InteractionHandle& handle, bool stealRpcOptions) {
+void MyServiceAsyncClient::interactFastImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const apache::thrift::InteractionHandle& handle, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -615,7 +615,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_interactFast(::std::
 
 
 
-void MyServiceAsyncClient::serialize(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const InteractionHandle& handle) {
+void MyServiceAsyncClient::serialize(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const apache::thrift::InteractionHandle& handle) {
   auto [ctx, header] = serializeCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -630,7 +630,7 @@ void MyServiceAsyncClient::serialize(apache::thrift::RpcOptions& rpcOptions, std
   serializeImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), handle);
 }
 
-void MyServiceAsyncClient::serializeImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::StreamClientCallback* callback, const InteractionHandle& handle, bool stealRpcOptions) {
+void MyServiceAsyncClient::serializeImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::StreamClientCallback* callback, const apache::thrift::InteractionHandle& handle, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
