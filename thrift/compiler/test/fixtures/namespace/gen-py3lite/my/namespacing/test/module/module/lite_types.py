@@ -41,11 +41,10 @@ import py3lite_module_root.my.namespacing.test.module.module.lite_metadata
 def _fbthrift_metadata__struct_Foo():
     return py3lite_module_root.my.namespacing.test.module.module.lite_metadata.gen_metadata_struct_Foo()
 
-
-
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_all_structs = [
     Foo,
-)
+]
+_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
 
 
 class _fbthrift_TestService_init_args(metaclass=_fbthrift_py3lite_types.StructMeta):

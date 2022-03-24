@@ -172,13 +172,12 @@ def _fbthrift_metadata__struct_MyDataItem():
 def _fbthrift_metadata__struct_MyUnion():
     return module.lite_metadata.gen_metadata_struct_MyUnion()
 
-
-
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_all_structs = [
     MyStruct,
     MyDataItem,
     MyUnion,
-)
+]
+_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
 
 
 class _fbthrift_MyService_ping_args(metaclass=_fbthrift_py3lite_types.StructMeta):

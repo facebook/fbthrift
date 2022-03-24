@@ -14,6 +14,8 @@ import empty.lite_metadata
 
 
 
+_fbthrift_all_structs = [
+]
 
 
 _fbthrift_py3lite_types.fill_specs(

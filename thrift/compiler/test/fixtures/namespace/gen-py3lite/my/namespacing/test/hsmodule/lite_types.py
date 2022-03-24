@@ -41,11 +41,10 @@ import py3lite_module_root.my.namespacing.test.hsmodule.lite_metadata
 def _fbthrift_metadata__struct_HsFoo():
     return py3lite_module_root.my.namespacing.test.hsmodule.lite_metadata.gen_metadata_struct_HsFoo()
 
-
-
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_all_structs = [
     HsFoo,
-)
+]
+_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
 
 
 class _fbthrift_HsTestService_init_args(metaclass=_fbthrift_py3lite_types.StructMeta):

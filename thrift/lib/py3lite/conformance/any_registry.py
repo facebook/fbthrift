@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import types
 import typing
 
 from thrift.conformance.any.lite_types import Any
@@ -52,6 +53,11 @@ class AnyRegistry:
             hash = get_universal_hash(alg, uri)
             hash_to_type[hash] = cls
         return False
+
+    def register_module(self, module: types.ModuleType) -> None:
+        # pyre-ignore[16]
+        for cls in module._fbthrift_all_structs:
+            self.register_type(cls)
 
     def store(
         self, obj: StructOrUnion, protocol: StandardProtocol = StandardProtocol.Binary

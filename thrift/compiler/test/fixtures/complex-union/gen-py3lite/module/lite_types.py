@@ -307,9 +307,7 @@ def _fbthrift_metadata__struct_NonCopyableStruct():
 def _fbthrift_metadata__struct_NonCopyableUnion():
     return module.lite_metadata.gen_metadata_struct_NonCopyableUnion()
 
-
-
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_all_structs = [
     ComplexUnion,
     ListUnion,
     DataUnion,
@@ -318,6 +316,7 @@ _fbthrift_py3lite_types.fill_specs(
     VirtualComplexUnion,
     NonCopyableStruct,
     NonCopyableUnion,
-)
+]
+_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
 
 containerTypedef = _fbthrift_py3lite_types.MapTypeFactory(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_string)

@@ -796,9 +796,7 @@ def _fbthrift_metadata__struct_OptionalStringPatch():
 def _fbthrift_metadata__struct_OptionalBinaryPatch():
     return patch.lite_metadata.gen_metadata_struct_OptionalBinaryPatch()
 
-
-
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_all_structs = [
     GeneratePatch,
     GenerateOptionalPatch,
     BoolPatch,
@@ -819,4 +817,5 @@ _fbthrift_py3lite_types.fill_specs(
     OptionalDoublePatch,
     OptionalStringPatch,
     OptionalBinaryPatch,
-)
+]
+_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)

@@ -16,6 +16,8 @@ import py3lite_module_root.my.namespacing.extend.test.extend.lite_metadata
 
 
 
+_fbthrift_all_structs = [
+]
 
 
 class _fbthrift_ExtendTestService_check_args(metaclass=_fbthrift_py3lite_types.StructMeta):

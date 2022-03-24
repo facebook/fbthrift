@@ -1092,9 +1092,7 @@ def _fbthrift_metadata__exception_optXcep():
 def _fbthrift_metadata__exception_complexException():
     return module.lite_metadata.gen_metadata_exception_complexException()
 
-
-
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_all_structs = [
     MyStructFloatFieldThrowExp,
     MyStructMapFloatThrowExp,
     MyStruct,
@@ -1110,7 +1108,8 @@ _fbthrift_py3lite_types.fill_specs(
     reqXcep,
     optXcep,
     complexException,
-)
+]
+_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
 
 
 DEFAULT_PORT_NUM = 3456

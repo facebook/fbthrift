@@ -308,16 +308,15 @@ def _fbthrift_metadata__struct_BinaryUnion():
 def _fbthrift_metadata__struct_BinaryUnionStruct():
     return module.lite_metadata.gen_metadata_struct_BinaryUnionStruct()
 
-
-
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_all_structs = [
     SimpleException,
     OptionalRefStruct,
     SimpleStruct,
     ComplexStruct,
     BinaryUnion,
     BinaryUnionStruct,
-)
+]
+_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
 
 
 A_BOOL = True

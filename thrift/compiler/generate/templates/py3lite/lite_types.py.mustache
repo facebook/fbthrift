@@ -107,14 +107,13 @@ def _fbthrift_metadata__{{#struct:exception?}}exception{{/struct:exception?}}{{^
     return {{program:module_path}}.lite_metadata.gen_metadata_{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{struct:name}}()
 {{/program:structs}}
 
-{{#program:structs?}}
-
-
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_all_structs = [
     {{#program:structs}}
     {{struct:name}},
     {{/program:structs}}
-)
+]
+{{#program:structs?}}
+_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
 {{/program:structs?}}
 {{#program:constants?}}
 

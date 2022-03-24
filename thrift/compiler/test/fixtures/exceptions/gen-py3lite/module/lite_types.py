@@ -225,16 +225,15 @@ def _fbthrift_metadata__exception_ExceptionWithPrimitiveField():
 def _fbthrift_metadata__exception_Banal():
     return module.lite_metadata.gen_metadata_exception_Banal()
 
-
-
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_all_structs = [
     Fiery,
     Serious,
     ComplexFieldNames,
     CustomFieldNames,
     ExceptionWithPrimitiveField,
     Banal,
-)
+]
+_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
 
 
 class _fbthrift_Raiser_doBland_args(metaclass=_fbthrift_py3lite_types.StructMeta):

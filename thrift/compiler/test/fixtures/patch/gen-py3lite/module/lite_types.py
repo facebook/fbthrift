@@ -271,11 +271,10 @@ def _fbthrift_metadata__struct_MyStructValuePatch():
 def _fbthrift_metadata__struct_OptionalMyStructValuePatch():
     return module.lite_metadata.gen_metadata_struct_OptionalMyStructValuePatch()
 
-
-
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_all_structs = [
     MyStruct,
     MyStructPatch,
     MyStructValuePatch,
     OptionalMyStructValuePatch,
-)
+]
+_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)

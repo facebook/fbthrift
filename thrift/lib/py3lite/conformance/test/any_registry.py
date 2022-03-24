@@ -24,7 +24,7 @@ from thrift.test.testset import lite_types
 class AnyRegistryTest(unittest.TestCase):
     def test_round_trip(self) -> None:
         registry = AnyRegistry()
-        registry.register_type(lite_types.struct_map_string_i32)
+        registry.register_module(lite_types)
         original = lite_types.struct_map_string_i32(
             field_1={
                 "Answer to the Ultimate Question of Life, the Universe, and Everything.": 42

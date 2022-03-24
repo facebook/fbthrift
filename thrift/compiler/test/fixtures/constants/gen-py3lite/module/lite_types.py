@@ -383,9 +383,7 @@ def _fbthrift_metadata__struct_union1():
 def _fbthrift_metadata__struct_union2():
     return module.lite_metadata.gen_metadata_struct_union2()
 
-
-
-_fbthrift_py3lite_types.fill_specs(
+_fbthrift_all_structs = [
     Internship,
     Range,
     struct1,
@@ -394,7 +392,8 @@ _fbthrift_py3lite_types.fill_specs(
     struct4,
     union1,
     union2,
-)
+]
+_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
 
 
 myInt = 1337
