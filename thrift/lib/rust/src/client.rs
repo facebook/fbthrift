@@ -59,6 +59,7 @@ pub trait Transport: Framing + Send + Sized + 'static {
         _service_name: &'static CStr,
         _fn_name: &'static CStr,
         _req: FramingEncodedFinal<Self>,
+        _rpc_options: &Self::RpcOptions,
     ) -> Pin<
         Box<
             dyn Future<

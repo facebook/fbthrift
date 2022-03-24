@@ -2461,8 +2461,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call_stream = self.transport()
-                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call_stream", method = "MyService.streamById"));
 
             async move {
@@ -2518,8 +2519,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call_stream = self.transport()
-                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call_stream", method = "MyService.streamByIdWithException"));
 
             async move {
@@ -2575,8 +2577,9 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
+            let rpc_options = T::RpcOptions::default();
             let call_stream = self.transport()
-                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
                 .instrument(::tracing::trace_span!("call_stream", method = "MyService.streamByIdWithResponse"));
 
             async move {
