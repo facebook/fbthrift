@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ static constexpr auto max_v = std::numeric_limits<I>::max();
 
 template <typename I, size_t N, I First, I Last>
 struct varint_case {
+  using integer_type = I;
   using unsigned_case = varint_case<
       std::make_unsigned_t<I>,
       N,
