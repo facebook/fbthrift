@@ -40,7 +40,7 @@ public class RpcOptions {
   private final Long createInteractionId;
   private final Long interactionId;
 
-  private RpcOptions(
+  protected RpcOptions(
       ProtocolId protocolId,
       Integer seqId,
       Integer clientTimeoutMs,
