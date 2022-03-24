@@ -38,6 +38,21 @@ class RpcOptions {
     ALLOC_PAGE_ALIGN = 1,
     ALLOC_CUSTOM = 2
   };
+
+  /**
+   * Priority levels used to classify requests based on their impact on the end
+   * user.
+   *
+   * Under certain circumstances, the routing layer may drop lower-priority
+   * requests in order to quickly regain system stability.
+   */
+  enum class DefconPriority : uint8_t {
+    LOW, // Low-priority traffic: small impact, nice-to-have features
+    MID, // Mid-priority traffic: visible impact to the user
+    HIGH, // High-priority traffic: significant impact to the user
+    CRIT, // Critical infra traffic that should *never* be dropped
+  };
+
   typedef apache::thrift::concurrency::PRIORITY PRIORITY;
 
   /**
@@ -130,6 +145,9 @@ class RpcOptions {
   const std::optional<std::unordered_map<std::string, std::string>>&
   getFaultsToInject() const;
 
+  RpcOptions& setDefconPriority(DefconPriority defconPriority);
+  const std::optional<DefconPriority>& getDefconPriority() const;
+
  private:
   using timeout_ms_t = uint32_t;
   timeout_ms_t timeout_{0};
@@ -164,6 +182,9 @@ class RpcOptions {
   // Defines faults to be injected within the routing layer, if any
   std::optional<std::unordered_map<std::string, std::string>>
       faultsToInject_; // fault ID --> value
+
+  // Classifies the current request based on its impact on the end user
+  std::optional<DefconPriority> defconPriority_;
 };
 
 } // namespace thrift

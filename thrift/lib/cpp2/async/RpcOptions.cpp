@@ -264,5 +264,15 @@ RpcOptions::getFaultsToInject() const {
   return faultsToInject_;
 }
 
+RpcOptions& RpcOptions::setDefconPriority(DefconPriority defconPriority) {
+  defconPriority_ = defconPriority;
+  return *this;
+}
+
+const std::optional<RpcOptions::DefconPriority>& RpcOptions::getDefconPriority()
+    const {
+  return defconPriority_;
+}
+
 } // namespace thrift
 } // namespace apache
