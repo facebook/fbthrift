@@ -93,5 +93,8 @@ cdef class SyncClient:
     def get_persistent_headers(SyncClient self):
         return self._persistent_headers
 
+    def clear_persistent_headers(SyncClient self):
+        self._persistent_headers.clear()
+
     def set_onetime_header(SyncClient self, string key, string value):
         self._onetime_headers[key] = value

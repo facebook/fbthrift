@@ -2332,6 +2332,20 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
       << endl
       << endl;
 
+  f_service_ << indent() << "def clear_persistent_headers(self):" << endl
+             << indent() << "  if self._fbthrift_cpp_transport:" << endl
+             << indent()
+             << "    self._fbthrift_cpp_transport.clear_persistent_headers()"
+             << endl
+             << indent() << "  else:" << endl
+             << indent() << "    try:" << endl
+             << indent() << "      self._oprot.trans.clear_persistent_headers()"
+             << endl
+             << indent() << "    except AttributeError:" << endl
+             << indent() << "      pass" << endl
+             << endl
+             << endl;
+
   f_service_
       << indent() << "def set_onetime_header(self, key, value):" << endl
       << indent() << "  if self._fbthrift_cpp_transport:" << endl

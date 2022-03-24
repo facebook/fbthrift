@@ -41,6 +41,12 @@ class SyncClientTests(unittest.TestCase):
                     "PERSISTENT_HEADER_VALUE",
                     client.readHeader("PERSISTENT_HEADER_KEY"),
                 )
+                client.clear_persistent_headers()
+                self.assertFalse(client.get_persistent_headers())
+                self.assertEqual(
+                    "",
+                    client.readHeader("PERSISTENT_HEADER_KEY"),
+                )
 
     def test_onetime_header(self) -> None:
         with server_in_another_process() as path:
