@@ -1379,7 +1379,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "Raiser.doBland"));
 
             async move {
@@ -1422,7 +1422,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "Raiser.doRaise"));
 
             async move {
@@ -1465,7 +1465,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "Raiser.get200"));
 
             async move {
@@ -1508,7 +1508,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "Raiser.get500"));
 
             async move {

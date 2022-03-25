@@ -934,7 +934,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "C.f"));
 
             async move {
@@ -978,7 +978,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call_stream = self.transport()
-                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call_stream", method = "C.numbers"));
 
             async move {
@@ -1039,7 +1039,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "C.thing"));
 
             async move {

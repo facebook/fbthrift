@@ -1843,7 +1843,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyInteraction.frobnicate"));
 
             async move {
@@ -1886,7 +1886,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyInteraction.ping"));
 
             async move {
@@ -1930,7 +1930,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call_stream = self.transport()
-                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call_stream", method = "MyInteraction.truthify"));
 
             async move {
@@ -1985,7 +1985,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyInteraction.encode"));
 
             async move {
@@ -2230,7 +2230,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyInteractionFast.frobnicate"));
 
             async move {
@@ -2273,7 +2273,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyInteractionFast.ping"));
 
             async move {
@@ -2317,7 +2317,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call_stream = self.transport()
-                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call_stream", method = "MyInteractionFast.truthify"));
 
             async move {
@@ -2372,7 +2372,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyInteractionFast.encode"));
 
             async move {
@@ -2564,7 +2564,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "SerialInteraction.frobnicate"));
 
             async move {
@@ -2857,7 +2857,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.foo"));
 
             async move {
@@ -2902,7 +2902,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.interact"));
 
             async move {
@@ -2945,7 +2945,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.interactFast"));
 
             async move {
@@ -2989,7 +2989,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call_stream = self.transport()
-                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call_stream", method = "MyService.serialize"));
 
             async move {

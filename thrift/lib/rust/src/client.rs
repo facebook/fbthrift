@@ -51,7 +51,7 @@ pub trait Transport: Framing + Send + Sized + 'static {
         service_name: &'static CStr,
         fn_name: &'static CStr,
         req: FramingEncodedFinal<Self>,
-        rpc_options: &Self::RpcOptions,
+        rpc_options: Self::RpcOptions,
     ) -> Pin<Box<dyn Future<Output = Result<FramingDecoded<Self>, anyhow::Error>> + Send + 'static>>;
 
     fn call_stream(
@@ -59,7 +59,7 @@ pub trait Transport: Framing + Send + Sized + 'static {
         _service_name: &'static CStr,
         _fn_name: &'static CStr,
         _req: FramingEncodedFinal<Self>,
-        _rpc_options: &Self::RpcOptions,
+        _rpc_options: Self::RpcOptions,
     ) -> Pin<
         Box<
             dyn Future<

@@ -1322,7 +1322,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.ping"));
 
             async move {
@@ -1365,7 +1365,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.getRandomData"));
 
             async move {
@@ -1410,7 +1410,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.hasDataById"));
 
             async move {
@@ -1455,7 +1455,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.getDataById"));
 
             async move {
@@ -1502,7 +1502,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.putDataById"));
 
             async move {
@@ -1549,7 +1549,7 @@ pub mod client {
 
             let rpc_options = T::RpcOptions::default();
             let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, &rpc_options)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
                 .instrument(::tracing::trace_span!("call", function = "MyService.lobDataById"));
 
             async move {
