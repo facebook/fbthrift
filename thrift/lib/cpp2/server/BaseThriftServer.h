@@ -532,7 +532,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     allocIOBufFn_ = std::move(fn);
   }
 
-  std::shared_ptr<server::TServerEventHandler> getEventHandler() {
+  std::shared_ptr<server::TServerEventHandler> getEventHandler() const {
     return eventHandler_;
   }
 
@@ -546,7 +546,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * getEventHandlersUnsafe.
    */
   const std::vector<std::shared_ptr<server::TServerEventHandler>>&
-  getEventHandlersUnsafe() {
+  getEventHandlersUnsafe() const {
     return eventHandlers_;
   }
 
@@ -974,7 +974,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     enableCodel_.set(enableCodel, source);
   }
 
-  bool getEnableCodel() { return enableCodel_.get(); }
+  bool getEnableCodel() const { return enableCodel_.get(); }
 
   /**
    * Sets the main server interface that exposes user-defined methods.
@@ -1006,7 +1006,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     monitoringServiceHandler_ = std::move(iface);
   }
 
-  const std::shared_ptr<MonitoringServerInterface>& getMonitoringInterface() {
+  const std::shared_ptr<MonitoringServerInterface>& getMonitoringInterface()
+      const {
     return monitoringServiceHandler_;
   }
 
@@ -1030,7 +1031,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     controlServiceHandler_ = std::move(iface);
   }
 
-  const std::shared_ptr<ControlServerInterface>& getControlInterface() {
+  const std::shared_ptr<ControlServerInterface>& getControlInterface() const {
     return controlServiceHandler_;
   }
 
@@ -1135,7 +1136,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     socketWriteTimeout_.set(timeout, source);
   }
 
-  std::chrono::milliseconds getSocketWriteTimeout() {
+  std::chrono::milliseconds getSocketWriteTimeout() const {
     return socketWriteTimeout_.get();
   }
 
@@ -1226,7 +1227,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     getLoad_ = getLoad;
   }
 
-  std::function<int64_t(const std::string&)> getGetLoad() { return getLoad_; }
+  std::function<int64_t(const std::string&)> getGetLoad() const {
+    return getLoad_;
+  }
 
   /**
    * Set failure injection parameters.
@@ -1272,7 +1275,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   /**
    * Return the maximum memory usage by each debug payload.
    */
-  uint64_t getMaxDebugPayloadMemoryPerRequest() {
+  uint64_t getMaxDebugPayloadMemoryPerRequest() const {
     return maxDebugPayloadMemoryPerRequest_.get();
   }
 
@@ -1291,7 +1294,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * Return the maximum memory usage by each worker to keep track of debug
    * payloads.
    */
-  uint64_t getMaxDebugPayloadMemoryPerWorker() {
+  uint64_t getMaxDebugPayloadMemoryPerWorker() const {
     return maxDebugPayloadMemoryPerWorker_.get();
   }
 
@@ -1311,7 +1314,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * Return the maximum memory usage by each worker to keep track of debug
    * payloads.
    */
-  uint16_t getMaxFinishedDebugPayloadsPerWorker() {
+  uint16_t getMaxFinishedDebugPayloadsPerWorker() const {
     return maxFinishedDebugPayloadsPerWorker_.get();
   }
 
@@ -1391,7 +1394,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   size_t getIngressMemoryLimit() const { return ingressMemoryLimit_.get(); }
 
-  folly::observer::Observer<size_t> getIngressMemoryLimitObserver() {
+  folly::observer::Observer<size_t> getIngressMemoryLimitObserver() const {
     return ingressMemoryLimit_.getObserver();
   }
 
@@ -1410,7 +1413,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   size_t getEgressMemoryLimit() const { return egressMemoryLimit_.get(); }
 
-  folly::observer::Observer<size_t> getEgressMemoryLimitObserver() {
+  folly::observer::Observer<size_t> getEgressMemoryLimitObserver() const {
     return egressMemoryLimit_.getObserver();
   }
 
@@ -1431,7 +1434,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   folly::observer::Observer<size_t>
-  getMinPayloadSizeToEnforceIngressMemoryLimitObserver() {
+  getMinPayloadSizeToEnforceIngressMemoryLimitObserver() const {
     return minPayloadSizeToEnforceIngressMemoryLimit_.getObserver();
   }
 
