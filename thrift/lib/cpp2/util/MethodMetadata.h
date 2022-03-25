@@ -26,11 +26,17 @@
 
 namespace apache::thrift {
 
-enum class FunctionQualifier {
+enum class FunctionQualifier : uint8_t {
   Unspecified,
   OneWay,
   Idempotent,
   ReadOnly,
+};
+
+enum class InteractionMethodPosition : uint8_t {
+  None,
+  Factory,
+  Member,
 };
 
 inline std::string_view qualifierToString(FunctionQualifier fq) {
@@ -56,10 +62,19 @@ inline std::string_view qualifierToString(FunctionQualifier fq) {
 class MethodMetadata {
  public:
   struct Data {
-    Data(std::string name, FunctionQualifier qualifier)
-        : methodName(std::move(name)), functionQualifier(qualifier) {}
+    Data(
+        std::string name,
+        FunctionQualifier qualifier,
+        InteractionMethodPosition position = InteractionMethodPosition::None,
+        std::string interaction = {})
+        : methodName(std::move(name)),
+          functionQualifier(qualifier),
+          interactionPosition(position),
+          interactionName(std::move(interaction)) {}
     std::string methodName;
     FunctionQualifier functionQualifier;
+    InteractionMethodPosition interactionPosition;
+    std::string interactionName;
   };
 
   MethodMetadata(const MethodMetadata& that) {
@@ -166,6 +181,28 @@ class MethodMetadata {
   }
 
   FunctionQualifier qualifier() const { return data_->functionQualifier; }
+
+  InteractionMethodPosition interactionPosition() const {
+    return data_->interactionPosition;
+  }
+
+  ManagedStringView interactionName_managed() const& {
+    if (isOwning()) {
+      return ManagedStringView(std::string_view(data_->interactionName));
+    } else {
+      return ManagedStringView::from_static(
+          std::string_view(data_->interactionName));
+    }
+  }
+
+  ManagedStringView interactionName_managed() && {
+    if (isOwning()) {
+      return ManagedStringView(std::move(data_->interactionName));
+    } else {
+      return ManagedStringView::from_static(
+          std::string_view(data_->interactionName));
+    }
+  }
 
   bool isOwning() const { return isOwning_; }
 
