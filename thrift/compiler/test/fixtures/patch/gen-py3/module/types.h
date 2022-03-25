@@ -50,6 +50,33 @@ void reset_field<::cpp2::MyStruct>(
     case 8:
       obj.binaryVal_ref().copy_from(default_inst<::cpp2::MyStruct>().binaryVal_ref());
       return;
+    case 9:
+      obj.optBoolVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optBoolVal_ref());
+      return;
+    case 10:
+      obj.optByteVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optByteVal_ref());
+      return;
+    case 11:
+      obj.optI16Val_ref().copy_from(default_inst<::cpp2::MyStruct>().optI16Val_ref());
+      return;
+    case 12:
+      obj.optI32Val_ref().copy_from(default_inst<::cpp2::MyStruct>().optI32Val_ref());
+      return;
+    case 13:
+      obj.optI64Val_ref().copy_from(default_inst<::cpp2::MyStruct>().optI64Val_ref());
+      return;
+    case 14:
+      obj.optFloatVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optFloatVal_ref());
+      return;
+    case 15:
+      obj.optDoubleVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optDoubleVal_ref());
+      return;
+    case 16:
+      obj.optStringVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optStringVal_ref());
+      return;
+    case 17:
+      obj.optBinaryVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optBinaryVal_ref());
+      return;
   }
 }
 
@@ -83,6 +110,33 @@ void reset_field<::cpp2::MyStructPatch>(
       return;
     case 8:
       obj.binaryVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().binaryVal_ref());
+      return;
+    case 9:
+      obj.optBoolVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optBoolVal_ref());
+      return;
+    case 10:
+      obj.optByteVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optByteVal_ref());
+      return;
+    case 11:
+      obj.optI16Val_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optI16Val_ref());
+      return;
+    case 12:
+      obj.optI32Val_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optI32Val_ref());
+      return;
+    case 13:
+      obj.optI64Val_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optI64Val_ref());
+      return;
+    case 14:
+      obj.optFloatVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optFloatVal_ref());
+      return;
+    case 15:
+      obj.optDoubleVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optDoubleVal_ref());
+      return;
+    case 16:
+      obj.optStringVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optStringVal_ref());
+      return;
+    case 17:
+      obj.optBinaryVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optBinaryVal_ref());
       return;
   }
 }

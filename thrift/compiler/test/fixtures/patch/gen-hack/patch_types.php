@@ -1620,7 +1620,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
    */
   public ?bool $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.BoolPatch patchAfter
@@ -1870,7 +1870,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
    */
   public ?int $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.BytePatch patchAfter
@@ -2125,7 +2125,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public ?int $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.I16Patch patchAfter
@@ -2380,7 +2380,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public ?int $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.I32Patch patchAfter
@@ -2635,7 +2635,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public ?int $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.I64Patch patchAfter
@@ -2885,7 +2885,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
    */
   public ?float $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.FloatPatch patchAfter
@@ -3135,7 +3135,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    */
   public ?float $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.DoublePatch patchAfter
@@ -3385,7 +3385,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    */
   public ?string $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.StringPatch patchAfter
@@ -3635,7 +3635,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    */
   public ?string $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.BinaryPatch patchAfter

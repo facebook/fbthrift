@@ -79,6 +79,15 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[double] doubleVal_ref()
         __field_ref[string] stringVal_ref()
         __field_ref[_folly_IOBuf] binaryVal_ref()
+        __optional_field_ref[cbool] optBoolVal_ref()
+        __optional_field_ref[cint8_t] optByteVal_ref()
+        __optional_field_ref[cint16_t] optI16Val_ref()
+        __optional_field_ref[cint32_t] optI32Val_ref()
+        __optional_field_ref[cint64_t] optI64Val_ref()
+        __optional_field_ref[float] optFloatVal_ref()
+        __optional_field_ref[double] optDoubleVal_ref()
+        __optional_field_ref[string] optStringVal_ref()
+        __optional_field_ref[_folly_IOBuf] optBinaryVal_ref()
 
 
     cdef cppclass cMyStructPatch "::cpp2::MyStructPatch":
@@ -99,6 +108,15 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[_patch_types.cDoublePatch] doubleVal_ref()
         __field_ref[_patch_types.cStringPatch] stringVal_ref()
         __field_ref[_patch_types.cBinaryPatch] binaryVal_ref()
+        __field_ref[_patch_types.cOptionalBoolPatch] optBoolVal_ref()
+        __field_ref[_patch_types.cOptionalBytePatch] optByteVal_ref()
+        __field_ref[_patch_types.cOptionalI16Patch] optI16Val_ref()
+        __field_ref[_patch_types.cOptionalI32Patch] optI32Val_ref()
+        __field_ref[_patch_types.cOptionalI64Patch] optI64Val_ref()
+        __field_ref[_patch_types.cOptionalFloatPatch] optFloatVal_ref()
+        __field_ref[_patch_types.cOptionalDoublePatch] optDoubleVal_ref()
+        __field_ref[_patch_types.cOptionalStringPatch] optStringVal_ref()
+        __field_ref[_patch_types.cOptionalBinaryPatch] optBinaryVal_ref()
 
 
     cdef cppclass cMyStructValuePatch "::cpp2::MyStructValuePatch":
@@ -144,6 +162,15 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef inline object doubleVal_impl(self)
     cdef inline object stringVal_impl(self)
     cdef inline object binaryVal_impl(self)
+    cdef inline object optBoolVal_impl(self)
+    cdef inline object optByteVal_impl(self)
+    cdef inline object optI16Val_impl(self)
+    cdef inline object optI32Val_impl(self)
+    cdef inline object optI64Val_impl(self)
+    cdef inline object optFloatVal_impl(self)
+    cdef inline object optDoubleVal_impl(self)
+    cdef inline object optStringVal_impl(self)
+    cdef inline object optBinaryVal_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStruct])
@@ -162,6 +189,15 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline object doubleVal_impl(self)
     cdef inline object stringVal_impl(self)
     cdef inline object binaryVal_impl(self)
+    cdef inline object optBoolVal_impl(self)
+    cdef inline object optByteVal_impl(self)
+    cdef inline object optI16Val_impl(self)
+    cdef inline object optI32Val_impl(self)
+    cdef inline object optI64Val_impl(self)
+    cdef inline object optFloatVal_impl(self)
+    cdef inline object optDoubleVal_impl(self)
+    cdef inline object optStringVal_impl(self)
+    cdef inline object optBinaryVal_impl(self)
     cdef _patch_types.BoolPatch __fbthrift_cached_boolVal
     cdef _patch_types.BytePatch __fbthrift_cached_byteVal
     cdef _patch_types.I16Patch __fbthrift_cached_i16Val
@@ -171,6 +207,15 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef _patch_types.DoublePatch __fbthrift_cached_doubleVal
     cdef _patch_types.StringPatch __fbthrift_cached_stringVal
     cdef _patch_types.BinaryPatch __fbthrift_cached_binaryVal
+    cdef _patch_types.OptionalBoolPatch __fbthrift_cached_optBoolVal
+    cdef _patch_types.OptionalBytePatch __fbthrift_cached_optByteVal
+    cdef _patch_types.OptionalI16Patch __fbthrift_cached_optI16Val
+    cdef _patch_types.OptionalI32Patch __fbthrift_cached_optI32Val
+    cdef _patch_types.OptionalI64Patch __fbthrift_cached_optI64Val
+    cdef _patch_types.OptionalFloatPatch __fbthrift_cached_optFloatVal
+    cdef _patch_types.OptionalDoublePatch __fbthrift_cached_optDoubleVal
+    cdef _patch_types.OptionalStringPatch __fbthrift_cached_optStringVal
+    cdef _patch_types.OptionalBinaryPatch __fbthrift_cached_optBinaryVal
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStructPatch])

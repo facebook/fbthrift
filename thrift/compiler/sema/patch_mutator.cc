@@ -29,6 +29,57 @@ constexpr auto kGeneratePatchUri = "facebook.com/thrift/op/GeneratePatch";
 constexpr auto kGenerateOptionalPatchUri =
     "facebook.com/thrift/op/GenerateOptionalPatch";
 
+// TODO(afuller): Index all types by uri, and find them that way.
+const char* getPatchTypeName(t_base_type::type base_type) {
+  switch (base_type) {
+    case t_base_type::type::t_bool:
+      return "patch.BoolPatch";
+    case t_base_type::type::t_byte:
+      return "patch.BytePatch";
+    case t_base_type::type::t_i16:
+      return "patch.I16Patch";
+    case t_base_type::type::t_i32:
+      return "patch.I32Patch";
+    case t_base_type::type::t_i64:
+      return "patch.I64Patch";
+    case t_base_type::type::t_float:
+      return "patch.FloatPatch";
+    case t_base_type::type::t_double:
+      return "patch.DoublePatch";
+    case t_base_type::type::t_string:
+      return "patch.StringPatch";
+    case t_base_type::type::t_binary:
+      return "patch.BinaryPatch";
+    default:
+      return "";
+  }
+}
+// TODO(afuller): Index all types by uri, and find them that way.
+const char* getOptionalPatchTypeName(t_base_type::type base_type) {
+  switch (base_type) {
+    case t_base_type::type::t_bool:
+      return "patch.OptionalBoolPatch";
+    case t_base_type::type::t_byte:
+      return "patch.OptionalBytePatch";
+    case t_base_type::type::t_i16:
+      return "patch.OptionalI16Patch";
+    case t_base_type::type::t_i32:
+      return "patch.OptionalI32Patch";
+    case t_base_type::type::t_i64:
+      return "patch.OptionalI64Patch";
+    case t_base_type::type::t_float:
+      return "patch.OptionalFloatPatch";
+    case t_base_type::type::t_double:
+      return "patch.OptionalDoublePatch";
+    case t_base_type::type::t_string:
+      return "patch.OptionalStringPatch";
+    case t_base_type::type::t_binary:
+      return "patch.OptionalBinaryPatch";
+    default:
+      return "";
+  }
+}
+
 // Helper for generating a struct.
 struct StructGen {
   // The annotation we are generating for.
@@ -152,18 +203,9 @@ patch_generator& patch_generator::get_for(
 
 t_struct& patch_generator::add_optional_patch(
     const t_node& annot, t_type_ref value_type, t_struct& patch_type) {
-  t_struct& generated = gen_struct(
-      annot,
-      "Optional" + patch_type.name(),
-      prefix_uri_name(patch_type.uri(), "Optional"));
-  // Set relevant annotations.
-  generated.set_annotation(
+  PatchGen gen{{annot, gen_prefix_struct(annot, patch_type, "Optional")}};
+  gen.generated.set_annotation(
       "cpp.adapter", "::apache::thrift::op::detail::OptionalPatchAdapter");
-  if (const auto* cpp_name = patch_type.find_annotation_or_null("cpp.name")) {
-    generated.set_annotation("cpp.name", "Optional" + *cpp_name);
-  }
-
-  PatchGen gen{{annot, generated}};
   gen.clear().set_doc(
       "If the optional value should be cleared. Applied first.");
   gen.patch(patch_type)
@@ -173,15 +215,15 @@ t_struct& patch_generator::add_optional_patch(
           "The value with which to initialize any unset value. Applied third.");
   gen.patchAfter(patch_type)
       .set_doc(
-          "The patch to apply to any set value, including newly set values. Applied forth.");
-  return generated;
+          "The patch to apply to any set value, including newly set values. Applied fourth.");
+  return gen.generated;
 }
 
 t_struct& patch_generator::add_structure_patch(
-    const t_node& annot, t_structured& orig) {
-  StructGen gen{annot, gen_struct_with_suffix(annot, orig, "Patch")};
+    const t_const& annot, t_structured& orig) {
+  StructGen gen{annot, gen_suffix_struct(annot, orig, "Patch")};
   for (const auto& field : orig.fields()) {
-    if (t_type_ref patch_type = find_patch_type(field)) {
+    if (t_type_ref patch_type = find_patch_type(annot, field)) {
       gen.field(field.id(), patch_type, field.name());
     } else {
       ctx_.warning(field, "Could not resolve patch type for field.");
@@ -192,8 +234,7 @@ t_struct& patch_generator::add_structure_patch(
 
 t_struct& patch_generator::add_struct_value_patch(
     const t_node& annot, t_struct& value_type, t_type_ref patch_type) {
-  PatchGen gen{
-      {annot, gen_struct_with_suffix(annot, value_type, "ValuePatch")}};
+  PatchGen gen{{annot, gen_suffix_struct(annot, value_type, "ValuePatch")}};
   gen.assign(value_type)
       .set_doc(
           "Assigns to a given struct. If set, all other operations are ignored.\n");
@@ -202,45 +243,30 @@ t_struct& patch_generator::add_struct_value_patch(
   return gen.generated;
 }
 
-t_type_ref patch_generator::find_patch_type(const t_field& field) const {
+t_type_ref patch_generator::find_patch_type(
+    const t_const& annot, const t_field& field) const {
   // Base types use a shared representation defined in patch.thrift.
-  //
-  // These type should always be availabile because the are defined along side
-  // the annoation used to trigger patch generation.
   if (auto* base_type =
           dynamic_cast<const t_base_type*>(field.type()->get_true_type())) {
-    // TODO(afuller): Index all types by uri, and find them that way.
-    switch (base_type->base_type()) {
-      case t_base_type::type::t_bool:
-        return t_type_ref::from_ptr(
-            program_.scope()->find_type("patch.BoolPatch"));
-      case t_base_type::type::t_byte:
-        return t_type_ref::from_ptr(
-            program_.scope()->find_type("patch.BytePatch"));
-      case t_base_type::type::t_i16:
-        return t_type_ref::from_ptr(
-            program_.scope()->find_type("patch.I16Patch"));
-      case t_base_type::type::t_i32:
-        return t_type_ref::from_ptr(
-            program_.scope()->find_type("patch.I32Patch"));
-      case t_base_type::type::t_i64:
-        return t_type_ref::from_ptr(
-            program_.scope()->find_type("patch.I64Patch"));
-      case t_base_type::type::t_float:
-        return t_type_ref::from_ptr(
-            program_.scope()->find_type("patch.FloatPatch"));
-      case t_base_type::type::t_double:
-        return t_type_ref::from_ptr(
-            program_.scope()->find_type("patch.DoublePatch"));
-      case t_base_type::type::t_string:
-        return t_type_ref::from_ptr(
-            program_.scope()->find_type("patch.StringPatch"));
-      case t_base_type::type::t_binary:
-        return t_type_ref::from_ptr(
-            program_.scope()->find_type("patch.BinaryPatch"));
-      default:
-        break;
+    auto type = base_type->base_type();
+    const char* name = field.qualifier() == t_field_qualifier::optional
+        ? getOptionalPatchTypeName(type)
+        : getPatchTypeName(type);
+    if (const auto* result = program_.scope()->find_type(name)) {
+      return t_type_ref::from_ptr(result);
     }
+    // TODO(afuller): This look up hack only works for 'built-in' patch types.
+    // Use a shared uri type registry instead.
+    if (const auto* result =
+            annot.type()->program()->scope()->find_type(name)) {
+      return t_type_ref::from_ptr(result);
+    }
+
+    // These type should always be availabile because the are defined along
+    // side the annoation used to trigger patch generation.
+    ctx_.failure(field, [&](auto& os) {
+      os << "Could not find expected patch type: " << name;
+    });
   }
 
   // Could not resolve the patch type.
@@ -254,15 +280,32 @@ t_struct& patch_generator::gen_struct(
   generated->set_uri(std::move(uri));
   // Attribute the new struct to the anntation.
   generated->set_lineno(annot.lineno());
+  program_.scope()->add_type(
+      program_.name() + "." + generated->name(), generated.get());
   program_.add_definition(std::move(generated));
   return *ptr;
 }
 
-t_struct& patch_generator::gen_struct_with_suffix(
-    const t_node& annot, const t_named& orig, const std::string& suffix) {
+t_struct& patch_generator::gen_suffix_struct(
+    const t_node& annot, const t_named& orig, const char* suffix) {
   ctx_.failure_if(
       orig.uri().empty(), annot, "URI required to support patching.");
-  return gen_struct(annot, orig.name() + suffix, orig.uri() + suffix);
+  t_struct& generated =
+      gen_struct(annot, orig.name() + suffix, orig.uri() + suffix);
+  if (const auto* cpp_name = orig.find_annotation_or_null("cpp.name")) {
+    generated.set_annotation("cpp.name", *cpp_name + suffix);
+  }
+  return generated;
+}
+
+t_struct& patch_generator::gen_prefix_struct(
+    const t_node& annot, const t_named& orig, const char* prefix) {
+  t_struct& generated = gen_struct(
+      annot, prefix + orig.name(), prefix_uri_name(orig.uri(), prefix));
+  if (const auto* cpp_name = orig.find_annotation_or_null("cpp.name")) {
+    generated.set_annotation("cpp.name", prefix + *cpp_name);
+  }
+  return generated;
 }
 
 } // namespace compiler

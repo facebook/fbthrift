@@ -35,6 +35,15 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
   private static final TField DOUBLE_VAL_FIELD_DESC = new TField("doubleVal", TType.STRUCT, (short)7);
   private static final TField STRING_VAL_FIELD_DESC = new TField("stringVal", TType.STRUCT, (short)8);
   private static final TField BINARY_VAL_FIELD_DESC = new TField("binaryVal", TType.STRUCT, (short)9);
+  private static final TField OPT_BOOL_VAL_FIELD_DESC = new TField("optBoolVal", TType.STRUCT, (short)11);
+  private static final TField OPT_BYTE_VAL_FIELD_DESC = new TField("optByteVal", TType.STRUCT, (short)12);
+  private static final TField OPT_I16_VAL_FIELD_DESC = new TField("optI16Val", TType.STRUCT, (short)13);
+  private static final TField OPT_I32_VAL_FIELD_DESC = new TField("optI32Val", TType.STRUCT, (short)14);
+  private static final TField OPT_I64_VAL_FIELD_DESC = new TField("optI64Val", TType.STRUCT, (short)15);
+  private static final TField OPT_FLOAT_VAL_FIELD_DESC = new TField("optFloatVal", TType.STRUCT, (short)16);
+  private static final TField OPT_DOUBLE_VAL_FIELD_DESC = new TField("optDoubleVal", TType.STRUCT, (short)17);
+  private static final TField OPT_STRING_VAL_FIELD_DESC = new TField("optStringVal", TType.STRUCT, (short)18);
+  private static final TField OPT_BINARY_VAL_FIELD_DESC = new TField("optBinaryVal", TType.STRUCT, (short)19);
 
   public BoolPatch boolVal;
   public BytePatch byteVal;
@@ -45,6 +54,15 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
   public DoublePatch doubleVal;
   public StringPatch stringVal;
   public BinaryPatch binaryVal;
+  public OptionalBoolPatch optBoolVal;
+  public OptionalBytePatch optByteVal;
+  public OptionalI16Patch optI16Val;
+  public OptionalI32Patch optI32Val;
+  public OptionalI64Patch optI64Val;
+  public OptionalFloatPatch optFloatVal;
+  public OptionalDoublePatch optDoubleVal;
+  public OptionalStringPatch optStringVal;
+  public OptionalBinaryPatch optBinaryVal;
   public static final int BOOLVAL = 1;
   public static final int BYTEVAL = 2;
   public static final int I16VAL = 3;
@@ -54,6 +72,15 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
   public static final int DOUBLEVAL = 7;
   public static final int STRINGVAL = 8;
   public static final int BINARYVAL = 9;
+  public static final int OPTBOOLVAL = 11;
+  public static final int OPTBYTEVAL = 12;
+  public static final int OPTI16VAL = 13;
+  public static final int OPTI32VAL = 14;
+  public static final int OPTI64VAL = 15;
+  public static final int OPTFLOATVAL = 16;
+  public static final int OPTDOUBLEVAL = 17;
+  public static final int OPTSTRINGVAL = 18;
+  public static final int OPTBINARYVAL = 19;
 
   // isset id assignments
 
@@ -79,6 +106,24 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
         new StructMetaData(TType.STRUCT, StringPatch.class)));
     tmpMetaDataMap.put(BINARYVAL, new FieldMetaData("binaryVal", TFieldRequirementType.DEFAULT, 
         new StructMetaData(TType.STRUCT, BinaryPatch.class)));
+    tmpMetaDataMap.put(OPTBOOLVAL, new FieldMetaData("optBoolVal", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, OptionalBoolPatch.class)));
+    tmpMetaDataMap.put(OPTBYTEVAL, new FieldMetaData("optByteVal", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, OptionalBytePatch.class)));
+    tmpMetaDataMap.put(OPTI16VAL, new FieldMetaData("optI16Val", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, OptionalI16Patch.class)));
+    tmpMetaDataMap.put(OPTI32VAL, new FieldMetaData("optI32Val", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, OptionalI32Patch.class)));
+    tmpMetaDataMap.put(OPTI64VAL, new FieldMetaData("optI64Val", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, OptionalI64Patch.class)));
+    tmpMetaDataMap.put(OPTFLOATVAL, new FieldMetaData("optFloatVal", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, OptionalFloatPatch.class)));
+    tmpMetaDataMap.put(OPTDOUBLEVAL, new FieldMetaData("optDoubleVal", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, OptionalDoublePatch.class)));
+    tmpMetaDataMap.put(OPTSTRINGVAL, new FieldMetaData("optStringVal", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, OptionalStringPatch.class)));
+    tmpMetaDataMap.put(OPTBINARYVAL, new FieldMetaData("optBinaryVal", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, OptionalBinaryPatch.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -98,7 +143,16 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       FloatPatch floatVal,
       DoublePatch doubleVal,
       StringPatch stringVal,
-      BinaryPatch binaryVal) {
+      BinaryPatch binaryVal,
+      OptionalBoolPatch optBoolVal,
+      OptionalBytePatch optByteVal,
+      OptionalI16Patch optI16Val,
+      OptionalI32Patch optI32Val,
+      OptionalI64Patch optI64Val,
+      OptionalFloatPatch optFloatVal,
+      OptionalDoublePatch optDoubleVal,
+      OptionalStringPatch optStringVal,
+      OptionalBinaryPatch optBinaryVal) {
     this();
     this.boolVal = boolVal;
     this.byteVal = byteVal;
@@ -109,6 +163,15 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     this.doubleVal = doubleVal;
     this.stringVal = stringVal;
     this.binaryVal = binaryVal;
+    this.optBoolVal = optBoolVal;
+    this.optByteVal = optByteVal;
+    this.optI16Val = optI16Val;
+    this.optI32Val = optI32Val;
+    this.optI64Val = optI64Val;
+    this.optFloatVal = optFloatVal;
+    this.optDoubleVal = optDoubleVal;
+    this.optStringVal = optStringVal;
+    this.optBinaryVal = optBinaryVal;
   }
 
   public static class Builder {
@@ -121,6 +184,15 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     private DoublePatch doubleVal;
     private StringPatch stringVal;
     private BinaryPatch binaryVal;
+    private OptionalBoolPatch optBoolVal;
+    private OptionalBytePatch optByteVal;
+    private OptionalI16Patch optI16Val;
+    private OptionalI32Patch optI32Val;
+    private OptionalI64Patch optI64Val;
+    private OptionalFloatPatch optFloatVal;
+    private OptionalDoublePatch optDoubleVal;
+    private OptionalStringPatch optStringVal;
+    private OptionalBinaryPatch optBinaryVal;
 
     public Builder() {
     }
@@ -170,6 +242,51 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       return this;
     }
 
+    public Builder setOptBoolVal(final OptionalBoolPatch optBoolVal) {
+      this.optBoolVal = optBoolVal;
+      return this;
+    }
+
+    public Builder setOptByteVal(final OptionalBytePatch optByteVal) {
+      this.optByteVal = optByteVal;
+      return this;
+    }
+
+    public Builder setOptI16Val(final OptionalI16Patch optI16Val) {
+      this.optI16Val = optI16Val;
+      return this;
+    }
+
+    public Builder setOptI32Val(final OptionalI32Patch optI32Val) {
+      this.optI32Val = optI32Val;
+      return this;
+    }
+
+    public Builder setOptI64Val(final OptionalI64Patch optI64Val) {
+      this.optI64Val = optI64Val;
+      return this;
+    }
+
+    public Builder setOptFloatVal(final OptionalFloatPatch optFloatVal) {
+      this.optFloatVal = optFloatVal;
+      return this;
+    }
+
+    public Builder setOptDoubleVal(final OptionalDoublePatch optDoubleVal) {
+      this.optDoubleVal = optDoubleVal;
+      return this;
+    }
+
+    public Builder setOptStringVal(final OptionalStringPatch optStringVal) {
+      this.optStringVal = optStringVal;
+      return this;
+    }
+
+    public Builder setOptBinaryVal(final OptionalBinaryPatch optBinaryVal) {
+      this.optBinaryVal = optBinaryVal;
+      return this;
+    }
+
     public MyStructPatch build() {
       MyStructPatch result = new MyStructPatch();
       result.setBoolVal(this.boolVal);
@@ -181,6 +298,15 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       result.setDoubleVal(this.doubleVal);
       result.setStringVal(this.stringVal);
       result.setBinaryVal(this.binaryVal);
+      result.setOptBoolVal(this.optBoolVal);
+      result.setOptByteVal(this.optByteVal);
+      result.setOptI16Val(this.optI16Val);
+      result.setOptI32Val(this.optI32Val);
+      result.setOptI64Val(this.optI64Val);
+      result.setOptFloatVal(this.optFloatVal);
+      result.setOptDoubleVal(this.optDoubleVal);
+      result.setOptStringVal(this.optStringVal);
+      result.setOptBinaryVal(this.optBinaryVal);
       return result;
     }
   }
@@ -219,6 +345,33 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
     if (other.isSetBinaryVal()) {
       this.binaryVal = TBaseHelper.deepCopy(other.binaryVal);
+    }
+    if (other.isSetOptBoolVal()) {
+      this.optBoolVal = TBaseHelper.deepCopy(other.optBoolVal);
+    }
+    if (other.isSetOptByteVal()) {
+      this.optByteVal = TBaseHelper.deepCopy(other.optByteVal);
+    }
+    if (other.isSetOptI16Val()) {
+      this.optI16Val = TBaseHelper.deepCopy(other.optI16Val);
+    }
+    if (other.isSetOptI32Val()) {
+      this.optI32Val = TBaseHelper.deepCopy(other.optI32Val);
+    }
+    if (other.isSetOptI64Val()) {
+      this.optI64Val = TBaseHelper.deepCopy(other.optI64Val);
+    }
+    if (other.isSetOptFloatVal()) {
+      this.optFloatVal = TBaseHelper.deepCopy(other.optFloatVal);
+    }
+    if (other.isSetOptDoubleVal()) {
+      this.optDoubleVal = TBaseHelper.deepCopy(other.optDoubleVal);
+    }
+    if (other.isSetOptStringVal()) {
+      this.optStringVal = TBaseHelper.deepCopy(other.optStringVal);
+    }
+    if (other.isSetOptBinaryVal()) {
+      this.optBinaryVal = TBaseHelper.deepCopy(other.optBinaryVal);
     }
   }
 
@@ -442,6 +595,222 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
+  public OptionalBoolPatch getOptBoolVal() {
+    return this.optBoolVal;
+  }
+
+  public MyStructPatch setOptBoolVal(OptionalBoolPatch optBoolVal) {
+    this.optBoolVal = optBoolVal;
+    return this;
+  }
+
+  public void unsetOptBoolVal() {
+    this.optBoolVal = null;
+  }
+
+  // Returns true if field optBoolVal is set (has been assigned a value) and false otherwise
+  public boolean isSetOptBoolVal() {
+    return this.optBoolVal != null;
+  }
+
+  public void setOptBoolValIsSet(boolean __value) {
+    if (!__value) {
+      this.optBoolVal = null;
+    }
+  }
+
+  public OptionalBytePatch getOptByteVal() {
+    return this.optByteVal;
+  }
+
+  public MyStructPatch setOptByteVal(OptionalBytePatch optByteVal) {
+    this.optByteVal = optByteVal;
+    return this;
+  }
+
+  public void unsetOptByteVal() {
+    this.optByteVal = null;
+  }
+
+  // Returns true if field optByteVal is set (has been assigned a value) and false otherwise
+  public boolean isSetOptByteVal() {
+    return this.optByteVal != null;
+  }
+
+  public void setOptByteValIsSet(boolean __value) {
+    if (!__value) {
+      this.optByteVal = null;
+    }
+  }
+
+  public OptionalI16Patch getOptI16Val() {
+    return this.optI16Val;
+  }
+
+  public MyStructPatch setOptI16Val(OptionalI16Patch optI16Val) {
+    this.optI16Val = optI16Val;
+    return this;
+  }
+
+  public void unsetOptI16Val() {
+    this.optI16Val = null;
+  }
+
+  // Returns true if field optI16Val is set (has been assigned a value) and false otherwise
+  public boolean isSetOptI16Val() {
+    return this.optI16Val != null;
+  }
+
+  public void setOptI16ValIsSet(boolean __value) {
+    if (!__value) {
+      this.optI16Val = null;
+    }
+  }
+
+  public OptionalI32Patch getOptI32Val() {
+    return this.optI32Val;
+  }
+
+  public MyStructPatch setOptI32Val(OptionalI32Patch optI32Val) {
+    this.optI32Val = optI32Val;
+    return this;
+  }
+
+  public void unsetOptI32Val() {
+    this.optI32Val = null;
+  }
+
+  // Returns true if field optI32Val is set (has been assigned a value) and false otherwise
+  public boolean isSetOptI32Val() {
+    return this.optI32Val != null;
+  }
+
+  public void setOptI32ValIsSet(boolean __value) {
+    if (!__value) {
+      this.optI32Val = null;
+    }
+  }
+
+  public OptionalI64Patch getOptI64Val() {
+    return this.optI64Val;
+  }
+
+  public MyStructPatch setOptI64Val(OptionalI64Patch optI64Val) {
+    this.optI64Val = optI64Val;
+    return this;
+  }
+
+  public void unsetOptI64Val() {
+    this.optI64Val = null;
+  }
+
+  // Returns true if field optI64Val is set (has been assigned a value) and false otherwise
+  public boolean isSetOptI64Val() {
+    return this.optI64Val != null;
+  }
+
+  public void setOptI64ValIsSet(boolean __value) {
+    if (!__value) {
+      this.optI64Val = null;
+    }
+  }
+
+  public OptionalFloatPatch getOptFloatVal() {
+    return this.optFloatVal;
+  }
+
+  public MyStructPatch setOptFloatVal(OptionalFloatPatch optFloatVal) {
+    this.optFloatVal = optFloatVal;
+    return this;
+  }
+
+  public void unsetOptFloatVal() {
+    this.optFloatVal = null;
+  }
+
+  // Returns true if field optFloatVal is set (has been assigned a value) and false otherwise
+  public boolean isSetOptFloatVal() {
+    return this.optFloatVal != null;
+  }
+
+  public void setOptFloatValIsSet(boolean __value) {
+    if (!__value) {
+      this.optFloatVal = null;
+    }
+  }
+
+  public OptionalDoublePatch getOptDoubleVal() {
+    return this.optDoubleVal;
+  }
+
+  public MyStructPatch setOptDoubleVal(OptionalDoublePatch optDoubleVal) {
+    this.optDoubleVal = optDoubleVal;
+    return this;
+  }
+
+  public void unsetOptDoubleVal() {
+    this.optDoubleVal = null;
+  }
+
+  // Returns true if field optDoubleVal is set (has been assigned a value) and false otherwise
+  public boolean isSetOptDoubleVal() {
+    return this.optDoubleVal != null;
+  }
+
+  public void setOptDoubleValIsSet(boolean __value) {
+    if (!__value) {
+      this.optDoubleVal = null;
+    }
+  }
+
+  public OptionalStringPatch getOptStringVal() {
+    return this.optStringVal;
+  }
+
+  public MyStructPatch setOptStringVal(OptionalStringPatch optStringVal) {
+    this.optStringVal = optStringVal;
+    return this;
+  }
+
+  public void unsetOptStringVal() {
+    this.optStringVal = null;
+  }
+
+  // Returns true if field optStringVal is set (has been assigned a value) and false otherwise
+  public boolean isSetOptStringVal() {
+    return this.optStringVal != null;
+  }
+
+  public void setOptStringValIsSet(boolean __value) {
+    if (!__value) {
+      this.optStringVal = null;
+    }
+  }
+
+  public OptionalBinaryPatch getOptBinaryVal() {
+    return this.optBinaryVal;
+  }
+
+  public MyStructPatch setOptBinaryVal(OptionalBinaryPatch optBinaryVal) {
+    this.optBinaryVal = optBinaryVal;
+    return this;
+  }
+
+  public void unsetOptBinaryVal() {
+    this.optBinaryVal = null;
+  }
+
+  // Returns true if field optBinaryVal is set (has been assigned a value) and false otherwise
+  public boolean isSetOptBinaryVal() {
+    return this.optBinaryVal != null;
+  }
+
+  public void setOptBinaryValIsSet(boolean __value) {
+    if (!__value) {
+      this.optBinaryVal = null;
+    }
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case BOOLVAL:
@@ -516,6 +885,78 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       }
       break;
 
+    case OPTBOOLVAL:
+      if (__value == null) {
+        unsetOptBoolVal();
+      } else {
+        setOptBoolVal((OptionalBoolPatch)__value);
+      }
+      break;
+
+    case OPTBYTEVAL:
+      if (__value == null) {
+        unsetOptByteVal();
+      } else {
+        setOptByteVal((OptionalBytePatch)__value);
+      }
+      break;
+
+    case OPTI16VAL:
+      if (__value == null) {
+        unsetOptI16Val();
+      } else {
+        setOptI16Val((OptionalI16Patch)__value);
+      }
+      break;
+
+    case OPTI32VAL:
+      if (__value == null) {
+        unsetOptI32Val();
+      } else {
+        setOptI32Val((OptionalI32Patch)__value);
+      }
+      break;
+
+    case OPTI64VAL:
+      if (__value == null) {
+        unsetOptI64Val();
+      } else {
+        setOptI64Val((OptionalI64Patch)__value);
+      }
+      break;
+
+    case OPTFLOATVAL:
+      if (__value == null) {
+        unsetOptFloatVal();
+      } else {
+        setOptFloatVal((OptionalFloatPatch)__value);
+      }
+      break;
+
+    case OPTDOUBLEVAL:
+      if (__value == null) {
+        unsetOptDoubleVal();
+      } else {
+        setOptDoubleVal((OptionalDoublePatch)__value);
+      }
+      break;
+
+    case OPTSTRINGVAL:
+      if (__value == null) {
+        unsetOptStringVal();
+      } else {
+        setOptStringVal((OptionalStringPatch)__value);
+      }
+      break;
+
+    case OPTBINARYVAL:
+      if (__value == null) {
+        unsetOptBinaryVal();
+      } else {
+        setOptBinaryVal((OptionalBinaryPatch)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -550,6 +991,33 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     case BINARYVAL:
       return getBinaryVal();
 
+    case OPTBOOLVAL:
+      return getOptBoolVal();
+
+    case OPTBYTEVAL:
+      return getOptByteVal();
+
+    case OPTI16VAL:
+      return getOptI16Val();
+
+    case OPTI32VAL:
+      return getOptI32Val();
+
+    case OPTI64VAL:
+      return getOptI64Val();
+
+    case OPTFLOATVAL:
+      return getOptFloatVal();
+
+    case OPTDOUBLEVAL:
+      return getOptDoubleVal();
+
+    case OPTSTRINGVAL:
+      return getOptStringVal();
+
+    case OPTBINARYVAL:
+      return getOptBinaryVal();
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -583,12 +1051,30 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
 
     if (!TBaseHelper.equalsNobinary(this.isSetBinaryVal(), that.isSetBinaryVal(), this.binaryVal, that.binaryVal)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetOptBoolVal(), that.isSetOptBoolVal(), this.optBoolVal, that.optBoolVal)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetOptByteVal(), that.isSetOptByteVal(), this.optByteVal, that.optByteVal)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetOptI16Val(), that.isSetOptI16Val(), this.optI16Val, that.optI16Val)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetOptI32Val(), that.isSetOptI32Val(), this.optI32Val, that.optI32Val)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetOptI64Val(), that.isSetOptI64Val(), this.optI64Val, that.optI64Val)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetOptFloatVal(), that.isSetOptFloatVal(), this.optFloatVal, that.optFloatVal)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetOptDoubleVal(), that.isSetOptDoubleVal(), this.optDoubleVal, that.optDoubleVal)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetOptStringVal(), that.isSetOptStringVal(), this.optStringVal, that.optStringVal)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetOptBinaryVal(), that.isSetOptBinaryVal(), this.optBinaryVal, that.optBinaryVal)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {boolVal, byteVal, i16Val, i32Val, i64Val, floatVal, doubleVal, stringVal, binaryVal});
+    return Arrays.deepHashCode(new Object[] {boolVal, byteVal, i16Val, i32Val, i64Val, floatVal, doubleVal, stringVal, binaryVal, optBoolVal, optByteVal, optI16Val, optI32Val, optI64Val, optFloatVal, optDoubleVal, optStringVal, optBinaryVal});
   }
 
   @Override
@@ -672,6 +1158,78 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(binaryVal, other.binaryVal);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetOptBoolVal()).compareTo(other.isSetOptBoolVal());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(optBoolVal, other.optBoolVal);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetOptByteVal()).compareTo(other.isSetOptByteVal());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(optByteVal, other.optByteVal);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetOptI16Val()).compareTo(other.isSetOptI16Val());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(optI16Val, other.optI16Val);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetOptI32Val()).compareTo(other.isSetOptI32Val());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(optI32Val, other.optI32Val);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetOptI64Val()).compareTo(other.isSetOptI64Val());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(optI64Val, other.optI64Val);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetOptFloatVal()).compareTo(other.isSetOptFloatVal());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(optFloatVal, other.optFloatVal);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetOptDoubleVal()).compareTo(other.isSetOptDoubleVal());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(optDoubleVal, other.optDoubleVal);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetOptStringVal()).compareTo(other.isSetOptStringVal());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(optStringVal, other.optStringVal);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetOptBinaryVal()).compareTo(other.isSetOptBinaryVal());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(optBinaryVal, other.optBinaryVal);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -761,6 +1319,78 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case OPTBOOLVAL:
+          if (__field.type == TType.STRUCT) {
+            this.optBoolVal = new OptionalBoolPatch();
+            this.optBoolVal.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case OPTBYTEVAL:
+          if (__field.type == TType.STRUCT) {
+            this.optByteVal = new OptionalBytePatch();
+            this.optByteVal.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case OPTI16VAL:
+          if (__field.type == TType.STRUCT) {
+            this.optI16Val = new OptionalI16Patch();
+            this.optI16Val.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case OPTI32VAL:
+          if (__field.type == TType.STRUCT) {
+            this.optI32Val = new OptionalI32Patch();
+            this.optI32Val.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case OPTI64VAL:
+          if (__field.type == TType.STRUCT) {
+            this.optI64Val = new OptionalI64Patch();
+            this.optI64Val.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case OPTFLOATVAL:
+          if (__field.type == TType.STRUCT) {
+            this.optFloatVal = new OptionalFloatPatch();
+            this.optFloatVal.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case OPTDOUBLEVAL:
+          if (__field.type == TType.STRUCT) {
+            this.optDoubleVal = new OptionalDoublePatch();
+            this.optDoubleVal.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case OPTSTRINGVAL:
+          if (__field.type == TType.STRUCT) {
+            this.optStringVal = new OptionalStringPatch();
+            this.optStringVal.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case OPTBINARYVAL:
+          if (__field.type == TType.STRUCT) {
+            this.optBinaryVal = new OptionalBinaryPatch();
+            this.optBinaryVal.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -821,6 +1451,51 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     if (this.binaryVal != null) {
       oprot.writeFieldBegin(BINARY_VAL_FIELD_DESC);
       this.binaryVal.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.optBoolVal != null) {
+      oprot.writeFieldBegin(OPT_BOOL_VAL_FIELD_DESC);
+      this.optBoolVal.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.optByteVal != null) {
+      oprot.writeFieldBegin(OPT_BYTE_VAL_FIELD_DESC);
+      this.optByteVal.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.optI16Val != null) {
+      oprot.writeFieldBegin(OPT_I16_VAL_FIELD_DESC);
+      this.optI16Val.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.optI32Val != null) {
+      oprot.writeFieldBegin(OPT_I32_VAL_FIELD_DESC);
+      this.optI32Val.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.optI64Val != null) {
+      oprot.writeFieldBegin(OPT_I64_VAL_FIELD_DESC);
+      this.optI64Val.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.optFloatVal != null) {
+      oprot.writeFieldBegin(OPT_FLOAT_VAL_FIELD_DESC);
+      this.optFloatVal.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.optDoubleVal != null) {
+      oprot.writeFieldBegin(OPT_DOUBLE_VAL_FIELD_DESC);
+      this.optDoubleVal.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.optStringVal != null) {
+      oprot.writeFieldBegin(OPT_STRING_VAL_FIELD_DESC);
+      this.optStringVal.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.optBinaryVal != null) {
+      oprot.writeFieldBegin(OPT_BINARY_VAL_FIELD_DESC);
+      this.optBinaryVal.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -939,6 +1614,105 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       sb.append("null");
     } else {
       sb.append(TBaseHelper.toString(this.getBinaryVal(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("optBoolVal");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getOptBoolVal() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getOptBoolVal(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("optByteVal");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getOptByteVal() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getOptByteVal(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("optI16Val");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getOptI16Val() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getOptI16Val(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("optI32Val");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getOptI32Val() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getOptI32Val(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("optI64Val");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getOptI64Val() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getOptI64Val(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("optFloatVal");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getOptFloatVal() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getOptFloatVal(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("optDoubleVal");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getOptDoubleVal() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getOptDoubleVal(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("optStringVal");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getOptStringVal() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getOptStringVal(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("optBinaryVal");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getOptBinaryVal() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getOptBinaryVal(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

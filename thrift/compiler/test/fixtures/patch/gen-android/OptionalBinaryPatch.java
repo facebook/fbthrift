@@ -42,7 +42,7 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
    */
   public final byte[] ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    */
   public final BinaryPatch patchAfter;
   public static final int CLEAR = 2;
@@ -128,7 +128,7 @@ public class OptionalBinaryPatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    */
   public BinaryPatch getPatchAfter() {
     return this.patchAfter;

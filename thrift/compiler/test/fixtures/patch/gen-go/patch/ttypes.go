@@ -1655,7 +1655,7 @@ func (p *BinaryPatch) String() string {
 }
 
 // Attributes:
-//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied forth.
+//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
 type OptionalBoolPatch struct {
   Ensure *bool `thrift:"ensure,1,optional" db:"ensure" json:"ensure,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -1930,7 +1930,7 @@ func (p *OptionalBoolPatch) String() string {
 }
 
 // Attributes:
-//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied forth.
+//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
 type OptionalBytePatch struct {
   Ensure *int8 `thrift:"ensure,1,optional" db:"ensure" json:"ensure,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -2206,7 +2206,7 @@ func (p *OptionalBytePatch) String() string {
 }
 
 // Attributes:
-//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied forth.
+//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
 type OptionalI16Patch struct {
   Ensure *int16 `thrift:"ensure,1,optional" db:"ensure" json:"ensure,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -2481,7 +2481,7 @@ func (p *OptionalI16Patch) String() string {
 }
 
 // Attributes:
-//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied forth.
+//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
 type OptionalI32Patch struct {
   Ensure *int32 `thrift:"ensure,1,optional" db:"ensure" json:"ensure,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -2756,7 +2756,7 @@ func (p *OptionalI32Patch) String() string {
 }
 
 // Attributes:
-//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied forth.
+//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
 type OptionalI64Patch struct {
   Ensure *int64 `thrift:"ensure,1,optional" db:"ensure" json:"ensure,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -3031,7 +3031,7 @@ func (p *OptionalI64Patch) String() string {
 }
 
 // Attributes:
-//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied forth.
+//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
 type OptionalFloatPatch struct {
   Ensure *float32 `thrift:"ensure,1,optional" db:"ensure" json:"ensure,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -3306,7 +3306,7 @@ func (p *OptionalFloatPatch) String() string {
 }
 
 // Attributes:
-//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied forth.
+//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
 type OptionalDoublePatch struct {
   Ensure *float64 `thrift:"ensure,1,optional" db:"ensure" json:"ensure,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -3581,7 +3581,7 @@ func (p *OptionalDoublePatch) String() string {
 }
 
 // Attributes:
-//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied forth.
+//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
 type OptionalStringPatch struct {
   Ensure *string `thrift:"ensure,1,optional" db:"ensure" json:"ensure,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -3856,7 +3856,7 @@ func (p *OptionalStringPatch) String() string {
 }
 
 // Attributes:
-//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied forth.
+//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
 type OptionalBinaryPatch struct {
   Ensure []byte `thrift:"ensure,1,optional" db:"ensure" json:"ensure,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`

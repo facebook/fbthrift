@@ -44,7 +44,7 @@ public class OptionalMyStructValuePatch implements TBase, java.io.Serializable, 
    */
   public final MyStruct ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    */
   public final MyStructValuePatch patchAfter;
   public static final int CLEAR = 2;
@@ -130,7 +130,7 @@ public class OptionalMyStructValuePatch implements TBase, java.io.Serializable, 
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    */
   public MyStructValuePatch getPatchAfter() {
     return this.patchAfter;

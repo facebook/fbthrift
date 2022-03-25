@@ -34,6 +34,15 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"doubleVal")] = __MyStruct_FieldsSetter._set_field_6
         __fbthrift_inst._setters[__cstring_view(<const char*>"stringVal")] = __MyStruct_FieldsSetter._set_field_7
         __fbthrift_inst._setters[__cstring_view(<const char*>"binaryVal")] = __MyStruct_FieldsSetter._set_field_8
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optBoolVal")] = __MyStruct_FieldsSetter._set_field_9
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optByteVal")] = __MyStruct_FieldsSetter._set_field_10
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optI16Val")] = __MyStruct_FieldsSetter._set_field_11
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optI32Val")] = __MyStruct_FieldsSetter._set_field_12
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optI64Val")] = __MyStruct_FieldsSetter._set_field_13
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optFloatVal")] = __MyStruct_FieldsSetter._set_field_14
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optDoubleVal")] = __MyStruct_FieldsSetter._set_field_15
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optStringVal")] = __MyStruct_FieldsSetter._set_field_16
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optBinaryVal")] = __MyStruct_FieldsSetter._set_field_17
         return __fbthrift_inst
 
     cdef void set_field(__MyStruct_FieldsSetter self, const char* name, object value) except *:
@@ -128,6 +137,91 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'binaryVal is not a { bytes !r}.')
         deref(self._struct_cpp_obj).binaryVal_ref().assign(_module_types._folly_IOBuf(cmove(<string>_fbthrift_value)))
 
+    cdef void _set_field_9(self, _fbthrift_value) except *:
+        # for field optBoolVal
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 9)
+            return
+        if not isinstance(_fbthrift_value, bool):
+            raise TypeError(f'optBoolVal is not a { bool !r}.')
+        deref(self._struct_cpp_obj).optBoolVal_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_10(self, _fbthrift_value) except *:
+        # for field optByteVal
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 10)
+            return
+        if not isinstance(_fbthrift_value, int):
+            raise TypeError(f'optByteVal is not a { int !r}.')
+        _fbthrift_value = <cint8_t> _fbthrift_value
+        deref(self._struct_cpp_obj).optByteVal_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_11(self, _fbthrift_value) except *:
+        # for field optI16Val
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 11)
+            return
+        if not isinstance(_fbthrift_value, int):
+            raise TypeError(f'optI16Val is not a { int !r}.')
+        _fbthrift_value = <cint16_t> _fbthrift_value
+        deref(self._struct_cpp_obj).optI16Val_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_12(self, _fbthrift_value) except *:
+        # for field optI32Val
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 12)
+            return
+        if not isinstance(_fbthrift_value, int):
+            raise TypeError(f'optI32Val is not a { int !r}.')
+        _fbthrift_value = <cint32_t> _fbthrift_value
+        deref(self._struct_cpp_obj).optI32Val_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_13(self, _fbthrift_value) except *:
+        # for field optI64Val
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 13)
+            return
+        if not isinstance(_fbthrift_value, int):
+            raise TypeError(f'optI64Val is not a { int !r}.')
+        _fbthrift_value = <cint64_t> _fbthrift_value
+        deref(self._struct_cpp_obj).optI64Val_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_14(self, _fbthrift_value) except *:
+        # for field optFloatVal
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 14)
+            return
+        if not isinstance(_fbthrift_value, (float, int)):
+            raise TypeError(f'optFloatVal is not a { float !r}.')
+        deref(self._struct_cpp_obj).optFloatVal_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_15(self, _fbthrift_value) except *:
+        # for field optDoubleVal
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 15)
+            return
+        if not isinstance(_fbthrift_value, (float, int)):
+            raise TypeError(f'optDoubleVal is not a { float !r}.')
+        deref(self._struct_cpp_obj).optDoubleVal_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_16(self, _fbthrift_value) except *:
+        # for field optStringVal
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 16)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'optStringVal is not a { str !r}.')
+        deref(self._struct_cpp_obj).optStringVal_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
+
+    cdef void _set_field_17(self, _fbthrift_value) except *:
+        # for field optBinaryVal
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 17)
+            return
+        if not isinstance(_fbthrift_value, bytes):
+            raise TypeError(f'optBinaryVal is not a { bytes !r}.')
+        deref(self._struct_cpp_obj).optBinaryVal_ref().assign(_module_types._folly_IOBuf(cmove(<string>_fbthrift_value)))
+
 
 @__cython.auto_pickle(False)
 cdef class __MyStructPatch_FieldsSetter(__StructFieldsSetter):
@@ -145,6 +239,15 @@ cdef class __MyStructPatch_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"doubleVal")] = __MyStructPatch_FieldsSetter._set_field_6
         __fbthrift_inst._setters[__cstring_view(<const char*>"stringVal")] = __MyStructPatch_FieldsSetter._set_field_7
         __fbthrift_inst._setters[__cstring_view(<const char*>"binaryVal")] = __MyStructPatch_FieldsSetter._set_field_8
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optBoolVal")] = __MyStructPatch_FieldsSetter._set_field_9
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optByteVal")] = __MyStructPatch_FieldsSetter._set_field_10
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optI16Val")] = __MyStructPatch_FieldsSetter._set_field_11
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optI32Val")] = __MyStructPatch_FieldsSetter._set_field_12
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optI64Val")] = __MyStructPatch_FieldsSetter._set_field_13
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optFloatVal")] = __MyStructPatch_FieldsSetter._set_field_14
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optDoubleVal")] = __MyStructPatch_FieldsSetter._set_field_15
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optStringVal")] = __MyStructPatch_FieldsSetter._set_field_16
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optBinaryVal")] = __MyStructPatch_FieldsSetter._set_field_17
         return __fbthrift_inst
 
     cdef void set_field(__MyStructPatch_FieldsSetter self, const char* name, object value) except *:
@@ -234,6 +337,87 @@ cdef class __MyStructPatch_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, _patch_types.BinaryPatch):
             raise TypeError(f'binaryVal is not a { _patch_types.BinaryPatch !r}.')
         deref(self._struct_cpp_obj).binaryVal_ref().assign(deref((<_patch_types.BinaryPatch?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_9(self, _fbthrift_value) except *:
+        # for field optBoolVal
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 9)
+            return
+        if not isinstance(_fbthrift_value, _patch_types.OptionalBoolPatch):
+            raise TypeError(f'optBoolVal is not a { _patch_types.OptionalBoolPatch !r}.')
+        deref(self._struct_cpp_obj).optBoolVal_ref().assign(deref((<_patch_types.OptionalBoolPatch?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_10(self, _fbthrift_value) except *:
+        # for field optByteVal
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 10)
+            return
+        if not isinstance(_fbthrift_value, _patch_types.OptionalBytePatch):
+            raise TypeError(f'optByteVal is not a { _patch_types.OptionalBytePatch !r}.')
+        deref(self._struct_cpp_obj).optByteVal_ref().assign(deref((<_patch_types.OptionalBytePatch?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_11(self, _fbthrift_value) except *:
+        # for field optI16Val
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 11)
+            return
+        if not isinstance(_fbthrift_value, _patch_types.OptionalI16Patch):
+            raise TypeError(f'optI16Val is not a { _patch_types.OptionalI16Patch !r}.')
+        deref(self._struct_cpp_obj).optI16Val_ref().assign(deref((<_patch_types.OptionalI16Patch?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_12(self, _fbthrift_value) except *:
+        # for field optI32Val
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 12)
+            return
+        if not isinstance(_fbthrift_value, _patch_types.OptionalI32Patch):
+            raise TypeError(f'optI32Val is not a { _patch_types.OptionalI32Patch !r}.')
+        deref(self._struct_cpp_obj).optI32Val_ref().assign(deref((<_patch_types.OptionalI32Patch?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_13(self, _fbthrift_value) except *:
+        # for field optI64Val
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 13)
+            return
+        if not isinstance(_fbthrift_value, _patch_types.OptionalI64Patch):
+            raise TypeError(f'optI64Val is not a { _patch_types.OptionalI64Patch !r}.')
+        deref(self._struct_cpp_obj).optI64Val_ref().assign(deref((<_patch_types.OptionalI64Patch?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_14(self, _fbthrift_value) except *:
+        # for field optFloatVal
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 14)
+            return
+        if not isinstance(_fbthrift_value, _patch_types.OptionalFloatPatch):
+            raise TypeError(f'optFloatVal is not a { _patch_types.OptionalFloatPatch !r}.')
+        deref(self._struct_cpp_obj).optFloatVal_ref().assign(deref((<_patch_types.OptionalFloatPatch?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_15(self, _fbthrift_value) except *:
+        # for field optDoubleVal
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 15)
+            return
+        if not isinstance(_fbthrift_value, _patch_types.OptionalDoublePatch):
+            raise TypeError(f'optDoubleVal is not a { _patch_types.OptionalDoublePatch !r}.')
+        deref(self._struct_cpp_obj).optDoubleVal_ref().assign(deref((<_patch_types.OptionalDoublePatch?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_16(self, _fbthrift_value) except *:
+        # for field optStringVal
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 16)
+            return
+        if not isinstance(_fbthrift_value, _patch_types.OptionalStringPatch):
+            raise TypeError(f'optStringVal is not a { _patch_types.OptionalStringPatch !r}.')
+        deref(self._struct_cpp_obj).optStringVal_ref().assign(deref((<_patch_types.OptionalStringPatch?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_17(self, _fbthrift_value) except *:
+        # for field optBinaryVal
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 17)
+            return
+        if not isinstance(_fbthrift_value, _patch_types.OptionalBinaryPatch):
+            raise TypeError(f'optBinaryVal is not a { _patch_types.OptionalBinaryPatch !r}.')
+        deref(self._struct_cpp_obj).optBinaryVal_ref().assign(deref((<_patch_types.OptionalBinaryPatch?> _fbthrift_value)._cpp_obj))
 
 
 @__cython.auto_pickle(False)

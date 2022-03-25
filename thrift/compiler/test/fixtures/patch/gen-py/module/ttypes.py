@@ -48,6 +48,15 @@ class MyStruct:
    - doubleVal
    - stringVal
    - binaryVal
+   - optBoolVal
+   - optByteVal
+   - optI16Val
+   - optI32Val
+   - optI64Val
+   - optFloatVal
+   - optDoubleVal
+   - optStringVal
+   - optBinaryVal
   """
 
   thrift_spec = None
@@ -115,6 +124,51 @@ class MyStruct:
           self.binaryVal = iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 11:
+        if ftype == TType.BOOL:
+          self.optBoolVal = iprot.readBool()
+        else:
+          iprot.skip(ftype)
+      elif fid == 12:
+        if ftype == TType.BYTE:
+          self.optByteVal = iprot.readByte()
+        else:
+          iprot.skip(ftype)
+      elif fid == 13:
+        if ftype == TType.I16:
+          self.optI16Val = iprot.readI16()
+        else:
+          iprot.skip(ftype)
+      elif fid == 14:
+        if ftype == TType.I32:
+          self.optI32Val = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 15:
+        if ftype == TType.I64:
+          self.optI64Val = iprot.readI64()
+        else:
+          iprot.skip(ftype)
+      elif fid == 16:
+        if ftype == TType.FLOAT:
+          self.optFloatVal = iprot.readFloat()
+        else:
+          iprot.skip(ftype)
+      elif fid == 17:
+        if ftype == TType.DOUBLE:
+          self.optDoubleVal = iprot.readDouble()
+        else:
+          iprot.skip(ftype)
+      elif fid == 18:
+        if ftype == TType.STRING:
+          self.optStringVal = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 19:
+        if ftype == TType.STRING:
+          self.optBinaryVal = iprot.readString()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -164,6 +218,42 @@ class MyStruct:
       oprot.writeFieldBegin('binaryVal', TType.STRING, 9)
       oprot.writeString(self.binaryVal)
       oprot.writeFieldEnd()
+    if self.optBoolVal != None:
+      oprot.writeFieldBegin('optBoolVal', TType.BOOL, 11)
+      oprot.writeBool(self.optBoolVal)
+      oprot.writeFieldEnd()
+    if self.optByteVal != None:
+      oprot.writeFieldBegin('optByteVal', TType.BYTE, 12)
+      oprot.writeByte(self.optByteVal)
+      oprot.writeFieldEnd()
+    if self.optI16Val != None:
+      oprot.writeFieldBegin('optI16Val', TType.I16, 13)
+      oprot.writeI16(self.optI16Val)
+      oprot.writeFieldEnd()
+    if self.optI32Val != None:
+      oprot.writeFieldBegin('optI32Val', TType.I32, 14)
+      oprot.writeI32(self.optI32Val)
+      oprot.writeFieldEnd()
+    if self.optI64Val != None:
+      oprot.writeFieldBegin('optI64Val', TType.I64, 15)
+      oprot.writeI64(self.optI64Val)
+      oprot.writeFieldEnd()
+    if self.optFloatVal != None:
+      oprot.writeFieldBegin('optFloatVal', TType.FLOAT, 16)
+      oprot.writeFloat(self.optFloatVal)
+      oprot.writeFieldEnd()
+    if self.optDoubleVal != None:
+      oprot.writeFieldBegin('optDoubleVal', TType.DOUBLE, 17)
+      oprot.writeDouble(self.optDoubleVal)
+      oprot.writeFieldEnd()
+    if self.optStringVal != None:
+      oprot.writeFieldBegin('optStringVal', TType.STRING, 18)
+      oprot.writeString(self.optStringVal.encode('utf-8')) if UTF8STRINGS and not isinstance(self.optStringVal, bytes) else oprot.writeString(self.optStringVal)
+      oprot.writeFieldEnd()
+    if self.optBinaryVal != None:
+      oprot.writeFieldBegin('optBinaryVal', TType.STRING, 19)
+      oprot.writeString(self.optBinaryVal)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -203,6 +293,30 @@ class MyStruct:
       self.stringVal = json_obj['stringVal']
     if 'binaryVal' in json_obj and json_obj['binaryVal'] is not None:
       self.binaryVal = json_obj['binaryVal']
+    if 'optBoolVal' in json_obj and json_obj['optBoolVal'] is not None:
+      self.optBoolVal = json_obj['optBoolVal']
+    if 'optByteVal' in json_obj and json_obj['optByteVal'] is not None:
+      self.optByteVal = json_obj['optByteVal']
+      if self.optByteVal > 0x7f or self.optByteVal < -0x80:
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+    if 'optI16Val' in json_obj and json_obj['optI16Val'] is not None:
+      self.optI16Val = json_obj['optI16Val']
+      if self.optI16Val > 0x7fff or self.optI16Val < -0x8000:
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+    if 'optI32Val' in json_obj and json_obj['optI32Val'] is not None:
+      self.optI32Val = json_obj['optI32Val']
+      if self.optI32Val > 0x7fffffff or self.optI32Val < -0x80000000:
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+    if 'optI64Val' in json_obj and json_obj['optI64Val'] is not None:
+      self.optI64Val = long(json_obj['optI64Val'])
+    if 'optFloatVal' in json_obj and json_obj['optFloatVal'] is not None:
+      self.optFloatVal = float(json_obj['optFloatVal'])
+    if 'optDoubleVal' in json_obj and json_obj['optDoubleVal'] is not None:
+      self.optDoubleVal = float(json_obj['optDoubleVal'])
+    if 'optStringVal' in json_obj and json_obj['optStringVal'] is not None:
+      self.optStringVal = json_obj['optStringVal']
+    if 'optBinaryVal' in json_obj and json_obj['optBinaryVal'] is not None:
+      self.optBinaryVal = json_obj['optBinaryVal']
 
   def __repr__(self):
     L = []
@@ -243,6 +357,42 @@ class MyStruct:
       value = pprint.pformat(self.binaryVal, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    binaryVal=%s' % (value))
+    if self.optBoolVal is not None:
+      value = pprint.pformat(self.optBoolVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optBoolVal=%s' % (value))
+    if self.optByteVal is not None:
+      value = pprint.pformat(self.optByteVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optByteVal=%s' % (value))
+    if self.optI16Val is not None:
+      value = pprint.pformat(self.optI16Val, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optI16Val=%s' % (value))
+    if self.optI32Val is not None:
+      value = pprint.pformat(self.optI32Val, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optI32Val=%s' % (value))
+    if self.optI64Val is not None:
+      value = pprint.pformat(self.optI64Val, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optI64Val=%s' % (value))
+    if self.optFloatVal is not None:
+      value = pprint.pformat(self.optFloatVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optFloatVal=%s' % (value))
+    if self.optDoubleVal is not None:
+      value = pprint.pformat(self.optDoubleVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optDoubleVal=%s' % (value))
+    if self.optStringVal is not None:
+      value = pprint.pformat(self.optStringVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optStringVal=%s' % (value))
+    if self.optBinaryVal is not None:
+      value = pprint.pformat(self.optBinaryVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optBinaryVal=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -269,6 +419,15 @@ class MyStructPatch:
    - doubleVal
    - stringVal
    - binaryVal
+   - optBoolVal
+   - optByteVal
+   - optI16Val
+   - optI32Val
+   - optI64Val
+   - optFloatVal
+   - optDoubleVal
+   - optStringVal
+   - optBinaryVal
   """
 
   thrift_spec = None
@@ -345,6 +504,60 @@ class MyStructPatch:
           self.binaryVal.read(iprot)
         else:
           iprot.skip(ftype)
+      elif fid == 11:
+        if ftype == TType.STRUCT:
+          self.optBoolVal = patch.ttypes.OptionalBoolPatch()
+          self.optBoolVal.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 12:
+        if ftype == TType.STRUCT:
+          self.optByteVal = patch.ttypes.OptionalBytePatch()
+          self.optByteVal.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 13:
+        if ftype == TType.STRUCT:
+          self.optI16Val = patch.ttypes.OptionalI16Patch()
+          self.optI16Val.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 14:
+        if ftype == TType.STRUCT:
+          self.optI32Val = patch.ttypes.OptionalI32Patch()
+          self.optI32Val.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 15:
+        if ftype == TType.STRUCT:
+          self.optI64Val = patch.ttypes.OptionalI64Patch()
+          self.optI64Val.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 16:
+        if ftype == TType.STRUCT:
+          self.optFloatVal = patch.ttypes.OptionalFloatPatch()
+          self.optFloatVal.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 17:
+        if ftype == TType.STRUCT:
+          self.optDoubleVal = patch.ttypes.OptionalDoublePatch()
+          self.optDoubleVal.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 18:
+        if ftype == TType.STRUCT:
+          self.optStringVal = patch.ttypes.OptionalStringPatch()
+          self.optStringVal.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 19:
+        if ftype == TType.STRUCT:
+          self.optBinaryVal = patch.ttypes.OptionalBinaryPatch()
+          self.optBinaryVal.read(iprot)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -394,6 +607,42 @@ class MyStructPatch:
       oprot.writeFieldBegin('binaryVal', TType.STRUCT, 9)
       self.binaryVal.write(oprot)
       oprot.writeFieldEnd()
+    if self.optBoolVal != None:
+      oprot.writeFieldBegin('optBoolVal', TType.STRUCT, 11)
+      self.optBoolVal.write(oprot)
+      oprot.writeFieldEnd()
+    if self.optByteVal != None:
+      oprot.writeFieldBegin('optByteVal', TType.STRUCT, 12)
+      self.optByteVal.write(oprot)
+      oprot.writeFieldEnd()
+    if self.optI16Val != None:
+      oprot.writeFieldBegin('optI16Val', TType.STRUCT, 13)
+      self.optI16Val.write(oprot)
+      oprot.writeFieldEnd()
+    if self.optI32Val != None:
+      oprot.writeFieldBegin('optI32Val', TType.STRUCT, 14)
+      self.optI32Val.write(oprot)
+      oprot.writeFieldEnd()
+    if self.optI64Val != None:
+      oprot.writeFieldBegin('optI64Val', TType.STRUCT, 15)
+      self.optI64Val.write(oprot)
+      oprot.writeFieldEnd()
+    if self.optFloatVal != None:
+      oprot.writeFieldBegin('optFloatVal', TType.STRUCT, 16)
+      self.optFloatVal.write(oprot)
+      oprot.writeFieldEnd()
+    if self.optDoubleVal != None:
+      oprot.writeFieldBegin('optDoubleVal', TType.STRUCT, 17)
+      self.optDoubleVal.write(oprot)
+      oprot.writeFieldEnd()
+    if self.optStringVal != None:
+      oprot.writeFieldBegin('optStringVal', TType.STRUCT, 18)
+      self.optStringVal.write(oprot)
+      oprot.writeFieldEnd()
+    if self.optBinaryVal != None:
+      oprot.writeFieldBegin('optBinaryVal', TType.STRUCT, 19)
+      self.optBinaryVal.write(oprot)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -436,6 +685,33 @@ class MyStructPatch:
     if 'binaryVal' in json_obj and json_obj['binaryVal'] is not None:
       self.binaryVal = patch.ttypes.BinaryPatch()
       self.binaryVal.readFromJson(json_obj['binaryVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'optBoolVal' in json_obj and json_obj['optBoolVal'] is not None:
+      self.optBoolVal = patch.ttypes.OptionalBoolPatch()
+      self.optBoolVal.readFromJson(json_obj['optBoolVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'optByteVal' in json_obj and json_obj['optByteVal'] is not None:
+      self.optByteVal = patch.ttypes.OptionalBytePatch()
+      self.optByteVal.readFromJson(json_obj['optByteVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'optI16Val' in json_obj and json_obj['optI16Val'] is not None:
+      self.optI16Val = patch.ttypes.OptionalI16Patch()
+      self.optI16Val.readFromJson(json_obj['optI16Val'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'optI32Val' in json_obj and json_obj['optI32Val'] is not None:
+      self.optI32Val = patch.ttypes.OptionalI32Patch()
+      self.optI32Val.readFromJson(json_obj['optI32Val'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'optI64Val' in json_obj and json_obj['optI64Val'] is not None:
+      self.optI64Val = patch.ttypes.OptionalI64Patch()
+      self.optI64Val.readFromJson(json_obj['optI64Val'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'optFloatVal' in json_obj and json_obj['optFloatVal'] is not None:
+      self.optFloatVal = patch.ttypes.OptionalFloatPatch()
+      self.optFloatVal.readFromJson(json_obj['optFloatVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'optDoubleVal' in json_obj and json_obj['optDoubleVal'] is not None:
+      self.optDoubleVal = patch.ttypes.OptionalDoublePatch()
+      self.optDoubleVal.readFromJson(json_obj['optDoubleVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'optStringVal' in json_obj and json_obj['optStringVal'] is not None:
+      self.optStringVal = patch.ttypes.OptionalStringPatch()
+      self.optStringVal.readFromJson(json_obj['optStringVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'optBinaryVal' in json_obj and json_obj['optBinaryVal'] is not None:
+      self.optBinaryVal = patch.ttypes.OptionalBinaryPatch()
+      self.optBinaryVal.readFromJson(json_obj['optBinaryVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
 
   def __repr__(self):
     L = []
@@ -476,6 +752,42 @@ class MyStructPatch:
       value = pprint.pformat(self.binaryVal, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    binaryVal=%s' % (value))
+    if self.optBoolVal is not None:
+      value = pprint.pformat(self.optBoolVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optBoolVal=%s' % (value))
+    if self.optByteVal is not None:
+      value = pprint.pformat(self.optByteVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optByteVal=%s' % (value))
+    if self.optI16Val is not None:
+      value = pprint.pformat(self.optI16Val, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optI16Val=%s' % (value))
+    if self.optI32Val is not None:
+      value = pprint.pformat(self.optI32Val, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optI32Val=%s' % (value))
+    if self.optI64Val is not None:
+      value = pprint.pformat(self.optI64Val, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optI64Val=%s' % (value))
+    if self.optFloatVal is not None:
+      value = pprint.pformat(self.optFloatVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optFloatVal=%s' % (value))
+    if self.optDoubleVal is not None:
+      value = pprint.pformat(self.optDoubleVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optDoubleVal=%s' % (value))
+    if self.optStringVal is not None:
+      value = pprint.pformat(self.optStringVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optStringVal=%s' % (value))
+    if self.optBinaryVal is not None:
+      value = pprint.pformat(self.optBinaryVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optBinaryVal=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -616,7 +928,7 @@ class MyStructValuePatch:
 class OptionalMyStructValuePatch:
   """
   Attributes:
-   - clear: If the optional value should be cleared. Applied first. - patch: The patch to apply to any set value. Applied second. - ensure: The value with which to initialize any unset value. Applied third. - patchAfter: The patch to apply to any set value, including newly set values. Applied forth.
+   - clear: If the optional value should be cleared. Applied first. - patch: The patch to apply to any set value. Applied second. - ensure: The value with which to initialize any unset value. Applied third. - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
   """
 
   thrift_spec = None
@@ -763,6 +1075,16 @@ MyStruct.thrift_spec = (
   (7, TType.DOUBLE, 'doubleVal', None, None, 2, ), # 7
   (8, TType.STRING, 'stringVal', True, None, 2, ), # 8
   (9, TType.STRING, 'binaryVal', False, None, 2, ), # 9
+  None, # 10
+  (11, TType.BOOL, 'optBoolVal', None, None, 1, ), # 11
+  (12, TType.BYTE, 'optByteVal', None, None, 1, ), # 12
+  (13, TType.I16, 'optI16Val', None, None, 1, ), # 13
+  (14, TType.I32, 'optI32Val', None, None, 1, ), # 14
+  (15, TType.I64, 'optI64Val', None, None, 1, ), # 15
+  (16, TType.FLOAT, 'optFloatVal', None, None, 1, ), # 16
+  (17, TType.DOUBLE, 'optDoubleVal', None, None, 1, ), # 17
+  (18, TType.STRING, 'optStringVal', True, None, 1, ), # 18
+  (19, TType.STRING, 'optBinaryVal', False, None, 1, ), # 19
 )
 
 MyStruct.thrift_struct_annotations = {
@@ -770,7 +1092,7 @@ MyStruct.thrift_struct_annotations = {
 MyStruct.thrift_field_annotations = {
 }
 
-def MyStruct__init__(self, boolVal=None, byteVal=None, i16Val=None, i32Val=None, i64Val=None, floatVal=None, doubleVal=None, stringVal=None, binaryVal=None,):
+def MyStruct__init__(self, boolVal=None, byteVal=None, i16Val=None, i32Val=None, i64Val=None, floatVal=None, doubleVal=None, stringVal=None, binaryVal=None, optBoolVal=None, optByteVal=None, optI16Val=None, optI32Val=None, optI64Val=None, optFloatVal=None, optDoubleVal=None, optStringVal=None, optBinaryVal=None,):
   self.boolVal = boolVal
   self.byteVal = byteVal
   self.i16Val = i16Val
@@ -780,6 +1102,15 @@ def MyStruct__init__(self, boolVal=None, byteVal=None, i16Val=None, i32Val=None,
   self.doubleVal = doubleVal
   self.stringVal = stringVal
   self.binaryVal = binaryVal
+  self.optBoolVal = optBoolVal
+  self.optByteVal = optByteVal
+  self.optI16Val = optI16Val
+  self.optI32Val = optI32Val
+  self.optI64Val = optI64Val
+  self.optFloatVal = optFloatVal
+  self.optDoubleVal = optDoubleVal
+  self.optStringVal = optStringVal
+  self.optBinaryVal = optBinaryVal
 
 MyStruct.__init__ = MyStruct__init__
 
@@ -793,6 +1124,15 @@ def MyStruct__setstate__(self, state):
   state.setdefault('doubleVal', None)
   state.setdefault('stringVal', None)
   state.setdefault('binaryVal', None)
+  state.setdefault('optBoolVal', None)
+  state.setdefault('optByteVal', None)
+  state.setdefault('optI16Val', None)
+  state.setdefault('optI32Val', None)
+  state.setdefault('optI64Val', None)
+  state.setdefault('optFloatVal', None)
+  state.setdefault('optDoubleVal', None)
+  state.setdefault('optStringVal', None)
+  state.setdefault('optBinaryVal', None)
   self.__dict__ = state
 
 MyStruct.__getstate__ = lambda self: self.__dict__.copy()
@@ -810,6 +1150,16 @@ MyStructPatch.thrift_spec = (
   (7, TType.STRUCT, 'doubleVal', [patch.ttypes.DoublePatch, patch.ttypes.DoublePatch.thrift_spec, False], None, 2, ), # 7
   (8, TType.STRUCT, 'stringVal', [patch.ttypes.StringPatch, patch.ttypes.StringPatch.thrift_spec, False], None, 2, ), # 8
   (9, TType.STRUCT, 'binaryVal', [patch.ttypes.BinaryPatch, patch.ttypes.BinaryPatch.thrift_spec, False], None, 2, ), # 9
+  None, # 10
+  (11, TType.STRUCT, 'optBoolVal', [patch.ttypes.OptionalBoolPatch, patch.ttypes.OptionalBoolPatch.thrift_spec, False], None, 2, ), # 11
+  (12, TType.STRUCT, 'optByteVal', [patch.ttypes.OptionalBytePatch, patch.ttypes.OptionalBytePatch.thrift_spec, False], None, 2, ), # 12
+  (13, TType.STRUCT, 'optI16Val', [patch.ttypes.OptionalI16Patch, patch.ttypes.OptionalI16Patch.thrift_spec, False], None, 2, ), # 13
+  (14, TType.STRUCT, 'optI32Val', [patch.ttypes.OptionalI32Patch, patch.ttypes.OptionalI32Patch.thrift_spec, False], None, 2, ), # 14
+  (15, TType.STRUCT, 'optI64Val', [patch.ttypes.OptionalI64Patch, patch.ttypes.OptionalI64Patch.thrift_spec, False], None, 2, ), # 15
+  (16, TType.STRUCT, 'optFloatVal', [patch.ttypes.OptionalFloatPatch, patch.ttypes.OptionalFloatPatch.thrift_spec, False], None, 2, ), # 16
+  (17, TType.STRUCT, 'optDoubleVal', [patch.ttypes.OptionalDoublePatch, patch.ttypes.OptionalDoublePatch.thrift_spec, False], None, 2, ), # 17
+  (18, TType.STRUCT, 'optStringVal', [patch.ttypes.OptionalStringPatch, patch.ttypes.OptionalStringPatch.thrift_spec, False], None, 2, ), # 18
+  (19, TType.STRUCT, 'optBinaryVal', [patch.ttypes.OptionalBinaryPatch, patch.ttypes.OptionalBinaryPatch.thrift_spec, False], None, 2, ), # 19
 )
 
 MyStructPatch.thrift_struct_annotations = {
@@ -817,7 +1167,7 @@ MyStructPatch.thrift_struct_annotations = {
 MyStructPatch.thrift_field_annotations = {
 }
 
-def MyStructPatch__init__(self, boolVal=None, byteVal=None, i16Val=None, i32Val=None, i64Val=None, floatVal=None, doubleVal=None, stringVal=None, binaryVal=None,):
+def MyStructPatch__init__(self, boolVal=None, byteVal=None, i16Val=None, i32Val=None, i64Val=None, floatVal=None, doubleVal=None, stringVal=None, binaryVal=None, optBoolVal=None, optByteVal=None, optI16Val=None, optI32Val=None, optI64Val=None, optFloatVal=None, optDoubleVal=None, optStringVal=None, optBinaryVal=None,):
   self.boolVal = boolVal
   self.byteVal = byteVal
   self.i16Val = i16Val
@@ -827,6 +1177,15 @@ def MyStructPatch__init__(self, boolVal=None, byteVal=None, i16Val=None, i32Val=
   self.doubleVal = doubleVal
   self.stringVal = stringVal
   self.binaryVal = binaryVal
+  self.optBoolVal = optBoolVal
+  self.optByteVal = optByteVal
+  self.optI16Val = optI16Val
+  self.optI32Val = optI32Val
+  self.optI64Val = optI64Val
+  self.optFloatVal = optFloatVal
+  self.optDoubleVal = optDoubleVal
+  self.optStringVal = optStringVal
+  self.optBinaryVal = optBinaryVal
 
 MyStructPatch.__init__ = MyStructPatch__init__
 
@@ -840,6 +1199,15 @@ def MyStructPatch__setstate__(self, state):
   state.setdefault('doubleVal', None)
   state.setdefault('stringVal', None)
   state.setdefault('binaryVal', None)
+  state.setdefault('optBoolVal', None)
+  state.setdefault('optByteVal', None)
+  state.setdefault('optI16Val', None)
+  state.setdefault('optI32Val', None)
+  state.setdefault('optI64Val', None)
+  state.setdefault('optFloatVal', None)
+  state.setdefault('optDoubleVal', None)
+  state.setdefault('optStringVal', None)
+  state.setdefault('optBinaryVal', None)
   self.__dict__ = state
 
 MyStructPatch.__getstate__ = lambda self: self.__dict__.copy()

@@ -19,18 +19,6 @@ include "thrift/lib/thrift/patch.thrift"
 
 namespace cpp2 apache.thrift.test.patch
 
-struct TestFields {
-  1: optional bool optBoolVal;
-  2: optional byte optByteVal;
-  3: optional i16 optI16Val;
-  4: optional i32 optI32Val;
-  5: optional i64 optI64Val;
-  6: optional float optFloatVal;
-  7: optional double optDoubleVal;
-  8: optional string optStringVal;
-  9: optional binary (cpp.type = "::folly::IOBuf") optBinaryVal;
-}
-
 @patch.GeneratePatch
 struct MyStruct {
   1: bool boolVal;
@@ -42,4 +30,14 @@ struct MyStruct {
   7: double doubleVal;
   8: string stringVal;
   9: binary (cpp.type = "::folly::IOBuf") binaryVal;
+
+  11: optional bool optBoolVal;
+  12: optional byte optByteVal;
+  13: optional i16 optI16Val;
+  14: optional i32 optI32Val;
+  15: optional i64 optI64Val;
+  16: optional float optFloatVal;
+  17: optional double optDoubleVal;
+  18: optional string optStringVal;
+  19: optional binary (cpp.type = "::folly::IOBuf") optBinaryVal;
 } (thrift.uri = "facebook.com/thrift/test/patch/MyStruct")

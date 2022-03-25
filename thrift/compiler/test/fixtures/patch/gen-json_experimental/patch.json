@@ -249,7 +249,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied forth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
             "key" : 4,
             "lineno" : 39,
             "required" : "opt-in-req-out",
@@ -295,7 +295,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied forth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
             "key" : 4,
             "lineno" : 55,
             "required" : "opt-in-req-out",
@@ -341,7 +341,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied forth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
             "key" : 4,
             "lineno" : 71,
             "required" : "opt-in-req-out",
@@ -387,7 +387,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied forth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
             "key" : 4,
             "lineno" : 87,
             "required" : "opt-in-req-out",
@@ -433,7 +433,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied forth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
             "key" : 4,
             "lineno" : 103,
             "required" : "opt-in-req-out",
@@ -479,7 +479,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied forth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
             "key" : 4,
             "lineno" : 119,
             "required" : "opt-in-req-out",
@@ -525,7 +525,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied forth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
             "key" : 4,
             "lineno" : 135,
             "required" : "opt-in-req-out",
@@ -571,7 +571,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied forth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
             "key" : 4,
             "lineno" : 151,
             "required" : "opt-in-req-out",
@@ -617,7 +617,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied forth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
             "key" : 4,
             "lineno" : 170,
             "required" : "opt-in-req-out",

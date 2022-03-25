@@ -42,7 +42,7 @@ public class OptionalI32Patch implements TBase, java.io.Serializable, Cloneable,
    */
   public int ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    */
   public I32Patch patchAfter;
   public static final int CLEAR = 2;
@@ -262,14 +262,14 @@ public class OptionalI32Patch implements TBase, java.io.Serializable, Cloneable,
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    */
   public I32Patch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    */
   public OptionalI32Patch setPatchAfter(I32Patch patchAfter) {
     this.patchAfter = patchAfter;

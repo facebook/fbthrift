@@ -36,6 +36,24 @@ struct VisitByFieldId<::cpp2::MyStruct> {
       return f(7, static_cast<T&&>(t).stringVal_ref());
     case 9:
       return f(8, static_cast<T&&>(t).binaryVal_ref());
+    case 11:
+      return f(9, static_cast<T&&>(t).optBoolVal_ref());
+    case 12:
+      return f(10, static_cast<T&&>(t).optByteVal_ref());
+    case 13:
+      return f(11, static_cast<T&&>(t).optI16Val_ref());
+    case 14:
+      return f(12, static_cast<T&&>(t).optI32Val_ref());
+    case 15:
+      return f(13, static_cast<T&&>(t).optI64Val_ref());
+    case 16:
+      return f(14, static_cast<T&&>(t).optFloatVal_ref());
+    case 17:
+      return f(15, static_cast<T&&>(t).optDoubleVal_ref());
+    case 18:
+      return f(16, static_cast<T&&>(t).optStringVal_ref());
+    case 19:
+      return f(17, static_cast<T&&>(t).optBinaryVal_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::MyStruct");
     }
@@ -65,6 +83,24 @@ struct VisitByFieldId<::cpp2::MyStructPatch> {
       return f(7, static_cast<T&&>(t).stringVal_ref());
     case 9:
       return f(8, static_cast<T&&>(t).binaryVal_ref());
+    case 11:
+      return f(9, static_cast<T&&>(t).optBoolVal_ref());
+    case 12:
+      return f(10, static_cast<T&&>(t).optByteVal_ref());
+    case 13:
+      return f(11, static_cast<T&&>(t).optI16Val_ref());
+    case 14:
+      return f(12, static_cast<T&&>(t).optI32Val_ref());
+    case 15:
+      return f(13, static_cast<T&&>(t).optI64Val_ref());
+    case 16:
+      return f(14, static_cast<T&&>(t).optFloatVal_ref());
+    case 17:
+      return f(15, static_cast<T&&>(t).optDoubleVal_ref());
+    case 18:
+      return f(16, static_cast<T&&>(t).optStringVal_ref());
+    case 19:
+      return f(17, static_cast<T&&>(t).optBinaryVal_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::MyStructPatch");
     }

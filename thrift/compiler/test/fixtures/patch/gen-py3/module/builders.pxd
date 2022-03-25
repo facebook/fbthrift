@@ -25,6 +25,15 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public pfloat doubleVal
     cdef public str stringVal
     cdef public bytes binaryVal
+    cdef public pbool optBoolVal
+    cdef public pint optByteVal
+    cdef public pint optI16Val
+    cdef public pint optI32Val
+    cdef public pint optI64Val
+    cdef public pfloat optFloatVal
+    cdef public pfloat optDoubleVal
+    cdef public str optStringVal
+    cdef public bytes optBinaryVal
 
 
 cdef class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
@@ -37,6 +46,15 @@ cdef class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
     cdef public object doubleVal
     cdef public object stringVal
     cdef public object binaryVal
+    cdef public object optBoolVal
+    cdef public object optByteVal
+    cdef public object optI16Val
+    cdef public object optI32Val
+    cdef public object optI64Val
+    cdef public object optFloatVal
+    cdef public object optDoubleVal
+    cdef public object optStringVal
+    cdef public object optBinaryVal
 
 
 cdef class MyStructValuePatch_Builder(thrift.py3.builder.StructBuilder):

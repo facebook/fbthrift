@@ -42,7 +42,7 @@ public class OptionalI64Patch implements TBase, java.io.Serializable, Cloneable 
    */
   public final Long ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    */
   public final I64Patch patchAfter;
   public static final int CLEAR = 2;
@@ -128,7 +128,7 @@ public class OptionalI64Patch implements TBase, java.io.Serializable, Cloneable 
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    */
   public I64Patch getPatchAfter() {
     return this.patchAfter;

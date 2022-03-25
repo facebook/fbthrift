@@ -27,7 +27,6 @@ namespace apache::thrift {
 using test::patch::MyStruct;
 using test::patch::MyStructPatch;
 using test::patch::MyStructValuePatch;
-using test::patch::TestFields;
 
 using TestStructPatch = op::detail::StructPatch<MyStructValuePatch>;
 
@@ -56,6 +55,20 @@ TestStructPatch testPatch() {
   *patch->floatVal() += 5;
   *patch->doubleVal() += 6;
   patch->stringVal() = "_" + op::StringPatch{} + "_";
+  return patch;
+}
+
+TestStructPatch testOptPatch() {
+  auto val = testValue();
+  TestStructPatch patch;
+  patch.patch().optBoolVal()->patch() = !op::BoolPatch{};
+  patch->optByteVal()->patch() = val.byteVal();
+  patch->optI16Val()->patch() += 2;
+  patch->optI32Val()->patch() += 3;
+  patch->optI64Val()->patch() += 4;
+  patch->optFloatVal()->patch() += 5;
+  patch->optDoubleVal()->patch() += 6;
+  patch->optStringVal()->patch() = "_" + op::StringPatch{} + "_";
   return patch;
 }
 
@@ -140,61 +153,81 @@ TEST(StructPatchTest, AssignClear) {
 
 TEST(StructPatchTest, OptionalFields) {
   TestStructPatch patch = testPatch();
-  TestFields fields;
+  TestStructPatch optPatch = testOptPatch();
+
+  MyStruct actual;
   std::optional<std::string> optStr;
 
   // Applying a value patch to void does nothing.
-  EXPECT_TRUE(empty(fields));
-  patch->boolVal()->apply(fields.optBoolVal());
-  patch->byteVal()->apply(fields.optByteVal());
-  patch->i16Val()->apply(fields.optI16Val());
-  patch->i32Val()->apply(fields.optI32Val());
-  patch->i64Val()->apply(fields.optI64Val());
-  patch->floatVal()->apply(fields.optFloatVal());
-  patch->doubleVal()->apply(fields.optDoubleVal());
-  patch->stringVal()->apply(fields.optStringVal());
+  test::expectPatch(optPatch, {}, {});
+  EXPECT_EQ(actual, MyStruct{});
+  patch->boolVal()->apply(actual.optBoolVal());
+  patch->byteVal()->apply(actual.optByteVal());
+  patch->i16Val()->apply(actual.optI16Val());
+  patch->i32Val()->apply(actual.optI32Val());
+  patch->i64Val()->apply(actual.optI64Val());
+  patch->floatVal()->apply(actual.optFloatVal());
+  patch->doubleVal()->apply(actual.optDoubleVal());
+  patch->stringVal()->apply(actual.optStringVal());
   patch->stringVal()->apply(optStr);
-  EXPECT_TRUE(empty(fields));
+  EXPECT_EQ(actual, MyStruct{});
   EXPECT_FALSE(optStr.has_value());
 
   // Applying a value patch to values, patches.
-  fields.optBoolVal().ensure();
-  fields.optByteVal().ensure();
-  fields.optI16Val().ensure();
-  fields.optI32Val().ensure();
-  fields.optI64Val().ensure();
-  fields.optFloatVal().ensure();
-  fields.optDoubleVal().ensure();
-  fields.optStringVal().ensure();
-
+  actual.optBoolVal().ensure();
+  actual.optByteVal().ensure();
+  actual.optI16Val().ensure();
+  actual.optI32Val().ensure();
+  actual.optI64Val().ensure();
+  actual.optFloatVal().ensure();
+  actual.optDoubleVal().ensure();
+  actual.optStringVal() = "hi";
   optStr = "hi";
   test::expectPatch(*patch->stringVal(), optStr, "_hi_", "__hi__");
 
-  EXPECT_FALSE(empty(fields));
-  patch->boolVal()->apply(fields.optBoolVal());
-  patch->byteVal()->apply(fields.optByteVal());
-  patch->i16Val()->apply(fields.optI16Val());
-  patch->i32Val()->apply(fields.optI32Val());
-  patch->i64Val()->apply(fields.optI64Val());
-  patch->floatVal()->apply(fields.optFloatVal());
-  patch->doubleVal()->apply(fields.optDoubleVal());
-  patch->stringVal()->apply(fields.optStringVal());
+  MyStruct expected1, expected2;
+  expected1.optBoolVal() = true;
+  expected2.optBoolVal() = false;
+  expected1.optByteVal() = 2;
+  expected2.optByteVal() = 2;
+  expected1.optI16Val() = 2;
+  expected2.optI16Val() = 4;
+  expected1.optI32Val() = 3;
+  expected2.optI32Val() = 6;
+  expected1.optI64Val() = 4;
+  expected2.optI64Val() = 8;
+  expected1.optFloatVal() = 5;
+  expected2.optFloatVal() = 10;
+  expected1.optDoubleVal() = 6;
+  expected2.optDoubleVal() = 12;
+  expected1.optStringVal() = "_hi_";
+  expected2.optStringVal() = "__hi__";
+  test::expectPatch(optPatch, actual, expected1, expected2);
+
+  patch->boolVal()->apply(actual.optBoolVal());
+  patch->byteVal()->apply(actual.optByteVal());
+  patch->i16Val()->apply(actual.optI16Val());
+  patch->i32Val()->apply(actual.optI32Val());
+  patch->i64Val()->apply(actual.optI64Val());
+  patch->floatVal()->apply(actual.optFloatVal());
+  patch->doubleVal()->apply(actual.optDoubleVal());
+  patch->stringVal()->apply(actual.optStringVal());
   patch->stringVal()->apply(optStr);
-  EXPECT_EQ(*fields.optBoolVal(), true);
-  EXPECT_EQ(*fields.optByteVal(), 2);
-  EXPECT_EQ(*fields.optI16Val(), 2);
-  EXPECT_EQ(*fields.optI32Val(), 3);
-  EXPECT_EQ(*fields.optI64Val(), 4);
-  EXPECT_EQ(*fields.optFloatVal(), 5);
-  EXPECT_EQ(*fields.optDoubleVal(), 6);
-  EXPECT_EQ(*fields.optStringVal(), "__");
+  EXPECT_EQ(*actual.optBoolVal(), true);
+  EXPECT_EQ(*actual.optByteVal(), 2);
+  EXPECT_EQ(*actual.optI16Val(), 2);
+  EXPECT_EQ(*actual.optI32Val(), 3);
+  EXPECT_EQ(*actual.optI64Val(), 4);
+  EXPECT_EQ(*actual.optFloatVal(), 5);
+  EXPECT_EQ(*actual.optDoubleVal(), 6);
+  EXPECT_EQ(*actual.optStringVal(), "_hi_");
   EXPECT_EQ(*optStr, "_hi_");
 }
 
 TEST(StructPatchTest, OptionalPatch) {
   op::OptionalBoolPatch patch;
   std::optional<bool> actual;
-  TestFields fields;
+  MyStruct fields;
   op::OptionalBoolPatch restorePatch;
   restorePatch = fields.optBoolVal();
 

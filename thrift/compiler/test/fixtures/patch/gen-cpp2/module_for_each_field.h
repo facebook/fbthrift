@@ -26,6 +26,15 @@ struct ForEachField<::cpp2::MyStruct> {
     f(6, static_cast<T&&>(t).doubleVal_ref()...);
     f(7, static_cast<T&&>(t).stringVal_ref()...);
     f(8, static_cast<T&&>(t).binaryVal_ref()...);
+    f(9, static_cast<T&&>(t).optBoolVal_ref()...);
+    f(10, static_cast<T&&>(t).optByteVal_ref()...);
+    f(11, static_cast<T&&>(t).optI16Val_ref()...);
+    f(12, static_cast<T&&>(t).optI32Val_ref()...);
+    f(13, static_cast<T&&>(t).optI64Val_ref()...);
+    f(14, static_cast<T&&>(t).optFloatVal_ref()...);
+    f(15, static_cast<T&&>(t).optDoubleVal_ref()...);
+    f(16, static_cast<T&&>(t).optStringVal_ref()...);
+    f(17, static_cast<T&&>(t).optBinaryVal_ref()...);
   }
 };
 
@@ -42,6 +51,15 @@ struct ForEachField<::cpp2::MyStructPatch> {
     f(6, static_cast<T&&>(t).doubleVal_ref()...);
     f(7, static_cast<T&&>(t).stringVal_ref()...);
     f(8, static_cast<T&&>(t).binaryVal_ref()...);
+    f(9, static_cast<T&&>(t).optBoolVal_ref()...);
+    f(10, static_cast<T&&>(t).optByteVal_ref()...);
+    f(11, static_cast<T&&>(t).optI16Val_ref()...);
+    f(12, static_cast<T&&>(t).optI32Val_ref()...);
+    f(13, static_cast<T&&>(t).optI64Val_ref()...);
+    f(14, static_cast<T&&>(t).optFloatVal_ref()...);
+    f(15, static_cast<T&&>(t).optDoubleVal_ref()...);
+    f(16, static_cast<T&&>(t).optStringVal_ref()...);
+    f(17, static_cast<T&&>(t).optBinaryVal_ref()...);
   }
 };
 

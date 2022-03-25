@@ -42,7 +42,7 @@ public class OptionalDoublePatch implements TBase, java.io.Serializable, Cloneab
    */
   public final Double ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    */
   public final DoublePatch patchAfter;
   public static final int CLEAR = 2;
@@ -128,7 +128,7 @@ public class OptionalDoublePatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    */
   public DoublePatch getPatchAfter() {
     return this.patchAfter;

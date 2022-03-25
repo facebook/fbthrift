@@ -73,6 +73,69 @@
             "lineno" : 36,
             "required" : "opt-in-req-out",
             "type" : "binary"
+          },
+          "optBoolVal" : {
+            "name" : "optBoolVal",
+            "key" : 11,
+            "lineno" : 38,
+            "required" : "optional",
+            "type" : "bool"
+          },
+          "optByteVal" : {
+            "name" : "optByteVal",
+            "key" : 12,
+            "lineno" : 39,
+            "required" : "optional",
+            "type" : "byte"
+          },
+          "optI16Val" : {
+            "name" : "optI16Val",
+            "key" : 13,
+            "lineno" : 40,
+            "required" : "optional",
+            "type" : "i16"
+          },
+          "optI32Val" : {
+            "name" : "optI32Val",
+            "key" : 14,
+            "lineno" : 41,
+            "required" : "optional",
+            "type" : "i32"
+          },
+          "optI64Val" : {
+            "name" : "optI64Val",
+            "key" : 15,
+            "lineno" : 42,
+            "required" : "optional",
+            "type" : "i64"
+          },
+          "optFloatVal" : {
+            "name" : "optFloatVal",
+            "key" : 16,
+            "lineno" : 43,
+            "required" : "optional",
+            "type" : "float"
+          },
+          "optDoubleVal" : {
+            "name" : "optDoubleVal",
+            "key" : 17,
+            "lineno" : 44,
+            "required" : "optional",
+            "type" : "double"
+          },
+          "optStringVal" : {
+            "name" : "optStringVal",
+            "key" : 18,
+            "lineno" : 45,
+            "required" : "optional",
+            "type" : "string"
+          },
+          "optBinaryVal" : {
+            "name" : "optBinaryVal",
+            "key" : 19,
+            "lineno" : 46,
+            "required" : "optional",
+            "type" : "binary"
           }
         },
         "is_exception" : false,
@@ -171,6 +234,96 @@
   "type" : "struct",
   "name" : "BinaryPatch"
 }
+          },
+          "optBoolVal" : {
+            "name" : "optBoolVal",
+            "key" : 11,
+            "lineno" : 27,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "OptionalBoolPatch"
+}
+          },
+          "optByteVal" : {
+            "name" : "optByteVal",
+            "key" : 12,
+            "lineno" : 27,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "OptionalBytePatch"
+}
+          },
+          "optI16Val" : {
+            "name" : "optI16Val",
+            "key" : 13,
+            "lineno" : 27,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "OptionalI16Patch"
+}
+          },
+          "optI32Val" : {
+            "name" : "optI32Val",
+            "key" : 14,
+            "lineno" : 27,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "OptionalI32Patch"
+}
+          },
+          "optI64Val" : {
+            "name" : "optI64Val",
+            "key" : 15,
+            "lineno" : 27,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "OptionalI64Patch"
+}
+          },
+          "optFloatVal" : {
+            "name" : "optFloatVal",
+            "key" : 16,
+            "lineno" : 27,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "OptionalFloatPatch"
+}
+          },
+          "optDoubleVal" : {
+            "name" : "optDoubleVal",
+            "key" : 17,
+            "lineno" : 27,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "OptionalDoublePatch"
+}
+          },
+          "optStringVal" : {
+            "name" : "optStringVal",
+            "key" : 18,
+            "lineno" : 27,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "OptionalStringPatch"
+}
+          },
+          "optBinaryVal" : {
+            "name" : "optBinaryVal",
+            "key" : 19,
+            "lineno" : 27,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "OptionalBinaryPatch"
+}
           }
         },
         "is_exception" : false,
@@ -250,7 +403,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied forth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
             "key" : 4,
             "lineno" : 27,
             "required" : "opt-in-req-out",

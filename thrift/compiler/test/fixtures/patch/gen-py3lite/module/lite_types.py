@@ -77,6 +77,69 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value
         ),
+        (
+            11,  # id
+            False,  # isUnqualified
+            "optBoolVal",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            12,  # id
+            False,  # isUnqualified
+            "optByteVal",  # name
+            _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
+            None,  # default value
+        ),
+        (
+            13,  # id
+            False,  # isUnqualified
+            "optI16Val",  # name
+            _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
+            None,  # default value
+        ),
+        (
+            14,  # id
+            False,  # isUnqualified
+            "optI32Val",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+        ),
+        (
+            15,  # id
+            False,  # isUnqualified
+            "optI64Val",  # name
+            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            None,  # default value
+        ),
+        (
+            16,  # id
+            False,  # isUnqualified
+            "optFloatVal",  # name
+            _fbthrift_py3lite_types.typeinfo_float,  # typeinfo
+            None,  # default value
+        ),
+        (
+            17,  # id
+            False,  # isUnqualified
+            "optDoubleVal",  # name
+            _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
+            None,  # default value
+        ),
+        (
+            18,  # id
+            False,  # isUnqualified
+            "optStringVal",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+        ),
+        (
+            19,  # id
+            False,  # isUnqualified
+            "optBinaryVal",  # name
+            _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
+            None,  # default value
+        ),
     )
 
     @staticmethod
@@ -156,6 +219,69 @@ class MyStructPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
             True,  # isUnqualified
             "binaryVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.BinaryPatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            11,  # id
+            True,  # isUnqualified
+            "optBoolVal",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalBoolPatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            12,  # id
+            True,  # isUnqualified
+            "optByteVal",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalBytePatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            13,  # id
+            True,  # isUnqualified
+            "optI16Val",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalI16Patch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            14,  # id
+            True,  # isUnqualified
+            "optI32Val",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalI32Patch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            15,  # id
+            True,  # isUnqualified
+            "optI64Val",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalI64Patch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            16,  # id
+            True,  # isUnqualified
+            "optFloatVal",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalFloatPatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            17,  # id
+            True,  # isUnqualified
+            "optDoubleVal",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalDoublePatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            18,  # id
+            True,  # isUnqualified
+            "optStringVal",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalStringPatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            19,  # id
+            True,  # isUnqualified
+            "optBinaryVal",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalBinaryPatch),  # typeinfo
             None,  # default value
         ),
     )

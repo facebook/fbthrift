@@ -46,6 +46,15 @@ StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
     {7, "doubleVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
     {8, "stringVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
     {9, "binaryVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
+    {11, "optBoolVal", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
+    {12, "optByteVal", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE), std::vector<ThriftConstStruct>{}},
+    {13, "optI16Val", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}},
+    {14, "optI32Val", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
+    {15, "optI64Val", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
+    {16, "optFloatVal", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE), std::vector<ThriftConstStruct>{}},
+    {17, "optDoubleVal", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
+    {18, "optStringVal", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
+    {19, "optBinaryVal", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -79,6 +88,15 @@ StructMetadata<::cpp2::MyStructPatch>::gen(ThriftMetadata& metadata) {
     {7, "doubleVal", false, std::make_unique<Struct<::apache::thrift::op::DoublePatchStruct>>("patch.DoublePatch"), std::vector<ThriftConstStruct>{}},
     {8, "stringVal", false, std::make_unique<Struct<::apache::thrift::op::StringPatchStruct>>("patch.StringPatch"), std::vector<ThriftConstStruct>{}},
     {9, "binaryVal", false, std::make_unique<Struct<::apache::thrift::op::BinaryPatchStruct>>("patch.BinaryPatch"), std::vector<ThriftConstStruct>{}},
+    {11, "optBoolVal", false, std::make_unique<Struct<::apache::thrift::op::OptionalBoolPatchStruct>>("patch.OptionalBoolPatch"), std::vector<ThriftConstStruct>{}},
+    {12, "optByteVal", false, std::make_unique<Struct<::apache::thrift::op::OptionalBytePatchStruct>>("patch.OptionalBytePatch"), std::vector<ThriftConstStruct>{}},
+    {13, "optI16Val", false, std::make_unique<Struct<::apache::thrift::op::OptionalI16PatchStruct>>("patch.OptionalI16Patch"), std::vector<ThriftConstStruct>{}},
+    {14, "optI32Val", false, std::make_unique<Struct<::apache::thrift::op::OptionalI32PatchStruct>>("patch.OptionalI32Patch"), std::vector<ThriftConstStruct>{}},
+    {15, "optI64Val", false, std::make_unique<Struct<::apache::thrift::op::OptionalI64PatchStruct>>("patch.OptionalI64Patch"), std::vector<ThriftConstStruct>{}},
+    {16, "optFloatVal", false, std::make_unique<Struct<::apache::thrift::op::OptionalFloatPatchStruct>>("patch.OptionalFloatPatch"), std::vector<ThriftConstStruct>{}},
+    {17, "optDoubleVal", false, std::make_unique<Struct<::apache::thrift::op::OptionalDoublePatchStruct>>("patch.OptionalDoublePatch"), std::vector<ThriftConstStruct>{}},
+    {18, "optStringVal", false, std::make_unique<Struct<::apache::thrift::op::OptionalStringPatchStruct>>("patch.OptionalStringPatch"), std::vector<ThriftConstStruct>{}},
+    {19, "optBinaryVal", false, std::make_unique<Struct<::apache::thrift::op::OptionalBinaryPatchStruct>>("patch.OptionalBinaryPatch"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStructPatch_fields) {
     ::apache::thrift::metadata::ThriftField field;

@@ -42,7 +42,7 @@ public class OptionalStringPatch implements TBase, java.io.Serializable, Cloneab
    */
   public final String ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    */
   public final StringPatch patchAfter;
   public static final int CLEAR = 2;
@@ -128,7 +128,7 @@ public class OptionalStringPatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied forth.
+   * The patch to apply to any set value, including newly set values. Applied fourth.
    */
   public StringPatch getPatchAfter() {
     return this.patchAfter;

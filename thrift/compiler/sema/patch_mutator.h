@@ -17,9 +17,9 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
 
 #include <thrift/compiler/ast/diagnostic_context.h>
+#include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/sema/ast_mutator.h>
 
@@ -58,7 +58,7 @@ class patch_generator {
   //     1: Foo myFoo;
   //   }
   //
-  t_struct& add_structure_patch(const t_node& annot, t_structured& node);
+  t_struct& add_structure_patch(const t_const& annot, t_structured& node);
 
   // Add a value patch representation for the given struct and associate patch
   // type, and return a reference to it.
@@ -95,7 +95,7 @@ class patch_generator {
   //     optional Value ensure (thrift.box);
   //
   //     // The patch to apply to any set value, including newly set values.
-  //     // Applied forth.
+  //     // Applied fourth.
   //     Patch patchAfter;
   //   } (cpp.adapter = "::apache::thrift::op::detail::OptionalPatchAdapter")
   //
@@ -110,13 +110,15 @@ class patch_generator {
 
   // Adds a new struct to the program, and return a reference to it.
   t_struct& gen_struct(const t_node& annot, std::string name, std::string uri);
-  t_struct& gen_struct_with_suffix(
-      const t_node& annot, const t_named& orig, const std::string& suffix);
+  t_struct& gen_suffix_struct(
+      const t_node& annot, const t_named& orig, const char* suffix);
+  t_struct& gen_prefix_struct(
+      const t_node& annot, const t_named& orig, const char* prefix);
 
   // Attempts to resolve the associated patch type for the given field.
   //
   // Returns an empty t_type_ref, if not found.
-  t_type_ref find_patch_type(const t_field& field) const;
+  t_type_ref find_patch_type(const t_const& annot, const t_field& field) const;
 
   // Injects prefix immediately after the last '/'
   //

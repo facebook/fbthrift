@@ -23,6 +23,15 @@ pub mod types {
         pub doubleVal: ::std::primitive::f64,
         pub stringVal: ::std::string::String,
         pub binaryVal: ::std::vec::Vec<::std::primitive::u8>,
+        pub optBoolVal: ::std::option::Option<::std::primitive::bool>,
+        pub optByteVal: ::std::option::Option<::std::primitive::i8>,
+        pub optI16Val: ::std::option::Option<::std::primitive::i16>,
+        pub optI32Val: ::std::option::Option<::std::primitive::i32>,
+        pub optI64Val: ::std::option::Option<::std::primitive::i64>,
+        pub optFloatVal: ::std::option::Option<::std::primitive::f32>,
+        pub optDoubleVal: ::std::option::Option<::std::primitive::f64>,
+        pub optStringVal: ::std::option::Option<::std::string::String>,
+        pub optBinaryVal: ::std::option::Option<::std::vec::Vec<::std::primitive::u8>>,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -42,6 +51,15 @@ pub mod types {
         pub doubleVal: patch::types::DoublePatch,
         pub stringVal: patch::types::StringPatch,
         pub binaryVal: patch::types::BinaryPatch,
+        pub optBoolVal: patch::types::OptionalBoolPatch,
+        pub optByteVal: patch::types::OptionalBytePatch,
+        pub optI16Val: patch::types::OptionalI16Patch,
+        pub optI32Val: patch::types::OptionalI32Patch,
+        pub optI64Val: patch::types::OptionalI64Patch,
+        pub optFloatVal: patch::types::OptionalFloatPatch,
+        pub optDoubleVal: patch::types::OptionalDoublePatch,
+        pub optStringVal: patch::types::OptionalStringPatch,
+        pub optBinaryVal: patch::types::OptionalBinaryPatch,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -74,7 +92,7 @@ pub mod types {
         pub patch: crate::types::MyStructValuePatch,
         #[doc = "The value with which to initialize any unset value. Applied third."]
         pub ensure: ::std::option::Option<crate::types::MyStruct>,
-        #[doc = "The patch to apply to any set value, including newly set values. Applied forth."]
+        #[doc = "The patch to apply to any set value, including newly set values. Applied fourth."]
         pub patchAfter: crate::types::MyStructValuePatch,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
@@ -96,6 +114,15 @@ pub mod types {
                 doubleVal: ::std::default::Default::default(),
                 stringVal: ::std::default::Default::default(),
                 binaryVal: ::std::default::Default::default(),
+                optBoolVal: ::std::option::Option::None,
+                optByteVal: ::std::option::Option::None,
+                optI16Val: ::std::option::Option::None,
+                optI32Val: ::std::option::Option::None,
+                optI64Val: ::std::option::Option::None,
+                optFloatVal: ::std::option::Option::None,
+                optDoubleVal: ::std::option::Option::None,
+                optStringVal: ::std::option::Option::None,
+                optBinaryVal: ::std::option::Option::None,
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -114,6 +141,15 @@ pub mod types {
                 .field("doubleVal", &self.doubleVal)
                 .field("stringVal", &self.stringVal)
                 .field("binaryVal", &self.binaryVal)
+                .field("optBoolVal", &self.optBoolVal)
+                .field("optByteVal", &self.optByteVal)
+                .field("optI16Val", &self.optI16Val)
+                .field("optI32Val", &self.optI32Val)
+                .field("optI64Val", &self.optI64Val)
+                .field("optFloatVal", &self.optFloatVal)
+                .field("optDoubleVal", &self.optDoubleVal)
+                .field("optStringVal", &self.optStringVal)
+                .field("optBinaryVal", &self.optBinaryVal)
                 .finish()
         }
     }
@@ -158,6 +194,51 @@ pub mod types {
             p.write_field_begin("binaryVal", ::fbthrift::TType::String, 9);
             ::fbthrift::Serialize::write(&self.binaryVal, p);
             p.write_field_end();
+            if let ::std::option::Option::Some(some) = &self.optBoolVal {
+                p.write_field_begin("optBoolVal", ::fbthrift::TType::Bool, 11);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            if let ::std::option::Option::Some(some) = &self.optByteVal {
+                p.write_field_begin("optByteVal", ::fbthrift::TType::Byte, 12);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            if let ::std::option::Option::Some(some) = &self.optI16Val {
+                p.write_field_begin("optI16Val", ::fbthrift::TType::I16, 13);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            if let ::std::option::Option::Some(some) = &self.optI32Val {
+                p.write_field_begin("optI32Val", ::fbthrift::TType::I32, 14);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            if let ::std::option::Option::Some(some) = &self.optI64Val {
+                p.write_field_begin("optI64Val", ::fbthrift::TType::I64, 15);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            if let ::std::option::Option::Some(some) = &self.optFloatVal {
+                p.write_field_begin("optFloatVal", ::fbthrift::TType::Float, 16);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            if let ::std::option::Option::Some(some) = &self.optDoubleVal {
+                p.write_field_begin("optDoubleVal", ::fbthrift::TType::Double, 17);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            if let ::std::option::Option::Some(some) = &self.optStringVal {
+                p.write_field_begin("optStringVal", ::fbthrift::TType::String, 18);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            if let ::std::option::Option::Some(some) = &self.optBinaryVal {
+                p.write_field_begin("optBinaryVal", ::fbthrift::TType::String, 19);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -177,6 +258,15 @@ pub mod types {
                 ::fbthrift::Field::new("i16Val", ::fbthrift::TType::I16, 3),
                 ::fbthrift::Field::new("i32Val", ::fbthrift::TType::I32, 4),
                 ::fbthrift::Field::new("i64Val", ::fbthrift::TType::I64, 5),
+                ::fbthrift::Field::new("optBinaryVal", ::fbthrift::TType::String, 19),
+                ::fbthrift::Field::new("optBoolVal", ::fbthrift::TType::Bool, 11),
+                ::fbthrift::Field::new("optByteVal", ::fbthrift::TType::Byte, 12),
+                ::fbthrift::Field::new("optDoubleVal", ::fbthrift::TType::Double, 17),
+                ::fbthrift::Field::new("optFloatVal", ::fbthrift::TType::Float, 16),
+                ::fbthrift::Field::new("optI16Val", ::fbthrift::TType::I16, 13),
+                ::fbthrift::Field::new("optI32Val", ::fbthrift::TType::I32, 14),
+                ::fbthrift::Field::new("optI64Val", ::fbthrift::TType::I64, 15),
+                ::fbthrift::Field::new("optStringVal", ::fbthrift::TType::String, 18),
                 ::fbthrift::Field::new("stringVal", ::fbthrift::TType::String, 8),
             ];
             let mut field_boolVal = ::std::option::Option::None;
@@ -188,6 +278,15 @@ pub mod types {
             let mut field_doubleVal = ::std::option::Option::None;
             let mut field_stringVal = ::std::option::Option::None;
             let mut field_binaryVal = ::std::option::Option::None;
+            let mut field_optBoolVal = ::std::option::Option::None;
+            let mut field_optByteVal = ::std::option::Option::None;
+            let mut field_optI16Val = ::std::option::Option::None;
+            let mut field_optI32Val = ::std::option::Option::None;
+            let mut field_optI64Val = ::std::option::Option::None;
+            let mut field_optFloatVal = ::std::option::Option::None;
+            let mut field_optDoubleVal = ::std::option::Option::None;
+            let mut field_optStringVal = ::std::option::Option::None;
+            let mut field_optBinaryVal = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -202,6 +301,15 @@ pub mod types {
                     (::fbthrift::TType::Double, 7) => field_doubleVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 8) => field_stringVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 9) => field_binaryVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Bool, 11) => field_optBoolVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Byte, 12) => field_optByteVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I16, 13) => field_optI16Val = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 14) => field_optI32Val = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I64, 15) => field_optI64Val = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Float, 16) => field_optFloatVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Double, 17) => field_optDoubleVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 18) => field_optStringVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 19) => field_optBinaryVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -217,6 +325,15 @@ pub mod types {
                 doubleVal: field_doubleVal.unwrap_or_default(),
                 stringVal: field_stringVal.unwrap_or_default(),
                 binaryVal: field_binaryVal.unwrap_or_default(),
+                optBoolVal: field_optBoolVal,
+                optByteVal: field_optByteVal,
+                optI16Val: field_optI16Val,
+                optI32Val: field_optI32Val,
+                optI64Val: field_optI64Val,
+                optFloatVal: field_optFloatVal,
+                optDoubleVal: field_optDoubleVal,
+                optStringVal: field_optStringVal,
+                optBinaryVal: field_optBinaryVal,
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
@@ -235,6 +352,15 @@ pub mod types {
                 doubleVal: ::std::default::Default::default(),
                 stringVal: ::std::default::Default::default(),
                 binaryVal: ::std::default::Default::default(),
+                optBoolVal: ::std::default::Default::default(),
+                optByteVal: ::std::default::Default::default(),
+                optI16Val: ::std::default::Default::default(),
+                optI32Val: ::std::default::Default::default(),
+                optI64Val: ::std::default::Default::default(),
+                optFloatVal: ::std::default::Default::default(),
+                optDoubleVal: ::std::default::Default::default(),
+                optStringVal: ::std::default::Default::default(),
+                optBinaryVal: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -253,6 +379,15 @@ pub mod types {
                 .field("doubleVal", &self.doubleVal)
                 .field("stringVal", &self.stringVal)
                 .field("binaryVal", &self.binaryVal)
+                .field("optBoolVal", &self.optBoolVal)
+                .field("optByteVal", &self.optByteVal)
+                .field("optI16Val", &self.optI16Val)
+                .field("optI32Val", &self.optI32Val)
+                .field("optI64Val", &self.optI64Val)
+                .field("optFloatVal", &self.optFloatVal)
+                .field("optDoubleVal", &self.optDoubleVal)
+                .field("optStringVal", &self.optStringVal)
+                .field("optBinaryVal", &self.optBinaryVal)
                 .finish()
         }
     }
@@ -297,6 +432,33 @@ pub mod types {
             p.write_field_begin("binaryVal", ::fbthrift::TType::Struct, 9);
             ::fbthrift::Serialize::write(&self.binaryVal, p);
             p.write_field_end();
+            p.write_field_begin("optBoolVal", ::fbthrift::TType::Struct, 11);
+            ::fbthrift::Serialize::write(&self.optBoolVal, p);
+            p.write_field_end();
+            p.write_field_begin("optByteVal", ::fbthrift::TType::Struct, 12);
+            ::fbthrift::Serialize::write(&self.optByteVal, p);
+            p.write_field_end();
+            p.write_field_begin("optI16Val", ::fbthrift::TType::Struct, 13);
+            ::fbthrift::Serialize::write(&self.optI16Val, p);
+            p.write_field_end();
+            p.write_field_begin("optI32Val", ::fbthrift::TType::Struct, 14);
+            ::fbthrift::Serialize::write(&self.optI32Val, p);
+            p.write_field_end();
+            p.write_field_begin("optI64Val", ::fbthrift::TType::Struct, 15);
+            ::fbthrift::Serialize::write(&self.optI64Val, p);
+            p.write_field_end();
+            p.write_field_begin("optFloatVal", ::fbthrift::TType::Struct, 16);
+            ::fbthrift::Serialize::write(&self.optFloatVal, p);
+            p.write_field_end();
+            p.write_field_begin("optDoubleVal", ::fbthrift::TType::Struct, 17);
+            ::fbthrift::Serialize::write(&self.optDoubleVal, p);
+            p.write_field_end();
+            p.write_field_begin("optStringVal", ::fbthrift::TType::Struct, 18);
+            ::fbthrift::Serialize::write(&self.optStringVal, p);
+            p.write_field_end();
+            p.write_field_begin("optBinaryVal", ::fbthrift::TType::Struct, 19);
+            ::fbthrift::Serialize::write(&self.optBinaryVal, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -316,6 +478,15 @@ pub mod types {
                 ::fbthrift::Field::new("i16Val", ::fbthrift::TType::Struct, 3),
                 ::fbthrift::Field::new("i32Val", ::fbthrift::TType::Struct, 4),
                 ::fbthrift::Field::new("i64Val", ::fbthrift::TType::Struct, 5),
+                ::fbthrift::Field::new("optBinaryVal", ::fbthrift::TType::Struct, 19),
+                ::fbthrift::Field::new("optBoolVal", ::fbthrift::TType::Struct, 11),
+                ::fbthrift::Field::new("optByteVal", ::fbthrift::TType::Struct, 12),
+                ::fbthrift::Field::new("optDoubleVal", ::fbthrift::TType::Struct, 17),
+                ::fbthrift::Field::new("optFloatVal", ::fbthrift::TType::Struct, 16),
+                ::fbthrift::Field::new("optI16Val", ::fbthrift::TType::Struct, 13),
+                ::fbthrift::Field::new("optI32Val", ::fbthrift::TType::Struct, 14),
+                ::fbthrift::Field::new("optI64Val", ::fbthrift::TType::Struct, 15),
+                ::fbthrift::Field::new("optStringVal", ::fbthrift::TType::Struct, 18),
                 ::fbthrift::Field::new("stringVal", ::fbthrift::TType::Struct, 8),
             ];
             let mut field_boolVal = ::std::option::Option::None;
@@ -327,6 +498,15 @@ pub mod types {
             let mut field_doubleVal = ::std::option::Option::None;
             let mut field_stringVal = ::std::option::Option::None;
             let mut field_binaryVal = ::std::option::Option::None;
+            let mut field_optBoolVal = ::std::option::Option::None;
+            let mut field_optByteVal = ::std::option::Option::None;
+            let mut field_optI16Val = ::std::option::Option::None;
+            let mut field_optI32Val = ::std::option::Option::None;
+            let mut field_optI64Val = ::std::option::Option::None;
+            let mut field_optFloatVal = ::std::option::Option::None;
+            let mut field_optDoubleVal = ::std::option::Option::None;
+            let mut field_optStringVal = ::std::option::Option::None;
+            let mut field_optBinaryVal = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -341,6 +521,15 @@ pub mod types {
                     (::fbthrift::TType::Struct, 7) => field_doubleVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 8) => field_stringVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 9) => field_binaryVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 11) => field_optBoolVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 12) => field_optByteVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 13) => field_optI16Val = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 14) => field_optI32Val = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 15) => field_optI64Val = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 16) => field_optFloatVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 17) => field_optDoubleVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 18) => field_optStringVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 19) => field_optBinaryVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -356,6 +545,15 @@ pub mod types {
                 doubleVal: field_doubleVal.unwrap_or_default(),
                 stringVal: field_stringVal.unwrap_or_default(),
                 binaryVal: field_binaryVal.unwrap_or_default(),
+                optBoolVal: field_optBoolVal.unwrap_or_default(),
+                optByteVal: field_optByteVal.unwrap_or_default(),
+                optI16Val: field_optI16Val.unwrap_or_default(),
+                optI32Val: field_optI32Val.unwrap_or_default(),
+                optI64Val: field_optI64Val.unwrap_or_default(),
+                optFloatVal: field_optFloatVal.unwrap_or_default(),
+                optDoubleVal: field_optDoubleVal.unwrap_or_default(),
+                optStringVal: field_optStringVal.unwrap_or_default(),
+                optBinaryVal: field_optBinaryVal.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }

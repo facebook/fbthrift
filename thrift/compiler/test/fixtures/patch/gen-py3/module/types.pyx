@@ -91,6 +91,15 @@ cdef class MyStruct(thrift.py3.types.Struct):
           "doubleVal": deref(self._cpp_obj).doubleVal_ref().has_value(),
           "stringVal": deref(self._cpp_obj).stringVal_ref().has_value(),
           "binaryVal": deref(self._cpp_obj).binaryVal_ref().has_value(),
+          "optBoolVal": deref(self._cpp_obj).optBoolVal_ref().has_value(),
+          "optByteVal": deref(self._cpp_obj).optByteVal_ref().has_value(),
+          "optI16Val": deref(self._cpp_obj).optI16Val_ref().has_value(),
+          "optI32Val": deref(self._cpp_obj).optI32Val_ref().has_value(),
+          "optI64Val": deref(self._cpp_obj).optI64Val_ref().has_value(),
+          "optFloatVal": deref(self._cpp_obj).optFloatVal_ref().has_value(),
+          "optDoubleVal": deref(self._cpp_obj).optDoubleVal_ref().has_value(),
+          "optStringVal": deref(self._cpp_obj).optStringVal_ref().has_value(),
+          "optBinaryVal": deref(self._cpp_obj).optBinaryVal_ref().has_value(),
         })
 
     @staticmethod
@@ -171,6 +180,96 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def binaryVal(self):
         return self.binaryVal_impl()
 
+    cdef inline optBoolVal_impl(self):
+        if not deref(self._cpp_obj).optBoolVal_ref().has_value():
+            return None
+
+        return <pbool> deref(self._cpp_obj).optBoolVal_ref().value_unchecked()
+
+    @property
+    def optBoolVal(self):
+        return self.optBoolVal_impl()
+
+    cdef inline optByteVal_impl(self):
+        if not deref(self._cpp_obj).optByteVal_ref().has_value():
+            return None
+
+        return deref(self._cpp_obj).optByteVal_ref().value_unchecked()
+
+    @property
+    def optByteVal(self):
+        return self.optByteVal_impl()
+
+    cdef inline optI16Val_impl(self):
+        if not deref(self._cpp_obj).optI16Val_ref().has_value():
+            return None
+
+        return deref(self._cpp_obj).optI16Val_ref().value_unchecked()
+
+    @property
+    def optI16Val(self):
+        return self.optI16Val_impl()
+
+    cdef inline optI32Val_impl(self):
+        if not deref(self._cpp_obj).optI32Val_ref().has_value():
+            return None
+
+        return deref(self._cpp_obj).optI32Val_ref().value_unchecked()
+
+    @property
+    def optI32Val(self):
+        return self.optI32Val_impl()
+
+    cdef inline optI64Val_impl(self):
+        if not deref(self._cpp_obj).optI64Val_ref().has_value():
+            return None
+
+        return deref(self._cpp_obj).optI64Val_ref().value_unchecked()
+
+    @property
+    def optI64Val(self):
+        return self.optI64Val_impl()
+
+    cdef inline optFloatVal_impl(self):
+        if not deref(self._cpp_obj).optFloatVal_ref().has_value():
+            return None
+
+        return deref(self._cpp_obj).optFloatVal_ref().value_unchecked()
+
+    @property
+    def optFloatVal(self):
+        return self.optFloatVal_impl()
+
+    cdef inline optDoubleVal_impl(self):
+        if not deref(self._cpp_obj).optDoubleVal_ref().has_value():
+            return None
+
+        return deref(self._cpp_obj).optDoubleVal_ref().value_unchecked()
+
+    @property
+    def optDoubleVal(self):
+        return self.optDoubleVal_impl()
+
+    cdef inline optStringVal_impl(self):
+        if not deref(self._cpp_obj).optStringVal_ref().has_value():
+            return None
+
+        return (<bytes>deref(self._cpp_obj).optStringVal_ref().value_unchecked()).decode('UTF-8')
+
+    @property
+    def optStringVal(self):
+        return self.optStringVal_impl()
+
+    cdef inline optBinaryVal_impl(self):
+        if not deref(self._cpp_obj).optBinaryVal_ref().has_value():
+            return None
+
+        return (<const char*>deref(self._cpp_obj).optBinaryVal_ref().value_unchecked().data())[:deref(self._cpp_obj).optBinaryVal_ref().value_unchecked().size()]
+
+    @property
+    def optBinaryVal(self):
+        return self.optBinaryVal_impl()
+
 
     def __hash__(MyStruct self):
         return super().__hash__()
@@ -214,7 +313,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyStruct](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 9
+        self._fbthrift_struct_size = 18
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -261,6 +360,15 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
           "doubleVal": deref(self._cpp_obj).doubleVal_ref().has_value(),
           "stringVal": deref(self._cpp_obj).stringVal_ref().has_value(),
           "binaryVal": deref(self._cpp_obj).binaryVal_ref().has_value(),
+          "optBoolVal": deref(self._cpp_obj).optBoolVal_ref().has_value(),
+          "optByteVal": deref(self._cpp_obj).optByteVal_ref().has_value(),
+          "optI16Val": deref(self._cpp_obj).optI16Val_ref().has_value(),
+          "optI32Val": deref(self._cpp_obj).optI32Val_ref().has_value(),
+          "optI64Val": deref(self._cpp_obj).optI64Val_ref().has_value(),
+          "optFloatVal": deref(self._cpp_obj).optFloatVal_ref().has_value(),
+          "optDoubleVal": deref(self._cpp_obj).optDoubleVal_ref().has_value(),
+          "optStringVal": deref(self._cpp_obj).optStringVal_ref().has_value(),
+          "optBinaryVal": deref(self._cpp_obj).optBinaryVal_ref().has_value(),
         })
 
     @staticmethod
@@ -359,6 +467,96 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     def binaryVal(self):
         return self.binaryVal_impl()
 
+    cdef inline optBoolVal_impl(self):
+
+        if self.__fbthrift_cached_optBoolVal is None:
+            self.__fbthrift_cached_optBoolVal = _patch_types.OptionalBoolPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optBoolVal_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_optBoolVal
+
+    @property
+    def optBoolVal(self):
+        return self.optBoolVal_impl()
+
+    cdef inline optByteVal_impl(self):
+
+        if self.__fbthrift_cached_optByteVal is None:
+            self.__fbthrift_cached_optByteVal = _patch_types.OptionalBytePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optByteVal_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_optByteVal
+
+    @property
+    def optByteVal(self):
+        return self.optByteVal_impl()
+
+    cdef inline optI16Val_impl(self):
+
+        if self.__fbthrift_cached_optI16Val is None:
+            self.__fbthrift_cached_optI16Val = _patch_types.OptionalI16Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optI16Val_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_optI16Val
+
+    @property
+    def optI16Val(self):
+        return self.optI16Val_impl()
+
+    cdef inline optI32Val_impl(self):
+
+        if self.__fbthrift_cached_optI32Val is None:
+            self.__fbthrift_cached_optI32Val = _patch_types.OptionalI32Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optI32Val_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_optI32Val
+
+    @property
+    def optI32Val(self):
+        return self.optI32Val_impl()
+
+    cdef inline optI64Val_impl(self):
+
+        if self.__fbthrift_cached_optI64Val is None:
+            self.__fbthrift_cached_optI64Val = _patch_types.OptionalI64Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optI64Val_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_optI64Val
+
+    @property
+    def optI64Val(self):
+        return self.optI64Val_impl()
+
+    cdef inline optFloatVal_impl(self):
+
+        if self.__fbthrift_cached_optFloatVal is None:
+            self.__fbthrift_cached_optFloatVal = _patch_types.OptionalFloatPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optFloatVal_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_optFloatVal
+
+    @property
+    def optFloatVal(self):
+        return self.optFloatVal_impl()
+
+    cdef inline optDoubleVal_impl(self):
+
+        if self.__fbthrift_cached_optDoubleVal is None:
+            self.__fbthrift_cached_optDoubleVal = _patch_types.OptionalDoublePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optDoubleVal_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_optDoubleVal
+
+    @property
+    def optDoubleVal(self):
+        return self.optDoubleVal_impl()
+
+    cdef inline optStringVal_impl(self):
+
+        if self.__fbthrift_cached_optStringVal is None:
+            self.__fbthrift_cached_optStringVal = _patch_types.OptionalStringPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optStringVal_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_optStringVal
+
+    @property
+    def optStringVal(self):
+        return self.optStringVal_impl()
+
+    cdef inline optBinaryVal_impl(self):
+
+        if self.__fbthrift_cached_optBinaryVal is None:
+            self.__fbthrift_cached_optBinaryVal = _patch_types.OptionalBinaryPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optBinaryVal_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_optBinaryVal
+
+    @property
+    def optBinaryVal(self):
+        return self.optBinaryVal_impl()
+
 
     def __hash__(MyStructPatch self):
         return super().__hash__()
@@ -402,7 +600,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyStructPatch](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 9
+        self._fbthrift_struct_size = 18
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStructPatch self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

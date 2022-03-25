@@ -26,6 +26,15 @@ class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     doubleVal: _typing.Optional[float]
     stringVal: _typing.Optional[str]
     binaryVal: _typing.Optional[bytes]
+    optBoolVal: _typing.Optional[bool]
+    optByteVal: _typing.Optional[int]
+    optI16Val: _typing.Optional[int]
+    optI32Val: _typing.Optional[int]
+    optI64Val: _typing.Optional[int]
+    optFloatVal: _typing.Optional[float]
+    optDoubleVal: _typing.Optional[float]
+    optStringVal: _typing.Optional[str]
+    optBinaryVal: _typing.Optional[bytes]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
@@ -40,6 +49,15 @@ class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
     doubleVal: _typing.Any
     stringVal: _typing.Any
     binaryVal: _typing.Any
+    optBoolVal: _typing.Any
+    optByteVal: _typing.Any
+    optI16Val: _typing.Any
+    optI32Val: _typing.Any
+    optI64Val: _typing.Any
+    optFloatVal: _typing.Any
+    optDoubleVal: _typing.Any
+    optStringVal: _typing.Any
+    optBinaryVal: _typing.Any
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

@@ -61,6 +61,15 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_6(self, _fbthrift_value) except *
     cdef void _set_field_7(self, _fbthrift_value) except *
     cdef void _set_field_8(self, _fbthrift_value) except *
+    cdef void _set_field_9(self, _fbthrift_value) except *
+    cdef void _set_field_10(self, _fbthrift_value) except *
+    cdef void _set_field_11(self, _fbthrift_value) except *
+    cdef void _set_field_12(self, _fbthrift_value) except *
+    cdef void _set_field_13(self, _fbthrift_value) except *
+    cdef void _set_field_14(self, _fbthrift_value) except *
+    cdef void _set_field_15(self, _fbthrift_value) except *
+    cdef void _set_field_16(self, _fbthrift_value) except *
+    cdef void _set_field_17(self, _fbthrift_value) except *
 
 
 ctypedef void (*__MyStructPatch_FieldsSetterFunc)(__MyStructPatch_FieldsSetter, object) except *
@@ -80,6 +89,15 @@ cdef class __MyStructPatch_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_6(self, _fbthrift_value) except *
     cdef void _set_field_7(self, _fbthrift_value) except *
     cdef void _set_field_8(self, _fbthrift_value) except *
+    cdef void _set_field_9(self, _fbthrift_value) except *
+    cdef void _set_field_10(self, _fbthrift_value) except *
+    cdef void _set_field_11(self, _fbthrift_value) except *
+    cdef void _set_field_12(self, _fbthrift_value) except *
+    cdef void _set_field_13(self, _fbthrift_value) except *
+    cdef void _set_field_14(self, _fbthrift_value) except *
+    cdef void _set_field_15(self, _fbthrift_value) except *
+    cdef void _set_field_16(self, _fbthrift_value) except *
+    cdef void _set_field_17(self, _fbthrift_value) except *
 
 
 ctypedef void (*__MyStructValuePatch_FieldsSetterFunc)(__MyStructValuePatch_FieldsSetter, object) except *

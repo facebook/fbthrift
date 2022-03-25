@@ -34,4 +34,14 @@ struct MyStruct {
   7: double doubleVal;
   8: string stringVal;
   9: binary (cpp.type = "::folly::IOBuf") binaryVal;
+
+  11: optional bool optBoolVal;
+  12: optional byte optByteVal;
+  13: optional i16 optI16Val;
+  14: optional i32 optI32Val;
+  15: optional i64 optI64Val;
+  16: optional float optFloatVal;
+  17: optional double optDoubleVal;
+  18: optional string optStringVal;
+  19: optional binary (cpp.type = "::folly::IOBuf") optBinaryVal;
 }
