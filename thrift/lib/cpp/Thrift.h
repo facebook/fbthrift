@@ -243,6 +243,41 @@ class FOLLY_EXPORT AppClientError : public AppBaseError {
   bool isClientError() const noexcept override { return true; }
 };
 
+/**
+ * Below are class templates that allows the Thrift compiler to
+ * generate code for C++ types without polluting the user namespace.
+ *
+ * Given the following IDL:
+ *     namespace cpp2 foo
+ *     service Bar {}
+ * The Thrift compiler only requires an incomplete type to be declared in the
+ * user namespace.
+ *     namespace foo {
+ *     class Bar;
+ *     }
+ * To implement server and client stubs for this service, the compiler can
+ * provide template specializations for apache::thrift::ServiceHandler<foo::Bar>
+ * and apache::thrift::Client<foo::Bar> respectively.
+ *
+ * This mechanism provides a framework to implement arbitrary "traits" on
+ * services with the guarantee that adding new types will not collide with
+ * user-defined types in their own namespaces.
+ */
+
+template <class ServiceTag>
+class ServiceHandler {
+  static_assert(
+      folly::always_false<ServiceTag>,
+      "Invalid instantiation of base template. Is ServiceTag valid?");
+};
+
+template <class ServiceTag>
+class Client {
+  static_assert(
+      folly::always_false<ServiceTag>,
+      "Invalid instantiation of base template. Is ServiceTag valid?");
+};
+
 } // namespace thrift
 } // namespace apache
 
