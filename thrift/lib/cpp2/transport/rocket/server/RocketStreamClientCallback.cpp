@@ -126,7 +126,7 @@ bool RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
     apache::thrift::rocket::detail::setCompressionCodec(
         *compressionConfig_,
         payload.metadata,
-        payload.payload->computeChainDataLength());
+        payload.payload ? payload.payload->computeChainDataLength() : 0);
   }
 
   connection_.sendPayload(
