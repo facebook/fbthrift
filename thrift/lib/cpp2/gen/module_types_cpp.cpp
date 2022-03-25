@@ -22,6 +22,8 @@ namespace detail {
 
 namespace st {
 
+template struct enum_find<int>;
+
 FOLLY_NOINLINE void translate_field_name(
     folly::StringPiece fname,
     int16_t& fid,

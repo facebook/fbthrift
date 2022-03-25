@@ -17,6 +17,7 @@
 #pragma once
 
 #include <algorithm>
+#include <atomic>
 #include <memory>
 #include <type_traits>
 
@@ -25,6 +26,9 @@
 #include <folly/Portability.h>
 #include <folly/Range.h>
 #include <folly/Traits.h>
+#include <folly/lang/Align.h>
+#include <folly/lang/Exception.h>
+#include <folly/synchronization/AtomicUtil.h>
 
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/Thrift.h>
@@ -35,33 +39,128 @@ namespace detail {
 
 namespace st {
 
-template <typename E>
-struct enum_find {
-  using F = TEnumMapFactory<E>;
+template <typename Int>
+struct alignas(folly::cacheline_align_v) enum_find {
+  // metadata for the slow path to fill the caches for the fast path
+  struct metadata {
+    std::size_t const size{};
+    Int const* const values{};
+    folly::StringPiece const* const names{};
+  };
 
-  FOLLY_EXPORT static char const* find_name(E const value) {
-    using map_t = typename F::ValuesToNamesMapType;
-    static folly::Indestructible<map_t> const map{F::makeValuesToNamesMap()};
-    auto const found = map->find(value);
-    return found == map->end() ? nullptr : found->second;
+  // the fast path cache types
+  using find_name_map_t = std::map<Int, char const*>;
+  using find_value_map_t = std::map<char const*, Int, ltstr>;
+
+  // an approximate state of the fast-path caches; approximately mutex-like
+  struct cache_state {
+    std::atomic<unsigned> cell{0}; // 0 init, +1 locked, -1 ready
+    FOLLY_ERASE bool ready() noexcept {
+      return folly::to_signed(cell.load(std::memory_order_acquire)) < 0;
+    }
+    FOLLY_ERASE bool try_lock() noexcept {
+      return !folly::atomic_fetch_set(cell, 0, std::memory_order_relaxed);
+    }
+    FOLLY_ERASE bool unlock(bool ready) noexcept {
+      return cell.store(ready ? -1 : 0, std::memory_order_release), ready;
+    }
+  };
+
+  // the fast-path caches, guarded by the cache-state
+  struct bidi_cache {
+    find_name_map_t find_name_index;
+    find_value_map_t find_value_index;
+
+    FOLLY_NOINLINE explicit bidi_cache(metadata const& meta_) {
+      for (std::size_t i = 0; i < meta_.size; ++i) {
+        find_name_index.emplace(meta_.values[i], meta_.names[i].data());
+        find_value_index.emplace(meta_.names[i].data(), meta_.values[i]);
+      }
+    }
+  };
+
+  // these fields all fit within a single cache line for fast path performance
+  // the metadata is stored separately since it is used only in the slow path
+  cache_state state; // protects the fast-path caches
+  folly::aligned_storage_for_t<bidi_cache> cache{}; // the fast-path caches
+  metadata const& meta; // source for the fast-path caches
+
+  FOLLY_ERASE explicit constexpr enum_find(metadata const& meta_) noexcept
+      : meta{meta_} {}
+
+  FOLLY_NOINLINE bool prep_and_unlock() noexcept {
+    auto const try_ = [&] { return ::new (&cache) bidi_cache(meta), true; };
+    auto const catch_ = []() noexcept { return false; };
+    return state.unlock(folly::catch_exception(try_, +catch_));
+  }
+  FOLLY_ERASE bool try_prepare() noexcept {
+    return state.try_lock() && prep_and_unlock();
   }
 
-  FOLLY_EXPORT static bool find_value(char const* const name, E* const out) {
-    using map_t = typename F::NamesToValuesMapType;
-    static folly::Indestructible<map_t> const map{F::makeNamesToValuesMap()};
-    auto found = map->find(name);
-    return found == map->end() ? false : (*out = found->second, true);
+  FOLLY_ERASE char const* find_name_fast(Int const value) noexcept {
+    auto const& map = reinterpret_cast<bidi_cache&>(cache).find_name_index;
+    auto const found = map.find(value);
+    return found == map.end() ? nullptr : found->second;
+  }
+  FOLLY_NOINLINE char const* find_name_scan(Int const value) noexcept {
+    // reverse order to simulate loop-map-insert then map-find
+    auto const range = folly::range(meta.values, meta.values + meta.size);
+    auto const found = range.rfind(value);
+    return found == range.npos ? nullptr : meta.names[found].data();
+  }
+  // param order optimizes outline findName by minimizing native instructions
+  FOLLY_NOINLINE static char const* find_name(
+      Int const value, enum_find& self) noexcept {
+    // with two likelinesses v.s. one, gets the right code layout
+    return FOLLY_LIKELY(self.state.ready()) || FOLLY_LIKELY(self.try_prepare())
+        ? self.find_name_fast(value)
+        : self.find_name_scan(value);
+  }
+
+  FOLLY_ERASE bool find_value_fast(
+      char const* const name, Int* const out) noexcept {
+    auto const& map = reinterpret_cast<bidi_cache&>(cache).find_value_index;
+    auto const found = map.find(name);
+    return found == map.end() ? false : ((*out = found->second), true);
+  }
+  FOLLY_NOINLINE bool find_value_scan(
+      char const* const name, Int* const out) noexcept {
+    // reverse order to simulate loop-map-insert then map-find
+    auto const range = folly::range(meta.names, meta.names + meta.size);
+    auto const found = range.rfind(name);
+    return found == range.npos ? false : ((*out = meta.values[found]), true);
+  }
+  // param order optimizes outline findValue by minimizing native instructions
+  FOLLY_NOINLINE static bool find_value(
+      char const* const name, Int* const out, enum_find& self) noexcept {
+    // with two likelinesses v.s. one, gets the right code layout
+    return FOLLY_LIKELY(self.state.ready()) || FOLLY_LIKELY(self.try_prepare())
+        ? self.find_value_fast(name, out)
+        : self.find_value_scan(name, out);
   }
 };
+extern template struct enum_find<int>; // default
 
-template <typename E>
-FOLLY_ERASE char const* enum_find_name(E const value) {
-  return enum_find<E>::find_name(value);
+template <typename E, typename U = std::underlying_type_t<E>>
+FOLLY_EXPORT FOLLY_ALWAYS_INLINE enum_find<U>& enum_find_instance() {
+  using traits = TEnumTraits<E>;
+  using metadata = typename enum_find<U>::metadata;
+  auto const values = reinterpret_cast<U const*>(traits::values.data());
+  static metadata const meta{traits::size, values, traits::names.data()};
+  static enum_find<U> impl{meta};
+  return impl;
 }
 
-template <typename E>
-FOLLY_ERASE bool enum_find_value(char const* const name, E* const out) {
-  return enum_find<E>::find_value(name, out);
+template <typename E, typename U = std::underlying_type_t<E>>
+FOLLY_ERASE char const* enum_find_name(E const value) noexcept {
+  return enum_find<U>::find_name(U(value), enum_find_instance<E>());
+}
+
+template <typename E, typename U = std::underlying_type_t<E>>
+FOLLY_ERASE bool enum_find_value(
+    char const* const name, E* const out) noexcept {
+  auto const uout = reinterpret_cast<U*>(out);
+  return enum_find<U>::find_value(name, uout, enum_find_instance<E>());
 }
 
 //  copy_field_fn
