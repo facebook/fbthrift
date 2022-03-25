@@ -14,6 +14,15 @@ namespace thrift {
 namespace detail {
 
 template <>
+struct ForEachField<::cpp2::MyData> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).data1_ref()...);
+    f(1, static_cast<T&&>(t).data2_ref()...);
+  }
+};
+
+template <>
 struct ForEachField<::cpp2::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
@@ -26,15 +35,47 @@ struct ForEachField<::cpp2::MyStruct> {
     f(6, static_cast<T&&>(t).doubleVal_ref()...);
     f(7, static_cast<T&&>(t).stringVal_ref()...);
     f(8, static_cast<T&&>(t).binaryVal_ref()...);
-    f(9, static_cast<T&&>(t).optBoolVal_ref()...);
-    f(10, static_cast<T&&>(t).optByteVal_ref()...);
-    f(11, static_cast<T&&>(t).optI16Val_ref()...);
-    f(12, static_cast<T&&>(t).optI32Val_ref()...);
-    f(13, static_cast<T&&>(t).optI64Val_ref()...);
-    f(14, static_cast<T&&>(t).optFloatVal_ref()...);
-    f(15, static_cast<T&&>(t).optDoubleVal_ref()...);
-    f(16, static_cast<T&&>(t).optStringVal_ref()...);
-    f(17, static_cast<T&&>(t).optBinaryVal_ref()...);
+    f(9, static_cast<T&&>(t).structVal_ref()...);
+    f(10, static_cast<T&&>(t).optBoolVal_ref()...);
+    f(11, static_cast<T&&>(t).optByteVal_ref()...);
+    f(12, static_cast<T&&>(t).optI16Val_ref()...);
+    f(13, static_cast<T&&>(t).optI32Val_ref()...);
+    f(14, static_cast<T&&>(t).optI64Val_ref()...);
+    f(15, static_cast<T&&>(t).optFloatVal_ref()...);
+    f(16, static_cast<T&&>(t).optDoubleVal_ref()...);
+    f(17, static_cast<T&&>(t).optStringVal_ref()...);
+    f(18, static_cast<T&&>(t).optBinaryVal_ref()...);
+    f(19, static_cast<T&&>(t).optStructVal_ref()...);
+  }
+};
+
+template <>
+struct ForEachField<::cpp2::MyDataPatch> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).data1_ref()...);
+    f(1, static_cast<T&&>(t).data2_ref()...);
+  }
+};
+
+template <>
+struct ForEachField<::cpp2::MyDataValuePatch> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).assign_ref()...);
+    f(1, static_cast<T&&>(t).clear_ref()...);
+    f(2, static_cast<T&&>(t).patch_ref()...);
+  }
+};
+
+template <>
+struct ForEachField<::cpp2::OptionalMyDataValuePatch> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).clear_ref()...);
+    f(1, static_cast<T&&>(t).patch_ref()...);
+    f(2, static_cast<T&&>(t).ensure_ref()...);
+    f(3, static_cast<T&&>(t).patchAfter_ref()...);
   }
 };
 
@@ -51,15 +92,17 @@ struct ForEachField<::cpp2::MyStructPatch> {
     f(6, static_cast<T&&>(t).doubleVal_ref()...);
     f(7, static_cast<T&&>(t).stringVal_ref()...);
     f(8, static_cast<T&&>(t).binaryVal_ref()...);
-    f(9, static_cast<T&&>(t).optBoolVal_ref()...);
-    f(10, static_cast<T&&>(t).optByteVal_ref()...);
-    f(11, static_cast<T&&>(t).optI16Val_ref()...);
-    f(12, static_cast<T&&>(t).optI32Val_ref()...);
-    f(13, static_cast<T&&>(t).optI64Val_ref()...);
-    f(14, static_cast<T&&>(t).optFloatVal_ref()...);
-    f(15, static_cast<T&&>(t).optDoubleVal_ref()...);
-    f(16, static_cast<T&&>(t).optStringVal_ref()...);
-    f(17, static_cast<T&&>(t).optBinaryVal_ref()...);
+    f(9, static_cast<T&&>(t).structVal_ref()...);
+    f(10, static_cast<T&&>(t).optBoolVal_ref()...);
+    f(11, static_cast<T&&>(t).optByteVal_ref()...);
+    f(12, static_cast<T&&>(t).optI16Val_ref()...);
+    f(13, static_cast<T&&>(t).optI32Val_ref()...);
+    f(14, static_cast<T&&>(t).optI64Val_ref()...);
+    f(15, static_cast<T&&>(t).optFloatVal_ref()...);
+    f(16, static_cast<T&&>(t).optDoubleVal_ref()...);
+    f(17, static_cast<T&&>(t).optStringVal_ref()...);
+    f(18, static_cast<T&&>(t).optBinaryVal_ref()...);
+    f(19, static_cast<T&&>(t).optStructVal_ref()...);
   }
 };
 

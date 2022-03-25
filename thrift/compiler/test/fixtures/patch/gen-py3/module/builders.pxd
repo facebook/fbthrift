@@ -15,6 +15,11 @@ cimport patch.builders as _patch_builders
 
 cimport module.types as _module_types
 
+cdef class MyData_Builder(thrift.py3.builder.StructBuilder):
+    cdef public str data1
+    cdef public pint data2
+
+
 cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public pbool boolVal
     cdef public pint byteVal
@@ -25,6 +30,7 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public pfloat doubleVal
     cdef public str stringVal
     cdef public bytes binaryVal
+    cdef public object structVal
     cdef public pbool optBoolVal
     cdef public pint optByteVal
     cdef public pint optI16Val
@@ -34,6 +40,25 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public pfloat optDoubleVal
     cdef public str optStringVal
     cdef public bytes optBinaryVal
+    cdef public object optStructVal
+
+
+cdef class MyDataPatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public object data1
+    cdef public object data2
+
+
+cdef class MyDataValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public object assign
+    cdef public pbool clear
+    cdef public object patch
+
+
+cdef class OptionalMyDataValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public object ensure
+    cdef public object patchAfter
 
 
 cdef class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
@@ -46,6 +71,7 @@ cdef class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
     cdef public object doubleVal
     cdef public object stringVal
     cdef public object binaryVal
+    cdef public object structVal
     cdef public object optBoolVal
     cdef public object optByteVal
     cdef public object optI16Val
@@ -55,6 +81,7 @@ cdef class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
     cdef public object optDoubleVal
     cdef public object optStringVal
     cdef public object optBinaryVal
+    cdef public object optStructVal
 
 
 cdef class MyStructValuePatch_Builder(thrift.py3.builder.StructBuilder):

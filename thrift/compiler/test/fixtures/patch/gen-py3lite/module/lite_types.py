@@ -12,6 +12,38 @@ import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import patch.lite_types
 
 
+class MyData(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            True,  # isUnqualified
+            "data1",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+        ),
+        (
+            2,  # id
+            True,  # isUnqualified
+            "data2",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyData"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/MyData"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyData()
+
+
+
 class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -78,6 +110,13 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
         (
+            10,  # id
+            True,  # isUnqualified
+            "structVal",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyData),  # typeinfo
+            None,  # default value
+        ),
+        (
             11,  # id
             False,  # isUnqualified
             "optBoolVal",  # name
@@ -140,6 +179,13 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value
         ),
+        (
+            20,  # id
+            False,  # isUnqualified
+            "optStructVal",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyData),  # typeinfo
+            None,  # default value
+        ),
     )
 
     @staticmethod
@@ -153,6 +199,123 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStruct()
+
+
+
+class MyDataPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            True,  # isUnqualified
+            "data1",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.StringPatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            2,  # id
+            True,  # isUnqualified
+            "data2",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.I32Patch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyDataPatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/MyDataPatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyDataPatch()
+
+
+
+class MyDataValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            False,  # isUnqualified
+            "assign",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyData),  # typeinfo
+            None,  # default value
+        ),
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataPatch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyDataValuePatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/MyDataValuePatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyDataValuePatch()
+
+
+
+class OptionalMyDataValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataValuePatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyData),  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataValuePatch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.OptionalMyDataValuePatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/OptionalMyDataValuePatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalMyDataValuePatch()
 
 
 
@@ -222,6 +385,13 @@ class MyStructPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
         (
+            10,  # id
+            True,  # isUnqualified
+            "structVal",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataValuePatch),  # typeinfo
+            None,  # default value
+        ),
+        (
             11,  # id
             True,  # isUnqualified
             "optBoolVal",  # name
@@ -282,6 +452,13 @@ class MyStructPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
             True,  # isUnqualified
             "optBinaryVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalBinaryPatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            20,  # id
+            True,  # isUnqualified
+            "optStructVal",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(OptionalMyDataValuePatch),  # typeinfo
             None,  # default value
         ),
     )
@@ -388,8 +565,16 @@ class OptionalMyStructValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 import module.lite_metadata
 
 
+def _fbthrift_metadata__struct_MyData():
+    return module.lite_metadata.gen_metadata_struct_MyData()
 def _fbthrift_metadata__struct_MyStruct():
     return module.lite_metadata.gen_metadata_struct_MyStruct()
+def _fbthrift_metadata__struct_MyDataPatch():
+    return module.lite_metadata.gen_metadata_struct_MyDataPatch()
+def _fbthrift_metadata__struct_MyDataValuePatch():
+    return module.lite_metadata.gen_metadata_struct_MyDataValuePatch()
+def _fbthrift_metadata__struct_OptionalMyDataValuePatch():
+    return module.lite_metadata.gen_metadata_struct_OptionalMyDataValuePatch()
 def _fbthrift_metadata__struct_MyStructPatch():
     return module.lite_metadata.gen_metadata_struct_MyStructPatch()
 def _fbthrift_metadata__struct_MyStructValuePatch():
@@ -398,7 +583,11 @@ def _fbthrift_metadata__struct_OptionalMyStructValuePatch():
     return module.lite_metadata.gen_metadata_struct_OptionalMyStructValuePatch()
 
 _fbthrift_all_structs = [
+    MyData,
     MyStruct,
+    MyDataPatch,
+    MyDataValuePatch,
+    OptionalMyDataValuePatch,
     MyStructPatch,
     MyStructValuePatch,
     OptionalMyStructValuePatch,

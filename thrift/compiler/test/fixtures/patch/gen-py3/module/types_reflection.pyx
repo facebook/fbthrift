@@ -24,6 +24,43 @@ from thrift.py3.types cimport (
 )
 
 
+cdef __StructSpec get_reflection__MyData():
+    cdef _module_types.MyData defaults = _module_types.MyData._fbthrift_create(
+        constant_shared_ptr[_module_types.cMyData](
+            default_inst[_module_types.cMyData]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="MyData",
+        kind=__StructType.STRUCT,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=1,
+            name="data1",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="data2",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __StructSpec get_reflection__MyStruct():
     cdef _module_types.MyStruct defaults = _module_types.MyStruct._fbthrift_create(
         constant_shared_ptr[_module_types.cMyStruct](
@@ -146,6 +183,18 @@ cdef __StructSpec get_reflection__MyStruct():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
+            id=10,
+            name="structVal",
+            type=_module_types.MyData,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
             id=11,
             name="optBoolVal",
             type=bool,
@@ -247,6 +296,165 @@ cdef __StructSpec get_reflection__MyStruct():
             type=bytes,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=20,
+            name="optStructVal",
+            type=_module_types.MyData,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
+cdef __StructSpec get_reflection__MyDataPatch():
+    cdef _module_types.MyDataPatch defaults = _module_types.MyDataPatch._fbthrift_create(
+        constant_shared_ptr[_module_types.cMyDataPatch](
+            default_inst[_module_types.cMyDataPatch]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="MyDataPatch",
+        kind=__StructType.STRUCT,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=1,
+            name="data1",
+            type=_patch_types.StringPatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="data2",
+            type=_patch_types.I32Patch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
+cdef __StructSpec get_reflection__MyDataValuePatch():
+    cdef _module_types.MyDataValuePatch defaults = _module_types.MyDataValuePatch._fbthrift_create(
+        constant_shared_ptr[_module_types.cMyDataValuePatch](
+            default_inst[_module_types.cMyDataValuePatch]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="MyDataValuePatch",
+        kind=__StructType.STRUCT,
+        annotations={
+            """cpp.adapter""": """::apache::thrift::op::detail::StructPatchAdapter""",        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=1,
+            name="assign",
+            type=_module_types.MyData,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """thrift.box""": "1",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="clear",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=3,
+            name="patch",
+            type=_module_types.MyDataPatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
+cdef __StructSpec get_reflection__OptionalMyDataValuePatch():
+    cdef _module_types.OptionalMyDataValuePatch defaults = _module_types.OptionalMyDataValuePatch._fbthrift_create(
+        constant_shared_ptr[_module_types.cOptionalMyDataValuePatch](
+            default_inst[_module_types.cOptionalMyDataValuePatch]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="OptionalMyDataValuePatch",
+        kind=__StructType.STRUCT,
+        annotations={
+            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="clear",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=3,
+            name="patch",
+            type=_module_types.MyDataValuePatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=1,
+            name="ensure",
+            type=_module_types.MyData,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """thrift.box""": "1",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=4,
+            name="patchAfter",
+            type=_module_types.MyDataValuePatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
             },
@@ -375,6 +583,18 @@ cdef __StructSpec get_reflection__MyStructPatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
+            id=10,
+            name="structVal",
+            type=_module_types.MyDataValuePatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
             id=11,
             name="optBoolVal",
             type=_patch_types.OptionalBoolPatch,
@@ -481,6 +701,18 @@ cdef __StructSpec get_reflection__MyStructPatch():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=20,
+            name="optStructVal",
+            type=_module_types.OptionalMyDataValuePatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__MyStructValuePatch():
     cdef _module_types.MyStructValuePatch defaults = _module_types.MyStructValuePatch._fbthrift_create(
@@ -492,7 +724,7 @@ cdef __StructSpec get_reflection__MyStructValuePatch():
         name="MyStructValuePatch",
         kind=__StructType.STRUCT,
         annotations={
-        },
+            """cpp.adapter""": """::apache::thrift::op::detail::StructPatchAdapter""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(

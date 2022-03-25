@@ -24,6 +24,12 @@ namespace java2 test.fixtures.patch
 namespace java.swift test.fixtures.patch
 
 @patch.GeneratePatch
+struct MyData {
+  1: string data1;
+  2: i32 data2;
+}
+
+@patch.GeneratePatch
 struct MyStruct {
   1: bool boolVal;
   2: byte byteVal;
@@ -34,6 +40,7 @@ struct MyStruct {
   7: double doubleVal;
   8: string stringVal;
   9: binary (cpp.type = "::folly::IOBuf") binaryVal;
+  10: MyData structVal;
 
   11: optional bool optBoolVal;
   12: optional byte optByteVal;
@@ -44,4 +51,5 @@ struct MyStruct {
   17: optional double optDoubleVal;
   18: optional string optStringVal;
   19: optional binary (cpp.type = "::folly::IOBuf") optBinaryVal;
+  20: optional MyData optStructVal;
 }

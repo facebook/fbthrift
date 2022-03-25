@@ -14,7 +14,15 @@ from thrift.py3.reflection cimport (
     FieldSpec as __FieldSpec,
 )
 
+cdef __StructSpec get_reflection__MyData()
+
 cdef __StructSpec get_reflection__MyStruct()
+
+cdef __StructSpec get_reflection__MyDataPatch()
+
+cdef __StructSpec get_reflection__MyDataValuePatch()
+
+cdef __StructSpec get_reflection__OptionalMyDataValuePatch()
 
 cdef __StructSpec get_reflection__MyStructPatch()
 

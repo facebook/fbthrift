@@ -34,6 +34,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         @com.facebook.swift.codec.ThriftField(value=7, name="doubleVal", requiredness=Requiredness.NONE) final double doubleVal,
         @com.facebook.swift.codec.ThriftField(value=8, name="stringVal", requiredness=Requiredness.NONE) final String stringVal,
         @com.facebook.swift.codec.ThriftField(value=9, name="binaryVal", requiredness=Requiredness.NONE) final byte[] binaryVal,
+        @com.facebook.swift.codec.ThriftField(value=10, name="structVal", requiredness=Requiredness.NONE) final test.fixtures.patch.MyData structVal,
         @com.facebook.swift.codec.ThriftField(value=11, name="optBoolVal", requiredness=Requiredness.OPTIONAL) final Boolean optBoolVal,
         @com.facebook.swift.codec.ThriftField(value=12, name="optByteVal", requiredness=Requiredness.OPTIONAL) final Byte optByteVal,
         @com.facebook.swift.codec.ThriftField(value=13, name="optI16Val", requiredness=Requiredness.OPTIONAL) final Short optI16Val,
@@ -42,7 +43,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         @com.facebook.swift.codec.ThriftField(value=16, name="optFloatVal", requiredness=Requiredness.OPTIONAL) final Float optFloatVal,
         @com.facebook.swift.codec.ThriftField(value=17, name="optDoubleVal", requiredness=Requiredness.OPTIONAL) final Double optDoubleVal,
         @com.facebook.swift.codec.ThriftField(value=18, name="optStringVal", requiredness=Requiredness.OPTIONAL) final String optStringVal,
-        @com.facebook.swift.codec.ThriftField(value=19, name="optBinaryVal", requiredness=Requiredness.OPTIONAL) final byte[] optBinaryVal
+        @com.facebook.swift.codec.ThriftField(value=19, name="optBinaryVal", requiredness=Requiredness.OPTIONAL) final byte[] optBinaryVal,
+        @com.facebook.swift.codec.ThriftField(value=20, name="optStructVal", requiredness=Requiredness.OPTIONAL) final test.fixtures.patch.MyData optStructVal
     ) {
         this.boolVal = boolVal;
         this.byteVal = byteVal;
@@ -53,6 +55,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         this.doubleVal = doubleVal;
         this.stringVal = stringVal;
         this.binaryVal = binaryVal;
+        this.structVal = structVal;
         this.optBoolVal = optBoolVal;
         this.optByteVal = optByteVal;
         this.optI16Val = optI16Val;
@@ -62,6 +65,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         this.optDoubleVal = optDoubleVal;
         this.optStringVal = optStringVal;
         this.optBinaryVal = optBinaryVal;
+        this.optStructVal = optStructVal;
     }
     
     @ThriftConstructor
@@ -75,6 +79,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       this.doubleVal = 0.;
       this.stringVal = null;
       this.binaryVal = null;
+      this.structVal = null;
       this.optBoolVal = null;
       this.optByteVal = null;
       this.optI16Val = null;
@@ -84,6 +89,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       this.optDoubleVal = null;
       this.optStringVal = null;
       this.optBinaryVal = null;
+      this.optStructVal = null;
     }
     
     public static class Builder {
@@ -97,6 +103,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private double doubleVal = 0.;
         private String stringVal = null;
         private byte[] binaryVal = null;
+        private test.fixtures.patch.MyData structVal = null;
         private Boolean optBoolVal = null;
         private Byte optByteVal = null;
         private Short optI16Val = null;
@@ -106,6 +113,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private Double optDoubleVal = null;
         private String optStringVal = null;
         private byte[] optBinaryVal = null;
+        private test.fixtures.patch.MyData optStructVal = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="boolVal", requiredness=Requiredness.NONE)
         public Builder setBoolVal(boolean boolVal) {
@@ -179,6 +187,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         public byte[] getBinaryVal() { return binaryVal; }
     
+            @com.facebook.swift.codec.ThriftField(value=10, name="structVal", requiredness=Requiredness.NONE)
+        public Builder setStructVal(test.fixtures.patch.MyData structVal) {
+            this.structVal = structVal;
+            return this;
+        }
+    
+        public test.fixtures.patch.MyData getStructVal() { return structVal; }
+    
             @com.facebook.swift.codec.ThriftField(value=11, name="optBoolVal", requiredness=Requiredness.OPTIONAL)
         public Builder setOptBoolVal(Boolean optBoolVal) {
             this.optBoolVal = optBoolVal;
@@ -251,6 +267,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         public byte[] getOptBinaryVal() { return optBinaryVal; }
     
+            @com.facebook.swift.codec.ThriftField(value=20, name="optStructVal", requiredness=Requiredness.OPTIONAL)
+        public Builder setOptStructVal(test.fixtures.patch.MyData optStructVal) {
+            this.optStructVal = optStructVal;
+            return this;
+        }
+    
+        public test.fixtures.patch.MyData getOptStructVal() { return optStructVal; }
+    
         public Builder() { }
         public Builder(MyStruct other) {
             this.boolVal = other.boolVal;
@@ -262,6 +286,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             this.doubleVal = other.doubleVal;
             this.stringVal = other.stringVal;
             this.binaryVal = other.binaryVal;
+            this.structVal = other.structVal;
             this.optBoolVal = other.optBoolVal;
             this.optByteVal = other.optByteVal;
             this.optI16Val = other.optI16Val;
@@ -271,6 +296,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             this.optDoubleVal = other.optDoubleVal;
             this.optStringVal = other.optStringVal;
             this.optBinaryVal = other.optBinaryVal;
+            this.optStructVal = other.optStructVal;
         }
     
         @ThriftConstructor
@@ -285,6 +311,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 this.doubleVal,
                 this.stringVal,
                 this.binaryVal,
+                this.structVal,
                 this.optBoolVal,
                 this.optByteVal,
                 this.optI16Val,
@@ -293,7 +320,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 this.optFloatVal,
                 this.optDoubleVal,
                 this.optStringVal,
-                this.optBinaryVal
+                this.optBinaryVal,
+                this.optStructVal
             );
             return result;
         }
@@ -330,6 +358,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private final byte[] binaryVal;
     public static final int _BINARYVAL = 9;
     private static final TField BINARY_VAL_FIELD_DESC = new TField("binaryVal", TType.STRING, (short)9);
+        private final test.fixtures.patch.MyData structVal;
+    public static final int _STRUCTVAL = 10;
+    private static final TField STRUCT_VAL_FIELD_DESC = new TField("structVal", TType.STRUCT, (short)10);
         private final Boolean optBoolVal;
     public static final int _OPTBOOLVAL = 11;
     private static final TField OPT_BOOL_VAL_FIELD_DESC = new TField("optBoolVal", TType.BOOL, (short)11);
@@ -357,6 +388,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private final byte[] optBinaryVal;
     public static final int _OPTBINARYVAL = 19;
     private static final TField OPT_BINARY_VAL_FIELD_DESC = new TField("optBinaryVal", TType.STRING, (short)19);
+        private final test.fixtures.patch.MyData optStructVal;
+    public static final int _OPTSTRUCTVAL = 20;
+    private static final TField OPT_STRUCT_VAL_FIELD_DESC = new TField("optStructVal", TType.STRUCT, (short)20);
     static {
       NAMES_TO_IDS.put("boolVal", 1);
       THRIFT_NAMES_TO_IDS.put("boolVal", 1);
@@ -385,6 +419,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       NAMES_TO_IDS.put("binaryVal", 9);
       THRIFT_NAMES_TO_IDS.put("binaryVal", 9);
       FIELD_METADATA.put(9, BINARY_VAL_FIELD_DESC);
+      NAMES_TO_IDS.put("structVal", 10);
+      THRIFT_NAMES_TO_IDS.put("structVal", 10);
+      FIELD_METADATA.put(10, STRUCT_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("optBoolVal", 11);
       THRIFT_NAMES_TO_IDS.put("optBoolVal", 11);
       FIELD_METADATA.put(11, OPT_BOOL_VAL_FIELD_DESC);
@@ -412,6 +449,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       NAMES_TO_IDS.put("optBinaryVal", 19);
       THRIFT_NAMES_TO_IDS.put("optBinaryVal", 19);
       FIELD_METADATA.put(19, OPT_BINARY_VAL_FIELD_DESC);
+      NAMES_TO_IDS.put("optStructVal", 20);
+      THRIFT_NAMES_TO_IDS.put("optStructVal", 20);
+      FIELD_METADATA.put(20, OPT_STRUCT_VAL_FIELD_DESC);
     }
     
     
@@ -460,6 +500,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
     
     @Nullable
+    @com.facebook.swift.codec.ThriftField(value=10, name="structVal", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.MyData getStructVal() { return structVal; }
+    
+    
+    @Nullable
     @com.facebook.swift.codec.ThriftField(value=11, name="optBoolVal", requiredness=Requiredness.OPTIONAL)
     public Boolean isOptBoolVal() { return optBoolVal; }
     
@@ -503,6 +548,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     @com.facebook.swift.codec.ThriftField(value=19, name="optBinaryVal", requiredness=Requiredness.OPTIONAL)
     public byte[] getOptBinaryVal() { return optBinaryVal; }
     
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=20, name="optStructVal", requiredness=Requiredness.OPTIONAL)
+    public test.fixtures.patch.MyData getOptStructVal() { return optStructVal; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -515,6 +565,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         helper.add("doubleVal", doubleVal);
         helper.add("stringVal", stringVal);
         helper.add("binaryVal", binaryVal);
+        helper.add("structVal", structVal);
         helper.add("optBoolVal", optBoolVal);
         helper.add("optByteVal", optByteVal);
         helper.add("optI16Val", optI16Val);
@@ -524,6 +575,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         helper.add("optDoubleVal", optDoubleVal);
         helper.add("optStringVal", optStringVal);
         helper.add("optBinaryVal", optBinaryVal);
+        helper.add("optStructVal", optStructVal);
         return helper.toString();
     }
     
@@ -548,6 +600,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             Objects.equals(doubleVal, other.doubleVal) &&
             Objects.equals(stringVal, other.stringVal) &&
             Arrays.equals(binaryVal, other.binaryVal) &&
+            Objects.equals(structVal, other.structVal) &&
             Objects.equals(optBoolVal, other.optBoolVal) &&
             Objects.equals(optByteVal, other.optByteVal) &&
             Objects.equals(optI16Val, other.optI16Val) &&
@@ -557,6 +610,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             Objects.equals(optDoubleVal, other.optDoubleVal) &&
             Objects.equals(optStringVal, other.optStringVal) &&
             Arrays.equals(optBinaryVal, other.optBinaryVal) &&
+            Objects.equals(optStructVal, other.optStructVal) &&
             true;
     }
     
@@ -572,6 +626,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             doubleVal,
             stringVal,
             binaryVal,
+            structVal,
             optBoolVal,
             optByteVal,
             optI16Val,
@@ -580,7 +635,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             optFloatVal,
             optDoubleVal,
             optStringVal,
-            optBinaryVal
+            optBinaryVal,
+            optStructVal
         });
     }
     
@@ -669,6 +725,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _STRUCTVAL:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.patch.MyData structVal = test.fixtures.patch.MyData.read0(oprot);
+            builder.setStructVal(structVal);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         case _OPTBOOLVAL:
           if (__field.type == TType.BOOL) {
             Boolean optBoolVal = oprot.readBool();
@@ -741,6 +805,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _OPTSTRUCTVAL:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.patch.MyData optStructVal = test.fixtures.patch.MyData.read0(oprot);
+            builder.setOptStructVal(optStructVal);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -782,6 +854,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       if (this.binaryVal != null) {
         oprot.writeFieldBegin(BINARY_VAL_FIELD_DESC);
         oprot.writeBinary(java.nio.ByteBuffer.wrap(this.binaryVal));
+        oprot.writeFieldEnd();
+      }
+      if (this.structVal != null) {
+        oprot.writeFieldBegin(STRUCT_VAL_FIELD_DESC);
+        this.structVal.write0(oprot);
         oprot.writeFieldEnd();
       }
       if (this.optBoolVal != null) {
@@ -827,6 +904,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       if (this.optBinaryVal != null) {
         oprot.writeFieldBegin(OPT_BINARY_VAL_FIELD_DESC);
         oprot.writeBinary(java.nio.ByteBuffer.wrap(this.optBinaryVal));
+        oprot.writeFieldEnd();
+      }
+      if (this.optStructVal != null) {
+        oprot.writeFieldBegin(OPT_STRUCT_VAL_FIELD_DESC);
+        this.optStructVal.write0(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

@@ -61,6 +61,19 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
 
+    cdef cppclass cMyData "::cpp2::MyData":
+        cMyData() except +
+        cMyData(const cMyData&) except +
+        bint operator==(cMyData&)
+        bint operator!=(cMyData&)
+        bint operator<(cMyData&)
+        bint operator>(cMyData&)
+        bint operator<=(cMyData&)
+        bint operator>=(cMyData&)
+        __field_ref[string] data1_ref()
+        __field_ref[cint32_t] data2_ref()
+
+
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
@@ -79,6 +92,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[double] doubleVal_ref()
         __field_ref[string] stringVal_ref()
         __field_ref[_folly_IOBuf] binaryVal_ref()
+        __field_ref[cMyData] structVal_ref()
         __optional_field_ref[cbool] optBoolVal_ref()
         __optional_field_ref[cint8_t] optByteVal_ref()
         __optional_field_ref[cint16_t] optI16Val_ref()
@@ -88,6 +102,49 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[double] optDoubleVal_ref()
         __optional_field_ref[string] optStringVal_ref()
         __optional_field_ref[_folly_IOBuf] optBinaryVal_ref()
+        __optional_field_ref[cMyData] optStructVal_ref()
+
+
+    cdef cppclass cMyDataPatch "::cpp2::MyDataPatch":
+        cMyDataPatch() except +
+        cMyDataPatch(const cMyDataPatch&) except +
+        bint operator==(cMyDataPatch&)
+        bint operator!=(cMyDataPatch&)
+        bint operator<(cMyDataPatch&)
+        bint operator>(cMyDataPatch&)
+        bint operator<=(cMyDataPatch&)
+        bint operator>=(cMyDataPatch&)
+        __field_ref[_patch_types.cStringPatch] data1_ref()
+        __field_ref[_patch_types.cI32Patch] data2_ref()
+
+
+    cdef cppclass cMyDataValuePatch "::cpp2::MyDataValuePatch":
+        cMyDataValuePatch() except +
+        cMyDataValuePatch(const cMyDataValuePatch&) except +
+        bint operator==(cMyDataValuePatch&)
+        bint operator!=(cMyDataValuePatch&)
+        bint operator<(cMyDataValuePatch&)
+        bint operator>(cMyDataValuePatch&)
+        bint operator<=(cMyDataValuePatch&)
+        bint operator>=(cMyDataValuePatch&)
+        __optional_field_ref[cMyData] assign_ref()
+        __field_ref[cbool] clear_ref()
+        __field_ref[cMyDataPatch] patch_ref()
+
+
+    cdef cppclass cOptionalMyDataValuePatch "::cpp2::OptionalMyDataValuePatch":
+        cOptionalMyDataValuePatch() except +
+        cOptionalMyDataValuePatch(const cOptionalMyDataValuePatch&) except +
+        bint operator==(cOptionalMyDataValuePatch&)
+        bint operator!=(cOptionalMyDataValuePatch&)
+        bint operator<(cOptionalMyDataValuePatch&)
+        bint operator>(cOptionalMyDataValuePatch&)
+        bint operator<=(cOptionalMyDataValuePatch&)
+        bint operator>=(cOptionalMyDataValuePatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cMyDataValuePatch] patch_ref()
+        __optional_field_ref[cMyData] ensure_ref()
+        __field_ref[cMyDataValuePatch] patchAfter_ref()
 
 
     cdef cppclass cMyStructPatch "::cpp2::MyStructPatch":
@@ -108,6 +165,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[_patch_types.cDoublePatch] doubleVal_ref()
         __field_ref[_patch_types.cStringPatch] stringVal_ref()
         __field_ref[_patch_types.cBinaryPatch] binaryVal_ref()
+        __field_ref[cMyDataValuePatch] structVal_ref()
         __field_ref[_patch_types.cOptionalBoolPatch] optBoolVal_ref()
         __field_ref[_patch_types.cOptionalBytePatch] optByteVal_ref()
         __field_ref[_patch_types.cOptionalI16Patch] optI16Val_ref()
@@ -117,6 +175,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[_patch_types.cOptionalDoublePatch] optDoubleVal_ref()
         __field_ref[_patch_types.cOptionalStringPatch] optStringVal_ref()
         __field_ref[_patch_types.cOptionalBinaryPatch] optBinaryVal_ref()
+        __field_ref[cOptionalMyDataValuePatch] optStructVal_ref()
 
 
     cdef cppclass cMyStructValuePatch "::cpp2::MyStructValuePatch":
@@ -150,6 +209,17 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
 
 
 
+cdef class MyData(thrift.py3.types.Struct):
+    cdef shared_ptr[cMyData] _cpp_obj
+    cdef _fbthrift_types_fields.__MyData_FieldsSetter _fields_setter
+    cdef inline object data1_impl(self)
+    cdef inline object data2_impl(self)
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyData])
+
+
+
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
@@ -162,6 +232,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef inline object doubleVal_impl(self)
     cdef inline object stringVal_impl(self)
     cdef inline object binaryVal_impl(self)
+    cdef inline object structVal_impl(self)
     cdef inline object optBoolVal_impl(self)
     cdef inline object optByteVal_impl(self)
     cdef inline object optI16Val_impl(self)
@@ -171,9 +242,55 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef inline object optDoubleVal_impl(self)
     cdef inline object optStringVal_impl(self)
     cdef inline object optBinaryVal_impl(self)
+    cdef inline object optStructVal_impl(self)
+    cdef MyData __fbthrift_cached_structVal
+    cdef MyData __fbthrift_cached_optStructVal
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStruct])
+
+
+
+cdef class MyDataPatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cMyDataPatch] _cpp_obj
+    cdef _fbthrift_types_fields.__MyDataPatch_FieldsSetter _fields_setter
+    cdef inline object data1_impl(self)
+    cdef inline object data2_impl(self)
+    cdef _patch_types.StringPatch __fbthrift_cached_data1
+    cdef _patch_types.I32Patch __fbthrift_cached_data2
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyDataPatch])
+
+
+
+cdef class MyDataValuePatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cMyDataValuePatch] _cpp_obj
+    cdef _fbthrift_types_fields.__MyDataValuePatch_FieldsSetter _fields_setter
+    cdef inline object assign_impl(self)
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef MyData __fbthrift_cached_assign
+    cdef MyDataPatch __fbthrift_cached_patch
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyDataValuePatch])
+
+
+
+cdef class OptionalMyDataValuePatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cOptionalMyDataValuePatch] _cpp_obj
+    cdef _fbthrift_types_fields.__OptionalMyDataValuePatch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef MyDataValuePatch __fbthrift_cached_patch
+    cdef MyData __fbthrift_cached_ensure
+    cdef MyDataValuePatch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalMyDataValuePatch])
 
 
 
@@ -189,6 +306,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline object doubleVal_impl(self)
     cdef inline object stringVal_impl(self)
     cdef inline object binaryVal_impl(self)
+    cdef inline object structVal_impl(self)
     cdef inline object optBoolVal_impl(self)
     cdef inline object optByteVal_impl(self)
     cdef inline object optI16Val_impl(self)
@@ -198,6 +316,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline object optDoubleVal_impl(self)
     cdef inline object optStringVal_impl(self)
     cdef inline object optBinaryVal_impl(self)
+    cdef inline object optStructVal_impl(self)
     cdef _patch_types.BoolPatch __fbthrift_cached_boolVal
     cdef _patch_types.BytePatch __fbthrift_cached_byteVal
     cdef _patch_types.I16Patch __fbthrift_cached_i16Val
@@ -207,6 +326,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef _patch_types.DoublePatch __fbthrift_cached_doubleVal
     cdef _patch_types.StringPatch __fbthrift_cached_stringVal
     cdef _patch_types.BinaryPatch __fbthrift_cached_binaryVal
+    cdef MyDataValuePatch __fbthrift_cached_structVal
     cdef _patch_types.OptionalBoolPatch __fbthrift_cached_optBoolVal
     cdef _patch_types.OptionalBytePatch __fbthrift_cached_optByteVal
     cdef _patch_types.OptionalI16Patch __fbthrift_cached_optI16Val
@@ -216,6 +336,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef _patch_types.OptionalDoublePatch __fbthrift_cached_optDoubleVal
     cdef _patch_types.OptionalStringPatch __fbthrift_cached_optStringVal
     cdef _patch_types.OptionalBinaryPatch __fbthrift_cached_optBinaryVal
+    cdef OptionalMyDataValuePatch __fbthrift_cached_optStructVal
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStructPatch])

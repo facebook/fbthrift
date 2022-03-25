@@ -24,6 +24,7 @@
 #include <thrift/test/gen-cpp2/StructPatchTest_types.h>
 
 namespace apache::thrift {
+using test::patch::MyData;
 using test::patch::MyStruct;
 using test::patch::MyStructPatch;
 using test::patch::MyStructValuePatch;
@@ -41,6 +42,7 @@ MyStruct testValue() {
   val.doubleVal() = 7;
   val.stringVal() = "8";
   val.binaryVal() = StringTraits<folly::IOBuf>::fromStringLiteral("9");
+  val.structVal()->data1() = "Ba";
   return val;
 }
 
@@ -55,6 +57,7 @@ TestStructPatch testPatch() {
   *patch->floatVal() += 5;
   *patch->doubleVal() += 6;
   patch->stringVal() = "_" + op::StringPatch{} + "_";
+  patch->structVal()->patch().data1()->append("Na");
   return patch;
 }
 
@@ -69,6 +72,9 @@ TestStructPatch testOptPatch() {
   patch->optFloatVal()->patch() += 5;
   patch->optDoubleVal()->patch() += 6;
   patch->optStringVal()->patch() = "_" + op::StringPatch{} + "_";
+  MyData data;
+  data.data2() = 5;
+  patch->optStructVal()->patch() = std::move(data);
   return patch;
 }
 
@@ -104,6 +110,7 @@ TEST(StructPatchTest, Clear) {
 TEST(StructPatchTest, Patch) {
   MyStruct val;
   val.stringVal() = "hi";
+  val.structVal()->data1() = "Ba";
 
   MyStruct expected1, expected2;
   expected1.boolVal() = true;
@@ -122,6 +129,8 @@ TEST(StructPatchTest, Patch) {
   expected2.doubleVal() = 12;
   expected1.stringVal() = "_hi_";
   expected2.stringVal() = "__hi__";
+  expected1.structVal()->data1() = "BaNa";
+  expected2.structVal()->data1() = "BaNaNa";
 
   auto patch = testPatch();
   test::expectPatch(patch, val, expected1, expected2);
@@ -169,6 +178,7 @@ TEST(StructPatchTest, OptionalFields) {
   patch->floatVal()->apply(actual.optFloatVal());
   patch->doubleVal()->apply(actual.optDoubleVal());
   patch->stringVal()->apply(actual.optStringVal());
+  patch->structVal()->apply(actual.optStructVal());
   patch->stringVal()->apply(optStr);
   EXPECT_EQ(actual, MyStruct{});
   EXPECT_FALSE(optStr.has_value());
@@ -182,6 +192,7 @@ TEST(StructPatchTest, OptionalFields) {
   actual.optFloatVal().ensure();
   actual.optDoubleVal().ensure();
   actual.optStringVal() = "hi";
+  actual.optStructVal().ensure().data1() = "Ba";
   optStr = "hi";
   test::expectPatch(*patch->stringVal(), optStr, "_hi_", "__hi__");
 
@@ -202,6 +213,8 @@ TEST(StructPatchTest, OptionalFields) {
   expected2.optDoubleVal() = 12;
   expected1.optStringVal() = "_hi_";
   expected2.optStringVal() = "__hi__";
+  expected1.optStructVal().ensure().data2() = 5;
+  expected2.optStructVal().ensure().data2() = 5;
   test::expectPatch(optPatch, actual, expected1, expected2);
 
   patch->boolVal()->apply(actual.optBoolVal());
@@ -212,6 +225,7 @@ TEST(StructPatchTest, OptionalFields) {
   patch->floatVal()->apply(actual.optFloatVal());
   patch->doubleVal()->apply(actual.optDoubleVal());
   patch->stringVal()->apply(actual.optStringVal());
+  patch->structVal()->apply(actual.optStructVal());
   patch->stringVal()->apply(optStr);
   EXPECT_EQ(*actual.optBoolVal(), true);
   EXPECT_EQ(*actual.optByteVal(), 2);
@@ -221,6 +235,8 @@ TEST(StructPatchTest, OptionalFields) {
   EXPECT_EQ(*actual.optFloatVal(), 5);
   EXPECT_EQ(*actual.optDoubleVal(), 6);
   EXPECT_EQ(*actual.optStringVal(), "_hi_");
+  ASSERT_TRUE(actual.optStructVal().has_value());
+  EXPECT_EQ(*actual.optStructVal()->data1(), "BaNa");
   EXPECT_EQ(*optStr, "_hi_");
 }
 

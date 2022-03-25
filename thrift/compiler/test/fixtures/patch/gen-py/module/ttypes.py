@@ -34,7 +34,112 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'MyStruct', 'MyStructPatch', 'MyStructValuePatch', 'OptionalMyStructValuePatch']
+__all__ = ['UTF8STRINGS', 'MyData', 'MyStruct', 'MyDataPatch', 'MyDataValuePatch', 'OptionalMyDataValuePatch', 'MyStructPatch', 'MyStructValuePatch', 'OptionalMyStructValuePatch']
+
+class MyData:
+  """
+  Attributes:
+   - data1
+   - data2
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRING:
+          self.data1 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.I32:
+          self.data2 = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('MyData')
+    if self.data1 != None:
+      oprot.writeFieldBegin('data1', TType.STRING, 1)
+      oprot.writeString(self.data1.encode('utf-8')) if UTF8STRINGS and not isinstance(self.data1, bytes) else oprot.writeString(self.data1)
+      oprot.writeFieldEnd()
+    if self.data2 != None:
+      oprot.writeFieldBegin('data2', TType.I32, 2)
+      oprot.writeI32(self.data2)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'data1' in json_obj and json_obj['data1'] is not None:
+      self.data1 = json_obj['data1']
+    if 'data2' in json_obj and json_obj['data2'] is not None:
+      self.data2 = json_obj['data2']
+      if self.data2 > 0x7fffffff or self.data2 < -0x80000000:
+        raise TProtocolException(TProtocolException.INVALID_DATA, 'number exceeds limit in field')
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.data1 is not None:
+      value = pprint.pformat(self.data1, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    data1=%s' % (value))
+    if self.data2 is not None:
+      value = pprint.pformat(self.data2, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    data2=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
 
 class MyStruct:
   """
@@ -48,6 +153,7 @@ class MyStruct:
    - doubleVal
    - stringVal
    - binaryVal
+   - structVal
    - optBoolVal
    - optByteVal
    - optI16Val
@@ -57,6 +163,7 @@ class MyStruct:
    - optDoubleVal
    - optStringVal
    - optBinaryVal
+   - optStructVal
   """
 
   thrift_spec = None
@@ -124,6 +231,12 @@ class MyStruct:
           self.binaryVal = iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 10:
+        if ftype == TType.STRUCT:
+          self.structVal = MyData()
+          self.structVal.read(iprot)
+        else:
+          iprot.skip(ftype)
       elif fid == 11:
         if ftype == TType.BOOL:
           self.optBoolVal = iprot.readBool()
@@ -167,6 +280,12 @@ class MyStruct:
       elif fid == 19:
         if ftype == TType.STRING:
           self.optBinaryVal = iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 20:
+        if ftype == TType.STRUCT:
+          self.optStructVal = MyData()
+          self.optStructVal.read(iprot)
         else:
           iprot.skip(ftype)
       else:
@@ -218,6 +337,10 @@ class MyStruct:
       oprot.writeFieldBegin('binaryVal', TType.STRING, 9)
       oprot.writeString(self.binaryVal)
       oprot.writeFieldEnd()
+    if self.structVal != None:
+      oprot.writeFieldBegin('structVal', TType.STRUCT, 10)
+      self.structVal.write(oprot)
+      oprot.writeFieldEnd()
     if self.optBoolVal != None:
       oprot.writeFieldBegin('optBoolVal', TType.BOOL, 11)
       oprot.writeBool(self.optBoolVal)
@@ -253,6 +376,10 @@ class MyStruct:
     if self.optBinaryVal != None:
       oprot.writeFieldBegin('optBinaryVal', TType.STRING, 19)
       oprot.writeString(self.optBinaryVal)
+      oprot.writeFieldEnd()
+    if self.optStructVal != None:
+      oprot.writeFieldBegin('optStructVal', TType.STRUCT, 20)
+      self.optStructVal.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
@@ -293,6 +420,9 @@ class MyStruct:
       self.stringVal = json_obj['stringVal']
     if 'binaryVal' in json_obj and json_obj['binaryVal'] is not None:
       self.binaryVal = json_obj['binaryVal']
+    if 'structVal' in json_obj and json_obj['structVal'] is not None:
+      self.structVal = MyData()
+      self.structVal.readFromJson(json_obj['structVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'optBoolVal' in json_obj and json_obj['optBoolVal'] is not None:
       self.optBoolVal = json_obj['optBoolVal']
     if 'optByteVal' in json_obj and json_obj['optByteVal'] is not None:
@@ -317,6 +447,9 @@ class MyStruct:
       self.optStringVal = json_obj['optStringVal']
     if 'optBinaryVal' in json_obj and json_obj['optBinaryVal'] is not None:
       self.optBinaryVal = json_obj['optBinaryVal']
+    if 'optStructVal' in json_obj and json_obj['optStructVal'] is not None:
+      self.optStructVal = MyData()
+      self.optStructVal.readFromJson(json_obj['optStructVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
 
   def __repr__(self):
     L = []
@@ -357,6 +490,10 @@ class MyStruct:
       value = pprint.pformat(self.binaryVal, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    binaryVal=%s' % (value))
+    if self.structVal is not None:
+      value = pprint.pformat(self.structVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    structVal=%s' % (value))
     if self.optBoolVal is not None:
       value = pprint.pformat(self.optBoolVal, indent=0)
       value = padding.join(value.splitlines(True))
@@ -393,6 +530,378 @@ class MyStruct:
       value = pprint.pformat(self.optBinaryVal, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    optBinaryVal=%s' % (value))
+    if self.optStructVal is not None:
+      value = pprint.pformat(self.optStructVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optStructVal=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
+class MyDataPatch:
+  """
+  Attributes:
+   - data1
+   - data2
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRUCT:
+          self.data1 = patch.ttypes.StringPatch()
+          self.data1.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.STRUCT:
+          self.data2 = patch.ttypes.I32Patch()
+          self.data2.read(iprot)
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('MyDataPatch')
+    if self.data1 != None:
+      oprot.writeFieldBegin('data1', TType.STRUCT, 1)
+      self.data1.write(oprot)
+      oprot.writeFieldEnd()
+    if self.data2 != None:
+      oprot.writeFieldBegin('data2', TType.STRUCT, 2)
+      self.data2.write(oprot)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'data1' in json_obj and json_obj['data1'] is not None:
+      self.data1 = patch.ttypes.StringPatch()
+      self.data1.readFromJson(json_obj['data1'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'data2' in json_obj and json_obj['data2'] is not None:
+      self.data2 = patch.ttypes.I32Patch()
+      self.data2.readFromJson(json_obj['data2'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.data1 is not None:
+      value = pprint.pformat(self.data1, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    data1=%s' % (value))
+    if self.data2 is not None:
+      value = pprint.pformat(self.data2, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    data2=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
+class MyDataValuePatch:
+  """
+  Attributes:
+   - assign: Assigns to a given struct. If set, all other operations are ignored.
+   - clear: Clears a given struct. Applied first.
+   - patch: Patches a given struct. Applied second.
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRUCT:
+          self.assign = MyData()
+          self.assign.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.BOOL:
+          self.clear = iprot.readBool()
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.STRUCT:
+          self.patch = MyDataPatch()
+          self.patch.read(iprot)
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('MyDataValuePatch')
+    if self.assign != None:
+      oprot.writeFieldBegin('assign', TType.STRUCT, 1)
+      self.assign.write(oprot)
+      oprot.writeFieldEnd()
+    if self.clear != None:
+      oprot.writeFieldBegin('clear', TType.BOOL, 2)
+      oprot.writeBool(self.clear)
+      oprot.writeFieldEnd()
+    if self.patch != None:
+      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
+      self.patch.write(oprot)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'assign' in json_obj and json_obj['assign'] is not None:
+      self.assign = MyData()
+      self.assign.readFromJson(json_obj['assign'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'clear' in json_obj and json_obj['clear'] is not None:
+      self.clear = json_obj['clear']
+    if 'patch' in json_obj and json_obj['patch'] is not None:
+      self.patch = MyDataPatch()
+      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.assign is not None:
+      value = pprint.pformat(self.assign, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    assign=%s' % (value))
+    if self.clear is not None:
+      value = pprint.pformat(self.clear, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    clear=%s' % (value))
+    if self.patch is not None:
+      value = pprint.pformat(self.patch, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    patch=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
+class OptionalMyDataValuePatch:
+  """
+  Attributes:
+   - clear: If the optional value should be cleared. Applied first. - patch: The patch to apply to any set value. Applied second. - ensure: The value with which to initialize any unset value. Applied third. - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 2:
+        if ftype == TType.BOOL:
+          self.clear = iprot.readBool()
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.STRUCT:
+          self.patch = MyDataValuePatch()
+          self.patch.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 1:
+        if ftype == TType.STRUCT:
+          self.ensure = MyData()
+          self.ensure.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 4:
+        if ftype == TType.STRUCT:
+          self.patchAfter = MyDataValuePatch()
+          self.patchAfter.read(iprot)
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('OptionalMyDataValuePatch')
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.STRUCT, 1)
+      self.ensure.write(oprot)
+      oprot.writeFieldEnd()
+    if self.clear != None:
+      oprot.writeFieldBegin('clear', TType.BOOL, 2)
+      oprot.writeBool(self.clear)
+      oprot.writeFieldEnd()
+    if self.patch != None:
+      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
+      self.patch.write(oprot)
+      oprot.writeFieldEnd()
+    if self.patchAfter != None:
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      self.patchAfter.write(oprot)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'clear' in json_obj and json_obj['clear'] is not None:
+      self.clear = json_obj['clear']
+    if 'patch' in json_obj and json_obj['patch'] is not None:
+      self.patch = MyDataValuePatch()
+      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'ensure' in json_obj and json_obj['ensure'] is not None:
+      self.ensure = MyData()
+      self.ensure.readFromJson(json_obj['ensure'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'patchAfter' in json_obj and json_obj['patchAfter'] is not None:
+      self.patchAfter = MyDataValuePatch()
+      self.patchAfter.readFromJson(json_obj['patchAfter'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.clear is not None:
+      value = pprint.pformat(self.clear, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    clear=%s' % (value))
+    if self.patch is not None:
+      value = pprint.pformat(self.patch, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    patch=%s' % (value))
+    if self.ensure is not None:
+      value = pprint.pformat(self.ensure, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    ensure=%s' % (value))
+    if self.patchAfter is not None:
+      value = pprint.pformat(self.patchAfter, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    patchAfter=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -419,6 +928,7 @@ class MyStructPatch:
    - doubleVal
    - stringVal
    - binaryVal
+   - structVal
    - optBoolVal
    - optByteVal
    - optI16Val
@@ -428,6 +938,7 @@ class MyStructPatch:
    - optDoubleVal
    - optStringVal
    - optBinaryVal
+   - optStructVal
   """
 
   thrift_spec = None
@@ -504,6 +1015,12 @@ class MyStructPatch:
           self.binaryVal.read(iprot)
         else:
           iprot.skip(ftype)
+      elif fid == 10:
+        if ftype == TType.STRUCT:
+          self.structVal = MyDataValuePatch()
+          self.structVal.read(iprot)
+        else:
+          iprot.skip(ftype)
       elif fid == 11:
         if ftype == TType.STRUCT:
           self.optBoolVal = patch.ttypes.OptionalBoolPatch()
@@ -558,6 +1075,12 @@ class MyStructPatch:
           self.optBinaryVal.read(iprot)
         else:
           iprot.skip(ftype)
+      elif fid == 20:
+        if ftype == TType.STRUCT:
+          self.optStructVal = OptionalMyDataValuePatch()
+          self.optStructVal.read(iprot)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -607,6 +1130,10 @@ class MyStructPatch:
       oprot.writeFieldBegin('binaryVal', TType.STRUCT, 9)
       self.binaryVal.write(oprot)
       oprot.writeFieldEnd()
+    if self.structVal != None:
+      oprot.writeFieldBegin('structVal', TType.STRUCT, 10)
+      self.structVal.write(oprot)
+      oprot.writeFieldEnd()
     if self.optBoolVal != None:
       oprot.writeFieldBegin('optBoolVal', TType.STRUCT, 11)
       self.optBoolVal.write(oprot)
@@ -642,6 +1169,10 @@ class MyStructPatch:
     if self.optBinaryVal != None:
       oprot.writeFieldBegin('optBinaryVal', TType.STRUCT, 19)
       self.optBinaryVal.write(oprot)
+      oprot.writeFieldEnd()
+    if self.optStructVal != None:
+      oprot.writeFieldBegin('optStructVal', TType.STRUCT, 20)
+      self.optStructVal.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
@@ -685,6 +1216,9 @@ class MyStructPatch:
     if 'binaryVal' in json_obj and json_obj['binaryVal'] is not None:
       self.binaryVal = patch.ttypes.BinaryPatch()
       self.binaryVal.readFromJson(json_obj['binaryVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'structVal' in json_obj and json_obj['structVal'] is not None:
+      self.structVal = MyDataValuePatch()
+      self.structVal.readFromJson(json_obj['structVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'optBoolVal' in json_obj and json_obj['optBoolVal'] is not None:
       self.optBoolVal = patch.ttypes.OptionalBoolPatch()
       self.optBoolVal.readFromJson(json_obj['optBoolVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
@@ -712,6 +1246,9 @@ class MyStructPatch:
     if 'optBinaryVal' in json_obj and json_obj['optBinaryVal'] is not None:
       self.optBinaryVal = patch.ttypes.OptionalBinaryPatch()
       self.optBinaryVal.readFromJson(json_obj['optBinaryVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'optStructVal' in json_obj and json_obj['optStructVal'] is not None:
+      self.optStructVal = OptionalMyDataValuePatch()
+      self.optStructVal.readFromJson(json_obj['optStructVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
 
   def __repr__(self):
     L = []
@@ -752,6 +1289,10 @@ class MyStructPatch:
       value = pprint.pformat(self.binaryVal, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    binaryVal=%s' % (value))
+    if self.structVal is not None:
+      value = pprint.pformat(self.structVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    structVal=%s' % (value))
     if self.optBoolVal is not None:
       value = pprint.pformat(self.optBoolVal, indent=0)
       value = padding.join(value.splitlines(True))
@@ -788,6 +1329,10 @@ class MyStructPatch:
       value = pprint.pformat(self.optBinaryVal, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    optBinaryVal=%s' % (value))
+    if self.optStructVal is not None:
+      value = pprint.pformat(self.optStructVal, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    optStructVal=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -1063,6 +1608,32 @@ class OptionalMyStructValuePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+all_structs.append(MyData)
+MyData.thrift_spec = (
+  None, # 0
+  (1, TType.STRING, 'data1', True, None, 2, ), # 1
+  (2, TType.I32, 'data2', None, None, 2, ), # 2
+)
+
+MyData.thrift_struct_annotations = {
+}
+MyData.thrift_field_annotations = {
+}
+
+def MyData__init__(self, data1=None, data2=None,):
+  self.data1 = data1
+  self.data2 = data2
+
+MyData.__init__ = MyData__init__
+
+def MyData__setstate__(self, state):
+  state.setdefault('data1', None)
+  state.setdefault('data2', None)
+  self.__dict__ = state
+
+MyData.__getstate__ = lambda self: self.__dict__.copy()
+MyData.__setstate__ = MyData__setstate__
+
 all_structs.append(MyStruct)
 MyStruct.thrift_spec = (
   None, # 0
@@ -1075,7 +1646,7 @@ MyStruct.thrift_spec = (
   (7, TType.DOUBLE, 'doubleVal', None, None, 2, ), # 7
   (8, TType.STRING, 'stringVal', True, None, 2, ), # 8
   (9, TType.STRING, 'binaryVal', False, None, 2, ), # 9
-  None, # 10
+  (10, TType.STRUCT, 'structVal', [MyData, MyData.thrift_spec, False], None, 2, ), # 10
   (11, TType.BOOL, 'optBoolVal', None, None, 1, ), # 11
   (12, TType.BYTE, 'optByteVal', None, None, 1, ), # 12
   (13, TType.I16, 'optI16Val', None, None, 1, ), # 13
@@ -1085,6 +1656,7 @@ MyStruct.thrift_spec = (
   (17, TType.DOUBLE, 'optDoubleVal', None, None, 1, ), # 17
   (18, TType.STRING, 'optStringVal', True, None, 1, ), # 18
   (19, TType.STRING, 'optBinaryVal', False, None, 1, ), # 19
+  (20, TType.STRUCT, 'optStructVal', [MyData, MyData.thrift_spec, False], None, 1, ), # 20
 )
 
 MyStruct.thrift_struct_annotations = {
@@ -1092,7 +1664,7 @@ MyStruct.thrift_struct_annotations = {
 MyStruct.thrift_field_annotations = {
 }
 
-def MyStruct__init__(self, boolVal=None, byteVal=None, i16Val=None, i32Val=None, i64Val=None, floatVal=None, doubleVal=None, stringVal=None, binaryVal=None, optBoolVal=None, optByteVal=None, optI16Val=None, optI32Val=None, optI64Val=None, optFloatVal=None, optDoubleVal=None, optStringVal=None, optBinaryVal=None,):
+def MyStruct__init__(self, boolVal=None, byteVal=None, i16Val=None, i32Val=None, i64Val=None, floatVal=None, doubleVal=None, stringVal=None, binaryVal=None, structVal=None, optBoolVal=None, optByteVal=None, optI16Val=None, optI32Val=None, optI64Val=None, optFloatVal=None, optDoubleVal=None, optStringVal=None, optBinaryVal=None, optStructVal=None,):
   self.boolVal = boolVal
   self.byteVal = byteVal
   self.i16Val = i16Val
@@ -1102,6 +1674,7 @@ def MyStruct__init__(self, boolVal=None, byteVal=None, i16Val=None, i32Val=None,
   self.doubleVal = doubleVal
   self.stringVal = stringVal
   self.binaryVal = binaryVal
+  self.structVal = structVal
   self.optBoolVal = optBoolVal
   self.optByteVal = optByteVal
   self.optI16Val = optI16Val
@@ -1111,6 +1684,7 @@ def MyStruct__init__(self, boolVal=None, byteVal=None, i16Val=None, i32Val=None,
   self.optDoubleVal = optDoubleVal
   self.optStringVal = optStringVal
   self.optBinaryVal = optBinaryVal
+  self.optStructVal = optStructVal
 
 MyStruct.__init__ = MyStruct__init__
 
@@ -1124,6 +1698,7 @@ def MyStruct__setstate__(self, state):
   state.setdefault('doubleVal', None)
   state.setdefault('stringVal', None)
   state.setdefault('binaryVal', None)
+  state.setdefault('structVal', None)
   state.setdefault('optBoolVal', None)
   state.setdefault('optByteVal', None)
   state.setdefault('optI16Val', None)
@@ -1133,10 +1708,106 @@ def MyStruct__setstate__(self, state):
   state.setdefault('optDoubleVal', None)
   state.setdefault('optStringVal', None)
   state.setdefault('optBinaryVal', None)
+  state.setdefault('optStructVal', None)
   self.__dict__ = state
 
 MyStruct.__getstate__ = lambda self: self.__dict__.copy()
 MyStruct.__setstate__ = MyStruct__setstate__
+
+all_structs.append(MyDataPatch)
+MyDataPatch.thrift_spec = (
+  None, # 0
+  (1, TType.STRUCT, 'data1', [patch.ttypes.StringPatch, patch.ttypes.StringPatch.thrift_spec, False], None, 2, ), # 1
+  (2, TType.STRUCT, 'data2', [patch.ttypes.I32Patch, patch.ttypes.I32Patch.thrift_spec, False], None, 2, ), # 2
+)
+
+MyDataPatch.thrift_struct_annotations = {
+}
+MyDataPatch.thrift_field_annotations = {
+}
+
+def MyDataPatch__init__(self, data1=None, data2=None,):
+  self.data1 = data1
+  self.data2 = data2
+
+MyDataPatch.__init__ = MyDataPatch__init__
+
+def MyDataPatch__setstate__(self, state):
+  state.setdefault('data1', None)
+  state.setdefault('data2', None)
+  self.__dict__ = state
+
+MyDataPatch.__getstate__ = lambda self: self.__dict__.copy()
+MyDataPatch.__setstate__ = MyDataPatch__setstate__
+
+all_structs.append(MyDataValuePatch)
+MyDataValuePatch.thrift_spec = (
+  None, # 0
+  (1, TType.STRUCT, 'assign', [MyData, MyData.thrift_spec, False], None, 1, ), # 1
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (3, TType.STRUCT, 'patch', [MyDataPatch, MyDataPatch.thrift_spec, False], None, 2, ), # 3
+)
+
+MyDataValuePatch.thrift_struct_annotations = {
+  "cpp.adapter": "::apache::thrift::op::detail::StructPatchAdapter",
+}
+MyDataValuePatch.thrift_field_annotations = {
+  1: {
+    "thrift.box": "",
+  },
+}
+
+def MyDataValuePatch__init__(self, assign=None, clear=None, patch=None,):
+  self.assign = assign
+  self.clear = clear
+  self.patch = patch
+
+MyDataValuePatch.__init__ = MyDataValuePatch__init__
+
+def MyDataValuePatch__setstate__(self, state):
+  state.setdefault('assign', None)
+  state.setdefault('clear', None)
+  state.setdefault('patch', None)
+  self.__dict__ = state
+
+MyDataValuePatch.__getstate__ = lambda self: self.__dict__.copy()
+MyDataValuePatch.__setstate__ = MyDataValuePatch__setstate__
+
+all_structs.append(OptionalMyDataValuePatch)
+OptionalMyDataValuePatch.thrift_spec = (
+  None, # 0
+  (1, TType.STRUCT, 'ensure', [MyData, MyData.thrift_spec, False], None, 1, ), # 1
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (3, TType.STRUCT, 'patch', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 3
+  (4, TType.STRUCT, 'patchAfter', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 4
+)
+
+OptionalMyDataValuePatch.thrift_struct_annotations = {
+  "cpp.adapter": "::apache::thrift::op::detail::OptionalPatchAdapter",
+}
+OptionalMyDataValuePatch.thrift_field_annotations = {
+  1: {
+    "thrift.box": "",
+  },
+}
+
+def OptionalMyDataValuePatch__init__(self, clear=None, patch=None, ensure=None, patchAfter=None,):
+  self.clear = clear
+  self.patch = patch
+  self.ensure = ensure
+  self.patchAfter = patchAfter
+
+OptionalMyDataValuePatch.__init__ = OptionalMyDataValuePatch__init__
+
+def OptionalMyDataValuePatch__setstate__(self, state):
+  state.setdefault('clear', None)
+  state.setdefault('patch', None)
+  state.setdefault('ensure', None)
+  state.setdefault('patchAfter', None)
+  self.__dict__ = state
+
+OptionalMyDataValuePatch.__getstate__ = lambda self: self.__dict__.copy()
+OptionalMyDataValuePatch.__setstate__ = OptionalMyDataValuePatch__setstate__
 
 all_structs.append(MyStructPatch)
 MyStructPatch.thrift_spec = (
@@ -1150,7 +1821,7 @@ MyStructPatch.thrift_spec = (
   (7, TType.STRUCT, 'doubleVal', [patch.ttypes.DoublePatch, patch.ttypes.DoublePatch.thrift_spec, False], None, 2, ), # 7
   (8, TType.STRUCT, 'stringVal', [patch.ttypes.StringPatch, patch.ttypes.StringPatch.thrift_spec, False], None, 2, ), # 8
   (9, TType.STRUCT, 'binaryVal', [patch.ttypes.BinaryPatch, patch.ttypes.BinaryPatch.thrift_spec, False], None, 2, ), # 9
-  None, # 10
+  (10, TType.STRUCT, 'structVal', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 10
   (11, TType.STRUCT, 'optBoolVal', [patch.ttypes.OptionalBoolPatch, patch.ttypes.OptionalBoolPatch.thrift_spec, False], None, 2, ), # 11
   (12, TType.STRUCT, 'optByteVal', [patch.ttypes.OptionalBytePatch, patch.ttypes.OptionalBytePatch.thrift_spec, False], None, 2, ), # 12
   (13, TType.STRUCT, 'optI16Val', [patch.ttypes.OptionalI16Patch, patch.ttypes.OptionalI16Patch.thrift_spec, False], None, 2, ), # 13
@@ -1160,6 +1831,7 @@ MyStructPatch.thrift_spec = (
   (17, TType.STRUCT, 'optDoubleVal', [patch.ttypes.OptionalDoublePatch, patch.ttypes.OptionalDoublePatch.thrift_spec, False], None, 2, ), # 17
   (18, TType.STRUCT, 'optStringVal', [patch.ttypes.OptionalStringPatch, patch.ttypes.OptionalStringPatch.thrift_spec, False], None, 2, ), # 18
   (19, TType.STRUCT, 'optBinaryVal', [patch.ttypes.OptionalBinaryPatch, patch.ttypes.OptionalBinaryPatch.thrift_spec, False], None, 2, ), # 19
+  (20, TType.STRUCT, 'optStructVal', [OptionalMyDataValuePatch, OptionalMyDataValuePatch.thrift_spec, False], None, 2, ), # 20
 )
 
 MyStructPatch.thrift_struct_annotations = {
@@ -1167,7 +1839,7 @@ MyStructPatch.thrift_struct_annotations = {
 MyStructPatch.thrift_field_annotations = {
 }
 
-def MyStructPatch__init__(self, boolVal=None, byteVal=None, i16Val=None, i32Val=None, i64Val=None, floatVal=None, doubleVal=None, stringVal=None, binaryVal=None, optBoolVal=None, optByteVal=None, optI16Val=None, optI32Val=None, optI64Val=None, optFloatVal=None, optDoubleVal=None, optStringVal=None, optBinaryVal=None,):
+def MyStructPatch__init__(self, boolVal=None, byteVal=None, i16Val=None, i32Val=None, i64Val=None, floatVal=None, doubleVal=None, stringVal=None, binaryVal=None, structVal=None, optBoolVal=None, optByteVal=None, optI16Val=None, optI32Val=None, optI64Val=None, optFloatVal=None, optDoubleVal=None, optStringVal=None, optBinaryVal=None, optStructVal=None,):
   self.boolVal = boolVal
   self.byteVal = byteVal
   self.i16Val = i16Val
@@ -1177,6 +1849,7 @@ def MyStructPatch__init__(self, boolVal=None, byteVal=None, i16Val=None, i32Val=
   self.doubleVal = doubleVal
   self.stringVal = stringVal
   self.binaryVal = binaryVal
+  self.structVal = structVal
   self.optBoolVal = optBoolVal
   self.optByteVal = optByteVal
   self.optI16Val = optI16Val
@@ -1186,6 +1859,7 @@ def MyStructPatch__init__(self, boolVal=None, byteVal=None, i16Val=None, i32Val=
   self.optDoubleVal = optDoubleVal
   self.optStringVal = optStringVal
   self.optBinaryVal = optBinaryVal
+  self.optStructVal = optStructVal
 
 MyStructPatch.__init__ = MyStructPatch__init__
 
@@ -1199,6 +1873,7 @@ def MyStructPatch__setstate__(self, state):
   state.setdefault('doubleVal', None)
   state.setdefault('stringVal', None)
   state.setdefault('binaryVal', None)
+  state.setdefault('structVal', None)
   state.setdefault('optBoolVal', None)
   state.setdefault('optByteVal', None)
   state.setdefault('optI16Val', None)
@@ -1208,6 +1883,7 @@ def MyStructPatch__setstate__(self, state):
   state.setdefault('optDoubleVal', None)
   state.setdefault('optStringVal', None)
   state.setdefault('optBinaryVal', None)
+  state.setdefault('optStructVal', None)
   self.__dict__ = state
 
 MyStructPatch.__getstate__ = lambda self: self.__dict__.copy()
@@ -1222,6 +1898,7 @@ MyStructValuePatch.thrift_spec = (
 )
 
 MyStructValuePatch.thrift_struct_annotations = {
+  "cpp.adapter": "::apache::thrift::op::detail::StructPatchAdapter",
 }
 MyStructValuePatch.thrift_field_annotations = {
   1: {

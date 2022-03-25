@@ -12,68 +12,20 @@
 namespace apache {
 namespace thrift {
 
-const std::array<folly::StringPiece, 18> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
-  "boolVal",
-  "byteVal",
-  "i16Val",
-  "i32Val",
-  "i64Val",
-  "floatVal",
-  "doubleVal",
-  "stringVal",
-  "binaryVal",
-  "optBoolVal",
-  "optByteVal",
-  "optI16Val",
-  "optI32Val",
-  "optI64Val",
-  "optFloatVal",
-  "optDoubleVal",
-  "optStringVal",
-  "optBinaryVal",
+const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::MyData>::fields_names = {{
+  "data1",
+  "data2",
 }};
-const std::array<int16_t, 18> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
+const std::array<int16_t, 2> TStructDataStorage<::cpp2::MyData>::fields_ids = {{
   1,
   2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  11,
-  12,
-  13,
-  14,
-  15,
-  16,
-  17,
-  18,
-  19,
 }};
-const std::array<protocol::TType, 18> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
-  TType::T_BOOL,
-  TType::T_BYTE,
-  TType::T_I16,
+const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::MyData>::fields_types = {{
+  TType::T_STRING,
   TType::T_I32,
-  TType::T_I64,
-  TType::T_FLOAT,
-  TType::T_DOUBLE,
-  TType::T_STRING,
-  TType::T_STRING,
-  TType::T_BOOL,
-  TType::T_BYTE,
-  TType::T_I16,
-  TType::T_I32,
-  TType::T_I64,
-  TType::T_FLOAT,
-  TType::T_DOUBLE,
-  TType::T_STRING,
-  TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 18> TStructDataStorage<::cpp2::MyStructPatch>::fields_names = {{
+const std::array<folly::StringPiece, 20> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
   "boolVal",
   "byteVal",
   "i16Val",
@@ -83,6 +35,7 @@ const std::array<folly::StringPiece, 18> TStructDataStorage<::cpp2::MyStructPatc
   "doubleVal",
   "stringVal",
   "binaryVal",
+  "structVal",
   "optBoolVal",
   "optByteVal",
   "optI16Val",
@@ -92,8 +45,9 @@ const std::array<folly::StringPiece, 18> TStructDataStorage<::cpp2::MyStructPatc
   "optDoubleVal",
   "optStringVal",
   "optBinaryVal",
+  "optStructVal",
 }};
-const std::array<int16_t, 18> TStructDataStorage<::cpp2::MyStructPatch>::fields_ids = {{
+const std::array<int16_t, 20> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
   1,
   2,
   3,
@@ -103,6 +57,7 @@ const std::array<int16_t, 18> TStructDataStorage<::cpp2::MyStructPatch>::fields_
   7,
   8,
   9,
+  10,
   11,
   12,
   13,
@@ -112,8 +67,126 @@ const std::array<int16_t, 18> TStructDataStorage<::cpp2::MyStructPatch>::fields_
   17,
   18,
   19,
+  20,
 }};
-const std::array<protocol::TType, 18> TStructDataStorage<::cpp2::MyStructPatch>::fields_types = {{
+const std::array<protocol::TType, 20> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
+  TType::T_BOOL,
+  TType::T_BYTE,
+  TType::T_I16,
+  TType::T_I32,
+  TType::T_I64,
+  TType::T_FLOAT,
+  TType::T_DOUBLE,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRUCT,
+  TType::T_BOOL,
+  TType::T_BYTE,
+  TType::T_I16,
+  TType::T_I32,
+  TType::T_I64,
+  TType::T_FLOAT,
+  TType::T_DOUBLE,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRUCT,
+}};
+
+const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::MyDataPatch>::fields_names = {{
+  "data1",
+  "data2",
+}};
+const std::array<int16_t, 2> TStructDataStorage<::cpp2::MyDataPatch>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::MyDataPatch>::fields_types = {{
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
+
+const std::array<folly::StringPiece, 3> TStructDataStorage<::cpp2::MyDataValuePatch>::fields_names = {{
+  "assign",
+  "clear",
+  "patch",
+}};
+const std::array<int16_t, 3> TStructDataStorage<::cpp2::MyDataValuePatch>::fields_ids = {{
+  1,
+  2,
+  3,
+}};
+const std::array<protocol::TType, 3> TStructDataStorage<::cpp2::MyDataValuePatch>::fields_types = {{
+  TType::T_STRUCT,
+  TType::T_BOOL,
+  TType::T_STRUCT,
+}};
+
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::OptionalMyDataValuePatch>::fields_names = {{
+  "clear",
+  "patch",
+  "ensure",
+  "patchAfter",
+}};
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::OptionalMyDataValuePatch>::fields_ids = {{
+  2,
+  3,
+  1,
+  4,
+}};
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::OptionalMyDataValuePatch>::fields_types = {{
+  TType::T_BOOL,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
+
+const std::array<folly::StringPiece, 20> TStructDataStorage<::cpp2::MyStructPatch>::fields_names = {{
+  "boolVal",
+  "byteVal",
+  "i16Val",
+  "i32Val",
+  "i64Val",
+  "floatVal",
+  "doubleVal",
+  "stringVal",
+  "binaryVal",
+  "structVal",
+  "optBoolVal",
+  "optByteVal",
+  "optI16Val",
+  "optI32Val",
+  "optI64Val",
+  "optFloatVal",
+  "optDoubleVal",
+  "optStringVal",
+  "optBinaryVal",
+  "optStructVal",
+}};
+const std::array<int16_t, 20> TStructDataStorage<::cpp2::MyStructPatch>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+}};
+const std::array<protocol::TType, 20> TStructDataStorage<::cpp2::MyStructPatch>::fields_types = {{
+  TType::T_STRUCT,
+  TType::T_STRUCT,
   TType::T_STRUCT,
   TType::T_STRUCT,
   TType::T_STRUCT,

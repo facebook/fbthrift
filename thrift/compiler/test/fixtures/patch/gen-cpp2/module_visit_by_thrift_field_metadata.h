@@ -14,6 +14,21 @@ namespace thrift {
 namespace detail {
 
 template <>
+struct VisitByFieldId<::cpp2::MyData> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 1:
+      return f(0, static_cast<T&&>(t).data1_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).data2_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::MyData");
+    }
+  }
+};
+
+template <>
 struct VisitByFieldId<::cpp2::MyStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
@@ -36,26 +51,81 @@ struct VisitByFieldId<::cpp2::MyStruct> {
       return f(7, static_cast<T&&>(t).stringVal_ref());
     case 9:
       return f(8, static_cast<T&&>(t).binaryVal_ref());
+    case 10:
+      return f(9, static_cast<T&&>(t).structVal_ref());
     case 11:
-      return f(9, static_cast<T&&>(t).optBoolVal_ref());
+      return f(10, static_cast<T&&>(t).optBoolVal_ref());
     case 12:
-      return f(10, static_cast<T&&>(t).optByteVal_ref());
+      return f(11, static_cast<T&&>(t).optByteVal_ref());
     case 13:
-      return f(11, static_cast<T&&>(t).optI16Val_ref());
+      return f(12, static_cast<T&&>(t).optI16Val_ref());
     case 14:
-      return f(12, static_cast<T&&>(t).optI32Val_ref());
+      return f(13, static_cast<T&&>(t).optI32Val_ref());
     case 15:
-      return f(13, static_cast<T&&>(t).optI64Val_ref());
+      return f(14, static_cast<T&&>(t).optI64Val_ref());
     case 16:
-      return f(14, static_cast<T&&>(t).optFloatVal_ref());
+      return f(15, static_cast<T&&>(t).optFloatVal_ref());
     case 17:
-      return f(15, static_cast<T&&>(t).optDoubleVal_ref());
+      return f(16, static_cast<T&&>(t).optDoubleVal_ref());
     case 18:
-      return f(16, static_cast<T&&>(t).optStringVal_ref());
+      return f(17, static_cast<T&&>(t).optStringVal_ref());
     case 19:
-      return f(17, static_cast<T&&>(t).optBinaryVal_ref());
+      return f(18, static_cast<T&&>(t).optBinaryVal_ref());
+    case 20:
+      return f(19, static_cast<T&&>(t).optStructVal_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::MyStruct");
+    }
+  }
+};
+
+template <>
+struct VisitByFieldId<::cpp2::MyDataPatch> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 1:
+      return f(0, static_cast<T&&>(t).data1_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).data2_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::MyDataPatch");
+    }
+  }
+};
+
+template <>
+struct VisitByFieldId<::cpp2::MyDataValuePatch> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 1:
+      return f(0, static_cast<T&&>(t).assign_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).clear_ref());
+    case 3:
+      return f(2, static_cast<T&&>(t).patch_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::MyDataValuePatch");
+    }
+  }
+};
+
+template <>
+struct VisitByFieldId<::cpp2::OptionalMyDataValuePatch> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 2:
+      return f(0, static_cast<T&&>(t).clear_ref());
+    case 3:
+      return f(1, static_cast<T&&>(t).patch_ref());
+    case 1:
+      return f(2, static_cast<T&&>(t).ensure_ref());
+    case 4:
+      return f(3, static_cast<T&&>(t).patchAfter_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::OptionalMyDataValuePatch");
     }
   }
 };
@@ -83,24 +153,28 @@ struct VisitByFieldId<::cpp2::MyStructPatch> {
       return f(7, static_cast<T&&>(t).stringVal_ref());
     case 9:
       return f(8, static_cast<T&&>(t).binaryVal_ref());
+    case 10:
+      return f(9, static_cast<T&&>(t).structVal_ref());
     case 11:
-      return f(9, static_cast<T&&>(t).optBoolVal_ref());
+      return f(10, static_cast<T&&>(t).optBoolVal_ref());
     case 12:
-      return f(10, static_cast<T&&>(t).optByteVal_ref());
+      return f(11, static_cast<T&&>(t).optByteVal_ref());
     case 13:
-      return f(11, static_cast<T&&>(t).optI16Val_ref());
+      return f(12, static_cast<T&&>(t).optI16Val_ref());
     case 14:
-      return f(12, static_cast<T&&>(t).optI32Val_ref());
+      return f(13, static_cast<T&&>(t).optI32Val_ref());
     case 15:
-      return f(13, static_cast<T&&>(t).optI64Val_ref());
+      return f(14, static_cast<T&&>(t).optI64Val_ref());
     case 16:
-      return f(14, static_cast<T&&>(t).optFloatVal_ref());
+      return f(15, static_cast<T&&>(t).optFloatVal_ref());
     case 17:
-      return f(15, static_cast<T&&>(t).optDoubleVal_ref());
+      return f(16, static_cast<T&&>(t).optDoubleVal_ref());
     case 18:
-      return f(16, static_cast<T&&>(t).optStringVal_ref());
+      return f(17, static_cast<T&&>(t).optStringVal_ref());
     case 19:
-      return f(17, static_cast<T&&>(t).optBinaryVal_ref());
+      return f(18, static_cast<T&&>(t).optBinaryVal_ref());
+    case 20:
+      return f(19, static_cast<T&&>(t).optStructVal_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::MyStructPatch");
     }

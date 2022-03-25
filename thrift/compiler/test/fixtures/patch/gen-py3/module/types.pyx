@@ -61,6 +61,113 @@ cimport module.types_reflection as _types_reflection
 
 
 @__cython.auto_pickle(False)
+cdef class MyData(thrift.py3.types.Struct):
+    def __init__(MyData self, **kwargs):
+        self._cpp_obj = make_shared[cMyData]()
+        self._fields_setter = _fbthrift_types_fields.__MyData_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(MyData self, **kwargs):
+        if not kwargs:
+            return self
+        cdef MyData __fbthrift_inst = MyData.__new__(MyData)
+        __fbthrift_inst._cpp_obj = make_shared[cMyData](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyData_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("MyData", {
+          "data1": deref(self._cpp_obj).data1_ref().has_value(),
+          "data2": deref(self._cpp_obj).data2_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyData] cpp_obj):
+        __fbthrift_inst = <MyData>MyData.__new__(MyData)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+    cdef inline data1_impl(self):
+
+        return (<bytes>deref(self._cpp_obj).data1_ref().value()).decode('UTF-8')
+
+    @property
+    def data1(self):
+        return self.data1_impl()
+
+    cdef inline data2_impl(self):
+
+        return deref(self._cpp_obj).data2_ref().value()
+
+    @property
+    def data2(self):
+        return self.data2_impl()
+
+
+    def __hash__(MyData self):
+        return super().__hash__()
+
+    def __repr__(MyData self):
+        return super().__repr__()
+
+    def __str__(MyData self):
+        return super().__str__()
+
+
+    def __copy__(MyData self):
+        cdef shared_ptr[cMyData] cpp_obj = make_shared[cMyData](
+            deref(self._cpp_obj)
+        )
+        return MyData._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cMyData](
+            self._cpp_obj,
+            (<MyData>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__MyData()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyData].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyData"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyData](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 2
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyData self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cMyData](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(MyData self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cMyData]()
+        with nogil:
+            needed = serializer.cdeserialize[cMyData](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
+@__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
     def __init__(MyStruct self, **kwargs):
         self._cpp_obj = make_shared[cMyStruct]()
@@ -91,6 +198,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           "doubleVal": deref(self._cpp_obj).doubleVal_ref().has_value(),
           "stringVal": deref(self._cpp_obj).stringVal_ref().has_value(),
           "binaryVal": deref(self._cpp_obj).binaryVal_ref().has_value(),
+          "structVal": deref(self._cpp_obj).structVal_ref().has_value(),
           "optBoolVal": deref(self._cpp_obj).optBoolVal_ref().has_value(),
           "optByteVal": deref(self._cpp_obj).optByteVal_ref().has_value(),
           "optI16Val": deref(self._cpp_obj).optI16Val_ref().has_value(),
@@ -100,6 +208,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           "optDoubleVal": deref(self._cpp_obj).optDoubleVal_ref().has_value(),
           "optStringVal": deref(self._cpp_obj).optStringVal_ref().has_value(),
           "optBinaryVal": deref(self._cpp_obj).optBinaryVal_ref().has_value(),
+          "optStructVal": deref(self._cpp_obj).optStructVal_ref().has_value(),
         })
 
     @staticmethod
@@ -179,6 +288,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def binaryVal(self):
         return self.binaryVal_impl()
+
+    cdef inline structVal_impl(self):
+
+        if self.__fbthrift_cached_structVal is None:
+            self.__fbthrift_cached_structVal = MyData._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).structVal_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_structVal
+
+    @property
+    def structVal(self):
+        return self.structVal_impl()
 
     cdef inline optBoolVal_impl(self):
         if not deref(self._cpp_obj).optBoolVal_ref().has_value():
@@ -270,6 +389,18 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def optBinaryVal(self):
         return self.optBinaryVal_impl()
 
+    cdef inline optStructVal_impl(self):
+        if not deref(self._cpp_obj).optStructVal_ref().has_value():
+            return None
+
+        if self.__fbthrift_cached_optStructVal is None:
+            self.__fbthrift_cached_optStructVal = MyData._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optStructVal_ref().ref_unchecked(), self._cpp_obj))
+        return self.__fbthrift_cached_optStructVal
+
+    @property
+    def optStructVal(self):
+        return self.optStructVal_impl()
+
 
     def __hash__(MyStruct self):
         return super().__hash__()
@@ -313,7 +444,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyStruct](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 18
+        self._fbthrift_struct_size = 20
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -326,6 +457,372 @@ cdef class MyStruct(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cMyStruct]()
         with nogil:
             needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
+@__cython.auto_pickle(False)
+cdef class MyDataPatch(thrift.py3.types.Struct):
+    def __init__(MyDataPatch self, **kwargs):
+        self._cpp_obj = make_shared[cMyDataPatch]()
+        self._fields_setter = _fbthrift_types_fields.__MyDataPatch_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(MyDataPatch self, **kwargs):
+        if not kwargs:
+            return self
+        cdef MyDataPatch __fbthrift_inst = MyDataPatch.__new__(MyDataPatch)
+        __fbthrift_inst._cpp_obj = make_shared[cMyDataPatch](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyDataPatch_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("MyDataPatch", {
+          "data1": deref(self._cpp_obj).data1_ref().has_value(),
+          "data2": deref(self._cpp_obj).data2_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyDataPatch] cpp_obj):
+        __fbthrift_inst = <MyDataPatch>MyDataPatch.__new__(MyDataPatch)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+    cdef inline data1_impl(self):
+
+        if self.__fbthrift_cached_data1 is None:
+            self.__fbthrift_cached_data1 = _patch_types.StringPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).data1_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_data1
+
+    @property
+    def data1(self):
+        return self.data1_impl()
+
+    cdef inline data2_impl(self):
+
+        if self.__fbthrift_cached_data2 is None:
+            self.__fbthrift_cached_data2 = _patch_types.I32Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).data2_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_data2
+
+    @property
+    def data2(self):
+        return self.data2_impl()
+
+
+    def __hash__(MyDataPatch self):
+        return super().__hash__()
+
+    def __repr__(MyDataPatch self):
+        return super().__repr__()
+
+    def __str__(MyDataPatch self):
+        return super().__str__()
+
+
+    def __copy__(MyDataPatch self):
+        cdef shared_ptr[cMyDataPatch] cpp_obj = make_shared[cMyDataPatch](
+            deref(self._cpp_obj)
+        )
+        return MyDataPatch._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cMyDataPatch](
+            self._cpp_obj,
+            (<MyDataPatch>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__MyDataPatch()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyDataPatch].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyDataPatch"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyDataPatch](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 2
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyDataPatch self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cMyDataPatch](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(MyDataPatch self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cMyDataPatch]()
+        with nogil:
+            needed = serializer.cdeserialize[cMyDataPatch](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
+@__cython.auto_pickle(False)
+cdef class MyDataValuePatch(thrift.py3.types.Struct):
+    def __init__(MyDataValuePatch self, **kwargs):
+        self._cpp_obj = make_shared[cMyDataValuePatch]()
+        self._fields_setter = _fbthrift_types_fields.__MyDataValuePatch_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(MyDataValuePatch self, **kwargs):
+        if not kwargs:
+            return self
+        cdef MyDataValuePatch __fbthrift_inst = MyDataValuePatch.__new__(MyDataValuePatch)
+        __fbthrift_inst._cpp_obj = make_shared[cMyDataValuePatch](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyDataValuePatch_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("MyDataValuePatch", {
+          "assign": deref(self._cpp_obj).assign_ref().has_value(),
+          "clear": deref(self._cpp_obj).clear_ref().has_value(),
+          "patch": deref(self._cpp_obj).patch_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyDataValuePatch] cpp_obj):
+        __fbthrift_inst = <MyDataValuePatch>MyDataValuePatch.__new__(MyDataValuePatch)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+    cdef inline assign_impl(self):
+        if not deref(self._cpp_obj).assign_ref().has_value():
+            return None
+
+        if self.__fbthrift_cached_assign is None:
+            self.__fbthrift_cached_assign = MyData._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).assign_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_assign
+
+    @property
+    def assign(self):
+        return self.assign_impl()
+
+    cdef inline clear_impl(self):
+
+        return <pbool> deref(self._cpp_obj).clear_ref().value()
+
+    @property
+    def clear(self):
+        return self.clear_impl()
+
+    cdef inline patch_impl(self):
+
+        if self.__fbthrift_cached_patch is None:
+            self.__fbthrift_cached_patch = MyDataPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).patch_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_patch
+
+    @property
+    def patch(self):
+        return self.patch_impl()
+
+
+    def __hash__(MyDataValuePatch self):
+        return super().__hash__()
+
+    def __repr__(MyDataValuePatch self):
+        return super().__repr__()
+
+    def __str__(MyDataValuePatch self):
+        return super().__str__()
+
+
+    def __copy__(MyDataValuePatch self):
+        cdef shared_ptr[cMyDataValuePatch] cpp_obj = make_shared[cMyDataValuePatch](
+            deref(self._cpp_obj)
+        )
+        return MyDataValuePatch._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cMyDataValuePatch](
+            self._cpp_obj,
+            (<MyDataValuePatch>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__MyDataValuePatch()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyDataValuePatch].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyDataValuePatch"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyDataValuePatch](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 3
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyDataValuePatch self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cMyDataValuePatch](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(MyDataValuePatch self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cMyDataValuePatch]()
+        with nogil:
+            needed = serializer.cdeserialize[cMyDataValuePatch](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
+@__cython.auto_pickle(False)
+cdef class OptionalMyDataValuePatch(thrift.py3.types.Struct):
+    def __init__(OptionalMyDataValuePatch self, **kwargs):
+        self._cpp_obj = make_shared[cOptionalMyDataValuePatch]()
+        self._fields_setter = _fbthrift_types_fields.__OptionalMyDataValuePatch_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(OptionalMyDataValuePatch self, **kwargs):
+        if not kwargs:
+            return self
+        cdef OptionalMyDataValuePatch __fbthrift_inst = OptionalMyDataValuePatch.__new__(OptionalMyDataValuePatch)
+        __fbthrift_inst._cpp_obj = make_shared[cOptionalMyDataValuePatch](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__OptionalMyDataValuePatch_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("OptionalMyDataValuePatch", {
+          "clear": deref(self._cpp_obj).clear_ref().has_value(),
+          "patch": deref(self._cpp_obj).patch_ref().has_value(),
+          "ensure": deref(self._cpp_obj).ensure_ref().has_value(),
+          "patchAfter": deref(self._cpp_obj).patchAfter_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalMyDataValuePatch] cpp_obj):
+        __fbthrift_inst = <OptionalMyDataValuePatch>OptionalMyDataValuePatch.__new__(OptionalMyDataValuePatch)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+    cdef inline clear_impl(self):
+
+        return <pbool> deref(self._cpp_obj).clear_ref().value()
+
+    @property
+    def clear(self):
+        return self.clear_impl()
+
+    cdef inline patch_impl(self):
+
+        if self.__fbthrift_cached_patch is None:
+            self.__fbthrift_cached_patch = MyDataValuePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).patch_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_patch
+
+    @property
+    def patch(self):
+        return self.patch_impl()
+
+    cdef inline ensure_impl(self):
+        if not deref(self._cpp_obj).ensure_ref().has_value():
+            return None
+
+        if self.__fbthrift_cached_ensure is None:
+            self.__fbthrift_cached_ensure = MyData._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).ensure_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_ensure
+
+    @property
+    def ensure(self):
+        return self.ensure_impl()
+
+    cdef inline patchAfter_impl(self):
+
+        if self.__fbthrift_cached_patchAfter is None:
+            self.__fbthrift_cached_patchAfter = MyDataValuePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).patchAfter_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_patchAfter
+
+    @property
+    def patchAfter(self):
+        return self.patchAfter_impl()
+
+
+    def __hash__(OptionalMyDataValuePatch self):
+        return super().__hash__()
+
+    def __repr__(OptionalMyDataValuePatch self):
+        return super().__repr__()
+
+    def __str__(OptionalMyDataValuePatch self):
+        return super().__str__()
+
+
+    def __copy__(OptionalMyDataValuePatch self):
+        cdef shared_ptr[cOptionalMyDataValuePatch] cpp_obj = make_shared[cOptionalMyDataValuePatch](
+            deref(self._cpp_obj)
+        )
+        return OptionalMyDataValuePatch._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cOptionalMyDataValuePatch](
+            self._cpp_obj,
+            (<OptionalMyDataValuePatch>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__OptionalMyDataValuePatch()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cOptionalMyDataValuePatch].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.OptionalMyDataValuePatch"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cOptionalMyDataValuePatch](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 4
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(OptionalMyDataValuePatch self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cOptionalMyDataValuePatch](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(OptionalMyDataValuePatch self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cOptionalMyDataValuePatch]()
+        with nogil:
+            needed = serializer.cdeserialize[cOptionalMyDataValuePatch](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -360,6 +857,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
           "doubleVal": deref(self._cpp_obj).doubleVal_ref().has_value(),
           "stringVal": deref(self._cpp_obj).stringVal_ref().has_value(),
           "binaryVal": deref(self._cpp_obj).binaryVal_ref().has_value(),
+          "structVal": deref(self._cpp_obj).structVal_ref().has_value(),
           "optBoolVal": deref(self._cpp_obj).optBoolVal_ref().has_value(),
           "optByteVal": deref(self._cpp_obj).optByteVal_ref().has_value(),
           "optI16Val": deref(self._cpp_obj).optI16Val_ref().has_value(),
@@ -369,6 +867,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
           "optDoubleVal": deref(self._cpp_obj).optDoubleVal_ref().has_value(),
           "optStringVal": deref(self._cpp_obj).optStringVal_ref().has_value(),
           "optBinaryVal": deref(self._cpp_obj).optBinaryVal_ref().has_value(),
+          "optStructVal": deref(self._cpp_obj).optStructVal_ref().has_value(),
         })
 
     @staticmethod
@@ -467,6 +966,16 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     def binaryVal(self):
         return self.binaryVal_impl()
 
+    cdef inline structVal_impl(self):
+
+        if self.__fbthrift_cached_structVal is None:
+            self.__fbthrift_cached_structVal = MyDataValuePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).structVal_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_structVal
+
+    @property
+    def structVal(self):
+        return self.structVal_impl()
+
     cdef inline optBoolVal_impl(self):
 
         if self.__fbthrift_cached_optBoolVal is None:
@@ -557,6 +1066,16 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     def optBinaryVal(self):
         return self.optBinaryVal_impl()
 
+    cdef inline optStructVal_impl(self):
+
+        if self.__fbthrift_cached_optStructVal is None:
+            self.__fbthrift_cached_optStructVal = OptionalMyDataValuePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optStructVal_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_optStructVal
+
+    @property
+    def optStructVal(self):
+        return self.optStructVal_impl()
+
 
     def __hash__(MyStructPatch self):
         return super().__hash__()
@@ -600,7 +1119,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyStructPatch](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 18
+        self._fbthrift_struct_size = 20
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStructPatch self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

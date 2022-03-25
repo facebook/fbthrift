@@ -17,7 +17,15 @@
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/patch.thrift"
 
+package "facebook.com/thrift/test/patch"
+
 namespace cpp2 apache.thrift.test.patch
+
+@patch.GeneratePatch
+struct MyData {
+  1: string data1;
+  2: i32 data2;
+}
 
 @patch.GeneratePatch
 struct MyStruct {
@@ -30,6 +38,7 @@ struct MyStruct {
   7: double doubleVal;
   8: string stringVal;
   9: binary (cpp.type = "::folly::IOBuf") binaryVal;
+  10: MyData structVal;
 
   11: optional bool optBoolVal;
   12: optional byte optByteVal;
@@ -40,4 +49,5 @@ struct MyStruct {
   17: optional double optDoubleVal;
   18: optional string optStringVal;
   19: optional binary (cpp.type = "::folly::IOBuf") optBinaryVal;
-} (thrift.uri = "facebook.com/thrift/test/patch/MyStruct")
+  20: optional MyData optStructVal;
+}

@@ -12,6 +12,18 @@ pub mod types {
     #![allow(clippy::redundant_closure)]
 
 
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct MyData {
+        pub data1: ::std::string::String,
+        pub data2: ::std::primitive::i32,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
+    }
+
     #[derive(Clone, PartialEq)]
     pub struct MyStruct {
         pub boolVal: ::std::primitive::bool,
@@ -23,6 +35,7 @@ pub mod types {
         pub doubleVal: ::std::primitive::f64,
         pub stringVal: ::std::string::String,
         pub binaryVal: ::std::vec::Vec<::std::primitive::u8>,
+        pub structVal: crate::types::MyData,
         pub optBoolVal: ::std::option::Option<::std::primitive::bool>,
         pub optByteVal: ::std::option::Option<::std::primitive::i8>,
         pub optI16Val: ::std::option::Option<::std::primitive::i16>,
@@ -32,6 +45,53 @@ pub mod types {
         pub optDoubleVal: ::std::option::Option<::std::primitive::f64>,
         pub optStringVal: ::std::option::Option<::std::string::String>,
         pub optBinaryVal: ::std::option::Option<::std::vec::Vec<::std::primitive::u8>>,
+        pub optStructVal: ::std::option::Option<crate::types::MyData>,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
+    }
+
+    #[derive(Clone, PartialEq)]
+    pub struct MyDataPatch {
+        pub data1: patch::types::StringPatch,
+        pub data2: patch::types::I32Patch,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
+    }
+
+    #[derive(Clone, PartialEq)]
+    pub struct MyDataValuePatch {
+        #[doc = "Assigns to a given struct. If set, all other operations are ignored."]
+        pub assign: ::std::option::Option<crate::types::MyData>,
+        #[doc = "Clears a given struct. Applied first."]
+        pub clear: ::std::primitive::bool,
+        #[doc = "Patches a given struct. Applied second."]
+        pub patch: crate::types::MyDataPatch,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
+    }
+
+    #[derive(Clone, PartialEq)]
+    pub struct OptionalMyDataValuePatch {
+        #[doc = "If the optional value should be cleared. Applied first."]
+        pub clear: ::std::primitive::bool,
+        #[doc = "The patch to apply to any set value. Applied second."]
+        pub patch: crate::types::MyDataValuePatch,
+        #[doc = "The value with which to initialize any unset value. Applied third."]
+        pub ensure: ::std::option::Option<crate::types::MyData>,
+        #[doc = "The patch to apply to any set value, including newly set values. Applied fourth."]
+        pub patchAfter: crate::types::MyDataValuePatch,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -51,6 +111,7 @@ pub mod types {
         pub doubleVal: patch::types::DoublePatch,
         pub stringVal: patch::types::StringPatch,
         pub binaryVal: patch::types::BinaryPatch,
+        pub structVal: crate::types::MyDataValuePatch,
         pub optBoolVal: patch::types::OptionalBoolPatch,
         pub optByteVal: patch::types::OptionalBytePatch,
         pub optI16Val: patch::types::OptionalI16Patch,
@@ -60,6 +121,7 @@ pub mod types {
         pub optDoubleVal: patch::types::OptionalDoublePatch,
         pub optStringVal: patch::types::OptionalStringPatch,
         pub optBinaryVal: patch::types::OptionalBinaryPatch,
+        pub optStructVal: crate::types::OptionalMyDataValuePatch,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -102,6 +164,82 @@ pub mod types {
         pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
+    impl ::std::default::Default for self::MyData {
+        fn default() -> Self {
+            Self {
+                data1: ::std::default::Default::default(),
+                data2: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyData {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyData")
+                .field("data1", &self.data1)
+                .field("data2", &self.data2)
+                .finish()
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::MyData {}
+    unsafe impl ::std::marker::Sync for self::MyData {}
+
+    impl ::fbthrift::GetTType for self::MyData {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::MyData
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("MyData");
+            p.write_field_begin("data1", ::fbthrift::TType::String, 1);
+            ::fbthrift::Serialize::write(&self.data1, p);
+            p.write_field_end();
+            p.write_field_begin("data2", ::fbthrift::TType::I32, 2);
+            ::fbthrift::Serialize::write(&self.data2, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::MyData
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("data1", ::fbthrift::TType::String, 1),
+                ::fbthrift::Field::new("data2", ::fbthrift::TType::I32, 2),
+            ];
+            let mut field_data1 = ::std::option::Option::None;
+            let mut field_data2 = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::String, 1) => field_data1 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I32, 2) => field_data2 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                data1: field_data1.unwrap_or_default(),
+                data2: field_data2.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            })
+        }
+    }
+
+
     impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {
@@ -114,6 +252,7 @@ pub mod types {
                 doubleVal: ::std::default::Default::default(),
                 stringVal: ::std::default::Default::default(),
                 binaryVal: ::std::default::Default::default(),
+                structVal: ::std::default::Default::default(),
                 optBoolVal: ::std::option::Option::None,
                 optByteVal: ::std::option::Option::None,
                 optI16Val: ::std::option::Option::None,
@@ -123,6 +262,7 @@ pub mod types {
                 optDoubleVal: ::std::option::Option::None,
                 optStringVal: ::std::option::Option::None,
                 optBinaryVal: ::std::option::Option::None,
+                optStructVal: ::std::option::Option::None,
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -141,6 +281,7 @@ pub mod types {
                 .field("doubleVal", &self.doubleVal)
                 .field("stringVal", &self.stringVal)
                 .field("binaryVal", &self.binaryVal)
+                .field("structVal", &self.structVal)
                 .field("optBoolVal", &self.optBoolVal)
                 .field("optByteVal", &self.optByteVal)
                 .field("optI16Val", &self.optI16Val)
@@ -150,6 +291,7 @@ pub mod types {
                 .field("optDoubleVal", &self.optDoubleVal)
                 .field("optStringVal", &self.optStringVal)
                 .field("optBinaryVal", &self.optBinaryVal)
+                .field("optStructVal", &self.optStructVal)
                 .finish()
         }
     }
@@ -193,6 +335,9 @@ pub mod types {
             p.write_field_end();
             p.write_field_begin("binaryVal", ::fbthrift::TType::String, 9);
             ::fbthrift::Serialize::write(&self.binaryVal, p);
+            p.write_field_end();
+            p.write_field_begin("structVal", ::fbthrift::TType::Struct, 10);
+            ::fbthrift::Serialize::write(&self.structVal, p);
             p.write_field_end();
             if let ::std::option::Option::Some(some) = &self.optBoolVal {
                 p.write_field_begin("optBoolVal", ::fbthrift::TType::Bool, 11);
@@ -239,6 +384,11 @@ pub mod types {
                 ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
+            if let ::std::option::Option::Some(some) = &self.optStructVal {
+                p.write_field_begin("optStructVal", ::fbthrift::TType::Struct, 20);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -267,7 +417,9 @@ pub mod types {
                 ::fbthrift::Field::new("optI32Val", ::fbthrift::TType::I32, 14),
                 ::fbthrift::Field::new("optI64Val", ::fbthrift::TType::I64, 15),
                 ::fbthrift::Field::new("optStringVal", ::fbthrift::TType::String, 18),
+                ::fbthrift::Field::new("optStructVal", ::fbthrift::TType::Struct, 20),
                 ::fbthrift::Field::new("stringVal", ::fbthrift::TType::String, 8),
+                ::fbthrift::Field::new("structVal", ::fbthrift::TType::Struct, 10),
             ];
             let mut field_boolVal = ::std::option::Option::None;
             let mut field_byteVal = ::std::option::Option::None;
@@ -278,6 +430,7 @@ pub mod types {
             let mut field_doubleVal = ::std::option::Option::None;
             let mut field_stringVal = ::std::option::Option::None;
             let mut field_binaryVal = ::std::option::Option::None;
+            let mut field_structVal = ::std::option::Option::None;
             let mut field_optBoolVal = ::std::option::Option::None;
             let mut field_optByteVal = ::std::option::Option::None;
             let mut field_optI16Val = ::std::option::Option::None;
@@ -287,6 +440,7 @@ pub mod types {
             let mut field_optDoubleVal = ::std::option::Option::None;
             let mut field_optStringVal = ::std::option::Option::None;
             let mut field_optBinaryVal = ::std::option::Option::None;
+            let mut field_optStructVal = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -301,6 +455,7 @@ pub mod types {
                     (::fbthrift::TType::Double, 7) => field_doubleVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 8) => field_stringVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 9) => field_binaryVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 10) => field_structVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Bool, 11) => field_optBoolVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Byte, 12) => field_optByteVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::I16, 13) => field_optI16Val = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
@@ -310,6 +465,7 @@ pub mod types {
                     (::fbthrift::TType::Double, 17) => field_optDoubleVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 18) => field_optStringVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 19) => field_optBinaryVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 20) => field_optStructVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -325,6 +481,7 @@ pub mod types {
                 doubleVal: field_doubleVal.unwrap_or_default(),
                 stringVal: field_stringVal.unwrap_or_default(),
                 binaryVal: field_binaryVal.unwrap_or_default(),
+                structVal: field_structVal.unwrap_or_default(),
                 optBoolVal: field_optBoolVal,
                 optByteVal: field_optByteVal,
                 optI16Val: field_optI16Val,
@@ -334,6 +491,266 @@ pub mod types {
                 optDoubleVal: field_optDoubleVal,
                 optStringVal: field_optStringVal,
                 optBinaryVal: field_optBinaryVal,
+                optStructVal: field_optStructVal,
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            })
+        }
+    }
+
+
+    impl ::std::default::Default for self::MyDataPatch {
+        fn default() -> Self {
+            Self {
+                data1: ::std::default::Default::default(),
+                data2: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyDataPatch {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyDataPatch")
+                .field("data1", &self.data1)
+                .field("data2", &self.data2)
+                .finish()
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::MyDataPatch {}
+    unsafe impl ::std::marker::Sync for self::MyDataPatch {}
+
+    impl ::fbthrift::GetTType for self::MyDataPatch {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::MyDataPatch
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("MyDataPatch");
+            p.write_field_begin("data1", ::fbthrift::TType::Struct, 1);
+            ::fbthrift::Serialize::write(&self.data1, p);
+            p.write_field_end();
+            p.write_field_begin("data2", ::fbthrift::TType::Struct, 2);
+            ::fbthrift::Serialize::write(&self.data2, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::MyDataPatch
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("data1", ::fbthrift::TType::Struct, 1),
+                ::fbthrift::Field::new("data2", ::fbthrift::TType::Struct, 2),
+            ];
+            let mut field_data1 = ::std::option::Option::None;
+            let mut field_data2 = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::Struct, 1) => field_data1 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 2) => field_data2 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                data1: field_data1.unwrap_or_default(),
+                data2: field_data2.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            })
+        }
+    }
+
+
+    impl ::std::default::Default for self::MyDataValuePatch {
+        fn default() -> Self {
+            Self {
+                assign: ::std::option::Option::None,
+                clear: ::std::default::Default::default(),
+                patch: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyDataValuePatch {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyDataValuePatch")
+                .field("assign", &self.assign)
+                .field("clear", &self.clear)
+                .field("patch", &self.patch)
+                .finish()
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::MyDataValuePatch {}
+    unsafe impl ::std::marker::Sync for self::MyDataValuePatch {}
+
+    impl ::fbthrift::GetTType for self::MyDataValuePatch {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::MyDataValuePatch
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("MyDataValuePatch");
+            if let ::std::option::Option::Some(some) = &self.assign {
+                p.write_field_begin("assign", ::fbthrift::TType::Struct, 1);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
+            ::fbthrift::Serialize::write(&self.clear, p);
+            p.write_field_end();
+            p.write_field_begin("patch", ::fbthrift::TType::Struct, 3);
+            ::fbthrift::Serialize::write(&self.patch, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::MyDataValuePatch
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("assign", ::fbthrift::TType::Struct, 1),
+                ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
+                ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
+            ];
+            let mut field_assign = ::std::option::Option::None;
+            let mut field_clear = ::std::option::Option::None;
+            let mut field_patch = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::Struct, 1) => field_assign = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                assign: field_assign,
+                clear: field_clear.unwrap_or_default(),
+                patch: field_patch.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            })
+        }
+    }
+
+
+    impl ::std::default::Default for self::OptionalMyDataValuePatch {
+        fn default() -> Self {
+            Self {
+                clear: ::std::default::Default::default(),
+                patch: ::std::default::Default::default(),
+                ensure: ::std::option::Option::None,
+                patchAfter: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::OptionalMyDataValuePatch {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("OptionalMyDataValuePatch")
+                .field("clear", &self.clear)
+                .field("patch", &self.patch)
+                .field("ensure", &self.ensure)
+                .field("patchAfter", &self.patchAfter)
+                .finish()
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::OptionalMyDataValuePatch {}
+    unsafe impl ::std::marker::Sync for self::OptionalMyDataValuePatch {}
+
+    impl ::fbthrift::GetTType for self::OptionalMyDataValuePatch {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::OptionalMyDataValuePatch
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("OptionalMyDataValuePatch");
+            p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
+            ::fbthrift::Serialize::write(&self.clear, p);
+            p.write_field_end();
+            p.write_field_begin("patch", ::fbthrift::TType::Struct, 3);
+            ::fbthrift::Serialize::write(&self.patch, p);
+            p.write_field_end();
+            if let ::std::option::Option::Some(some) = &self.ensure {
+                p.write_field_begin("ensure", ::fbthrift::TType::Struct, 1);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
+            p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 4);
+            ::fbthrift::Serialize::write(&self.patchAfter, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::OptionalMyDataValuePatch
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
+                ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 1),
+                ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
+                ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 4),
+            ];
+            let mut field_clear = ::std::option::Option::None;
+            let mut field_patch = ::std::option::Option::None;
+            let mut field_ensure = ::std::option::Option::None;
+            let mut field_patchAfter = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 1) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 4) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                clear: field_clear.unwrap_or_default(),
+                patch: field_patch.unwrap_or_default(),
+                ensure: field_ensure,
+                patchAfter: field_patchAfter.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
@@ -352,6 +769,7 @@ pub mod types {
                 doubleVal: ::std::default::Default::default(),
                 stringVal: ::std::default::Default::default(),
                 binaryVal: ::std::default::Default::default(),
+                structVal: ::std::default::Default::default(),
                 optBoolVal: ::std::default::Default::default(),
                 optByteVal: ::std::default::Default::default(),
                 optI16Val: ::std::default::Default::default(),
@@ -361,6 +779,7 @@ pub mod types {
                 optDoubleVal: ::std::default::Default::default(),
                 optStringVal: ::std::default::Default::default(),
                 optBinaryVal: ::std::default::Default::default(),
+                optStructVal: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -379,6 +798,7 @@ pub mod types {
                 .field("doubleVal", &self.doubleVal)
                 .field("stringVal", &self.stringVal)
                 .field("binaryVal", &self.binaryVal)
+                .field("structVal", &self.structVal)
                 .field("optBoolVal", &self.optBoolVal)
                 .field("optByteVal", &self.optByteVal)
                 .field("optI16Val", &self.optI16Val)
@@ -388,6 +808,7 @@ pub mod types {
                 .field("optDoubleVal", &self.optDoubleVal)
                 .field("optStringVal", &self.optStringVal)
                 .field("optBinaryVal", &self.optBinaryVal)
+                .field("optStructVal", &self.optStructVal)
                 .finish()
         }
     }
@@ -432,6 +853,9 @@ pub mod types {
             p.write_field_begin("binaryVal", ::fbthrift::TType::Struct, 9);
             ::fbthrift::Serialize::write(&self.binaryVal, p);
             p.write_field_end();
+            p.write_field_begin("structVal", ::fbthrift::TType::Struct, 10);
+            ::fbthrift::Serialize::write(&self.structVal, p);
+            p.write_field_end();
             p.write_field_begin("optBoolVal", ::fbthrift::TType::Struct, 11);
             ::fbthrift::Serialize::write(&self.optBoolVal, p);
             p.write_field_end();
@@ -458,6 +882,9 @@ pub mod types {
             p.write_field_end();
             p.write_field_begin("optBinaryVal", ::fbthrift::TType::Struct, 19);
             ::fbthrift::Serialize::write(&self.optBinaryVal, p);
+            p.write_field_end();
+            p.write_field_begin("optStructVal", ::fbthrift::TType::Struct, 20);
+            ::fbthrift::Serialize::write(&self.optStructVal, p);
             p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
@@ -487,7 +914,9 @@ pub mod types {
                 ::fbthrift::Field::new("optI32Val", ::fbthrift::TType::Struct, 14),
                 ::fbthrift::Field::new("optI64Val", ::fbthrift::TType::Struct, 15),
                 ::fbthrift::Field::new("optStringVal", ::fbthrift::TType::Struct, 18),
+                ::fbthrift::Field::new("optStructVal", ::fbthrift::TType::Struct, 20),
                 ::fbthrift::Field::new("stringVal", ::fbthrift::TType::Struct, 8),
+                ::fbthrift::Field::new("structVal", ::fbthrift::TType::Struct, 10),
             ];
             let mut field_boolVal = ::std::option::Option::None;
             let mut field_byteVal = ::std::option::Option::None;
@@ -498,6 +927,7 @@ pub mod types {
             let mut field_doubleVal = ::std::option::Option::None;
             let mut field_stringVal = ::std::option::Option::None;
             let mut field_binaryVal = ::std::option::Option::None;
+            let mut field_structVal = ::std::option::Option::None;
             let mut field_optBoolVal = ::std::option::Option::None;
             let mut field_optByteVal = ::std::option::Option::None;
             let mut field_optI16Val = ::std::option::Option::None;
@@ -507,6 +937,7 @@ pub mod types {
             let mut field_optDoubleVal = ::std::option::Option::None;
             let mut field_optStringVal = ::std::option::Option::None;
             let mut field_optBinaryVal = ::std::option::Option::None;
+            let mut field_optStructVal = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -521,6 +952,7 @@ pub mod types {
                     (::fbthrift::TType::Struct, 7) => field_doubleVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 8) => field_stringVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 9) => field_binaryVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 10) => field_structVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 11) => field_optBoolVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 12) => field_optByteVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 13) => field_optI16Val = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
@@ -530,6 +962,7 @@ pub mod types {
                     (::fbthrift::TType::Struct, 17) => field_optDoubleVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 18) => field_optStringVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 19) => field_optBinaryVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 20) => field_optStructVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -545,6 +978,7 @@ pub mod types {
                 doubleVal: field_doubleVal.unwrap_or_default(),
                 stringVal: field_stringVal.unwrap_or_default(),
                 binaryVal: field_binaryVal.unwrap_or_default(),
+                structVal: field_structVal.unwrap_or_default(),
                 optBoolVal: field_optBoolVal.unwrap_or_default(),
                 optByteVal: field_optByteVal.unwrap_or_default(),
                 optI16Val: field_optI16Val.unwrap_or_default(),
@@ -554,6 +988,7 @@ pub mod types {
                 optDoubleVal: field_optDoubleVal.unwrap_or_default(),
                 optStringVal: field_optStringVal.unwrap_or_default(),
                 optBinaryVal: field_optBinaryVal.unwrap_or_default(),
+                optStructVal: field_optStructVal.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }

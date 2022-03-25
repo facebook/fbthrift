@@ -19,5 +19,5 @@ if sys.version_info[0] >= 3:
 import patch.ttypes
 
 
-from .ttypes import UTF8STRINGS, MyStruct, MyStructPatch, MyStructValuePatch, OptionalMyStructValuePatch
+from .ttypes import UTF8STRINGS, MyData, MyStruct, MyDataPatch, MyDataValuePatch, OptionalMyDataValuePatch, MyStructPatch, MyStructValuePatch, OptionalMyStructValuePatch
 

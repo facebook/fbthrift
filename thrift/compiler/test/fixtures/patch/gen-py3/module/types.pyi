@@ -20,6 +20,38 @@ import patch.types as _patch_types
 __property__ = property
 
 
+class MyData(thrift.py3.types.Struct, _typing.Hashable):
+    class __fbthrift_IsSet:
+        data1: bool
+        data2: bool
+        pass
+
+    data1: Final[str] = ...
+
+    data2: Final[int] = ...
+
+    def __init__(
+        self, *,
+        data1: _typing.Optional[str]=None,
+        data2: _typing.Optional[int]=None
+    ) -> None: ...
+
+    def __call__(
+        self, *,
+        data1: _typing.Union[str, __NotSet, None]=NOTSET,
+        data2: _typing.Union[int, __NotSet, None]=NOTSET
+    ) -> MyData: ...
+
+    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyData'], bytes]]: ...
+    def __hash__(self) -> int: ...
+    def __str__(self) -> str: ...
+    def __repr__(self) -> str: ...
+    def __lt__(self, other: 'MyData') -> bool: ...
+    def __gt__(self, other: 'MyData') -> bool: ...
+    def __le__(self, other: 'MyData') -> bool: ...
+    def __ge__(self, other: 'MyData') -> bool: ...
+
+
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         boolVal: bool
@@ -31,6 +63,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         doubleVal: bool
         stringVal: bool
         binaryVal: bool
+        structVal: bool
         optBoolVal: bool
         optByteVal: bool
         optI16Val: bool
@@ -40,6 +73,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         optDoubleVal: bool
         optStringVal: bool
         optBinaryVal: bool
+        optStructVal: bool
         pass
 
     boolVal: Final[bool] = ...
@@ -60,6 +94,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     binaryVal: Final[bytes] = ...
 
+    structVal: Final[MyData] = ...
+
     optBoolVal: Final[_typing.Optional[bool]] = ...
 
     optByteVal: Final[_typing.Optional[int]] = ...
@@ -78,6 +114,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     optBinaryVal: Final[_typing.Optional[bytes]] = ...
 
+    optStructVal: Final[_typing.Optional[MyData]] = ...
+
     def __init__(
         self, *,
         boolVal: _typing.Optional[bool]=None,
@@ -89,6 +127,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         doubleVal: _typing.Optional[float]=None,
         stringVal: _typing.Optional[str]=None,
         binaryVal: _typing.Optional[bytes]=None,
+        structVal: _typing.Optional[MyData]=None,
         optBoolVal: _typing.Optional[bool]=None,
         optByteVal: _typing.Optional[int]=None,
         optI16Val: _typing.Optional[int]=None,
@@ -97,7 +136,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         optFloatVal: _typing.Optional[float]=None,
         optDoubleVal: _typing.Optional[float]=None,
         optStringVal: _typing.Optional[str]=None,
-        optBinaryVal: _typing.Optional[bytes]=None
+        optBinaryVal: _typing.Optional[bytes]=None,
+        optStructVal: _typing.Optional[MyData]=None
     ) -> None: ...
 
     def __call__(
@@ -111,6 +151,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         doubleVal: _typing.Union[float, __NotSet, None]=NOTSET,
         stringVal: _typing.Union[str, __NotSet, None]=NOTSET,
         binaryVal: _typing.Union[bytes, __NotSet, None]=NOTSET,
+        structVal: _typing.Union[MyData, __NotSet, None]=NOTSET,
         optBoolVal: _typing.Union[bool, __NotSet, None]=NOTSET,
         optByteVal: _typing.Union[int, __NotSet, None]=NOTSET,
         optI16Val: _typing.Union[int, __NotSet, None]=NOTSET,
@@ -119,7 +160,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         optFloatVal: _typing.Union[float, __NotSet, None]=NOTSET,
         optDoubleVal: _typing.Union[float, __NotSet, None]=NOTSET,
         optStringVal: _typing.Union[str, __NotSet, None]=NOTSET,
-        optBinaryVal: _typing.Union[bytes, __NotSet, None]=NOTSET
+        optBinaryVal: _typing.Union[bytes, __NotSet, None]=NOTSET,
+        optStructVal: _typing.Union[MyData, __NotSet, None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...
@@ -130,6 +172,117 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'MyStruct') -> bool: ...
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
+
+
+class MyDataPatch(thrift.py3.types.Struct, _typing.Hashable):
+    class __fbthrift_IsSet:
+        data1: bool
+        data2: bool
+        pass
+
+    data1: Final[_patch_types.StringPatch] = ...
+
+    data2: Final[_patch_types.I32Patch] = ...
+
+    def __init__(
+        self, *,
+        data1: _typing.Optional[_patch_types.StringPatch]=None,
+        data2: _typing.Optional[_patch_types.I32Patch]=None
+    ) -> None: ...
+
+    def __call__(
+        self, *,
+        data1: _typing.Union[_patch_types.StringPatch, __NotSet, None]=NOTSET,
+        data2: _typing.Union[_patch_types.I32Patch, __NotSet, None]=NOTSET
+    ) -> MyDataPatch: ...
+
+    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyDataPatch'], bytes]]: ...
+    def __hash__(self) -> int: ...
+    def __str__(self) -> str: ...
+    def __repr__(self) -> str: ...
+    def __lt__(self, other: 'MyDataPatch') -> bool: ...
+    def __gt__(self, other: 'MyDataPatch') -> bool: ...
+    def __le__(self, other: 'MyDataPatch') -> bool: ...
+    def __ge__(self, other: 'MyDataPatch') -> bool: ...
+
+
+class MyDataValuePatch(thrift.py3.types.Struct, _typing.Hashable):
+    class __fbthrift_IsSet:
+        assign: bool
+        clear: bool
+        patch: bool
+        pass
+
+    assign: Final[_typing.Optional[MyData]] = ...
+
+    clear: Final[bool] = ...
+
+    patch: Final[MyDataPatch] = ...
+
+    def __init__(
+        self, *,
+        assign: _typing.Optional[MyData]=None,
+        clear: _typing.Optional[bool]=None,
+        patch: _typing.Optional[MyDataPatch]=None
+    ) -> None: ...
+
+    def __call__(
+        self, *,
+        assign: _typing.Union[MyData, __NotSet, None]=NOTSET,
+        clear: _typing.Union[bool, __NotSet, None]=NOTSET,
+        patch: _typing.Union[MyDataPatch, __NotSet, None]=NOTSET
+    ) -> MyDataValuePatch: ...
+
+    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyDataValuePatch'], bytes]]: ...
+    def __hash__(self) -> int: ...
+    def __str__(self) -> str: ...
+    def __repr__(self) -> str: ...
+    def __lt__(self, other: 'MyDataValuePatch') -> bool: ...
+    def __gt__(self, other: 'MyDataValuePatch') -> bool: ...
+    def __le__(self, other: 'MyDataValuePatch') -> bool: ...
+    def __ge__(self, other: 'MyDataValuePatch') -> bool: ...
+
+
+class OptionalMyDataValuePatch(thrift.py3.types.Struct, _typing.Hashable):
+    class __fbthrift_IsSet:
+        clear: bool
+        patch: bool
+        ensure: bool
+        patchAfter: bool
+        pass
+
+    clear: Final[bool] = ...
+
+    patch: Final[MyDataValuePatch] = ...
+
+    ensure: Final[_typing.Optional[MyData]] = ...
+
+    patchAfter: Final[MyDataValuePatch] = ...
+
+    def __init__(
+        self, *,
+        clear: _typing.Optional[bool]=None,
+        patch: _typing.Optional[MyDataValuePatch]=None,
+        ensure: _typing.Optional[MyData]=None,
+        patchAfter: _typing.Optional[MyDataValuePatch]=None
+    ) -> None: ...
+
+    def __call__(
+        self, *,
+        clear: _typing.Union[bool, __NotSet, None]=NOTSET,
+        patch: _typing.Union[MyDataValuePatch, __NotSet, None]=NOTSET,
+        ensure: _typing.Union[MyData, __NotSet, None]=NOTSET,
+        patchAfter: _typing.Union[MyDataValuePatch, __NotSet, None]=NOTSET
+    ) -> OptionalMyDataValuePatch: ...
+
+    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['OptionalMyDataValuePatch'], bytes]]: ...
+    def __hash__(self) -> int: ...
+    def __str__(self) -> str: ...
+    def __repr__(self) -> str: ...
+    def __lt__(self, other: 'OptionalMyDataValuePatch') -> bool: ...
+    def __gt__(self, other: 'OptionalMyDataValuePatch') -> bool: ...
+    def __le__(self, other: 'OptionalMyDataValuePatch') -> bool: ...
+    def __ge__(self, other: 'OptionalMyDataValuePatch') -> bool: ...
 
 
 class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
@@ -143,6 +296,7 @@ class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
         doubleVal: bool
         stringVal: bool
         binaryVal: bool
+        structVal: bool
         optBoolVal: bool
         optByteVal: bool
         optI16Val: bool
@@ -152,6 +306,7 @@ class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
         optDoubleVal: bool
         optStringVal: bool
         optBinaryVal: bool
+        optStructVal: bool
         pass
 
     boolVal: Final[_patch_types.BoolPatch] = ...
@@ -172,6 +327,8 @@ class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
 
     binaryVal: Final[_patch_types.BinaryPatch] = ...
 
+    structVal: Final[MyDataValuePatch] = ...
+
     optBoolVal: Final[_patch_types.OptionalBoolPatch] = ...
 
     optByteVal: Final[_patch_types.OptionalBytePatch] = ...
@@ -190,6 +347,8 @@ class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
 
     optBinaryVal: Final[_patch_types.OptionalBinaryPatch] = ...
 
+    optStructVal: Final[OptionalMyDataValuePatch] = ...
+
     def __init__(
         self, *,
         boolVal: _typing.Optional[_patch_types.BoolPatch]=None,
@@ -201,6 +360,7 @@ class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
         doubleVal: _typing.Optional[_patch_types.DoublePatch]=None,
         stringVal: _typing.Optional[_patch_types.StringPatch]=None,
         binaryVal: _typing.Optional[_patch_types.BinaryPatch]=None,
+        structVal: _typing.Optional[MyDataValuePatch]=None,
         optBoolVal: _typing.Optional[_patch_types.OptionalBoolPatch]=None,
         optByteVal: _typing.Optional[_patch_types.OptionalBytePatch]=None,
         optI16Val: _typing.Optional[_patch_types.OptionalI16Patch]=None,
@@ -209,7 +369,8 @@ class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
         optFloatVal: _typing.Optional[_patch_types.OptionalFloatPatch]=None,
         optDoubleVal: _typing.Optional[_patch_types.OptionalDoublePatch]=None,
         optStringVal: _typing.Optional[_patch_types.OptionalStringPatch]=None,
-        optBinaryVal: _typing.Optional[_patch_types.OptionalBinaryPatch]=None
+        optBinaryVal: _typing.Optional[_patch_types.OptionalBinaryPatch]=None,
+        optStructVal: _typing.Optional[OptionalMyDataValuePatch]=None
     ) -> None: ...
 
     def __call__(
@@ -223,6 +384,7 @@ class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
         doubleVal: _typing.Union[_patch_types.DoublePatch, __NotSet, None]=NOTSET,
         stringVal: _typing.Union[_patch_types.StringPatch, __NotSet, None]=NOTSET,
         binaryVal: _typing.Union[_patch_types.BinaryPatch, __NotSet, None]=NOTSET,
+        structVal: _typing.Union[MyDataValuePatch, __NotSet, None]=NOTSET,
         optBoolVal: _typing.Union[_patch_types.OptionalBoolPatch, __NotSet, None]=NOTSET,
         optByteVal: _typing.Union[_patch_types.OptionalBytePatch, __NotSet, None]=NOTSET,
         optI16Val: _typing.Union[_patch_types.OptionalI16Patch, __NotSet, None]=NOTSET,
@@ -231,7 +393,8 @@ class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
         optFloatVal: _typing.Union[_patch_types.OptionalFloatPatch, __NotSet, None]=NOTSET,
         optDoubleVal: _typing.Union[_patch_types.OptionalDoublePatch, __NotSet, None]=NOTSET,
         optStringVal: _typing.Union[_patch_types.OptionalStringPatch, __NotSet, None]=NOTSET,
-        optBinaryVal: _typing.Union[_patch_types.OptionalBinaryPatch, __NotSet, None]=NOTSET
+        optBinaryVal: _typing.Union[_patch_types.OptionalBinaryPatch, __NotSet, None]=NOTSET,
+        optStructVal: _typing.Union[OptionalMyDataValuePatch, __NotSet, None]=NOTSET
     ) -> MyStructPatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStructPatch'], bytes]]: ...

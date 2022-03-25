@@ -240,18 +240,19 @@ t_struct& patch_generator::add_struct_value_patch(
           "Assigns to a given struct. If set, all other operations are ignored.\n");
   gen.clear().set_doc("Clears a given struct. Applied first.\n");
   gen.patch(patch_type).set_doc("Patches a given struct. Applied second.\n");
+  gen.generated.set_annotation(
+      "cpp.adapter", "::apache::thrift::op::detail::StructPatchAdapter");
   return gen.generated;
 }
 
 t_type_ref patch_generator::find_patch_type(
     const t_const& annot, const t_field& field) const {
   // Base types use a shared representation defined in patch.thrift.
-  if (auto* base_type =
-          dynamic_cast<const t_base_type*>(field.type()->get_true_type())) {
-    auto type = base_type->base_type();
+  const auto* type = field.type()->get_true_type();
+  if (auto* base_type = dynamic_cast<const t_base_type*>(type)) {
     const char* name = field.qualifier() == t_field_qualifier::optional
-        ? getOptionalPatchTypeName(type)
-        : getPatchTypeName(type);
+        ? getOptionalPatchTypeName(base_type->base_type())
+        : getPatchTypeName(base_type->base_type());
     if (const auto* result = program_.scope()->find_type(name)) {
       return t_type_ref::from_ptr(result);
     }
@@ -267,6 +268,20 @@ t_type_ref patch_generator::find_patch_type(
     ctx_.failure(field, [&](auto& os) {
       os << "Could not find expected patch type: " << name;
     });
+  } else if (auto* structured = dynamic_cast<const t_structured*>(type)) {
+    // Try to find the generated patch type.
+    std::string name = structured->name() + "ValuePatch";
+    if (field.qualifier() == t_field_qualifier::optional) {
+      name = "Optional" + std::move(name);
+    }
+    // It should be in the same program as the type itself.
+    name = structured->program()->name() + "." + std::move(name);
+    if (auto patch_type =
+            t_type_ref::from_ptr(program_.scope()->find_type(name))) {
+      return patch_type;
+    }
+    ctx_.warning(
+        field, "Could not find expected patch type: " + std::move(name));
   }
 
   // Could not resolve the patch type.

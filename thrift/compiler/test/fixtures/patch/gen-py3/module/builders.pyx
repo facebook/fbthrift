@@ -4,6 +4,13 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
+cdef class MyData_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.MyData
+
+    def __iter__(self):
+        yield "data1", self.data1
+        yield "data2", self.data2
+
 cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.MyStruct
 
@@ -17,6 +24,7 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
         yield "doubleVal", self.doubleVal
         yield "stringVal", self.stringVal
         yield "binaryVal", self.binaryVal
+        yield "structVal", self.structVal
         yield "optBoolVal", self.optBoolVal
         yield "optByteVal", self.optByteVal
         yield "optI16Val", self.optI16Val
@@ -26,6 +34,31 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
         yield "optDoubleVal", self.optDoubleVal
         yield "optStringVal", self.optStringVal
         yield "optBinaryVal", self.optBinaryVal
+        yield "optStructVal", self.optStructVal
+
+cdef class MyDataPatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.MyDataPatch
+
+    def __iter__(self):
+        yield "data1", self.data1
+        yield "data2", self.data2
+
+cdef class MyDataValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.MyDataValuePatch
+
+    def __iter__(self):
+        yield "assign", self.assign
+        yield "clear", self.clear
+        yield "patch", self.patch
+
+cdef class OptionalMyDataValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.OptionalMyDataValuePatch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
 
 cdef class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.MyStructPatch
@@ -40,6 +73,7 @@ cdef class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
         yield "doubleVal", self.doubleVal
         yield "stringVal", self.stringVal
         yield "binaryVal", self.binaryVal
+        yield "structVal", self.structVal
         yield "optBoolVal", self.optBoolVal
         yield "optByteVal", self.optByteVal
         yield "optI16Val", self.optI16Val
@@ -49,6 +83,7 @@ cdef class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
         yield "optDoubleVal", self.optDoubleVal
         yield "optStringVal", self.optStringVal
         yield "optBinaryVal", self.optBinaryVal
+        yield "optStructVal", self.optStructVal
 
 cdef class MyStructValuePatch_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.MyStructValuePatch

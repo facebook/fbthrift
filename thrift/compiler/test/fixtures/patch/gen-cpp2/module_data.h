@@ -12,15 +12,43 @@
 
 namespace apache { namespace thrift {
 
+template <> struct TStructDataStorage<::cpp2::MyData> {
+  static constexpr const std::size_t fields_size = 2;
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<protocol::TType, fields_size> fields_types;
+};
+
 template <> struct TStructDataStorage<::cpp2::MyStruct> {
-  static constexpr const std::size_t fields_size = 18;
+  static constexpr const std::size_t fields_size = 20;
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<protocol::TType, fields_size> fields_types;
+};
+
+template <> struct TStructDataStorage<::cpp2::MyDataPatch> {
+  static constexpr const std::size_t fields_size = 2;
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<protocol::TType, fields_size> fields_types;
+};
+
+template <> struct TStructDataStorage<::cpp2::MyDataValuePatch> {
+  static constexpr const std::size_t fields_size = 3;
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<protocol::TType, fields_size> fields_types;
+};
+
+template <> struct TStructDataStorage<::cpp2::OptionalMyDataValuePatch> {
+  static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::cpp2::MyStructPatch> {
-  static constexpr const std::size_t fields_size = 18;
+  static constexpr const std::size_t fields_size = 20;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;

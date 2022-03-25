@@ -20,6 +20,7 @@
 #include <utility>
 
 #include <thrift/lib/cpp2/op/detail/BasePatch.h>
+#include <thrift/lib/cpp2/op/detail/StructPatch.h>
 #include <thrift/lib/cpp2/op/detail/ValuePatch.h>
 
 namespace apache {
@@ -212,6 +213,9 @@ using AssignPatchAdapter = PatchAdapter<AssignPatch>;
 using BoolPatchAdapter = PatchAdapter<BoolPatch>;
 using NumberPatchAdapter = PatchAdapter<NumberPatch>;
 using StringPatchAdapter = PatchAdapter<StringPatch>;
+
+// Adapters for structred types.
+using StructPatchAdapter = PatchAdapter<StructPatch>;
 
 // Adapter for all optional values.
 using OptionalPatchAdapter = PatchAdapter<OptionalPatch>;

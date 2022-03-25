@@ -2,13 +2,13 @@
   "__fbthrift": {"@generated": 0},
   "thrift_module" : "module",
   "structs" : {
-    "MyStruct" : {
+    "MyData" : {
       "lineno" : 27,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
-        "boolVal" : {
-          "type_enum" : "BOOL",
+        "data1" : {
+          "type_enum" : "STRING",
           "spec_args" : null,
           "required" : true,
           "source_range" : {
@@ -22,8 +22,8 @@
             }
           }
         },
-        "byteVal" : {
-          "type_enum" : "BYTE",
+        "data2" : {
+          "type_enum" : "I32",
           "spec_args" : null,
           "required" : true,
           "source_range" : {
@@ -33,247 +33,7 @@
             },
             "end" : {
               "line" : 29,
-              "column" : 18
-            }
-          }
-        },
-        "i16Val" : {
-          "type_enum" : "I16",
-          "spec_args" : null,
-          "required" : true,
-          "source_range" : {
-            "begin" : {
-              "line" : 30,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 30,
-              "column" : 16
-            }
-          }
-        },
-        "i32Val" : {
-          "type_enum" : "I32",
-          "spec_args" : null,
-          "required" : true,
-          "source_range" : {
-            "begin" : {
-              "line" : 31,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 31,
-              "column" : 16
-            }
-          }
-        },
-        "i64Val" : {
-          "type_enum" : "I64",
-          "spec_args" : null,
-          "required" : true,
-          "source_range" : {
-            "begin" : {
-              "line" : 32,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 32,
-              "column" : 16
-            }
-          }
-        },
-        "floatVal" : {
-          "type_enum" : "FLOAT",
-          "spec_args" : null,
-          "required" : true,
-          "source_range" : {
-            "begin" : {
-              "line" : 33,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 33,
-              "column" : 20
-            }
-          }
-        },
-        "doubleVal" : {
-          "type_enum" : "DOUBLE",
-          "spec_args" : null,
-          "required" : true,
-          "source_range" : {
-            "begin" : {
-              "line" : 34,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 34,
-              "column" : 22
-            }
-          }
-        },
-        "stringVal" : {
-          "type_enum" : "STRING",
-          "spec_args" : null,
-          "required" : true,
-          "source_range" : {
-            "begin" : {
-              "line" : 35,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 35,
-              "column" : 22
-            }
-          }
-        },
-        "binaryVal" : {
-          "type_enum" : "STRING",
-          "spec_args" : null,
-          "required" : true,
-          "source_range" : {
-            "begin" : {
-              "line" : 36,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 36,
-              "column" : 52
-            }
-          }
-        },
-        "optBoolVal" : {
-          "type_enum" : "BOOL",
-          "spec_args" : null,
-          "required" : false,
-          "source_range" : {
-            "begin" : {
-              "line" : 38,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 38,
-              "column" : 31
-            }
-          }
-        },
-        "optByteVal" : {
-          "type_enum" : "BYTE",
-          "spec_args" : null,
-          "required" : false,
-          "source_range" : {
-            "begin" : {
-              "line" : 39,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 39,
-              "column" : 31
-            }
-          }
-        },
-        "optI16Val" : {
-          "type_enum" : "I16",
-          "spec_args" : null,
-          "required" : false,
-          "source_range" : {
-            "begin" : {
-              "line" : 40,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 40,
-              "column" : 29
-            }
-          }
-        },
-        "optI32Val" : {
-          "type_enum" : "I32",
-          "spec_args" : null,
-          "required" : false,
-          "source_range" : {
-            "begin" : {
-              "line" : 41,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 41,
-              "column" : 29
-            }
-          }
-        },
-        "optI64Val" : {
-          "type_enum" : "I64",
-          "spec_args" : null,
-          "required" : false,
-          "source_range" : {
-            "begin" : {
-              "line" : 42,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 42,
-              "column" : 29
-            }
-          }
-        },
-        "optFloatVal" : {
-          "type_enum" : "FLOAT",
-          "spec_args" : null,
-          "required" : false,
-          "source_range" : {
-            "begin" : {
-              "line" : 43,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 43,
-              "column" : 33
-            }
-          }
-        },
-        "optDoubleVal" : {
-          "type_enum" : "DOUBLE",
-          "spec_args" : null,
-          "required" : false,
-          "source_range" : {
-            "begin" : {
-              "line" : 44,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 44,
-              "column" : 35
-            }
-          }
-        },
-        "optStringVal" : {
-          "type_enum" : "STRING",
-          "spec_args" : null,
-          "required" : false,
-          "source_range" : {
-            "begin" : {
-              "line" : 45,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 45,
-              "column" : 35
-            }
-          }
-        },
-        "optBinaryVal" : {
-          "type_enum" : "STRING",
-          "spec_args" : null,
-          "required" : false,
-          "source_range" : {
-            "begin" : {
-              "line" : 46,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 46,
-              "column" : 65
+              "column" : 15
             }
           }
         }
@@ -284,13 +44,516 @@
           "column" : 1
         },
         "end" : {
-          "line" : 47,
+          "line" : 30,
           "column" : 2
         }
       }
     },
-    "MyStructPatch" : {
+    "MyStruct" : {
+      "lineno" : 33,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "boolVal" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 34,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 34,
+              "column" : 18
+            }
+          }
+        },
+        "byteVal" : {
+          "type_enum" : "BYTE",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 35,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 35,
+              "column" : 18
+            }
+          }
+        },
+        "i16Val" : {
+          "type_enum" : "I16",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 36,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 36,
+              "column" : 16
+            }
+          }
+        },
+        "i32Val" : {
+          "type_enum" : "I32",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 37,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 37,
+              "column" : 16
+            }
+          }
+        },
+        "i64Val" : {
+          "type_enum" : "I64",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 38,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 38,
+              "column" : 16
+            }
+          }
+        },
+        "floatVal" : {
+          "type_enum" : "FLOAT",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 39,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 39,
+              "column" : 20
+            }
+          }
+        },
+        "doubleVal" : {
+          "type_enum" : "DOUBLE",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 40,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 40,
+              "column" : 22
+            }
+          }
+        },
+        "stringVal" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 41,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 41,
+              "column" : 22
+            }
+          }
+        },
+        "binaryVal" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 42,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 42,
+              "column" : 52
+            }
+          }
+        },
+        "structVal" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyData",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 43,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 43,
+              "column" : 23
+            }
+          }
+        },
+        "optBoolVal" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 45,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 45,
+              "column" : 31
+            }
+          }
+        },
+        "optByteVal" : {
+          "type_enum" : "BYTE",
+          "spec_args" : null,
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 46,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 46,
+              "column" : 31
+            }
+          }
+        },
+        "optI16Val" : {
+          "type_enum" : "I16",
+          "spec_args" : null,
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 47,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 47,
+              "column" : 29
+            }
+          }
+        },
+        "optI32Val" : {
+          "type_enum" : "I32",
+          "spec_args" : null,
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 48,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 48,
+              "column" : 29
+            }
+          }
+        },
+        "optI64Val" : {
+          "type_enum" : "I64",
+          "spec_args" : null,
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 49,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 49,
+              "column" : 29
+            }
+          }
+        },
+        "optFloatVal" : {
+          "type_enum" : "FLOAT",
+          "spec_args" : null,
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 50,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 50,
+              "column" : 33
+            }
+          }
+        },
+        "optDoubleVal" : {
+          "type_enum" : "DOUBLE",
+          "spec_args" : null,
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 51,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 51,
+              "column" : 35
+            }
+          }
+        },
+        "optStringVal" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 52,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 52,
+              "column" : 35
+            }
+          }
+        },
+        "optBinaryVal" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 53,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 53,
+              "column" : 65
+            }
+          }
+        },
+        "optStructVal" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyData",
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 54,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 54,
+              "column" : 35
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 32,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 55,
+          "column" : 2
+        }
+      }
+    },
+    "MyDataPatch" : {
       "lineno" : 27,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "data1" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "patch.StringPatch",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "data2" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "patch.I32Patch",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 0,
+          "column" : 0
+        },
+        "end" : {
+          "line" : 0,
+          "column" : 0
+        }
+      }
+    },
+    "MyDataValuePatch" : {
+      "lineno" : 27,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "assign" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyData",
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "clear" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "patch" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyDataPatch",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 0,
+          "column" : 0
+        },
+        "end" : {
+          "line" : 0,
+          "column" : 0
+        }
+      }
+    },
+    "OptionalMyDataValuePatch" : {
+      "lineno" : 27,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "clear" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "patch" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyDataValuePatch",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "ensure" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyData",
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "patchAfter" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyDataValuePatch",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 0,
+          "column" : 0
+        },
+        "end" : {
+          "line" : 0,
+          "column" : 0
+        }
+      }
+    },
+    "MyStructPatch" : {
+      "lineno" : 33,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -417,6 +680,21 @@
         "binaryVal" : {
           "type_enum" : "STRUCT",
           "spec_args" : "patch.BinaryPatch",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "structVal" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "MyDataValuePatch",
           "required" : true,
           "source_range" : {
             "begin" : {
@@ -563,6 +841,21 @@
               "column" : 0
             }
           }
+        },
+        "optStructVal" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "OptionalMyDataValuePatch",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
         }
       },
       "source_range" : {
@@ -577,7 +870,7 @@
       }
     },
     "MyStructValuePatch" : {
-      "lineno" : 27,
+      "lineno" : 33,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -639,7 +932,7 @@
       }
     },
     "OptionalMyStructValuePatch" : {
-      "lineno" : 27,
+      "lineno" : 33,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
