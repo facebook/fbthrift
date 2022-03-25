@@ -101,7 +101,7 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
 
-class MyInteractionFastIf : public apache::thrift::Tile, public apache::thrift::ServerInterface {
+class MyInteractionFastIf : public apache::thrift::EventBaseTile, public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyInteractionFast"; }
 

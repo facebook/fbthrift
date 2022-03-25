@@ -1219,6 +1219,7 @@ class mstch_service : public mstch_base {
             {"service:structured_annotations",
              &mstch_service::structured_annotations},
             {"interaction:serial?", &mstch_service::is_serial_interaction},
+            {"interaction:eb?", &mstch_service::is_event_base_interaction},
         });
 
     // Collect performed interactions and cache them
@@ -1277,6 +1278,9 @@ class mstch_service : public mstch_base {
   mstch::node is_interaction() { return service_->is_interaction(); }
   mstch::node is_serial_interaction() {
     return service_->is_serial_interaction();
+  }
+  mstch::node is_event_base_interaction() {
+    return service_->has_annotation("process_in_event_base");
   }
 
   virtual ~mstch_service() = default;

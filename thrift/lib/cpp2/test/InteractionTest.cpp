@@ -75,22 +75,26 @@ struct SemiCalculatorHandler : CalculatorSvIf {
     int acc_{0};
     void async_eb_accumulatePrimitive(
         std::unique_ptr<HandlerCallback<void>> cb, int32_t a) override {
+      cb->getEventBase()->checkIsInEventBaseThread();
       acc_ += a;
       cb->exception(std::runtime_error("Not Implemented Yet"));
     }
     void async_eb_getPrimitive(
         std::unique_ptr<HandlerCallback<int32_t>> cb) override {
+      cb->getEventBase()->checkIsInEventBaseThread();
       cb->result(acc_);
     }
   };
 
   TileAndResponse<AdditionFastIf, void> fastAddition() override {
+    CHECK(!getEventBase()->isInEventBaseThread());
     return {std::make_unique<FastAdditionHandler>()};
   }
 
   void async_eb_veryFastAddition(
       std::unique_ptr<HandlerCallback<TileAndResponse<AdditionFastIf, void>>>
           cb) override {
+    cb->getEventBase()->checkIsInEventBaseThread();
     cb->result({std::make_unique<FastAdditionHandler>()});
   }
 };

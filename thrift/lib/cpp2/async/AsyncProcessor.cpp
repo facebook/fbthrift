@@ -182,7 +182,7 @@ bool GeneratedAsyncProcessor::createInteraction(
         auto tilePtr = nullthrows(createInteractionImpl(name));
         eb.add([=, &conn, &eb, t = std::move(tilePtr)]() mutable {
           TilePtr tile{t.release(), &eb};
-          promisePtr->fulfill(*tile, *tm, eb);
+          promisePtr->fulfill(*tile, tm, eb);
           conn.tryReplaceTile(id, std::move(tile));
         });
         return;
@@ -591,7 +591,7 @@ bool HandlerCallbackBase::fulfillTilePromise(std::unique_ptr<Tile> ptr) {
              eb = eb_]() mutable {
     TilePtr tile{ptr.release(), eb};
     DCHECK(dynamic_cast<TilePromise*>(interaction.get()));
-    static_cast<TilePromise&>(*interaction).fulfill(*tile, *tm, *eb);
+    static_cast<TilePromise&>(*interaction).fulfill(*tile, tm, *eb);
     ctx->getConnectionContext()->tryReplaceTile(
         ctx->getInteractionId(), std::move(tile));
   };

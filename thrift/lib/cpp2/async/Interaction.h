@@ -92,6 +92,8 @@ class Tile {
 
   static void __fbthrift_onTermination(TilePtr tile, folly::EventBase& eb);
 
+  virtual bool __fbthrift_runsInEventBase() { return false; }
+
  private:
   void incRef(folly::EventBase& eb) {
     eb.dcheckIsInEventBaseThread();
@@ -118,6 +120,11 @@ class SerialInteractionTile : public Tile {
   friend class Tile;
 };
 
+class EventBaseTile : public Tile {
+ public:
+  bool __fbthrift_runsInEventBase() final { return true; }
+};
+
 class TilePromise final : public Tile {
  public:
   explicit TilePromise(bool isFactoryFunction)
@@ -128,7 +135,7 @@ class TilePromise final : public Tile {
       const concurrency::ThreadManager::ExecutionScope& scope) override;
 
   void fulfill(
-      Tile& tile, concurrency::ThreadManager& tm, folly::EventBase& eb);
+      Tile& tile, concurrency::ThreadManager* tm, folly::EventBase& eb);
 
   void failWith(folly::exception_wrapper ew, const std::string& exCode);
 

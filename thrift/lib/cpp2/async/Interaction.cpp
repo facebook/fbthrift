@@ -100,8 +100,14 @@ bool TilePromise::__fbthrift_maybeEnqueue(
 }
 
 void TilePromise::fulfill(
-    Tile& tile, concurrency::ThreadManager& tm, folly::EventBase& eb) {
-  tile.tm_ = &tm;
+    Tile& tile, concurrency::ThreadManager* tm, folly::EventBase& eb) {
+  if (tile.__fbthrift_runsInEventBase()) {
+    tm = nullptr;
+  } else {
+    DCHECK(tm) << "thread=eb factory function can only create "
+               << "process_in_event_base interaction";
+    tile.tm_ = tm;
+  }
   if (terminated_) {
     Tile::__fbthrift_onTermination({&tile, &eb}, eb);
   }
@@ -112,10 +118,14 @@ void TilePromise::fulfill(
     auto& [task, scope] = continuations.front();
     dynamic_cast<InteractionTask&>(*task).setTile({&tile, &eb});
     if (!tile.__fbthrift_maybeEnqueue(std::move(task), scope)) {
-      tm.getKeepAlive(
-            std::move(scope),
-            concurrency::ThreadManager::Source::EXISTING_INTERACTION)
-          ->add([task = std::move(task)]() mutable { task->run(); });
+      if (tm) {
+        tm->getKeepAlive(
+              std::move(scope),
+              concurrency::ThreadManager::Source::EXISTING_INTERACTION)
+            ->add([task = std::move(task)]() mutable { task->run(); });
+      } else {
+        task->run();
+      }
     }
     continuations.pop();
   }
