@@ -10,6 +10,7 @@
 
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/emptiable/gen-cpp2/simple_types.h"
+#include "thrift/annotation/gen-cpp2/thrift_metadata.h"
 
 
 namespace apache {
@@ -29,6 +30,11 @@ class StructMetadata<::apache::thrift::test::MyStruct> {
 };
 template <>
 class StructMetadata<::apache::thrift::test::EmptiableStruct> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::apache::thrift::test::EmptiableTerseStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };

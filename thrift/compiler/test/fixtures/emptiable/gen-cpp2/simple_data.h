@@ -33,6 +33,13 @@ template <> struct TStructDataStorage<::apache::thrift::test::EmptiableStruct> {
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
+template <> struct TStructDataStorage<::apache::thrift::test::EmptiableTerseStruct> {
+  static constexpr const std::size_t fields_size = 14;
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<protocol::TType, fields_size> fields_types;
+};
+
 template <> struct TStructDataStorage<::apache::thrift::test::NotEmptiableStruct> {
   static constexpr const std::size_t fields_size = 14;
   static const std::array<folly::StringPiece, fields_size> fields_names;

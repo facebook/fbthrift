@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/thrift.thrift"
+
 namespace cpp2 apache.thrift.test
 
 enum MyEnum {
@@ -38,6 +40,24 @@ struct EmptiableStruct {
   12: optional set<i16> set_field;
   13: optional map<i16, i16> map_field;
   14: optional MyStruct struct_field;
+}
+
+@thrift.TerseWrite
+struct EmptiableTerseStruct {
+  1: bool bool_field;
+  2: byte byte_field;
+  3: i16 short_field;
+  4: i32 int_field;
+  5: i64 long_field;
+  6: float float_field;
+  7: double double_field;
+  8: string string_field;
+  9: binary binary_field;
+  10: MyEnum MyEnum;
+  11: list<i16> list_field;
+  12: set<i16> set_field;
+  13: map<i16, i16> map_field;
+  14: MyStruct struct_field;
 }
 
 struct NotEmptiableStruct {

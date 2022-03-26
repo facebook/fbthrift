@@ -77,6 +77,55 @@ const std::array<protocol::TType, 14> TStructDataStorage<::apache::thrift::test:
   TType::T_STRUCT,
 }};
 
+const std::array<folly::StringPiece, 14> TStructDataStorage<::apache::thrift::test::EmptiableTerseStruct>::fields_names = {{
+  "bool_field",
+  "byte_field",
+  "short_field",
+  "int_field",
+  "long_field",
+  "float_field",
+  "double_field",
+  "string_field",
+  "binary_field",
+  "MyEnum",
+  "list_field",
+  "set_field",
+  "map_field",
+  "struct_field",
+}};
+const std::array<int16_t, 14> TStructDataStorage<::apache::thrift::test::EmptiableTerseStruct>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+}};
+const std::array<protocol::TType, 14> TStructDataStorage<::apache::thrift::test::EmptiableTerseStruct>::fields_types = {{
+  TType::T_BOOL,
+  TType::T_BYTE,
+  TType::T_I16,
+  TType::T_I32,
+  TType::T_I64,
+  TType::T_FLOAT,
+  TType::T_DOUBLE,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_I32,
+  TType::T_LIST,
+  TType::T_SET,
+  TType::T_MAP,
+  TType::T_STRUCT,
+}};
+
 const std::array<folly::StringPiece, 14> TStructDataStorage<::apache::thrift::test::NotEmptiableStruct>::fields_names = {{
   "bool_field",
   "byte_field",
