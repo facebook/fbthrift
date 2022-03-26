@@ -15,9 +15,9 @@
  */
 
 #include <atomic>
-#include <mutex>
 #include <folly/Indestructible.h>
 #include <folly/Synchronized.h>
+#include <folly/synchronization/CallOnce.h>
 #include <thrift/lib/cpp2/server/ConcurrencyControllerBase.h>
 
 namespace apache::thrift {
@@ -28,21 +28,17 @@ auto& getObserverStorage() {
   class Storage {
    public:
     void set(std::shared_ptr<Observer> o) {
-      static std::once_flag observerSetFlag;
-      std::call_once(observerSetFlag, [&] {
-        instance_ = std::move(o);
-        isset_.store(true, std::memory_order_release);
-      });
+      folly::call_once(observerSetFlag_, [&] { instance_ = std::move(o); });
     }
     Observer* get() {
-      if (!isset_.load(std::memory_order_acquire)) {
+      if (!folly::test_once(observerSetFlag_)) {
         return {};
       }
       return instance_.get();
     }
 
    private:
-    std::atomic<bool> isset_{false};
+    folly::once_flag observerSetFlag_;
     std::shared_ptr<Observer> instance_;
   };
 
