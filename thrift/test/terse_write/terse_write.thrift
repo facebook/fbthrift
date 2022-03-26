@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
 
 namespace cpp2 apache.thrift.test.terse_write
@@ -23,6 +24,7 @@ enum MyEnum {
   ME1 = 1,
 }
 
+@thrift.TerseWrite
 struct MyStruct {
   1: i32 field1;
 }
@@ -76,3 +78,22 @@ struct FieldLevelTerseStruct {
   @thrift.TerseWrite
   14: MyStruct struct_field;
 }
+
+@thrift.TerseWrite
+struct CppRefTerseStruct {
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  1: i32 unique_int_field;
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  2: i32 shared_int_field;
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  3: i32 shared_const_int_field;
+}
+
+struct MixedFieldsStruct {
+  @thrift.TerseWrite
+  1: i32 terse_int_field;
+  2: i32 def_int_field;
+  3: optional i32 opt_int_field;
+}
+
+struct EmptyStruct {}

@@ -76,8 +76,13 @@
     previousFieldHasValue = false;
   }
 <%/field:deprecated_terse_writes?%>
-<%^field:optional?%><%^field:deprecated_terse_writes?%>
+<%#field:terse_write?%>
+  } else {
+    previousFieldHasValue = false;
   }
-<%/field:deprecated_terse_writes?%><%/field:optional?%>
+<%/field:terse_write?%>
+<%^field:optional?%><%^field:deprecated_terse_writes?%><%^field:terse_write?%>
+  }
+<%/field:terse_write?%><%/field:deprecated_terse_writes?%><%/field:optional?%>
 <%/struct:union?%>
 <%/field:type%>

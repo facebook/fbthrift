@@ -490,8 +490,7 @@ bool deprecated_terse_writes(const t_field* field) {
   // Add terse writes for unqualified fields when comparison is cheap:
   // (e.g. i32/i64, empty strings/list/map)
   auto t = field->get_type()->get_true_type();
-  return field->get_req() != t_field::e_req::optional &&
-      field->get_req() != t_field::e_req::required &&
+  return field->get_req() == t_field::e_req::opt_in_req_out &&
       (is_cpp_ref_unique_either(field) ||
        (!t->is_struct() && !t->is_xception()));
 }

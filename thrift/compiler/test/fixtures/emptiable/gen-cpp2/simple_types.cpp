@@ -537,7 +537,20 @@ void EmptiableTerseStruct::__fbthrift_clear() {
 }
 
 bool EmptiableTerseStruct::__fbthrift_is_empty() const {
-  return false;
+  return !(this->__fbthrift_field_bool_field != bool()) &&
+ !(this->__fbthrift_field_byte_field != ::std::int8_t()) &&
+ !(this->__fbthrift_field_short_field != ::std::int16_t()) &&
+ !(this->__fbthrift_field_int_field != ::std::int32_t()) &&
+ !(this->__fbthrift_field_long_field != ::std::int64_t()) &&
+ !(this->__fbthrift_field_float_field != float()) &&
+ !(this->__fbthrift_field_double_field != double()) &&
+ !(!apache::thrift::StringTraits<std::string>::isEmpty(this->__fbthrift_field_string_field)) &&
+ !(!apache::thrift::StringTraits<std::string>::isEmpty(this->__fbthrift_field_binary_field)) &&
+ !(this->__fbthrift_field_MyEnum != ::apache::thrift::test::MyEnum()) &&
+ !(!this->__fbthrift_field_list_field.empty()) &&
+ !(!this->__fbthrift_field_set_field.empty()) &&
+ !(!this->__fbthrift_field_map_field.empty()) &&
+ !(!apache::thrift::empty(this->__fbthrift_field_struct_field));
 }
 
 bool EmptiableTerseStruct::operator==(const EmptiableTerseStruct& rhs) const {
