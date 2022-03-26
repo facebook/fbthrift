@@ -672,7 +672,7 @@ StructMetadata<::test_cpp2::cpp_reflection::struct_with_indirections>::gen(Thrif
   return res.first->second;
 }
 
-void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method1(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::gen_method1(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "method1";
@@ -681,7 +681,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method1(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method2(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::gen_method2(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "method2";
@@ -711,7 +711,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method2(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method3(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::gen_method3(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "method3";
@@ -720,7 +720,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method3(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method4(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::gen_method4(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "method4";
@@ -750,7 +750,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method4(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method5(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::gen_method5(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "method5";
@@ -759,7 +759,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method5(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method6(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::gen_method6(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "method6";
@@ -790,7 +790,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method6(Thr
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -800,17 +800,17 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen(::apache::t
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_service1;
   module_service1.name_ref() = "module.service1";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method1,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method2,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method3,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method4,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method5,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method6,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::gen_method1,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::gen_method2,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::gen_method3,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::gen_method4,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::gen_method5,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>>::gen_method6,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_service1);
@@ -826,7 +826,7 @@ const ThriftServiceContextRef* ServiceMetadata<::test_cpp2::cpp_reflection::serv
   context.module_ref() = std::move(module);
   return &context;
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodA(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::gen_methodA(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodA";
@@ -835,7 +835,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodA(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodB(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::gen_methodB(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodB";
@@ -865,7 +865,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodB(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodC(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::gen_methodC(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodC";
@@ -874,7 +874,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodC(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodD(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::gen_methodD(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodD";
@@ -904,7 +904,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodD(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodE(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::gen_methodE(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodE";
@@ -913,7 +913,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodE(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodF(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::gen_methodF(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodF";
@@ -944,7 +944,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodF(Thr
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -954,17 +954,17 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen(::apache::t
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_service2;
   module_service2.name_ref() = "module.service2";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodA,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodB,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodC,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodD,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodE,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodF,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::gen_methodA,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::gen_methodB,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::gen_methodC,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::gen_methodD,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::gen_methodE,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::gen_methodF,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_service2);
@@ -980,7 +980,7 @@ const ThriftServiceContextRef* ServiceMetadata<::test_cpp2::cpp_reflection::serv
   context.module_ref() = std::move(module);
   return &context;
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodA(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>>::gen_methodA(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodA";
@@ -989,7 +989,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodA(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodB(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>>::gen_methodB(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodB";
@@ -1019,7 +1019,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodB(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodC(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>>::gen_methodC(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodC";
@@ -1028,7 +1028,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodC(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodD(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>>::gen_methodD(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodD";
@@ -1058,7 +1058,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodD(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodE(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>>::gen_methodE(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodE";
@@ -1067,7 +1067,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodE(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodF(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>>::gen_methodF(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "methodF";
@@ -1098,7 +1098,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodF(Thr
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -1108,17 +1108,17 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen(::apache::t
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_service3;
   module_service3.name_ref() = "module.service3";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodA,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodB,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodC,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodD,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodE,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodF,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>>::gen_methodA,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>>::gen_methodB,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>>::gen_methodC,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>>::gen_methodD,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>>::gen_methodE,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>>::gen_methodF,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_service3);
@@ -1134,7 +1134,7 @@ const ThriftServiceContextRef* ServiceMetadata<::test_cpp2::cpp_reflection::serv
   context.module_ref() = std::move(module);
   return &context;
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_get(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_get(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "get";
@@ -1143,7 +1143,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_getter(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_getter(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "getter";
@@ -1152,7 +1152,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_lists(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_lists(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "lists";
@@ -1161,7 +1161,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_maps(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_maps(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "maps";
@@ -1170,7 +1170,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_name(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_name(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "name";
@@ -1179,7 +1179,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_name_to_value(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_name_to_value(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "name_to_value";
@@ -1188,7 +1188,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_names(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_names(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "names";
@@ -1197,7 +1197,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_prefix_tree(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_prefix_tree(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "prefix_tree";
@@ -1206,7 +1206,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_sets(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_sets(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "sets";
@@ -1215,7 +1215,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_setter(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_setter(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "setter";
@@ -1224,7 +1224,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_str(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_str(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "str";
@@ -1233,7 +1233,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_strings(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_strings(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "strings";
@@ -1242,7 +1242,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_type(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_type(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "type";
@@ -1251,7 +1251,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_value(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_value(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "value";
@@ -1260,7 +1260,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_value_to_name(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_value_to_name(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "value_to_name";
@@ -1269,7 +1269,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_values(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_values(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "values";
@@ -1278,7 +1278,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_id(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_id(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "id";
@@ -1287,7 +1287,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_ids(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_ids(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "ids";
@@ -1296,7 +1296,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_descriptor(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_descriptor(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "descriptor";
@@ -1305,7 +1305,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_descriptors(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_descriptors(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "descriptors";
@@ -1314,7 +1314,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_key(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_key(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "key";
@@ -1323,7 +1323,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_keys(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_keys(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "keys";
@@ -1332,7 +1332,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_annotation(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_annotation(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "annotation";
@@ -1341,7 +1341,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_annotations(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_annotations(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "annotations";
@@ -1350,7 +1350,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_member(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_member(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "member";
@@ -1359,7 +1359,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_members(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_members(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "members";
@@ -1368,7 +1368,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_field(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_field(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "field";
@@ -1377,7 +1377,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_fields(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_fields(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "fields";
@@ -1387,7 +1387,7 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -1397,39 +1397,39 @@ void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_service_with_special_names;
   module_service_with_special_names.name_ref() = "module.service_with_special_names";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_get,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_getter,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_lists,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_maps,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_name,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_name_to_value,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_names,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_prefix_tree,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_sets,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_setter,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_str,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_strings,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_type,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_value,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_value_to_name,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_values,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_id,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_ids,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_descriptor,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_descriptors,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_key,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_keys,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_annotation,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_annotations,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_member,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_members,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_field,
-    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_fields,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_get,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_getter,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_lists,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_maps,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_name,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_name_to_value,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_names,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_prefix_tree,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_sets,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_setter,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_str,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_strings,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_type,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_value,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_value_to_name,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_values,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_id,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_ids,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_descriptor,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_descriptors,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_key,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_keys,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_annotation,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_annotations,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_member,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_members,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_field,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen_fields,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_service_with_special_names);

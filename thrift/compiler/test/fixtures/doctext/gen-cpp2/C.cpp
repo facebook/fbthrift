@@ -10,40 +10,39 @@
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace cpp2 {
-std::unique_ptr<apache::thrift::AsyncProcessor> CSvIf::getProcessor() {
-  return std::make_unique<CAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::C>::getProcessor() {
+  return std::make_unique<::cpp2::CAsyncProcessor>(this);
 }
 
-CSvIf::CreateMethodMetadataResult CSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<CAsyncProcessor>();
+apache::thrift::ServiceHandler<::cpp2::C>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::C>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::CAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> CSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::C>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  CServiceInfoHolder CSvIf::__fbthrift_serviceInfoHolder;
+::cpp2::CServiceInfoHolder apache::thrift::ServiceHandler<::cpp2::C>::__fbthrift_serviceInfoHolder;
 
 
-void CSvIf::f() {
+void apache::thrift::ServiceHandler<::cpp2::C>::f() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("f");
 }
 
-folly::SemiFuture<folly::Unit> CSvIf::semifuture_f() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::C>::semifuture_f() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_f.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   f();
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> CSvIf::future_f() {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::C>::future_f() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_f.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_f(), getInternalKeepAlive());
 }
 
-void CSvIf::async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::C>::async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -85,23 +84,23 @@ void CSvIf::async_tm_f(std::unique_ptr<apache::thrift::HandlerCallback<void>> ca
   }
 }
 
-::apache::thrift::ServerStream<::cpp2::number> CSvIf::numbers() {
+::apache::thrift::ServerStream<::cpp2::number> apache::thrift::ServiceHandler<::cpp2::C>::numbers() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("numbers");
 }
 
-folly::SemiFuture<::apache::thrift::ServerStream<::cpp2::number>> CSvIf::semifuture_numbers() {
+folly::SemiFuture<::apache::thrift::ServerStream<::cpp2::number>> apache::thrift::ServiceHandler<::cpp2::C>::semifuture_numbers() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_numbers.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return numbers();
 }
 
-folly::Future<::apache::thrift::ServerStream<::cpp2::number>> CSvIf::future_numbers() {
+folly::Future<::apache::thrift::ServerStream<::cpp2::number>> apache::thrift::ServiceHandler<::cpp2::C>::future_numbers() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_numbers.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_numbers(), getInternalKeepAlive());
 }
 
-void CSvIf::async_tm_numbers(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::cpp2::number>>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::C>::async_tm_numbers(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::cpp2::number>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -142,11 +141,11 @@ void CSvIf::async_tm_numbers(std::unique_ptr<apache::thrift::HandlerCallback<::a
   }
 }
 
-void CSvIf::thing(::std::string& /*_return*/, ::std::int32_t /*a*/, std::unique_ptr<::std::string> /*b*/, std::unique_ptr<::std::set<::std::int32_t>> /*c*/) {
+void apache::thrift::ServiceHandler<::cpp2::C>::thing(::std::string& /*_return*/, ::std::int32_t /*a*/, std::unique_ptr<::std::string> /*b*/, std::unique_ptr<::std::set<::std::int32_t>> /*c*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("thing");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> CSvIf::semifuture_thing(::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::cpp2::C>::semifuture_thing(::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_thing.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -154,13 +153,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> CSvIf::semifuture_thing(::std:
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> CSvIf::future_thing(::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::cpp2::C>::future_thing(::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_thing.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_thing(p_a, std::move(p_b), std::move(p_c)), getInternalKeepAlive());
 }
 
-void CSvIf::async_tm_thing(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) {
+void apache::thrift::ServiceHandler<::cpp2::C>::async_tm_thing(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -203,6 +202,9 @@ void CSvIf::async_tm_thing(std::unique_ptr<apache::thrift::HandlerCallback<std::
   }
 }
 
+
+namespace cpp2 {
+
 void CSvNull::f() {
   return;
 }
@@ -210,13 +212,12 @@ void CSvNull::f() {
 void CSvNull::thing(::std::string& /*_return*/, ::std::int32_t /*a*/, std::unique_ptr<::std::string> /*b*/, std::unique_ptr<::std::set<::std::int32_t>> /*c*/) {}
 
 
-
 const char* CAsyncProcessor::getServiceName() {
   return "C";
 }
 
 void CAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<CSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::C>>::gen(response);
 }
 
 void CAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

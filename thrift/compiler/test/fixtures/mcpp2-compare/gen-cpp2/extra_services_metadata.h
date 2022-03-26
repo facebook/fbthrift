@@ -14,6 +14,7 @@
 
 namespace extra {
 namespace svc {
+class ExtraService;
 class ExtraServiceSvIf;
 }} // namespace extra::svc
 
@@ -28,7 +29,7 @@ class StructMetadata<::extra::svc::containerStruct2> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class ServiceMetadata<::extra::svc::ExtraServiceSvIf> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::extra::svc::ExtraService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -47,6 +48,9 @@ class ServiceMetadata<::extra::svc::ExtraServiceSvIf> {
   static void gen_oneway_void_ret_struct_param(ThriftMetadata& metadata, ThriftService& context);
   static void gen_oneway_void_ret_listunion_param(ThriftMetadata& metadata, ThriftService& context);
 };
+template <>
+class ServiceMetadata<::extra::svc::ExtraServiceSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::extra::svc::ExtraService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

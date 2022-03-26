@@ -10,38 +10,39 @@
 #include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace cpp2 {
-std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceFastSvIf::getProcessor() {
-  return std::make_unique<MyServiceFastAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::MyServiceFast>::getProcessor() {
+  return std::make_unique<::cpp2::MyServiceFastAsyncProcessor>(this);
 }
 
-MyServiceFastSvIf::CreateMethodMetadataResult MyServiceFastSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<MyServiceFastAsyncProcessor>();
+apache::thrift::ServiceHandler<::cpp2::MyServiceFast>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::MyServiceFast>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::MyServiceFastAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> MyServiceFastSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::MyServiceFast>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  MyServiceFastServiceInfoHolder MyServiceFastSvIf::__fbthrift_serviceInfoHolder;
+::cpp2::MyServiceFastServiceInfoHolder apache::thrift::ServiceHandler<::cpp2::MyServiceFast>::__fbthrift_serviceInfoHolder;
 
 
-void MyServiceFastSvIf::async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t /*id*/) {
+void apache::thrift::ServiceHandler<::cpp2::MyServiceFast>::async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t /*id*/) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("hasDataById"));
 }
 
-void MyServiceFastSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, ::std::int64_t /*id*/) {
+void apache::thrift::ServiceHandler<::cpp2::MyServiceFast>::async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, ::std::int64_t /*id*/) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("getDataById"));
 }
 
-void MyServiceFastSvIf::async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t /*id*/, const ::std::string& /*data*/) {
+void apache::thrift::ServiceHandler<::cpp2::MyServiceFast>::async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t /*id*/, const ::std::string& /*data*/) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("putDataById"));
 }
 
-void MyServiceFastSvIf::async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/, ::std::int64_t /*id*/, const ::std::string& /*data*/) {
+void apache::thrift::ServiceHandler<::cpp2::MyServiceFast>::async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/, ::std::int64_t /*id*/, const ::std::string& /*data*/) {
   LOG(DFATAL) << "Function lobDataById is unimplemented";
 }
 
+
+namespace cpp2 {
 
 
 const char* MyServiceFastAsyncProcessor::getServiceName() {
@@ -49,7 +50,7 @@ const char* MyServiceFastAsyncProcessor::getServiceName() {
 }
 
 void MyServiceFastAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<MyServiceFastSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyServiceFast>>::gen(response);
 }
 
 void MyServiceFastAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

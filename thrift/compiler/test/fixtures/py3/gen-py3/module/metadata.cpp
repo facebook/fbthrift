@@ -20,9 +20,9 @@ namespace simple {
   ::apache::thrift::detail::md::StructMetadata<ComplexStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<BinaryUnion>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<BinaryUnionStruct>::gen(metadata);
-  ::apache::thrift::detail::md::ServiceMetadata<SimpleServiceSvIf>::gen(response);
-  ::apache::thrift::detail::md::ServiceMetadata<DerivedServiceSvIf>::gen(response);
-  ::apache::thrift::detail::md::ServiceMetadata<RederivedServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::DerivedService>>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::RederivedService>>::gen(response);
   return metadata;
 }
 } // namespace py3

@@ -25,6 +25,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace extra { namespace svc {
+class ExtraService;
 class ExtraServiceAsyncProcessor;
 
 class ExtraServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -32,12 +33,15 @@ class ExtraServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+}} // extra::svc
 
-class ExtraServiceSvIf : virtual public ::some::valid::ns::ParamServiceSvIf {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::extra::svc::ExtraService> : virtual public ::some::valid::ns::ParamServiceSvIf {
  public:
   std::string_view getGeneratedName() const override { return "ExtraService"; }
 
-  typedef ExtraServiceAsyncProcessor ProcessorType;
+  typedef ::extra::svc::ExtraServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -73,7 +77,7 @@ class ExtraServiceSvIf : virtual public ::some::valid::ns::ParamServiceSvIf {
   virtual folly::SemiFuture<folly::Unit> semifuture_oneway_void_ret_listunion_param(const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
   virtual void async_tm_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1);
  private:
-  static ExtraServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::extra::svc::ExtraServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_simple_function{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_throws_function2{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_throws_function3{apache::thrift::detail::si::InvocationType::AsyncTm};
@@ -83,6 +87,12 @@ class ExtraServiceSvIf : virtual public ::some::valid::ns::ParamServiceSvIf {
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_oneway_void_ret_listunion_param{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace extra { namespace svc {
+class ExtraServiceSvIf : public ::apache::thrift::ServiceHandler<ExtraService> {};
+}} // extra::svc
+namespace extra { namespace svc {
 class ExtraServiceSvNull : public ExtraServiceSvIf, virtual public ::some::valid::ns::ParamServiceSvIf {
  public:
   bool simple_function() override;
@@ -100,7 +110,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = ::some::valid::ns::ParamServiceAsyncProcessor;
  protected:
-  ExtraServiceSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::extra::svc::ExtraService>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -186,7 +196,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_oneway_void_ret_listunion_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
  public:
-  ExtraServiceAsyncProcessor(ExtraServiceSvIf* iface) :
+  ExtraServiceAsyncProcessor(::apache::thrift::ServiceHandler<::extra::svc::ExtraService>* iface) :
       ::some::valid::ns::ParamServiceAsyncProcessor(iface),
       iface_(iface) {}
   ~ExtraServiceAsyncProcessor() override {}

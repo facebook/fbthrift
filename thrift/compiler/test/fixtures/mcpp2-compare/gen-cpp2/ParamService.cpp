@@ -10,44 +10,43 @@
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace some { namespace valid { namespace ns {
-std::unique_ptr<apache::thrift::AsyncProcessor> ParamServiceSvIf::getProcessor() {
-  return std::make_unique<ParamServiceAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::getProcessor() {
+  return std::make_unique<::some::valid::ns::ParamServiceAsyncProcessor>(this);
 }
 
-ParamServiceSvIf::CreateMethodMetadataResult ParamServiceSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<ParamServiceAsyncProcessor>();
+apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::some::valid::ns::ParamServiceAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> ParamServiceSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  ParamServiceServiceInfoHolder ParamServiceSvIf::__fbthrift_serviceInfoHolder;
+::some::valid::ns::ParamServiceServiceInfoHolder apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::__fbthrift_serviceInfoHolder;
 
 
-void ParamServiceSvIf::async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int16_t /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int16_t /*param1*/) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("void_ret_i16_param"));
 }
 
-void ParamServiceSvIf::void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("void_ret_byte_i16_param");
 }
 
-folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2) {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_void_ret_byte_i16_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   void_ret_byte_i16_param(p_param1, p_param2);
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2) {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_void_ret_byte_i16_param(::std::int8_t p_param1, ::std::int16_t p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_void_ret_byte_i16_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_void_ret_byte_i16_param(p_param1, p_param2), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int8_t p_param1, ::std::int16_t p_param2) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int8_t p_param1, ::std::int16_t p_param2) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -89,24 +88,24 @@ void ParamServiceSvIf::async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::
   }
 }
 
-void ParamServiceSvIf::void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("void_ret_map_param");
 }
 
-folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_void_ret_map_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   void_ret_map_param(std::move(p_param1));
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_void_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_void_ret_map_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_void_ret_map_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -148,24 +147,24 @@ void ParamServiceSvIf::async_tm_void_ret_map_param(std::unique_ptr<apache::thrif
   }
 }
 
-void ParamServiceSvIf::void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/, std::unique_ptr<::std::set<::std::vector<::std::string>>> /*param2*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/, std::unique_ptr<::std::set<::std::vector<::std::string>>> /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("void_ret_map_setlist_param");
 }
 
-folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_void_ret_map_setlist_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   void_ret_map_setlist_param(std::move(p_param1), std::move(p_param2));
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_void_ret_map_setlist_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_void_ret_map_setlist_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_void_ret_map_setlist_param(std::move(p_param1), std::move(p_param2)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1, std::unique_ptr<::std::set<::std::vector<::std::string>>> p_param2) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -207,24 +206,24 @@ void ParamServiceSvIf::async_tm_void_ret_map_setlist_param(std::unique_ptr<apach
   }
 }
 
-void ParamServiceSvIf::void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("void_ret_map_typedef_param");
 }
 
-folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1) {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_void_ret_map_typedef_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   void_ret_map_typedef_param(p_param1);
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1) {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_void_ret_map_typedef_param(::some::valid::ns::simpleTypeDef p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_void_ret_map_typedef_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_void_ret_map_typedef_param(p_param1), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_void_ret_map_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::some::valid::ns::simpleTypeDef p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_void_ret_map_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::some::valid::ns::simpleTypeDef p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -266,24 +265,24 @@ void ParamServiceSvIf::async_tm_void_ret_map_typedef_param(std::unique_ptr<apach
   }
 }
 
-void ParamServiceSvIf::void_ret_enum_param(::some::valid::ns::MyEnumA /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::void_ret_enum_param(::some::valid::ns::MyEnumA /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("void_ret_enum_param");
 }
 
-folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1) {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_void_ret_enum_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   void_ret_enum_param(p_param1);
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1) {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_void_ret_enum_param(::some::valid::ns::MyEnumA p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_void_ret_enum_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_void_ret_enum_param(p_param1), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_void_ret_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::some::valid::ns::MyEnumA p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_void_ret_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::some::valid::ns::MyEnumA p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -325,24 +324,24 @@ void ParamServiceSvIf::async_tm_void_ret_enum_param(std::unique_ptr<apache::thri
   }
 }
 
-void ParamServiceSvIf::void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("void_ret_struct_param");
 }
 
-folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> p_param1) {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_void_ret_struct_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   void_ret_struct_param(std::move(p_param1));
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> p_param1) {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_void_ret_struct_param(std::unique_ptr<::some::valid::ns::MyStruct> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_void_ret_struct_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_void_ret_struct_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::some::valid::ns::MyStruct> p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::some::valid::ns::MyStruct> p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -384,24 +383,24 @@ void ParamServiceSvIf::async_tm_void_ret_struct_param(std::unique_ptr<apache::th
   }
 }
 
-void ParamServiceSvIf::void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("void_ret_listunion_param");
 }
 
-folly::SemiFuture<folly::Unit> ParamServiceSvIf::semifuture_void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_void_ret_listunion_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   void_ret_listunion_param(std::move(p_param1));
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_void_ret_listunion_param(std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_void_ret_listunion_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_void_ret_listunion_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>> p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -443,23 +442,23 @@ void ParamServiceSvIf::async_tm_void_ret_listunion_param(std::unique_ptr<apache:
   }
 }
 
-bool ParamServiceSvIf::bool_ret_i32_i64_param(::std::int32_t /*param1*/, ::std::int64_t /*param2*/) {
+bool apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::bool_ret_i32_i64_param(::std::int32_t /*param1*/, ::std::int64_t /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("bool_ret_i32_i64_param");
 }
 
-folly::SemiFuture<bool> ParamServiceSvIf::semifuture_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2) {
+folly::SemiFuture<bool> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_bool_ret_i32_i64_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return bool_ret_i32_i64_param(p_param1, p_param2);
 }
 
-folly::Future<bool> ParamServiceSvIf::future_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2) {
+folly::Future<bool> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_bool_ret_i32_i64_param(::std::int32_t p_param1, ::std::int64_t p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_bool_ret_i32_i64_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_bool_ret_i32_i64_param(p_param1, p_param2), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int32_t p_param1, ::std::int64_t p_param2) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int32_t p_param1, ::std::int64_t p_param2) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -500,23 +499,23 @@ void ParamServiceSvIf::async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::t
   }
 }
 
-bool ParamServiceSvIf::bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {
+bool apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("bool_ret_map_param");
 }
 
-folly::SemiFuture<bool> ParamServiceSvIf::semifuture_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
+folly::SemiFuture<bool> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_bool_ret_map_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return bool_ret_map_param(std::move(p_param1));
 }
 
-folly::Future<bool> ParamServiceSvIf::future_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
+folly::Future<bool> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_bool_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_bool_ret_map_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_bool_ret_map_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -557,23 +556,23 @@ void ParamServiceSvIf::async_tm_bool_ret_map_param(std::unique_ptr<apache::thrif
   }
 }
 
-bool ParamServiceSvIf::bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> /*param1*/) {
+bool apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("bool_ret_union_param");
 }
 
-folly::SemiFuture<bool> ParamServiceSvIf::semifuture_bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) {
+folly::SemiFuture<bool> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_bool_ret_union_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return bool_ret_union_param(std::move(p_param1));
 }
 
-folly::Future<bool> ParamServiceSvIf::future_bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) {
+folly::Future<bool> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_bool_ret_union_param(std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_bool_ret_union_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_bool_ret_union_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_bool_ret_union_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_bool_ret_union_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::some::valid::ns::ComplexUnion> p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -614,23 +613,23 @@ void ParamServiceSvIf::async_tm_bool_ret_union_param(std::unique_ptr<apache::thr
   }
 }
 
-::std::int64_t ParamServiceSvIf::i64_ret_float_double_param(float /*param1*/, double /*param2*/) {
+::std::int64_t apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::i64_ret_float_double_param(float /*param1*/, double /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("i64_ret_float_double_param");
 }
 
-folly::SemiFuture<::std::int64_t> ParamServiceSvIf::semifuture_i64_ret_float_double_param(float p_param1, double p_param2) {
+folly::SemiFuture<::std::int64_t> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_i64_ret_float_double_param(float p_param1, double p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_i64_ret_float_double_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return i64_ret_float_double_param(p_param1, p_param2);
 }
 
-folly::Future<::std::int64_t> ParamServiceSvIf::future_i64_ret_float_double_param(float p_param1, double p_param2) {
+folly::Future<::std::int64_t> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_i64_ret_float_double_param(float p_param1, double p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_i64_ret_float_double_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_i64_ret_float_double_param(p_param1, p_param2), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, float p_param1, double p_param2) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, float p_param1, double p_param2) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -671,23 +670,23 @@ void ParamServiceSvIf::async_tm_i64_ret_float_double_param(std::unique_ptr<apach
   }
 }
 
-::std::int64_t ParamServiceSvIf::i64_ret_string_typedef_param(std::unique_ptr<::std::string> /*param1*/, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> /*param2*/) {
+::std::int64_t apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::i64_ret_string_typedef_param(std::unique_ptr<::std::string> /*param1*/, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("i64_ret_string_typedef_param");
 }
 
-folly::SemiFuture<::std::int64_t> ParamServiceSvIf::semifuture_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) {
+folly::SemiFuture<::std::int64_t> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_i64_ret_string_typedef_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return i64_ret_string_typedef_param(std::move(p_param1), std::move(p_param2));
 }
 
-folly::Future<::std::int64_t> ParamServiceSvIf::future_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) {
+folly::Future<::std::int64_t> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_i64_ret_string_typedef_param(std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_i64_ret_string_typedef_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_i64_ret_string_typedef_param(std::move(p_param1), std::move(p_param2)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_i64_ret_string_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_i64_ret_string_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, std::unique_ptr<::std::string> p_param1, std::unique_ptr<::std::set<::some::valid::ns::mostComplexTypeDef>> p_param2) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -728,27 +727,27 @@ void ParamServiceSvIf::async_tm_i64_ret_string_typedef_param(std::unique_ptr<apa
   }
 }
 
-void ParamServiceSvIf::async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, ::std::int32_t /*param1*/, ::std::int32_t /*param2*/, ::std::int32_t /*param3*/, ::std::int32_t /*param4*/, ::std::int32_t /*param5*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, ::std::int32_t /*param1*/, ::std::int32_t /*param2*/, ::std::int32_t /*param3*/, ::std::int32_t /*param4*/, ::std::int32_t /*param5*/) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("i64_ret_i32_i32_i32_i32_i32_param"));
 }
 
-double ParamServiceSvIf::double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> /*param1*/) {
+double apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("double_ret_setstruct_param");
 }
 
-folly::SemiFuture<double> ParamServiceSvIf::semifuture_double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) {
+folly::SemiFuture<double> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_double_ret_setstruct_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return double_ret_setstruct_param(std::move(p_param1));
 }
 
-folly::Future<double> ParamServiceSvIf::future_double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) {
+folly::Future<double> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_double_ret_setstruct_param(std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_double_ret_setstruct_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_double_ret_setstruct_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_double_ret_setstruct_param(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_double_ret_setstruct_param(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, std::unique_ptr<::std::set<::some::valid::ns::MyStruct>> p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -789,11 +788,11 @@ void ParamServiceSvIf::async_tm_double_ret_setstruct_param(std::unique_ptr<apach
   }
 }
 
-void ParamServiceSvIf::string_ret_string_param(::std::string& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::string_ret_string_param(::std::string& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("string_ret_string_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> ParamServiceSvIf::semifuture_string_ret_string_param(std::unique_ptr<::std::string> p_param1) {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_string_ret_string_param(std::unique_ptr<::std::string> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_string_ret_string_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -801,13 +800,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> ParamServiceSvIf::semifuture_s
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> ParamServiceSvIf::future_string_ret_string_param(std::unique_ptr<::std::string> p_param1) {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_string_ret_string_param(std::unique_ptr<::std::string> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_string_ret_string_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_string_ret_string_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_string_ret_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_string_ret_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -850,11 +849,11 @@ void ParamServiceSvIf::async_tm_string_ret_string_param(std::unique_ptr<apache::
   }
 }
 
-void ParamServiceSvIf::binary_ret_binary_param(::std::string& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::binary_ret_binary_param(::std::string& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("binary_ret_binary_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> ParamServiceSvIf::semifuture_binary_ret_binary_param(std::unique_ptr<::std::string> p_param1) {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_binary_ret_binary_param(std::unique_ptr<::std::string> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_binary_ret_binary_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -862,13 +861,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> ParamServiceSvIf::semifuture_b
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> ParamServiceSvIf::future_binary_ret_binary_param(std::unique_ptr<::std::string> p_param1) {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_binary_ret_binary_param(std::unique_ptr<::std::string> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_binary_ret_binary_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_binary_ret_binary_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_binary_ret_binary_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_binary_ret_binary_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -911,11 +910,11 @@ void ParamServiceSvIf::async_tm_binary_ret_binary_param(std::unique_ptr<apache::
   }
 }
 
-void ParamServiceSvIf::map_ret_bool_param(::std::map<::std::string, ::std::int64_t>& /*_return*/, bool /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::map_ret_bool_param(::std::map<::std::string, ::std::int64_t>& /*_return*/, bool /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("map_ret_bool_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> ParamServiceSvIf::semifuture_map_ret_bool_param(bool p_param1) {
+folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_map_ret_bool_param(bool p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_map_ret_bool_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
@@ -923,13 +922,13 @@ folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> Pa
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> ParamServiceSvIf::future_map_ret_bool_param(bool p_param1) {
+folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_map_ret_bool_param(bool p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_map_ret_bool_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_map_ret_bool_param(p_param1), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_map_ret_bool_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>>> callback, bool p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_map_ret_bool_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>>> callback, bool p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -972,11 +971,11 @@ void ParamServiceSvIf::async_tm_map_ret_bool_param(std::unique_ptr<apache::thrif
   }
 }
 
-void ParamServiceSvIf::list_ret_map_setlist_param(::std::vector<bool>& /*_return*/, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> /*param1*/, std::unique_ptr<::std::vector<::std::string>> /*param2*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::list_ret_map_setlist_param(::std::vector<bool>& /*_return*/, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> /*param1*/, std::unique_ptr<::std::vector<::std::string>> /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("list_ret_map_setlist_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::vector<bool>>> ParamServiceSvIf::semifuture_list_ret_map_setlist_param(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) {
+folly::SemiFuture<std::unique_ptr<::std::vector<bool>>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_list_ret_map_setlist_param(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_list_ret_map_setlist_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::vector<bool>>();
@@ -984,13 +983,13 @@ folly::SemiFuture<std::unique_ptr<::std::vector<bool>>> ParamServiceSvIf::semifu
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::vector<bool>>> ParamServiceSvIf::future_list_ret_map_setlist_param(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) {
+folly::Future<std::unique_ptr<::std::vector<bool>>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_list_ret_map_setlist_param(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_list_ret_map_setlist_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_list_ret_map_setlist_param(std::move(p_param1), std::move(p_param2)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_list_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<bool>>>> callback, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_list_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<bool>>>> callback, std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> p_param1, std::unique_ptr<::std::vector<::std::string>> p_param2) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1033,11 +1032,11 @@ void ParamServiceSvIf::async_tm_list_ret_map_setlist_param(std::unique_ptr<apach
   }
 }
 
-void ParamServiceSvIf::mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::mapsetlistmapliststring_ret_listlistlist_param(::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("mapsetlistmapliststring_ret_listlistlist_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> ParamServiceSvIf::semifuture_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) {
+folly::SemiFuture<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_mapsetlistmapliststring_ret_listlistlist_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>();
@@ -1045,13 +1044,13 @@ folly::SemiFuture<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> ParamServiceSvIf::future_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) {
+folly::Future<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_mapsetlistmapliststring_ret_listlistlist_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_mapsetlistmapliststring_ret_listlistlist_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>>> callback, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>>> callback, std::unique_ptr<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>> p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1094,23 +1093,23 @@ void ParamServiceSvIf::async_tm_mapsetlistmapliststring_ret_listlistlist_param(s
   }
 }
 
-::some::valid::ns::simpleTypeDef ParamServiceSvIf::typedef_ret_i32_param(::std::int32_t /*param1*/) {
+::some::valid::ns::simpleTypeDef apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::typedef_ret_i32_param(::std::int32_t /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("typedef_ret_i32_param");
 }
 
-folly::SemiFuture<::some::valid::ns::simpleTypeDef> ParamServiceSvIf::semifuture_typedef_ret_i32_param(::std::int32_t p_param1) {
+folly::SemiFuture<::some::valid::ns::simpleTypeDef> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_typedef_ret_i32_param(::std::int32_t p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_typedef_ret_i32_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return typedef_ret_i32_param(p_param1);
 }
 
-folly::Future<::some::valid::ns::simpleTypeDef> ParamServiceSvIf::future_typedef_ret_i32_param(::std::int32_t p_param1) {
+folly::Future<::some::valid::ns::simpleTypeDef> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_typedef_ret_i32_param(::std::int32_t p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_typedef_ret_i32_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_typedef_ret_i32_param(p_param1), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_typedef_ret_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::simpleTypeDef>> callback, ::std::int32_t p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_typedef_ret_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::simpleTypeDef>> callback, ::std::int32_t p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1151,27 +1150,27 @@ void ParamServiceSvIf::async_tm_typedef_ret_i32_param(std::unique_ptr<apache::th
   }
 }
 
-void ParamServiceSvIf::async_eb_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::simpleTypeDef>>>> callback, std::unique_ptr<::some::valid::ns::complexStructTypeDef> /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_eb_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::simpleTypeDef>>>> callback, std::unique_ptr<::some::valid::ns::complexStructTypeDef> /*param1*/) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("listtypedef_ret_typedef_param"));
 }
 
-::some::valid::ns::MyEnumA ParamServiceSvIf::enum_ret_double_param(double /*param1*/) {
+::some::valid::ns::MyEnumA apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::enum_ret_double_param(double /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("enum_ret_double_param");
 }
 
-folly::SemiFuture<::some::valid::ns::MyEnumA> ParamServiceSvIf::semifuture_enum_ret_double_param(double p_param1) {
+folly::SemiFuture<::some::valid::ns::MyEnumA> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_enum_ret_double_param(double p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_enum_ret_double_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return enum_ret_double_param(p_param1);
 }
 
-folly::Future<::some::valid::ns::MyEnumA> ParamServiceSvIf::future_enum_ret_double_param(double p_param1) {
+folly::Future<::some::valid::ns::MyEnumA> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_enum_ret_double_param(double p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_enum_ret_double_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_enum_ret_double_param(p_param1), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_enum_ret_double_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback, double p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_enum_ret_double_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback, double p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1212,23 +1211,23 @@ void ParamServiceSvIf::async_tm_enum_ret_double_param(std::unique_ptr<apache::th
   }
 }
 
-::some::valid::ns::MyEnumA ParamServiceSvIf::enum_ret_double_enum_param(double /*param1*/, ::some::valid::ns::MyEnumA /*param2*/) {
+::some::valid::ns::MyEnumA apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::enum_ret_double_enum_param(double /*param1*/, ::some::valid::ns::MyEnumA /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("enum_ret_double_enum_param");
 }
 
-folly::SemiFuture<::some::valid::ns::MyEnumA> ParamServiceSvIf::semifuture_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2) {
+folly::SemiFuture<::some::valid::ns::MyEnumA> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_enum_ret_double_enum_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return enum_ret_double_enum_param(p_param1, p_param2);
 }
 
-folly::Future<::some::valid::ns::MyEnumA> ParamServiceSvIf::future_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2) {
+folly::Future<::some::valid::ns::MyEnumA> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_enum_ret_double_enum_param(double p_param1, ::some::valid::ns::MyEnumA p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_enum_ret_double_enum_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_enum_ret_double_enum_param(p_param1, p_param2), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_enum_ret_double_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback, double p_param1, ::some::valid::ns::MyEnumA p_param2) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_enum_ret_double_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback, double p_param1, ::some::valid::ns::MyEnumA p_param2) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1269,11 +1268,11 @@ void ParamServiceSvIf::async_tm_enum_ret_double_enum_param(std::unique_ptr<apach
   }
 }
 
-void ParamServiceSvIf::listenum_ret_map_param(::std::vector<::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::listenum_ret_map_param(::std::vector<::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("listenum_ret_map_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>> ParamServiceSvIf::semifuture_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
+folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_listenum_ret_map_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::vector<::some::valid::ns::MyEnumA>>();
@@ -1281,13 +1280,13 @@ folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>> Pa
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>> ParamServiceSvIf::future_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
+folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_listenum_ret_map_param(std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_listenum_ret_map_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_listenum_ret_map_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_listenum_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_listenum_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>>> callback, std::unique_ptr<::std::map<::std::string, ::std::int64_t>> p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1330,15 +1329,15 @@ void ParamServiceSvIf::async_tm_listenum_ret_map_param(std::unique_ptr<apache::t
   }
 }
 
-void ParamServiceSvIf::async_eb_struct_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback, ::std::int16_t /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_eb_struct_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback, ::std::int16_t /*param1*/) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("struct_ret_i16_param"));
 }
 
-void ParamServiceSvIf::setstruct_ret_set_param(::std::set<::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<::std::set<::std::string>> /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::setstruct_ret_set_param(::std::set<::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<::std::set<::std::string>> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("setstruct_ret_set_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> ParamServiceSvIf::semifuture_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) {
+folly::SemiFuture<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_setstruct_ret_set_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::set<::some::valid::ns::MyStruct>>();
@@ -1346,13 +1345,13 @@ folly::SemiFuture<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> Para
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> ParamServiceSvIf::future_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) {
+folly::Future<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_setstruct_ret_set_param(std::unique_ptr<::std::set<::std::string>> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_setstruct_ret_set_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_setstruct_ret_set_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_setstruct_ret_set_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>>> callback, std::unique_ptr<::std::set<::std::string>> p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_setstruct_ret_set_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>>> callback, std::unique_ptr<::std::set<::std::string>> p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1395,11 +1394,11 @@ void ParamServiceSvIf::async_tm_setstruct_ret_set_param(std::unique_ptr<apache::
   }
 }
 
-void ParamServiceSvIf::union_ret_i32_i32_param(::some::valid::ns::ComplexUnion& /*_return*/, ::std::int32_t /*param1*/, ::std::int32_t /*param2*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::union_ret_i32_i32_param(::some::valid::ns::ComplexUnion& /*_return*/, ::std::int32_t /*param1*/, ::std::int32_t /*param2*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("union_ret_i32_i32_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::some::valid::ns::ComplexUnion>> ParamServiceSvIf::semifuture_union_ret_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2) {
+folly::SemiFuture<std::unique_ptr<::some::valid::ns::ComplexUnion>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_union_ret_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_union_ret_i32_i32_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::some::valid::ns::ComplexUnion>();
@@ -1407,13 +1406,13 @@ folly::SemiFuture<std::unique_ptr<::some::valid::ns::ComplexUnion>> ParamService
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::some::valid::ns::ComplexUnion>> ParamServiceSvIf::future_union_ret_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2) {
+folly::Future<std::unique_ptr<::some::valid::ns::ComplexUnion>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_union_ret_i32_i32_param(::std::int32_t p_param1, ::std::int32_t p_param2) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_union_ret_i32_i32_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_union_ret_i32_i32_param(p_param1, p_param2), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback, ::std::int32_t p_param1, ::std::int32_t p_param2) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback, ::std::int32_t p_param1, ::std::int32_t p_param2) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1456,11 +1455,11 @@ void ParamServiceSvIf::async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::
   }
 }
 
-void ParamServiceSvIf::listunion_string_param(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::listunion_string_param(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("listunion_string_param");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> ParamServiceSvIf::semifuture_listunion_string_param(std::unique_ptr<::std::string> p_param1) {
+folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::semifuture_listunion_string_param(std::unique_ptr<::std::string> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_listunion_string_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::vector<::some::valid::ns::ComplexUnion>>();
@@ -1468,13 +1467,13 @@ folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> ParamServiceSvIf::future_listunion_string_param(std::unique_ptr<::std::string> p_param1) {
+folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::future_listunion_string_param(std::unique_ptr<::std::string> p_param1) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_listunion_string_param.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_listunion_string_param(std::move(p_param1)), getInternalKeepAlive());
 }
 
-void ParamServiceSvIf::async_tm_listunion_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>> callback, std::unique_ptr<::std::string> p_param1) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ParamService>::async_tm_listunion_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>> callback, std::unique_ptr<::std::string> p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1516,6 +1515,9 @@ void ParamServiceSvIf::async_tm_listunion_string_param(std::unique_ptr<apache::t
     callback->exception(std::current_exception());
   }
 }
+
+
+namespace some { namespace valid { namespace ns {
 
 void ParamServiceSvNull::void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/) {
   return;
@@ -1600,13 +1602,12 @@ void ParamServiceSvNull::union_ret_i32_i32_param(::some::valid::ns::ComplexUnion
 void ParamServiceSvNull::listunion_string_param(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<::std::string> /*param1*/) {}
 
 
-
 const char* ParamServiceAsyncProcessor::getServiceName() {
   return "ParamService";
 }
 
 void ParamServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<ParamServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen(response);
 }
 
 void ParamServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

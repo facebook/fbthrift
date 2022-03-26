@@ -10,43 +10,42 @@
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace some { namespace valid { namespace ns {
-std::unique_ptr<apache::thrift::AsyncProcessor> ReturnServiceSvIf::getProcessor() {
-  return std::make_unique<ReturnServiceAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::getProcessor() {
+  return std::make_unique<::some::valid::ns::ReturnServiceAsyncProcessor>(this);
 }
 
-ReturnServiceSvIf::CreateMethodMetadataResult ReturnServiceSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<ReturnServiceAsyncProcessor>();
+apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::some::valid::ns::ReturnServiceAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> ReturnServiceSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  ReturnServiceServiceInfoHolder ReturnServiceSvIf::__fbthrift_serviceInfoHolder;
+::some::valid::ns::ReturnServiceServiceInfoHolder apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::__fbthrift_serviceInfoHolder;
 
 
-void ReturnServiceSvIf::async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("noReturn"));
 }
 
-bool ReturnServiceSvIf::boolReturn() {
+bool apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::boolReturn() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("boolReturn");
 }
 
-folly::SemiFuture<bool> ReturnServiceSvIf::semifuture_boolReturn() {
+folly::SemiFuture<bool> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_boolReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_boolReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return boolReturn();
 }
 
-folly::Future<bool> ReturnServiceSvIf::future_boolReturn() {
+folly::Future<bool> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_boolReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_boolReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_boolReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_boolReturn(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_boolReturn(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -87,23 +86,23 @@ void ReturnServiceSvIf::async_tm_boolReturn(std::unique_ptr<apache::thrift::Hand
   }
 }
 
-::std::int16_t ReturnServiceSvIf::i16Return() {
+::std::int16_t apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::i16Return() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("i16Return");
 }
 
-folly::SemiFuture<::std::int16_t> ReturnServiceSvIf::semifuture_i16Return() {
+folly::SemiFuture<::std::int16_t> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_i16Return() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_i16Return.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return i16Return();
 }
 
-folly::Future<::std::int16_t> ReturnServiceSvIf::future_i16Return() {
+folly::Future<::std::int16_t> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_i16Return() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_i16Return.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_i16Return(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_i16Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_i16Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -144,23 +143,23 @@ void ReturnServiceSvIf::async_tm_i16Return(std::unique_ptr<apache::thrift::Handl
   }
 }
 
-::std::int32_t ReturnServiceSvIf::i32Return() {
+::std::int32_t apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::i32Return() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("i32Return");
 }
 
-folly::SemiFuture<::std::int32_t> ReturnServiceSvIf::semifuture_i32Return() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_i32Return() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_i32Return.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return i32Return();
 }
 
-folly::Future<::std::int32_t> ReturnServiceSvIf::future_i32Return() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_i32Return() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_i32Return.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_i32Return(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_i32Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_i32Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -201,23 +200,23 @@ void ReturnServiceSvIf::async_tm_i32Return(std::unique_ptr<apache::thrift::Handl
   }
 }
 
-::std::int64_t ReturnServiceSvIf::i64Return() {
+::std::int64_t apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::i64Return() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("i64Return");
 }
 
-folly::SemiFuture<::std::int64_t> ReturnServiceSvIf::semifuture_i64Return() {
+folly::SemiFuture<::std::int64_t> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_i64Return() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_i64Return.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return i64Return();
 }
 
-folly::Future<::std::int64_t> ReturnServiceSvIf::future_i64Return() {
+folly::Future<::std::int64_t> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_i64Return() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_i64Return.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_i64Return(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_i64Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_i64Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -258,23 +257,23 @@ void ReturnServiceSvIf::async_tm_i64Return(std::unique_ptr<apache::thrift::Handl
   }
 }
 
-float ReturnServiceSvIf::floatReturn() {
+float apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::floatReturn() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("floatReturn");
 }
 
-folly::SemiFuture<float> ReturnServiceSvIf::semifuture_floatReturn() {
+folly::SemiFuture<float> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_floatReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_floatReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return floatReturn();
 }
 
-folly::Future<float> ReturnServiceSvIf::future_floatReturn() {
+folly::Future<float> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_floatReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_floatReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_floatReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_floatReturn(std::unique_ptr<apache::thrift::HandlerCallback<float>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_floatReturn(std::unique_ptr<apache::thrift::HandlerCallback<float>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -315,23 +314,23 @@ void ReturnServiceSvIf::async_tm_floatReturn(std::unique_ptr<apache::thrift::Han
   }
 }
 
-double ReturnServiceSvIf::doubleReturn() {
+double apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::doubleReturn() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("doubleReturn");
 }
 
-folly::SemiFuture<double> ReturnServiceSvIf::semifuture_doubleReturn() {
+folly::SemiFuture<double> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_doubleReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_doubleReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return doubleReturn();
 }
 
-folly::Future<double> ReturnServiceSvIf::future_doubleReturn() {
+folly::Future<double> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_doubleReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_doubleReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_doubleReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_doubleReturn(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_doubleReturn(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -372,15 +371,15 @@ void ReturnServiceSvIf::async_tm_doubleReturn(std::unique_ptr<apache::thrift::Ha
   }
 }
 
-void ReturnServiceSvIf::async_eb_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_eb_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("stringReturn"));
 }
 
-void ReturnServiceSvIf::binaryReturn(::std::string& /*_return*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::binaryReturn(::std::string& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("binaryReturn");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> ReturnServiceSvIf::semifuture_binaryReturn() {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_binaryReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_binaryReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -388,13 +387,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> ReturnServiceSvIf::semifuture_
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> ReturnServiceSvIf::future_binaryReturn() {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_binaryReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_binaryReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_binaryReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_binaryReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_binaryReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -437,11 +436,11 @@ void ReturnServiceSvIf::async_tm_binaryReturn(std::unique_ptr<apache::thrift::Ha
   }
 }
 
-void ReturnServiceSvIf::mapReturn(::std::map<::std::string, ::std::int64_t>& /*_return*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::mapReturn(::std::map<::std::string, ::std::int64_t>& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("mapReturn");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> ReturnServiceSvIf::semifuture_mapReturn() {
+folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_mapReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_mapReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
@@ -449,13 +448,13 @@ folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> Re
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> ReturnServiceSvIf::future_mapReturn() {
+folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_mapReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_mapReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_mapReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_mapReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_mapReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -498,23 +497,23 @@ void ReturnServiceSvIf::async_tm_mapReturn(std::unique_ptr<apache::thrift::Handl
   }
 }
 
-::some::valid::ns::simpleTypeDef ReturnServiceSvIf::simpleTypedefReturn() {
+::some::valid::ns::simpleTypeDef apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::simpleTypedefReturn() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("simpleTypedefReturn");
 }
 
-folly::SemiFuture<::some::valid::ns::simpleTypeDef> ReturnServiceSvIf::semifuture_simpleTypedefReturn() {
+folly::SemiFuture<::some::valid::ns::simpleTypeDef> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_simpleTypedefReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_simpleTypedefReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return simpleTypedefReturn();
 }
 
-folly::Future<::some::valid::ns::simpleTypeDef> ReturnServiceSvIf::future_simpleTypedefReturn() {
+folly::Future<::some::valid::ns::simpleTypeDef> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_simpleTypedefReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_simpleTypedefReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_simpleTypedefReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_simpleTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::simpleTypeDef>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_simpleTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::simpleTypeDef>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -555,11 +554,11 @@ void ReturnServiceSvIf::async_tm_simpleTypedefReturn(std::unique_ptr<apache::thr
   }
 }
 
-void ReturnServiceSvIf::complexTypedefReturn(::some::valid::ns::complexStructTypeDef& /*_return*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::complexTypedefReturn(::some::valid::ns::complexStructTypeDef& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("complexTypedefReturn");
 }
 
-folly::SemiFuture<std::unique_ptr<::some::valid::ns::complexStructTypeDef>> ReturnServiceSvIf::semifuture_complexTypedefReturn() {
+folly::SemiFuture<std::unique_ptr<::some::valid::ns::complexStructTypeDef>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_complexTypedefReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_complexTypedefReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::some::valid::ns::complexStructTypeDef>();
@@ -567,13 +566,13 @@ folly::SemiFuture<std::unique_ptr<::some::valid::ns::complexStructTypeDef>> Retu
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::some::valid::ns::complexStructTypeDef>> ReturnServiceSvIf::future_complexTypedefReturn() {
+folly::Future<std::unique_ptr<::some::valid::ns::complexStructTypeDef>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_complexTypedefReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_complexTypedefReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_complexTypedefReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_complexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::complexStructTypeDef>>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_complexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::complexStructTypeDef>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -616,11 +615,11 @@ void ReturnServiceSvIf::async_tm_complexTypedefReturn(std::unique_ptr<apache::th
   }
 }
 
-void ReturnServiceSvIf::list_mostComplexTypedefReturn(::std::vector<::some::valid::ns::mostComplexTypeDef>& /*_return*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::list_mostComplexTypedefReturn(::std::vector<::some::valid::ns::mostComplexTypeDef>& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("list_mostComplexTypedefReturn");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>> ReturnServiceSvIf::semifuture_list_mostComplexTypedefReturn() {
+folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_list_mostComplexTypedefReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_list_mostComplexTypedefReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::vector<::some::valid::ns::mostComplexTypeDef>>();
@@ -628,13 +627,13 @@ folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTy
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>> ReturnServiceSvIf::future_list_mostComplexTypedefReturn() {
+folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_list_mostComplexTypedefReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_list_mostComplexTypedefReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_list_mostComplexTypedefReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_list_mostComplexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_list_mostComplexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -677,19 +676,19 @@ void ReturnServiceSvIf::async_tm_list_mostComplexTypedefReturn(std::unique_ptr<a
   }
 }
 
-void ReturnServiceSvIf::async_eb_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_eb_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("enumReturn"));
 }
 
-void ReturnServiceSvIf::async_eb_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_eb_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>>> callback) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("list_EnumReturn"));
 }
 
-void ReturnServiceSvIf::structReturn(::some::valid::ns::MyStruct& /*_return*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::structReturn(::some::valid::ns::MyStruct& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("structReturn");
 }
 
-folly::SemiFuture<std::unique_ptr<::some::valid::ns::MyStruct>> ReturnServiceSvIf::semifuture_structReturn() {
+folly::SemiFuture<std::unique_ptr<::some::valid::ns::MyStruct>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_structReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_structReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::some::valid::ns::MyStruct>();
@@ -697,13 +696,13 @@ folly::SemiFuture<std::unique_ptr<::some::valid::ns::MyStruct>> ReturnServiceSvI
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::some::valid::ns::MyStruct>> ReturnServiceSvIf::future_structReturn() {
+folly::Future<std::unique_ptr<::some::valid::ns::MyStruct>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_structReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_structReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_structReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_structReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_structReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -746,11 +745,11 @@ void ReturnServiceSvIf::async_tm_structReturn(std::unique_ptr<apache::thrift::Ha
   }
 }
 
-void ReturnServiceSvIf::set_StructReturn(::std::set<::some::valid::ns::MyStruct>& /*_return*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::set_StructReturn(::std::set<::some::valid::ns::MyStruct>& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("set_StructReturn");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> ReturnServiceSvIf::semifuture_set_StructReturn() {
+folly::SemiFuture<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_set_StructReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_set_StructReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::set<::some::valid::ns::MyStruct>>();
@@ -758,13 +757,13 @@ folly::SemiFuture<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> Retu
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> ReturnServiceSvIf::future_set_StructReturn() {
+folly::Future<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_set_StructReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_set_StructReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_set_StructReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_set_StructReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_set_StructReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -807,15 +806,15 @@ void ReturnServiceSvIf::async_tm_set_StructReturn(std::unique_ptr<apache::thrift
   }
 }
 
-void ReturnServiceSvIf::async_eb_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_eb_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("unionReturn"));
 }
 
-void ReturnServiceSvIf::list_UnionReturn(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::list_UnionReturn(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("list_UnionReturn");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> ReturnServiceSvIf::semifuture_list_UnionReturn() {
+folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_list_UnionReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_list_UnionReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::vector<::some::valid::ns::ComplexUnion>>();
@@ -823,13 +822,13 @@ folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> ReturnServiceSvIf::future_list_UnionReturn() {
+folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_list_UnionReturn() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_list_UnionReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_list_UnionReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>> callback) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -872,15 +871,15 @@ void ReturnServiceSvIf::async_tm_list_UnionReturn(std::unique_ptr<apache::thrift
   }
 }
 
-void ReturnServiceSvIf::async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::IOBuf>>> callback, ::std::int64_t /*size*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::IOBuf>>> callback, ::std::int64_t /*size*/) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("readDataEb"));
 }
 
-void ReturnServiceSvIf::readData(::some::valid::ns::IOBufPtr& /*_return*/, ::std::int64_t /*size*/) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::readData(::some::valid::ns::IOBufPtr& /*_return*/, ::std::int64_t /*size*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("readData");
 }
 
-folly::SemiFuture<std::unique_ptr<::some::valid::ns::IOBufPtr>> ReturnServiceSvIf::semifuture_readData(::std::int64_t p_size) {
+folly::SemiFuture<std::unique_ptr<::some::valid::ns::IOBufPtr>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::semifuture_readData(::std::int64_t p_size) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_readData.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::some::valid::ns::IOBufPtr>();
@@ -888,13 +887,13 @@ folly::SemiFuture<std::unique_ptr<::some::valid::ns::IOBufPtr>> ReturnServiceSvI
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::some::valid::ns::IOBufPtr>> ReturnServiceSvIf::future_readData(::std::int64_t p_size) {
+folly::Future<std::unique_ptr<::some::valid::ns::IOBufPtr>> apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::future_readData(::std::int64_t p_size) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_readData.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_readData(p_size), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::IOBufPtr>>> callback, ::std::int64_t p_size) {
+void apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>::async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::IOBufPtr>>> callback, ::std::int64_t p_size) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -936,6 +935,9 @@ void ReturnServiceSvIf::async_tm_readData(std::unique_ptr<apache::thrift::Handle
     callback->exception(std::current_exception());
   }
 }
+
+
+namespace some { namespace valid { namespace ns {
 
 bool ReturnServiceSvNull::boolReturn() {
   return 0;
@@ -982,13 +984,12 @@ void ReturnServiceSvNull::list_UnionReturn(::std::vector<::some::valid::ns::Comp
 void ReturnServiceSvNull::readData(::some::valid::ns::IOBufPtr& /*_return*/, ::std::int64_t /*size*/) {}
 
 
-
 const char* ReturnServiceAsyncProcessor::getServiceName() {
   return "ReturnService";
 }
 
 void ReturnServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<ReturnServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen(response);
 }
 
 void ReturnServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

@@ -17,7 +17,7 @@ namespace cpp2 {
   ::apache::thrift::detail::md::ExceptionMetadata<CustomFieldNames>::gen(metadata);
   ::apache::thrift::detail::md::ExceptionMetadata<ExceptionWithPrimitiveField>::gen(metadata);
   ::apache::thrift::detail::md::ExceptionMetadata<Banal>::gen(metadata);
-  ::apache::thrift::detail::md::ServiceMetadata<RaiserSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Raiser>>::gen(response);
   return metadata;
 }
 } // namespace cpp2

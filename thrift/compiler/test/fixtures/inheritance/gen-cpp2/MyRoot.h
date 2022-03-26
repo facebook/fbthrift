@@ -23,6 +23,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class MyRoot;
 class MyRootAsyncProcessor;
 
 class MyRootServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -30,12 +31,15 @@ class MyRootServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+} // cpp2
 
-class MyRootSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::MyRoot> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyRoot"; }
 
-  typedef MyRootAsyncProcessor ProcessorType;
+  typedef ::cpp2::MyRootAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -45,10 +49,16 @@ class MyRootSvIf : public apache::thrift::ServerInterface {
   virtual folly::SemiFuture<folly::Unit> semifuture_do_root();
   virtual void async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
  private:
-  static MyRootServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::cpp2::MyRootServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_do_root{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class MyRootSvIf : public ::apache::thrift::ServiceHandler<MyRoot> {};
+} // cpp2
+namespace cpp2 {
 class MyRootSvNull : public MyRootSvIf {
  public:
   void do_root() override;
@@ -60,7 +70,7 @@ class MyRootAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  MyRootSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::cpp2::MyRoot>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -86,7 +96,7 @@ class MyRootAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_do_root(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  MyRootAsyncProcessor(MyRootSvIf* iface) :
+  MyRootAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::MyRoot>* iface) :
       iface_(iface) {}
   ~MyRootAsyncProcessor() override {}
 

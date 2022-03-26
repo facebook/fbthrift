@@ -10,27 +10,26 @@
 #include "thrift/compiler/test/fixtures/split/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace cpp2 {
-std::unique_ptr<apache::thrift::AsyncProcessor> DbMixedStackArgumentsSvIf::getProcessor() {
-  return std::make_unique<DbMixedStackArgumentsAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>::getProcessor() {
+  return std::make_unique<::cpp2::DbMixedStackArgumentsAsyncProcessor>(this);
 }
 
-DbMixedStackArgumentsSvIf::CreateMethodMetadataResult DbMixedStackArgumentsSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<DbMixedStackArgumentsAsyncProcessor>();
+apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::DbMixedStackArgumentsAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> DbMixedStackArgumentsSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  DbMixedStackArgumentsServiceInfoHolder DbMixedStackArgumentsSvIf::__fbthrift_serviceInfoHolder;
+::cpp2::DbMixedStackArgumentsServiceInfoHolder apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>::__fbthrift_serviceInfoHolder;
 
 
-void DbMixedStackArgumentsSvIf::getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {
+void apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>::getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("getDataByKey0");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::semifuture_getDataByKey0(std::unique_ptr<::std::string> p_key) {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>::semifuture_getDataByKey0(std::unique_ptr<::std::string> p_key) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_getDataByKey0.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -38,13 +37,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::sem
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::future_getDataByKey0(std::unique_ptr<::std::string> p_key) {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>::future_getDataByKey0(std::unique_ptr<::std::string> p_key) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_getDataByKey0.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_getDataByKey0(std::move(p_key)), getInternalKeepAlive());
 }
 
-void DbMixedStackArgumentsSvIf::async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_key) {
+void apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>::async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_key) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -87,11 +86,11 @@ void DbMixedStackArgumentsSvIf::async_tm_getDataByKey0(std::unique_ptr<apache::t
   }
 }
 
-void DbMixedStackArgumentsSvIf::getDataByKey1(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {
+void apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>::getDataByKey1(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("getDataByKey1");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::semifuture_getDataByKey1(std::unique_ptr<::std::string> p_key) {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>::semifuture_getDataByKey1(std::unique_ptr<::std::string> p_key) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_getDataByKey1.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -99,13 +98,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::sem
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::future_getDataByKey1(std::unique_ptr<::std::string> p_key) {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>::future_getDataByKey1(std::unique_ptr<::std::string> p_key) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_getDataByKey1.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_getDataByKey1(std::move(p_key)), getInternalKeepAlive());
 }
 
-void DbMixedStackArgumentsSvIf::async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_key) {
+void apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>::async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_key) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -148,10 +147,12 @@ void DbMixedStackArgumentsSvIf::async_tm_getDataByKey1(std::unique_ptr<apache::t
   }
 }
 
+
+namespace cpp2 {
+
 void DbMixedStackArgumentsSvNull::getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {}
 
 void DbMixedStackArgumentsSvNull::getDataByKey1(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) {}
-
 
 
 const char* DbMixedStackArgumentsAsyncProcessor::getServiceName() {
@@ -159,7 +160,7 @@ const char* DbMixedStackArgumentsAsyncProcessor::getServiceName() {
 }
 
 void DbMixedStackArgumentsAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<DbMixedStackArgumentsSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>>::gen(response);
 }
 
 void DbMixedStackArgumentsAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

@@ -23,6 +23,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class Raiser;
 class RaiserAsyncProcessor;
 
 class RaiserServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -30,12 +31,15 @@ class RaiserServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+} // cpp2
 
-class RaiserSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::Raiser> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "Raiser"; }
 
-  typedef RaiserAsyncProcessor ProcessorType;
+  typedef ::cpp2::RaiserAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -57,13 +61,19 @@ class RaiserSvIf : public apache::thrift::ServerInterface {
   virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_get500();
   virtual void async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback);
  private:
-  static RaiserServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::cpp2::RaiserServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_doBland{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_doRaise{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_get200{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_get500{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class RaiserSvIf : public ::apache::thrift::ServiceHandler<Raiser> {};
+} // cpp2
+namespace cpp2 {
 class RaiserSvNull : public RaiserSvIf {
  public:
   void doBland() override;
@@ -78,7 +88,7 @@ class RaiserAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  RaiserSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::cpp2::Raiser>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -134,7 +144,7 @@ class RaiserAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_get500(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  RaiserAsyncProcessor(RaiserSvIf* iface) :
+  RaiserAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::Raiser>* iface) :
       iface_(iface) {}
   ~RaiserAsyncProcessor() override {}
 

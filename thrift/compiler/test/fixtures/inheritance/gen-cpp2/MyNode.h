@@ -24,6 +24,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class MyNode;
 class MyNodeAsyncProcessor;
 
 class MyNodeServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -31,12 +32,15 @@ class MyNodeServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+} // cpp2
 
-class MyNodeSvIf : virtual public ::cpp2::MyRootSvIf {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::MyNode> : virtual public ::cpp2::MyRootSvIf {
  public:
   std::string_view getGeneratedName() const override { return "MyNode"; }
 
-  typedef MyNodeAsyncProcessor ProcessorType;
+  typedef ::cpp2::MyNodeAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -46,10 +50,16 @@ class MyNodeSvIf : virtual public ::cpp2::MyRootSvIf {
   virtual folly::SemiFuture<folly::Unit> semifuture_do_mid();
   virtual void async_tm_do_mid(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
  private:
-  static MyNodeServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::cpp2::MyNodeServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_do_mid{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class MyNodeSvIf : public ::apache::thrift::ServiceHandler<MyNode> {};
+} // cpp2
+namespace cpp2 {
 class MyNodeSvNull : public MyNodeSvIf, virtual public ::cpp2::MyRootSvIf {
  public:
   void do_mid() override;
@@ -61,7 +71,7 @@ class MyNodeAsyncProcessor : public ::cpp2::MyRootAsyncProcessor {
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = ::cpp2::MyRootAsyncProcessor;
  protected:
-  MyNodeSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::cpp2::MyNode>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -87,7 +97,7 @@ class MyNodeAsyncProcessor : public ::cpp2::MyRootAsyncProcessor {
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_do_mid(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  MyNodeAsyncProcessor(MyNodeSvIf* iface) :
+  MyNodeAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::MyNode>* iface) :
       ::cpp2::MyRootAsyncProcessor(iface),
       iface_(iface) {}
   ~MyNodeAsyncProcessor() override {}

@@ -10,22 +10,23 @@
 #include "thrift/compiler/test/fixtures/py3/gen-py3cpp/empty_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace cpp2 {
-std::unique_ptr<apache::thrift::AsyncProcessor> NullServiceSvIf::getProcessor() {
-  return std::make_unique<NullServiceAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::NullService>::getProcessor() {
+  return std::make_unique<::cpp2::NullServiceAsyncProcessor>(this);
 }
 
-NullServiceSvIf::CreateMethodMetadataResult NullServiceSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<NullServiceAsyncProcessor>();
+apache::thrift::ServiceHandler<::cpp2::NullService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::NullService>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::NullServiceAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> NullServiceSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::NullService>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  NullServiceServiceInfoHolder NullServiceSvIf::__fbthrift_serviceInfoHolder;
+::cpp2::NullServiceServiceInfoHolder apache::thrift::ServiceHandler<::cpp2::NullService>::__fbthrift_serviceInfoHolder;
 
 
+
+namespace cpp2 {
 
 
 const char* NullServiceAsyncProcessor::getServiceName() {
@@ -33,7 +34,7 @@ const char* NullServiceAsyncProcessor::getServiceName() {
 }
 
 void NullServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<NullServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NullService>>::gen(response);
 }
 
 void NullServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

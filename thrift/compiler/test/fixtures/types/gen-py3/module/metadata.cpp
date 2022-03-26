@@ -43,7 +43,7 @@ namespace types {
   ::apache::thrift::detail::md::StructMetadata<AllocatorAware2>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<TypedefStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<StructWithDoubleUnderscores>::gen(metadata);
-  ::apache::thrift::detail::md::ServiceMetadata<SomeServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::apache::thrift::fixtures::types::SomeService>>::gen(response);
   return metadata;
 }
 } // namespace apache

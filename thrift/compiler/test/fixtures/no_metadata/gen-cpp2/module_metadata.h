@@ -12,6 +12,7 @@
 #include "thrift/compiler/test/fixtures/no_metadata/gen-cpp2/module_types.h"
 
 namespace cpp2 {
+class MyService;
 class MyServiceSvIf;
 } // namespace cpp2
 
@@ -45,7 +46,7 @@ class StructMetadata<::cpp2::MyUnion>
   using EmptyMetadata::gen;
 };
 template <>
-class ServiceMetadata<::cpp2::MyServiceSvIf>
+class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>
     : private EmptyServiceMetadata {
  public:
   using EmptyServiceMetadata::gen;
@@ -56,6 +57,9 @@ class ServiceMetadata<::cpp2::MyServiceSvIf>
   template <typename T>
   friend class ServiceMetadata;
 };
+template <>
+class ServiceMetadata<::cpp2::MyServiceSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

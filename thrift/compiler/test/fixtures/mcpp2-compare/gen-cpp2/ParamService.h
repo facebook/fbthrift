@@ -25,6 +25,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace some { namespace valid { namespace ns {
+class ParamService;
 class ParamServiceAsyncProcessor;
 
 class ParamServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -32,12 +33,15 @@ class ParamServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+}}} // some::valid::ns
 
-class ParamServiceSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::some::valid::ns::ParamService> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "ParamService"; }
 
-  typedef ParamServiceAsyncProcessor ProcessorType;
+  typedef ::some::valid::ns::ParamServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -147,7 +151,7 @@ class ParamServiceSvIf : public apache::thrift::ServerInterface {
   virtual folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> semifuture_listunion_string_param(std::unique_ptr<::std::string> p_param1);
   virtual void async_tm_listunion_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>> callback, std::unique_ptr<::std::string> p_param1);
  private:
-  static ParamServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::some::valid::ns::ParamServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_void_ret_byte_i16_param{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_void_ret_map_param{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_void_ret_map_setlist_param{apache::thrift::detail::si::InvocationType::AsyncTm};
@@ -175,6 +179,12 @@ class ParamServiceSvIf : public apache::thrift::ServerInterface {
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_listunion_string_param{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace some { namespace valid { namespace ns {
+class ParamServiceSvIf : public ::apache::thrift::ServiceHandler<ParamService> {};
+}}} // some::valid::ns
+namespace some { namespace valid { namespace ns {
 class ParamServiceSvNull : public ParamServiceSvIf {
  public:
   void void_ret_byte_i16_param(::std::int8_t /*param1*/, ::std::int16_t /*param2*/) override;
@@ -210,7 +220,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  ParamServiceSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -516,7 +526,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_listunion_string_param(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  ParamServiceAsyncProcessor(ParamServiceSvIf* iface) :
+  ParamServiceAsyncProcessor(::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>* iface) :
       iface_(iface) {}
   ~ParamServiceAsyncProcessor() override {}
 

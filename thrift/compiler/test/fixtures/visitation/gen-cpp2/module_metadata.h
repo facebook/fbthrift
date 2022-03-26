@@ -15,18 +15,22 @@
 
 namespace test_cpp2 {
 namespace cpp_reflection {
+class service1;
 class service1SvIf;
 }} // namespace test_cpp2::cpp_reflection
 namespace test_cpp2 {
 namespace cpp_reflection {
+class service2;
 class service2SvIf;
 }} // namespace test_cpp2::cpp_reflection
 namespace test_cpp2 {
 namespace cpp_reflection {
+class service3;
 class service3SvIf;
 }} // namespace test_cpp2::cpp_reflection
 namespace test_cpp2 {
 namespace cpp_reflection {
+class service_with_special_names;
 class service_with_special_namesSvIf;
 }} // namespace test_cpp2::cpp_reflection
 
@@ -151,7 +155,7 @@ class StructMetadata<::test_cpp2::cpp_reflection::struct_with_indirections> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -168,7 +172,10 @@ class ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf> {
   static void gen_method6(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
-class ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf> {
+class ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>> {};
+template <>
+class ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -185,7 +192,10 @@ class ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf> {
   static void gen_methodF(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
-class ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf> {
+class ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>> {};
+template <>
+class ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -202,7 +212,10 @@ class ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf> {
   static void gen_methodF(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
-class ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf> {
+class ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>> {};
+template <>
+class ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -240,6 +253,9 @@ class ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvI
   static void gen_field(ThriftMetadata& metadata, ThriftService& context);
   static void gen_fields(ThriftMetadata& metadata, ThriftService& context);
 };
+template <>
+class ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

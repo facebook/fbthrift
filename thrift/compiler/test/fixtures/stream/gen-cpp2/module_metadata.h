@@ -12,6 +12,7 @@
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/module_types.h"
 
 namespace cpp2 {
+class PubSubStreamingService;
 class PubSubStreamingServiceSvIf;
 } // namespace cpp2
 
@@ -31,7 +32,7 @@ class ExceptionMetadata<::cpp2::FooEx> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
-class ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -46,6 +47,9 @@ class ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf> {
   static void gen_responseandstreamthrows(ThriftMetadata& metadata, ThriftService& context);
   static void gen_returnstreamFast(ThriftMetadata& metadata, ThriftService& context);
 };
+template <>
+class ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

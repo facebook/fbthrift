@@ -14,6 +14,7 @@
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/includes_metadata.h"
 
 namespace cpp2 {
+class MyService;
 class MyServiceSvIf;
 } // namespace cpp2
 
@@ -23,7 +24,7 @@ namespace detail {
 namespace md {
 
 template <>
-class ServiceMetadata<::cpp2::MyServiceSvIf> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -35,6 +36,9 @@ class ServiceMetadata<::cpp2::MyServiceSvIf> {
   static void gen_query(ThriftMetadata& metadata, ThriftService& context);
   static void gen_has_arg_docs(ThriftMetadata& metadata, ThriftService& context);
 };
+template <>
+class ServiceMetadata<::cpp2::MyServiceSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

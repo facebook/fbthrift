@@ -14,6 +14,7 @@
 #include "thrift/annotation/gen-cpp2/thrift_metadata.h"
 
 namespace cpp2 {
+class Service;
 class ServiceSvIf;
 } // namespace cpp2
 
@@ -43,7 +44,7 @@ class StructMetadata<::cpp2::StructWithFieldAdapter> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class ServiceMetadata<::cpp2::ServiceSvIf> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -54,6 +55,9 @@ class ServiceMetadata<::cpp2::ServiceSvIf> {
 
   static void gen_func(ThriftMetadata& metadata, ThriftService& context);
 };
+template <>
+class ServiceMetadata<::cpp2::ServiceSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

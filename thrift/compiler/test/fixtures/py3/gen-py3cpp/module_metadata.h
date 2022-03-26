@@ -13,14 +13,17 @@
 
 namespace py3 {
 namespace simple {
+class SimpleService;
 class SimpleServiceSvIf;
 }} // namespace py3::simple
 namespace py3 {
 namespace simple {
+class DerivedService;
 class DerivedServiceSvIf;
 }} // namespace py3::simple
 namespace py3 {
 namespace simple {
+class RederivedService;
 class RederivedServiceSvIf;
 }} // namespace py3::simple
 
@@ -75,7 +78,7 @@ class ExceptionMetadata<::py3::simple::SimpleException> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
-class ServiceMetadata<::py3::simple::SimpleServiceSvIf> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -127,7 +130,10 @@ class ServiceMetadata<::py3::simple::SimpleServiceSvIf> {
   static void gen_get_binary_union_struct(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
-class ServiceMetadata<::py3::simple::DerivedServiceSvIf> {
+class ServiceMetadata<::py3::simple::SimpleServiceSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>> {};
+template <>
+class ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::DerivedService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -139,7 +145,10 @@ class ServiceMetadata<::py3::simple::DerivedServiceSvIf> {
   static void gen_get_six(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
-class ServiceMetadata<::py3::simple::RederivedServiceSvIf> {
+class ServiceMetadata<::py3::simple::DerivedServiceSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::DerivedService>> {};
+template <>
+class ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::RederivedService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -150,6 +159,9 @@ class ServiceMetadata<::py3::simple::RederivedServiceSvIf> {
 
   static void gen_get_seven(ThriftMetadata& metadata, ThriftService& context);
 };
+template <>
+class ServiceMetadata<::py3::simple::RederivedServiceSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::RederivedService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

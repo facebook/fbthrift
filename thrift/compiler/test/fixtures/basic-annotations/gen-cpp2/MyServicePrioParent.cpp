@@ -10,40 +10,39 @@
 #include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace cpp2 {
-std::unique_ptr<apache::thrift::AsyncProcessor> MyServicePrioParentSvIf::getProcessor() {
-  return std::make_unique<MyServicePrioParentAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>::getProcessor() {
+  return std::make_unique<::cpp2::MyServicePrioParentAsyncProcessor>(this);
 }
 
-MyServicePrioParentSvIf::CreateMethodMetadataResult MyServicePrioParentSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<MyServicePrioParentAsyncProcessor>();
+apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::MyServicePrioParentAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> MyServicePrioParentSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  MyServicePrioParentServiceInfoHolder MyServicePrioParentSvIf::__fbthrift_serviceInfoHolder;
+::cpp2::MyServicePrioParentServiceInfoHolder apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>::__fbthrift_serviceInfoHolder;
 
 
-void MyServicePrioParentSvIf::ping() {
+void apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>::ping() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("ping");
 }
 
-folly::SemiFuture<folly::Unit> MyServicePrioParentSvIf::semifuture_ping() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>::semifuture_ping() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_ping.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   ping();
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> MyServicePrioParentSvIf::future_ping() {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>::future_ping() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_ping.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_ping(), getInternalKeepAlive());
 }
 
-void MyServicePrioParentSvIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -85,24 +84,24 @@ void MyServicePrioParentSvIf::async_tm_ping(std::unique_ptr<apache::thrift::Hand
   }
 }
 
-void MyServicePrioParentSvIf::pong() {
+void apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>::pong() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("pong");
 }
 
-folly::SemiFuture<folly::Unit> MyServicePrioParentSvIf::semifuture_pong() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>::semifuture_pong() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_pong.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   pong();
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> MyServicePrioParentSvIf::future_pong() {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>::future_pong() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_pong.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_pong(), getInternalKeepAlive());
 }
 
-void MyServicePrioParentSvIf::async_tm_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>::async_tm_pong(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -144,6 +143,9 @@ void MyServicePrioParentSvIf::async_tm_pong(std::unique_ptr<apache::thrift::Hand
   }
 }
 
+
+namespace cpp2 {
+
 void MyServicePrioParentSvNull::ping() {
   return;
 }
@@ -153,13 +155,12 @@ void MyServicePrioParentSvNull::pong() {
 }
 
 
-
 const char* MyServicePrioParentAsyncProcessor::getServiceName() {
   return "MyServicePrioParent";
 }
 
 void MyServicePrioParentAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<MyServicePrioParentSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>>::gen(response);
 }
 
 void MyServicePrioParentAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

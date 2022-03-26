@@ -12,6 +12,7 @@
 #include "thrift/compiler/test/fixtures/params/gen-cpp2/module_types.h"
 
 namespace cpp2 {
+class NestedContainers;
 class NestedContainersSvIf;
 } // namespace cpp2
 
@@ -21,7 +22,7 @@ namespace detail {
 namespace md {
 
 template <>
-class ServiceMetadata<::cpp2::NestedContainersSvIf> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NestedContainers>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -36,6 +37,9 @@ class ServiceMetadata<::cpp2::NestedContainersSvIf> {
   static void gen_listSet(ThriftMetadata& metadata, ThriftService& context);
   static void gen_turtles(ThriftMetadata& metadata, ThriftService& context);
 };
+template <>
+class ServiceMetadata<::cpp2::NestedContainersSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NestedContainers>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

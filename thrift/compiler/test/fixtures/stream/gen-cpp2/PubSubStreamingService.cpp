@@ -10,39 +10,38 @@
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace cpp2 {
-std::unique_ptr<apache::thrift::AsyncProcessor> PubSubStreamingServiceSvIf::getProcessor() {
-  return std::make_unique<PubSubStreamingServiceAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::getProcessor() {
+  return std::make_unique<::cpp2::PubSubStreamingServiceAsyncProcessor>(this);
 }
 
-PubSubStreamingServiceSvIf::CreateMethodMetadataResult PubSubStreamingServiceSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<PubSubStreamingServiceAsyncProcessor>();
+apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::PubSubStreamingServiceAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> PubSubStreamingServiceSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  PubSubStreamingServiceServiceInfoHolder PubSubStreamingServiceSvIf::__fbthrift_serviceInfoHolder;
+::cpp2::PubSubStreamingServiceServiceInfoHolder apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::__fbthrift_serviceInfoHolder;
 
 
-::apache::thrift::ServerStream<::std::int32_t> PubSubStreamingServiceSvIf::returnstream(::std::int32_t /*i32_from*/, ::std::int32_t /*i32_to*/) {
+::apache::thrift::ServerStream<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::returnstream(::std::int32_t /*i32_from*/, ::std::int32_t /*i32_to*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("returnstream");
 }
 
-folly::SemiFuture<::apache::thrift::ServerStream<::std::int32_t>> PubSubStreamingServiceSvIf::semifuture_returnstream(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
+folly::SemiFuture<::apache::thrift::ServerStream<::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::semifuture_returnstream(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_returnstream.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return returnstream(p_i32_from, p_i32_to);
 }
 
-folly::Future<::apache::thrift::ServerStream<::std::int32_t>> PubSubStreamingServiceSvIf::future_returnstream(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
+folly::Future<::apache::thrift::ServerStream<::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::future_returnstream(::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_returnstream.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_returnstream(p_i32_from, p_i32_to), getInternalKeepAlive());
 }
 
-void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>> callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
+void apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>> callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -83,23 +82,23 @@ void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::t
   }
 }
 
-::apache::thrift::ServerStream<::std::int32_t> PubSubStreamingServiceSvIf::streamthrows(::std::int32_t /*foo*/) {
+::apache::thrift::ServerStream<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::streamthrows(::std::int32_t /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("streamthrows");
 }
 
-folly::SemiFuture<::apache::thrift::ServerStream<::std::int32_t>> PubSubStreamingServiceSvIf::semifuture_streamthrows(::std::int32_t p_foo) {
+folly::SemiFuture<::apache::thrift::ServerStream<::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::semifuture_streamthrows(::std::int32_t p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_streamthrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return streamthrows(p_foo);
 }
 
-folly::Future<::apache::thrift::ServerStream<::std::int32_t>> PubSubStreamingServiceSvIf::future_streamthrows(::std::int32_t p_foo) {
+folly::Future<::apache::thrift::ServerStream<::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::future_streamthrows(::std::int32_t p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_streamthrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_streamthrows(p_foo), getInternalKeepAlive());
 }
 
-void PubSubStreamingServiceSvIf::async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>> callback, ::std::int32_t p_foo) {
+void apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>> callback, ::std::int32_t p_foo) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -140,23 +139,23 @@ void PubSubStreamingServiceSvIf::async_tm_streamthrows(std::unique_ptr<apache::t
   }
 }
 
-::apache::thrift::ServerStream<::std::int32_t> PubSubStreamingServiceSvIf::boththrows(::std::int32_t /*foo*/) {
+::apache::thrift::ServerStream<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::boththrows(::std::int32_t /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("boththrows");
 }
 
-folly::SemiFuture<::apache::thrift::ServerStream<::std::int32_t>> PubSubStreamingServiceSvIf::semifuture_boththrows(::std::int32_t p_foo) {
+folly::SemiFuture<::apache::thrift::ServerStream<::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::semifuture_boththrows(::std::int32_t p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_boththrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return boththrows(p_foo);
 }
 
-folly::Future<::apache::thrift::ServerStream<::std::int32_t>> PubSubStreamingServiceSvIf::future_boththrows(::std::int32_t p_foo) {
+folly::Future<::apache::thrift::ServerStream<::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::future_boththrows(::std::int32_t p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_boththrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_boththrows(p_foo), getInternalKeepAlive());
 }
 
-void PubSubStreamingServiceSvIf::async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>> callback, ::std::int32_t p_foo) {
+void apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>> callback, ::std::int32_t p_foo) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -197,23 +196,23 @@ void PubSubStreamingServiceSvIf::async_tm_boththrows(std::unique_ptr<apache::thr
   }
 }
 
-::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t> PubSubStreamingServiceSvIf::responseandstreamthrows(::std::int32_t /*foo*/) {
+::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::responseandstreamthrows(::std::int32_t /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("responseandstreamthrows");
 }
 
-folly::SemiFuture<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> PubSubStreamingServiceSvIf::semifuture_responseandstreamthrows(::std::int32_t p_foo) {
+folly::SemiFuture<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::semifuture_responseandstreamthrows(::std::int32_t p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_responseandstreamthrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return responseandstreamthrows(p_foo);
 }
 
-folly::Future<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> PubSubStreamingServiceSvIf::future_responseandstreamthrows(::std::int32_t p_foo) {
+folly::Future<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::future_responseandstreamthrows(::std::int32_t p_foo) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_responseandstreamthrows.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_responseandstreamthrows(p_foo), getInternalKeepAlive());
 }
 
-void PubSubStreamingServiceSvIf::async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> callback, ::std::int32_t p_foo) {
+void apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> callback, ::std::int32_t p_foo) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -254,10 +253,12 @@ void PubSubStreamingServiceSvIf::async_tm_responseandstreamthrows(std::unique_pt
   }
 }
 
-void PubSubStreamingServiceSvIf::async_eb_returnstreamFast(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>> callback, ::std::int32_t /*i32_from*/, ::std::int32_t /*i32_to*/) {
+void apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::async_eb_returnstreamFast(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>> callback, ::std::int32_t /*i32_from*/, ::std::int32_t /*i32_to*/) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("returnstreamFast"));
 }
 
+
+namespace cpp2 {
 
 
 const char* PubSubStreamingServiceAsyncProcessor::getServiceName() {
@@ -265,7 +266,7 @@ const char* PubSubStreamingServiceAsyncProcessor::getServiceName() {
 }
 
 void PubSubStreamingServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<PubSubStreamingServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen(response);
 }
 
 void PubSubStreamingServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

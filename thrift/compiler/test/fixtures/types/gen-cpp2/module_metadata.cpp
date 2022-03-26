@@ -687,7 +687,7 @@ StructMetadata<::apache::thrift::fixtures::types::StructWithDoubleUnderscores>::
   return res.first->second;
 }
 
-void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bounce_map(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::apache::thrift::fixtures::types::SomeService>>::gen_bounce_map(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "bounce_map";
@@ -703,7 +703,7 @@ void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bo
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_binary_keyed_map(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::apache::thrift::fixtures::types::SomeService>>::gen_binary_keyed_map(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "binary_keyed_map";
@@ -720,7 +720,7 @@ void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bi
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::apache::thrift::fixtures::types::SomeService>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -730,13 +730,13 @@ void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen(::
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::apache::thrift::fixtures::types::SomeService>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_SomeService;
   module_SomeService.name_ref() = "module.SomeService";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bounce_map,
-    ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_binary_keyed_map,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::apache::thrift::fixtures::types::SomeService>>::gen_bounce_map,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::apache::thrift::fixtures::types::SomeService>>::gen_binary_keyed_map,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_SomeService);

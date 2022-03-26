@@ -14,14 +14,24 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><% > service_h/service_info_holder%>
+%>
+<% > common/namespace_cpp2_begin%>
+
+class <%service:cpp_name%>;
+class <%service:cpp_name%>AsyncProcessor;
+
+<% > service_h/service_info_holder%>
+
+<% > common/namespace_cpp2_end%>
 
 
-class <%service:cpp_name%>SvIf : <%#service:extends%>virtual public <% > common/namespace_cpp2%><%service:cpp_name%>SvIf<%/service:extends%><%^service:extends%>public apache::thrift::ServerInterface<%/service:extends%> {
+namespace apache::thrift {
+template <>
+class ServiceHandler<<%service:qualified_name%>> : <%#service:extends%>virtual public <% > common/namespace_cpp2%><%service:cpp_name%>SvIf<%/service:extends%><%^service:extends%>public apache::thrift::ServerInterface<%/service:extends%> {
  public:
   std::string_view getGeneratedName() const override { return "<%service:name%>"; }
 
-  typedef <%service:parent_service_cpp_name%>AsyncProcessor ProcessorType;
+  typedef <%service:qualified_name%>AsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -31,3 +41,10 @@ class <%service:cpp_name%>SvIf : <%#service:extends%>virtual public <% > common/
 
 <% > service_h/service_interface_functions%>
 };
+
+} // namespace apache::thrift
+
+<% > common/namespace_cpp2_begin%>
+
+class <%service:cpp_name%>SvIf : public ::apache::thrift::ServiceHandler<<%service:cpp_name%>> {};
+<% > common/namespace_cpp2_end%>

@@ -11,7 +11,7 @@ namespace cpp2 {
 ::apache::thrift::metadata::ThriftMetadata service_getThriftModuleMetadata() {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
-  ::apache::thrift::detail::md::ServiceMetadata<MyServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen(response);
   return metadata;
 }
 } // namespace cpp2

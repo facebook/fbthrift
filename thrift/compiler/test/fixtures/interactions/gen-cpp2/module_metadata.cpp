@@ -71,7 +71,7 @@ void ExceptionMetadata<::cpp2::CustomException>::gen(ThriftMetadata& metadata) {
     module_CustomException.fields_ref()->push_back(std::move(field));
   }
 }
-void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_foo(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_foo(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "foo";
@@ -80,7 +80,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_foo(ThriftMetadata& metadata, T
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_interact(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_interact(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "interact";
@@ -96,7 +96,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_interact(ThriftMetadata& metada
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_interactFast(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_interactFast(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "interactFast";
@@ -105,7 +105,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_interactFast(ThriftMetadata& me
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_serialize(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_serialize(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "serialize";
@@ -115,7 +115,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_serialize(ThriftMetadata& metad
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::cpp2::MyServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -125,15 +125,15 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen(::apache::thrift::metadata::Thr
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::cpp2::MyServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_MyService;
   module_MyService.name_ref() = "module.MyService";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::cpp2::MyServiceSvIf>::gen_foo,
-    ServiceMetadata<::cpp2::MyServiceSvIf>::gen_interact,
-    ServiceMetadata<::cpp2::MyServiceSvIf>::gen_interactFast,
-    ServiceMetadata<::cpp2::MyServiceSvIf>::gen_serialize,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_foo,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_interact,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_interactFast,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_serialize,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_MyService);

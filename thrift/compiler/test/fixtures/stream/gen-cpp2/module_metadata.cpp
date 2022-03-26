@@ -46,7 +46,7 @@ void ExceptionMetadata<::cpp2::FooEx>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftException& module_FooEx = res.first->second;
   module_FooEx.name_ref() = "module.FooEx";
 }
-void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_returnstream(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_returnstream(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "returnstream";
@@ -69,7 +69,7 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_returnstream(Thrif
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_streamthrows(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_streamthrows(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "streamthrows";
@@ -85,7 +85,7 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_streamthrows(Thrif
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_boththrows(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_boththrows(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "boththrows";
@@ -109,7 +109,7 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_boththrows(ThriftM
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_responseandstreamthrows(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_responseandstreamthrows(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "responseandstreamthrows";
@@ -133,7 +133,7 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_responseandstreamt
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_returnstreamFast(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_returnstreamFast(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "returnstreamFast";
@@ -157,7 +157,7 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_returnstreamFast(T
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -167,16 +167,16 @@ void ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen(::apache::thrift::
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_PubSubStreamingService;
   module_PubSubStreamingService.name_ref() = "module.PubSubStreamingService";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_returnstream,
-    ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_streamthrows,
-    ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_boththrows,
-    ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_responseandstreamthrows,
-    ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf>::gen_returnstreamFast,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_returnstream,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_streamthrows,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_boththrows,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_responseandstreamthrows,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>>::gen_returnstreamFast,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_PubSubStreamingService);

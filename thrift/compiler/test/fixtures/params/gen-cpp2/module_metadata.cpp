@@ -27,7 +27,7 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
 
-void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_mapList(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NestedContainers>>::gen_mapList(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "mapList";
@@ -43,7 +43,7 @@ void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_mapList(ThriftMetadata& 
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_mapSet(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NestedContainers>>::gen_mapSet(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "mapSet";
@@ -59,7 +59,7 @@ void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_mapSet(ThriftMetadata& m
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_listMap(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NestedContainers>>::gen_listMap(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "listMap";
@@ -75,7 +75,7 @@ void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_listMap(ThriftMetadata& 
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_listSet(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NestedContainers>>::gen_listSet(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "listSet";
@@ -91,7 +91,7 @@ void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_listSet(ThriftMetadata& 
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_turtles(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NestedContainers>>::gen_turtles(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "turtles";
@@ -108,7 +108,7 @@ void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_turtles(ThriftMetadata& 
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NestedContainers>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -118,16 +118,16 @@ void ServiceMetadata<::cpp2::NestedContainersSvIf>::gen(::apache::thrift::metada
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::cpp2::NestedContainersSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NestedContainers>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_NestedContainers;
   module_NestedContainers.name_ref() = "module.NestedContainers";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_mapList,
-    ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_mapSet,
-    ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_listMap,
-    ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_listSet,
-    ServiceMetadata<::cpp2::NestedContainersSvIf>::gen_turtles,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NestedContainers>>::gen_mapList,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NestedContainers>>::gen_mapSet,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NestedContainers>>::gen_listMap,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NestedContainers>>::gen_listSet,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NestedContainers>>::gen_turtles,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_NestedContainers);

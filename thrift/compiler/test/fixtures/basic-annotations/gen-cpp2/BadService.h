@@ -25,6 +25,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class GoodService;
 class GoodServiceAsyncProcessor;
 
 class GoodServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -32,12 +33,15 @@ class GoodServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+} // cpp2
 
-class GoodServiceSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::GoodService> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "BadService"; }
 
-  typedef GoodServiceAsyncProcessor ProcessorType;
+  typedef ::cpp2::GoodServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -51,7 +55,7 @@ class BadInteractionIf : public apache::thrift::Tile, public apache::thrift::Ser
  public:
   std::string_view getGeneratedName() const override { return "BadInteraction"; }
 
-  typedef GoodServiceAsyncProcessor ProcessorType;
+  typedef ::cpp2::GoodServiceAsyncProcessor ProcessorType;
   virtual ~BadInteractionIf() = default;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     std::terminate();
@@ -78,11 +82,17 @@ class BadInteractionIf : public apache::thrift::Tile, public apache::thrift::Ser
   virtual folly::SemiFuture<::std::int32_t> semifuture_bar();
   virtual void async_tm_bar(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback);
  private:
-  static GoodServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::cpp2::GoodServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_createBadInteraction{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_bar{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class GoodServiceSvIf : public ::apache::thrift::ServiceHandler<GoodService> {};
+} // cpp2
+namespace cpp2 {
 class GoodServiceSvNull : public GoodServiceSvIf {
  public:
   ::std::int32_t bar() override;
@@ -94,7 +104,7 @@ class GoodServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  GoodServiceSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::cpp2::GoodService>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -138,7 +148,7 @@ class GoodServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_BadInteraction_foo(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  GoodServiceAsyncProcessor(GoodServiceSvIf* iface) :
+  GoodServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::GoodService>* iface) :
       iface_(iface) {}
   ~GoodServiceAsyncProcessor() override {}
 

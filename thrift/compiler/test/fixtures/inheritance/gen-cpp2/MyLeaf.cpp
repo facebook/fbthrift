@@ -10,40 +10,39 @@
 #include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace cpp2 {
-std::unique_ptr<apache::thrift::AsyncProcessor> MyLeafSvIf::getProcessor() {
-  return std::make_unique<MyLeafAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::MyLeaf>::getProcessor() {
+  return std::make_unique<::cpp2::MyLeafAsyncProcessor>(this);
 }
 
-MyLeafSvIf::CreateMethodMetadataResult MyLeafSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<MyLeafAsyncProcessor>();
+apache::thrift::ServiceHandler<::cpp2::MyLeaf>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::MyLeaf>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::MyLeafAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> MyLeafSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::MyLeaf>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  MyLeafServiceInfoHolder MyLeafSvIf::__fbthrift_serviceInfoHolder;
+::cpp2::MyLeafServiceInfoHolder apache::thrift::ServiceHandler<::cpp2::MyLeaf>::__fbthrift_serviceInfoHolder;
 
 
-void MyLeafSvIf::do_leaf() {
+void apache::thrift::ServiceHandler<::cpp2::MyLeaf>::do_leaf() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("do_leaf");
 }
 
-folly::SemiFuture<folly::Unit> MyLeafSvIf::semifuture_do_leaf() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyLeaf>::semifuture_do_leaf() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_do_leaf.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   do_leaf();
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> MyLeafSvIf::future_do_leaf() {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyLeaf>::future_do_leaf() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_do_leaf.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_do_leaf(), getInternalKeepAlive());
 }
 
-void MyLeafSvIf::async_tm_do_leaf(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyLeaf>::async_tm_do_leaf(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -85,10 +84,12 @@ void MyLeafSvIf::async_tm_do_leaf(std::unique_ptr<apache::thrift::HandlerCallbac
   }
 }
 
+
+namespace cpp2 {
+
 void MyLeafSvNull::do_leaf() {
   return;
 }
-
 
 
 const char* MyLeafAsyncProcessor::getServiceName() {
@@ -96,7 +97,7 @@ const char* MyLeafAsyncProcessor::getServiceName() {
 }
 
 void MyLeafAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<MyLeafSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyLeaf>>::gen(response);
 }
 
 void MyLeafAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

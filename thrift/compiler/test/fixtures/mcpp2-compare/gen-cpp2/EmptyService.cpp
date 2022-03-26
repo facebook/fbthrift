@@ -10,22 +10,23 @@
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace some { namespace valid { namespace ns {
-std::unique_ptr<apache::thrift::AsyncProcessor> EmptyServiceSvIf::getProcessor() {
-  return std::make_unique<EmptyServiceAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>::getProcessor() {
+  return std::make_unique<::some::valid::ns::EmptyServiceAsyncProcessor>(this);
 }
 
-EmptyServiceSvIf::CreateMethodMetadataResult EmptyServiceSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<EmptyServiceAsyncProcessor>();
+apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::some::valid::ns::EmptyServiceAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> EmptyServiceSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  EmptyServiceServiceInfoHolder EmptyServiceSvIf::__fbthrift_serviceInfoHolder;
+::some::valid::ns::EmptyServiceServiceInfoHolder apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>::__fbthrift_serviceInfoHolder;
 
 
+
+namespace some { namespace valid { namespace ns {
 
 
 const char* EmptyServiceAsyncProcessor::getServiceName() {
@@ -33,7 +34,7 @@ const char* EmptyServiceAsyncProcessor::getServiceName() {
 }
 
 void EmptyServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<EmptyServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>>::gen(response);
 }
 
 void EmptyServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

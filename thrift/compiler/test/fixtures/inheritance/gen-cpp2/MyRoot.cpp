@@ -10,40 +10,39 @@
 #include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace cpp2 {
-std::unique_ptr<apache::thrift::AsyncProcessor> MyRootSvIf::getProcessor() {
-  return std::make_unique<MyRootAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::MyRoot>::getProcessor() {
+  return std::make_unique<::cpp2::MyRootAsyncProcessor>(this);
 }
 
-MyRootSvIf::CreateMethodMetadataResult MyRootSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<MyRootAsyncProcessor>();
+apache::thrift::ServiceHandler<::cpp2::MyRoot>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::MyRoot>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::MyRootAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> MyRootSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::MyRoot>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  MyRootServiceInfoHolder MyRootSvIf::__fbthrift_serviceInfoHolder;
+::cpp2::MyRootServiceInfoHolder apache::thrift::ServiceHandler<::cpp2::MyRoot>::__fbthrift_serviceInfoHolder;
 
 
-void MyRootSvIf::do_root() {
+void apache::thrift::ServiceHandler<::cpp2::MyRoot>::do_root() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("do_root");
 }
 
-folly::SemiFuture<folly::Unit> MyRootSvIf::semifuture_do_root() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyRoot>::semifuture_do_root() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_do_root.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   do_root();
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> MyRootSvIf::future_do_root() {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyRoot>::future_do_root() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_do_root.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_do_root(), getInternalKeepAlive());
 }
 
-void MyRootSvIf::async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyRoot>::async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -85,10 +84,12 @@ void MyRootSvIf::async_tm_do_root(std::unique_ptr<apache::thrift::HandlerCallbac
   }
 }
 
+
+namespace cpp2 {
+
 void MyRootSvNull::do_root() {
   return;
 }
-
 
 
 const char* MyRootAsyncProcessor::getServiceName() {
@@ -96,7 +97,7 @@ const char* MyRootAsyncProcessor::getServiceName() {
 }
 
 void MyRootAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<MyRootSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyRoot>>::gen(response);
 }
 
 void MyRootAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

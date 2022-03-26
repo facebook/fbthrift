@@ -12,6 +12,7 @@
 #include "thrift/compiler/test/fixtures/py3/gen-py3cpp/empty_types.h"
 
 namespace cpp2 {
+class NullService;
 class NullServiceSvIf;
 } // namespace cpp2
 
@@ -21,7 +22,7 @@ namespace detail {
 namespace md {
 
 template <>
-class ServiceMetadata<::cpp2::NullServiceSvIf> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NullService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -31,6 +32,9 @@ class ServiceMetadata<::cpp2::NullServiceSvIf> {
   friend class ServiceMetadata;
 
 };
+template <>
+class ServiceMetadata<::cpp2::NullServiceSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NullService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

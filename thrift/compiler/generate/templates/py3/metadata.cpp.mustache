@@ -35,7 +35,7 @@
 {{/struct:exception?}}
 {{/program:structs}}
 {{#program:services}}
-  ::apache::thrift::detail::md::ServiceMetadata<{{service:cpp_name}}SvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<{{service:qualified_name}}>>::gen(response);
 {{/program:services}}
   return metadata;
 }

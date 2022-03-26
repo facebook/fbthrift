@@ -230,7 +230,7 @@ void ExceptionMetadata<::py3::simple::SimpleException>::gen(ThriftMetadata& meta
     module_SimpleException.fields_ref()->push_back(std::move(field));
   }
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_five(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_get_five(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "get_five";
@@ -239,7 +239,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_five(ThriftMetad
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_add_five(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_add_five(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "add_five";
@@ -255,7 +255,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_add_five(ThriftMetad
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_do_nothing(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_do_nothing(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "do_nothing";
@@ -264,7 +264,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_do_nothing(ThriftMet
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_concat(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_concat(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "concat";
@@ -287,7 +287,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_concat(ThriftMetadat
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_value(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_get_value(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "get_value";
@@ -303,7 +303,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_value(ThriftMeta
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_negate(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_negate(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "negate";
@@ -319,7 +319,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_negate(ThriftMetadat
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_tiny(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_tiny(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "tiny";
@@ -335,7 +335,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_tiny(ThriftMetadata&
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_small(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_small(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "small";
@@ -351,7 +351,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_small(ThriftMetadata
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_big(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_big(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "big";
@@ -367,7 +367,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_big(ThriftMetadata& 
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_two(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_two(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "two";
@@ -383,7 +383,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_two(ThriftMetadata& 
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_expected_exception(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_expected_exception(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "expected_exception";
@@ -400,7 +400,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_expected_exception(T
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_unexpected_exception(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_unexpected_exception(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "unexpected_exception";
@@ -409,7 +409,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_unexpected_exception
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_i16_list(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_sum_i16_list(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "sum_i16_list";
@@ -425,7 +425,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_i16_list(ThriftM
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_i32_list(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_sum_i32_list(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "sum_i32_list";
@@ -441,7 +441,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_i32_list(ThriftM
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_i64_list(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_sum_i64_list(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "sum_i64_list";
@@ -457,7 +457,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_i64_list(ThriftM
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_concat_many(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_concat_many(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "concat_many";
@@ -473,7 +473,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_concat_many(ThriftMe
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_count_structs(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_count_structs(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "count_structs";
@@ -489,7 +489,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_count_structs(Thrift
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_set(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_sum_set(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "sum_set";
@@ -505,7 +505,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_set(ThriftMetada
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_contains_word(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_contains_word(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "contains_word";
@@ -528,7 +528,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_contains_word(Thrift
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_map_value(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_get_map_value(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "get_map_value";
@@ -551,7 +551,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_map_value(Thrift
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_map_length(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_map_length(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "map_length";
@@ -567,7 +567,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_map_length(ThriftMet
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_map_values(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_sum_map_values(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "sum_map_values";
@@ -583,7 +583,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_map_values(Thrif
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_complex_sum_i32(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_complex_sum_i32(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "complex_sum_i32";
@@ -599,7 +599,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_complex_sum_i32(Thri
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_repeat_name(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_repeat_name(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "repeat_name";
@@ -615,7 +615,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_repeat_name(ThriftMe
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_struct(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_get_struct(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "get_struct";
@@ -624,7 +624,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_struct(ThriftMet
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_fib(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_fib(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "fib";
@@ -640,7 +640,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_fib(ThriftMetadata& 
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_unique_words(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_unique_words(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "unique_words";
@@ -656,7 +656,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_unique_words(ThriftM
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_words_count(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_words_count(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "words_count";
@@ -672,7 +672,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_words_count(ThriftMe
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_set_enum(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_set_enum(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "set_enum";
@@ -688,7 +688,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_set_enum(ThriftMetad
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_list_of_lists(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_list_of_lists(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "list_of_lists";
@@ -711,7 +711,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_list_of_lists(Thrift
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_word_character_frequency(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_word_character_frequency(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "word_character_frequency";
@@ -727,7 +727,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_word_character_frequ
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_list_of_sets(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_list_of_sets(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "list_of_sets";
@@ -743,7 +743,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_list_of_sets(ThriftM
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_nested_map_argument(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_nested_map_argument(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "nested_map_argument";
@@ -759,7 +759,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_nested_map_argument(
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_make_sentence(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_make_sentence(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "make_sentence";
@@ -775,7 +775,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_make_sentence(Thrift
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_union(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_get_union(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "get_union";
@@ -791,7 +791,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_union(ThriftMeta
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_keys(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_get_keys(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "get_keys";
@@ -807,7 +807,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_keys(ThriftMetad
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_lookup_double(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_lookup_double(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "lookup_double";
@@ -823,7 +823,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_lookup_double(Thrift
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_retrieve_binary(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_retrieve_binary(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "retrieve_binary";
@@ -839,7 +839,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_retrieve_binary(Thri
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_contain_binary(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_contain_binary(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "contain_binary";
@@ -855,7 +855,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_contain_binary(Thrif
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_contain_enum(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_contain_enum(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "contain_enum";
@@ -871,7 +871,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_contain_enum(ThriftM
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_binary_union_struct(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_get_binary_union_struct(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "get_binary_union_struct";
@@ -888,7 +888,7 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_binary_union_str
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -898,52 +898,52 @@ void ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen(::apache::thrift::me
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::py3::simple::SimpleServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_SimpleService;
   module_SimpleService.name_ref() = "module.SimpleService";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_five,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_add_five,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_do_nothing,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_concat,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_value,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_negate,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_tiny,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_small,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_big,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_two,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_expected_exception,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_unexpected_exception,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_i16_list,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_i32_list,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_i64_list,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_concat_many,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_count_structs,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_set,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_contains_word,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_map_value,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_map_length,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_sum_map_values,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_complex_sum_i32,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_repeat_name,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_struct,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_fib,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_unique_words,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_words_count,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_set_enum,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_list_of_lists,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_word_character_frequency,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_list_of_sets,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_nested_map_argument,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_make_sentence,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_union,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_keys,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_lookup_double,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_retrieve_binary,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_contain_binary,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_contain_enum,
-    ServiceMetadata<::py3::simple::SimpleServiceSvIf>::gen_get_binary_union_struct,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_get_five,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_add_five,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_do_nothing,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_concat,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_get_value,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_negate,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_tiny,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_small,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_big,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_two,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_expected_exception,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_unexpected_exception,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_sum_i16_list,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_sum_i32_list,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_sum_i64_list,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_concat_many,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_count_structs,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_sum_set,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_contains_word,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_get_map_value,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_map_length,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_sum_map_values,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_complex_sum_i32,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_repeat_name,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_get_struct,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_fib,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_unique_words,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_words_count,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_set_enum,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_list_of_lists,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_word_character_frequency,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_list_of_sets,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_nested_map_argument,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_make_sentence,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_get_union,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_get_keys,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_lookup_double,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_retrieve_binary,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_contain_binary,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_contain_enum,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen_get_binary_union_struct,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_SimpleService);
@@ -959,7 +959,7 @@ const ThriftServiceContextRef* ServiceMetadata<::py3::simple::SimpleServiceSvIf>
   context.module_ref() = std::move(module);
   return &context;
 }
-void ServiceMetadata<::py3::simple::DerivedServiceSvIf>::gen_get_six(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::DerivedService>>::gen_get_six(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "get_six";
@@ -969,7 +969,7 @@ void ServiceMetadata<::py3::simple::DerivedServiceSvIf>::gen_get_six(ThriftMetad
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::py3::simple::DerivedServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::DerivedService>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -979,12 +979,12 @@ void ServiceMetadata<::py3::simple::DerivedServiceSvIf>::gen(::apache::thrift::m
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::py3::simple::DerivedServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::DerivedService>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_DerivedService;
   module_DerivedService.name_ref() = "module.DerivedService";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::py3::simple::DerivedServiceSvIf>::gen_get_six,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::DerivedService>>::gen_get_six,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_DerivedService);
@@ -993,7 +993,7 @@ const ThriftServiceContextRef* ServiceMetadata<::py3::simple::DerivedServiceSvIf
   auto selfIndex = services.size();
   services.emplace_back();
   module_DerivedService.parent_ref() = "module.SimpleService";
-  ServiceMetadata<::py3::simple::SimpleServiceSvIf>::genRecurse(metadata, services);
+  ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::genRecurse(metadata, services);
   ThriftServiceContextRef& context = services[selfIndex];
   metadata.services_ref()->emplace("module.DerivedService", std::move(module_DerivedService));
   context.service_name_ref() = "module.DerivedService";
@@ -1002,7 +1002,7 @@ const ThriftServiceContextRef* ServiceMetadata<::py3::simple::DerivedServiceSvIf
   context.module_ref() = std::move(module);
   return &context;
 }
-void ServiceMetadata<::py3::simple::RederivedServiceSvIf>::gen_get_seven(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::RederivedService>>::gen_get_seven(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "get_seven";
@@ -1012,7 +1012,7 @@ void ServiceMetadata<::py3::simple::RederivedServiceSvIf>::gen_get_seven(ThriftM
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::py3::simple::RederivedServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::RederivedService>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -1022,12 +1022,12 @@ void ServiceMetadata<::py3::simple::RederivedServiceSvIf>::gen(::apache::thrift:
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::py3::simple::RederivedServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::RederivedService>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_RederivedService;
   module_RederivedService.name_ref() = "module.RederivedService";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::py3::simple::RederivedServiceSvIf>::gen_get_seven,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::RederivedService>>::gen_get_seven,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_RederivedService);
@@ -1036,7 +1036,7 @@ const ThriftServiceContextRef* ServiceMetadata<::py3::simple::RederivedServiceSv
   auto selfIndex = services.size();
   services.emplace_back();
   module_RederivedService.parent_ref() = "module.DerivedService";
-  ServiceMetadata<::py3::simple::DerivedServiceSvIf>::genRecurse(metadata, services);
+  ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::DerivedService>>::genRecurse(metadata, services);
   ThriftServiceContextRef& context = services[selfIndex];
   metadata.services_ref()->emplace("module.RederivedService", std::move(module_RederivedService));
   context.service_name_ref() = "module.RederivedService";

@@ -23,6 +23,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class MyServiceFast;
 class MyServiceFastAsyncProcessor;
 
 class MyServiceFastServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -30,12 +31,15 @@ class MyServiceFastServiceInfoHolder : public apache::thrift::ServiceInfoHolder 
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+} // cpp2
 
-class MyServiceFastSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::MyServiceFast> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyServiceFast"; }
 
-  typedef MyServiceFastAsyncProcessor ProcessorType;
+  typedef ::cpp2::MyServiceFastAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -45,9 +49,15 @@ class MyServiceFastSvIf : public apache::thrift::ServerInterface {
   virtual void async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_id, const ::std::string& p_data);
   virtual void async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, ::std::int64_t p_id, const ::std::string& p_data);
  private:
-  static MyServiceFastServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::cpp2::MyServiceFastServiceInfoHolder __fbthrift_serviceInfoHolder;
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class MyServiceFastSvIf : public ::apache::thrift::ServiceHandler<MyServiceFast> {};
+} // cpp2
+namespace cpp2 {
 class MyServiceFastSvNull : public MyServiceFastSvIf {
  public:
 };
@@ -58,7 +68,7 @@ class MyServiceFastAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  MyServiceFastSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::cpp2::MyServiceFast>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -110,7 +120,7 @@ class MyServiceFastAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_lobDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
  public:
-  MyServiceFastAsyncProcessor(MyServiceFastSvIf* iface) :
+  MyServiceFastAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::MyServiceFast>* iface) :
       iface_(iface) {}
   ~MyServiceFastAsyncProcessor() override {}
 

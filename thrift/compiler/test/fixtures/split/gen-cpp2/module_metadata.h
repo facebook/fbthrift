@@ -12,9 +12,11 @@
 #include "thrift/compiler/test/fixtures/split/gen-cpp2/module_types.h"
 
 namespace cpp2 {
+class MyService;
 class MyServiceSvIf;
 } // namespace cpp2
 namespace cpp2 {
+class DbMixedStackArguments;
 class DbMixedStackArgumentsSvIf;
 } // namespace cpp2
 
@@ -44,7 +46,7 @@ class StructMetadata<::cpp2::MyUnion> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class ServiceMetadata<::cpp2::MyServiceSvIf> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -63,7 +65,10 @@ class ServiceMetadata<::cpp2::MyServiceSvIf> {
   static void gen_lobDataById(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
-class ServiceMetadata<::cpp2::DbMixedStackArgumentsSvIf> {
+class ServiceMetadata<::cpp2::MyServiceSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>> {};
+template <>
+class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -75,6 +80,9 @@ class ServiceMetadata<::cpp2::DbMixedStackArgumentsSvIf> {
   static void gen_getDataByKey0(ThriftMetadata& metadata, ThriftService& context);
   static void gen_getDataByKey1(ThriftMetadata& metadata, ThriftService& context);
 };
+template <>
+class ServiceMetadata<::cpp2::DbMixedStackArgumentsSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

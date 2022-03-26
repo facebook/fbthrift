@@ -27,6 +27,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace test_cpp2 { namespace cpp_reflection {
+class service_with_special_names;
 class service_with_special_namesAsyncProcessor;
 
 class service_with_special_namesServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -34,12 +35,15 @@ class service_with_special_namesServiceInfoHolder : public apache::thrift::Servi
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+}} // test_cpp2::cpp_reflection
 
-class service_with_special_namesSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "service_with_special_names"; }
 
-  typedef service_with_special_namesAsyncProcessor ProcessorType;
+  typedef ::test_cpp2::cpp_reflection::service_with_special_namesAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -157,7 +161,7 @@ class service_with_special_namesSvIf : public apache::thrift::ServerInterface {
   virtual folly::SemiFuture<::std::int32_t> semifuture_fields();
   virtual void async_tm_fields(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback);
  private:
-  static service_with_special_namesServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::test_cpp2::cpp_reflection::service_with_special_namesServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_get{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_getter{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_lists{apache::thrift::detail::si::InvocationType::AsyncTm};
@@ -188,6 +192,12 @@ class service_with_special_namesSvIf : public apache::thrift::ServerInterface {
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_fields{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace test_cpp2 { namespace cpp_reflection {
+class service_with_special_namesSvIf : public ::apache::thrift::ServiceHandler<service_with_special_names> {};
+}} // test_cpp2::cpp_reflection
+namespace test_cpp2 { namespace cpp_reflection {
 class service_with_special_namesSvNull : public service_with_special_namesSvIf {
  public:
   ::std::int32_t get() override;
@@ -226,7 +236,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  service_with_special_namesSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -522,7 +532,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_fields(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  service_with_special_namesAsyncProcessor(service_with_special_namesSvIf* iface) :
+  service_with_special_namesAsyncProcessor(::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>* iface) :
       iface_(iface) {}
   ~service_with_special_namesAsyncProcessor() override {}
 

@@ -12,6 +12,7 @@
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/module_types.h"
 
 namespace cpp2 {
+class C;
 class CSvIf;
 } // namespace cpp2
 
@@ -46,7 +47,7 @@ class ExceptionMetadata<::cpp2::Bang> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
-class ServiceMetadata<::cpp2::CSvIf> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::C>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -59,6 +60,9 @@ class ServiceMetadata<::cpp2::CSvIf> {
   static void gen_numbers(ThriftMetadata& metadata, ThriftService& context);
   static void gen_thing(ThriftMetadata& metadata, ThriftService& context);
 };
+template <>
+class ServiceMetadata<::cpp2::CSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::C>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

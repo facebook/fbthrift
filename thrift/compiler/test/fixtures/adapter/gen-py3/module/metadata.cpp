@@ -15,7 +15,7 @@ namespace cpp2 {
   ::apache::thrift::detail::md::StructMetadata<Baz>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Bar>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<StructWithFieldAdapter>::gen(metadata);
-  ::apache::thrift::detail::md::ServiceMetadata<ServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::gen(response);
   return metadata;
 }
 } // namespace cpp2

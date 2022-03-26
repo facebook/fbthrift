@@ -23,6 +23,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class NullService;
 class NullServiceAsyncProcessor;
 
 class NullServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -30,20 +31,29 @@ class NullServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+} // cpp2
 
-class NullServiceSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::NullService> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "NullService"; }
 
-  typedef NullServiceAsyncProcessor ProcessorType;
+  typedef ::cpp2::NullServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
  private:
-  static NullServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::cpp2::NullServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class NullServiceSvIf : public ::apache::thrift::ServiceHandler<NullService> {};
+} // cpp2
+namespace cpp2 {
 class NullServiceSvNull : public NullServiceSvIf {
  public:
 };
@@ -54,7 +64,7 @@ class NullServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  NullServiceSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::cpp2::NullService>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -70,7 +80,7 @@ class NullServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   static const NullServiceAsyncProcessor::ProcessMap kOwnProcessMap_;
  private:
  public:
-  NullServiceAsyncProcessor(NullServiceSvIf* iface) :
+  NullServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::NullService>* iface) :
       iface_(iface) {}
   ~NullServiceAsyncProcessor() override {}
 

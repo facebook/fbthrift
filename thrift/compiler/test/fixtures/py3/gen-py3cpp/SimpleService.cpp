@@ -10,39 +10,38 @@
 #include "thrift/compiler/test/fixtures/py3/gen-py3cpp/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace py3 { namespace simple {
-std::unique_ptr<apache::thrift::AsyncProcessor> SimpleServiceSvIf::getProcessor() {
-  return std::make_unique<SimpleServiceAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::getProcessor() {
+  return std::make_unique<::py3::simple::SimpleServiceAsyncProcessor>(this);
 }
 
-SimpleServiceSvIf::CreateMethodMetadataResult SimpleServiceSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<SimpleServiceAsyncProcessor>();
+apache::thrift::ServiceHandler<::py3::simple::SimpleService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::py3::simple::SimpleService>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::py3::simple::SimpleServiceAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> SimpleServiceSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  SimpleServiceServiceInfoHolder SimpleServiceSvIf::__fbthrift_serviceInfoHolder;
+::py3::simple::SimpleServiceServiceInfoHolder apache::thrift::ServiceHandler<::py3::simple::SimpleService>::__fbthrift_serviceInfoHolder;
 
 
-::std::int32_t SimpleServiceSvIf::get_five() {
+::std::int32_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::get_five() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get_five");
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceSvIf::semifuture_get_five() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_get_five() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_get_five.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return get_five();
 }
 
-folly::Future<::std::int32_t> SimpleServiceSvIf::future_get_five() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_get_five() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_get_five.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_get_five(), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_get_five(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_get_five(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -83,23 +82,23 @@ void SimpleServiceSvIf::async_tm_get_five(std::unique_ptr<apache::thrift::Handle
   }
 }
 
-::std::int32_t SimpleServiceSvIf::add_five(::std::int32_t /*num*/) {
+::std::int32_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::add_five(::std::int32_t /*num*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("add_five");
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceSvIf::semifuture_add_five(::std::int32_t p_num) {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_add_five(::std::int32_t p_num) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_add_five.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return add_five(p_num);
 }
 
-folly::Future<::std::int32_t> SimpleServiceSvIf::future_add_five(::std::int32_t p_num) {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_add_five(::std::int32_t p_num) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_add_five.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_add_five(p_num), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_add_five(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, ::std::int32_t p_num) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_add_five(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, ::std::int32_t p_num) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -140,24 +139,24 @@ void SimpleServiceSvIf::async_tm_add_five(std::unique_ptr<apache::thrift::Handle
   }
 }
 
-void SimpleServiceSvIf::do_nothing() {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::do_nothing() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("do_nothing");
 }
 
-folly::SemiFuture<folly::Unit> SimpleServiceSvIf::semifuture_do_nothing() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_do_nothing() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_do_nothing.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   do_nothing();
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> SimpleServiceSvIf::future_do_nothing() {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_do_nothing() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_do_nothing.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_do_nothing(), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_do_nothing(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_do_nothing(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -199,11 +198,11 @@ void SimpleServiceSvIf::async_tm_do_nothing(std::unique_ptr<apache::thrift::Hand
   }
 }
 
-void SimpleServiceSvIf::concat(::std::string& /*_return*/, std::unique_ptr<::std::string> /*first*/, std::unique_ptr<::std::string> /*second*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::concat(::std::string& /*_return*/, std::unique_ptr<::std::string> /*first*/, std::unique_ptr<::std::string> /*second*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("concat");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> SimpleServiceSvIf::semifuture_concat(std::unique_ptr<::std::string> p_first, std::unique_ptr<::std::string> p_second) {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_concat(std::unique_ptr<::std::string> p_first, std::unique_ptr<::std::string> p_second) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_concat.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -211,13 +210,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> SimpleServiceSvIf::semifuture_
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> SimpleServiceSvIf::future_concat(std::unique_ptr<::std::string> p_first, std::unique_ptr<::std::string> p_second) {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_concat(std::unique_ptr<::std::string> p_first, std::unique_ptr<::std::string> p_second) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_concat.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_concat(std::move(p_first), std::move(p_second)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_concat(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_first, std::unique_ptr<::std::string> p_second) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_concat(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_first, std::unique_ptr<::std::string> p_second) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -260,23 +259,23 @@ void SimpleServiceSvIf::async_tm_concat(std::unique_ptr<apache::thrift::HandlerC
   }
 }
 
-::std::int32_t SimpleServiceSvIf::get_value(std::unique_ptr<::py3::simple::SimpleStruct> /*simple_struct*/) {
+::std::int32_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::get_value(std::unique_ptr<::py3::simple::SimpleStruct> /*simple_struct*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get_value");
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceSvIf::semifuture_get_value(std::unique_ptr<::py3::simple::SimpleStruct> p_simple_struct) {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_get_value(std::unique_ptr<::py3::simple::SimpleStruct> p_simple_struct) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_get_value.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return get_value(std::move(p_simple_struct));
 }
 
-folly::Future<::std::int32_t> SimpleServiceSvIf::future_get_value(std::unique_ptr<::py3::simple::SimpleStruct> p_simple_struct) {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_get_value(std::unique_ptr<::py3::simple::SimpleStruct> p_simple_struct) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_get_value.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_get_value(std::move(p_simple_struct)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_get_value(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::py3::simple::SimpleStruct> p_simple_struct) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_get_value(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::py3::simple::SimpleStruct> p_simple_struct) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -317,23 +316,23 @@ void SimpleServiceSvIf::async_tm_get_value(std::unique_ptr<apache::thrift::Handl
   }
 }
 
-bool SimpleServiceSvIf::negate(bool /*input*/) {
+bool apache::thrift::ServiceHandler<::py3::simple::SimpleService>::negate(bool /*input*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("negate");
 }
 
-folly::SemiFuture<bool> SimpleServiceSvIf::semifuture_negate(bool p_input) {
+folly::SemiFuture<bool> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_negate(bool p_input) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_negate.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return negate(p_input);
 }
 
-folly::Future<bool> SimpleServiceSvIf::future_negate(bool p_input) {
+folly::Future<bool> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_negate(bool p_input) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_negate.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_negate(p_input), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_negate(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, bool p_input) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_negate(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, bool p_input) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -374,23 +373,23 @@ void SimpleServiceSvIf::async_tm_negate(std::unique_ptr<apache::thrift::HandlerC
   }
 }
 
-::std::int8_t SimpleServiceSvIf::tiny(::std::int8_t /*input*/) {
+::std::int8_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::tiny(::std::int8_t /*input*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("tiny");
 }
 
-folly::SemiFuture<::std::int8_t> SimpleServiceSvIf::semifuture_tiny(::std::int8_t p_input) {
+folly::SemiFuture<::std::int8_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_tiny(::std::int8_t p_input) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_tiny.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return tiny(p_input);
 }
 
-folly::Future<::std::int8_t> SimpleServiceSvIf::future_tiny(::std::int8_t p_input) {
+folly::Future<::std::int8_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_tiny(::std::int8_t p_input) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_tiny.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_tiny(p_input), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_tiny(std::unique_ptr<apache::thrift::HandlerCallback<::std::int8_t>> callback, ::std::int8_t p_input) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_tiny(std::unique_ptr<apache::thrift::HandlerCallback<::std::int8_t>> callback, ::std::int8_t p_input) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -431,23 +430,23 @@ void SimpleServiceSvIf::async_tm_tiny(std::unique_ptr<apache::thrift::HandlerCal
   }
 }
 
-::std::int16_t SimpleServiceSvIf::small(::std::int16_t /*input*/) {
+::std::int16_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::small(::std::int16_t /*input*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("small");
 }
 
-folly::SemiFuture<::std::int16_t> SimpleServiceSvIf::semifuture_small(::std::int16_t p_input) {
+folly::SemiFuture<::std::int16_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_small(::std::int16_t p_input) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_small.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return small(p_input);
 }
 
-folly::Future<::std::int16_t> SimpleServiceSvIf::future_small(::std::int16_t p_input) {
+folly::Future<::std::int16_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_small(::std::int16_t p_input) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_small.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_small(p_input), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_small(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback, ::std::int16_t p_input) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_small(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback, ::std::int16_t p_input) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -488,23 +487,23 @@ void SimpleServiceSvIf::async_tm_small(std::unique_ptr<apache::thrift::HandlerCa
   }
 }
 
-::std::int64_t SimpleServiceSvIf::big(::std::int64_t /*input*/) {
+::std::int64_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::big(::std::int64_t /*input*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("big");
 }
 
-folly::SemiFuture<::std::int64_t> SimpleServiceSvIf::semifuture_big(::std::int64_t p_input) {
+folly::SemiFuture<::std::int64_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_big(::std::int64_t p_input) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_big.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return big(p_input);
 }
 
-folly::Future<::std::int64_t> SimpleServiceSvIf::future_big(::std::int64_t p_input) {
+folly::Future<::std::int64_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_big(::std::int64_t p_input) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_big.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_big(p_input), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_big(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, ::std::int64_t p_input) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_big(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, ::std::int64_t p_input) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -545,23 +544,23 @@ void SimpleServiceSvIf::async_tm_big(std::unique_ptr<apache::thrift::HandlerCall
   }
 }
 
-double SimpleServiceSvIf::two(double /*input*/) {
+double apache::thrift::ServiceHandler<::py3::simple::SimpleService>::two(double /*input*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("two");
 }
 
-folly::SemiFuture<double> SimpleServiceSvIf::semifuture_two(double p_input) {
+folly::SemiFuture<double> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_two(double p_input) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_two.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return two(p_input);
 }
 
-folly::Future<double> SimpleServiceSvIf::future_two(double p_input) {
+folly::Future<double> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_two(double p_input) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_two.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_two(p_input), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_two(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, double p_input) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_two(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, double p_input) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -602,24 +601,24 @@ void SimpleServiceSvIf::async_tm_two(std::unique_ptr<apache::thrift::HandlerCall
   }
 }
 
-void SimpleServiceSvIf::expected_exception() {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::expected_exception() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("expected_exception");
 }
 
-folly::SemiFuture<folly::Unit> SimpleServiceSvIf::semifuture_expected_exception() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_expected_exception() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_expected_exception.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   expected_exception();
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> SimpleServiceSvIf::future_expected_exception() {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_expected_exception() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_expected_exception.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_expected_exception(), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_expected_exception(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_expected_exception(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -661,23 +660,23 @@ void SimpleServiceSvIf::async_tm_expected_exception(std::unique_ptr<apache::thri
   }
 }
 
-::std::int32_t SimpleServiceSvIf::unexpected_exception() {
+::std::int32_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::unexpected_exception() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("unexpected_exception");
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceSvIf::semifuture_unexpected_exception() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_unexpected_exception() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_unexpected_exception.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return unexpected_exception();
 }
 
-folly::Future<::std::int32_t> SimpleServiceSvIf::future_unexpected_exception() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_unexpected_exception() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_unexpected_exception.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_unexpected_exception(), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_unexpected_exception(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_unexpected_exception(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -718,23 +717,23 @@ void SimpleServiceSvIf::async_tm_unexpected_exception(std::unique_ptr<apache::th
   }
 }
 
-::std::int32_t SimpleServiceSvIf::sum_i16_list(std::unique_ptr<::std::vector<::std::int16_t>> /*numbers*/) {
+::std::int32_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::sum_i16_list(std::unique_ptr<::std::vector<::std::int16_t>> /*numbers*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("sum_i16_list");
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceSvIf::semifuture_sum_i16_list(std::unique_ptr<::std::vector<::std::int16_t>> p_numbers) {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_sum_i16_list(std::unique_ptr<::std::vector<::std::int16_t>> p_numbers) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_sum_i16_list.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return sum_i16_list(std::move(p_numbers));
 }
 
-folly::Future<::std::int32_t> SimpleServiceSvIf::future_sum_i16_list(std::unique_ptr<::std::vector<::std::int16_t>> p_numbers) {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_sum_i16_list(std::unique_ptr<::std::vector<::std::int16_t>> p_numbers) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_sum_i16_list.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_sum_i16_list(std::move(p_numbers)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_sum_i16_list(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::vector<::std::int16_t>> p_numbers) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_sum_i16_list(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::vector<::std::int16_t>> p_numbers) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -775,23 +774,23 @@ void SimpleServiceSvIf::async_tm_sum_i16_list(std::unique_ptr<apache::thrift::Ha
   }
 }
 
-::std::int32_t SimpleServiceSvIf::sum_i32_list(std::unique_ptr<::std::vector<::std::int32_t>> /*numbers*/) {
+::std::int32_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::sum_i32_list(std::unique_ptr<::std::vector<::std::int32_t>> /*numbers*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("sum_i32_list");
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceSvIf::semifuture_sum_i32_list(std::unique_ptr<::std::vector<::std::int32_t>> p_numbers) {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_sum_i32_list(std::unique_ptr<::std::vector<::std::int32_t>> p_numbers) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_sum_i32_list.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return sum_i32_list(std::move(p_numbers));
 }
 
-folly::Future<::std::int32_t> SimpleServiceSvIf::future_sum_i32_list(std::unique_ptr<::std::vector<::std::int32_t>> p_numbers) {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_sum_i32_list(std::unique_ptr<::std::vector<::std::int32_t>> p_numbers) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_sum_i32_list.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_sum_i32_list(std::move(p_numbers)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_sum_i32_list(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::vector<::std::int32_t>> p_numbers) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_sum_i32_list(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::vector<::std::int32_t>> p_numbers) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -832,23 +831,23 @@ void SimpleServiceSvIf::async_tm_sum_i32_list(std::unique_ptr<apache::thrift::Ha
   }
 }
 
-::std::int32_t SimpleServiceSvIf::sum_i64_list(std::unique_ptr<::std::vector<::std::int64_t>> /*numbers*/) {
+::std::int32_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::sum_i64_list(std::unique_ptr<::std::vector<::std::int64_t>> /*numbers*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("sum_i64_list");
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceSvIf::semifuture_sum_i64_list(std::unique_ptr<::std::vector<::std::int64_t>> p_numbers) {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_sum_i64_list(std::unique_ptr<::std::vector<::std::int64_t>> p_numbers) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_sum_i64_list.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return sum_i64_list(std::move(p_numbers));
 }
 
-folly::Future<::std::int32_t> SimpleServiceSvIf::future_sum_i64_list(std::unique_ptr<::std::vector<::std::int64_t>> p_numbers) {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_sum_i64_list(std::unique_ptr<::std::vector<::std::int64_t>> p_numbers) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_sum_i64_list.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_sum_i64_list(std::move(p_numbers)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_sum_i64_list(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::vector<::std::int64_t>> p_numbers) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_sum_i64_list(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::vector<::std::int64_t>> p_numbers) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -889,11 +888,11 @@ void SimpleServiceSvIf::async_tm_sum_i64_list(std::unique_ptr<apache::thrift::Ha
   }
 }
 
-void SimpleServiceSvIf::concat_many(::std::string& /*_return*/, std::unique_ptr<::std::vector<::std::string>> /*words*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::concat_many(::std::string& /*_return*/, std::unique_ptr<::std::vector<::std::string>> /*words*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("concat_many");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> SimpleServiceSvIf::semifuture_concat_many(std::unique_ptr<::std::vector<::std::string>> p_words) {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_concat_many(std::unique_ptr<::std::vector<::std::string>> p_words) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_concat_many.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -901,13 +900,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> SimpleServiceSvIf::semifuture_
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> SimpleServiceSvIf::future_concat_many(std::unique_ptr<::std::vector<::std::string>> p_words) {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_concat_many(std::unique_ptr<::std::vector<::std::string>> p_words) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_concat_many.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_concat_many(std::move(p_words)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_concat_many(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::vector<::std::string>> p_words) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_concat_many(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::vector<::std::string>> p_words) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -950,23 +949,23 @@ void SimpleServiceSvIf::async_tm_concat_many(std::unique_ptr<apache::thrift::Han
   }
 }
 
-::std::int32_t SimpleServiceSvIf::count_structs(std::unique_ptr<::std::vector<::py3::simple::SimpleStruct>> /*items*/) {
+::std::int32_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::count_structs(std::unique_ptr<::std::vector<::py3::simple::SimpleStruct>> /*items*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("count_structs");
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceSvIf::semifuture_count_structs(std::unique_ptr<::std::vector<::py3::simple::SimpleStruct>> p_items) {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_count_structs(std::unique_ptr<::std::vector<::py3::simple::SimpleStruct>> p_items) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_count_structs.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return count_structs(std::move(p_items));
 }
 
-folly::Future<::std::int32_t> SimpleServiceSvIf::future_count_structs(std::unique_ptr<::std::vector<::py3::simple::SimpleStruct>> p_items) {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_count_structs(std::unique_ptr<::std::vector<::py3::simple::SimpleStruct>> p_items) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_count_structs.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_count_structs(std::move(p_items)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_count_structs(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::vector<::py3::simple::SimpleStruct>> p_items) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_count_structs(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::vector<::py3::simple::SimpleStruct>> p_items) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1007,23 +1006,23 @@ void SimpleServiceSvIf::async_tm_count_structs(std::unique_ptr<apache::thrift::H
   }
 }
 
-::std::int32_t SimpleServiceSvIf::sum_set(std::unique_ptr<::std::set<::std::int32_t>> /*numbers*/) {
+::std::int32_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::sum_set(std::unique_ptr<::std::set<::std::int32_t>> /*numbers*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("sum_set");
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceSvIf::semifuture_sum_set(std::unique_ptr<::std::set<::std::int32_t>> p_numbers) {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_sum_set(std::unique_ptr<::std::set<::std::int32_t>> p_numbers) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_sum_set.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return sum_set(std::move(p_numbers));
 }
 
-folly::Future<::std::int32_t> SimpleServiceSvIf::future_sum_set(std::unique_ptr<::std::set<::std::int32_t>> p_numbers) {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_sum_set(std::unique_ptr<::std::set<::std::int32_t>> p_numbers) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_sum_set.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_sum_set(std::move(p_numbers)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_sum_set(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::set<::std::int32_t>> p_numbers) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_sum_set(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::set<::std::int32_t>> p_numbers) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1064,23 +1063,23 @@ void SimpleServiceSvIf::async_tm_sum_set(std::unique_ptr<apache::thrift::Handler
   }
 }
 
-bool SimpleServiceSvIf::contains_word(std::unique_ptr<::std::set<::std::string>> /*words*/, std::unique_ptr<::std::string> /*word*/) {
+bool apache::thrift::ServiceHandler<::py3::simple::SimpleService>::contains_word(std::unique_ptr<::std::set<::std::string>> /*words*/, std::unique_ptr<::std::string> /*word*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("contains_word");
 }
 
-folly::SemiFuture<bool> SimpleServiceSvIf::semifuture_contains_word(std::unique_ptr<::std::set<::std::string>> p_words, std::unique_ptr<::std::string> p_word) {
+folly::SemiFuture<bool> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_contains_word(std::unique_ptr<::std::set<::std::string>> p_words, std::unique_ptr<::std::string> p_word) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_contains_word.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return contains_word(std::move(p_words), std::move(p_word));
 }
 
-folly::Future<bool> SimpleServiceSvIf::future_contains_word(std::unique_ptr<::std::set<::std::string>> p_words, std::unique_ptr<::std::string> p_word) {
+folly::Future<bool> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_contains_word(std::unique_ptr<::std::set<::std::string>> p_words, std::unique_ptr<::std::string> p_word) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_contains_word.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_contains_word(std::move(p_words), std::move(p_word)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_contains_word(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::std::set<::std::string>> p_words, std::unique_ptr<::std::string> p_word) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_contains_word(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::std::set<::std::string>> p_words, std::unique_ptr<::std::string> p_word) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1121,11 +1120,11 @@ void SimpleServiceSvIf::async_tm_contains_word(std::unique_ptr<apache::thrift::H
   }
 }
 
-void SimpleServiceSvIf::get_map_value(::std::string& /*_return*/, std::unique_ptr<::std::map<::std::string, ::std::string>> /*words*/, std::unique_ptr<::std::string> /*key*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::get_map_value(::std::string& /*_return*/, std::unique_ptr<::std::map<::std::string, ::std::string>> /*words*/, std::unique_ptr<::std::string> /*key*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get_map_value");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> SimpleServiceSvIf::semifuture_get_map_value(std::unique_ptr<::std::map<::std::string, ::std::string>> p_words, std::unique_ptr<::std::string> p_key) {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_get_map_value(std::unique_ptr<::std::map<::std::string, ::std::string>> p_words, std::unique_ptr<::std::string> p_key) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_get_map_value.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -1133,13 +1132,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> SimpleServiceSvIf::semifuture_
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> SimpleServiceSvIf::future_get_map_value(std::unique_ptr<::std::map<::std::string, ::std::string>> p_words, std::unique_ptr<::std::string> p_key) {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_get_map_value(std::unique_ptr<::std::map<::std::string, ::std::string>> p_words, std::unique_ptr<::std::string> p_key) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_get_map_value.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_get_map_value(std::move(p_words), std::move(p_key)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_get_map_value(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::map<::std::string, ::std::string>> p_words, std::unique_ptr<::std::string> p_key) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_get_map_value(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::map<::std::string, ::std::string>> p_words, std::unique_ptr<::std::string> p_key) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1182,23 +1181,23 @@ void SimpleServiceSvIf::async_tm_get_map_value(std::unique_ptr<apache::thrift::H
   }
 }
 
-::std::int16_t SimpleServiceSvIf::map_length(std::unique_ptr<::std::map<::std::string, ::py3::simple::SimpleStruct>> /*items*/) {
+::std::int16_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::map_length(std::unique_ptr<::std::map<::std::string, ::py3::simple::SimpleStruct>> /*items*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("map_length");
 }
 
-folly::SemiFuture<::std::int16_t> SimpleServiceSvIf::semifuture_map_length(std::unique_ptr<::std::map<::std::string, ::py3::simple::SimpleStruct>> p_items) {
+folly::SemiFuture<::std::int16_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_map_length(std::unique_ptr<::std::map<::std::string, ::py3::simple::SimpleStruct>> p_items) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_map_length.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return map_length(std::move(p_items));
 }
 
-folly::Future<::std::int16_t> SimpleServiceSvIf::future_map_length(std::unique_ptr<::std::map<::std::string, ::py3::simple::SimpleStruct>> p_items) {
+folly::Future<::std::int16_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_map_length(std::unique_ptr<::std::map<::std::string, ::py3::simple::SimpleStruct>> p_items) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_map_length.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_map_length(std::move(p_items)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_map_length(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback, std::unique_ptr<::std::map<::std::string, ::py3::simple::SimpleStruct>> p_items) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_map_length(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback, std::unique_ptr<::std::map<::std::string, ::py3::simple::SimpleStruct>> p_items) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1239,23 +1238,23 @@ void SimpleServiceSvIf::async_tm_map_length(std::unique_ptr<apache::thrift::Hand
   }
 }
 
-::std::int16_t SimpleServiceSvIf::sum_map_values(std::unique_ptr<::std::map<::std::string, ::std::int16_t>> /*items*/) {
+::std::int16_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::sum_map_values(std::unique_ptr<::std::map<::std::string, ::std::int16_t>> /*items*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("sum_map_values");
 }
 
-folly::SemiFuture<::std::int16_t> SimpleServiceSvIf::semifuture_sum_map_values(std::unique_ptr<::std::map<::std::string, ::std::int16_t>> p_items) {
+folly::SemiFuture<::std::int16_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_sum_map_values(std::unique_ptr<::std::map<::std::string, ::std::int16_t>> p_items) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_sum_map_values.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return sum_map_values(std::move(p_items));
 }
 
-folly::Future<::std::int16_t> SimpleServiceSvIf::future_sum_map_values(std::unique_ptr<::std::map<::std::string, ::std::int16_t>> p_items) {
+folly::Future<::std::int16_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_sum_map_values(std::unique_ptr<::std::map<::std::string, ::std::int16_t>> p_items) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_sum_map_values.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_sum_map_values(std::move(p_items)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_sum_map_values(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback, std::unique_ptr<::std::map<::std::string, ::std::int16_t>> p_items) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_sum_map_values(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback, std::unique_ptr<::std::map<::std::string, ::std::int16_t>> p_items) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1296,23 +1295,23 @@ void SimpleServiceSvIf::async_tm_sum_map_values(std::unique_ptr<apache::thrift::
   }
 }
 
-::std::int32_t SimpleServiceSvIf::complex_sum_i32(std::unique_ptr<::py3::simple::ComplexStruct> /*counter*/) {
+::std::int32_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::complex_sum_i32(std::unique_ptr<::py3::simple::ComplexStruct> /*counter*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("complex_sum_i32");
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceSvIf::semifuture_complex_sum_i32(std::unique_ptr<::py3::simple::ComplexStruct> p_counter) {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_complex_sum_i32(std::unique_ptr<::py3::simple::ComplexStruct> p_counter) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_complex_sum_i32.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return complex_sum_i32(std::move(p_counter));
 }
 
-folly::Future<::std::int32_t> SimpleServiceSvIf::future_complex_sum_i32(std::unique_ptr<::py3::simple::ComplexStruct> p_counter) {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_complex_sum_i32(std::unique_ptr<::py3::simple::ComplexStruct> p_counter) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_complex_sum_i32.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_complex_sum_i32(std::move(p_counter)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_complex_sum_i32(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::py3::simple::ComplexStruct> p_counter) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_complex_sum_i32(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::py3::simple::ComplexStruct> p_counter) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1353,11 +1352,11 @@ void SimpleServiceSvIf::async_tm_complex_sum_i32(std::unique_ptr<apache::thrift:
   }
 }
 
-void SimpleServiceSvIf::repeat_name(::std::string& /*_return*/, std::unique_ptr<::py3::simple::ComplexStruct> /*counter*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::repeat_name(::std::string& /*_return*/, std::unique_ptr<::py3::simple::ComplexStruct> /*counter*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("repeat_name");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> SimpleServiceSvIf::semifuture_repeat_name(std::unique_ptr<::py3::simple::ComplexStruct> p_counter) {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_repeat_name(std::unique_ptr<::py3::simple::ComplexStruct> p_counter) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_repeat_name.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -1365,13 +1364,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> SimpleServiceSvIf::semifuture_
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> SimpleServiceSvIf::future_repeat_name(std::unique_ptr<::py3::simple::ComplexStruct> p_counter) {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_repeat_name(std::unique_ptr<::py3::simple::ComplexStruct> p_counter) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_repeat_name.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_repeat_name(std::move(p_counter)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_repeat_name(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::py3::simple::ComplexStruct> p_counter) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_repeat_name(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::py3::simple::ComplexStruct> p_counter) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1414,11 +1413,11 @@ void SimpleServiceSvIf::async_tm_repeat_name(std::unique_ptr<apache::thrift::Han
   }
 }
 
-void SimpleServiceSvIf::get_struct(::py3::simple::SimpleStruct& /*_return*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::get_struct(::py3::simple::SimpleStruct& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get_struct");
 }
 
-folly::SemiFuture<std::unique_ptr<::py3::simple::SimpleStruct>> SimpleServiceSvIf::semifuture_get_struct() {
+folly::SemiFuture<std::unique_ptr<::py3::simple::SimpleStruct>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_get_struct() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_get_struct.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::py3::simple::SimpleStruct>();
@@ -1426,13 +1425,13 @@ folly::SemiFuture<std::unique_ptr<::py3::simple::SimpleStruct>> SimpleServiceSvI
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::py3::simple::SimpleStruct>> SimpleServiceSvIf::future_get_struct() {
+folly::Future<std::unique_ptr<::py3::simple::SimpleStruct>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_get_struct() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_get_struct.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_get_struct(), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_get_struct(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::py3::simple::SimpleStruct>>> callback) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_get_struct(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::py3::simple::SimpleStruct>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1475,11 +1474,11 @@ void SimpleServiceSvIf::async_tm_get_struct(std::unique_ptr<apache::thrift::Hand
   }
 }
 
-void SimpleServiceSvIf::fib(::std::vector<::std::int32_t>& /*_return*/, ::std::int16_t /*n*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::fib(::std::vector<::std::int32_t>& /*_return*/, ::std::int16_t /*n*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("fib");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::vector<::std::int32_t>>> SimpleServiceSvIf::semifuture_fib(::std::int16_t p_n) {
+folly::SemiFuture<std::unique_ptr<::std::vector<::std::int32_t>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_fib(::std::int16_t p_n) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_fib.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::vector<::std::int32_t>>();
@@ -1487,13 +1486,13 @@ folly::SemiFuture<std::unique_ptr<::std::vector<::std::int32_t>>> SimpleServiceS
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::vector<::std::int32_t>>> SimpleServiceSvIf::future_fib(::std::int16_t p_n) {
+folly::Future<std::unique_ptr<::std::vector<::std::int32_t>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_fib(::std::int16_t p_n) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_fib.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_fib(p_n), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_fib(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::std::int32_t>>>> callback, ::std::int16_t p_n) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_fib(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::std::int32_t>>>> callback, ::std::int16_t p_n) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1536,11 +1535,11 @@ void SimpleServiceSvIf::async_tm_fib(std::unique_ptr<apache::thrift::HandlerCall
   }
 }
 
-void SimpleServiceSvIf::unique_words(::std::set<::std::string>& /*_return*/, std::unique_ptr<::std::vector<::std::string>> /*words*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::unique_words(::std::set<::std::string>& /*_return*/, std::unique_ptr<::std::vector<::std::string>> /*words*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("unique_words");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::set<::std::string>>> SimpleServiceSvIf::semifuture_unique_words(std::unique_ptr<::std::vector<::std::string>> p_words) {
+folly::SemiFuture<std::unique_ptr<::std::set<::std::string>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_unique_words(std::unique_ptr<::std::vector<::std::string>> p_words) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_unique_words.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::set<::std::string>>();
@@ -1548,13 +1547,13 @@ folly::SemiFuture<std::unique_ptr<::std::set<::std::string>>> SimpleServiceSvIf:
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::set<::std::string>>> SimpleServiceSvIf::future_unique_words(std::unique_ptr<::std::vector<::std::string>> p_words) {
+folly::Future<std::unique_ptr<::std::set<::std::string>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_unique_words(std::unique_ptr<::std::vector<::std::string>> p_words) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_unique_words.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_unique_words(std::move(p_words)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_unique_words(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::string>>>> callback, std::unique_ptr<::std::vector<::std::string>> p_words) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_unique_words(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::string>>>> callback, std::unique_ptr<::std::vector<::std::string>> p_words) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1597,11 +1596,11 @@ void SimpleServiceSvIf::async_tm_unique_words(std::unique_ptr<apache::thrift::Ha
   }
 }
 
-void SimpleServiceSvIf::words_count(::std::map<::std::string, ::std::int16_t>& /*_return*/, std::unique_ptr<::std::vector<::std::string>> /*words*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::words_count(::std::map<::std::string, ::std::int16_t>& /*_return*/, std::unique_ptr<::std::vector<::std::string>> /*words*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("words_count");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int16_t>>> SimpleServiceSvIf::semifuture_words_count(std::unique_ptr<::std::vector<::std::string>> p_words) {
+folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int16_t>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_words_count(std::unique_ptr<::std::vector<::std::string>> p_words) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_words_count.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::map<::std::string, ::std::int16_t>>();
@@ -1609,13 +1608,13 @@ folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int16_t>>> Si
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int16_t>>> SimpleServiceSvIf::future_words_count(std::unique_ptr<::std::vector<::std::string>> p_words) {
+folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int16_t>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_words_count(std::unique_ptr<::std::vector<::std::string>> p_words) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_words_count.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_words_count(std::move(p_words)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_words_count(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int16_t>>>> callback, std::unique_ptr<::std::vector<::std::string>> p_words) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_words_count(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int16_t>>>> callback, std::unique_ptr<::std::vector<::std::string>> p_words) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1658,23 +1657,23 @@ void SimpleServiceSvIf::async_tm_words_count(std::unique_ptr<apache::thrift::Han
   }
 }
 
-::py3::simple::AnEnum SimpleServiceSvIf::set_enum(::py3::simple::AnEnum /*in_enum*/) {
+::py3::simple::AnEnum apache::thrift::ServiceHandler<::py3::simple::SimpleService>::set_enum(::py3::simple::AnEnum /*in_enum*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("set_enum");
 }
 
-folly::SemiFuture<::py3::simple::AnEnum> SimpleServiceSvIf::semifuture_set_enum(::py3::simple::AnEnum p_in_enum) {
+folly::SemiFuture<::py3::simple::AnEnum> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_set_enum(::py3::simple::AnEnum p_in_enum) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_set_enum.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return set_enum(p_in_enum);
 }
 
-folly::Future<::py3::simple::AnEnum> SimpleServiceSvIf::future_set_enum(::py3::simple::AnEnum p_in_enum) {
+folly::Future<::py3::simple::AnEnum> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_set_enum(::py3::simple::AnEnum p_in_enum) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_set_enum.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_set_enum(p_in_enum), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_set_enum(std::unique_ptr<apache::thrift::HandlerCallback<::py3::simple::AnEnum>> callback, ::py3::simple::AnEnum p_in_enum) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_set_enum(std::unique_ptr<apache::thrift::HandlerCallback<::py3::simple::AnEnum>> callback, ::py3::simple::AnEnum p_in_enum) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1715,11 +1714,11 @@ void SimpleServiceSvIf::async_tm_set_enum(std::unique_ptr<apache::thrift::Handle
   }
 }
 
-void SimpleServiceSvIf::list_of_lists(::std::vector<::std::vector<::std::int32_t>>& /*_return*/, ::std::int16_t /*num_lists*/, ::std::int16_t /*num_items*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::list_of_lists(::std::vector<::std::vector<::std::int32_t>>& /*_return*/, ::std::int16_t /*num_lists*/, ::std::int16_t /*num_items*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("list_of_lists");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::vector<::std::vector<::std::int32_t>>>> SimpleServiceSvIf::semifuture_list_of_lists(::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+folly::SemiFuture<std::unique_ptr<::std::vector<::std::vector<::std::int32_t>>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_list_of_lists(::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_list_of_lists.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::vector<::std::vector<::std::int32_t>>>();
@@ -1727,13 +1726,13 @@ folly::SemiFuture<std::unique_ptr<::std::vector<::std::vector<::std::int32_t>>>>
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::vector<::std::vector<::std::int32_t>>>> SimpleServiceSvIf::future_list_of_lists(::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+folly::Future<std::unique_ptr<::std::vector<::std::vector<::std::int32_t>>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_list_of_lists(::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_list_of_lists.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_list_of_lists(p_num_lists, p_num_items), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_list_of_lists(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::std::vector<::std::int32_t>>>>> callback, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_list_of_lists(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::std::vector<::std::int32_t>>>>> callback, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1776,11 +1775,11 @@ void SimpleServiceSvIf::async_tm_list_of_lists(std::unique_ptr<apache::thrift::H
   }
 }
 
-void SimpleServiceSvIf::word_character_frequency(::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>& /*_return*/, std::unique_ptr<::std::string> /*sentence*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::word_character_frequency(::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>& /*_return*/, std::unique_ptr<::std::string> /*sentence*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("word_character_frequency");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>> SimpleServiceSvIf::semifuture_word_character_frequency(std::unique_ptr<::std::string> p_sentence) {
+folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_word_character_frequency(std::unique_ptr<::std::string> p_sentence) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_word_character_frequency.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>();
@@ -1788,13 +1787,13 @@ folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::map<::std::st
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>> SimpleServiceSvIf::future_word_character_frequency(std::unique_ptr<::std::string> p_sentence) {
+folly::Future<std::unique_ptr<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_word_character_frequency(std::unique_ptr<::std::string> p_sentence) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_word_character_frequency.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_word_character_frequency(std::move(p_sentence)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_word_character_frequency(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>> callback, std::unique_ptr<::std::string> p_sentence) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_word_character_frequency(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>> callback, std::unique_ptr<::std::string> p_sentence) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1837,11 +1836,11 @@ void SimpleServiceSvIf::async_tm_word_character_frequency(std::unique_ptr<apache
   }
 }
 
-void SimpleServiceSvIf::list_of_sets(::std::vector<::std::set<::std::string>>& /*_return*/, std::unique_ptr<::std::string> /*some_words*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::list_of_sets(::std::vector<::std::set<::std::string>>& /*_return*/, std::unique_ptr<::std::string> /*some_words*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("list_of_sets");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::vector<::std::set<::std::string>>>> SimpleServiceSvIf::semifuture_list_of_sets(std::unique_ptr<::std::string> p_some_words) {
+folly::SemiFuture<std::unique_ptr<::std::vector<::std::set<::std::string>>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_list_of_sets(std::unique_ptr<::std::string> p_some_words) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_list_of_sets.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::vector<::std::set<::std::string>>>();
@@ -1849,13 +1848,13 @@ folly::SemiFuture<std::unique_ptr<::std::vector<::std::set<::std::string>>>> Sim
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::vector<::std::set<::std::string>>>> SimpleServiceSvIf::future_list_of_sets(std::unique_ptr<::std::string> p_some_words) {
+folly::Future<std::unique_ptr<::std::vector<::std::set<::std::string>>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_list_of_sets(std::unique_ptr<::std::string> p_some_words) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_list_of_sets.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_list_of_sets(std::move(p_some_words)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_list_of_sets(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::std::set<::std::string>>>>> callback, std::unique_ptr<::std::string> p_some_words) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_list_of_sets(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::std::set<::std::string>>>>> callback, std::unique_ptr<::std::string> p_some_words) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1898,23 +1897,23 @@ void SimpleServiceSvIf::async_tm_list_of_sets(std::unique_ptr<apache::thrift::Ha
   }
 }
 
-::std::int32_t SimpleServiceSvIf::nested_map_argument(std::unique_ptr<::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>> /*struct_map*/) {
+::std::int32_t apache::thrift::ServiceHandler<::py3::simple::SimpleService>::nested_map_argument(std::unique_ptr<::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>> /*struct_map*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("nested_map_argument");
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceSvIf::semifuture_nested_map_argument(std::unique_ptr<::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>> p_struct_map) {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_nested_map_argument(std::unique_ptr<::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>> p_struct_map) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_nested_map_argument.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return nested_map_argument(std::move(p_struct_map));
 }
 
-folly::Future<::std::int32_t> SimpleServiceSvIf::future_nested_map_argument(std::unique_ptr<::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>> p_struct_map) {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_nested_map_argument(std::unique_ptr<::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>> p_struct_map) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_nested_map_argument.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_nested_map_argument(std::move(p_struct_map)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_nested_map_argument(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>> p_struct_map) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_nested_map_argument(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>> p_struct_map) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1955,11 +1954,11 @@ void SimpleServiceSvIf::async_tm_nested_map_argument(std::unique_ptr<apache::thr
   }
 }
 
-void SimpleServiceSvIf::make_sentence(::std::string& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::string>>> /*word_chars*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::make_sentence(::std::string& /*_return*/, std::unique_ptr<::std::vector<::std::vector<::std::string>>> /*word_chars*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("make_sentence");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> SimpleServiceSvIf::semifuture_make_sentence(std::unique_ptr<::std::vector<::std::vector<::std::string>>> p_word_chars) {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_make_sentence(std::unique_ptr<::std::vector<::std::vector<::std::string>>> p_word_chars) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_make_sentence.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -1967,13 +1966,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> SimpleServiceSvIf::semifuture_
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> SimpleServiceSvIf::future_make_sentence(std::unique_ptr<::std::vector<::std::vector<::std::string>>> p_word_chars) {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_make_sentence(std::unique_ptr<::std::vector<::std::vector<::std::string>>> p_word_chars) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_make_sentence.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_make_sentence(std::move(p_word_chars)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_make_sentence(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::vector<::std::vector<::std::string>>> p_word_chars) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_make_sentence(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::vector<::std::vector<::std::string>>> p_word_chars) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -2016,11 +2015,11 @@ void SimpleServiceSvIf::async_tm_make_sentence(std::unique_ptr<apache::thrift::H
   }
 }
 
-void SimpleServiceSvIf::get_union(::std::set<::std::int32_t>& /*_return*/, std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> /*sets*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::get_union(::std::set<::std::int32_t>& /*_return*/, std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> /*sets*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get_union");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::set<::std::int32_t>>> SimpleServiceSvIf::semifuture_get_union(std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> p_sets) {
+folly::SemiFuture<std::unique_ptr<::std::set<::std::int32_t>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_get_union(std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> p_sets) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_get_union.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::set<::std::int32_t>>();
@@ -2028,13 +2027,13 @@ folly::SemiFuture<std::unique_ptr<::std::set<::std::int32_t>>> SimpleServiceSvIf
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::set<::std::int32_t>>> SimpleServiceSvIf::future_get_union(std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> p_sets) {
+folly::Future<std::unique_ptr<::std::set<::std::int32_t>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_get_union(std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> p_sets) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_get_union.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_get_union(std::move(p_sets)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_get_union(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::int32_t>>>> callback, std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> p_sets) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_get_union(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::int32_t>>>> callback, std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> p_sets) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -2077,11 +2076,11 @@ void SimpleServiceSvIf::async_tm_get_union(std::unique_ptr<apache::thrift::Handl
   }
 }
 
-void SimpleServiceSvIf::get_keys(::std::set<::std::string>& /*_return*/, std::unique_ptr<::std::vector<::std::map<::std::string, ::std::string>>> /*string_map*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::get_keys(::std::set<::std::string>& /*_return*/, std::unique_ptr<::std::vector<::std::map<::std::string, ::std::string>>> /*string_map*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get_keys");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::set<::std::string>>> SimpleServiceSvIf::semifuture_get_keys(std::unique_ptr<::std::vector<::std::map<::std::string, ::std::string>>> p_string_map) {
+folly::SemiFuture<std::unique_ptr<::std::set<::std::string>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_get_keys(std::unique_ptr<::std::vector<::std::map<::std::string, ::std::string>>> p_string_map) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_get_keys.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::set<::std::string>>();
@@ -2089,13 +2088,13 @@ folly::SemiFuture<std::unique_ptr<::std::set<::std::string>>> SimpleServiceSvIf:
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::set<::std::string>>> SimpleServiceSvIf::future_get_keys(std::unique_ptr<::std::vector<::std::map<::std::string, ::std::string>>> p_string_map) {
+folly::Future<std::unique_ptr<::std::set<::std::string>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_get_keys(std::unique_ptr<::std::vector<::std::map<::std::string, ::std::string>>> p_string_map) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_get_keys.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_get_keys(std::move(p_string_map)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_get_keys(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::string>>>> callback, std::unique_ptr<::std::vector<::std::map<::std::string, ::std::string>>> p_string_map) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_get_keys(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::string>>>> callback, std::unique_ptr<::std::vector<::std::map<::std::string, ::std::string>>> p_string_map) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -2138,23 +2137,23 @@ void SimpleServiceSvIf::async_tm_get_keys(std::unique_ptr<apache::thrift::Handle
   }
 }
 
-double SimpleServiceSvIf::lookup_double(::std::int32_t /*key*/) {
+double apache::thrift::ServiceHandler<::py3::simple::SimpleService>::lookup_double(::std::int32_t /*key*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("lookup_double");
 }
 
-folly::SemiFuture<double> SimpleServiceSvIf::semifuture_lookup_double(::std::int32_t p_key) {
+folly::SemiFuture<double> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_lookup_double(::std::int32_t p_key) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_lookup_double.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return lookup_double(p_key);
 }
 
-folly::Future<double> SimpleServiceSvIf::future_lookup_double(::std::int32_t p_key) {
+folly::Future<double> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_lookup_double(::std::int32_t p_key) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_lookup_double.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_lookup_double(p_key), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_lookup_double(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, ::std::int32_t p_key) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_lookup_double(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, ::std::int32_t p_key) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -2195,11 +2194,11 @@ void SimpleServiceSvIf::async_tm_lookup_double(std::unique_ptr<apache::thrift::H
   }
 }
 
-void SimpleServiceSvIf::retrieve_binary(::std::string& /*_return*/, std::unique_ptr<::std::string> /*something*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::retrieve_binary(::std::string& /*_return*/, std::unique_ptr<::std::string> /*something*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("retrieve_binary");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> SimpleServiceSvIf::semifuture_retrieve_binary(std::unique_ptr<::std::string> p_something) {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_retrieve_binary(std::unique_ptr<::std::string> p_something) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_retrieve_binary.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -2207,13 +2206,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> SimpleServiceSvIf::semifuture_
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> SimpleServiceSvIf::future_retrieve_binary(std::unique_ptr<::std::string> p_something) {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_retrieve_binary(std::unique_ptr<::std::string> p_something) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_retrieve_binary.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_retrieve_binary(std::move(p_something)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_retrieve_binary(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_something) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_retrieve_binary(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_something) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -2256,11 +2255,11 @@ void SimpleServiceSvIf::async_tm_retrieve_binary(std::unique_ptr<apache::thrift:
   }
 }
 
-void SimpleServiceSvIf::contain_binary(::std::set<::std::string>& /*_return*/, std::unique_ptr<::std::vector<::std::string>> /*binaries*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::contain_binary(::std::set<::std::string>& /*_return*/, std::unique_ptr<::std::vector<::std::string>> /*binaries*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("contain_binary");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::set<::std::string>>> SimpleServiceSvIf::semifuture_contain_binary(std::unique_ptr<::std::vector<::std::string>> p_binaries) {
+folly::SemiFuture<std::unique_ptr<::std::set<::std::string>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_contain_binary(std::unique_ptr<::std::vector<::std::string>> p_binaries) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_contain_binary.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::set<::std::string>>();
@@ -2268,13 +2267,13 @@ folly::SemiFuture<std::unique_ptr<::std::set<::std::string>>> SimpleServiceSvIf:
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::set<::std::string>>> SimpleServiceSvIf::future_contain_binary(std::unique_ptr<::std::vector<::std::string>> p_binaries) {
+folly::Future<std::unique_ptr<::std::set<::std::string>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_contain_binary(std::unique_ptr<::std::vector<::std::string>> p_binaries) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_contain_binary.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_contain_binary(std::move(p_binaries)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_contain_binary(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::string>>>> callback, std::unique_ptr<::std::vector<::std::string>> p_binaries) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_contain_binary(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::string>>>> callback, std::unique_ptr<::std::vector<::std::string>> p_binaries) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -2317,11 +2316,11 @@ void SimpleServiceSvIf::async_tm_contain_binary(std::unique_ptr<apache::thrift::
   }
 }
 
-void SimpleServiceSvIf::contain_enum(::std::vector<::py3::simple::AnEnum>& /*_return*/, std::unique_ptr<::std::vector<::py3::simple::AnEnum>> /*the_enum*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::contain_enum(::std::vector<::py3::simple::AnEnum>& /*_return*/, std::unique_ptr<::std::vector<::py3::simple::AnEnum>> /*the_enum*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("contain_enum");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::vector<::py3::simple::AnEnum>>> SimpleServiceSvIf::semifuture_contain_enum(std::unique_ptr<::std::vector<::py3::simple::AnEnum>> p_the_enum) {
+folly::SemiFuture<std::unique_ptr<::std::vector<::py3::simple::AnEnum>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_contain_enum(std::unique_ptr<::std::vector<::py3::simple::AnEnum>> p_the_enum) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_contain_enum.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::vector<::py3::simple::AnEnum>>();
@@ -2329,13 +2328,13 @@ folly::SemiFuture<std::unique_ptr<::std::vector<::py3::simple::AnEnum>>> SimpleS
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::vector<::py3::simple::AnEnum>>> SimpleServiceSvIf::future_contain_enum(std::unique_ptr<::std::vector<::py3::simple::AnEnum>> p_the_enum) {
+folly::Future<std::unique_ptr<::std::vector<::py3::simple::AnEnum>>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_contain_enum(std::unique_ptr<::std::vector<::py3::simple::AnEnum>> p_the_enum) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_contain_enum.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_contain_enum(std::move(p_the_enum)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_contain_enum(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::py3::simple::AnEnum>>>> callback, std::unique_ptr<::std::vector<::py3::simple::AnEnum>> p_the_enum) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_contain_enum(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::py3::simple::AnEnum>>>> callback, std::unique_ptr<::std::vector<::py3::simple::AnEnum>> p_the_enum) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -2378,11 +2377,11 @@ void SimpleServiceSvIf::async_tm_contain_enum(std::unique_ptr<apache::thrift::Ha
   }
 }
 
-void SimpleServiceSvIf::get_binary_union_struct(::py3::simple::BinaryUnionStruct& /*_return*/, std::unique_ptr<::py3::simple::BinaryUnion> /*u*/) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::get_binary_union_struct(::py3::simple::BinaryUnionStruct& /*_return*/, std::unique_ptr<::py3::simple::BinaryUnion> /*u*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get_binary_union_struct");
 }
 
-folly::SemiFuture<std::unique_ptr<::py3::simple::BinaryUnionStruct>> SimpleServiceSvIf::semifuture_get_binary_union_struct(std::unique_ptr<::py3::simple::BinaryUnion> p_u) {
+folly::SemiFuture<std::unique_ptr<::py3::simple::BinaryUnionStruct>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::semifuture_get_binary_union_struct(std::unique_ptr<::py3::simple::BinaryUnion> p_u) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_get_binary_union_struct.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::py3::simple::BinaryUnionStruct>();
@@ -2390,13 +2389,13 @@ folly::SemiFuture<std::unique_ptr<::py3::simple::BinaryUnionStruct>> SimpleServi
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::py3::simple::BinaryUnionStruct>> SimpleServiceSvIf::future_get_binary_union_struct(std::unique_ptr<::py3::simple::BinaryUnion> p_u) {
+folly::Future<std::unique_ptr<::py3::simple::BinaryUnionStruct>> apache::thrift::ServiceHandler<::py3::simple::SimpleService>::future_get_binary_union_struct(std::unique_ptr<::py3::simple::BinaryUnion> p_u) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_get_binary_union_struct.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_get_binary_union_struct(std::move(p_u)), getInternalKeepAlive());
 }
 
-void SimpleServiceSvIf::async_tm_get_binary_union_struct(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::py3::simple::BinaryUnionStruct>>> callback, std::unique_ptr<::py3::simple::BinaryUnion> p_u) {
+void apache::thrift::ServiceHandler<::py3::simple::SimpleService>::async_tm_get_binary_union_struct(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::py3::simple::BinaryUnionStruct>>> callback, std::unique_ptr<::py3::simple::BinaryUnion> p_u) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -2438,6 +2437,9 @@ void SimpleServiceSvIf::async_tm_get_binary_union_struct(std::unique_ptr<apache:
     callback->exception(std::current_exception());
   }
 }
+
+
+namespace py3 { namespace simple {
 
 ::std::int32_t SimpleServiceSvNull::get_five() {
   return 0;
@@ -2568,13 +2570,12 @@ void SimpleServiceSvNull::contain_enum(::std::vector<::py3::simple::AnEnum>& /*_
 void SimpleServiceSvNull::get_binary_union_struct(::py3::simple::BinaryUnionStruct& /*_return*/, std::unique_ptr<::py3::simple::BinaryUnion> /*u*/) {}
 
 
-
 const char* SimpleServiceAsyncProcessor::getServiceName() {
   return "SimpleService";
 }
 
 void SimpleServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<SimpleServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>>::gen(response);
 }
 
 void SimpleServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

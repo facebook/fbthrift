@@ -24,6 +24,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class MyServicePrioChild;
 class MyServicePrioChildAsyncProcessor;
 
 class MyServicePrioChildServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -31,12 +32,15 @@ class MyServicePrioChildServiceInfoHolder : public apache::thrift::ServiceInfoHo
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+} // cpp2
 
-class MyServicePrioChildSvIf : virtual public ::cpp2::MyServicePrioParentSvIf {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::MyServicePrioChild> : virtual public ::cpp2::MyServicePrioParentSvIf {
  public:
   std::string_view getGeneratedName() const override { return "MyServicePrioChild"; }
 
-  typedef MyServicePrioChildAsyncProcessor ProcessorType;
+  typedef ::cpp2::MyServicePrioChildAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -46,10 +50,16 @@ class MyServicePrioChildSvIf : virtual public ::cpp2::MyServicePrioParentSvIf {
   virtual folly::SemiFuture<folly::Unit> semifuture_pang();
   virtual void async_tm_pang(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
  private:
-  static MyServicePrioChildServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::cpp2::MyServicePrioChildServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_pang{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class MyServicePrioChildSvIf : public ::apache::thrift::ServiceHandler<MyServicePrioChild> {};
+} // cpp2
+namespace cpp2 {
 class MyServicePrioChildSvNull : public MyServicePrioChildSvIf, virtual public ::cpp2::MyServicePrioParentSvIf {
  public:
   void pang() override;
@@ -61,7 +71,7 @@ class MyServicePrioChildAsyncProcessor : public ::cpp2::MyServicePrioParentAsync
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = ::cpp2::MyServicePrioParentAsyncProcessor;
  protected:
-  MyServicePrioChildSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::cpp2::MyServicePrioChild>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -87,7 +97,7 @@ class MyServicePrioChildAsyncProcessor : public ::cpp2::MyServicePrioParentAsync
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_pang(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  MyServicePrioChildAsyncProcessor(MyServicePrioChildSvIf* iface) :
+  MyServicePrioChildAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::MyServicePrioChild>* iface) :
       ::cpp2::MyServicePrioParentAsyncProcessor(iface),
       iface_(iface) {}
   ~MyServicePrioChildAsyncProcessor() override {}

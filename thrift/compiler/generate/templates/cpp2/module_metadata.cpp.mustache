@@ -140,7 +140,7 @@ void ExceptionMetadata<<%struct:cpp_fullname%>>::gen(ThriftMetadata& metadata) {
 <%/program:structs%>
 <%#program:services%>
 <%#service:functions%><%^function:starts_interaction?%>
-void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:cpp_name%>SvIf>::gen_<%function:cpp_name%>(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::<% > service_common/service_class_name%>>::gen_<%function:cpp_name%>(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "<%function:name%>";
@@ -171,7 +171,7 @@ func.exceptions_ref()->push_back(std::move(<% > metadata/func_field_name%>));
 }
 <%/function:starts_interaction?%><%/service:functions%>
 
-void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:cpp_name%>SvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::<% > service_common/service_class_name%>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -181,14 +181,14 @@ void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:cpp_name%
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:cpp_name%>SvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::<% > service_common/service_class_name%>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService <%service:metadata_name%>;
   <%service:metadata_name%>.name_ref() = "<%program:name%>.<%service:name%>";
 <%#service:functions?%>
   static const ThriftFunctionGenerator functions[] = {
 <%#service:functions%><%^function:starts_interaction?%>
-    ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:cpp_name%>SvIf>::gen_<%function:cpp_name%>,
+    ServiceMetadata<::<% > service_common/service_class_name%>>::gen_<%function:cpp_name%>,
 <%/function:starts_interaction?%><%/service:functions%>
   };
   for (auto& function_gen : functions) {
@@ -201,7 +201,7 @@ const ThriftServiceContextRef* ServiceMetadata<::<% > common/service_namespace_c
 <%#service:extends?%>
   <%service:metadata_name%>.parent_ref() = "<%#service:extends%><%service:program_name%>.<%service:name%><%/service:extends%>";
 <%#service:extends%>
-  ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:cpp_name%>SvIf>::genRecurse(metadata, services);
+  ServiceMetadata<::<% > service_common/service_class_name%>>::genRecurse(metadata, services);
 <%/service:extends%>
 <%/service:extends?%>
 <%#service:structured_annotations%>

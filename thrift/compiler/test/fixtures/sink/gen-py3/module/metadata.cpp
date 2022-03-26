@@ -18,7 +18,7 @@ namespace cpp2 {
   ::apache::thrift::detail::md::ExceptionMetadata<InitialException>::gen(metadata);
   ::apache::thrift::detail::md::ExceptionMetadata<SinkException1>::gen(metadata);
   ::apache::thrift::detail::md::ExceptionMetadata<SinkException2>::gen(metadata);
-  ::apache::thrift::detail::md::ServiceMetadata<SinkServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>>::gen(response);
   return metadata;
 }
 } // namespace cpp2

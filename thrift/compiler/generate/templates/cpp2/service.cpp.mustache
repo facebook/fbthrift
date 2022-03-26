@@ -21,38 +21,39 @@
 #include "<%service:include_prefix%><%service:program_name%>_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-<% > common/namespace_cpp2_begin%>
-
-std::unique_ptr<apache::thrift::AsyncProcessor> <%service:cpp_name%>SvIf::getProcessor() {
-  return std::make_unique<<%service:cpp_name%>AsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> <% > service_common/service_class_name%>::getProcessor() {
+  return std::make_unique<<%service:qualified_name%>AsyncProcessor>(this);
 }
 
-<%service:cpp_name%>SvIf::CreateMethodMetadataResult <%service:cpp_name%>SvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<<%service:cpp_name%>AsyncProcessor>();
+<% > service_common/service_class_name%>::CreateMethodMetadataResult <% > service_common/service_class_name%>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<<%service:qualified_name%>AsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> <%service:cpp_name%>SvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> <% > service_common/service_class_name%>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
 <%^service:interaction?%>
-  <%service:cpp_name%>ServiceInfoHolder <%service:cpp_name%>SvIf::__fbthrift_serviceInfoHolder;
+<%service:qualified_name%>ServiceInfoHolder <% > service_common/service_class_name%>::__fbthrift_serviceInfoHolder;
 <%/service:interaction?%>
 
 <% > service_cpp/service_interface_impl%>
 
-<% > service_cpp/service_null_impl%>
-
 <%#service:interactions%>
 <% > service_cpp/service_interface_impl%>
 <%/service:interactions%>
+
+<% > common/namespace_cpp2_begin%>
+
+
+<% > service_cpp/service_null_impl%>
 
 const char* <%service:cpp_name%>AsyncProcessor::getServiceName() {
   return "<%service:name%>";
 }
 
 void <%service:cpp_name%>AsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<<%service:cpp_name%>SvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<<%service:qualified_name%>>>::gen(response);
 }
 
 void <%service:cpp_name%>AsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

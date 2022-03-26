@@ -25,7 +25,7 @@
   using BaseAsyncProcessor = void;
 <%/service:extends%>
  protected:
-  <%service:cpp_name%>SvIf* iface_;
+  ::apache::thrift::ServiceHandler<<%service:qualified_name%>>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -58,7 +58,7 @@
 <% > service_h/async_processor_per_function%>
 <%/service:functions%><%/service:interactions%>
  public:
-  <%service:cpp_name%>AsyncProcessor(<%service:cpp_name%>SvIf* iface) :
+  <%service:cpp_name%>AsyncProcessor(::apache::thrift::ServiceHandler<<%service:qualified_name%>>* iface) :
 <%#service:extends%>
       <% > common/namespace_cpp2%><%service:cpp_name%>AsyncProcessor(iface),
 <%/service:extends%>

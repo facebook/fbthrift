@@ -24,6 +24,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace py3 { namespace simple {
+class DerivedService;
 class DerivedServiceAsyncProcessor;
 
 class DerivedServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -31,12 +32,15 @@ class DerivedServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+}} // py3::simple
 
-class DerivedServiceSvIf : virtual public ::py3::simple::SimpleServiceSvIf {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::py3::simple::DerivedService> : virtual public ::py3::simple::SimpleServiceSvIf {
  public:
   std::string_view getGeneratedName() const override { return "DerivedService"; }
 
-  typedef DerivedServiceAsyncProcessor ProcessorType;
+  typedef ::py3::simple::DerivedServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -46,10 +50,16 @@ class DerivedServiceSvIf : virtual public ::py3::simple::SimpleServiceSvIf {
   virtual folly::SemiFuture<::std::int32_t> semifuture_get_six();
   virtual void async_tm_get_six(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback);
  private:
-  static DerivedServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::py3::simple::DerivedServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_get_six{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace py3 { namespace simple {
+class DerivedServiceSvIf : public ::apache::thrift::ServiceHandler<DerivedService> {};
+}} // py3::simple
+namespace py3 { namespace simple {
 class DerivedServiceSvNull : public DerivedServiceSvIf, virtual public ::py3::simple::SimpleServiceSvIf {
  public:
   ::std::int32_t get_six() override;
@@ -61,7 +71,7 @@ class DerivedServiceAsyncProcessor : public ::py3::simple::SimpleServiceAsyncPro
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = ::py3::simple::SimpleServiceAsyncProcessor;
  protected:
-  DerivedServiceSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::py3::simple::DerivedService>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -87,7 +97,7 @@ class DerivedServiceAsyncProcessor : public ::py3::simple::SimpleServiceAsyncPro
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_get_six(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  DerivedServiceAsyncProcessor(DerivedServiceSvIf* iface) :
+  DerivedServiceAsyncProcessor(::apache::thrift::ServiceHandler<::py3::simple::DerivedService>* iface) :
       ::py3::simple::SimpleServiceAsyncProcessor(iface),
       iface_(iface) {}
   ~DerivedServiceAsyncProcessor() override {}

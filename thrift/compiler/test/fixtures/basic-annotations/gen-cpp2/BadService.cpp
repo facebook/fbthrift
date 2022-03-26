@@ -10,43 +10,42 @@
 #include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace cpp2 {
-std::unique_ptr<apache::thrift::AsyncProcessor> GoodServiceSvIf::getProcessor() {
-  return std::make_unique<GoodServiceAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::GoodService>::getProcessor() {
+  return std::make_unique<::cpp2::GoodServiceAsyncProcessor>(this);
 }
 
-GoodServiceSvIf::CreateMethodMetadataResult GoodServiceSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<GoodServiceAsyncProcessor>();
+apache::thrift::ServiceHandler<::cpp2::GoodService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::GoodService>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::GoodServiceAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> GoodServiceSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::GoodService>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  GoodServiceServiceInfoHolder GoodServiceSvIf::__fbthrift_serviceInfoHolder;
+::cpp2::GoodServiceServiceInfoHolder apache::thrift::ServiceHandler<::cpp2::GoodService>::__fbthrift_serviceInfoHolder;
 
 
-std::unique_ptr<GoodServiceSvIf::BadInteractionIf> GoodServiceSvIf::createBadInteraction() {
+std::unique_ptr<apache::thrift::ServiceHandler<::cpp2::GoodService>::BadInteractionIf> apache::thrift::ServiceHandler<::cpp2::GoodService>::createBadInteraction() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("createBadInteraction");
 }
 
-::std::int32_t GoodServiceSvIf::bar() {
+::std::int32_t apache::thrift::ServiceHandler<::cpp2::GoodService>::bar() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("bar");
 }
 
-folly::SemiFuture<::std::int32_t> GoodServiceSvIf::semifuture_bar() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::GoodService>::semifuture_bar() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_bar.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return bar();
 }
 
-folly::Future<::std::int32_t> GoodServiceSvIf::future_bar() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::GoodService>::future_bar() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_bar.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_bar(), getInternalKeepAlive());
 }
 
-void GoodServiceSvIf::async_tm_bar(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::GoodService>::async_tm_bar(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -87,17 +86,12 @@ void GoodServiceSvIf::async_tm_bar(std::unique_ptr<apache::thrift::HandlerCallba
   }
 }
 
-::std::int32_t GoodServiceSvNull::bar() {
-  return 0;
-}
 
-
-
-void GoodServiceSvIf::BadInteractionIf::foo() {
+void apache::thrift::ServiceHandler<::cpp2::GoodService>::BadInteractionIf::foo() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("foo");
 }
 
-folly::SemiFuture<folly::Unit> GoodServiceSvIf::BadInteractionIf::semifuture_foo() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::GoodService>::BadInteractionIf::semifuture_foo() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_foo.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   foo();
@@ -105,20 +99,20 @@ folly::SemiFuture<folly::Unit> GoodServiceSvIf::BadInteractionIf::semifuture_foo
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<void> GoodServiceSvIf::BadInteractionIf::co_foo() {
+folly::coro::Task<void> apache::thrift::ServiceHandler<::cpp2::GoodService>::BadInteractionIf::co_foo() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_foo.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return folly::coro::toTask(semifuture_foo());
 }
 
-folly::coro::Task<void> GoodServiceSvIf::BadInteractionIf::co_foo(apache::thrift::RequestParams /* params */) {
+folly::coro::Task<void> apache::thrift::ServiceHandler<::cpp2::GoodService>::BadInteractionIf::co_foo(apache::thrift::RequestParams /* params */) {
   auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
   __fbthrift_invocation_foo.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
   return co_foo();
 }
 #endif // FOLLY_HAS_COROUTINES
 
-void GoodServiceSvIf::BadInteractionIf::async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::GoodService>::BadInteractionIf::async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -179,12 +173,19 @@ void GoodServiceSvIf::BadInteractionIf::async_tm_foo(std::unique_ptr<apache::thr
   }
 }
 
+namespace cpp2 {
+
+::std::int32_t GoodServiceSvNull::bar() {
+  return 0;
+}
+
+
 const char* GoodServiceAsyncProcessor::getServiceName() {
   return "BadService";
 }
 
 void GoodServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<GoodServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::GoodService>>::gen(response);
 }
 
 void GoodServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

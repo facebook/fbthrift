@@ -25,6 +25,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class MyService;
 class MyServiceAsyncProcessor;
 
 class MyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -32,12 +33,15 @@ class MyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+} // cpp2
 
-class MyServiceSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::MyService> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyService"; }
 
-  typedef MyServiceAsyncProcessor ProcessorType;
+  typedef ::cpp2::MyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -51,7 +55,7 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
  public:
   std::string_view getGeneratedName() const override { return "MyInteraction"; }
 
-  typedef MyServiceAsyncProcessor ProcessorType;
+  typedef ::cpp2::MyServiceAsyncProcessor ProcessorType;
   virtual ~MyInteractionIf() = default;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     std::terminate();
@@ -105,7 +109,7 @@ class MyInteractionFastIf : public apache::thrift::EventBaseTile, public apache:
  public:
   std::string_view getGeneratedName() const override { return "MyInteractionFast"; }
 
-  typedef MyServiceAsyncProcessor ProcessorType;
+  typedef ::cpp2::MyServiceAsyncProcessor ProcessorType;
   virtual ~MyInteractionFastIf() = default;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     std::terminate();
@@ -131,7 +135,7 @@ class SerialInteractionIf : public apache::thrift::SerialInteractionTile, public
  public:
   std::string_view getGeneratedName() const override { return "SerialInteraction"; }
 
-  typedef MyServiceAsyncProcessor ProcessorType;
+  typedef ::cpp2::MyServiceAsyncProcessor ProcessorType;
   virtual ~SerialInteractionIf() = default;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     std::terminate();
@@ -159,32 +163,32 @@ class SerialInteractionIf : public apache::thrift::SerialInteractionTile, public
   virtual folly::Future<folly::Unit> future_foo();
   virtual folly::SemiFuture<folly::Unit> semifuture_foo();
   virtual void async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
-  virtual apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void> interact(::std::int32_t /*arg*/);
-  virtual folly::Future<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void>> future_interact(::std::int32_t p_arg);
-  virtual folly::SemiFuture<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void>> semifuture_interact(::std::int32_t p_arg);
+  virtual apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void> interact(::std::int32_t /*arg*/);
+  virtual folly::Future<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void>> future_interact(::std::int32_t p_arg);
+  virtual folly::SemiFuture<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void>> semifuture_interact(::std::int32_t p_arg);
 #if FOLLY_HAS_COROUTINES
-  virtual folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void>> co_interact(::std::int32_t p_arg);
-  virtual folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void>> co_interact(apache::thrift::RequestParams params, ::std::int32_t p_arg);
+  virtual folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void>> co_interact(::std::int32_t p_arg);
+  virtual folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void>> co_interact(apache::thrift::RequestParams params, ::std::int32_t p_arg);
 #endif
-  virtual void async_tm_interact(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void>>> callback, ::std::int32_t p_arg);
-  virtual apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t> interactFast();
-  virtual folly::Future<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t>> future_interactFast();
-  virtual folly::SemiFuture<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t>> semifuture_interactFast();
+  virtual void async_tm_interact(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void>>> callback, ::std::int32_t p_arg);
+  virtual apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t> interactFast();
+  virtual folly::Future<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t>> future_interactFast();
+  virtual folly::SemiFuture<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t>> semifuture_interactFast();
 #if FOLLY_HAS_COROUTINES
-  virtual folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t>> co_interactFast();
-  virtual folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t>> co_interactFast(apache::thrift::RequestParams params);
+  virtual folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t>> co_interactFast();
+  virtual folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t>> co_interactFast(apache::thrift::RequestParams params);
 #endif
-  virtual void async_tm_interactFast(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t>>> callback);
-  virtual apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> serialize();
-  virtual folly::Future<apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> future_serialize();
-  virtual folly::SemiFuture<apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> semifuture_serialize();
+  virtual void async_tm_interactFast(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t>>> callback);
+  virtual apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> serialize();
+  virtual folly::Future<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> future_serialize();
+  virtual folly::SemiFuture<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> semifuture_serialize();
 #if FOLLY_HAS_COROUTINES
-  virtual folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> co_serialize();
-  virtual folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> co_serialize(apache::thrift::RequestParams params);
+  virtual folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> co_serialize();
+  virtual folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> co_serialize(apache::thrift::RequestParams params);
 #endif
-  virtual void async_tm_serialize(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>>> callback);
+  virtual void async_tm_serialize(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>>> callback);
  private:
-  static MyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::cpp2::MyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_createMyInteraction{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_createMyInteractionFast{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_createSerialInteraction{apache::thrift::detail::si::InvocationType::AsyncTm};
@@ -194,6 +198,12 @@ class SerialInteractionIf : public apache::thrift::SerialInteractionTile, public
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_serialize{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class MyServiceSvIf : public ::apache::thrift::ServiceHandler<MyService> {};
+} // cpp2
+namespace cpp2 {
 class MyServiceSvNull : public MyServiceSvIf {
  public:
   void foo() override;
@@ -205,7 +215,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  MyServiceSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::cpp2::MyService>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -357,7 +367,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_SerialInteraction_frobnicate(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  MyServiceAsyncProcessor(MyServiceSvIf* iface) :
+  MyServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::MyService>* iface) :
       iface_(iface) {}
   ~MyServiceAsyncProcessor() override {}
 

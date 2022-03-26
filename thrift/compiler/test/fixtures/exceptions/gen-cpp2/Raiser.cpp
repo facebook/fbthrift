@@ -10,40 +10,39 @@
 #include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace cpp2 {
-std::unique_ptr<apache::thrift::AsyncProcessor> RaiserSvIf::getProcessor() {
-  return std::make_unique<RaiserAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::Raiser>::getProcessor() {
+  return std::make_unique<::cpp2::RaiserAsyncProcessor>(this);
 }
 
-RaiserSvIf::CreateMethodMetadataResult RaiserSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<RaiserAsyncProcessor>();
+apache::thrift::ServiceHandler<::cpp2::Raiser>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::Raiser>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::RaiserAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> RaiserSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::Raiser>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  RaiserServiceInfoHolder RaiserSvIf::__fbthrift_serviceInfoHolder;
+::cpp2::RaiserServiceInfoHolder apache::thrift::ServiceHandler<::cpp2::Raiser>::__fbthrift_serviceInfoHolder;
 
 
-void RaiserSvIf::doBland() {
+void apache::thrift::ServiceHandler<::cpp2::Raiser>::doBland() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("doBland");
 }
 
-folly::SemiFuture<folly::Unit> RaiserSvIf::semifuture_doBland() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::Raiser>::semifuture_doBland() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_doBland.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   doBland();
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> RaiserSvIf::future_doBland() {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::Raiser>::future_doBland() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_doBland.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_doBland(), getInternalKeepAlive());
 }
 
-void RaiserSvIf::async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::Raiser>::async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -85,24 +84,24 @@ void RaiserSvIf::async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallbac
   }
 }
 
-void RaiserSvIf::doRaise() {
+void apache::thrift::ServiceHandler<::cpp2::Raiser>::doRaise() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("doRaise");
 }
 
-folly::SemiFuture<folly::Unit> RaiserSvIf::semifuture_doRaise() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::Raiser>::semifuture_doRaise() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_doRaise.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   doRaise();
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> RaiserSvIf::future_doRaise() {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::Raiser>::future_doRaise() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_doRaise.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_doRaise(), getInternalKeepAlive());
 }
 
-void RaiserSvIf::async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::Raiser>::async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -144,11 +143,11 @@ void RaiserSvIf::async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallbac
   }
 }
 
-void RaiserSvIf::get200(::std::string& /*_return*/) {
+void apache::thrift::ServiceHandler<::cpp2::Raiser>::get200(::std::string& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get200");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> RaiserSvIf::semifuture_get200() {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::cpp2::Raiser>::semifuture_get200() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_get200.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -156,13 +155,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> RaiserSvIf::semifuture_get200(
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> RaiserSvIf::future_get200() {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::cpp2::Raiser>::future_get200() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_get200.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_get200(), getInternalKeepAlive());
 }
 
-void RaiserSvIf::async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::Raiser>::async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -205,11 +204,11 @@ void RaiserSvIf::async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback
   }
 }
 
-void RaiserSvIf::get500(::std::string& /*_return*/) {
+void apache::thrift::ServiceHandler<::cpp2::Raiser>::get500(::std::string& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get500");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> RaiserSvIf::semifuture_get500() {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::cpp2::Raiser>::semifuture_get500() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_get500.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -217,13 +216,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> RaiserSvIf::semifuture_get500(
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> RaiserSvIf::future_get500() {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::cpp2::Raiser>::future_get500() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_get500.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_get500(), getInternalKeepAlive());
 }
 
-void RaiserSvIf::async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::Raiser>::async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -266,6 +265,9 @@ void RaiserSvIf::async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback
   }
 }
 
+
+namespace cpp2 {
+
 void RaiserSvNull::doBland() {
   return;
 }
@@ -279,13 +281,12 @@ void RaiserSvNull::get200(::std::string& /*_return*/) {}
 void RaiserSvNull::get500(::std::string& /*_return*/) {}
 
 
-
 const char* RaiserAsyncProcessor::getServiceName() {
   return "Raiser";
 }
 
 void RaiserAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<RaiserSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Raiser>>::gen(response);
 }
 
 void RaiserAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

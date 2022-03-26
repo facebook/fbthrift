@@ -24,6 +24,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class C;
 class CAsyncProcessor;
 
 class CServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -31,12 +32,15 @@ class CServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+} // cpp2
 
-class CSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::C> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "C"; }
 
-  typedef CAsyncProcessor ProcessorType;
+  typedef ::cpp2::CAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -54,12 +58,18 @@ class CSvIf : public apache::thrift::ServerInterface {
   virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_thing(::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c);
   virtual void async_tm_thing(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int32_t p_a, std::unique_ptr<::std::string> p_b, std::unique_ptr<::std::set<::std::int32_t>> p_c);
  private:
-  static CServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::cpp2::CServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_f{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_numbers{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_thing{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class CSvIf : public ::apache::thrift::ServiceHandler<C> {};
+} // cpp2
+namespace cpp2 {
 class CSvNull : public CSvIf {
  public:
   void f() override;
@@ -72,7 +82,7 @@ class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  CSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::cpp2::C>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -118,7 +128,7 @@ class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_thing(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  CAsyncProcessor(CSvIf* iface) :
+  CAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::C>* iface) :
       iface_(iface) {}
   ~CAsyncProcessor() override {}
 

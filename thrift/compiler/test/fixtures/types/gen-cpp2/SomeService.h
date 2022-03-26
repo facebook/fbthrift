@@ -24,6 +24,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+class SomeService;
 class SomeServiceAsyncProcessor;
 
 class SomeServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -31,12 +32,15 @@ class SomeServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+}}}} // apache::thrift::fixtures::types
 
-class SomeServiceSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::apache::thrift::fixtures::types::SomeService> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "SomeService"; }
 
-  typedef SomeServiceAsyncProcessor ProcessorType;
+  typedef ::apache::thrift::fixtures::types::SomeServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -50,11 +54,17 @@ class SomeServiceSvIf : public apache::thrift::ServerInterface {
   virtual folly::SemiFuture<std::unique_ptr<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>>> semifuture_binary_keyed_map(std::unique_ptr<::std::vector<::std::int64_t>> p_r);
   virtual void async_tm_binary_keyed_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>>>> callback, std::unique_ptr<::std::vector<::std::int64_t>> p_r);
  private:
-  static SomeServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::apache::thrift::fixtures::types::SomeServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_bounce_map{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_binary_keyed_map{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class SomeServiceSvIf : public ::apache::thrift::ServiceHandler<SomeService> {};
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
 class SomeServiceSvNull : public SomeServiceSvIf {
  public:
   void bounce_map(::apache::thrift::fixtures::types::SomeMap& /*_return*/, std::unique_ptr<::apache::thrift::fixtures::types::SomeMap> /*m*/) override;
@@ -67,7 +77,7 @@ class SomeServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  SomeServiceSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::apache::thrift::fixtures::types::SomeService>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -103,7 +113,7 @@ class SomeServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_binary_keyed_map(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  SomeServiceAsyncProcessor(SomeServiceSvIf* iface) :
+  SomeServiceAsyncProcessor(::apache::thrift::ServiceHandler<::apache::thrift::fixtures::types::SomeService>* iface) :
       iface_(iface) {}
   ~SomeServiceAsyncProcessor() override {}
 

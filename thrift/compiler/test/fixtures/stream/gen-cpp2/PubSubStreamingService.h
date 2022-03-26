@@ -24,6 +24,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class PubSubStreamingService;
 class PubSubStreamingServiceAsyncProcessor;
 
 class PubSubStreamingServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -31,12 +32,15 @@ class PubSubStreamingServiceServiceInfoHolder : public apache::thrift::ServiceIn
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+} // cpp2
 
-class PubSubStreamingServiceSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::PubSubStreamingService> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "PubSubStreamingService"; }
 
-  typedef PubSubStreamingServiceAsyncProcessor ProcessorType;
+  typedef ::cpp2::PubSubStreamingServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -59,13 +63,19 @@ class PubSubStreamingServiceSvIf : public apache::thrift::ServerInterface {
   virtual void async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> callback, ::std::int32_t p_foo);
   virtual void async_eb_returnstreamFast(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>> callback, ::std::int32_t p_i32_from, ::std::int32_t p_i32_to);
  private:
-  static PubSubStreamingServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::cpp2::PubSubStreamingServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_returnstream{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_streamthrows{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_boththrows{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_responseandstreamthrows{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class PubSubStreamingServiceSvIf : public ::apache::thrift::ServiceHandler<PubSubStreamingService> {};
+} // cpp2
+namespace cpp2 {
 class PubSubStreamingServiceSvNull : public PubSubStreamingServiceSvIf {
  public:
 };
@@ -76,7 +86,7 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  PubSubStreamingServiceSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -142,7 +152,7 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_returnstreamFast(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  PubSubStreamingServiceAsyncProcessor(PubSubStreamingServiceSvIf* iface) :
+  PubSubStreamingServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>* iface) :
       iface_(iface) {}
   ~PubSubStreamingServiceAsyncProcessor() override {}
 

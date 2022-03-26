@@ -10,39 +10,38 @@
 #include "thrift/compiler/test/fixtures/visitation/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace test_cpp2 { namespace cpp_reflection {
-std::unique_ptr<apache::thrift::AsyncProcessor> service_with_special_namesSvIf::getProcessor() {
-  return std::make_unique<service_with_special_namesAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::getProcessor() {
+  return std::make_unique<::test_cpp2::cpp_reflection::service_with_special_namesAsyncProcessor>(this);
 }
 
-service_with_special_namesSvIf::CreateMethodMetadataResult service_with_special_namesSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<service_with_special_namesAsyncProcessor>();
+apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::test_cpp2::cpp_reflection::service_with_special_namesAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> service_with_special_namesSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  service_with_special_namesServiceInfoHolder service_with_special_namesSvIf::__fbthrift_serviceInfoHolder;
+::test_cpp2::cpp_reflection::service_with_special_namesServiceInfoHolder apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::__fbthrift_serviceInfoHolder;
 
 
-::std::int32_t service_with_special_namesSvIf::get() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::get() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_get() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_get() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_get.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return get();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_get() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_get() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_get.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_get(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_get(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_get(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -83,23 +82,23 @@ void service_with_special_namesSvIf::async_tm_get(std::unique_ptr<apache::thrift
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::getter() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::getter() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("getter");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_getter() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_getter() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_getter.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return getter();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_getter() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_getter() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_getter.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_getter(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_getter(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_getter(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -140,23 +139,23 @@ void service_with_special_namesSvIf::async_tm_getter(std::unique_ptr<apache::thr
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::lists() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::lists() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("lists");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_lists() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_lists() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_lists.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return lists();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_lists() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_lists() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_lists.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_lists(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_lists(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_lists(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -197,23 +196,23 @@ void service_with_special_namesSvIf::async_tm_lists(std::unique_ptr<apache::thri
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::maps() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::maps() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("maps");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_maps() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_maps() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_maps.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return maps();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_maps() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_maps() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_maps.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_maps(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_maps(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_maps(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -254,23 +253,23 @@ void service_with_special_namesSvIf::async_tm_maps(std::unique_ptr<apache::thrif
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::name() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::name() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("name");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_name() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_name() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_name.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return name();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_name() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_name() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_name.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_name(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_name(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_name(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -311,23 +310,23 @@ void service_with_special_namesSvIf::async_tm_name(std::unique_ptr<apache::thrif
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::name_to_value() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::name_to_value() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("name_to_value");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_name_to_value() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_name_to_value() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_name_to_value.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return name_to_value();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_name_to_value() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_name_to_value() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_name_to_value.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_name_to_value(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_name_to_value(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_name_to_value(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -368,23 +367,23 @@ void service_with_special_namesSvIf::async_tm_name_to_value(std::unique_ptr<apac
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::names() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::names() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("names");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_names() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_names() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_names.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return names();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_names() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_names() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_names.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_names(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_names(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_names(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -425,23 +424,23 @@ void service_with_special_namesSvIf::async_tm_names(std::unique_ptr<apache::thri
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::prefix_tree() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::prefix_tree() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("prefix_tree");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_prefix_tree() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_prefix_tree() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_prefix_tree.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return prefix_tree();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_prefix_tree() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_prefix_tree() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_prefix_tree.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_prefix_tree(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_prefix_tree(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_prefix_tree(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -482,23 +481,23 @@ void service_with_special_namesSvIf::async_tm_prefix_tree(std::unique_ptr<apache
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::sets() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::sets() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("sets");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_sets() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_sets() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_sets.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return sets();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_sets() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_sets() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_sets.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_sets(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_sets(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_sets(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -539,23 +538,23 @@ void service_with_special_namesSvIf::async_tm_sets(std::unique_ptr<apache::thrif
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::setter() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::setter() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("setter");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_setter() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_setter() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_setter.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return setter();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_setter() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_setter() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_setter.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_setter(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_setter(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_setter(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -596,23 +595,23 @@ void service_with_special_namesSvIf::async_tm_setter(std::unique_ptr<apache::thr
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::str() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::str() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("str");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_str() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_str() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_str.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return str();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_str() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_str() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_str.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_str(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_str(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_str(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -653,23 +652,23 @@ void service_with_special_namesSvIf::async_tm_str(std::unique_ptr<apache::thrift
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::strings() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::strings() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("strings");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_strings() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_strings() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_strings.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return strings();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_strings() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_strings() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_strings.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_strings(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_strings(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_strings(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -710,23 +709,23 @@ void service_with_special_namesSvIf::async_tm_strings(std::unique_ptr<apache::th
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::type() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::type() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("type");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_type() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_type() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_type.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return type();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_type() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_type() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_type.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_type(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_type(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_type(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -767,23 +766,23 @@ void service_with_special_namesSvIf::async_tm_type(std::unique_ptr<apache::thrif
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::value() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::value() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("value");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_value() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_value() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_value.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return value();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_value() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_value() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_value.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_value(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_value(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_value(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -824,23 +823,23 @@ void service_with_special_namesSvIf::async_tm_value(std::unique_ptr<apache::thri
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::value_to_name() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::value_to_name() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("value_to_name");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_value_to_name() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_value_to_name() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_value_to_name.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return value_to_name();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_value_to_name() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_value_to_name() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_value_to_name.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_value_to_name(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_value_to_name(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_value_to_name(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -881,23 +880,23 @@ void service_with_special_namesSvIf::async_tm_value_to_name(std::unique_ptr<apac
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::values() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::values() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("values");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_values() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_values() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_values.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return values();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_values() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_values() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_values.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_values(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_values(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_values(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -938,23 +937,23 @@ void service_with_special_namesSvIf::async_tm_values(std::unique_ptr<apache::thr
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::id() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::id() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("id");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_id() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_id() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_id.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return id();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_id() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_id() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_id.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_id(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_id(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_id(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -995,23 +994,23 @@ void service_with_special_namesSvIf::async_tm_id(std::unique_ptr<apache::thrift:
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::ids() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::ids() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("ids");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_ids() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_ids() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_ids.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return ids();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_ids() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_ids() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_ids.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_ids(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_ids(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_ids(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1052,23 +1051,23 @@ void service_with_special_namesSvIf::async_tm_ids(std::unique_ptr<apache::thrift
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::descriptor() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::descriptor() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("descriptor");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_descriptor() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_descriptor() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_descriptor.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return descriptor();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_descriptor() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_descriptor() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_descriptor.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_descriptor(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_descriptor(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_descriptor(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1109,23 +1108,23 @@ void service_with_special_namesSvIf::async_tm_descriptor(std::unique_ptr<apache:
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::descriptors() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::descriptors() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("descriptors");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_descriptors() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_descriptors() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_descriptors.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return descriptors();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_descriptors() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_descriptors() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_descriptors.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_descriptors(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_descriptors(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_descriptors(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1166,23 +1165,23 @@ void service_with_special_namesSvIf::async_tm_descriptors(std::unique_ptr<apache
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::key() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::key() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("key");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_key() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_key() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_key.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return key();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_key() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_key() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_key.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_key(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_key(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_key(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1223,23 +1222,23 @@ void service_with_special_namesSvIf::async_tm_key(std::unique_ptr<apache::thrift
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::keys() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::keys() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("keys");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_keys() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_keys() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_keys.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return keys();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_keys() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_keys() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_keys.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_keys(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_keys(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_keys(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1280,23 +1279,23 @@ void service_with_special_namesSvIf::async_tm_keys(std::unique_ptr<apache::thrif
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::annotation() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::annotation() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("annotation");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_annotation() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_annotation() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_annotation.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return annotation();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_annotation() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_annotation() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_annotation.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_annotation(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_annotation(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_annotation(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1337,23 +1336,23 @@ void service_with_special_namesSvIf::async_tm_annotation(std::unique_ptr<apache:
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::annotations() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::annotations() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("annotations");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_annotations() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_annotations() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_annotations.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return annotations();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_annotations() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_annotations() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_annotations.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_annotations(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_annotations(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_annotations(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1394,23 +1393,23 @@ void service_with_special_namesSvIf::async_tm_annotations(std::unique_ptr<apache
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::member() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::member() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("member");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_member() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_member() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_member.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return member();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_member() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_member() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_member.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_member(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_member(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_member(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1451,23 +1450,23 @@ void service_with_special_namesSvIf::async_tm_member(std::unique_ptr<apache::thr
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::members() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::members() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("members");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_members() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_members() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_members.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return members();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_members() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_members() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_members.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_members(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_members(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_members(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1508,23 +1507,23 @@ void service_with_special_namesSvIf::async_tm_members(std::unique_ptr<apache::th
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::field() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::field() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("field");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_field() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_field() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_field.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return field();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_field() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_field() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_field.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_field(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_field(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_field(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1565,23 +1564,23 @@ void service_with_special_namesSvIf::async_tm_field(std::unique_ptr<apache::thri
   }
 }
 
-::std::int32_t service_with_special_namesSvIf::fields() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::fields() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("fields");
 }
 
-folly::SemiFuture<::std::int32_t> service_with_special_namesSvIf::semifuture_fields() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::semifuture_fields() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_fields.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return fields();
 }
 
-folly::Future<::std::int32_t> service_with_special_namesSvIf::future_fields() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::future_fields() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_fields.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_fields(), getInternalKeepAlive());
 }
 
-void service_with_special_namesSvIf::async_tm_fields(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>::async_tm_fields(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -1621,6 +1620,9 @@ void service_with_special_namesSvIf::async_tm_fields(std::unique_ptr<apache::thr
     callback->exception(std::current_exception());
   }
 }
+
+
+namespace test_cpp2 { namespace cpp_reflection {
 
 ::std::int32_t service_with_special_namesSvNull::get() {
   return 0;
@@ -1735,13 +1737,12 @@ void service_with_special_namesSvIf::async_tm_fields(std::unique_ptr<apache::thr
 }
 
 
-
 const char* service_with_special_namesAsyncProcessor::getServiceName() {
   return "service_with_special_names";
 }
 
 void service_with_special_namesAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<service_with_special_namesSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names>>::gen(response);
 }
 
 void service_with_special_namesAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

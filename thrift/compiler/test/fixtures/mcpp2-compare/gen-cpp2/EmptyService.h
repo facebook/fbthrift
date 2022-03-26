@@ -25,6 +25,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace some { namespace valid { namespace ns {
+class EmptyService;
 class EmptyServiceAsyncProcessor;
 
 class EmptyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -32,20 +33,29 @@ class EmptyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+}}} // some::valid::ns
 
-class EmptyServiceSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::some::valid::ns::EmptyService> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "EmptyService"; }
 
-  typedef EmptyServiceAsyncProcessor ProcessorType;
+  typedef ::some::valid::ns::EmptyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
 
  private:
-  static EmptyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::some::valid::ns::EmptyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
 };
 
+} // namespace apache::thrift
+
+namespace some { namespace valid { namespace ns {
+class EmptyServiceSvIf : public ::apache::thrift::ServiceHandler<EmptyService> {};
+}}} // some::valid::ns
+namespace some { namespace valid { namespace ns {
 class EmptyServiceSvNull : public EmptyServiceSvIf {
  public:
 };
@@ -56,7 +66,7 @@ class EmptyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  EmptyServiceSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -72,7 +82,7 @@ class EmptyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   static const EmptyServiceAsyncProcessor::ProcessMap kOwnProcessMap_;
  private:
  public:
-  EmptyServiceAsyncProcessor(EmptyServiceSvIf* iface) :
+  EmptyServiceAsyncProcessor(::apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>* iface) :
       iface_(iface) {}
   ~EmptyServiceAsyncProcessor() override {}
 

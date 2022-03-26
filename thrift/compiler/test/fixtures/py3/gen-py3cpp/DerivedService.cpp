@@ -10,39 +10,38 @@
 #include "thrift/compiler/test/fixtures/py3/gen-py3cpp/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace py3 { namespace simple {
-std::unique_ptr<apache::thrift::AsyncProcessor> DerivedServiceSvIf::getProcessor() {
-  return std::make_unique<DerivedServiceAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::py3::simple::DerivedService>::getProcessor() {
+  return std::make_unique<::py3::simple::DerivedServiceAsyncProcessor>(this);
 }
 
-DerivedServiceSvIf::CreateMethodMetadataResult DerivedServiceSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<DerivedServiceAsyncProcessor>();
+apache::thrift::ServiceHandler<::py3::simple::DerivedService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::py3::simple::DerivedService>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::py3::simple::DerivedServiceAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> DerivedServiceSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::py3::simple::DerivedService>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  DerivedServiceServiceInfoHolder DerivedServiceSvIf::__fbthrift_serviceInfoHolder;
+::py3::simple::DerivedServiceServiceInfoHolder apache::thrift::ServiceHandler<::py3::simple::DerivedService>::__fbthrift_serviceInfoHolder;
 
 
-::std::int32_t DerivedServiceSvIf::get_six() {
+::std::int32_t apache::thrift::ServiceHandler<::py3::simple::DerivedService>::get_six() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get_six");
 }
 
-folly::SemiFuture<::std::int32_t> DerivedServiceSvIf::semifuture_get_six() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::DerivedService>::semifuture_get_six() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_get_six.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return get_six();
 }
 
-folly::Future<::std::int32_t> DerivedServiceSvIf::future_get_six() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::py3::simple::DerivedService>::future_get_six() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_get_six.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_get_six(), getInternalKeepAlive());
 }
 
-void DerivedServiceSvIf::async_tm_get_six(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::py3::simple::DerivedService>::async_tm_get_six(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -83,10 +82,12 @@ void DerivedServiceSvIf::async_tm_get_six(std::unique_ptr<apache::thrift::Handle
   }
 }
 
+
+namespace py3 { namespace simple {
+
 ::std::int32_t DerivedServiceSvNull::get_six() {
   return 0;
 }
-
 
 
 const char* DerivedServiceAsyncProcessor::getServiceName() {
@@ -94,7 +95,7 @@ const char* DerivedServiceAsyncProcessor::getServiceName() {
 }
 
 void DerivedServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<DerivedServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::DerivedService>>::gen(response);
 }
 
 void DerivedServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

@@ -23,6 +23,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class NestedContainers;
 class NestedContainersAsyncProcessor;
 
 class NestedContainersServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -30,12 +31,15 @@ class NestedContainersServiceInfoHolder : public apache::thrift::ServiceInfoHold
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+} // cpp2
 
-class NestedContainersSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::NestedContainers> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "NestedContainers"; }
 
-  typedef NestedContainersAsyncProcessor ProcessorType;
+  typedef ::cpp2::NestedContainersAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -61,7 +65,7 @@ class NestedContainersSvIf : public apache::thrift::ServerInterface {
   virtual folly::SemiFuture<folly::Unit> semifuture_turtles(std::unique_ptr<::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>> p_foo);
   virtual void async_tm_turtles(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>> p_foo);
  private:
-  static NestedContainersServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::cpp2::NestedContainersServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_mapList{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_mapSet{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_listMap{apache::thrift::detail::si::InvocationType::AsyncTm};
@@ -69,6 +73,12 @@ class NestedContainersSvIf : public apache::thrift::ServerInterface {
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_turtles{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class NestedContainersSvIf : public ::apache::thrift::ServiceHandler<NestedContainers> {};
+} // cpp2
+namespace cpp2 {
 class NestedContainersSvNull : public NestedContainersSvIf {
  public:
   void mapList(std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>> /*foo*/) override;
@@ -84,7 +94,7 @@ class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  NestedContainersSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::cpp2::NestedContainers>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -150,7 +160,7 @@ class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_turtles(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  NestedContainersAsyncProcessor(NestedContainersSvIf* iface) :
+  NestedContainersAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::NestedContainers>* iface) :
       iface_(iface) {}
   ~NestedContainersAsyncProcessor() override {}
 

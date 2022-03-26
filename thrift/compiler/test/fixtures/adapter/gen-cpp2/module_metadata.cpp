@@ -141,7 +141,7 @@ StructMetadata<::cpp2::StructWithFieldAdapter>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 
-void ServiceMetadata<::cpp2::ServiceSvIf>::gen_func(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::gen_func(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "func";
@@ -175,7 +175,7 @@ void ServiceMetadata<::cpp2::ServiceSvIf>::gen_func(ThriftMetadata& metadata, Th
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::cpp2::ServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -185,12 +185,12 @@ void ServiceMetadata<::cpp2::ServiceSvIf>::gen(::apache::thrift::metadata::Thrif
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::cpp2::ServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_Service;
   module_Service.name_ref() = "module.Service";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::cpp2::ServiceSvIf>::gen_func,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>>::gen_func,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_Service);

@@ -268,7 +268,7 @@ void ExceptionMetadata<::cpp2::MyException>::gen(ThriftMetadata& metadata) {
   }
   module_MyException.structured_annotations_ref()->push_back(*cvStruct("module.structured_annotation_nested", {{"name", cvString(R"(nesty)")}}).cv_struct_ref());
 }
-void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_first(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_first(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "first";
@@ -278,7 +278,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_first(ThriftMetadata& metadata,
   func.structured_annotations_ref()->push_back(*cvStruct("module.structured_annotation_with_default", {}).cv_struct_ref());
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_second(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_second(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "second";
@@ -299,7 +299,7 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_second(ThriftMetadata& metadata
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::cpp2::MyServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -309,13 +309,13 @@ void ServiceMetadata<::cpp2::MyServiceSvIf>::gen(::apache::thrift::metadata::Thr
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::cpp2::MyServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_MyService;
   module_MyService.name_ref() = "module.MyService";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::cpp2::MyServiceSvIf>::gen_first,
-    ServiceMetadata<::cpp2::MyServiceSvIf>::gen_second,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_first,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_second,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_MyService);

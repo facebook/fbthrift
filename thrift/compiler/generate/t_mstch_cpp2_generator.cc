@@ -209,6 +209,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   static mstch::node cpp_includes(t_program const* program);
   static mstch::node include_prefix(
       t_program const* program, std::map<std::string, std::string>& options);
+  static std::string get_service_qualified_name(t_service const* service);
 
  private:
   void set_mstch_generators();
@@ -1377,10 +1378,13 @@ class mstch_cpp2_service : public mstch_service {
             {"service:cpp_includes", &mstch_cpp2_service::cpp_includes},
             {"service:metadata_name", &mstch_cpp2_service::metadata_name},
             {"service:cpp_name", &mstch_cpp2_service::cpp_name},
+            {"service:qualified_name", &mstch_cpp2_service::qualified_name},
             {"service:parent_service_name",
              &mstch_cpp2_service::parent_service_name},
             {"service:parent_service_cpp_name",
              &mstch_cpp2_service::parent_service_cpp_name},
+            {"service:parent_service_qualified_name",
+             &mstch_cpp2_service::parent_service_qualified_name},
             {"service:reduced_client?", &mstch_service::is_interaction},
         });
 
@@ -1436,11 +1440,17 @@ class mstch_cpp2_service : public mstch_service {
     return service_->is_interaction() ? service_->name()
                                       : cpp2::get_name(service_);
   }
+  mstch::node qualified_name() {
+    return t_mstch_cpp2_generator::get_service_qualified_name(service_);
+  }
   mstch::node parent_service_name() {
     return cache_->parsed_options_.at("parent_service_name");
   }
   mstch::node parent_service_cpp_name() {
     return cache_->parsed_options_.at("parent_service_cpp_name");
+  }
+  mstch::node parent_service_qualified_name() {
+    return cache_->parsed_options_.at("parent_service_qualified_name");
   }
 
  private:
@@ -2229,6 +2239,8 @@ void t_mstch_cpp2_generator::generate_service(t_service const* service) {
   // for interactions
   cache_->parsed_options_["parent_service_name"] = name;
   cache_->parsed_options_["parent_service_cpp_name"] = cpp2::get_name(service);
+  cache_->parsed_options_["parent_service_qualified_name"] =
+      t_mstch_cpp2_generator::get_service_qualified_name(service);
 
   auto serv = generators_->service_generator_->generate_cached(
       get_program(), service, generators_, cache_);
@@ -2270,6 +2282,7 @@ void t_mstch_cpp2_generator::generate_service(t_service const* service) {
 
   cache_->parsed_options_.erase("parent_service_name");
   cache_->parsed_options_.erase("parent_service_cpp_name");
+  cache_->parsed_options_.erase("parent_service_qualified_name");
 }
 
 std::string t_mstch_cpp2_generator::get_cpp2_namespace(
@@ -2280,6 +2293,11 @@ std::string t_mstch_cpp2_generator::get_cpp2_namespace(
 /* static */ std::string t_mstch_cpp2_generator::get_cpp2_unprefixed_namespace(
     t_program const* program) {
   return cpp2::get_gen_unprefixed_namespace(*program);
+}
+
+/* static */ std::string t_mstch_cpp2_generator::get_service_qualified_name(
+    t_service const* service) {
+  return get_cpp2_namespace(service->program()) + "::" + cpp2::get_name(service);
 }
 
 mstch::array t_mstch_cpp2_generator::get_namespace_array(

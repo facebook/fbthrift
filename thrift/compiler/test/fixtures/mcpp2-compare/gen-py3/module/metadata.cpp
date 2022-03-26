@@ -32,9 +32,9 @@ namespace ns {
   ::apache::thrift::detail::md::StructMetadata<FloatStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<FloatUnion>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<AllRequiredNoExceptMoveCtrStruct>::gen(metadata);
-  ::apache::thrift::detail::md::ServiceMetadata<EmptyServiceSvIf>::gen(response);
-  ::apache::thrift::detail::md::ServiceMetadata<ReturnServiceSvIf>::gen(response);
-  ::apache::thrift::detail::md::ServiceMetadata<ParamServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen(response);
   return metadata;
 }
 } // namespace some

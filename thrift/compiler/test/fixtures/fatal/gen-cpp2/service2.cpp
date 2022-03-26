@@ -10,40 +10,39 @@
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace test_cpp2 { namespace cpp_reflection {
-std::unique_ptr<apache::thrift::AsyncProcessor> service2SvIf::getProcessor() {
-  return std::make_unique<service2AsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::getProcessor() {
+  return std::make_unique<::test_cpp2::cpp_reflection::service2AsyncProcessor>(this);
 }
 
-service2SvIf::CreateMethodMetadataResult service2SvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<service2AsyncProcessor>();
+apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::test_cpp2::cpp_reflection::service2AsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> service2SvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  service2ServiceInfoHolder service2SvIf::__fbthrift_serviceInfoHolder;
+::test_cpp2::cpp_reflection::service2ServiceInfoHolder apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::__fbthrift_serviceInfoHolder;
 
 
-void service2SvIf::methodA() {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::methodA() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("methodA");
 }
 
-folly::SemiFuture<folly::Unit> service2SvIf::semifuture_methodA() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::semifuture_methodA() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_methodA.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   methodA();
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> service2SvIf::future_methodA() {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::future_methodA() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_methodA.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_methodA(), getInternalKeepAlive());
 }
 
-void service2SvIf::async_tm_methodA(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::async_tm_methodA(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -85,24 +84,24 @@ void service2SvIf::async_tm_methodA(std::unique_ptr<apache::thrift::HandlerCallb
   }
 }
 
-void service2SvIf::methodB(::std::int32_t /*x*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::methodB(::std::int32_t /*x*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("methodB");
 }
 
-folly::SemiFuture<folly::Unit> service2SvIf::semifuture_methodB(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::semifuture_methodB(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_methodB.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   methodB(p_x, std::move(p_y), p_z);
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> service2SvIf::future_methodB(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::future_methodB(::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_methodB.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_methodB(p_x, std::move(p_y), p_z), getInternalKeepAlive());
 }
 
-void service2SvIf::async_tm_methodB(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::async_tm_methodB(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int32_t p_x, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_y, double p_z) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -144,23 +143,23 @@ void service2SvIf::async_tm_methodB(std::unique_ptr<apache::thrift::HandlerCallb
   }
 }
 
-::std::int32_t service2SvIf::methodC() {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::methodC() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("methodC");
 }
 
-folly::SemiFuture<::std::int32_t> service2SvIf::semifuture_methodC() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::semifuture_methodC() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_methodC.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return methodC();
 }
 
-folly::Future<::std::int32_t> service2SvIf::future_methodC() {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::future_methodC() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_methodC.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_methodC(), getInternalKeepAlive());
 }
 
-void service2SvIf::async_tm_methodC(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::async_tm_methodC(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -201,23 +200,23 @@ void service2SvIf::async_tm_methodC(std::unique_ptr<apache::thrift::HandlerCallb
   }
 }
 
-::std::int32_t service2SvIf::methodD(::std::int32_t /*i*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*j*/, double /*k*/) {
+::std::int32_t apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::methodD(::std::int32_t /*i*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*j*/, double /*k*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("methodD");
 }
 
-folly::SemiFuture<::std::int32_t> service2SvIf::semifuture_methodD(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::semifuture_methodD(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_methodD.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return methodD(p_i, std::move(p_j), p_k);
 }
 
-folly::Future<::std::int32_t> service2SvIf::future_methodD(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
+folly::Future<::std::int32_t> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::future_methodD(::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_methodD.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_methodD(p_i, std::move(p_j), p_k), getInternalKeepAlive());
 }
 
-void service2SvIf::async_tm_methodD(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, ::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::async_tm_methodD(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, ::std::int32_t p_i, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_j, double p_k) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -258,11 +257,11 @@ void service2SvIf::async_tm_methodD(std::unique_ptr<apache::thrift::HandlerCallb
   }
 }
 
-void service2SvIf::methodE(::test_cpp2::cpp_reflection::struct2& /*_return*/) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::methodE(::test_cpp2::cpp_reflection::struct2& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("methodE");
 }
 
-folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> service2SvIf::semifuture_methodE() {
+folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::semifuture_methodE() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_methodE.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::test_cpp2::cpp_reflection::struct2>();
@@ -270,13 +269,13 @@ folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> service
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> service2SvIf::future_methodE() {
+folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::future_methodE() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_methodE.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_methodE(), getInternalKeepAlive());
 }
 
-void service2SvIf::async_tm_methodE(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::async_tm_methodE(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -319,11 +318,11 @@ void service2SvIf::async_tm_methodE(std::unique_ptr<apache::thrift::HandlerCallb
   }
 }
 
-void service2SvIf::methodF(::test_cpp2::cpp_reflection::struct2& /*_return*/, ::std::int32_t /*l*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::methodF(::test_cpp2::cpp_reflection::struct2& /*_return*/, ::std::int32_t /*l*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("methodF");
 }
 
-folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> service2SvIf::semifuture_methodF(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
+folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::semifuture_methodF(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_methodF.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::test_cpp2::cpp_reflection::struct2>();
@@ -331,13 +330,13 @@ folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> service
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> service2SvIf::future_methodF(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
+folly::Future<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::future_methodF(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_methodF.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_methodF(p_l, std::move(p_m), p_n), getInternalKeepAlive());
 }
 
-void service2SvIf::async_tm_methodF(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback, ::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
+void apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>::async_tm_methodF(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback, ::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -380,6 +379,9 @@ void service2SvIf::async_tm_methodF(std::unique_ptr<apache::thrift::HandlerCallb
   }
 }
 
+
+namespace test_cpp2 { namespace cpp_reflection {
+
 void service2SvNull::methodA() {
   return;
 }
@@ -401,13 +403,12 @@ void service2SvNull::methodE(::test_cpp2::cpp_reflection::struct2& /*_return*/) 
 void service2SvNull::methodF(::test_cpp2::cpp_reflection::struct2& /*_return*/, ::std::int32_t /*l*/, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/) {}
 
 
-
 const char* service2AsyncProcessor::getServiceName() {
   return "service2";
 }
 
 void service2AsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<service2SvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service2>>::gen(response);
 }
 
 void service2AsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

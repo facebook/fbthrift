@@ -24,6 +24,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class SinkService;
 class SinkServiceAsyncProcessor;
 
 class SinkServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -31,12 +32,15 @@ class SinkServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+} // cpp2
 
-class SinkServiceSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::cpp2::SinkService> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "SinkService"; }
 
-  typedef SinkServiceAsyncProcessor ProcessorType;
+  typedef ::cpp2::SinkServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -67,7 +71,7 @@ class SinkServiceSvIf : public apache::thrift::ServerInterface {
   virtual void async_tm_methodBothThrow(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback);
   virtual void async_eb_methodFast(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback);
  private:
-  static SinkServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::cpp2::SinkServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_method{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_methodAndReponse{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_methodThrow{apache::thrift::detail::si::InvocationType::AsyncTm};
@@ -76,6 +80,12 @@ class SinkServiceSvIf : public apache::thrift::ServerInterface {
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_methodBothThrow{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class SinkServiceSvIf : public ::apache::thrift::ServiceHandler<SinkService> {};
+} // cpp2
+namespace cpp2 {
 class SinkServiceSvNull : public SinkServiceSvIf {
  public:
   ::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse> method() override;
@@ -92,7 +102,7 @@ class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  SinkServiceSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::cpp2::SinkService>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -178,7 +188,7 @@ class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_methodFast(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  SinkServiceAsyncProcessor(SinkServiceSvIf* iface) :
+  SinkServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::SinkService>* iface) :
       iface_(iface) {}
   ~SinkServiceAsyncProcessor() override {}
 

@@ -733,6 +733,7 @@ class mstch_py3_service : public mstch_service {
              &mstch_py3_service::parent_service_name},
             {"service:parent_service_cpp_name",
              &mstch_py3_service::parent_service_cpp_name},
+            {"service:qualified_name", &mstch_py3_service::qualified_name},
             {"service:supportedFunctions",
              &mstch_py3_service::get_supported_functions},
             {"service:lifecycleFunctions",
@@ -759,6 +760,11 @@ class mstch_py3_service : public mstch_service {
   mstch::node includePrefix() { return service_->program()->include_prefix(); }
 
   mstch::node cpp_name() { return cpp2::get_name(service_); }
+
+  mstch::node qualified_name() {
+    return cpp2::get_gen_namespace(*service_->program()) +
+        "::" + cpp2::get_name(service_);
+  }
 
   mstch::node parent_service_name() {
     return cache_->parsed_options_.at("parent_service_name");

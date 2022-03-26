@@ -627,7 +627,7 @@ void ExceptionMetadata<::some::valid::ns::AnotherException>::gen(ThriftMetadata&
   }
 }
 
-void ServiceMetadata<::some::valid::ns::EmptyServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -637,7 +637,7 @@ void ServiceMetadata<::some::valid::ns::EmptyServiceSvIf>::gen(::apache::thrift:
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::some::valid::ns::EmptyServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_EmptyService;
   module_EmptyService.name_ref() = "module.EmptyService";
@@ -652,7 +652,7 @@ const ThriftServiceContextRef* ServiceMetadata<::some::valid::ns::EmptyServiceSv
   context.module_ref() = std::move(module);
   return &context;
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_noReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_noReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "noReturn";
@@ -661,7 +661,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_noReturn(ThriftM
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_boolReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_boolReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "boolReturn";
@@ -670,7 +670,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_boolReturn(Thrif
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i16Return(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_i16Return(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "i16Return";
@@ -679,7 +679,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i16Return(Thrift
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i32Return(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_i32Return(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "i32Return";
@@ -688,7 +688,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i32Return(Thrift
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i64Return(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_i64Return(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "i64Return";
@@ -697,7 +697,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i64Return(Thrift
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_floatReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_floatReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "floatReturn";
@@ -706,7 +706,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_floatReturn(Thri
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_doubleReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_doubleReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "doubleReturn";
@@ -715,7 +715,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_doubleReturn(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_stringReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_stringReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "stringReturn";
@@ -724,7 +724,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_stringReturn(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_binaryReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_binaryReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "binaryReturn";
@@ -733,7 +733,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_binaryReturn(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_mapReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_mapReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "mapReturn";
@@ -742,7 +742,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_mapReturn(Thrift
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_simpleTypedefReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_simpleTypedefReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "simpleTypedefReturn";
@@ -751,7 +751,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_simpleTypedefRet
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_complexTypedefReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_complexTypedefReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "complexTypedefReturn";
@@ -760,7 +760,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_complexTypedefRe
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_mostComplexTypedefReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_list_mostComplexTypedefReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "list_mostComplexTypedefReturn";
@@ -769,7 +769,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_mostComplex
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_enumReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_enumReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "enumReturn";
@@ -778,7 +778,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_enumReturn(Thrif
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_EnumReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_list_EnumReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "list_EnumReturn";
@@ -787,7 +787,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_EnumReturn(
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_structReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_structReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "structReturn";
@@ -796,7 +796,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_structReturn(Thr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_set_StructReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_set_StructReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "set_StructReturn";
@@ -805,7 +805,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_set_StructReturn
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_unionReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_unionReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "unionReturn";
@@ -814,7 +814,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_unionReturn(Thri
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_UnionReturn(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_list_UnionReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "list_UnionReturn";
@@ -823,7 +823,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_UnionReturn
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_readDataEb(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_readDataEb(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "readDataEb";
@@ -839,7 +839,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_readDataEb(Thrif
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_readData(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_readData(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "readData";
@@ -856,7 +856,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_readData(ThriftM
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -866,32 +866,32 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen(::apache::thrift
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_ReturnService;
   module_ReturnService.name_ref() = "module.ReturnService";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_noReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_boolReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i16Return,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i32Return,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i64Return,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_floatReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_doubleReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_stringReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_binaryReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_mapReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_simpleTypedefReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_complexTypedefReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_mostComplexTypedefReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_enumReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_EnumReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_structReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_set_StructReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_unionReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_list_UnionReturn,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_readDataEb,
-    ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_readData,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_noReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_boolReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_i16Return,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_i32Return,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_i64Return,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_floatReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_doubleReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_stringReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_binaryReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_mapReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_simpleTypedefReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_complexTypedefReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_list_mostComplexTypedefReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_enumReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_list_EnumReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_structReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_set_StructReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_unionReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_list_UnionReturn,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_readDataEb,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>>::gen_readData,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_ReturnService);
@@ -907,7 +907,7 @@ const ThriftServiceContextRef* ServiceMetadata<::some::valid::ns::ReturnServiceS
   context.module_ref() = std::move(module);
   return &context;
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_i16_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_i16_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "void_ret_i16_param";
@@ -923,7 +923,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_i16_para
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_byte_i16_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_byte_i16_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "void_ret_byte_i16_param";
@@ -946,7 +946,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_byte_i16
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_map_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "void_ret_map_param";
@@ -962,7 +962,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_para
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_setlist_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_map_setlist_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "void_ret_map_setlist_param";
@@ -985,7 +985,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_setl
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_typedef_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_map_typedef_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "void_ret_map_typedef_param";
@@ -1001,7 +1001,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_type
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_enum_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_enum_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "void_ret_enum_param";
@@ -1017,7 +1017,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_enum_par
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_struct_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_struct_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "void_ret_struct_param";
@@ -1033,7 +1033,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_struct_p
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_listunion_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_listunion_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "void_ret_listunion_param";
@@ -1049,7 +1049,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_listunio
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_i32_i64_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_bool_ret_i32_i64_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "bool_ret_i32_i64_param";
@@ -1072,7 +1072,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_i32_i64_
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_map_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_bool_ret_map_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "bool_ret_map_param";
@@ -1088,7 +1088,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_map_para
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_union_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_bool_ret_union_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "bool_ret_union_param";
@@ -1104,7 +1104,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_union_pa
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_float_double_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_i64_ret_float_double_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "i64_ret_float_double_param";
@@ -1127,7 +1127,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_float_dou
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_string_typedef_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_i64_ret_string_typedef_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "i64_ret_string_typedef_param";
@@ -1150,7 +1150,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_string_ty
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_i32_i32_i32_i32_i32_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_i64_ret_i32_i32_i32_i32_i32_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "i64_ret_i32_i32_i32_i32_i32_param";
@@ -1194,7 +1194,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_i32_i32_i
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_double_ret_setstruct_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_double_ret_setstruct_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "double_ret_setstruct_param";
@@ -1210,7 +1210,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_double_ret_setstr
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_string_ret_string_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_string_ret_string_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "string_ret_string_param";
@@ -1226,7 +1226,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_string_ret_string
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_binary_ret_binary_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_binary_ret_binary_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "binary_ret_binary_param";
@@ -1242,7 +1242,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_binary_ret_binary
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_map_ret_bool_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_map_ret_bool_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "map_ret_bool_param";
@@ -1258,7 +1258,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_map_ret_bool_para
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_list_ret_map_setlist_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_list_ret_map_setlist_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "list_ret_map_setlist_param";
@@ -1281,7 +1281,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_list_ret_map_setl
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_mapsetlistmapliststring_ret_listlistlist_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_mapsetlistmapliststring_ret_listlistlist_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "mapsetlistmapliststring_ret_listlistlist_param";
@@ -1297,7 +1297,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_mapsetlistmaplist
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_typedef_ret_i32_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_typedef_ret_i32_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "typedef_ret_i32_param";
@@ -1313,7 +1313,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_typedef_ret_i32_p
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listtypedef_ret_typedef_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_listtypedef_ret_typedef_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "listtypedef_ret_typedef_param";
@@ -1329,7 +1329,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listtypedef_ret_t
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_enum_ret_double_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_enum_ret_double_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "enum_ret_double_param";
@@ -1345,7 +1345,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_enum_ret_double_p
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_enum_ret_double_enum_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_enum_ret_double_enum_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "enum_ret_double_enum_param";
@@ -1368,7 +1368,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_enum_ret_double_e
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listenum_ret_map_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_listenum_ret_map_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "listenum_ret_map_param";
@@ -1384,7 +1384,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listenum_ret_map_
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_struct_ret_i16_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_struct_ret_i16_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "struct_ret_i16_param";
@@ -1400,7 +1400,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_struct_ret_i16_pa
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_setstruct_ret_set_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_setstruct_ret_set_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "setstruct_ret_set_param";
@@ -1416,7 +1416,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_setstruct_ret_set
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_union_ret_i32_i32_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_union_ret_i32_i32_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "union_ret_i32_i32_param";
@@ -1439,7 +1439,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_union_ret_i32_i32
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listunion_string_param(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_listunion_string_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "listunion_string_param";
@@ -1456,7 +1456,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listunion_string_
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -1466,40 +1466,40 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen(::apache::thrift:
   response.context_ref() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_ParamService;
   module_ParamService.name_ref() = "module.ParamService";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_i16_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_byte_i16_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_setlist_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_typedef_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_enum_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_struct_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_listunion_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_i32_i64_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_map_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_union_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_float_double_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_string_typedef_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_i32_i32_i32_i32_i32_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_double_ret_setstruct_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_string_ret_string_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_binary_ret_binary_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_map_ret_bool_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_list_ret_map_setlist_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_mapsetlistmapliststring_ret_listlistlist_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_typedef_ret_i32_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listtypedef_ret_typedef_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_enum_ret_double_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_enum_ret_double_enum_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listenum_ret_map_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_struct_ret_i16_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_setstruct_ret_set_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_union_ret_i32_i32_param,
-    ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listunion_string_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_i16_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_byte_i16_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_map_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_map_setlist_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_map_typedef_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_enum_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_struct_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_void_ret_listunion_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_bool_ret_i32_i64_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_bool_ret_map_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_bool_ret_union_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_i64_ret_float_double_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_i64_ret_string_typedef_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_i64_ret_i32_i32_i32_i32_i32_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_double_ret_setstruct_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_string_ret_string_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_binary_ret_binary_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_map_ret_bool_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_list_ret_map_setlist_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_mapsetlistmapliststring_ret_listlistlist_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_typedef_ret_i32_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_listtypedef_ret_typedef_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_enum_ret_double_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_enum_ret_double_enum_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_listenum_ret_map_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_struct_ret_i16_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_setstruct_ret_set_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_union_ret_i32_i32_param,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>>::gen_listunion_string_param,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_ParamService);

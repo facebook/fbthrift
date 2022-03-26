@@ -15,8 +15,8 @@
   limitations under the License.
 
 %><%^service:interaction?%><%!
-%><%service:cpp_name%>SvIf<%!
+%>apache::thrift::ServiceHandler<<%service:qualified_name%>><%!
 %><%/service:interaction?%><%!
 %><%#service:interaction?%><%!
-%><%service:parent_service_cpp_name%>SvIf::<%service:cpp_name%>If<%!
+%>apache::thrift::ServiceHandler<<%service:parent_service_qualified_name%>>::<%service:cpp_name%>If<%!
 %><%/service:interaction?%>

@@ -23,6 +23,10 @@
 
 namespace apache {
 namespace thrift {
+
+template <class>
+class ServiceHandler;
+
 namespace detail {
 namespace md {
 

@@ -12,6 +12,7 @@
 #include "thrift/compiler/test/fixtures/interactions/gen-cpp2/module_types.h"
 
 namespace cpp2 {
+class MyService;
 class MyServiceSvIf;
 } // namespace cpp2
 
@@ -31,7 +32,7 @@ class ExceptionMetadata<::cpp2::CustomException> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
-class ServiceMetadata<::cpp2::MyServiceSvIf> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -45,6 +46,9 @@ class ServiceMetadata<::cpp2::MyServiceSvIf> {
   static void gen_interactFast(ThriftMetadata& metadata, ThriftService& context);
   static void gen_serialize(ThriftMetadata& metadata, ThriftService& context);
 };
+template <>
+class ServiceMetadata<::cpp2::MyServiceSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

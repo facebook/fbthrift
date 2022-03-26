@@ -12,6 +12,7 @@
 #include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/module_types.h"
 
 namespace cpp2 {
+class Raiser;
 class RaiserSvIf;
 } // namespace cpp2
 
@@ -81,7 +82,7 @@ class ExceptionMetadata<::cpp2::Banal> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
-class ServiceMetadata<::cpp2::RaiserSvIf> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Raiser>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -95,6 +96,9 @@ class ServiceMetadata<::cpp2::RaiserSvIf> {
   static void gen_get200(ThriftMetadata& metadata, ThriftService& context);
   static void gen_get500(ThriftMetadata& metadata, ThriftService& context);
 };
+template <>
+class ServiceMetadata<::cpp2::RaiserSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Raiser>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

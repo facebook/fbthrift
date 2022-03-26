@@ -12,7 +12,7 @@ namespace cpp2 {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::StructMetadata<Foo>::gen(metadata);
-  ::apache::thrift::detail::md::ServiceMetadata<TestServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::TestService>>::gen(response);
   return metadata;
 }
 } // namespace cpp2

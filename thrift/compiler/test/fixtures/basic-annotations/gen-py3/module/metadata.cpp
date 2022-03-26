@@ -17,10 +17,10 @@ namespace cpp2 {
   ::apache::thrift::detail::md::ExceptionMetadata<MyException>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<SecretStruct>::gen(metadata);
-  ::apache::thrift::detail::md::ServiceMetadata<MyServiceSvIf>::gen(response);
-  ::apache::thrift::detail::md::ServiceMetadata<MyServicePrioParentSvIf>::gen(response);
-  ::apache::thrift::detail::md::ServiceMetadata<MyServicePrioChildSvIf>::gen(response);
-  ::apache::thrift::detail::md::ServiceMetadata<GoodServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyServicePrioChild>>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::GoodService>>::gen(response);
   return metadata;
 }
 } // namespace cpp2

@@ -23,6 +23,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace py3 { namespace simple {
+class SimpleService;
 class SimpleServiceAsyncProcessor;
 
 class SimpleServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -30,12 +31,15 @@ class SimpleServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder 
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+}} // py3::simple
 
-class SimpleServiceSvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::py3::simple::SimpleService> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "SimpleService"; }
 
-  typedef SimpleServiceAsyncProcessor ProcessorType;
+  typedef ::py3::simple::SimpleServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -205,7 +209,7 @@ class SimpleServiceSvIf : public apache::thrift::ServerInterface {
   virtual folly::SemiFuture<std::unique_ptr<::py3::simple::BinaryUnionStruct>> semifuture_get_binary_union_struct(std::unique_ptr<::py3::simple::BinaryUnion> p_u);
   virtual void async_tm_get_binary_union_struct(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::py3::simple::BinaryUnionStruct>>> callback, std::unique_ptr<::py3::simple::BinaryUnion> p_u);
  private:
-  static SimpleServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::py3::simple::SimpleServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_get_five{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_add_five{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_do_nothing{apache::thrift::detail::si::InvocationType::AsyncTm};
@@ -249,6 +253,12 @@ class SimpleServiceSvIf : public apache::thrift::ServerInterface {
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_get_binary_union_struct{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace py3 { namespace simple {
+class SimpleServiceSvIf : public ::apache::thrift::ServiceHandler<SimpleService> {};
+}} // py3::simple
+namespace py3 { namespace simple {
 class SimpleServiceSvNull : public SimpleServiceSvIf {
  public:
   ::std::int32_t get_five() override;
@@ -300,7 +310,7 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  SimpleServiceSvIf* iface_;
+  ::apache::thrift::ServiceHandler<::py3::simple::SimpleService>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -726,7 +736,7 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_get_binary_union_struct(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  SimpleServiceAsyncProcessor(SimpleServiceSvIf* iface) :
+  SimpleServiceAsyncProcessor(::apache::thrift::ServiceHandler<::py3::simple::SimpleService>* iface) :
       iface_(iface) {}
   ~SimpleServiceAsyncProcessor() override {}
 

@@ -26,6 +26,7 @@ namespace apache { namespace thrift {
 }}
 
 namespace test_cpp2 { namespace cpp_reflection {
+class service1;
 class service1AsyncProcessor;
 
 class service1ServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
@@ -33,12 +34,15 @@ class service1ServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
+}} // test_cpp2::cpp_reflection
 
-class service1SvIf : public apache::thrift::ServerInterface {
+namespace apache::thrift {
+template <>
+class ServiceHandler<::test_cpp2::cpp_reflection::service1> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "service1"; }
 
-  typedef service1AsyncProcessor ProcessorType;
+  typedef ::test_cpp2::cpp_reflection::service1AsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
@@ -68,7 +72,7 @@ class service1SvIf : public apache::thrift::ServerInterface {
   virtual folly::SemiFuture<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>> semifuture_method6(::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n);
   virtual void async_tm_method6(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test_cpp2::cpp_reflection::struct2>>> callback, ::std::int32_t p_l, std::unique_ptr<::test_cpp2::cpp_reflection::struct1> p_m, double p_n);
  private:
-  static service1ServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::test_cpp2::cpp_reflection::service1ServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_method1{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_method2{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_method3{apache::thrift::detail::si::InvocationType::AsyncTm};
@@ -77,6 +81,12 @@ class service1SvIf : public apache::thrift::ServerInterface {
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_method6{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
+} // namespace apache::thrift
+
+namespace test_cpp2 { namespace cpp_reflection {
+class service1SvIf : public ::apache::thrift::ServiceHandler<service1> {};
+}} // test_cpp2::cpp_reflection
+namespace test_cpp2 { namespace cpp_reflection {
 class service1SvNull : public service1SvIf {
  public:
   void method1() override;
@@ -93,7 +103,7 @@ class service1AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  service1SvIf* iface_;
+  ::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -169,7 +179,7 @@ class service1AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_method6(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  service1AsyncProcessor(service1SvIf* iface) :
+  service1AsyncProcessor(::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service1>* iface) :
       iface_(iface) {}
   ~service1AsyncProcessor() override {}
 

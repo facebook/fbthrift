@@ -10,52 +10,51 @@
 #include "thrift/compiler/test/fixtures/interactions/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-namespace cpp2 {
-std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceSvIf::getProcessor() {
-  return std::make_unique<MyServiceAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::MyService>::getProcessor() {
+  return std::make_unique<::cpp2::MyServiceAsyncProcessor>(this);
 }
 
-MyServiceSvIf::CreateMethodMetadataResult MyServiceSvIf::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<MyServiceAsyncProcessor>();
+apache::thrift::ServiceHandler<::cpp2::MyService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::MyService>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::MyServiceAsyncProcessor>();
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> MyServiceSvIf::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::MyService>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-  MyServiceServiceInfoHolder MyServiceSvIf::__fbthrift_serviceInfoHolder;
+::cpp2::MyServiceServiceInfoHolder apache::thrift::ServiceHandler<::cpp2::MyService>::__fbthrift_serviceInfoHolder;
 
 
-std::unique_ptr<MyServiceSvIf::MyInteractionIf> MyServiceSvIf::createMyInteraction() {
+std::unique_ptr<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf> apache::thrift::ServiceHandler<::cpp2::MyService>::createMyInteraction() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("createMyInteraction");
 }
 
-std::unique_ptr<MyServiceSvIf::MyInteractionFastIf> MyServiceSvIf::createMyInteractionFast() {
+std::unique_ptr<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf> apache::thrift::ServiceHandler<::cpp2::MyService>::createMyInteractionFast() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("createMyInteractionFast");
 }
 
-std::unique_ptr<MyServiceSvIf::SerialInteractionIf> MyServiceSvIf::createSerialInteraction() {
+std::unique_ptr<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf> apache::thrift::ServiceHandler<::cpp2::MyService>::createSerialInteraction() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("createSerialInteraction");
 }
 
-void MyServiceSvIf::foo() {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::foo() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("foo");
 }
 
-folly::SemiFuture<folly::Unit> MyServiceSvIf::semifuture_foo() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_foo() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_foo.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   foo();
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> MyServiceSvIf::future_foo() {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::future_foo() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_foo.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_foo(), getInternalKeepAlive());
 }
 
-void MyServiceSvIf::async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -97,37 +96,37 @@ void MyServiceSvIf::async_tm_foo(std::unique_ptr<apache::thrift::HandlerCallback
   }
 }
 
-apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void> MyServiceSvIf::interact(::std::int32_t /*arg*/) {
+apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void> apache::thrift::ServiceHandler<::cpp2::MyService>::interact(::std::int32_t /*arg*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("interact");
 }
 
-folly::SemiFuture<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void>> MyServiceSvIf::semifuture_interact(::std::int32_t p_arg) {
+folly::SemiFuture<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void>> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_interact(::std::int32_t p_arg) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_interact.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return interact(p_arg);
 }
 
-folly::Future<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void>> MyServiceSvIf::future_interact(::std::int32_t p_arg) {
+folly::Future<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void>> apache::thrift::ServiceHandler<::cpp2::MyService>::future_interact(::std::int32_t p_arg) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_interact.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_interact(p_arg), getInternalKeepAlive());
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void>> MyServiceSvIf::co_interact(::std::int32_t p_arg) {
+folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void>> apache::thrift::ServiceHandler<::cpp2::MyService>::co_interact(::std::int32_t p_arg) {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_interact.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
   return folly::coro::toTask(future_interact(p_arg));
 }
 
-folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void>> MyServiceSvIf::co_interact(apache::thrift::RequestParams /* params */, ::std::int32_t p_arg) {
+folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void>> apache::thrift::ServiceHandler<::cpp2::MyService>::co_interact(apache::thrift::RequestParams /* params */, ::std::int32_t p_arg) {
   auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
   __fbthrift_invocation_interact.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
   return co_interact(p_arg);
 }
 #endif // FOLLY_HAS_COROUTINES
 
-void MyServiceSvIf::async_tm_interact(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionIf, void>>> callback, ::std::int32_t p_arg) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_interact(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void>>> callback, ::std::int32_t p_arg) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -193,37 +192,37 @@ void MyServiceSvIf::async_tm_interact(std::unique_ptr<apache::thrift::HandlerCal
   }
 }
 
-apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t> MyServiceSvIf::interactFast() {
+apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t> apache::thrift::ServiceHandler<::cpp2::MyService>::interactFast() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("interactFast");
 }
 
-folly::SemiFuture<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t>> MyServiceSvIf::semifuture_interactFast() {
+folly::SemiFuture<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_interactFast() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_interactFast.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return interactFast();
 }
 
-folly::Future<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t>> MyServiceSvIf::future_interactFast() {
+folly::Future<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::MyService>::future_interactFast() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_interactFast.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_interactFast(), getInternalKeepAlive());
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t>> MyServiceSvIf::co_interactFast() {
+folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::MyService>::co_interactFast() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_interactFast.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
   return folly::coro::toTask(future_interactFast());
 }
 
-folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t>> MyServiceSvIf::co_interactFast(apache::thrift::RequestParams /* params */) {
+folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::MyService>::co_interactFast(apache::thrift::RequestParams /* params */) {
   auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
   __fbthrift_invocation_interactFast.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
   return co_interactFast();
 }
 #endif // FOLLY_HAS_COROUTINES
 
-void MyServiceSvIf::async_tm_interactFast(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<MyServiceSvIf::MyInteractionFastIf, ::std::int32_t>>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_interactFast(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -289,37 +288,37 @@ void MyServiceSvIf::async_tm_interactFast(std::unique_ptr<apache::thrift::Handle
   }
 }
 
-apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> MyServiceSvIf::serialize() {
+apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>> apache::thrift::ServiceHandler<::cpp2::MyService>::serialize() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("serialize");
 }
 
-folly::SemiFuture<apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> MyServiceSvIf::semifuture_serialize() {
+folly::SemiFuture<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_serialize() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_serialize.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return serialize();
 }
 
-folly::Future<apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> MyServiceSvIf::future_serialize() {
+folly::Future<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> apache::thrift::ServiceHandler<::cpp2::MyService>::future_serialize() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_serialize.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_serialize(), getInternalKeepAlive());
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> MyServiceSvIf::co_serialize() {
+folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> apache::thrift::ServiceHandler<::cpp2::MyService>::co_serialize() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_serialize.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
   return folly::coro::toTask(future_serialize());
 }
 
-folly::coro::Task<apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> MyServiceSvIf::co_serialize(apache::thrift::RequestParams /* params */) {
+folly::coro::Task<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>> apache::thrift::ServiceHandler<::cpp2::MyService>::co_serialize(apache::thrift::RequestParams /* params */) {
   auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
   __fbthrift_invocation_serialize.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
   return co_serialize();
 }
 #endif // FOLLY_HAS_COROUTINES
 
-void MyServiceSvIf::async_tm_serialize(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<MyServiceSvIf::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_serialize(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -385,37 +384,32 @@ void MyServiceSvIf::async_tm_serialize(std::unique_ptr<apache::thrift::HandlerCa
   }
 }
 
-void MyServiceSvNull::foo() {
-  return;
-}
 
-
-
-::std::int32_t MyServiceSvIf::MyInteractionIf::frobnicate() {
+::std::int32_t apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::frobnicate() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("frobnicate");
 }
 
-folly::SemiFuture<::std::int32_t> MyServiceSvIf::MyInteractionIf::semifuture_frobnicate() {
+folly::SemiFuture<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::semifuture_frobnicate() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_frobnicate.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return frobnicate();
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<::std::int32_t> MyServiceSvIf::MyInteractionIf::co_frobnicate() {
+folly::coro::Task<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_frobnicate() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_frobnicate.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return folly::coro::toTask(semifuture_frobnicate());
 }
 
-folly::coro::Task<::std::int32_t> MyServiceSvIf::MyInteractionIf::co_frobnicate(apache::thrift::RequestParams /* params */) {
+folly::coro::Task<::std::int32_t> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_frobnicate(apache::thrift::RequestParams /* params */) {
   auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
   __fbthrift_invocation_frobnicate.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
   return co_frobnicate();
 }
 #endif // FOLLY_HAS_COROUTINES
 
-void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -475,11 +469,11 @@ void MyServiceSvIf::MyInteractionIf::async_tm_frobnicate(std::unique_ptr<apache:
   }
 }
 
-void MyServiceSvIf::MyInteractionIf::ping() {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::ping() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("ping");
 }
 
-folly::SemiFuture<folly::Unit> MyServiceSvIf::MyInteractionIf::semifuture_ping() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::semifuture_ping() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_ping.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   ping();
@@ -487,20 +481,20 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::MyInteractionIf::semifuture_ping()
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<void> MyServiceSvIf::MyInteractionIf::co_ping() {
+folly::coro::Task<void> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_ping() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_ping.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return folly::coro::toTask(semifuture_ping());
 }
 
-folly::coro::Task<void> MyServiceSvIf::MyInteractionIf::co_ping(apache::thrift::RequestParams /* params */) {
+folly::coro::Task<void> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_ping(apache::thrift::RequestParams /* params */) {
   auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
   __fbthrift_invocation_ping.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
   return co_ping();
 }
 #endif // FOLLY_HAS_COROUTINES
 
-void MyServiceSvIf::MyInteractionIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -560,31 +554,31 @@ void MyServiceSvIf::MyInteractionIf::async_tm_ping(std::unique_ptr<apache::thrif
   }
 }
 
-::apache::thrift::ServerStream<bool> MyServiceSvIf::MyInteractionIf::truthify() {
+::apache::thrift::ServerStream<bool> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::truthify() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("truthify");
 }
 
-folly::SemiFuture<::apache::thrift::ServerStream<bool>> MyServiceSvIf::MyInteractionIf::semifuture_truthify() {
+folly::SemiFuture<::apache::thrift::ServerStream<bool>> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::semifuture_truthify() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_truthify.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return truthify();
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<::apache::thrift::ServerStream<bool>> MyServiceSvIf::MyInteractionIf::co_truthify() {
+folly::coro::Task<::apache::thrift::ServerStream<bool>> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_truthify() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_truthify.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return folly::coro::toTask(semifuture_truthify());
 }
 
-folly::coro::Task<::apache::thrift::ServerStream<bool>> MyServiceSvIf::MyInteractionIf::co_truthify(apache::thrift::RequestParams /* params */) {
+folly::coro::Task<::apache::thrift::ServerStream<bool>> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_truthify(apache::thrift::RequestParams /* params */) {
   auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
   __fbthrift_invocation_truthify.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
   return co_truthify();
 }
 #endif // FOLLY_HAS_COROUTINES
 
-void MyServiceSvIf::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -644,31 +638,31 @@ void MyServiceSvIf::MyInteractionIf::async_tm_truthify(std::unique_ptr<apache::t
   }
 }
 
-::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string> MyServiceSvIf::MyInteractionIf::encode() {
+::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::encode() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("encode");
 }
 
-folly::SemiFuture<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::semifuture_encode() {
+folly::SemiFuture<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::semifuture_encode() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_encode.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return encode();
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::co_encode() {
+folly::coro::Task<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_encode() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_encode.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return folly::coro::toTask(semifuture_encode());
 }
 
-folly::coro::Task<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>> MyServiceSvIf::MyInteractionIf::co_encode(apache::thrift::RequestParams /* params */) {
+folly::coro::Task<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>> apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::co_encode(apache::thrift::RequestParams /* params */) {
   auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
   __fbthrift_invocation_encode.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
   return co_encode();
 }
 #endif // FOLLY_HAS_COROUTINES
 
-void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -728,27 +722,27 @@ void MyServiceSvIf::MyInteractionIf::async_tm_encode(std::unique_ptr<apache::thr
   }
 }
 
-void MyServiceSvIf::MyInteractionFastIf::async_eb_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf::async_eb_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("frobnicate"));
 }
 
-void MyServiceSvIf::MyInteractionFastIf::async_eb_ping(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf::async_eb_ping(std::unique_ptr<apache::thrift::HandlerCallbackBase> /*callback*/) {
   LOG(DFATAL) << "Function ping is unimplemented";
 }
 
-void MyServiceSvIf::MyInteractionFastIf::async_eb_truthify(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf::async_eb_truthify(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>> callback) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("truthify"));
 }
 
-void MyServiceSvIf::MyInteractionFastIf::async_eb_encode(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf::async_eb_encode(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>>> callback) {
   callback->exception(apache::thrift::detail::si::create_app_exn_unimplemented("encode"));
 }
 
-void MyServiceSvIf::SerialInteractionIf::frobnicate() {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf::frobnicate() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("frobnicate");
 }
 
-folly::SemiFuture<folly::Unit> MyServiceSvIf::SerialInteractionIf::semifuture_frobnicate() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf::semifuture_frobnicate() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_frobnicate.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   frobnicate();
@@ -756,20 +750,20 @@ folly::SemiFuture<folly::Unit> MyServiceSvIf::SerialInteractionIf::semifuture_fr
 }
 
 #if FOLLY_HAS_COROUTINES
-folly::coro::Task<void> MyServiceSvIf::SerialInteractionIf::co_frobnicate() {
+folly::coro::Task<void> apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf::co_frobnicate() {
   auto expected{apache::thrift::detail::si::InvocationType::Coro};
   __fbthrift_invocation_frobnicate.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return folly::coro::toTask(semifuture_frobnicate());
 }
 
-folly::coro::Task<void> MyServiceSvIf::SerialInteractionIf::co_frobnicate(apache::thrift::RequestParams /* params */) {
+folly::coro::Task<void> apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf::co_frobnicate(apache::thrift::RequestParams /* params */) {
   auto expected{apache::thrift::detail::si::InvocationType::CoroParam};
   __fbthrift_invocation_frobnicate.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Coro, std::memory_order_relaxed);
   return co_frobnicate();
 }
 #endif // FOLLY_HAS_COROUTINES
 
-void MyServiceSvIf::SerialInteractionIf::async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf::async_tm_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -830,12 +824,19 @@ void MyServiceSvIf::SerialInteractionIf::async_tm_frobnicate(std::unique_ptr<apa
   }
 }
 
+namespace cpp2 {
+
+void MyServiceSvNull::foo() {
+  return;
+}
+
+
 const char* MyServiceAsyncProcessor::getServiceName() {
   return "MyService";
 }
 
 void MyServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<MyServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen(response);
 }
 
 void MyServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

@@ -12,6 +12,7 @@
 #include "thrift/compiler/test/fixtures/sink/gen-cpp2/module_types.h"
 
 namespace cpp2 {
+class SinkService;
 class SinkServiceSvIf;
 } // namespace cpp2
 
@@ -71,7 +72,7 @@ class ExceptionMetadata<::cpp2::SinkException2> {
   static void gen(ThriftMetadata& metadata);
 };
 template <>
-class ServiceMetadata<::cpp2::SinkServiceSvIf> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -88,6 +89,9 @@ class ServiceMetadata<::cpp2::SinkServiceSvIf> {
   static void gen_methodBothThrow(ThriftMetadata& metadata, ThriftService& context);
   static void gen_methodFast(ThriftMetadata& metadata, ThriftService& context);
 };
+template <>
+class ServiceMetadata<::cpp2::SinkServiceSvIf> final
+    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift
