@@ -132,9 +132,12 @@ void reset_field<::apache::thrift::op::StringPatch>(
       obj.assign_ref().copy_from(default_inst<::apache::thrift::op::StringPatch>().assign_ref());
       return;
     case 1:
-      obj.append_ref().copy_from(default_inst<::apache::thrift::op::StringPatch>().append_ref());
+      obj.clear_ref().copy_from(default_inst<::apache::thrift::op::StringPatch>().clear_ref());
       return;
     case 2:
+      obj.append_ref().copy_from(default_inst<::apache::thrift::op::StringPatch>().append_ref());
+      return;
+    case 3:
       obj.prepend_ref().copy_from(default_inst<::apache::thrift::op::StringPatch>().prepend_ref());
       return;
   }

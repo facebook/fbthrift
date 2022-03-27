@@ -25,21 +25,26 @@ import com.facebook.thrift.protocol.*;
 public class StringPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("StringPatch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.STRING, (short)1);
+  private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField APPEND_FIELD_DESC = new TField("append", TType.STRING, (short)4);
   private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.STRING, (short)5);
 
   public final String assign;
+  public final Boolean clear;
   public final String append;
   public final String prepend;
   public static final int ASSIGN = 1;
+  public static final int CLEAR = 2;
   public static final int APPEND = 4;
   public static final int PREPEND = 5;
 
   public StringPatch(
       String assign,
+      Boolean clear,
       String append,
       String prepend) {
     this.assign = assign;
+    this.clear = clear;
     this.append = append;
     this.prepend = prepend;
   }
@@ -52,6 +57,11 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable {
       this.assign = TBaseHelper.deepCopy(other.assign);
     } else {
       this.assign = null;
+    }
+    if (other.isSetClear()) {
+      this.clear = TBaseHelper.deepCopy(other.clear);
+    } else {
+      this.clear = null;
     }
     if (other.isSetAppend()) {
       this.append = TBaseHelper.deepCopy(other.append);
@@ -76,6 +86,15 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable {
   // Returns true if field assign is set (has been assigned a value) and false otherwise
   public boolean isSetAssign() {
     return this.assign != null;
+  }
+
+  public Boolean isClear() {
+    return this.clear;
+  }
+
+  // Returns true if field clear is set (has been assigned a value) and false otherwise
+  public boolean isSetClear() {
+    return this.clear != null;
   }
 
   public String getAppend() {
@@ -108,6 +127,8 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetAssign(), that.isSetAssign(), this.assign, that.assign)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetClear(), that.isSetClear(), this.clear, that.clear)) { return false; }
+
     if (!TBaseHelper.equalsNobinary(this.isSetAppend(), that.isSetAppend(), this.append, that.append)) { return false; }
 
     if (!TBaseHelper.equalsNobinary(this.isSetPrepend(), that.isSetPrepend(), this.prepend, that.prepend)) { return false; }
@@ -117,7 +138,7 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable {
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {assign, append, prepend});
+    return Arrays.deepHashCode(new Object[] {assign, clear, append, prepend});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -127,6 +148,7 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable {
 
   public static StringPatch deserialize(TProtocol iprot) throws TException {
     String tmp_assign = null;
+    Boolean tmp_clear = null;
     String tmp_append = null;
     String tmp_prepend = null;
     TField __field;
@@ -142,6 +164,13 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable {
         case ASSIGN:
           if (__field.type == TType.STRING) {
             tmp_assign = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case CLEAR:
+          if (__field.type == TType.BOOL) {
+            tmp_clear = iprot.readBool();
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -171,6 +200,7 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable {
     StringPatch _that;
     _that = new StringPatch(
       tmp_assign
+      ,tmp_clear
       ,tmp_append
       ,tmp_prepend
     );
@@ -188,6 +218,11 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable {
         oprot.writeString(this.assign);
         oprot.writeFieldEnd();
       }
+    }
+    if (this.clear != null) {
+      oprot.writeFieldBegin(CLEAR_FIELD_DESC);
+      oprot.writeBool(this.clear);
+      oprot.writeFieldEnd();
     }
     if (this.append != null) {
       oprot.writeFieldBegin(APPEND_FIELD_DESC);

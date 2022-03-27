@@ -292,11 +292,14 @@ class DoublePatch(thrift.py3.types.Struct, _typing.Hashable):
 class StringPatch(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         assign: bool
+        clear: bool
         append: bool
         prepend: bool
         pass
 
     assign: Final[_typing.Optional[str]] = ...
+
+    clear: Final[bool] = ...
 
     append: Final[str] = ...
 
@@ -305,6 +308,7 @@ class StringPatch(thrift.py3.types.Struct, _typing.Hashable):
     def __init__(
         self, *,
         assign: _typing.Optional[str]=None,
+        clear: _typing.Optional[bool]=None,
         append: _typing.Optional[str]=None,
         prepend: _typing.Optional[str]=None
     ) -> None: ...
@@ -312,6 +316,7 @@ class StringPatch(thrift.py3.types.Struct, _typing.Hashable):
     def __call__(
         self, *,
         assign: _typing.Union[str, __NotSet, None]=NOTSET,
+        clear: _typing.Union[bool, __NotSet, None]=NOTSET,
         append: _typing.Union[str, __NotSet, None]=NOTSET,
         prepend: _typing.Union[str, __NotSet, None]=NOTSET
     ) -> StringPatch: ...

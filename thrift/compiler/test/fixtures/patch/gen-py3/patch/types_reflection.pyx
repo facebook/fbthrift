@@ -336,6 +336,18 @@ cdef __StructSpec get_reflection__StringPatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
+            id=2,
+            name="clear",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
             id=4,
             name="append",
             type=str,

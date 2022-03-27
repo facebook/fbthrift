@@ -160,6 +160,7 @@ cdef class __StringPatch_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
 
 
 ctypedef void (*__BinaryPatch_FieldsSetterFunc)(__BinaryPatch_FieldsSetter, object) except *

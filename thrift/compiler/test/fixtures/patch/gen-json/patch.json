@@ -387,8 +387,8 @@
             }
           }
         },
-        "append" : {
-          "type_enum" : "STRING",
+        "clear" : {
+          "type_enum" : "BOOL",
           "spec_args" : null,
           "required" : true,
           "source_range" : {
@@ -398,6 +398,21 @@
             },
             "end" : {
               "line" : 159,
+              "column" : 16
+            }
+          }
+        },
+        "append" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 162,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 162,
               "column" : 19
             }
           }
@@ -408,11 +423,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 162,
+              "line" : 165,
               "column" : 3
             },
             "end" : {
-              "line" : 162,
+              "line" : 165,
               "column" : 20
             }
           }
@@ -424,13 +439,13 @@
           "column" : 1
         },
         "end" : {
-          "line" : 166,
+          "line" : 169,
           "column" : 2
         }
       }
     },
     "BinaryPatch" : {
-      "lineno" : 171,
+      "lineno" : 174,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -440,11 +455,11 @@
           "required" : false,
           "source_range" : {
             "begin" : {
-              "line" : 175,
+              "line" : 178,
               "column" : 3
             },
             "end" : {
-              "line" : 175,
+              "line" : 178,
               "column" : 58
             }
           }
@@ -452,11 +467,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 169,
+          "line" : 172,
           "column" : 1
         },
         "end" : {
-          "line" : 179,
+          "line" : 182,
           "column" : 2
         }
       }
@@ -1078,7 +1093,7 @@
       }
     },
     "OptionalBinaryPatch" : {
-      "lineno" : 170,
+      "lineno" : 173,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {

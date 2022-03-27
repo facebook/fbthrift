@@ -63,8 +63,8 @@ struct FieldPatch<type::fields<FieldTags...>> {
 //   bool clear;
 //   P patch;
 template <typename Patch>
-class StructPatch : public BaseValuePatch<Patch, StructPatch<Patch>> {
-  using Base = BaseValuePatch<Patch, StructPatch>;
+class StructPatch : public BaseClearablePatch<Patch, StructPatch<Patch>> {
+  using Base = BaseClearablePatch<Patch, StructPatch>;
   using T = typename Base::value_type;
 
  public:
@@ -74,21 +74,13 @@ class StructPatch : public BaseValuePatch<Patch, StructPatch<Patch>> {
   using Base::operator=;
   using patch_type = std::decay_t<decltype(*std::declval<Patch>().patch())>;
 
-  static StructPatch createClear() {
-    StructPatch patch;
-    patch.clear();
-    return patch;
-  }
-
-  void clear() { resetAnd().clear() = true; }
-
   // Convert to a patch, if needed, and return the
   // patch object.
   patch_type& patch() { return ensurePatch(); }
   patch_type* operator->() { return &ensurePatch(); }
 
   bool empty() const {
-    return !hasAssign() && !*patch_.clear() &&
+    return !hasAssignOrClear() &&
         // TODO(afuller): Use terse writes and switch to op::empty.
         *patch_.patch() == patch_type{};
   }
@@ -105,13 +97,7 @@ class StructPatch : public BaseValuePatch<Patch, StructPatch<Patch>> {
 
   template <typename U>
   void merge(U&& next) {
-    // Clear is slightly stronger than assigning a 'cleared' struct,
-    // in the presense of non-terse, non-optional fields with custom defaults
-    // and missmatched schemas... it's also smaller, so prefer it.
-    if (*next.get().clear() && !next.hasAssign()) {
-      // Next patch completely replaces this one.
-      *this = std::forward<U>(next);
-    } else if (!mergeAssign(std::forward<U>(next))) {
+    if (!mergeAssignAndClear(std::forward<U>(next))) {
       // Merge field patches.
       FieldPatch::merge(*patch_.patch(), *std::forward<U>(next).get().patch());
     }
@@ -119,7 +105,8 @@ class StructPatch : public BaseValuePatch<Patch, StructPatch<Patch>> {
 
  private:
   using Base::applyAssign;
-  using Base::mergeAssign;
+  using Base::hasAssignOrClear;
+  using Base::mergeAssignAndClear;
   using Base::patch_;
   using Base::resetAnd;
   using Fields = ::apache::thrift::detail::st::struct_private_access::fields<T>;

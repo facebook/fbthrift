@@ -1012,6 +1012,7 @@ cdef class StringPatch(thrift.py3.types.Struct):
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("StringPatch", {
           "assign": deref(self._cpp_obj).assign_ref().has_value(),
+          "clear": deref(self._cpp_obj).clear_ref().has_value(),
           "append": deref(self._cpp_obj).append_ref().has_value(),
           "prepend": deref(self._cpp_obj).prepend_ref().has_value(),
         })
@@ -1031,6 +1032,14 @@ cdef class StringPatch(thrift.py3.types.Struct):
     @property
     def assign(self):
         return self.assign_impl()
+
+    cdef inline clear_impl(self):
+
+        return <pbool> deref(self._cpp_obj).clear_ref().value()
+
+    @property
+    def clear(self):
+        return self.clear_impl()
 
     cdef inline append_impl(self):
 
@@ -1091,7 +1100,7 @@ cdef class StringPatch(thrift.py3.types.Struct):
         return __get_field_name_by_index[cStringPatch](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 3
+        self._fbthrift_struct_size = 4
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(StringPatch self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

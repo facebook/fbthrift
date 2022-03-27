@@ -158,6 +158,56 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
   }
 };
 
+// Base class for clearable value patch types.
+//
+// Patch must have the following fields:
+//   optional T assign;
+//   bool clear;
+template <typename Patch, typename Derived>
+class BaseClearablePatch : public BaseValuePatch<Patch, Derived> {
+  using Base = BaseValuePatch<Patch, Derived>;
+  using T = typename Base::value_type;
+
+ public:
+  using Base::Base;
+  using Base::operator=;
+  using Base::hasAssign;
+
+  static Derived createClear() {
+    Derived patch;
+    patch.clear();
+    return patch;
+  }
+
+  void clear() { resetAnd().clear() = true; }
+
+ protected:
+  using Base::applyAssign;
+  using Base::mergeAssign;
+  using Base::patch_;
+  using Base::resetAnd;
+
+  ~BaseClearablePatch() = default;
+
+  bool hasAssignOrClear() const noexcept {
+    return hasAssign() || patch_.clear() == true;
+  }
+
+  template <typename U>
+  bool mergeAssignAndClear(U&& next) {
+    // Clear is slightly stronger than assigning a 'cleared' value in some
+    // cases. For example a struct with non-terse, non-optional fields with
+    // custom defaults and missmatched schemas... it's also smaller, so prefer
+    // it.
+    if (*next.get().clear() && !next.hasAssign()) {
+      // Next patch completely replaces this one.
+      patch_ = std::forward<U>(next).get();
+      return true;
+    }
+    return mergeAssign(std::forward<U>(next));
+  }
+};
+
 } // namespace detail
 } // namespace op
 } // namespace thrift

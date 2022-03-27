@@ -102,9 +102,8 @@ TEST(StructPatchTest, AssignSplit) {
 
 TEST(StructPatchTest, Clear) {
   // Clear patch, clears all fields (even ones with defaults)
-  TestStructPatch patch;
-  patch.clear();
-  test::expectPatch(patch, testValue(), {});
+  test::expectPatch(TestStructPatch::createClear(), testValue(), {});
+  test::expectPatch(op::StringPatch::createClear(), {"hi"}, "");
 }
 
 TEST(StructPatchTest, Patch) {

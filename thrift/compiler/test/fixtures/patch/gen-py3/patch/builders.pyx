@@ -70,6 +70,7 @@ cdef class StringPatch_Builder(thrift.py3.builder.StructBuilder):
 
     def __iter__(self):
         yield "assign", self.assign
+        yield "clear", self.clear
         yield "append", self.append
         yield "prepend", self.prepend
 

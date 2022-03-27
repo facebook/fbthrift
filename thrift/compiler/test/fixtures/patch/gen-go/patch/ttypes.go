@@ -1329,11 +1329,13 @@ func (p *DoublePatch) String() string {
 
 // Attributes:
 //  - Assign
+//  - Clear
 //  - Append
 //  - Prepend
 type StringPatch struct {
   Assign *string `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
-  // unused fields # 2 to 3
+  Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
+  // unused field # 3
   Append string `thrift:"append,4" db:"append" json:"append"`
   Prepend string `thrift:"prepend,5" db:"prepend" json:"prepend"`
 }
@@ -1348,6 +1350,10 @@ func (p *StringPatch) GetAssign() string {
     return StringPatch_Assign_DEFAULT
   }
 return *p.Assign
+}
+
+func (p *StringPatch) GetClear() bool {
+  return p.Clear
 }
 
 func (p *StringPatch) GetAppend() string {
@@ -1374,6 +1380,7 @@ func NewStringPatchBuilder() *StringPatchBuilder{
 func (p StringPatchBuilder) Emit() *StringPatch{
   return &StringPatch{
     Assign: p.obj.Assign,
+    Clear: p.obj.Clear,
     Append: p.obj.Append,
     Prepend: p.obj.Prepend,
   }
@@ -1381,6 +1388,11 @@ func (p StringPatchBuilder) Emit() *StringPatch{
 
 func (s *StringPatchBuilder) Assign(assign *string) *StringPatchBuilder {
   s.obj.Assign = assign
+  return s
+}
+
+func (s *StringPatchBuilder) Clear(clear bool) *StringPatchBuilder {
+  s.obj.Clear = clear
   return s
 }
 
@@ -1396,6 +1408,11 @@ func (s *StringPatchBuilder) Prepend(prepend string) *StringPatchBuilder {
 
 func (s *StringPatch) SetAssign(assign *string) *StringPatch {
   s.Assign = assign
+  return s
+}
+
+func (s *StringPatch) SetClear(clear bool) *StringPatch {
+  s.Clear = clear
   return s
 }
 
@@ -1424,6 +1441,10 @@ func (p *StringPatch) Read(iprot thrift.Protocol) error {
     switch fieldId {
     case 1:
       if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
         return err
       }
     case 4:
@@ -1458,6 +1479,15 @@ func (p *StringPatch)  ReadField1(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *StringPatch)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Clear = v
+  }
+  return nil
+}
+
 func (p *StringPatch)  ReadField4(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 4: ", err)
@@ -1480,6 +1510,7 @@ func (p *StringPatch) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("StringPatch"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
   if err := p.writeField4(oprot); err != nil { return err }
   if err := p.writeField5(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
@@ -1498,6 +1529,16 @@ func (p *StringPatch) writeField1(oprot thrift.Protocol) (err error) {
     if err := oprot.WriteFieldEnd(); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field end error 1:assign: ", p), err) }
   }
+  return err
+}
+
+func (p *StringPatch) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("clear", thrift.BOOL, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:clear: ", p), err) }
+  if err := oprot.WriteBool(bool(p.Clear)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.clear (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:clear: ", p), err) }
   return err
 }
 
@@ -1532,9 +1573,10 @@ func (p *StringPatch) String() string {
   } else {
     assignVal = fmt.Sprintf("%v", *p.Assign)
   }
+  clearVal := fmt.Sprintf("%v", p.Clear)
   appendVal := fmt.Sprintf("%v", p.Append)
   prependVal := fmt.Sprintf("%v", p.Prepend)
-  return fmt.Sprintf("StringPatch({Assign:%s Append:%s Prepend:%s})", assignVal, appendVal, prependVal)
+  return fmt.Sprintf("StringPatch({Assign:%s Clear:%s Append:%s Prepend:%s})", assignVal, clearVal, appendVal, prependVal)
 }
 
 // Attributes:

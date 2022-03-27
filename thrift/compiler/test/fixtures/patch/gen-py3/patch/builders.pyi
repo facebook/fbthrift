@@ -79,6 +79,7 @@ class DoublePatch_Builder(thrift.py3.builder.StructBuilder):
 
 class StringPatch_Builder(thrift.py3.builder.StructBuilder):
     assign: _typing.Optional[str]
+    clear: _typing.Optional[bool]
     append: _typing.Optional[str]
     prepend: _typing.Optional[str]
 

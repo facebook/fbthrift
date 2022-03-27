@@ -190,17 +190,17 @@ class NumberPatch : public BaseValuePatch<Patch, NumberPatch<Patch>> {
 
 // Patch must have the following fields:
 //   optional T assign;
+//   bool clear;
 //   T append;
 //   T prepend;
 template <typename Patch>
-class StringPatch : public BaseValuePatch<Patch, StringPatch<Patch>> {
-  using Base = BaseValuePatch<Patch, StringPatch>;
+class StringPatch : public BaseClearablePatch<Patch, StringPatch<Patch>> {
+  using Base = BaseClearablePatch<Patch, StringPatch>;
   using T = typename Base::value_type;
 
  public:
   using Base::apply;
   using Base::Base;
-  using Base::hasAssign;
   using Base::operator=;
 
   template <typename... Args>
@@ -229,19 +229,22 @@ class StringPatch : public BaseValuePatch<Patch, StringPatch<Patch>> {
   }
 
   bool empty() const {
-    return !hasAssign() && patch_.prepend()->empty() &&
+    return !hasAssignOrClear() && patch_.prepend()->empty() &&
         patch_.append()->empty();
   }
 
   void apply(T& val) const {
     if (!applyAssign(val)) {
+      if (patch_.clear() == true) {
+        val.clear();
+      }
       val = *patch_.prepend() + val + *patch_.append();
     }
   }
 
   template <typename U>
   void merge(U&& next) {
-    if (!mergeAssign(std::forward<U>(next))) {
+    if (!mergeAssignAndClear(std::forward<U>(next))) {
       *patch_.prepend() =
           *std::forward<U>(next).get().prepend() + std::move(*patch_.prepend());
       patch_.append()->append(*std::forward<U>(next).get().append());
@@ -257,7 +260,8 @@ class StringPatch : public BaseValuePatch<Patch, StringPatch<Patch>> {
  private:
   using Base::applyAssign;
   using Base::assignOr;
-  using Base::mergeAssign;
+  using Base::hasAssignOrClear;
+  using Base::mergeAssignAndClear;
   using Base::patch_;
 
   template <typename U>

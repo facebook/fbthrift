@@ -284,6 +284,13 @@ class StringPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
         (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
             4,  # id
             True,  # isUnqualified
             "append",  # name

@@ -908,6 +908,7 @@ class StringPatch:
   """
   Attributes:
    - assign
+   - clear
    - append
    - prepend
   """
@@ -937,6 +938,11 @@ class StringPatch:
           self.assign = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.BOOL:
+          self.clear = iprot.readBool()
+        else:
+          iprot.skip(ftype)
       elif fid == 4:
         if ftype == TType.STRING:
           self.append = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
@@ -964,6 +970,10 @@ class StringPatch:
       oprot.writeFieldBegin('assign', TType.STRING, 1)
       oprot.writeString(self.assign.encode('utf-8')) if UTF8STRINGS and not isinstance(self.assign, bytes) else oprot.writeString(self.assign)
       oprot.writeFieldEnd()
+    if self.clear != None:
+      oprot.writeFieldBegin('clear', TType.BOOL, 2)
+      oprot.writeBool(self.clear)
+      oprot.writeFieldEnd()
     if self.append != None:
       oprot.writeFieldBegin('append', TType.STRING, 4)
       oprot.writeString(self.append.encode('utf-8')) if UTF8STRINGS and not isinstance(self.append, bytes) else oprot.writeString(self.append)
@@ -989,6 +999,8 @@ class StringPatch:
       json_obj = loads(json)
     if 'assign' in json_obj and json_obj['assign'] is not None:
       self.assign = json_obj['assign']
+    if 'clear' in json_obj and json_obj['clear'] is not None:
+      self.clear = json_obj['clear']
     if 'append' in json_obj and json_obj['append'] is not None:
       self.append = json_obj['append']
     if 'prepend' in json_obj and json_obj['prepend'] is not None:
@@ -1001,6 +1013,10 @@ class StringPatch:
       value = pprint.pformat(self.assign, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    assign=%s' % (value))
+    if self.clear is not None:
+      value = pprint.pformat(self.clear, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    clear=%s' % (value))
     if self.append is not None:
       value = pprint.pformat(self.append, indent=0)
       value = padding.join(value.splitlines(True))
@@ -2587,7 +2603,7 @@ all_structs.append(StringPatch)
 StringPatch.thrift_spec = (
   None, # 0
   (1, TType.STRING, 'assign', True, None, 1, ), # 1
-  None, # 2
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   None, # 3
   (4, TType.STRING, 'append', True, None, 2, ), # 4
   (5, TType.STRING, 'prepend', True, None, 2, ), # 5
@@ -2600,8 +2616,9 @@ StringPatch.thrift_struct_annotations = {
 StringPatch.thrift_field_annotations = {
 }
 
-def StringPatch__init__(self, assign=None, append=None, prepend=None,):
+def StringPatch__init__(self, assign=None, clear=None, append=None, prepend=None,):
   self.assign = assign
+  self.clear = clear
   self.append = append
   self.prepend = prepend
 
@@ -2609,6 +2626,7 @@ StringPatch.__init__ = StringPatch__init__
 
 def StringPatch__setstate__(self, state):
   state.setdefault('assign', None)
+  state.setdefault('clear', None)
   state.setdefault('append', None)
   state.setdefault('prepend', None)
   self.__dict__ = state

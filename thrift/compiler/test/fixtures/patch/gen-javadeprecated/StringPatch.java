@@ -25,17 +25,22 @@ import com.facebook.thrift.protocol.*;
 public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comparable<StringPatch> {
   private static final TStruct STRUCT_DESC = new TStruct("StringPatch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.STRING, (short)1);
+  private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField APPEND_FIELD_DESC = new TField("append", TType.STRING, (short)4);
   private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.STRING, (short)5);
 
   public String assign;
+  public boolean clear;
   public String append;
   public String prepend;
   public static final int ASSIGN = 1;
+  public static final int CLEAR = 2;
   public static final int APPEND = 4;
   public static final int PREPEND = 5;
 
   // isset id assignments
+  private static final int __CLEAR_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -43,6 +48,8 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(ASSIGN, new FieldMetaData("assign", TFieldRequirementType.OPTIONAL, 
         new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(CLEAR, new FieldMetaData("clear", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.BOOL)));
     tmpMetaDataMap.put(APPEND, new FieldMetaData("append", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.STRING)));
     tmpMetaDataMap.put(PREPEND, new FieldMetaData("prepend", TFieldRequirementType.DEFAULT, 
@@ -58,33 +65,48 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
   }
 
   public StringPatch(
+      boolean clear,
       String append,
       String prepend) {
     this();
+    this.clear = clear;
+    setClearIsSet(true);
     this.append = append;
     this.prepend = prepend;
   }
 
   public StringPatch(
       String assign,
+      boolean clear,
       String append,
       String prepend) {
     this();
     this.assign = assign;
+    this.clear = clear;
+    setClearIsSet(true);
     this.append = append;
     this.prepend = prepend;
   }
 
   public static class Builder {
     private String assign;
+    private boolean clear;
     private String append;
     private String prepend;
+
+    BitSet __optional_isset = new BitSet(1);
 
     public Builder() {
     }
 
     public Builder setAssign(final String assign) {
       this.assign = assign;
+      return this;
+    }
+
+    public Builder setClear(final boolean clear) {
+      this.clear = clear;
+      __optional_isset.set(__CLEAR_ISSET_ID, true);
       return this;
     }
 
@@ -101,6 +123,9 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
     public StringPatch build() {
       StringPatch result = new StringPatch();
       result.setAssign(this.assign);
+      if (__optional_isset.get(__CLEAR_ISSET_ID)) {
+        result.setClear(this.clear);
+      }
       result.setAppend(this.append);
       result.setPrepend(this.prepend);
       return result;
@@ -115,9 +140,12 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
    * Performs a deep copy on <i>other</i>.
    */
   public StringPatch(StringPatch other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetAssign()) {
       this.assign = TBaseHelper.deepCopy(other.assign);
     }
+    this.clear = TBaseHelper.deepCopy(other.clear);
     if (other.isSetAppend()) {
       this.append = TBaseHelper.deepCopy(other.append);
     }
@@ -152,6 +180,29 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
     if (!__value) {
       this.assign = null;
     }
+  }
+
+  public boolean isClear() {
+    return this.clear;
+  }
+
+  public StringPatch setClear(boolean clear) {
+    this.clear = clear;
+    setClearIsSet(true);
+    return this;
+  }
+
+  public void unsetClear() {
+    __isset_bit_vector.clear(__CLEAR_ISSET_ID);
+  }
+
+  // Returns true if field clear is set (has been assigned a value) and false otherwise
+  public boolean isSetClear() {
+    return __isset_bit_vector.get(__CLEAR_ISSET_ID);
+  }
+
+  public void setClearIsSet(boolean __value) {
+    __isset_bit_vector.set(__CLEAR_ISSET_ID, __value);
   }
 
   public String getAppend() {
@@ -212,6 +263,14 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
       }
       break;
 
+    case CLEAR:
+      if (__value == null) {
+        unsetClear();
+      } else {
+        setClear((Boolean)__value);
+      }
+      break;
+
     case APPEND:
       if (__value == null) {
         unsetAppend();
@@ -238,6 +297,9 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
     case ASSIGN:
       return getAssign();
 
+    case CLEAR:
+      return new Boolean(isClear());
+
     case APPEND:
       return getAppend();
 
@@ -261,6 +323,8 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
 
     if (!TBaseHelper.equalsNobinary(this.isSetAssign(), that.isSetAssign(), this.assign, that.assign)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.clear, that.clear)) { return false; }
+
     if (!TBaseHelper.equalsNobinary(this.isSetAppend(), that.isSetAppend(), this.append, that.append)) { return false; }
 
     if (!TBaseHelper.equalsNobinary(this.isSetPrepend(), that.isSetPrepend(), this.prepend, that.prepend)) { return false; }
@@ -270,7 +334,7 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {assign, append, prepend});
+    return Arrays.deepHashCode(new Object[] {assign, clear, append, prepend});
   }
 
   @Override
@@ -290,6 +354,14 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(assign, other.assign);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetClear()).compareTo(other.isSetClear());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(clear, other.clear);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -326,6 +398,14 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
         case ASSIGN:
           if (__field.type == TType.STRING) {
             this.assign = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case CLEAR:
+          if (__field.type == TType.BOOL) {
+            this.clear = iprot.readBool();
+            setClearIsSet(true);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -368,6 +448,9 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
         oprot.writeFieldEnd();
       }
     }
+    oprot.writeFieldBegin(CLEAR_FIELD_DESC);
+    oprot.writeBool(this.clear);
+    oprot.writeFieldEnd();
     if (this.append != null) {
       oprot.writeFieldBegin(APPEND_FIELD_DESC);
       oprot.writeString(this.append);
@@ -411,6 +494,13 @@ public class StringPatch implements TBase, java.io.Serializable, Cloneable, Comp
       }
       first = false;
     }
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("clear");
+    sb.append(space);
+    sb.append(":").append(space);
+    sb.append(TBaseHelper.toString(this.isClear(), indent + 1, prettyPrint));
+    first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
     sb.append("append");

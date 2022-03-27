@@ -155,6 +155,9 @@ struct StringPatch {
   // If set, all other patch operations are ignored.
   1: optional string assign;
 
+  // Clear a given string.
+  2: bool clear;
+
   // Append to a given value.
   4: string append;
 
