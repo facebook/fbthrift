@@ -50,4 +50,8 @@ struct MyStruct {
   18: optional string optStringVal;
   19: optional binary (cpp.type = "::folly::IOBuf") optBinaryVal;
   20: optional MyData optStructVal;
+
+  21: optional list<i16> optListVal;
+  22: optional set<string> optSetVal;
+  23: optional map<string, string> optMapVal;
 }

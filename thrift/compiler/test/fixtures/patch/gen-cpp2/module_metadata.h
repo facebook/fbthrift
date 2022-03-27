@@ -44,6 +44,36 @@ class StructMetadata<::cpp2::OptionalMyDataValuePatch> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
+class StructMetadata<::cpp2::MyStructField21Patch> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::OptionalMyStructField21Patch> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::MyStructField22Patch> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::OptionalMyStructField22Patch> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::MyStructField23Patch> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::OptionalMyStructField23Patch> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
 class StructMetadata<::cpp2::MyStructPatch> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);

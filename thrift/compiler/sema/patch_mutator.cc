@@ -112,6 +112,10 @@ struct StructGen {
     result.set_lineno(annot.lineno());
     return result;
   }
+
+  t_struct* operator->() { return &generated; }
+  operator t_struct&() { return generated; }
+  operator t_type_ref() { return generated; }
 };
 
 // Helper for generating patch structs.
@@ -223,27 +227,27 @@ patch_generator& patch_generator::get_for(
 t_struct& patch_generator::add_optional_patch(
     const t_node& annot, t_type_ref value_type, t_struct& patch_type) {
   PatchGen gen{{annot, gen_prefix_struct(annot, patch_type, "Optional")}};
-  gen.generated.set_annotation(
+  gen->set_annotation(
       "cpp.adapter", "::apache::thrift::op::detail::OptionalPatchAdapter");
 
   doc("Clears any set value. Applies first.", gen.clear());
   doc("Patches any set value. Applies second.", gen.patch(patch_type));
   gen.ensure(value_type);
   gen.patchAfter(patch_type);
-  return gen.generated;
+  return gen;
 }
 
 t_struct& patch_generator::add_structure_patch(
     const t_const& annot, t_structured& orig) {
   StructGen gen{annot, gen_suffix_struct(annot, orig, "Patch")};
   for (const auto& field : orig.fields()) {
-    if (t_type_ref patch_type = find_patch_type(annot, field)) {
+    if (t_type_ref patch_type = find_patch_type(annot, orig, field)) {
       gen.field(field.id(), patch_type, field.name());
     } else {
       ctx_.warning(field, "Could not resolve patch type for field.");
     }
   }
-  return gen.generated;
+  return gen;
 }
 
 t_struct& patch_generator::add_struct_value_patch(
@@ -252,13 +256,13 @@ t_struct& patch_generator::add_struct_value_patch(
   gen.assign(value_type);
   gen.clear();
   gen.patch(patch_type);
-  gen.generated.set_annotation(
+  gen->set_annotation(
       "cpp.adapter", "::apache::thrift::op::detail::StructPatchAdapter");
-  return gen.generated;
+  return gen;
 }
 
 t_type_ref patch_generator::find_patch_type(
-    const t_const& annot, const t_field& field) const {
+    const t_const& annot, const t_structured& parent, const t_field& field) {
   // Base types use a shared representation defined in patch.thrift.
   const auto* type = field.type()->get_true_type();
   if (auto* base_type = dynamic_cast<const t_base_type*>(type)) {
@@ -280,6 +284,7 @@ t_type_ref patch_generator::find_patch_type(
     ctx_.failure(field, [&](auto& os) {
       os << "Could not find expected patch type: " << name;
     });
+    return {};
   } else if (auto* structured = dynamic_cast<const t_structured*>(type)) {
     // Try to find the generated patch type.
     std::string name = structured->name() + "ValuePatch";
@@ -292,12 +297,25 @@ t_type_ref patch_generator::find_patch_type(
             t_type_ref::from_ptr(program_.scope()->find_type(name))) {
       return patch_type;
     }
-    ctx_.warning(
+    // TODO(afuller): Consider warning, but generating for this case instead.
+    ctx_.failure(
         field, "Could not find expected patch type: " + std::move(name));
+    return {};
   }
 
-  // Could not resolve the patch type.
-  return {};
+  // Could not resolve a shared patch type, so generate a field specific one.
+  // Give it a stable name.
+  std::string suffix = "Field" + std::to_string(field.id()) + "Patch";
+  PatchGen gen{{annot, gen_suffix_struct(annot, parent, suffix.c_str())}};
+  // All value patches have an assign field.
+  gen.assign(field.type());
+  gen->set_annotation(
+      "cpp.adapter", "::apache::thrift::op::detail::AssignPatchAdapter");
+
+  if (field.qualifier() == t_field_qualifier::optional) {
+    return add_optional_patch(annot, field.type(), gen);
+  }
+  return gen;
 }
 
 t_struct& patch_generator::gen_struct(

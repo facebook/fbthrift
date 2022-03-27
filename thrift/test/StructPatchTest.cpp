@@ -300,4 +300,12 @@ TEST(StructPatchTest, PrimitivesNotBoxed) {
       optional_field_ref<folly::IOBuf&&>>;
 }
 
+TEST(StructPatchTest, FieldPatch) {
+  TestStructPatch patch;
+  patch->optListVal()->ensure() = {1, 2};
+  MyStruct expected;
+  expected.optListVal().ensure() = {1, 2};
+  test::expectPatch(patch, {}, expected);
+}
+
 } // namespace apache::thrift

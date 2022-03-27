@@ -44,7 +44,10 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         @com.facebook.swift.codec.ThriftField(value=17, name="optDoubleVal", requiredness=Requiredness.NONE) final com.facebook.thrift.op.OptionalDoublePatch optDoubleVal,
         @com.facebook.swift.codec.ThriftField(value=18, name="optStringVal", requiredness=Requiredness.NONE) final com.facebook.thrift.op.OptionalStringPatch optStringVal,
         @com.facebook.swift.codec.ThriftField(value=19, name="optBinaryVal", requiredness=Requiredness.NONE) final com.facebook.thrift.op.OptionalBinaryPatch optBinaryVal,
-        @com.facebook.swift.codec.ThriftField(value=20, name="optStructVal", requiredness=Requiredness.NONE) final test.fixtures.patch.OptionalMyDataValuePatch optStructVal
+        @com.facebook.swift.codec.ThriftField(value=20, name="optStructVal", requiredness=Requiredness.NONE) final test.fixtures.patch.OptionalMyDataValuePatch optStructVal,
+        @com.facebook.swift.codec.ThriftField(value=21, name="optListVal", requiredness=Requiredness.NONE) final test.fixtures.patch.OptionalMyStructField21Patch optListVal,
+        @com.facebook.swift.codec.ThriftField(value=22, name="optSetVal", requiredness=Requiredness.NONE) final test.fixtures.patch.OptionalMyStructField22Patch optSetVal,
+        @com.facebook.swift.codec.ThriftField(value=23, name="optMapVal", requiredness=Requiredness.NONE) final test.fixtures.patch.OptionalMyStructField23Patch optMapVal
     ) {
         this.boolVal = boolVal;
         this.byteVal = byteVal;
@@ -66,6 +69,9 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         this.optStringVal = optStringVal;
         this.optBinaryVal = optBinaryVal;
         this.optStructVal = optStructVal;
+        this.optListVal = optListVal;
+        this.optSetVal = optSetVal;
+        this.optMapVal = optMapVal;
     }
     
     @ThriftConstructor
@@ -90,6 +96,9 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
       this.optStringVal = null;
       this.optBinaryVal = null;
       this.optStructVal = null;
+      this.optListVal = null;
+      this.optSetVal = null;
+      this.optMapVal = null;
     }
     
     public static class Builder {
@@ -114,6 +123,9 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         private com.facebook.thrift.op.OptionalStringPatch optStringVal = null;
         private com.facebook.thrift.op.OptionalBinaryPatch optBinaryVal = null;
         private test.fixtures.patch.OptionalMyDataValuePatch optStructVal = null;
+        private test.fixtures.patch.OptionalMyStructField21Patch optListVal = null;
+        private test.fixtures.patch.OptionalMyStructField22Patch optSetVal = null;
+        private test.fixtures.patch.OptionalMyStructField23Patch optMapVal = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="boolVal", requiredness=Requiredness.NONE)
         public Builder setBoolVal(com.facebook.thrift.op.BoolPatch boolVal) {
@@ -275,6 +287,30 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     
         public test.fixtures.patch.OptionalMyDataValuePatch getOptStructVal() { return optStructVal; }
     
+            @com.facebook.swift.codec.ThriftField(value=21, name="optListVal", requiredness=Requiredness.NONE)
+        public Builder setOptListVal(test.fixtures.patch.OptionalMyStructField21Patch optListVal) {
+            this.optListVal = optListVal;
+            return this;
+        }
+    
+        public test.fixtures.patch.OptionalMyStructField21Patch getOptListVal() { return optListVal; }
+    
+            @com.facebook.swift.codec.ThriftField(value=22, name="optSetVal", requiredness=Requiredness.NONE)
+        public Builder setOptSetVal(test.fixtures.patch.OptionalMyStructField22Patch optSetVal) {
+            this.optSetVal = optSetVal;
+            return this;
+        }
+    
+        public test.fixtures.patch.OptionalMyStructField22Patch getOptSetVal() { return optSetVal; }
+    
+            @com.facebook.swift.codec.ThriftField(value=23, name="optMapVal", requiredness=Requiredness.NONE)
+        public Builder setOptMapVal(test.fixtures.patch.OptionalMyStructField23Patch optMapVal) {
+            this.optMapVal = optMapVal;
+            return this;
+        }
+    
+        public test.fixtures.patch.OptionalMyStructField23Patch getOptMapVal() { return optMapVal; }
+    
         public Builder() { }
         public Builder(MyStructPatch other) {
             this.boolVal = other.boolVal;
@@ -297,6 +333,9 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
             this.optStringVal = other.optStringVal;
             this.optBinaryVal = other.optBinaryVal;
             this.optStructVal = other.optStructVal;
+            this.optListVal = other.optListVal;
+            this.optSetVal = other.optSetVal;
+            this.optMapVal = other.optMapVal;
         }
     
         @ThriftConstructor
@@ -321,7 +360,10 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
                 this.optDoubleVal,
                 this.optStringVal,
                 this.optBinaryVal,
-                this.optStructVal
+                this.optStructVal,
+                this.optListVal,
+                this.optSetVal,
+                this.optMapVal
             );
             return result;
         }
@@ -391,6 +433,15 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         private final test.fixtures.patch.OptionalMyDataValuePatch optStructVal;
     public static final int _OPTSTRUCTVAL = 20;
     private static final TField OPT_STRUCT_VAL_FIELD_DESC = new TField("optStructVal", TType.STRUCT, (short)20);
+        private final test.fixtures.patch.OptionalMyStructField21Patch optListVal;
+    public static final int _OPTLISTVAL = 21;
+    private static final TField OPT_LIST_VAL_FIELD_DESC = new TField("optListVal", TType.STRUCT, (short)21);
+        private final test.fixtures.patch.OptionalMyStructField22Patch optSetVal;
+    public static final int _OPTSETVAL = 22;
+    private static final TField OPT_SET_VAL_FIELD_DESC = new TField("optSetVal", TType.STRUCT, (short)22);
+        private final test.fixtures.patch.OptionalMyStructField23Patch optMapVal;
+    public static final int _OPTMAPVAL = 23;
+    private static final TField OPT_MAP_VAL_FIELD_DESC = new TField("optMapVal", TType.STRUCT, (short)23);
     static {
       NAMES_TO_IDS.put("boolVal", 1);
       THRIFT_NAMES_TO_IDS.put("boolVal", 1);
@@ -452,6 +503,15 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
       NAMES_TO_IDS.put("optStructVal", 20);
       THRIFT_NAMES_TO_IDS.put("optStructVal", 20);
       FIELD_METADATA.put(20, OPT_STRUCT_VAL_FIELD_DESC);
+      NAMES_TO_IDS.put("optListVal", 21);
+      THRIFT_NAMES_TO_IDS.put("optListVal", 21);
+      FIELD_METADATA.put(21, OPT_LIST_VAL_FIELD_DESC);
+      NAMES_TO_IDS.put("optSetVal", 22);
+      THRIFT_NAMES_TO_IDS.put("optSetVal", 22);
+      FIELD_METADATA.put(22, OPT_SET_VAL_FIELD_DESC);
+      NAMES_TO_IDS.put("optMapVal", 23);
+      THRIFT_NAMES_TO_IDS.put("optMapVal", 23);
+      FIELD_METADATA.put(23, OPT_MAP_VAL_FIELD_DESC);
     }
     
     @Nullable
@@ -553,6 +613,21 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     @com.facebook.swift.codec.ThriftField(value=20, name="optStructVal", requiredness=Requiredness.NONE)
     public test.fixtures.patch.OptionalMyDataValuePatch getOptStructVal() { return optStructVal; }
     
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=21, name="optListVal", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.OptionalMyStructField21Patch getOptListVal() { return optListVal; }
+    
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=22, name="optSetVal", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.OptionalMyStructField22Patch getOptSetVal() { return optSetVal; }
+    
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=23, name="optMapVal", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.OptionalMyStructField23Patch getOptMapVal() { return optMapVal; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -576,6 +651,9 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         helper.add("optStringVal", optStringVal);
         helper.add("optBinaryVal", optBinaryVal);
         helper.add("optStructVal", optStructVal);
+        helper.add("optListVal", optListVal);
+        helper.add("optSetVal", optSetVal);
+        helper.add("optMapVal", optMapVal);
         return helper.toString();
     }
     
@@ -611,6 +689,9 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
             Objects.equals(optStringVal, other.optStringVal) &&
             Objects.equals(optBinaryVal, other.optBinaryVal) &&
             Objects.equals(optStructVal, other.optStructVal) &&
+            Objects.equals(optListVal, other.optListVal) &&
+            Objects.equals(optSetVal, other.optSetVal) &&
+            Objects.equals(optMapVal, other.optMapVal) &&
             true;
     }
     
@@ -636,7 +717,10 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
             optDoubleVal,
             optStringVal,
             optBinaryVal,
-            optStructVal
+            optStructVal,
+            optListVal,
+            optSetVal,
+            optMapVal
         });
     }
     
@@ -813,6 +897,30 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _OPTLISTVAL:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.patch.OptionalMyStructField21Patch optListVal = test.fixtures.patch.OptionalMyStructField21Patch.read0(oprot);
+            builder.setOptListVal(optListVal);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _OPTSETVAL:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.patch.OptionalMyStructField22Patch optSetVal = test.fixtures.patch.OptionalMyStructField22Patch.read0(oprot);
+            builder.setOptSetVal(optSetVal);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _OPTMAPVAL:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.patch.OptionalMyStructField23Patch optMapVal = test.fixtures.patch.OptionalMyStructField23Patch.read0(oprot);
+            builder.setOptMapVal(optMapVal);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -923,6 +1031,21 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
       if (this.optStructVal != null) {
         oprot.writeFieldBegin(OPT_STRUCT_VAL_FIELD_DESC);
         this.optStructVal.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.optListVal != null) {
+        oprot.writeFieldBegin(OPT_LIST_VAL_FIELD_DESC);
+        this.optListVal.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.optSetVal != null) {
+        oprot.writeFieldBegin(OPT_SET_VAL_FIELD_DESC);
+        this.optSetVal.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.optMapVal != null) {
+        oprot.writeFieldBegin(OPT_MAP_VAL_FIELD_DESC);
+        this.optMapVal.write0(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

@@ -26,6 +26,24 @@ cdef __StructSpec get_reflection__OptionalMyDataValuePatch()
 
 cdef __StructSpec get_reflection__MyStructPatch()
 
+cdef __StructSpec get_reflection__MyStructField21Patch()
+
+cdef __StructSpec get_reflection__OptionalMyStructField21Patch()
+
+cdef __StructSpec get_reflection__MyStructField22Patch()
+
+cdef __StructSpec get_reflection__OptionalMyStructField22Patch()
+
+cdef __StructSpec get_reflection__MyStructField23Patch()
+
+cdef __StructSpec get_reflection__OptionalMyStructField23Patch()
+
 cdef __StructSpec get_reflection__MyStructValuePatch()
 
 cdef __StructSpec get_reflection__OptionalMyStructValuePatch()
+
+cdef __ListSpec get_reflection__List__i16()
+
+cdef __SetSpec get_reflection__Set__string()
+
+cdef __MapSpec get_reflection__Map__string_string()

@@ -117,8 +117,11 @@ class patch_generator {
 
   // Attempts to resolve the associated patch type for the given field.
   //
-  // Returns an empty t_type_ref, if not found.
-  t_type_ref find_patch_type(const t_const& annot, const t_field& field) const;
+  // In some cases, a patch representation for the field is automatically
+  // generated, if a shared definition cannot be found. Otherwise,
+  // an empty t_type_ref is returned.
+  t_type_ref find_patch_type(
+      const t_const& annot, const t_structured& parent, const t_field& field);
 
   // Injects prefix immediately after the last '/'
   //

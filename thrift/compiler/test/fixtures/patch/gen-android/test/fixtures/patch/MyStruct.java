@@ -46,6 +46,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   private static final TField OPT_STRING_VAL_FIELD_DESC = new TField("optStringVal", TType.STRING, (short)18);
   private static final TField OPT_BINARY_VAL_FIELD_DESC = new TField("optBinaryVal", TType.STRING, (short)19);
   private static final TField OPT_STRUCT_VAL_FIELD_DESC = new TField("optStructVal", TType.STRUCT, (short)20);
+  private static final TField OPT_LIST_VAL_FIELD_DESC = new TField("optListVal", TType.LIST, (short)21);
+  private static final TField OPT_SET_VAL_FIELD_DESC = new TField("optSetVal", TType.SET, (short)22);
+  private static final TField OPT_MAP_VAL_FIELD_DESC = new TField("optMapVal", TType.MAP, (short)23);
 
   public final Boolean boolVal;
   public final Byte byteVal;
@@ -67,6 +70,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public final String optStringVal;
   public final byte[] optBinaryVal;
   public final MyData optStructVal;
+  public final List<Short> optListVal;
+  public final Set<String> optSetVal;
+  public final Map<String,String> optMapVal;
   public static final int BOOLVAL = 1;
   public static final int BYTEVAL = 2;
   public static final int I16VAL = 3;
@@ -87,6 +93,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public static final int OPTSTRINGVAL = 18;
   public static final int OPTBINARYVAL = 19;
   public static final int OPTSTRUCTVAL = 20;
+  public static final int OPTLISTVAL = 21;
+  public static final int OPTSETVAL = 22;
+  public static final int OPTMAPVAL = 23;
 
   public MyStruct(
       Boolean boolVal,
@@ -108,7 +117,10 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       Double optDoubleVal,
       String optStringVal,
       byte[] optBinaryVal,
-      MyData optStructVal) {
+      MyData optStructVal,
+      List<Short> optListVal,
+      Set<String> optSetVal,
+      Map<String,String> optMapVal) {
     this.boolVal = boolVal;
     this.byteVal = byteVal;
     this.i16Val = i16Val;
@@ -129,6 +141,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     this.optStringVal = optStringVal;
     this.optBinaryVal = optBinaryVal;
     this.optStructVal = optStructVal;
+    this.optListVal = optListVal;
+    this.optSetVal = optSetVal;
+    this.optMapVal = optMapVal;
   }
 
   /**
@@ -234,6 +249,21 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       this.optStructVal = TBaseHelper.deepCopy(other.optStructVal);
     } else {
       this.optStructVal = null;
+    }
+    if (other.isSetOptListVal()) {
+      this.optListVal = TBaseHelper.deepCopy(other.optListVal);
+    } else {
+      this.optListVal = null;
+    }
+    if (other.isSetOptSetVal()) {
+      this.optSetVal = TBaseHelper.deepCopy(other.optSetVal);
+    } else {
+      this.optSetVal = null;
+    }
+    if (other.isSetOptMapVal()) {
+      this.optMapVal = TBaseHelper.deepCopy(other.optMapVal);
+    } else {
+      this.optMapVal = null;
     }
   }
 
@@ -421,6 +451,33 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     return this.optStructVal != null;
   }
 
+  public List<Short> getOptListVal() {
+    return this.optListVal;
+  }
+
+  // Returns true if field optListVal is set (has been assigned a value) and false otherwise
+  public boolean isSetOptListVal() {
+    return this.optListVal != null;
+  }
+
+  public Set<String> getOptSetVal() {
+    return this.optSetVal;
+  }
+
+  // Returns true if field optSetVal is set (has been assigned a value) and false otherwise
+  public boolean isSetOptSetVal() {
+    return this.optSetVal != null;
+  }
+
+  public Map<String,String> getOptMapVal() {
+    return this.optMapVal;
+  }
+
+  // Returns true if field optMapVal is set (has been assigned a value) and false otherwise
+  public boolean isSetOptMapVal() {
+    return this.optMapVal != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -471,12 +528,18 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetOptStructVal(), that.isSetOptStructVal(), this.optStructVal, that.optStructVal)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetOptListVal(), that.isSetOptListVal(), this.optListVal, that.optListVal)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetOptSetVal(), that.isSetOptSetVal(), this.optSetVal, that.optSetVal)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetOptMapVal(), that.isSetOptMapVal(), this.optMapVal, that.optMapVal)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {boolVal, byteVal, i16Val, i32Val, i64Val, floatVal, doubleVal, stringVal, binaryVal, structVal, optBoolVal, optByteVal, optI16Val, optI32Val, optI64Val, optFloatVal, optDoubleVal, optStringVal, optBinaryVal, optStructVal});
+    return Arrays.deepHashCode(new Object[] {boolVal, byteVal, i16Val, i32Val, i64Val, floatVal, doubleVal, stringVal, binaryVal, structVal, optBoolVal, optByteVal, optI16Val, optI32Val, optI64Val, optFloatVal, optDoubleVal, optStringVal, optBinaryVal, optStructVal, optListVal, optSetVal, optMapVal});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -505,6 +568,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     String tmp_optStringVal = null;
     byte[] tmp_optBinaryVal = null;
     MyData tmp_optStructVal = null;
+    List<Short> tmp_optListVal = null;
+    Set<String> tmp_optSetVal = null;
+    Map<String,String> tmp_optMapVal = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -655,6 +721,65 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case OPTLISTVAL:
+          if (__field.type == TType.LIST) {
+            {
+              TList _list0 = iprot.readListBegin();
+              tmp_optListVal = new ArrayList<Short>(Math.max(0, _list0.size));
+              for (int _i1 = 0; 
+                   (_list0.size < 0) ? iprot.peekList() : (_i1 < _list0.size); 
+                   ++_i1)
+              {
+                Short _elem2;
+                _elem2 = iprot.readI16();
+                tmp_optListVal.add(_elem2);
+              }
+              iprot.readListEnd();
+            }
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case OPTSETVAL:
+          if (__field.type == TType.SET) {
+            {
+              TSet _set3 = iprot.readSetBegin();
+              tmp_optSetVal = new HashSet<String>(Math.max(0, 2*_set3.size));
+              for (int _i4 = 0; 
+                   (_set3.size < 0) ? iprot.peekSet() : (_i4 < _set3.size); 
+                   ++_i4)
+              {
+                String _elem5;
+                _elem5 = iprot.readString();
+                tmp_optSetVal.add(_elem5);
+              }
+              iprot.readSetEnd();
+            }
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case OPTMAPVAL:
+          if (__field.type == TType.MAP) {
+            {
+              TMap _map6 = iprot.readMapBegin();
+              tmp_optMapVal = new HashMap<String,String>(Math.max(0, 2*_map6.size));
+              for (int _i7 = 0; 
+                   (_map6.size < 0) ? iprot.peekMap() : (_i7 < _map6.size); 
+                   ++_i7)
+              {
+                String _key8;
+                String _val9;
+                _key8 = iprot.readString();
+                _val9 = iprot.readString();
+                tmp_optMapVal.put(_key8, _val9);
+              }
+              iprot.readMapEnd();
+            }
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -685,6 +810,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       ,tmp_optStringVal
       ,tmp_optBinaryVal
       ,tmp_optStructVal
+      ,tmp_optListVal
+      ,tmp_optSetVal
+      ,tmp_optMapVal
     );
     _that.validate();
     return _that;
@@ -811,6 +939,46 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       if (isSetOptStructVal()) {
         oprot.writeFieldBegin(OPT_STRUCT_VAL_FIELD_DESC);
         this.optStructVal.write(oprot);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.optListVal != null) {
+      if (isSetOptListVal()) {
+        oprot.writeFieldBegin(OPT_LIST_VAL_FIELD_DESC);
+        {
+          oprot.writeListBegin(new TList(TType.I16, this.optListVal.size()));
+          for (Short _iter10 : this.optListVal)          {
+            oprot.writeI16(_iter10);
+          }
+          oprot.writeListEnd();
+        }
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.optSetVal != null) {
+      if (isSetOptSetVal()) {
+        oprot.writeFieldBegin(OPT_SET_VAL_FIELD_DESC);
+        {
+          oprot.writeSetBegin(new TSet(TType.STRING, this.optSetVal.size()));
+          for (String _iter11 : this.optSetVal)          {
+            oprot.writeString(_iter11);
+          }
+          oprot.writeSetEnd();
+        }
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.optMapVal != null) {
+      if (isSetOptMapVal()) {
+        oprot.writeFieldBegin(OPT_MAP_VAL_FIELD_DESC);
+        {
+          oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, this.optMapVal.size()));
+          for (Map.Entry<String, String> _iter12 : this.optMapVal.entrySet())          {
+            oprot.writeString(_iter12.getKey());
+            oprot.writeString(_iter12.getValue());
+          }
+          oprot.writeMapEnd();
+        }
         oprot.writeFieldEnd();
       }
     }

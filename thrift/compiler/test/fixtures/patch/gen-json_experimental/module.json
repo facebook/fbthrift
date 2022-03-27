@@ -178,6 +178,37 @@
   "type" : "struct",
   "name" : "MyData"
 }
+          },
+          "optListVal" : {
+            "name" : "optListVal",
+            "key" : 21,
+            "lineno" : 56,
+            "required" : "optional",
+            "type" : {
+  "type" : "list",
+  "inner_type" : "i16"
+}
+          },
+          "optSetVal" : {
+            "name" : "optSetVal",
+            "key" : 22,
+            "lineno" : 57,
+            "required" : "optional",
+            "type" : {
+  "type" : "set",
+  "inner_type" : "string"
+}
+          },
+          "optMapVal" : {
+            "name" : "optMapVal",
+            "key" : 23,
+            "lineno" : 58,
+            "required" : "optional",
+            "type" : {
+  "type" : "map",
+  "key_type" : "string",
+  "value_type" : "string"
+}
           }
         },
         "is_exception" : false,
@@ -500,6 +531,242 @@
             "type" : {
   "type" : "struct",
   "name" : "OptionalMyDataValuePatch"
+}
+          },
+          "optListVal" : {
+            "name" : "optListVal",
+            "key" : 21,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "OptionalMyStructField21Patch"
+}
+          },
+          "optSetVal" : {
+            "name" : "optSetVal",
+            "key" : 22,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "OptionalMyStructField22Patch"
+}
+          },
+          "optMapVal" : {
+            "name" : "optMapVal",
+            "key" : 23,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "OptionalMyStructField23Patch"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 33
+      },
+      "MyStructField21Patch" : {
+        "name" : "MyStructField21Patch",
+        "fields" : {
+          "assign" : {
+            "name" : "assign",
+            "docstring" : "Assigns to a given struct. If set, all other operations are ignored.\n",
+            "key" : 1,
+            "lineno" : 33,
+            "required" : "optional",
+            "type" : {
+  "type" : "list",
+  "inner_type" : "i16"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 33
+      },
+      "OptionalMyStructField21Patch" : {
+        "name" : "OptionalMyStructField21Patch",
+        "fields" : {
+          "clear" : {
+            "name" : "clear",
+            "docstring" : "Clears any set value. Applies first.\n",
+            "key" : 2,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : "bool"
+          },
+          "patch" : {
+            "name" : "patch",
+            "docstring" : "Patches any set value. Applies second.\n",
+            "key" : 3,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "MyStructField21Patch"
+}
+          },
+          "ensure" : {
+            "name" : "ensure",
+            "docstring" : "Initializes any unset value. Applies third.\n",
+            "key" : 1,
+            "lineno" : 33,
+            "required" : "optional",
+            "type" : {
+  "type" : "list",
+  "inner_type" : "i16"
+}
+          },
+          "patchAfter" : {
+            "name" : "patchAfter",
+            "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
+            "key" : 4,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "MyStructField21Patch"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 33
+      },
+      "MyStructField22Patch" : {
+        "name" : "MyStructField22Patch",
+        "fields" : {
+          "assign" : {
+            "name" : "assign",
+            "docstring" : "Assigns to a given struct. If set, all other operations are ignored.\n",
+            "key" : 1,
+            "lineno" : 33,
+            "required" : "optional",
+            "type" : {
+  "type" : "set",
+  "inner_type" : "string"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 33
+      },
+      "OptionalMyStructField22Patch" : {
+        "name" : "OptionalMyStructField22Patch",
+        "fields" : {
+          "clear" : {
+            "name" : "clear",
+            "docstring" : "Clears any set value. Applies first.\n",
+            "key" : 2,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : "bool"
+          },
+          "patch" : {
+            "name" : "patch",
+            "docstring" : "Patches any set value. Applies second.\n",
+            "key" : 3,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "MyStructField22Patch"
+}
+          },
+          "ensure" : {
+            "name" : "ensure",
+            "docstring" : "Initializes any unset value. Applies third.\n",
+            "key" : 1,
+            "lineno" : 33,
+            "required" : "optional",
+            "type" : {
+  "type" : "set",
+  "inner_type" : "string"
+}
+          },
+          "patchAfter" : {
+            "name" : "patchAfter",
+            "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
+            "key" : 4,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "MyStructField22Patch"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 33
+      },
+      "MyStructField23Patch" : {
+        "name" : "MyStructField23Patch",
+        "fields" : {
+          "assign" : {
+            "name" : "assign",
+            "docstring" : "Assigns to a given struct. If set, all other operations are ignored.\n",
+            "key" : 1,
+            "lineno" : 33,
+            "required" : "optional",
+            "type" : {
+  "type" : "map",
+  "key_type" : "string",
+  "value_type" : "string"
+}
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 33
+      },
+      "OptionalMyStructField23Patch" : {
+        "name" : "OptionalMyStructField23Patch",
+        "fields" : {
+          "clear" : {
+            "name" : "clear",
+            "docstring" : "Clears any set value. Applies first.\n",
+            "key" : 2,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : "bool"
+          },
+          "patch" : {
+            "name" : "patch",
+            "docstring" : "Patches any set value. Applies second.\n",
+            "key" : 3,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "MyStructField23Patch"
+}
+          },
+          "ensure" : {
+            "name" : "ensure",
+            "docstring" : "Initializes any unset value. Applies third.\n",
+            "key" : 1,
+            "lineno" : 33,
+            "required" : "optional",
+            "type" : {
+  "type" : "map",
+  "key_type" : "string",
+  "value_type" : "string"
+}
+          },
+          "patchAfter" : {
+            "name" : "patchAfter",
+            "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
+            "key" : 4,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "struct",
+  "name" : "MyStructField23Patch"
 }
           }
         },

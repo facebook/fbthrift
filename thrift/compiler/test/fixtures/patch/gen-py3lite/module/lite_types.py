@@ -186,6 +186,27 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyData),  # typeinfo
             None,  # default value
         ),
+        (
+            21,  # id
+            False,  # isUnqualified
+            "optListVal",  # name
+            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            None,  # default value
+        ),
+        (
+            22,  # id
+            False,  # isUnqualified
+            "optSetVal",  # name
+            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            None,  # default value
+        ),
+        (
+            23,  # id
+            False,  # isUnqualified
+            "optMapVal",  # name
+            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            None,  # default value
+        ),
     )
 
     @staticmethod
@@ -461,6 +482,27 @@ class MyStructPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
             lambda: _fbthrift_py3lite_types.StructTypeInfo(OptionalMyDataValuePatch),  # typeinfo
             None,  # default value
         ),
+        (
+            21,  # id
+            True,  # isUnqualified
+            "optListVal",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(OptionalMyStructField21Patch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            22,  # id
+            True,  # isUnqualified
+            "optSetVal",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(OptionalMyStructField22Patch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            23,  # id
+            True,  # isUnqualified
+            "optMapVal",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(OptionalMyStructField23Patch),  # typeinfo
+            None,  # default value
+        ),
     )
 
     @staticmethod
@@ -474,6 +516,219 @@ class MyStructPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStructPatch()
+
+
+
+class MyStructField21Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            False,  # isUnqualified
+            "assign",  # name
+            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyStructField21Patch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/MyStructField21Patch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyStructField21Patch()
+
+
+
+class OptionalMyStructField21Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructField21Patch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructField21Patch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.OptionalMyStructField21Patch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/OptionalMyStructField21Patch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalMyStructField21Patch()
+
+
+
+class MyStructField22Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            False,  # isUnqualified
+            "assign",  # name
+            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyStructField22Patch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/MyStructField22Patch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyStructField22Patch()
+
+
+
+class OptionalMyStructField22Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructField22Patch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructField22Patch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.OptionalMyStructField22Patch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/OptionalMyStructField22Patch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalMyStructField22Patch()
+
+
+
+class MyStructField23Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            False,  # isUnqualified
+            "assign",  # name
+            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyStructField23Patch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/MyStructField23Patch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyStructField23Patch()
+
+
+
+class OptionalMyStructField23Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructField23Patch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructField23Patch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.OptionalMyStructField23Patch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/OptionalMyStructField23Patch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalMyStructField23Patch()
 
 
 
@@ -577,6 +832,18 @@ def _fbthrift_metadata__struct_OptionalMyDataValuePatch():
     return module.lite_metadata.gen_metadata_struct_OptionalMyDataValuePatch()
 def _fbthrift_metadata__struct_MyStructPatch():
     return module.lite_metadata.gen_metadata_struct_MyStructPatch()
+def _fbthrift_metadata__struct_MyStructField21Patch():
+    return module.lite_metadata.gen_metadata_struct_MyStructField21Patch()
+def _fbthrift_metadata__struct_OptionalMyStructField21Patch():
+    return module.lite_metadata.gen_metadata_struct_OptionalMyStructField21Patch()
+def _fbthrift_metadata__struct_MyStructField22Patch():
+    return module.lite_metadata.gen_metadata_struct_MyStructField22Patch()
+def _fbthrift_metadata__struct_OptionalMyStructField22Patch():
+    return module.lite_metadata.gen_metadata_struct_OptionalMyStructField22Patch()
+def _fbthrift_metadata__struct_MyStructField23Patch():
+    return module.lite_metadata.gen_metadata_struct_MyStructField23Patch()
+def _fbthrift_metadata__struct_OptionalMyStructField23Patch():
+    return module.lite_metadata.gen_metadata_struct_OptionalMyStructField23Patch()
 def _fbthrift_metadata__struct_MyStructValuePatch():
     return module.lite_metadata.gen_metadata_struct_MyStructValuePatch()
 def _fbthrift_metadata__struct_OptionalMyStructValuePatch():
@@ -589,6 +856,12 @@ _fbthrift_all_structs = [
     MyDataValuePatch,
     OptionalMyDataValuePatch,
     MyStructPatch,
+    MyStructField21Patch,
+    OptionalMyStructField21Patch,
+    MyStructField22Patch,
+    OptionalMyStructField22Patch,
+    MyStructField23Patch,
+    OptionalMyStructField23Patch,
     MyStructValuePatch,
     OptionalMyStructValuePatch,
 ]

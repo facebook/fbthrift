@@ -84,6 +84,9 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_17(self, _fbthrift_value) except *
     cdef void _set_field_18(self, _fbthrift_value) except *
     cdef void _set_field_19(self, _fbthrift_value) except *
+    cdef void _set_field_20(self, _fbthrift_value) except *
+    cdef void _set_field_21(self, _fbthrift_value) except *
+    cdef void _set_field_22(self, _fbthrift_value) except *
 
 
 ctypedef void (*__MyDataPatch_FieldsSetterFunc)(__MyDataPatch_FieldsSetter, object) except *
@@ -153,6 +156,84 @@ cdef class __MyStructPatch_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_17(self, _fbthrift_value) except *
     cdef void _set_field_18(self, _fbthrift_value) except *
     cdef void _set_field_19(self, _fbthrift_value) except *
+    cdef void _set_field_20(self, _fbthrift_value) except *
+    cdef void _set_field_21(self, _fbthrift_value) except *
+    cdef void _set_field_22(self, _fbthrift_value) except *
+
+
+ctypedef void (*__MyStructField21Patch_FieldsSetterFunc)(__MyStructField21Patch_FieldsSetter, object) except *
+
+cdef class __MyStructField21Patch_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cMyStructField21Patch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __MyStructField21Patch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __MyStructField21Patch_FieldsSetter _fbthrift_create(_module_types.cMyStructField21Patch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+
+
+ctypedef void (*__OptionalMyStructField21Patch_FieldsSetterFunc)(__OptionalMyStructField21Patch_FieldsSetter, object) except *
+
+cdef class __OptionalMyStructField21Patch_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cOptionalMyStructField21Patch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __OptionalMyStructField21Patch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __OptionalMyStructField21Patch_FieldsSetter _fbthrift_create(_module_types.cOptionalMyStructField21Patch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+
+
+ctypedef void (*__MyStructField22Patch_FieldsSetterFunc)(__MyStructField22Patch_FieldsSetter, object) except *
+
+cdef class __MyStructField22Patch_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cMyStructField22Patch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __MyStructField22Patch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __MyStructField22Patch_FieldsSetter _fbthrift_create(_module_types.cMyStructField22Patch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+
+
+ctypedef void (*__OptionalMyStructField22Patch_FieldsSetterFunc)(__OptionalMyStructField22Patch_FieldsSetter, object) except *
+
+cdef class __OptionalMyStructField22Patch_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cOptionalMyStructField22Patch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __OptionalMyStructField22Patch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __OptionalMyStructField22Patch_FieldsSetter _fbthrift_create(_module_types.cOptionalMyStructField22Patch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+
+
+ctypedef void (*__MyStructField23Patch_FieldsSetterFunc)(__MyStructField23Patch_FieldsSetter, object) except *
+
+cdef class __MyStructField23Patch_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cMyStructField23Patch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __MyStructField23Patch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __MyStructField23Patch_FieldsSetter _fbthrift_create(_module_types.cMyStructField23Patch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+
+
+ctypedef void (*__OptionalMyStructField23Patch_FieldsSetterFunc)(__OptionalMyStructField23Patch_FieldsSetter, object) except *
+
+cdef class __OptionalMyStructField23Patch_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cOptionalMyStructField23Patch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __OptionalMyStructField23Patch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __OptionalMyStructField23Patch_FieldsSetter _fbthrift_create(_module_types.cOptionalMyStructField23Patch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
 
 
 ctypedef void (*__MyStructValuePatch_FieldsSetterFunc)(__MyStructValuePatch_FieldsSetter, object) except *

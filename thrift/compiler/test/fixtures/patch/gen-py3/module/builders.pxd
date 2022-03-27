@@ -41,6 +41,9 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public str optStringVal
     cdef public bytes optBinaryVal
     cdef public object optStructVal
+    cdef public list optListVal
+    cdef public set optSetVal
+    cdef public dict optMapVal
 
 
 cdef class MyDataPatch_Builder(thrift.py3.builder.StructBuilder):
@@ -82,6 +85,42 @@ cdef class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
     cdef public object optStringVal
     cdef public object optBinaryVal
     cdef public object optStructVal
+    cdef public object optListVal
+    cdef public object optSetVal
+    cdef public object optMapVal
+
+
+cdef class MyStructField21Patch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public list assign
+
+
+cdef class OptionalMyStructField21Patch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public list ensure
+    cdef public object patchAfter
+
+
+cdef class MyStructField22Patch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public set assign
+
+
+cdef class OptionalMyStructField22Patch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public set ensure
+    cdef public object patchAfter
+
+
+cdef class MyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public dict assign
+
+
+cdef class OptionalMyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public dict ensure
+    cdef public object patchAfter
 
 
 cdef class MyStructValuePatch_Builder(thrift.py3.builder.StructBuilder):

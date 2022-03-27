@@ -35,6 +35,9 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
         yield "optStringVal", self.optStringVal
         yield "optBinaryVal", self.optBinaryVal
         yield "optStructVal", self.optStructVal
+        yield "optListVal", self.optListVal
+        yield "optSetVal", self.optSetVal
+        yield "optMapVal", self.optMapVal
 
 cdef class MyDataPatch_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.MyDataPatch
@@ -84,6 +87,54 @@ cdef class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
         yield "optStringVal", self.optStringVal
         yield "optBinaryVal", self.optBinaryVal
         yield "optStructVal", self.optStructVal
+        yield "optListVal", self.optListVal
+        yield "optSetVal", self.optSetVal
+        yield "optMapVal", self.optMapVal
+
+cdef class MyStructField21Patch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.MyStructField21Patch
+
+    def __iter__(self):
+        yield "assign", self.assign
+
+cdef class OptionalMyStructField21Patch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.OptionalMyStructField21Patch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
+cdef class MyStructField22Patch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.MyStructField22Patch
+
+    def __iter__(self):
+        yield "assign", self.assign
+
+cdef class OptionalMyStructField22Patch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.OptionalMyStructField22Patch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
+cdef class MyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.MyStructField23Patch
+
+    def __iter__(self):
+        yield "assign", self.assign
+
+cdef class OptionalMyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.OptionalMyStructField23Patch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
 
 cdef class MyStructValuePatch_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.MyStructValuePatch

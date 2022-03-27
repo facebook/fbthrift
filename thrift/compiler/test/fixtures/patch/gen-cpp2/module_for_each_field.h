@@ -46,6 +46,9 @@ struct ForEachField<::cpp2::MyStruct> {
     f(17, static_cast<T&&>(t).optStringVal_ref()...);
     f(18, static_cast<T&&>(t).optBinaryVal_ref()...);
     f(19, static_cast<T&&>(t).optStructVal_ref()...);
+    f(20, static_cast<T&&>(t).optListVal_ref()...);
+    f(21, static_cast<T&&>(t).optSetVal_ref()...);
+    f(22, static_cast<T&&>(t).optMapVal_ref()...);
   }
 };
 
@@ -80,6 +83,63 @@ struct ForEachField<::cpp2::OptionalMyDataValuePatch> {
 };
 
 template <>
+struct ForEachField<::cpp2::MyStructField21Patch> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).assign_ref()...);
+  }
+};
+
+template <>
+struct ForEachField<::cpp2::OptionalMyStructField21Patch> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).clear_ref()...);
+    f(1, static_cast<T&&>(t).patch_ref()...);
+    f(2, static_cast<T&&>(t).ensure_ref()...);
+    f(3, static_cast<T&&>(t).patchAfter_ref()...);
+  }
+};
+
+template <>
+struct ForEachField<::cpp2::MyStructField22Patch> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).assign_ref()...);
+  }
+};
+
+template <>
+struct ForEachField<::cpp2::OptionalMyStructField22Patch> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).clear_ref()...);
+    f(1, static_cast<T&&>(t).patch_ref()...);
+    f(2, static_cast<T&&>(t).ensure_ref()...);
+    f(3, static_cast<T&&>(t).patchAfter_ref()...);
+  }
+};
+
+template <>
+struct ForEachField<::cpp2::MyStructField23Patch> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).assign_ref()...);
+  }
+};
+
+template <>
+struct ForEachField<::cpp2::OptionalMyStructField23Patch> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).clear_ref()...);
+    f(1, static_cast<T&&>(t).patch_ref()...);
+    f(2, static_cast<T&&>(t).ensure_ref()...);
+    f(3, static_cast<T&&>(t).patchAfter_ref()...);
+  }
+};
+
+template <>
 struct ForEachField<::cpp2::MyStructPatch> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
@@ -103,6 +163,9 @@ struct ForEachField<::cpp2::MyStructPatch> {
     f(17, static_cast<T&&>(t).optStringVal_ref()...);
     f(18, static_cast<T&&>(t).optBinaryVal_ref()...);
     f(19, static_cast<T&&>(t).optStructVal_ref()...);
+    f(20, static_cast<T&&>(t).optListVal_ref()...);
+    f(21, static_cast<T&&>(t).optSetVal_ref()...);
+    f(22, static_cast<T&&>(t).optMapVal_ref()...);
   }
 };
 

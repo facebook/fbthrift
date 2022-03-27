@@ -46,6 +46,9 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TField OPT_STRING_VAL_FIELD_DESC = new TField("optStringVal", TType.STRUCT, (short)18);
   private static final TField OPT_BINARY_VAL_FIELD_DESC = new TField("optBinaryVal", TType.STRUCT, (short)19);
   private static final TField OPT_STRUCT_VAL_FIELD_DESC = new TField("optStructVal", TType.STRUCT, (short)20);
+  private static final TField OPT_LIST_VAL_FIELD_DESC = new TField("optListVal", TType.STRUCT, (short)21);
+  private static final TField OPT_SET_VAL_FIELD_DESC = new TField("optSetVal", TType.STRUCT, (short)22);
+  private static final TField OPT_MAP_VAL_FIELD_DESC = new TField("optMapVal", TType.STRUCT, (short)23);
 
   public final BoolPatch boolVal;
   public final BytePatch byteVal;
@@ -67,6 +70,9 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
   public final OptionalStringPatch optStringVal;
   public final OptionalBinaryPatch optBinaryVal;
   public final OptionalMyDataValuePatch optStructVal;
+  public final OptionalMyStructField21Patch optListVal;
+  public final OptionalMyStructField22Patch optSetVal;
+  public final OptionalMyStructField23Patch optMapVal;
   public static final int BOOLVAL = 1;
   public static final int BYTEVAL = 2;
   public static final int I16VAL = 3;
@@ -87,6 +93,9 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
   public static final int OPTSTRINGVAL = 18;
   public static final int OPTBINARYVAL = 19;
   public static final int OPTSTRUCTVAL = 20;
+  public static final int OPTLISTVAL = 21;
+  public static final int OPTSETVAL = 22;
+  public static final int OPTMAPVAL = 23;
 
   public MyStructPatch(
       BoolPatch boolVal,
@@ -108,7 +117,10 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
       OptionalDoublePatch optDoubleVal,
       OptionalStringPatch optStringVal,
       OptionalBinaryPatch optBinaryVal,
-      OptionalMyDataValuePatch optStructVal) {
+      OptionalMyDataValuePatch optStructVal,
+      OptionalMyStructField21Patch optListVal,
+      OptionalMyStructField22Patch optSetVal,
+      OptionalMyStructField23Patch optMapVal) {
     this.boolVal = boolVal;
     this.byteVal = byteVal;
     this.i16Val = i16Val;
@@ -129,6 +141,9 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
     this.optStringVal = optStringVal;
     this.optBinaryVal = optBinaryVal;
     this.optStructVal = optStructVal;
+    this.optListVal = optListVal;
+    this.optSetVal = optSetVal;
+    this.optMapVal = optMapVal;
   }
 
   /**
@@ -234,6 +249,21 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
       this.optStructVal = TBaseHelper.deepCopy(other.optStructVal);
     } else {
       this.optStructVal = null;
+    }
+    if (other.isSetOptListVal()) {
+      this.optListVal = TBaseHelper.deepCopy(other.optListVal);
+    } else {
+      this.optListVal = null;
+    }
+    if (other.isSetOptSetVal()) {
+      this.optSetVal = TBaseHelper.deepCopy(other.optSetVal);
+    } else {
+      this.optSetVal = null;
+    }
+    if (other.isSetOptMapVal()) {
+      this.optMapVal = TBaseHelper.deepCopy(other.optMapVal);
+    } else {
+      this.optMapVal = null;
     }
   }
 
@@ -421,6 +451,33 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
     return this.optStructVal != null;
   }
 
+  public OptionalMyStructField21Patch getOptListVal() {
+    return this.optListVal;
+  }
+
+  // Returns true if field optListVal is set (has been assigned a value) and false otherwise
+  public boolean isSetOptListVal() {
+    return this.optListVal != null;
+  }
+
+  public OptionalMyStructField22Patch getOptSetVal() {
+    return this.optSetVal;
+  }
+
+  // Returns true if field optSetVal is set (has been assigned a value) and false otherwise
+  public boolean isSetOptSetVal() {
+    return this.optSetVal != null;
+  }
+
+  public OptionalMyStructField23Patch getOptMapVal() {
+    return this.optMapVal;
+  }
+
+  // Returns true if field optMapVal is set (has been assigned a value) and false otherwise
+  public boolean isSetOptMapVal() {
+    return this.optMapVal != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -471,12 +528,18 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetOptStructVal(), that.isSetOptStructVal(), this.optStructVal, that.optStructVal)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetOptListVal(), that.isSetOptListVal(), this.optListVal, that.optListVal)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetOptSetVal(), that.isSetOptSetVal(), this.optSetVal, that.optSetVal)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetOptMapVal(), that.isSetOptMapVal(), this.optMapVal, that.optMapVal)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {boolVal, byteVal, i16Val, i32Val, i64Val, floatVal, doubleVal, stringVal, binaryVal, structVal, optBoolVal, optByteVal, optI16Val, optI32Val, optI64Val, optFloatVal, optDoubleVal, optStringVal, optBinaryVal, optStructVal});
+    return Arrays.deepHashCode(new Object[] {boolVal, byteVal, i16Val, i32Val, i64Val, floatVal, doubleVal, stringVal, binaryVal, structVal, optBoolVal, optByteVal, optI16Val, optI32Val, optI64Val, optFloatVal, optDoubleVal, optStringVal, optBinaryVal, optStructVal, optListVal, optSetVal, optMapVal});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -505,6 +568,9 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
     OptionalStringPatch tmp_optStringVal = null;
     OptionalBinaryPatch tmp_optBinaryVal = null;
     OptionalMyDataValuePatch tmp_optStructVal = null;
+    OptionalMyStructField21Patch tmp_optListVal = null;
+    OptionalMyStructField22Patch tmp_optSetVal = null;
+    OptionalMyStructField23Patch tmp_optMapVal = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -655,6 +721,27 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case OPTLISTVAL:
+          if (__field.type == TType.STRUCT) {
+            tmp_optListVal = OptionalMyStructField21Patch.deserialize(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case OPTSETVAL:
+          if (__field.type == TType.STRUCT) {
+            tmp_optSetVal = OptionalMyStructField22Patch.deserialize(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case OPTMAPVAL:
+          if (__field.type == TType.STRUCT) {
+            tmp_optMapVal = OptionalMyStructField23Patch.deserialize(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -685,6 +772,9 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
       ,tmp_optStringVal
       ,tmp_optBinaryVal
       ,tmp_optStructVal
+      ,tmp_optListVal
+      ,tmp_optSetVal
+      ,tmp_optMapVal
     );
     _that.validate();
     return _that;
@@ -792,6 +882,21 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
     if (this.optStructVal != null) {
       oprot.writeFieldBegin(OPT_STRUCT_VAL_FIELD_DESC);
       this.optStructVal.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.optListVal != null) {
+      oprot.writeFieldBegin(OPT_LIST_VAL_FIELD_DESC);
+      this.optListVal.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.optSetVal != null) {
+      oprot.writeFieldBegin(OPT_SET_VAL_FIELD_DESC);
+      this.optSetVal.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.optMapVal != null) {
+      oprot.writeFieldBegin(OPT_MAP_VAL_FIELD_DESC);
+      this.optMapVal.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

@@ -96,6 +96,15 @@ void reset_field<::cpp2::MyStruct>(
     case 19:
       obj.optStructVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optStructVal_ref());
       return;
+    case 20:
+      obj.optListVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optListVal_ref());
+      return;
+    case 21:
+      obj.optSetVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optSetVal_ref());
+      return;
+    case 22:
+      obj.optMapVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optMapVal_ref());
+      return;
   }
 }
 
@@ -211,6 +220,102 @@ void reset_field<::cpp2::MyStructPatch>(
     case 19:
       obj.optStructVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optStructVal_ref());
       return;
+    case 20:
+      obj.optListVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optListVal_ref());
+      return;
+    case 21:
+      obj.optSetVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optSetVal_ref());
+      return;
+    case 22:
+      obj.optMapVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optMapVal_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::cpp2::MyStructField21Patch>(
+    ::cpp2::MyStructField21Patch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.assign_ref().copy_from(default_inst<::cpp2::MyStructField21Patch>().assign_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::cpp2::OptionalMyStructField21Patch>(
+    ::cpp2::OptionalMyStructField21Patch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::cpp2::OptionalMyStructField21Patch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::cpp2::OptionalMyStructField21Patch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::cpp2::OptionalMyStructField21Patch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::cpp2::OptionalMyStructField21Patch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::cpp2::MyStructField22Patch>(
+    ::cpp2::MyStructField22Patch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.assign_ref().copy_from(default_inst<::cpp2::MyStructField22Patch>().assign_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::cpp2::OptionalMyStructField22Patch>(
+    ::cpp2::OptionalMyStructField22Patch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::cpp2::OptionalMyStructField22Patch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::cpp2::OptionalMyStructField22Patch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::cpp2::OptionalMyStructField22Patch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::cpp2::OptionalMyStructField22Patch>().patchAfter_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::cpp2::MyStructField23Patch>(
+    ::cpp2::MyStructField23Patch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.assign_ref().copy_from(default_inst<::cpp2::MyStructField23Patch>().assign_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::cpp2::OptionalMyStructField23Patch>(
+    ::cpp2::OptionalMyStructField23Patch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::cpp2::OptionalMyStructField23Patch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::cpp2::OptionalMyStructField23Patch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::cpp2::OptionalMyStructField23Patch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::cpp2::OptionalMyStructField23Patch>().patchAfter_ref());
+      return;
   }
 }
 
@@ -302,6 +407,66 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::MyStructPatch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::MyStructField21Patch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::OptionalMyStructField21Patch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::MyStructField22Patch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::OptionalMyStructField22Patch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::MyStructField23Patch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::OptionalMyStructField23Patch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

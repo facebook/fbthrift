@@ -44,6 +44,9 @@ class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     optStringVal: _typing.Optional[str]
     optBinaryVal: _typing.Optional[bytes]
     optStructVal: _typing.Any
+    optListVal: _typing.Optional[list]
+    optSetVal: _typing.Optional[set]
+    optMapVal: _typing.Optional[dict]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
@@ -93,6 +96,54 @@ class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
     optStringVal: _typing.Any
     optBinaryVal: _typing.Any
     optStructVal: _typing.Any
+    optListVal: _typing.Any
+    optSetVal: _typing.Any
+    optMapVal: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class MyStructField21Patch_Builder(thrift.py3.builder.StructBuilder):
+    assign: _typing.Optional[list]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class OptionalMyStructField21Patch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Optional[list]
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class MyStructField22Patch_Builder(thrift.py3.builder.StructBuilder):
+    assign: _typing.Optional[set]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class OptionalMyStructField22Patch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Optional[set]
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class MyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
+    assign: _typing.Optional[dict]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class OptionalMyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Optional[dict]
+    patchAfter: _typing.Any
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

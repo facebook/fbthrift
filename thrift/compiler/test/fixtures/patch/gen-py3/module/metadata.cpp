@@ -17,6 +17,12 @@ namespace cpp2 {
   ::apache::thrift::detail::md::StructMetadata<MyDataValuePatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<OptionalMyDataValuePatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStructPatch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<MyStructField21Patch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<OptionalMyStructField21Patch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<MyStructField22Patch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<OptionalMyStructField22Patch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<MyStructField23Patch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<OptionalMyStructField23Patch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStructValuePatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<OptionalMyStructValuePatch>::gen(metadata);
   return metadata;
