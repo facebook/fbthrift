@@ -98,10 +98,6 @@ void expectPatch(
     EXPECT_EQ(actual1, expected1);
     patch.apply(actual1);
     EXPECT_EQ(actual1, expected2);
-    if (actual != expected1) {
-      // The value changes, so this cannot be an empty patch.
-      EXPECT_FALSE(patch.empty());
-    }
   }
   { // Merging with self, is the same as applying twice.
     patch.merge(patch);
@@ -111,7 +107,6 @@ void expectPatch(
   }
   { // Reset should be a noop patch.
     patch.reset();
-    EXPECT_TRUE(patch.empty());
     auto actual3 = actual;
     patch.apply(actual3);
     EXPECT_EQ(actual3, actual);

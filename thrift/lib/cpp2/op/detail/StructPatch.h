@@ -70,7 +70,6 @@ class StructPatch : public BaseClearablePatch<Patch, StructPatch<Patch>> {
  public:
   using Base::apply;
   using Base::Base;
-  using Base::hasAssign;
   using Base::operator=;
   using patch_type = std::decay_t<decltype(*std::declval<Patch>().patch())>;
 
@@ -78,12 +77,6 @@ class StructPatch : public BaseClearablePatch<Patch, StructPatch<Patch>> {
   // patch object.
   patch_type& patch() { return ensurePatch(); }
   patch_type* operator->() { return &ensurePatch(); }
-
-  bool empty() const {
-    return !hasAssignOrClear() &&
-        // TODO(afuller): Use terse writes and switch to op::empty.
-        *patch_.patch() == patch_type{};
-  }
 
   void apply(T& val) const {
     if (applyAssign(val)) {
@@ -105,7 +98,6 @@ class StructPatch : public BaseClearablePatch<Patch, StructPatch<Patch>> {
 
  private:
   using Base::applyAssign;
-  using Base::hasAssignOrClear;
   using Base::mergeAssignAndClear;
   using Base::patch_;
   using Base::resetAnd;
@@ -113,7 +105,7 @@ class StructPatch : public BaseClearablePatch<Patch, StructPatch<Patch>> {
   using FieldPatch = detail::FieldPatch<Fields>;
 
   patch_type& ensurePatch() {
-    if (hasAssign()) {
+    if (patch_.assign().has_value()) {
       // Ensure even unknown fields are cleared.
       *patch_.clear() = true;
 
@@ -121,7 +113,6 @@ class StructPatch : public BaseClearablePatch<Patch, StructPatch<Patch>> {
       FieldPatch::forwardTo(std::move(*patch_.assign()), *patch_.patch());
       patch_.assign().reset();
     }
-    assert(!hasAssign());
     return *patch_.patch();
   }
 };

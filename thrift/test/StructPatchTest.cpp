@@ -94,7 +94,7 @@ TEST(StructPatchTest, AssignSplit) {
   auto patch = TestStructPatch::createAssign(testValue());
   // Break apart the assign patch and check the result;
   patch.patch();
-  EXPECT_FALSE(patch.hasAssign());
+  EXPECT_FALSE(patch.get().assign().has_value());
   EXPECT_TRUE(*patch.get().clear());
   EXPECT_NE(*patch.get().patch(), MyStructPatch{});
   test::expectPatch(patch, {}, testValue());
@@ -135,7 +135,7 @@ TEST(StructPatchTest, Patch) {
   test::expectPatch(patch, val, expected1, expected2);
 
   patch.merge(TestStructPatch::createClear());
-  EXPECT_FALSE(patch.hasAssign());
+  EXPECT_FALSE(patch.get().assign().has_value());
   EXPECT_EQ(patch.patch(), MyStructPatch{});
   EXPECT_TRUE(*patch.get().clear());
   test::expectPatch(patch, testValue(), {});
@@ -155,7 +155,7 @@ TEST(StructPatchTest, AssignClear) {
 
   // Clear patch takes precedence (as it is smaller to encode and slightly
   // stronger in the presense of non-terse non-optional fields).
-  EXPECT_FALSE(patch.hasAssign());
+  EXPECT_FALSE(patch.get().assign().has_value());
   EXPECT_TRUE(*patch.get().clear());
 }
 

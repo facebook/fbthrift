@@ -38,10 +38,8 @@ class AssignPatch : public BaseValuePatch<Patch, AssignPatch<Patch>> {
  public:
   using Base::apply;
   using Base::Base;
-  using Base::hasAssign;
   using Base::operator=;
 
-  bool empty() const { return !hasAssign(); }
   void apply(T& val) const { applyAssign(val); }
   template <typename U>
   void merge(U&& next) {
@@ -65,7 +63,6 @@ class BoolPatch : public BaseValuePatch<Patch, BoolPatch<Patch>> {
   using Base::apply;
   using Base::Base;
   using Base::get;
-  using Base::hasAssign;
   using Base::operator=;
 
   static BoolPatch createInvert() { return !BoolPatch{}; }
@@ -74,8 +71,6 @@ class BoolPatch : public BaseValuePatch<Patch, BoolPatch<Patch>> {
     auto& val = assignOr(*patch_.invert());
     val = !val;
   }
-
-  bool empty() const { return !hasAssign() && !*patch_.invert(); }
 
   void apply(T& val) const {
     if (!applyAssign(val) && *patch_.invert()) {
@@ -110,7 +105,6 @@ class NumberPatch : public BaseValuePatch<Patch, NumberPatch<Patch>> {
  public:
   using Base::apply;
   using Base::Base;
-  using Base::hasAssign;
   using Base::operator=;
 
   template <typename U>
@@ -135,8 +129,6 @@ class NumberPatch : public BaseValuePatch<Patch, NumberPatch<Patch>> {
   void subtract(U&& val) {
     assignOr(*patch_.add()) -= std::forward<U>(val);
   }
-
-  bool empty() const { return !hasAssign() && *patch_.add() == 0; }
 
   void apply(T& val) const {
     if (!applyAssign(val)) {
@@ -228,17 +220,12 @@ class StringPatch : public BaseClearablePatch<Patch, StringPatch<Patch>> {
     cur = std::forward<U>(val) + std::move(cur);
   }
 
-  bool empty() const {
-    return !hasAssignOrClear() && patch_.prepend()->empty() &&
-        patch_.append()->empty();
-  }
-
   void apply(T& val) const {
     if (!applyAssign(val)) {
       if (patch_.clear() == true) {
         val.clear();
       }
-      val = *patch_.prepend() + val + *patch_.append();
+      val = *patch_.prepend() + std::move(val) + *patch_.append();
     }
   }
 
@@ -260,7 +247,6 @@ class StringPatch : public BaseClearablePatch<Patch, StringPatch<Patch>> {
  private:
   using Base::applyAssign;
   using Base::assignOr;
-  using Base::hasAssignOrClear;
   using Base::mergeAssignAndClear;
   using Base::patch_;
 

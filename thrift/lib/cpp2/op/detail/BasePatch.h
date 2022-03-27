@@ -108,7 +108,6 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
     return patch;
   }
 
-  bool hasAssign() const noexcept { return patch_.assign().has_value(); }
   void assign(const value_type& val) { resetAnd().assign().emplace(val); }
   void assign(value_type&& val) { resetAnd().assign().emplace(std::move(val)); }
 
@@ -133,11 +132,11 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
   ~BaseValuePatch() = default; // abstract base class
 
   value_type& assignOr(value_type& value) noexcept {
-    return hasAssign() ? *patch_.assign() : value;
+    return patch_.assign().has_value() ? *patch_.assign() : value;
   }
 
   bool applyAssign(value_type& val) const {
-    if (hasAssign()) {
+    if (patch_.assign().has_value()) {
       val = *patch_.assign();
       return true;
     }
@@ -146,11 +145,11 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
 
   template <typename U>
   bool mergeAssign(U&& next) {
-    if (next.hasAssign()) {
+    if (next.get().assign().has_value()) {
       patch_ = std::forward<U>(next).get();
       return true;
     }
-    if (hasAssign()) {
+    if (patch_.assign().has_value()) {
       next.apply(*patch_.assign());
       return true;
     }
@@ -171,7 +170,6 @@ class BaseClearablePatch : public BaseValuePatch<Patch, Derived> {
  public:
   using Base::Base;
   using Base::operator=;
-  using Base::hasAssign;
 
   static Derived createClear() {
     Derived patch;
@@ -189,17 +187,13 @@ class BaseClearablePatch : public BaseValuePatch<Patch, Derived> {
 
   ~BaseClearablePatch() = default;
 
-  bool hasAssignOrClear() const noexcept {
-    return hasAssign() || patch_.clear() == true;
-  }
-
   template <typename U>
   bool mergeAssignAndClear(U&& next) {
     // Clear is slightly stronger than assigning a 'cleared' value in some
     // cases. For example a struct with non-terse, non-optional fields with
     // custom defaults and missmatched schemas... it's also smaller, so prefer
     // it.
-    if (*next.get().clear() && !next.hasAssign()) {
+    if (*next.get().clear() && !next.get().assign().has_value()) {
       // Next patch completely replaces this one.
       patch_ = std::forward<U>(next).get();
       return true;

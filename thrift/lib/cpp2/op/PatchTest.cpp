@@ -27,7 +27,6 @@ TEST(PatchTest, BoolPatch) {
   BoolPatch patch;
 
   // Empty patch does nothing.
-  EXPECT_TRUE(patch.empty());
   test::expectPatch(patch, false, false);
   test::expectPatch(patch, true, true);
 
@@ -38,7 +37,6 @@ TEST(PatchTest, BoolPatch) {
 
   // Double inverting patch does nothing.
   patch = !patch;
-  EXPECT_TRUE(patch.empty());
   test::expectPatch(patch, false, false);
   test::expectPatch(patch, true, true);
 
@@ -56,14 +54,12 @@ void testNumberPatch() {
   NPatch patch;
 
   // Empty patch does nothing.
-  EXPECT_TRUE(patch.empty());
   test::expectPatch(patch, {7}, 7);
 
   // Incrementing patch increments.
   patch = 1 + NPatch::createAdd(1);
   test::expectPatch(patch, {7}, 9, 11);
   patch.merge(NPatch::createSubtract(2));
-  EXPECT_TRUE(patch.empty());
   test::expectPatch(patch, {7}, 7);
 
   // Assigning patch assigns.
@@ -86,7 +82,6 @@ TEST(PatchTest, StringPatch) {
   StringPatch patch;
 
   // Empty patch does nothing.
-  EXPECT_TRUE(patch.empty());
   test::expectPatch(patch, {"hi"}, "hi");
 
   // Relative patch patches.
@@ -107,10 +102,7 @@ TEST(PatchTest, StringPatch) {
 }
 
 TEST(PatchTest, BinaryPatch) {
-  BinaryPatch patch;
-  EXPECT_TRUE(patch.empty());
-
-  // TODO(afuller): More binary tests.
+  // TODO(afuller): Binary tests.
 }
 
 } // namespace op
