@@ -32,19 +32,19 @@ public class OptionalMyStructValuePatch implements TBase, java.io.Serializable, 
   private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)4);
 
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    */
   public final Boolean clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    */
   public final MyStructValuePatch patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    */
   public final MyStruct ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    */
   public final MyStructValuePatch patchAfter;
   public static final int CLEAR = 2;
@@ -94,7 +94,7 @@ public class OptionalMyStructValuePatch implements TBase, java.io.Serializable, 
   }
 
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    */
   public Boolean isClear() {
     return this.clear;
@@ -106,7 +106,7 @@ public class OptionalMyStructValuePatch implements TBase, java.io.Serializable, 
   }
 
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    */
   public MyStructValuePatch getPatch() {
     return this.patch;
@@ -118,7 +118,7 @@ public class OptionalMyStructValuePatch implements TBase, java.io.Serializable, 
   }
 
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    */
   public MyStruct getEnsure() {
     return this.ensure;
@@ -130,7 +130,7 @@ public class OptionalMyStructValuePatch implements TBase, java.io.Serializable, 
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    */
   public MyStructValuePatch getPatchAfter() {
     return this.patchAfter;

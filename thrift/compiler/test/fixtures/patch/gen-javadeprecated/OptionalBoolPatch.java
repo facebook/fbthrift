@@ -30,19 +30,19 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
   private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)4);
 
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    */
   public boolean clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    */
   public BoolPatch patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    */
   public boolean ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    */
   public BoolPatch patchAfter;
   public static final int CLEAR = 2;
@@ -174,14 +174,14 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
   }
 
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    */
   public boolean isClear() {
     return this.clear;
   }
 
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    */
   public OptionalBoolPatch setClear(boolean clear) {
     this.clear = clear;
@@ -203,14 +203,14 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
   }
 
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    */
   public BoolPatch getPatch() {
     return this.patch;
   }
 
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    */
   public OptionalBoolPatch setPatch(BoolPatch patch) {
     this.patch = patch;
@@ -233,14 +233,14 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
   }
 
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    */
   public boolean isEnsure() {
     return this.ensure;
   }
 
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    */
   public OptionalBoolPatch setEnsure(boolean ensure) {
     this.ensure = ensure;
@@ -262,14 +262,14 @@ public class OptionalBoolPatch implements TBase, java.io.Serializable, Cloneable
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    */
   public BoolPatch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    */
   public OptionalBoolPatch setPatchAfter(BoolPatch patchAfter) {
     this.patchAfter = patchAfter;

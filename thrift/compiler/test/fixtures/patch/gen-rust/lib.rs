@@ -70,9 +70,9 @@ pub mod types {
     pub struct MyDataValuePatch {
         #[doc = "Assigns to a given struct. If set, all other operations are ignored."]
         pub assign: ::std::option::Option<crate::types::MyData>,
-        #[doc = "Clears a given value. Applied first."]
+        #[doc = "Clears a given value. Applies first."]
         pub clear: ::std::primitive::bool,
-        #[doc = "Patches a given value. Applied second."]
+        #[doc = "Patches a given value. Applies second."]
         pub patch: crate::types::MyDataPatch,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
@@ -84,13 +84,13 @@ pub mod types {
 
     #[derive(Clone, PartialEq)]
     pub struct OptionalMyDataValuePatch {
-        #[doc = "If the optional value should be cleared. Applied first."]
+        #[doc = "Clears any set value. Applies first."]
         pub clear: ::std::primitive::bool,
-        #[doc = "The patch to apply to any set value. Applied second."]
+        #[doc = "Patches any set value. Applies second."]
         pub patch: crate::types::MyDataValuePatch,
-        #[doc = "The value with which to initialize any unset value. Applied third."]
+        #[doc = "Initializes any unset value. Applies third."]
         pub ensure: ::std::option::Option<crate::types::MyData>,
-        #[doc = "The patch to apply to any set value, including newly set values. Applied fourth."]
+        #[doc = "Patches any set value, including newly set values. Applies fourth."]
         pub patchAfter: crate::types::MyDataValuePatch,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
@@ -134,9 +134,9 @@ pub mod types {
     pub struct MyStructValuePatch {
         #[doc = "Assigns to a given struct. If set, all other operations are ignored."]
         pub assign: ::std::option::Option<crate::types::MyStruct>,
-        #[doc = "Clears a given value. Applied first."]
+        #[doc = "Clears a given value. Applies first."]
         pub clear: ::std::primitive::bool,
-        #[doc = "Patches a given value. Applied second."]
+        #[doc = "Patches a given value. Applies second."]
         pub patch: crate::types::MyStructPatch,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
@@ -148,13 +148,13 @@ pub mod types {
 
     #[derive(Clone, PartialEq)]
     pub struct OptionalMyStructValuePatch {
-        #[doc = "If the optional value should be cleared. Applied first."]
+        #[doc = "Clears any set value. Applies first."]
         pub clear: ::std::primitive::bool,
-        #[doc = "The patch to apply to any set value. Applied second."]
+        #[doc = "Patches any set value. Applies second."]
         pub patch: crate::types::MyStructValuePatch,
-        #[doc = "The value with which to initialize any unset value. Applied third."]
+        #[doc = "Initializes any unset value. Applies third."]
         pub ensure: ::std::option::Option<crate::types::MyStruct>,
-        #[doc = "The patch to apply to any set value, including newly set values. Applied fourth."]
+        #[doc = "Patches any set value, including newly set values. Applies fourth."]
         pub patchAfter: crate::types::MyStructValuePatch,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to

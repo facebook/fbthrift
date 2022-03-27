@@ -1599,28 +1599,28 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
   );
   const int STRUCTURAL_ID = 8412672391935815140;
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.BoolPatch patch
    */
   public ?BoolPatch $patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    * 
    * Original thrift field:-
    * 1: bool ensure
    */
   public ?bool $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.BoolPatch patchAfter
@@ -1849,28 +1849,28 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
   );
   const int STRUCTURAL_ID = 6344280821883027515;
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.BytePatch patch
    */
   public ?BytePatch $patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    * 
    * Original thrift field:-
    * 1: byte ensure
    */
   public ?int $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.BytePatch patchAfter
@@ -2104,28 +2104,28 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
   );
   const int STRUCTURAL_ID = 1368575933884824695;
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.I16Patch patch
    */
   public ?I16Patch $patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    * 
    * Original thrift field:-
    * 1: i16 ensure
    */
   public ?int $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.I16Patch patchAfter
@@ -2359,28 +2359,28 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
   );
   const int STRUCTURAL_ID = 2035073824687399400;
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.I32Patch patch
    */
   public ?I32Patch $patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    * 
    * Original thrift field:-
    * 1: i32 ensure
    */
   public ?int $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.I32Patch patchAfter
@@ -2614,28 +2614,28 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
   );
   const int STRUCTURAL_ID = 1021348638132900208;
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.I64Patch patch
    */
   public ?I64Patch $patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    * 
    * Original thrift field:-
    * 1: i64 ensure
    */
   public ?int $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.I64Patch patchAfter
@@ -2864,28 +2864,28 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
   );
   const int STRUCTURAL_ID = 6321532602031647348;
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.FloatPatch patch
    */
   public ?FloatPatch $patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    * 
    * Original thrift field:-
    * 1: float ensure
    */
   public ?float $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.FloatPatch patchAfter
@@ -3114,28 +3114,28 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
   );
   const int STRUCTURAL_ID = 544057086045006602;
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.DoublePatch patch
    */
   public ?DoublePatch $patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    * 
    * Original thrift field:-
    * 1: double ensure
    */
   public ?float $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.DoublePatch patchAfter
@@ -3364,28 +3364,28 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
   );
   const int STRUCTURAL_ID = 3041818733505872595;
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.StringPatch patch
    */
   public ?StringPatch $patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    * 
    * Original thrift field:-
    * 1: string ensure
    */
   public ?string $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.StringPatch patchAfter
@@ -3614,28 +3614,28 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
   );
   const int STRUCTURAL_ID = 8306158524033187717;
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    * 
    * Original thrift field:-
    * 3: struct patch.BinaryPatch patch
    */
   public ?BinaryPatch $patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    * 
    * Original thrift field:-
    * 1: binary ensure
    */
   public ?string $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
    * 4: struct patch.BinaryPatch patchAfter

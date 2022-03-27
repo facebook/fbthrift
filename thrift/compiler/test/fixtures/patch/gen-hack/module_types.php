@@ -1144,14 +1144,14 @@ class MyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public ?MyData $assign;
   /**
-   * Clears a given value. Applied first.
+   * Clears a given value. Applies first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * Patches a given value. Applied second.
+   * Patches a given value. Applies second.
    * 
    * Original thrift field:-
    * 3: struct module.MyDataPatch patch
@@ -1346,28 +1346,28 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
   );
   const int STRUCTURAL_ID = 9214810470290840882;
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    * 
    * Original thrift field:-
    * 3: struct module.MyDataValuePatch patch
    */
   public ?MyDataValuePatch $patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    * 
    * Original thrift field:-
    * 1: struct module.MyData ensure
    */
   public ?MyData $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
    * 4: struct module.MyDataValuePatch patchAfter
@@ -2542,14 +2542,14 @@ class MyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
    */
   public ?MyStruct $assign;
   /**
-   * Clears a given value. Applied first.
+   * Clears a given value. Applies first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * Patches a given value. Applied second.
+   * Patches a given value. Applies second.
    * 
    * Original thrift field:-
    * 3: struct module.MyStructPatch patch
@@ -2744,28 +2744,28 @@ class OptionalMyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishS
   );
   const int STRUCTURAL_ID = 1742817034691857525;
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    * 
    * Original thrift field:-
    * 3: struct module.MyStructValuePatch patch
    */
   public ?MyStructValuePatch $patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    * 
    * Original thrift field:-
    * 1: struct module.MyStruct ensure
    */
   public ?MyStruct $ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
    * 4: struct module.MyStructValuePatch patchAfter

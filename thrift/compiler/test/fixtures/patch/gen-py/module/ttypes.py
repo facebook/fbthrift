@@ -659,8 +659,8 @@ class MyDataValuePatch:
   """
   Attributes:
    - assign: Assigns to a given struct. If set, all other operations are ignored.
-   - clear: Clears a given value. Applied first.
-   - patch: Patches a given value. Applied second.
+   - clear: Clears a given value. Applies first.
+   - patch: Patches a given value. Applies second.
   """
 
   thrift_spec = None
@@ -781,10 +781,10 @@ class MyDataValuePatch:
 class OptionalMyDataValuePatch:
   """
   Attributes:
-   - clear: If the optional value should be cleared. Applied first.
-   - patch: The patch to apply to any set value. Applied second.
-   - ensure: The value with which to initialize any unset value. Applied third.
-   - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
+   - clear: Clears any set value. Applies first.
+   - patch: Patches any set value. Applies second.
+   - ensure: Initializes any unset value. Applies third.
+   - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
   thrift_spec = None
@@ -1354,8 +1354,8 @@ class MyStructValuePatch:
   """
   Attributes:
    - assign: Assigns to a given struct. If set, all other operations are ignored.
-   - clear: Clears a given value. Applied first.
-   - patch: Patches a given value. Applied second.
+   - clear: Clears a given value. Applies first.
+   - patch: Patches a given value. Applies second.
   """
 
   thrift_spec = None
@@ -1476,10 +1476,10 @@ class MyStructValuePatch:
 class OptionalMyStructValuePatch:
   """
   Attributes:
-   - clear: If the optional value should be cleared. Applied first.
-   - patch: The patch to apply to any set value. Applied second.
-   - ensure: The value with which to initialize any unset value. Applied third.
-   - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
+   - clear: Clears any set value. Applies first.
+   - patch: Patches any set value. Applies second.
+   - ensure: Initializes any unset value. Applies third.
+   - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
   thrift_spec = None

@@ -30,19 +30,19 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable 
   private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)4);
 
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    */
   public final Boolean clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    */
   public final I16Patch patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    */
   public final Short ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    */
   public final I16Patch patchAfter;
   public static final int CLEAR = 2;
@@ -92,7 +92,7 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable 
   }
 
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    */
   public Boolean isClear() {
     return this.clear;
@@ -104,7 +104,7 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable 
   }
 
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    */
   public I16Patch getPatch() {
     return this.patch;
@@ -116,7 +116,7 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable 
   }
 
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    */
   public Short getEnsure() {
     return this.ensure;
@@ -128,7 +128,7 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable 
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    */
   public I16Patch getPatchAfter() {
     return this.patchAfter;

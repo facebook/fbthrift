@@ -30,19 +30,19 @@ public class OptionalDoublePatch implements TBase, java.io.Serializable, Cloneab
   private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)4);
 
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    */
   public boolean clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    */
   public DoublePatch patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    */
   public double ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    */
   public DoublePatch patchAfter;
   public static final int CLEAR = 2;
@@ -174,14 +174,14 @@ public class OptionalDoublePatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    */
   public boolean isClear() {
     return this.clear;
   }
 
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    */
   public OptionalDoublePatch setClear(boolean clear) {
     this.clear = clear;
@@ -203,14 +203,14 @@ public class OptionalDoublePatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    */
   public DoublePatch getPatch() {
     return this.patch;
   }
 
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    */
   public OptionalDoublePatch setPatch(DoublePatch patch) {
     this.patch = patch;
@@ -233,14 +233,14 @@ public class OptionalDoublePatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    */
   public double getEnsure() {
     return this.ensure;
   }
 
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    */
   public OptionalDoublePatch setEnsure(double ensure) {
     this.ensure = ensure;
@@ -262,14 +262,14 @@ public class OptionalDoublePatch implements TBase, java.io.Serializable, Cloneab
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    */
   public DoublePatch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    */
   public OptionalDoublePatch setPatchAfter(DoublePatch patchAfter) {
     this.patchAfter = patchAfter;

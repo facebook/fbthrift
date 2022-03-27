@@ -135,28 +135,28 @@ struct PatchGen : StructGen {
   // 1: optional {type} ensure (thrift.box);
   t_field& ensure(t_type_ref type) {
     return doc(
-        "The value with which to initialize any unset value. Applied third.",
+        "Initializes any unset value. Applies third.",
         box(field(kEnsureId, type, "ensure")));
   }
 
   // 2: bool clear;
   t_field& clear() {
     return doc(
-        "Clears a given value. Applied first.",
+        "Clears a given value. Applies first.",
         field(kClearId, t_base_type::t_bool(), "clear"));
   }
 
   // 3: {patch_type} patch;
   t_field& patch(t_type_ref patch_type) {
     return doc(
-        "Patches a given value. Applied second.",
+        "Patches a given value. Applies second.",
         field(kPatchId, patch_type, "patch"));
   }
 
   // 4: {patch_type} patchAfter;
   t_field& patchAfter(t_type_ref patch_type) {
     return doc(
-        "The patch to apply to any set value, including newly set values. Applied fourth.",
+        "Patches any set value, including newly set values. Applies fourth.",
         field(kPatchAfterId, patch_type, "patchAfter"));
   }
 };
@@ -225,9 +225,9 @@ t_struct& patch_generator::add_optional_patch(
   PatchGen gen{{annot, gen_prefix_struct(annot, patch_type, "Optional")}};
   gen.generated.set_annotation(
       "cpp.adapter", "::apache::thrift::op::detail::OptionalPatchAdapter");
-  doc("If the optional value should be cleared. Applied first.", gen.clear());
-  doc("The patch to apply to any set value. Applied second.",
-      gen.patch(patch_type));
+
+  doc("Clears any set value. Applies first.", gen.clear());
+  doc("Patches any set value. Applies second.", gen.patch(patch_type));
   gen.ensure(value_type);
   gen.patchAfter(patch_type);
   return gen.generated;

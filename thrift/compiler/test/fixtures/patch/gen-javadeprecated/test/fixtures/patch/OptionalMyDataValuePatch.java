@@ -32,19 +32,19 @@ public class OptionalMyDataValuePatch implements TBase, java.io.Serializable, Cl
   private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)4);
 
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    */
   public boolean clear;
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    */
   public MyDataValuePatch patch;
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    */
   public MyData ensure;
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    */
   public MyDataValuePatch patchAfter;
   public static final int CLEAR = 2;
@@ -173,14 +173,14 @@ public class OptionalMyDataValuePatch implements TBase, java.io.Serializable, Cl
   }
 
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    */
   public boolean isClear() {
     return this.clear;
   }
 
   /**
-   * If the optional value should be cleared. Applied first.
+   * Clears any set value. Applies first.
    */
   public OptionalMyDataValuePatch setClear(boolean clear) {
     this.clear = clear;
@@ -202,14 +202,14 @@ public class OptionalMyDataValuePatch implements TBase, java.io.Serializable, Cl
   }
 
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    */
   public MyDataValuePatch getPatch() {
     return this.patch;
   }
 
   /**
-   * The patch to apply to any set value. Applied second.
+   * Patches any set value. Applies second.
    */
   public OptionalMyDataValuePatch setPatch(MyDataValuePatch patch) {
     this.patch = patch;
@@ -232,14 +232,14 @@ public class OptionalMyDataValuePatch implements TBase, java.io.Serializable, Cl
   }
 
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    */
   public MyData getEnsure() {
     return this.ensure;
   }
 
   /**
-   * The value with which to initialize any unset value. Applied third.
+   * Initializes any unset value. Applies third.
    */
   public OptionalMyDataValuePatch setEnsure(MyData ensure) {
     this.ensure = ensure;
@@ -262,14 +262,14 @@ public class OptionalMyDataValuePatch implements TBase, java.io.Serializable, Cl
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    */
   public MyDataValuePatch getPatchAfter() {
     return this.patchAfter;
   }
 
   /**
-   * The patch to apply to any set value, including newly set values. Applied fourth.
+   * Patches any set value, including newly set values. Applies fourth.
    */
   public OptionalMyDataValuePatch setPatchAfter(MyDataValuePatch patchAfter) {
     this.patchAfter = patchAfter;
