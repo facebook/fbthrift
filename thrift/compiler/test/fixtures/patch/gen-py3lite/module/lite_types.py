@@ -528,6 +528,27 @@ class MyStructField21Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
             None,  # default value
         ),
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "append",  # name
+            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            None,  # default value
+        ),
+        (
+            5,  # id
+            True,  # isUnqualified
+            "prepend",  # name
+            lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
+            None,  # default value
+        ),
     )
 
     @staticmethod
@@ -599,6 +620,27 @@ class MyStructField22Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
         ),
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "add",  # name
+            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            None,  # default value
+        ),
+        (
+            5,  # id
+            True,  # isUnqualified
+            "remove",  # name
+            lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            None,  # default value
+        ),
     )
 
     @staticmethod
@@ -667,6 +709,27 @@ class MyStructField23Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
             1,  # id
             False,  # isUnqualified
             "assign",  # name
+            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            None,  # default value
+        ),
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "add",  # name
+            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
+            None,  # default value
+        ),
+        (
+            6,  # id
+            True,  # isUnqualified
+            "removeIf",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
         ),

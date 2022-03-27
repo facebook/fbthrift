@@ -124,9 +124,18 @@ struct PatchGen : StructGen {
   enum t_patch_field_id : t_field_id {
     kAssignId = 1, // Value Patch
     kEnsureId = 1, // Optional Patch
+
     kClearId = 2,
     kPatchId = 3,
-    kPatchAfterId = 4,
+
+    kAppendId = 4, // List, String, Binary Patch
+    kAddId = 4, // Set, Map Patch
+    kPatchAfterId = 4, // Optional Patch
+
+    kPrependId = 5, // List, String, Binary Patch
+    kRemoveId = 5, // Set, Map Patch
+
+    kRemoveIfId = 6, // Map Patch
   };
 
   // 1: optional {type} assign (thrift.box);
@@ -157,11 +166,50 @@ struct PatchGen : StructGen {
         field(kPatchId, patch_type, "patch"));
   }
 
+  // 4: {type} append;
+  t_field& append(t_type_ref type) {
+    return doc(
+        "Appends to a given list. Currently Ignored.",
+        field(kAppendId, type, "append"));
+  }
+  // 5: {type} prepend;
+  t_field& prepend(t_type_ref type) {
+    return doc(
+        "Prepends to a given list. Currently Ignored.",
+        field(kPrependId, type, "prepend"));
+  }
+
+  // 4: {type} add;
+  t_field& add(t_type_ref type) {
+    return doc(
+        "Adds entries, if not already present. Currently Ignored.",
+        field(kAddId, type, "add"));
+  }
+
+  // 5: {type} remove;
+  t_field& remove(t_type_ref type) {
+    return doc(
+        "Removes entries, if present. Currently Ignored.",
+        field(kRemoveId, type, "remove"));
+  }
+
   // 4: {patch_type} patchAfter;
   t_field& patchAfter(t_type_ref patch_type) {
     return doc(
         "Patches any set value, including newly set values. Applies fourth.",
         field(kPatchAfterId, patch_type, "patchAfter"));
+  }
+
+  // 6: {type} removeIf;
+  t_field& removeIf(t_type_ref type) {
+    return doc(
+        "Removes the given key/value pairs, if present. Currently Ignored.",
+        field(kRemoveIfId, type, "removeIf"));
+  }
+
+  void set_adapter(std::string name) {
+    generated.set_annotation(
+        "cpp.adapter", "::apache::thrift::op::detail::" + std::move(name));
   }
 };
 
@@ -227,13 +275,11 @@ patch_generator& patch_generator::get_for(
 t_struct& patch_generator::add_optional_patch(
     const t_node& annot, t_type_ref value_type, t_struct& patch_type) {
   PatchGen gen{{annot, gen_prefix_struct(annot, patch_type, "Optional")}};
-  gen->set_annotation(
-      "cpp.adapter", "::apache::thrift::op::detail::OptionalPatchAdapter");
-
   doc("Clears any set value. Applies first.", gen.clear());
   doc("Patches any set value. Applies second.", gen.patch(patch_type));
   gen.ensure(value_type);
   gen.patchAfter(patch_type);
+  gen.set_adapter("OptionalPatchAdapter");
   return gen;
 }
 
@@ -256,8 +302,7 @@ t_struct& patch_generator::add_struct_value_patch(
   gen.assign(value_type);
   gen.clear();
   gen.patch(patch_type);
-  gen->set_annotation(
-      "cpp.adapter", "::apache::thrift::op::detail::StructPatchAdapter");
+  gen.set_adapter("StructPatchAdapter");
   return gen;
 }
 
@@ -309,8 +354,30 @@ t_type_ref patch_generator::find_patch_type(
   PatchGen gen{{annot, gen_suffix_struct(annot, parent, suffix.c_str())}};
   // All value patches have an assign field.
   gen.assign(field.type());
-  gen->set_annotation(
-      "cpp.adapter", "::apache::thrift::op::detail::AssignPatchAdapter");
+  if (auto* container = dynamic_cast<const t_container*>(type)) {
+    gen.clear();
+    // TODO(afuller): support gen.patch(...).
+    switch (container->container_type()) {
+      case t_container::type::t_list:
+        gen.append(field.type());
+        gen.prepend(field.type());
+        gen.set_adapter("ListPatchAdapter");
+        break;
+      case t_container::type::t_set:
+        gen.add(field.type());
+        gen.remove(field.type());
+        gen.set_adapter("SetPatchAdapter");
+        break;
+      case t_container::type::t_map:
+        gen.add(field.type());
+        // TODO(afuller): support remove
+        gen.removeIf(field.type());
+        gen.set_adapter("MapPatchAdapter");
+        break;
+    }
+  } else {
+    gen.set_adapter("AssignPatchAdapter");
+  }
 
   if (field.qualifier() == t_field_qualifier::optional) {
     return add_optional_patch(annot, field.type(), gen);
@@ -325,8 +392,7 @@ t_struct& patch_generator::gen_struct(
   generated->set_uri(std::move(uri));
   // Attribute the new struct to the anntation.
   generated->set_lineno(annot.lineno());
-  program_.scope()->add_type(
-      program_.name() + "." + generated->name(), generated.get());
+  program_.scope()->add_type(generated->get_scoped_name(), generated.get());
   program_.add_definition(std::move(generated));
   return *ptr;
 }

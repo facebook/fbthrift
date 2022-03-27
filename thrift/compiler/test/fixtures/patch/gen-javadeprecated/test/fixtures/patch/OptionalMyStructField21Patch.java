@@ -454,15 +454,15 @@ public class OptionalMyStructField21Patch implements TBase, java.io.Serializable
         case ENSURE:
           if (__field.type == TType.LIST) {
             {
-              TList _list17 = iprot.readListBegin();
-              this.ensure = new ArrayList<Short>(Math.max(0, _list17.size));
-              for (int _i18 = 0; 
-                   (_list17.size < 0) ? iprot.peekList() : (_i18 < _list17.size); 
-                   ++_i18)
+              TList _list25 = iprot.readListBegin();
+              this.ensure = new ArrayList<Short>(Math.max(0, _list25.size));
+              for (int _i26 = 0; 
+                   (_list25.size < 0) ? iprot.peekList() : (_i26 < _list25.size); 
+                   ++_i26)
               {
-                short _elem19;
-                _elem19 = iprot.readI16();
-                this.ensure.add(_elem19);
+                short _elem27;
+                _elem27 = iprot.readI16();
+                this.ensure.add(_elem27);
               }
               iprot.readListEnd();
             }
@@ -500,8 +500,8 @@ public class OptionalMyStructField21Patch implements TBase, java.io.Serializable
         oprot.writeFieldBegin(ENSURE_FIELD_DESC);
         {
           oprot.writeListBegin(new TList(TType.I16, this.ensure.size()));
-          for (short _iter20 : this.ensure)          {
-            oprot.writeI16(_iter20);
+          for (short _iter28 : this.ensure)          {
+            oprot.writeI16(_iter28);
           }
           oprot.writeListEnd();
         }

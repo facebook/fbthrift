@@ -149,13 +149,22 @@ const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::OptionalMyDataVa
   TType::T_STRUCT,
 }};
 
-const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::MyStructField21Patch>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::MyStructField21Patch>::fields_names = {{
   "assign",
+  "clear",
+  "append",
+  "prepend",
 }};
-const std::array<int16_t, 1> TStructDataStorage<::cpp2::MyStructField21Patch>::fields_ids = {{
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::MyStructField21Patch>::fields_ids = {{
   1,
+  2,
+  4,
+  5,
 }};
-const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::MyStructField21Patch>::fields_types = {{
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::MyStructField21Patch>::fields_types = {{
+  TType::T_LIST,
+  TType::T_BOOL,
+  TType::T_LIST,
   TType::T_LIST,
 }};
 
@@ -178,13 +187,22 @@ const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::OptionalMyStruct
   TType::T_STRUCT,
 }};
 
-const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::MyStructField22Patch>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::MyStructField22Patch>::fields_names = {{
   "assign",
+  "clear",
+  "add",
+  "remove",
 }};
-const std::array<int16_t, 1> TStructDataStorage<::cpp2::MyStructField22Patch>::fields_ids = {{
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::MyStructField22Patch>::fields_ids = {{
   1,
+  2,
+  4,
+  5,
 }};
-const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::MyStructField22Patch>::fields_types = {{
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::MyStructField22Patch>::fields_types = {{
+  TType::T_SET,
+  TType::T_BOOL,
+  TType::T_SET,
   TType::T_SET,
 }};
 
@@ -207,13 +225,22 @@ const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::OptionalMyStruct
   TType::T_STRUCT,
 }};
 
-const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::MyStructField23Patch>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::MyStructField23Patch>::fields_names = {{
   "assign",
+  "clear",
+  "add",
+  "removeIf",
 }};
-const std::array<int16_t, 1> TStructDataStorage<::cpp2::MyStructField23Patch>::fields_ids = {{
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::MyStructField23Patch>::fields_ids = {{
   1,
+  2,
+  4,
+  6,
 }};
-const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::MyStructField23Patch>::fields_types = {{
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::MyStructField23Patch>::fields_types = {{
+  TType::T_MAP,
+  TType::T_BOOL,
+  TType::T_MAP,
   TType::T_MAP,
 }};
 

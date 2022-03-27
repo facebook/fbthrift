@@ -185,14 +185,14 @@
           },
           "append" : {
             "name" : "append",
-            "key" : 2,
+            "key" : 4,
             "lineno" : 159,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
           "prepend" : {
             "name" : "prepend",
-            "key" : 3,
+            "key" : 5,
             "lineno" : 162,
             "required" : "opt-in-req-out",
             "type" : "string"

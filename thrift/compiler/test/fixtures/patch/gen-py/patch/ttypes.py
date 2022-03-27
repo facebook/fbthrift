@@ -937,12 +937,12 @@ class StringPatch:
           self.assign = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
-      elif fid == 2:
+      elif fid == 4:
         if ftype == TType.STRING:
           self.append = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
-      elif fid == 3:
+      elif fid == 5:
         if ftype == TType.STRING:
           self.prepend = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
@@ -965,11 +965,11 @@ class StringPatch:
       oprot.writeString(self.assign.encode('utf-8')) if UTF8STRINGS and not isinstance(self.assign, bytes) else oprot.writeString(self.assign)
       oprot.writeFieldEnd()
     if self.append != None:
-      oprot.writeFieldBegin('append', TType.STRING, 2)
+      oprot.writeFieldBegin('append', TType.STRING, 4)
       oprot.writeString(self.append.encode('utf-8')) if UTF8STRINGS and not isinstance(self.append, bytes) else oprot.writeString(self.append)
       oprot.writeFieldEnd()
     if self.prepend != None:
-      oprot.writeFieldBegin('prepend', TType.STRING, 3)
+      oprot.writeFieldBegin('prepend', TType.STRING, 5)
       oprot.writeString(self.prepend.encode('utf-8')) if UTF8STRINGS and not isinstance(self.prepend, bytes) else oprot.writeString(self.prepend)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2587,8 +2587,10 @@ all_structs.append(StringPatch)
 StringPatch.thrift_spec = (
   None, # 0
   (1, TType.STRING, 'assign', True, None, 1, ), # 1
-  (2, TType.STRING, 'append', True, None, 2, ), # 2
-  (3, TType.STRING, 'prepend', True, None, 2, ), # 3
+  None, # 2
+  None, # 3
+  (4, TType.STRING, 'append', True, None, 2, ), # 4
+  (5, TType.STRING, 'prepend', True, None, 2, ), # 5
 )
 
 StringPatch.thrift_struct_annotations = {

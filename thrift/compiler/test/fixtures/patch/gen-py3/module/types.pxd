@@ -194,6 +194,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyStructField21Patch&)
         bint operator>=(cMyStructField21Patch&)
         __optional_field_ref[vector[cint16_t]] assign_ref()
+        __field_ref[cbool] clear_ref()
+        __field_ref[vector[cint16_t]] append_ref()
+        __field_ref[vector[cint16_t]] prepend_ref()
 
 
     cdef cppclass cOptionalMyStructField21Patch "::cpp2::OptionalMyStructField21Patch":
@@ -221,6 +224,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyStructField22Patch&)
         bint operator>=(cMyStructField22Patch&)
         __optional_field_ref[cset[string]] assign_ref()
+        __field_ref[cbool] clear_ref()
+        __field_ref[cset[string]] add_ref()
+        __field_ref[cset[string]] remove_ref()
 
 
     cdef cppclass cOptionalMyStructField22Patch "::cpp2::OptionalMyStructField22Patch":
@@ -248,6 +254,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyStructField23Patch&)
         bint operator>=(cMyStructField23Patch&)
         __optional_field_ref[cmap[string,string]] assign_ref()
+        __field_ref[cbool] clear_ref()
+        __field_ref[cmap[string,string]] add_ref()
+        __field_ref[cmap[string,string]] removeIf_ref()
 
 
     cdef cppclass cOptionalMyStructField23Patch "::cpp2::OptionalMyStructField23Patch":
@@ -446,7 +455,12 @@ cdef class MyStructField21Patch(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStructField21Patch] _cpp_obj
     cdef _fbthrift_types_fields.__MyStructField21Patch_FieldsSetter _fields_setter
     cdef inline object assign_impl(self)
+    cdef inline object clear_impl(self)
+    cdef inline object append_impl(self)
+    cdef inline object prepend_impl(self)
     cdef List__i16 __fbthrift_cached_assign
+    cdef List__i16 __fbthrift_cached_append
+    cdef List__i16 __fbthrift_cached_prepend
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStructField21Patch])
@@ -473,7 +487,12 @@ cdef class MyStructField22Patch(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStructField22Patch] _cpp_obj
     cdef _fbthrift_types_fields.__MyStructField22Patch_FieldsSetter _fields_setter
     cdef inline object assign_impl(self)
+    cdef inline object clear_impl(self)
+    cdef inline object add_impl(self)
+    cdef inline object remove_impl(self)
     cdef Set__string __fbthrift_cached_assign
+    cdef Set__string __fbthrift_cached_add
+    cdef Set__string __fbthrift_cached_remove
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStructField22Patch])
@@ -500,7 +519,12 @@ cdef class MyStructField23Patch(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStructField23Patch] _cpp_obj
     cdef _fbthrift_types_fields.__MyStructField23Patch_FieldsSetter _fields_setter
     cdef inline object assign_impl(self)
+    cdef inline object clear_impl(self)
+    cdef inline object add_impl(self)
+    cdef inline object removeIf_impl(self)
     cdef Map__string_string __fbthrift_cached_assign
+    cdef Map__string_string __fbthrift_cached_add
+    cdef Map__string_string __fbthrift_cached_removeIf
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStructField23Patch])

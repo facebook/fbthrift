@@ -27,16 +27,40 @@ import com.facebook.thrift.protocol.*;
 public class MyStructField23Patch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("MyStructField23Patch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.MAP, (short)1);
+  private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
+  private static final TField ADD_FIELD_DESC = new TField("add", TType.MAP, (short)4);
+  private static final TField REMOVE_IF_FIELD_DESC = new TField("removeIf", TType.MAP, (short)6);
 
   /**
    * Assigns to a given struct. If set, all other operations are ignored.
    */
   public final Map<String,String> assign;
+  /**
+   * Clears a given value. Applies first.
+   */
+  public final Boolean clear;
+  /**
+   * Adds entries, if not already present. Currently Ignored.
+   */
+  public final Map<String,String> add;
+  /**
+   * Removes the given key/value pairs, if present. Currently Ignored.
+   */
+  public final Map<String,String> removeIf;
   public static final int ASSIGN = 1;
+  public static final int CLEAR = 2;
+  public static final int ADD = 4;
+  public static final int REMOVEIF = 6;
 
   public MyStructField23Patch(
-      Map<String,String> assign) {
+      Map<String,String> assign,
+      Boolean clear,
+      Map<String,String> add,
+      Map<String,String> removeIf) {
     this.assign = assign;
+    this.clear = clear;
+    this.add = add;
+    this.removeIf = removeIf;
   }
 
   /**
@@ -47,6 +71,21 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
       this.assign = TBaseHelper.deepCopy(other.assign);
     } else {
       this.assign = null;
+    }
+    if (other.isSetClear()) {
+      this.clear = TBaseHelper.deepCopy(other.clear);
+    } else {
+      this.clear = null;
+    }
+    if (other.isSetAdd()) {
+      this.add = TBaseHelper.deepCopy(other.add);
+    } else {
+      this.add = null;
+    }
+    if (other.isSetRemoveIf()) {
+      this.removeIf = TBaseHelper.deepCopy(other.removeIf);
+    } else {
+      this.removeIf = null;
     }
   }
 
@@ -66,6 +105,42 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
     return this.assign != null;
   }
 
+  /**
+   * Clears a given value. Applies first.
+   */
+  public Boolean isClear() {
+    return this.clear;
+  }
+
+  // Returns true if field clear is set (has been assigned a value) and false otherwise
+  public boolean isSetClear() {
+    return this.clear != null;
+  }
+
+  /**
+   * Adds entries, if not already present. Currently Ignored.
+   */
+  public Map<String,String> getAdd() {
+    return this.add;
+  }
+
+  // Returns true if field add is set (has been assigned a value) and false otherwise
+  public boolean isSetAdd() {
+    return this.add != null;
+  }
+
+  /**
+   * Removes the given key/value pairs, if present. Currently Ignored.
+   */
+  public Map<String,String> getRemoveIf() {
+    return this.removeIf;
+  }
+
+  // Returns true if field removeIf is set (has been assigned a value) and false otherwise
+  public boolean isSetRemoveIf() {
+    return this.removeIf != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -78,12 +153,18 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
 
     if (!TBaseHelper.equalsNobinary(this.isSetAssign(), that.isSetAssign(), this.assign, that.assign)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetClear(), that.isSetClear(), this.clear, that.clear)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetAdd(), that.isSetAdd(), this.add, that.add)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetRemoveIf(), that.isSetRemoveIf(), this.removeIf, that.removeIf)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {assign});
+    return Arrays.deepHashCode(new Object[] {assign, clear, add, removeIf});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -93,6 +174,9 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
 
   public static MyStructField23Patch deserialize(TProtocol iprot) throws TException {
     Map<String,String> tmp_assign = null;
+    Boolean tmp_clear = null;
+    Map<String,String> tmp_add = null;
+    Map<String,String> tmp_removeIf = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -106,17 +190,66 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
         case ASSIGN:
           if (__field.type == TType.MAP) {
             {
-              TMap _map29 = iprot.readMapBegin();
-              tmp_assign = new HashMap<String,String>(Math.max(0, 2*_map29.size));
-              for (int _i30 = 0; 
-                   (_map29.size < 0) ? iprot.peekMap() : (_i30 < _map29.size); 
-                   ++_i30)
+              TMap _map45 = iprot.readMapBegin();
+              tmp_assign = new HashMap<String,String>(Math.max(0, 2*_map45.size));
+              for (int _i46 = 0; 
+                   (_map45.size < 0) ? iprot.peekMap() : (_i46 < _map45.size); 
+                   ++_i46)
               {
-                String _key31;
-                String _val32;
-                _key31 = iprot.readString();
-                _val32 = iprot.readString();
-                tmp_assign.put(_key31, _val32);
+                String _key47;
+                String _val48;
+                _key47 = iprot.readString();
+                _val48 = iprot.readString();
+                tmp_assign.put(_key47, _val48);
+              }
+              iprot.readMapEnd();
+            }
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case CLEAR:
+          if (__field.type == TType.BOOL) {
+            tmp_clear = iprot.readBool();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case ADD:
+          if (__field.type == TType.MAP) {
+            {
+              TMap _map49 = iprot.readMapBegin();
+              tmp_add = new HashMap<String,String>(Math.max(0, 2*_map49.size));
+              for (int _i50 = 0; 
+                   (_map49.size < 0) ? iprot.peekMap() : (_i50 < _map49.size); 
+                   ++_i50)
+              {
+                String _key51;
+                String _val52;
+                _key51 = iprot.readString();
+                _val52 = iprot.readString();
+                tmp_add.put(_key51, _val52);
+              }
+              iprot.readMapEnd();
+            }
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case REMOVEIF:
+          if (__field.type == TType.MAP) {
+            {
+              TMap _map53 = iprot.readMapBegin();
+              tmp_removeIf = new HashMap<String,String>(Math.max(0, 2*_map53.size));
+              for (int _i54 = 0; 
+                   (_map53.size < 0) ? iprot.peekMap() : (_i54 < _map53.size); 
+                   ++_i54)
+              {
+                String _key55;
+                String _val56;
+                _key55 = iprot.readString();
+                _val56 = iprot.readString();
+                tmp_removeIf.put(_key55, _val56);
               }
               iprot.readMapEnd();
             }
@@ -135,6 +268,9 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
     MyStructField23Patch _that;
     _that = new MyStructField23Patch(
       tmp_assign
+      ,tmp_clear
+      ,tmp_add
+      ,tmp_removeIf
     );
     _that.validate();
     return _that;
@@ -149,14 +285,43 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
         oprot.writeFieldBegin(ASSIGN_FIELD_DESC);
         {
           oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, this.assign.size()));
-          for (Map.Entry<String, String> _iter33 : this.assign.entrySet())          {
-            oprot.writeString(_iter33.getKey());
-            oprot.writeString(_iter33.getValue());
+          for (Map.Entry<String, String> _iter57 : this.assign.entrySet())          {
+            oprot.writeString(_iter57.getKey());
+            oprot.writeString(_iter57.getValue());
           }
           oprot.writeMapEnd();
         }
         oprot.writeFieldEnd();
       }
+    }
+    if (this.clear != null) {
+      oprot.writeFieldBegin(CLEAR_FIELD_DESC);
+      oprot.writeBool(this.clear);
+      oprot.writeFieldEnd();
+    }
+    if (this.add != null) {
+      oprot.writeFieldBegin(ADD_FIELD_DESC);
+      {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, this.add.size()));
+        for (Map.Entry<String, String> _iter58 : this.add.entrySet())        {
+          oprot.writeString(_iter58.getKey());
+          oprot.writeString(_iter58.getValue());
+        }
+        oprot.writeMapEnd();
+      }
+      oprot.writeFieldEnd();
+    }
+    if (this.removeIf != null) {
+      oprot.writeFieldBegin(REMOVE_IF_FIELD_DESC);
+      {
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, this.removeIf.size()));
+        for (Map.Entry<String, String> _iter59 : this.removeIf.entrySet())        {
+          oprot.writeString(_iter59.getKey());
+          oprot.writeString(_iter59.getValue());
+        }
+        oprot.writeMapEnd();
+      }
+      oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();

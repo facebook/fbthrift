@@ -1263,19 +1263,19 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'assign',
       'type' => \TType::STRING,
     ),
-    2 => shape(
+    4 => shape(
       'var' => 'append',
       'type' => \TType::STRING,
     ),
-    3 => shape(
+    5 => shape(
       'var' => 'prepend',
       'type' => \TType::STRING,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'assign' => 1,
-    'append' => 2,
-    'prepend' => 3,
+    'append' => 4,
+    'prepend' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -1290,7 +1290,7 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'prepend' => string,
     ...
   );
-  const int STRUCTURAL_ID = 75028268814464515;
+  const int STRUCTURAL_ID = 3684408754858058717;
   /**
    * Original thrift field:-
    * 1: string assign
@@ -1298,12 +1298,12 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public ?string $assign;
   /**
    * Original thrift field:-
-   * 2: string append
+   * 4: string append
    */
   public string $append;
   /**
    * Original thrift field:-
-   * 3: string prepend
+   * 5: string prepend
    */
   public string $prepend;
 
@@ -1348,7 +1348,7 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 2,
+              "id" => 4,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
@@ -1359,7 +1359,7 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 3,
+              "id" => 5,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,

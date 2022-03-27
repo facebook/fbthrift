@@ -239,6 +239,15 @@ void reset_field<::cpp2::MyStructField21Patch>(
     case 0:
       obj.assign_ref().copy_from(default_inst<::cpp2::MyStructField21Patch>().assign_ref());
       return;
+    case 1:
+      obj.clear_ref().copy_from(default_inst<::cpp2::MyStructField21Patch>().clear_ref());
+      return;
+    case 2:
+      obj.append_ref().copy_from(default_inst<::cpp2::MyStructField21Patch>().append_ref());
+      return;
+    case 3:
+      obj.prepend_ref().copy_from(default_inst<::cpp2::MyStructField21Patch>().prepend_ref());
+      return;
   }
 }
 
@@ -268,6 +277,15 @@ void reset_field<::cpp2::MyStructField22Patch>(
     case 0:
       obj.assign_ref().copy_from(default_inst<::cpp2::MyStructField22Patch>().assign_ref());
       return;
+    case 1:
+      obj.clear_ref().copy_from(default_inst<::cpp2::MyStructField22Patch>().clear_ref());
+      return;
+    case 2:
+      obj.add_ref().copy_from(default_inst<::cpp2::MyStructField22Patch>().add_ref());
+      return;
+    case 3:
+      obj.remove_ref().copy_from(default_inst<::cpp2::MyStructField22Patch>().remove_ref());
+      return;
   }
 }
 
@@ -296,6 +314,15 @@ void reset_field<::cpp2::MyStructField23Patch>(
   switch (index) {
     case 0:
       obj.assign_ref().copy_from(default_inst<::cpp2::MyStructField23Patch>().assign_ref());
+      return;
+    case 1:
+      obj.clear_ref().copy_from(default_inst<::cpp2::MyStructField23Patch>().clear_ref());
+      return;
+    case 2:
+      obj.add_ref().copy_from(default_inst<::cpp2::MyStructField23Patch>().add_ref());
+      return;
+    case 3:
+      obj.removeIf_ref().copy_from(default_inst<::cpp2::MyStructField23Patch>().removeIf_ref());
       return;
   }
 }

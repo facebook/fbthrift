@@ -978,6 +978,51 @@
               "column" : 0
             }
           }
+        },
+        "clear" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "append" : {
+          "type_enum" : "LIST",
+          "spec_args" : { "type_enum" : "I16", "spec_args" : null} ,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "prepend" : {
+          "type_enum" : "LIST",
+          "spec_args" : { "type_enum" : "I16", "spec_args" : null} ,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
         }
       },
       "source_range" : {
@@ -1087,6 +1132,51 @@
               "column" : 0
             }
           }
+        },
+        "clear" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "add" : {
+          "type_enum" : "SET",
+          "spec_args" : { "type_enum" : "STRING", "spec_args" : null} ,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "remove" : {
+          "type_enum" : "SET",
+          "spec_args" : { "type_enum" : "STRING", "spec_args" : null} ,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
         }
       },
       "source_range" : {
@@ -1186,6 +1276,51 @@
           "type_enum" : "MAP",
           "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } ,
           "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "clear" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "add" : {
+          "type_enum" : "MAP",
+          "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } ,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 0,
+              "column" : 0
+            },
+            "end" : {
+              "line" : 0,
+              "column" : 0
+            }
+          }
+        },
+        "removeIf" : {
+          "type_enum" : "MAP",
+          "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } ,
+          "required" : true,
           "source_range" : {
             "begin" : {
               "line" : 0,

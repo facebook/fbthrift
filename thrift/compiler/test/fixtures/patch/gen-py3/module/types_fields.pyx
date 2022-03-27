@@ -701,6 +701,9 @@ cdef class __MyStructField21Patch_FieldsSetter(__StructFieldsSetter):
         cdef __MyStructField21Patch_FieldsSetter __fbthrift_inst = __MyStructField21Patch_FieldsSetter.__new__(__MyStructField21Patch_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"assign")] = __MyStructField21Patch_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"clear")] = __MyStructField21Patch_FieldsSetter._set_field_1
+        __fbthrift_inst._setters[__cstring_view(<const char*>"append")] = __MyStructField21Patch_FieldsSetter._set_field_2
+        __fbthrift_inst._setters[__cstring_view(<const char*>"prepend")] = __MyStructField21Patch_FieldsSetter._set_field_3
         return __fbthrift_inst
 
     cdef void set_field(__MyStructField21Patch_FieldsSetter self, const char* name, object value) except *:
@@ -716,6 +719,29 @@ cdef class __MyStructField21Patch_FieldsSetter(__StructFieldsSetter):
             __reset_field[_module_types.cMyStructField21Patch](deref(self._struct_cpp_obj), 0)
             return
         deref(self._struct_cpp_obj).assign_ref().assign(deref(_module_types.List__i16(_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_1(self, _fbthrift_value) except *:
+        # for field clear
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructField21Patch](deref(self._struct_cpp_obj), 1)
+            return
+        if not isinstance(_fbthrift_value, bool):
+            raise TypeError(f'clear is not a { bool !r}.')
+        deref(self._struct_cpp_obj).clear_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_2(self, _fbthrift_value) except *:
+        # for field append
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructField21Patch](deref(self._struct_cpp_obj), 2)
+            return
+        deref(self._struct_cpp_obj).append_ref().assign(deref(_module_types.List__i16(_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_3(self, _fbthrift_value) except *:
+        # for field prepend
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructField21Patch](deref(self._struct_cpp_obj), 3)
+            return
+        deref(self._struct_cpp_obj).prepend_ref().assign(deref(_module_types.List__i16(_fbthrift_value)._cpp_obj))
 
 
 @__cython.auto_pickle(False)
@@ -781,6 +807,9 @@ cdef class __MyStructField22Patch_FieldsSetter(__StructFieldsSetter):
         cdef __MyStructField22Patch_FieldsSetter __fbthrift_inst = __MyStructField22Patch_FieldsSetter.__new__(__MyStructField22Patch_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"assign")] = __MyStructField22Patch_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"clear")] = __MyStructField22Patch_FieldsSetter._set_field_1
+        __fbthrift_inst._setters[__cstring_view(<const char*>"add")] = __MyStructField22Patch_FieldsSetter._set_field_2
+        __fbthrift_inst._setters[__cstring_view(<const char*>"remove")] = __MyStructField22Patch_FieldsSetter._set_field_3
         return __fbthrift_inst
 
     cdef void set_field(__MyStructField22Patch_FieldsSetter self, const char* name, object value) except *:
@@ -796,6 +825,29 @@ cdef class __MyStructField22Patch_FieldsSetter(__StructFieldsSetter):
             __reset_field[_module_types.cMyStructField22Patch](deref(self._struct_cpp_obj), 0)
             return
         deref(self._struct_cpp_obj).assign_ref().assign(deref(_module_types.Set__string(_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_1(self, _fbthrift_value) except *:
+        # for field clear
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructField22Patch](deref(self._struct_cpp_obj), 1)
+            return
+        if not isinstance(_fbthrift_value, bool):
+            raise TypeError(f'clear is not a { bool !r}.')
+        deref(self._struct_cpp_obj).clear_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_2(self, _fbthrift_value) except *:
+        # for field add
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructField22Patch](deref(self._struct_cpp_obj), 2)
+            return
+        deref(self._struct_cpp_obj).add_ref().assign(deref(_module_types.Set__string(_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_3(self, _fbthrift_value) except *:
+        # for field remove
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructField22Patch](deref(self._struct_cpp_obj), 3)
+            return
+        deref(self._struct_cpp_obj).remove_ref().assign(deref(_module_types.Set__string(_fbthrift_value)._cpp_obj))
 
 
 @__cython.auto_pickle(False)
@@ -861,6 +913,9 @@ cdef class __MyStructField23Patch_FieldsSetter(__StructFieldsSetter):
         cdef __MyStructField23Patch_FieldsSetter __fbthrift_inst = __MyStructField23Patch_FieldsSetter.__new__(__MyStructField23Patch_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"assign")] = __MyStructField23Patch_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"clear")] = __MyStructField23Patch_FieldsSetter._set_field_1
+        __fbthrift_inst._setters[__cstring_view(<const char*>"add")] = __MyStructField23Patch_FieldsSetter._set_field_2
+        __fbthrift_inst._setters[__cstring_view(<const char*>"removeIf")] = __MyStructField23Patch_FieldsSetter._set_field_3
         return __fbthrift_inst
 
     cdef void set_field(__MyStructField23Patch_FieldsSetter self, const char* name, object value) except *:
@@ -876,6 +931,29 @@ cdef class __MyStructField23Patch_FieldsSetter(__StructFieldsSetter):
             __reset_field[_module_types.cMyStructField23Patch](deref(self._struct_cpp_obj), 0)
             return
         deref(self._struct_cpp_obj).assign_ref().assign(deref(_module_types.Map__string_string(_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_1(self, _fbthrift_value) except *:
+        # for field clear
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructField23Patch](deref(self._struct_cpp_obj), 1)
+            return
+        if not isinstance(_fbthrift_value, bool):
+            raise TypeError(f'clear is not a { bool !r}.')
+        deref(self._struct_cpp_obj).clear_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_2(self, _fbthrift_value) except *:
+        # for field add
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructField23Patch](deref(self._struct_cpp_obj), 2)
+            return
+        deref(self._struct_cpp_obj).add_ref().assign(deref(_module_types.Map__string_string(_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_3(self, _fbthrift_value) except *:
+        # for field removeIf
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStructField23Patch](deref(self._struct_cpp_obj), 3)
+            return
+        deref(self._struct_cpp_obj).removeIf_ref().assign(deref(_module_types.Map__string_string(_fbthrift_value)._cpp_obj))
 
 
 @__cython.auto_pickle(False)

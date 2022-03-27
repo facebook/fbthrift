@@ -143,6 +143,12 @@ struct VisitByFieldId<::cpp2::MyStructField21Patch> {
     switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).assign_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).clear_ref());
+    case 4:
+      return f(2, static_cast<T&&>(t).append_ref());
+    case 5:
+      return f(3, static_cast<T&&>(t).prepend_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::MyStructField21Patch");
     }
@@ -175,6 +181,12 @@ struct VisitByFieldId<::cpp2::MyStructField22Patch> {
     switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).assign_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).clear_ref());
+    case 4:
+      return f(2, static_cast<T&&>(t).add_ref());
+    case 5:
+      return f(3, static_cast<T&&>(t).remove_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::MyStructField22Patch");
     }
@@ -207,6 +219,12 @@ struct VisitByFieldId<::cpp2::MyStructField23Patch> {
     switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).assign_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).clear_ref());
+    case 4:
+      return f(2, static_cast<T&&>(t).add_ref());
+    case 6:
+      return f(3, static_cast<T&&>(t).removeIf_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::MyStructField23Patch");
     }

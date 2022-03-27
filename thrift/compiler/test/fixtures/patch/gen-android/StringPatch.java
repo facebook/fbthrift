@@ -25,15 +25,15 @@ import com.facebook.thrift.protocol.*;
 public class StringPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("StringPatch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.STRING, (short)1);
-  private static final TField APPEND_FIELD_DESC = new TField("append", TType.STRING, (short)2);
-  private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.STRING, (short)3);
+  private static final TField APPEND_FIELD_DESC = new TField("append", TType.STRING, (short)4);
+  private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.STRING, (short)5);
 
   public final String assign;
   public final String append;
   public final String prepend;
   public static final int ASSIGN = 1;
-  public static final int APPEND = 2;
-  public static final int PREPEND = 3;
+  public static final int APPEND = 4;
+  public static final int PREPEND = 5;
 
   public StringPatch(
       String assign,

@@ -27,16 +27,40 @@ import com.facebook.thrift.protocol.*;
 public class MyStructField22Patch implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("MyStructField22Patch");
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.SET, (short)1);
+  private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
+  private static final TField ADD_FIELD_DESC = new TField("add", TType.SET, (short)4);
+  private static final TField REMOVE_FIELD_DESC = new TField("remove", TType.SET, (short)5);
 
   /**
    * Assigns to a given struct. If set, all other operations are ignored.
    */
   public final Set<String> assign;
+  /**
+   * Clears a given value. Applies first.
+   */
+  public final Boolean clear;
+  /**
+   * Adds entries, if not already present. Currently Ignored.
+   */
+  public final Set<String> add;
+  /**
+   * Removes entries, if present. Currently Ignored.
+   */
+  public final Set<String> remove;
   public static final int ASSIGN = 1;
+  public static final int CLEAR = 2;
+  public static final int ADD = 4;
+  public static final int REMOVE = 5;
 
   public MyStructField22Patch(
-      Set<String> assign) {
+      Set<String> assign,
+      Boolean clear,
+      Set<String> add,
+      Set<String> remove) {
     this.assign = assign;
+    this.clear = clear;
+    this.add = add;
+    this.remove = remove;
   }
 
   /**
@@ -47,6 +71,21 @@ public class MyStructField22Patch implements TBase, java.io.Serializable, Clonea
       this.assign = TBaseHelper.deepCopy(other.assign);
     } else {
       this.assign = null;
+    }
+    if (other.isSetClear()) {
+      this.clear = TBaseHelper.deepCopy(other.clear);
+    } else {
+      this.clear = null;
+    }
+    if (other.isSetAdd()) {
+      this.add = TBaseHelper.deepCopy(other.add);
+    } else {
+      this.add = null;
+    }
+    if (other.isSetRemove()) {
+      this.remove = TBaseHelper.deepCopy(other.remove);
+    } else {
+      this.remove = null;
     }
   }
 
@@ -66,6 +105,42 @@ public class MyStructField22Patch implements TBase, java.io.Serializable, Clonea
     return this.assign != null;
   }
 
+  /**
+   * Clears a given value. Applies first.
+   */
+  public Boolean isClear() {
+    return this.clear;
+  }
+
+  // Returns true if field clear is set (has been assigned a value) and false otherwise
+  public boolean isSetClear() {
+    return this.clear != null;
+  }
+
+  /**
+   * Adds entries, if not already present. Currently Ignored.
+   */
+  public Set<String> getAdd() {
+    return this.add;
+  }
+
+  // Returns true if field add is set (has been assigned a value) and false otherwise
+  public boolean isSetAdd() {
+    return this.add != null;
+  }
+
+  /**
+   * Removes entries, if present. Currently Ignored.
+   */
+  public Set<String> getRemove() {
+    return this.remove;
+  }
+
+  // Returns true if field remove is set (has been assigned a value) and false otherwise
+  public boolean isSetRemove() {
+    return this.remove != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -78,12 +153,18 @@ public class MyStructField22Patch implements TBase, java.io.Serializable, Clonea
 
     if (!TBaseHelper.equalsNobinary(this.isSetAssign(), that.isSetAssign(), this.assign, that.assign)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetClear(), that.isSetClear(), this.clear, that.clear)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetAdd(), that.isSetAdd(), this.add, that.add)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetRemove(), that.isSetRemove(), this.remove, that.remove)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {assign});
+    return Arrays.deepHashCode(new Object[] {assign, clear, add, remove});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -93,6 +174,9 @@ public class MyStructField22Patch implements TBase, java.io.Serializable, Clonea
 
   public static MyStructField22Patch deserialize(TProtocol iprot) throws TException {
     Set<String> tmp_assign = null;
+    Boolean tmp_clear = null;
+    Set<String> tmp_add = null;
+    Set<String> tmp_remove = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -106,15 +190,60 @@ public class MyStructField22Patch implements TBase, java.io.Serializable, Clonea
         case ASSIGN:
           if (__field.type == TType.SET) {
             {
-              TSet _set21 = iprot.readSetBegin();
-              tmp_assign = new HashSet<String>(Math.max(0, 2*_set21.size));
-              for (int _i22 = 0; 
-                   (_set21.size < 0) ? iprot.peekSet() : (_i22 < _set21.size); 
-                   ++_i22)
+              TSet _set29 = iprot.readSetBegin();
+              tmp_assign = new HashSet<String>(Math.max(0, 2*_set29.size));
+              for (int _i30 = 0; 
+                   (_set29.size < 0) ? iprot.peekSet() : (_i30 < _set29.size); 
+                   ++_i30)
               {
-                String _elem23;
-                _elem23 = iprot.readString();
-                tmp_assign.add(_elem23);
+                String _elem31;
+                _elem31 = iprot.readString();
+                tmp_assign.add(_elem31);
+              }
+              iprot.readSetEnd();
+            }
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case CLEAR:
+          if (__field.type == TType.BOOL) {
+            tmp_clear = iprot.readBool();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case ADD:
+          if (__field.type == TType.SET) {
+            {
+              TSet _set32 = iprot.readSetBegin();
+              tmp_add = new HashSet<String>(Math.max(0, 2*_set32.size));
+              for (int _i33 = 0; 
+                   (_set32.size < 0) ? iprot.peekSet() : (_i33 < _set32.size); 
+                   ++_i33)
+              {
+                String _elem34;
+                _elem34 = iprot.readString();
+                tmp_add.add(_elem34);
+              }
+              iprot.readSetEnd();
+            }
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case REMOVE:
+          if (__field.type == TType.SET) {
+            {
+              TSet _set35 = iprot.readSetBegin();
+              tmp_remove = new HashSet<String>(Math.max(0, 2*_set35.size));
+              for (int _i36 = 0; 
+                   (_set35.size < 0) ? iprot.peekSet() : (_i36 < _set35.size); 
+                   ++_i36)
+              {
+                String _elem37;
+                _elem37 = iprot.readString();
+                tmp_remove.add(_elem37);
               }
               iprot.readSetEnd();
             }
@@ -133,6 +262,9 @@ public class MyStructField22Patch implements TBase, java.io.Serializable, Clonea
     MyStructField22Patch _that;
     _that = new MyStructField22Patch(
       tmp_assign
+      ,tmp_clear
+      ,tmp_add
+      ,tmp_remove
     );
     _that.validate();
     return _that;
@@ -147,13 +279,40 @@ public class MyStructField22Patch implements TBase, java.io.Serializable, Clonea
         oprot.writeFieldBegin(ASSIGN_FIELD_DESC);
         {
           oprot.writeSetBegin(new TSet(TType.STRING, this.assign.size()));
-          for (String _iter24 : this.assign)          {
-            oprot.writeString(_iter24);
+          for (String _iter38 : this.assign)          {
+            oprot.writeString(_iter38);
           }
           oprot.writeSetEnd();
         }
         oprot.writeFieldEnd();
       }
+    }
+    if (this.clear != null) {
+      oprot.writeFieldBegin(CLEAR_FIELD_DESC);
+      oprot.writeBool(this.clear);
+      oprot.writeFieldEnd();
+    }
+    if (this.add != null) {
+      oprot.writeFieldBegin(ADD_FIELD_DESC);
+      {
+        oprot.writeSetBegin(new TSet(TType.STRING, this.add.size()));
+        for (String _iter39 : this.add)        {
+          oprot.writeString(_iter39);
+        }
+        oprot.writeSetEnd();
+      }
+      oprot.writeFieldEnd();
+    }
+    if (this.remove != null) {
+      oprot.writeFieldBegin(REMOVE_FIELD_DESC);
+      {
+        oprot.writeSetBegin(new TSet(TType.STRING, this.remove.size()));
+        for (String _iter40 : this.remove)        {
+          oprot.writeString(_iter40);
+        }
+        oprot.writeSetEnd();
+      }
+      oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();

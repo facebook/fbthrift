@@ -581,6 +581,36 @@
   "type" : "list",
   "inner_type" : "i16"
 }
+          },
+          "clear" : {
+            "name" : "clear",
+            "docstring" : "Clears a given value. Applies first.\n",
+            "key" : 2,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : "bool"
+          },
+          "append" : {
+            "name" : "append",
+            "docstring" : "Appends to a given list. Currently Ignored.\n",
+            "key" : 4,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "list",
+  "inner_type" : "i16"
+}
+          },
+          "prepend" : {
+            "name" : "prepend",
+            "docstring" : "Prepends to a given list. Currently Ignored.\n",
+            "key" : 5,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "list",
+  "inner_type" : "i16"
+}
           }
         },
         "is_exception" : false,
@@ -649,6 +679,36 @@
   "type" : "set",
   "inner_type" : "string"
 }
+          },
+          "clear" : {
+            "name" : "clear",
+            "docstring" : "Clears a given value. Applies first.\n",
+            "key" : 2,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : "bool"
+          },
+          "add" : {
+            "name" : "add",
+            "docstring" : "Adds entries, if not already present. Currently Ignored.\n",
+            "key" : 4,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "set",
+  "inner_type" : "string"
+}
+          },
+          "remove" : {
+            "name" : "remove",
+            "docstring" : "Removes entries, if present. Currently Ignored.\n",
+            "key" : 5,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "set",
+  "inner_type" : "string"
+}
           }
         },
         "is_exception" : false,
@@ -713,6 +773,38 @@
             "key" : 1,
             "lineno" : 33,
             "required" : "optional",
+            "type" : {
+  "type" : "map",
+  "key_type" : "string",
+  "value_type" : "string"
+}
+          },
+          "clear" : {
+            "name" : "clear",
+            "docstring" : "Clears a given value. Applies first.\n",
+            "key" : 2,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : "bool"
+          },
+          "add" : {
+            "name" : "add",
+            "docstring" : "Adds entries, if not already present. Currently Ignored.\n",
+            "key" : 4,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
+            "type" : {
+  "type" : "map",
+  "key_type" : "string",
+  "value_type" : "string"
+}
+          },
+          "removeIf" : {
+            "name" : "removeIf",
+            "docstring" : "Removes the given key/value pairs, if present. Currently Ignored.\n",
+            "key" : 6,
+            "lineno" : 33,
+            "required" : "opt-in-req-out",
             "type" : {
   "type" : "map",
   "key_type" : "string",

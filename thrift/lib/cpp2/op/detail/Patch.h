@@ -217,6 +217,11 @@ using StringPatchAdapter = PatchAdapter<StringPatch>;
 // Adapters for structred types.
 using StructPatchAdapter = PatchAdapter<StructPatch>;
 
+// Adapters for containers.
+using ListPatchAdapter = AssignPatchAdapter;
+using SetPatchAdapter = AssignPatchAdapter;
+using MapPatchAdapter = AssignPatchAdapter;
+
 // Adapter for all optional values.
 using OptionalPatchAdapter = PatchAdapter<OptionalPatch>;
 

@@ -1230,6 +1230,9 @@ cdef class MyStructField21Patch(thrift.py3.types.Struct):
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyStructField21Patch", {
           "assign": deref(self._cpp_obj).assign_ref().has_value(),
+          "clear": deref(self._cpp_obj).clear_ref().has_value(),
+          "append": deref(self._cpp_obj).append_ref().has_value(),
+          "prepend": deref(self._cpp_obj).prepend_ref().has_value(),
         })
 
     @staticmethod
@@ -1249,6 +1252,34 @@ cdef class MyStructField21Patch(thrift.py3.types.Struct):
     @property
     def assign(self):
         return self.assign_impl()
+
+    cdef inline clear_impl(self):
+
+        return <pbool> deref(self._cpp_obj).clear_ref().value()
+
+    @property
+    def clear(self):
+        return self.clear_impl()
+
+    cdef inline append_impl(self):
+
+        if self.__fbthrift_cached_append is None:
+            self.__fbthrift_cached_append = List__i16._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).append_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_append
+
+    @property
+    def append(self):
+        return self.append_impl()
+
+    cdef inline prepend_impl(self):
+
+        if self.__fbthrift_cached_prepend is None:
+            self.__fbthrift_cached_prepend = List__i16._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).prepend_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_prepend
+
+    @property
+    def prepend(self):
+        return self.prepend_impl()
 
 
     def __hash__(MyStructField21Patch self):
@@ -1293,7 +1324,7 @@ cdef class MyStructField21Patch(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyStructField21Patch](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 4
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStructField21Patch self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -1465,6 +1496,9 @@ cdef class MyStructField22Patch(thrift.py3.types.Struct):
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyStructField22Patch", {
           "assign": deref(self._cpp_obj).assign_ref().has_value(),
+          "clear": deref(self._cpp_obj).clear_ref().has_value(),
+          "add": deref(self._cpp_obj).add_ref().has_value(),
+          "remove": deref(self._cpp_obj).remove_ref().has_value(),
         })
 
     @staticmethod
@@ -1484,6 +1518,34 @@ cdef class MyStructField22Patch(thrift.py3.types.Struct):
     @property
     def assign(self):
         return self.assign_impl()
+
+    cdef inline clear_impl(self):
+
+        return <pbool> deref(self._cpp_obj).clear_ref().value()
+
+    @property
+    def clear(self):
+        return self.clear_impl()
+
+    cdef inline add_impl(self):
+
+        if self.__fbthrift_cached_add is None:
+            self.__fbthrift_cached_add = Set__string._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).add_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_add
+
+    @property
+    def add(self):
+        return self.add_impl()
+
+    cdef inline remove_impl(self):
+
+        if self.__fbthrift_cached_remove is None:
+            self.__fbthrift_cached_remove = Set__string._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).remove_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_remove
+
+    @property
+    def remove(self):
+        return self.remove_impl()
 
 
     def __hash__(MyStructField22Patch self):
@@ -1528,7 +1590,7 @@ cdef class MyStructField22Patch(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyStructField22Patch](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 4
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStructField22Patch self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -1700,6 +1762,9 @@ cdef class MyStructField23Patch(thrift.py3.types.Struct):
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyStructField23Patch", {
           "assign": deref(self._cpp_obj).assign_ref().has_value(),
+          "clear": deref(self._cpp_obj).clear_ref().has_value(),
+          "add": deref(self._cpp_obj).add_ref().has_value(),
+          "removeIf": deref(self._cpp_obj).removeIf_ref().has_value(),
         })
 
     @staticmethod
@@ -1719,6 +1784,34 @@ cdef class MyStructField23Patch(thrift.py3.types.Struct):
     @property
     def assign(self):
         return self.assign_impl()
+
+    cdef inline clear_impl(self):
+
+        return <pbool> deref(self._cpp_obj).clear_ref().value()
+
+    @property
+    def clear(self):
+        return self.clear_impl()
+
+    cdef inline add_impl(self):
+
+        if self.__fbthrift_cached_add is None:
+            self.__fbthrift_cached_add = Map__string_string._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).add_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_add
+
+    @property
+    def add(self):
+        return self.add_impl()
+
+    cdef inline removeIf_impl(self):
+
+        if self.__fbthrift_cached_removeIf is None:
+            self.__fbthrift_cached_removeIf = Map__string_string._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).removeIf_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_removeIf
+
+    @property
+    def removeIf(self):
+        return self.removeIf_impl()
 
 
     def __hash__(MyStructField23Patch self):
@@ -1763,7 +1856,7 @@ cdef class MyStructField23Patch(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyStructField23Patch](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 4
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStructField23Patch self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

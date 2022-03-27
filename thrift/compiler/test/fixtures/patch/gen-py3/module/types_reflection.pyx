@@ -796,7 +796,7 @@ cdef __StructSpec get_reflection__MyStructField21Patch():
         name="MyStructField21Patch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::AssignPatchAdapter""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::ListPatchAdapter""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -805,6 +805,42 @@ cdef __StructSpec get_reflection__MyStructField21Patch():
             type=_module_types.List__i16,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="clear",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=4,
+            name="append",
+            type=_module_types.List__i16,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=5,
+            name="prepend",
+            type=_module_types.List__i16,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
             },
@@ -882,7 +918,7 @@ cdef __StructSpec get_reflection__MyStructField22Patch():
         name="MyStructField22Patch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::AssignPatchAdapter""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::SetPatchAdapter""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -891,6 +927,42 @@ cdef __StructSpec get_reflection__MyStructField22Patch():
             type=_module_types.Set__string,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="clear",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=4,
+            name="add",
+            type=_module_types.Set__string,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=5,
+            name="remove",
+            type=_module_types.Set__string,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
             },
@@ -968,7 +1040,7 @@ cdef __StructSpec get_reflection__MyStructField23Patch():
         name="MyStructField23Patch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::AssignPatchAdapter""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::MapPatchAdapter""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -977,6 +1049,42 @@ cdef __StructSpec get_reflection__MyStructField23Patch():
             type=_module_types.Map__string_string,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="clear",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=4,
+            name="add",
+            type=_module_types.Map__string_string,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=6,
+            name="removeIf",
+            type=_module_types.Map__string_string,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
             },

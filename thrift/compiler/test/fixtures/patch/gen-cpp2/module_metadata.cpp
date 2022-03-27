@@ -189,6 +189,9 @@ StructMetadata<::cpp2::MyStructField21Patch>::gen(ThriftMetadata& metadata) {
   static const EncodedThriftField
   module_MyStructField21Patch_fields[] = {
     {1, "assign", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
+    {2, "clear", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
+    {4, "append", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
+    {5, "prepend", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStructField21Patch_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -240,6 +243,9 @@ StructMetadata<::cpp2::MyStructField22Patch>::gen(ThriftMetadata& metadata) {
   static const EncodedThriftField
   module_MyStructField22Patch_fields[] = {
     {1, "assign", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
+    {2, "clear", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
+    {4, "add", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
+    {5, "remove", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStructField22Patch_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -291,6 +297,9 @@ StructMetadata<::cpp2::MyStructField23Patch>::gen(ThriftMetadata& metadata) {
   static const EncodedThriftField
   module_MyStructField23Patch_fields[] = {
     {1, "assign", true, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
+    {2, "clear", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
+    {4, "add", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
+    {6, "removeIf", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStructField23Patch_fields) {
     ::apache::thrift::metadata::ThriftField field;

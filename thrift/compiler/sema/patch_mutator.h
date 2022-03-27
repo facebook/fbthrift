@@ -117,9 +117,8 @@ class patch_generator {
 
   // Attempts to resolve the associated patch type for the given field.
   //
-  // In some cases, a patch representation for the field is automatically
-  // generated, if a shared definition cannot be found. Otherwise,
-  // an empty t_type_ref is returned.
+  // If a shared representation cannot be found, a new field-specific one may be
+  // generated. Otherwise an empty t_type_ref is returned.
   t_type_ref find_patch_type(
       const t_const& annot, const t_structured& parent, const t_field& field);
 

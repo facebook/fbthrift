@@ -454,15 +454,15 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
         case ENSURE:
           if (__field.type == TType.SET) {
             {
-              TSet _set25 = iprot.readSetBegin();
-              this.ensure = new HashSet<String>(Math.max(0, 2*_set25.size));
-              for (int _i26 = 0; 
-                   (_set25.size < 0) ? iprot.peekSet() : (_i26 < _set25.size); 
-                   ++_i26)
+              TSet _set41 = iprot.readSetBegin();
+              this.ensure = new HashSet<String>(Math.max(0, 2*_set41.size));
+              for (int _i42 = 0; 
+                   (_set41.size < 0) ? iprot.peekSet() : (_i42 < _set41.size); 
+                   ++_i42)
               {
-                String _elem27;
-                _elem27 = iprot.readString();
-                this.ensure.add(_elem27);
+                String _elem43;
+                _elem43 = iprot.readString();
+                this.ensure.add(_elem43);
               }
               iprot.readSetEnd();
             }
@@ -500,8 +500,8 @@ public class OptionalMyStructField22Patch implements TBase, java.io.Serializable
         oprot.writeFieldBegin(ENSURE_FIELD_DESC);
         {
           oprot.writeSetBegin(new TSet(TType.STRING, this.ensure.size()));
-          for (String _iter28 : this.ensure)          {
-            oprot.writeString(_iter28);
+          for (String _iter44 : this.ensure)          {
+            oprot.writeString(_iter44);
           }
           oprot.writeSetEnd();
         }

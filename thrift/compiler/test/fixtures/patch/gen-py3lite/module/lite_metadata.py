@@ -319,6 +319,12 @@ def _fbthrift_gen_metadata_struct_MyStructField21Patch(metadata_struct: _fbthrif
     fields = [
         _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE))), name="assign", is_optional=False, structured_annotations=[
         ]),
+        _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BOOL_TYPE), name="clear", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE))), name="append", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=5, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE))), name="prepend", is_optional=False, structured_annotations=[
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
@@ -328,6 +334,9 @@ def _fbthrift_gen_metadata_struct_MyStructField21Patch(metadata_struct: _fbthrif
     new_struct = metadata_struct(structs=struct_dict)
 
      # assign
+     # clear
+     # append
+     # prepend
 
     return new_struct
 def gen_metadata_struct_MyStructField21Patch() -> _fbthrift_metadata.ThriftMetadata:
@@ -376,6 +385,12 @@ def _fbthrift_gen_metadata_struct_MyStructField22Patch(metadata_struct: _fbthrif
     fields = [
         _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="assign", is_optional=False, structured_annotations=[
         ]),
+        _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BOOL_TYPE), name="clear", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="add", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=5, type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="remove", is_optional=False, structured_annotations=[
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
@@ -385,6 +400,9 @@ def _fbthrift_gen_metadata_struct_MyStructField22Patch(metadata_struct: _fbthrif
     new_struct = metadata_struct(structs=struct_dict)
 
      # assign
+     # clear
+     # add
+     # remove
 
     return new_struct
 def gen_metadata_struct_MyStructField22Patch() -> _fbthrift_metadata.ThriftMetadata:
@@ -433,6 +451,12 @@ def _fbthrift_gen_metadata_struct_MyStructField23Patch(metadata_struct: _fbthrif
     fields = [
         _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="assign", is_optional=False, structured_annotations=[
         ]),
+        _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BOOL_TYPE), name="clear", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="add", is_optional=False, structured_annotations=[
+        ]),
+        _fbthrift_metadata.ThriftField(id=6, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="removeIf", is_optional=False, structured_annotations=[
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
@@ -443,6 +467,11 @@ def _fbthrift_gen_metadata_struct_MyStructField23Patch(metadata_struct: _fbthrif
 
      # key
      # val  # assign
+     # clear
+     # key
+     # val  # add
+     # key
+     # val  # removeIf
 
     return new_struct
 def gen_metadata_struct_MyStructField23Patch() -> _fbthrift_metadata.ThriftMetadata:

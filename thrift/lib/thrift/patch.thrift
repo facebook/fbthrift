@@ -156,10 +156,10 @@ struct StringPatch {
   1: optional string assign;
 
   // Append to a given value.
-  2: string append;
+  4: string append;
 
   // Prepend to a given value.
-  3: string prepend;
+  5: string prepend;
 } (
   cpp.name = "StringPatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::StringPatchAdapter",
