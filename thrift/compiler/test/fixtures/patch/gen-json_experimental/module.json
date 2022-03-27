@@ -228,7 +228,7 @@
           },
           "clear" : {
             "name" : "clear",
-            "docstring" : "Clears a given struct. Applied first.\n",
+            "docstring" : "Clears a given value. Applied first.\n",
             "key" : 2,
             "lineno" : 27,
             "required" : "opt-in-req-out",
@@ -236,7 +236,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "Patches a given struct. Applied second.\n",
+            "docstring" : "Patches a given value. Applied second.\n",
             "key" : 3,
             "lineno" : 27,
             "required" : "opt-in-req-out",
@@ -255,7 +255,7 @@
         "fields" : {
           "clear" : {
             "name" : "clear",
-            "docstring" : "If the optional value should be cleared. Applied first.",
+            "docstring" : "If the optional value should be cleared. Applied first.\n",
             "key" : 2,
             "lineno" : 27,
             "required" : "opt-in-req-out",
@@ -263,7 +263,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "The patch to apply to any set value. Applied second.",
+            "docstring" : "The patch to apply to any set value. Applied second.\n",
             "key" : 3,
             "lineno" : 27,
             "required" : "opt-in-req-out",
@@ -274,7 +274,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "The value with which to initialize any unset value. Applied third.",
+            "docstring" : "The value with which to initialize any unset value. Applied third.\n",
             "key" : 1,
             "lineno" : 27,
             "required" : "optional",
@@ -285,7 +285,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.\n",
             "key" : 4,
             "lineno" : 27,
             "required" : "opt-in-req-out",
@@ -523,7 +523,7 @@
           },
           "clear" : {
             "name" : "clear",
-            "docstring" : "Clears a given struct. Applied first.\n",
+            "docstring" : "Clears a given value. Applied first.\n",
             "key" : 2,
             "lineno" : 33,
             "required" : "opt-in-req-out",
@@ -531,7 +531,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "Patches a given struct. Applied second.\n",
+            "docstring" : "Patches a given value. Applied second.\n",
             "key" : 3,
             "lineno" : 33,
             "required" : "opt-in-req-out",
@@ -550,7 +550,7 @@
         "fields" : {
           "clear" : {
             "name" : "clear",
-            "docstring" : "If the optional value should be cleared. Applied first.",
+            "docstring" : "If the optional value should be cleared. Applied first.\n",
             "key" : 2,
             "lineno" : 33,
             "required" : "opt-in-req-out",
@@ -558,7 +558,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "The patch to apply to any set value. Applied second.",
+            "docstring" : "The patch to apply to any set value. Applied second.\n",
             "key" : 3,
             "lineno" : 33,
             "required" : "opt-in-req-out",
@@ -569,7 +569,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "The value with which to initialize any unset value. Applied third.",
+            "docstring" : "The value with which to initialize any unset value. Applied third.\n",
             "key" : 1,
             "lineno" : 33,
             "required" : "optional",
@@ -580,7 +580,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.\n",
             "key" : 4,
             "lineno" : 33,
             "required" : "opt-in-req-out",

@@ -1144,14 +1144,14 @@ class MyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public ?MyData $assign;
   /**
-   * Clears a given struct. Applied first.
+   * Clears a given value. Applied first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * Patches a given struct. Applied second.
+   * Patches a given value. Applied second.
    * 
    * Original thrift field:-
    * 3: struct module.MyDataPatch patch
@@ -2542,14 +2542,14 @@ class MyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
    */
   public ?MyStruct $assign;
   /**
-   * Clears a given struct. Applied first.
+   * Clears a given value. Applied first.
    * 
    * Original thrift field:-
    * 2: bool clear
    */
   public bool $clear;
   /**
-   * Patches a given struct. Applied second.
+   * Patches a given value. Applied second.
    * 
    * Original thrift field:-
    * 3: struct module.MyStructPatch patch

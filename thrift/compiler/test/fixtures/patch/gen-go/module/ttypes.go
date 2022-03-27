@@ -1417,8 +1417,8 @@ func (p *MyDataPatch) String() string {
 
 // Attributes:
 //  - Assign: Assigns to a given struct. If set, all other operations are ignored.
-//  - Clear: Clears a given struct. Applied first.
-//  - Patch: Patches a given struct. Applied second.
+//  - Clear: Clears a given value. Applied first.
+//  - Patch: Patches a given value. Applied second.
 type MyDataValuePatch struct {
   Assign *MyData `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -1639,7 +1639,10 @@ func (p *MyDataValuePatch) String() string {
 }
 
 // Attributes:
-//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
+//  - Clear: If the optional value should be cleared. Applied first.
+//  - Patch: The patch to apply to any set value. Applied second.
+//  - Ensure: The value with which to initialize any unset value. Applied third.
+//  - PatchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
 type OptionalMyDataValuePatch struct {
   Ensure *MyData `thrift:"ensure,1,optional" db:"ensure" json:"ensure,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -3085,8 +3088,8 @@ func (p *MyStructPatch) String() string {
 
 // Attributes:
 //  - Assign: Assigns to a given struct. If set, all other operations are ignored.
-//  - Clear: Clears a given struct. Applied first.
-//  - Patch: Patches a given struct. Applied second.
+//  - Clear: Clears a given value. Applied first.
+//  - Patch: Patches a given value. Applied second.
 type MyStructValuePatch struct {
   Assign *MyStruct `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
@@ -3307,7 +3310,10 @@ func (p *MyStructValuePatch) String() string {
 }
 
 // Attributes:
-//  - Clear: If the optional value should be cleared. Applied first. - Patch: The patch to apply to any set value. Applied second. - Ensure: The value with which to initialize any unset value. Applied third. - PatchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
+//  - Clear: If the optional value should be cleared. Applied first.
+//  - Patch: The patch to apply to any set value. Applied second.
+//  - Ensure: The value with which to initialize any unset value. Applied third.
+//  - PatchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
 type OptionalMyStructValuePatch struct {
   Ensure *MyStruct `thrift:"ensure,1,optional" db:"ensure" json:"ensure,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`

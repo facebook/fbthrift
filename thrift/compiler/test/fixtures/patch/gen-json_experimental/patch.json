@@ -222,7 +222,7 @@
         "fields" : {
           "clear" : {
             "name" : "clear",
-            "docstring" : "If the optional value should be cleared. Applied first.",
+            "docstring" : "If the optional value should be cleared. Applied first.\n",
             "key" : 2,
             "lineno" : 39,
             "required" : "opt-in-req-out",
@@ -230,7 +230,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "The patch to apply to any set value. Applied second.",
+            "docstring" : "The patch to apply to any set value. Applied second.\n",
             "key" : 3,
             "lineno" : 39,
             "required" : "opt-in-req-out",
@@ -241,7 +241,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "The value with which to initialize any unset value. Applied third.",
+            "docstring" : "The value with which to initialize any unset value. Applied third.\n",
             "key" : 1,
             "lineno" : 39,
             "required" : "optional",
@@ -249,7 +249,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.\n",
             "key" : 4,
             "lineno" : 39,
             "required" : "opt-in-req-out",
@@ -268,7 +268,7 @@
         "fields" : {
           "clear" : {
             "name" : "clear",
-            "docstring" : "If the optional value should be cleared. Applied first.",
+            "docstring" : "If the optional value should be cleared. Applied first.\n",
             "key" : 2,
             "lineno" : 55,
             "required" : "opt-in-req-out",
@@ -276,7 +276,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "The patch to apply to any set value. Applied second.",
+            "docstring" : "The patch to apply to any set value. Applied second.\n",
             "key" : 3,
             "lineno" : 55,
             "required" : "opt-in-req-out",
@@ -287,7 +287,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "The value with which to initialize any unset value. Applied third.",
+            "docstring" : "The value with which to initialize any unset value. Applied third.\n",
             "key" : 1,
             "lineno" : 55,
             "required" : "optional",
@@ -295,7 +295,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.\n",
             "key" : 4,
             "lineno" : 55,
             "required" : "opt-in-req-out",
@@ -314,7 +314,7 @@
         "fields" : {
           "clear" : {
             "name" : "clear",
-            "docstring" : "If the optional value should be cleared. Applied first.",
+            "docstring" : "If the optional value should be cleared. Applied first.\n",
             "key" : 2,
             "lineno" : 71,
             "required" : "opt-in-req-out",
@@ -322,7 +322,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "The patch to apply to any set value. Applied second.",
+            "docstring" : "The patch to apply to any set value. Applied second.\n",
             "key" : 3,
             "lineno" : 71,
             "required" : "opt-in-req-out",
@@ -333,7 +333,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "The value with which to initialize any unset value. Applied third.",
+            "docstring" : "The value with which to initialize any unset value. Applied third.\n",
             "key" : 1,
             "lineno" : 71,
             "required" : "optional",
@@ -341,7 +341,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.\n",
             "key" : 4,
             "lineno" : 71,
             "required" : "opt-in-req-out",
@@ -360,7 +360,7 @@
         "fields" : {
           "clear" : {
             "name" : "clear",
-            "docstring" : "If the optional value should be cleared. Applied first.",
+            "docstring" : "If the optional value should be cleared. Applied first.\n",
             "key" : 2,
             "lineno" : 87,
             "required" : "opt-in-req-out",
@@ -368,7 +368,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "The patch to apply to any set value. Applied second.",
+            "docstring" : "The patch to apply to any set value. Applied second.\n",
             "key" : 3,
             "lineno" : 87,
             "required" : "opt-in-req-out",
@@ -379,7 +379,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "The value with which to initialize any unset value. Applied third.",
+            "docstring" : "The value with which to initialize any unset value. Applied third.\n",
             "key" : 1,
             "lineno" : 87,
             "required" : "optional",
@@ -387,7 +387,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.\n",
             "key" : 4,
             "lineno" : 87,
             "required" : "opt-in-req-out",
@@ -406,7 +406,7 @@
         "fields" : {
           "clear" : {
             "name" : "clear",
-            "docstring" : "If the optional value should be cleared. Applied first.",
+            "docstring" : "If the optional value should be cleared. Applied first.\n",
             "key" : 2,
             "lineno" : 103,
             "required" : "opt-in-req-out",
@@ -414,7 +414,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "The patch to apply to any set value. Applied second.",
+            "docstring" : "The patch to apply to any set value. Applied second.\n",
             "key" : 3,
             "lineno" : 103,
             "required" : "opt-in-req-out",
@@ -425,7 +425,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "The value with which to initialize any unset value. Applied third.",
+            "docstring" : "The value with which to initialize any unset value. Applied third.\n",
             "key" : 1,
             "lineno" : 103,
             "required" : "optional",
@@ -433,7 +433,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.\n",
             "key" : 4,
             "lineno" : 103,
             "required" : "opt-in-req-out",
@@ -452,7 +452,7 @@
         "fields" : {
           "clear" : {
             "name" : "clear",
-            "docstring" : "If the optional value should be cleared. Applied first.",
+            "docstring" : "If the optional value should be cleared. Applied first.\n",
             "key" : 2,
             "lineno" : 119,
             "required" : "opt-in-req-out",
@@ -460,7 +460,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "The patch to apply to any set value. Applied second.",
+            "docstring" : "The patch to apply to any set value. Applied second.\n",
             "key" : 3,
             "lineno" : 119,
             "required" : "opt-in-req-out",
@@ -471,7 +471,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "The value with which to initialize any unset value. Applied third.",
+            "docstring" : "The value with which to initialize any unset value. Applied third.\n",
             "key" : 1,
             "lineno" : 119,
             "required" : "optional",
@@ -479,7 +479,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.\n",
             "key" : 4,
             "lineno" : 119,
             "required" : "opt-in-req-out",
@@ -498,7 +498,7 @@
         "fields" : {
           "clear" : {
             "name" : "clear",
-            "docstring" : "If the optional value should be cleared. Applied first.",
+            "docstring" : "If the optional value should be cleared. Applied first.\n",
             "key" : 2,
             "lineno" : 135,
             "required" : "opt-in-req-out",
@@ -506,7 +506,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "The patch to apply to any set value. Applied second.",
+            "docstring" : "The patch to apply to any set value. Applied second.\n",
             "key" : 3,
             "lineno" : 135,
             "required" : "opt-in-req-out",
@@ -517,7 +517,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "The value with which to initialize any unset value. Applied third.",
+            "docstring" : "The value with which to initialize any unset value. Applied third.\n",
             "key" : 1,
             "lineno" : 135,
             "required" : "optional",
@@ -525,7 +525,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.\n",
             "key" : 4,
             "lineno" : 135,
             "required" : "opt-in-req-out",
@@ -544,7 +544,7 @@
         "fields" : {
           "clear" : {
             "name" : "clear",
-            "docstring" : "If the optional value should be cleared. Applied first.",
+            "docstring" : "If the optional value should be cleared. Applied first.\n",
             "key" : 2,
             "lineno" : 151,
             "required" : "opt-in-req-out",
@@ -552,7 +552,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "The patch to apply to any set value. Applied second.",
+            "docstring" : "The patch to apply to any set value. Applied second.\n",
             "key" : 3,
             "lineno" : 151,
             "required" : "opt-in-req-out",
@@ -563,7 +563,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "The value with which to initialize any unset value. Applied third.",
+            "docstring" : "The value with which to initialize any unset value. Applied third.\n",
             "key" : 1,
             "lineno" : 151,
             "required" : "optional",
@@ -571,7 +571,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.\n",
             "key" : 4,
             "lineno" : 151,
             "required" : "opt-in-req-out",
@@ -590,7 +590,7 @@
         "fields" : {
           "clear" : {
             "name" : "clear",
-            "docstring" : "If the optional value should be cleared. Applied first.",
+            "docstring" : "If the optional value should be cleared. Applied first.\n",
             "key" : 2,
             "lineno" : 170,
             "required" : "opt-in-req-out",
@@ -598,7 +598,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "The patch to apply to any set value. Applied second.",
+            "docstring" : "The patch to apply to any set value. Applied second.\n",
             "key" : 3,
             "lineno" : 170,
             "required" : "opt-in-req-out",
@@ -609,7 +609,7 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "The value with which to initialize any unset value. Applied third.",
+            "docstring" : "The value with which to initialize any unset value. Applied third.\n",
             "key" : 1,
             "lineno" : 170,
             "required" : "optional",
@@ -617,7 +617,7 @@
           },
           "patchAfter" : {
             "name" : "patchAfter",
-            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.",
+            "docstring" : "The patch to apply to any set value, including newly set values. Applied fourth.\n",
             "key" : 4,
             "lineno" : 170,
             "required" : "opt-in-req-out",

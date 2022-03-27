@@ -80,6 +80,23 @@ const char* getOptionalPatchTypeName(t_base_type::type base_type) {
   }
 }
 
+// A fluent function to set the doc string on a given node.
+template <typename N>
+N& doc(std::string txt, N& node) {
+  node.set_doc(std::move(txt) + "\n");
+  return node;
+}
+
+// A fluent function to box a given field.
+t_field& box(t_field& node) {
+  node.set_qualifier(t_field_qualifier::optional);
+  // Box the field, if the underlying type is a struct.
+  if (dynamic_cast<const t_struct*>(node.type()->get_true_type())) {
+    node.set_annotation("thrift.box");
+  }
+  return node;
+}
+
 // Helper for generating a struct.
 struct StructGen {
   // The annotation we are generating for.
@@ -94,16 +111,6 @@ struct StructGen {
     t_field& result = generated.fields().back();
     result.set_lineno(annot.lineno());
     return result;
-  }
-
-  // A fluent function to box a given field.
-  static t_field& box(t_field& node) {
-    node.set_qualifier(t_field_qualifier::optional);
-    // Box the field, if the underlying type is a struct.
-    if (dynamic_cast<const t_struct*>(node.type()->get_true_type())) {
-      node.set_annotation("thrift.box");
-    }
-    return node;
   }
 };
 
@@ -120,25 +127,37 @@ struct PatchGen : StructGen {
 
   // 1: optional {type} assign (thrift.box);
   t_field& assign(t_type_ref type) {
-    return box(field(kAssignId, type, "assign"));
+    return doc(
+        "Assigns to a given struct. If set, all other operations are ignored.",
+        box(field(kAssignId, type, "assign")));
   }
 
   // 1: optional {type} ensure (thrift.box);
   t_field& ensure(t_type_ref type) {
-    return box(field(kEnsureId, type, "ensure"));
+    return doc(
+        "The value with which to initialize any unset value. Applied third.",
+        box(field(kEnsureId, type, "ensure")));
   }
 
   // 2: bool clear;
-  t_field& clear() { return field(kClearId, t_base_type::t_bool(), "clear"); }
+  t_field& clear() {
+    return doc(
+        "Clears a given value. Applied first.",
+        field(kClearId, t_base_type::t_bool(), "clear"));
+  }
 
   // 3: {patch_type} patch;
   t_field& patch(t_type_ref patch_type) {
-    return field(kPatchId, patch_type, "patch");
+    return doc(
+        "Patches a given value. Applied second.",
+        field(kPatchId, patch_type, "patch"));
   }
 
   // 4: {patch_type} patchAfter;
   t_field& patchAfter(t_type_ref patch_type) {
-    return field(kPatchAfterId, patch_type, "patchAfter");
+    return doc(
+        "The patch to apply to any set value, including newly set values. Applied fourth.",
+        field(kPatchAfterId, patch_type, "patchAfter"));
   }
 };
 
@@ -206,16 +225,11 @@ t_struct& patch_generator::add_optional_patch(
   PatchGen gen{{annot, gen_prefix_struct(annot, patch_type, "Optional")}};
   gen.generated.set_annotation(
       "cpp.adapter", "::apache::thrift::op::detail::OptionalPatchAdapter");
-  gen.clear().set_doc(
-      "If the optional value should be cleared. Applied first.");
-  gen.patch(patch_type)
-      .set_doc("The patch to apply to any set value. Applied second.");
-  gen.ensure(value_type)
-      .set_doc(
-          "The value with which to initialize any unset value. Applied third.");
-  gen.patchAfter(patch_type)
-      .set_doc(
-          "The patch to apply to any set value, including newly set values. Applied fourth.");
+  doc("If the optional value should be cleared. Applied first.", gen.clear());
+  doc("The patch to apply to any set value. Applied second.",
+      gen.patch(patch_type));
+  gen.ensure(value_type);
+  gen.patchAfter(patch_type);
   return gen.generated;
 }
 
@@ -235,11 +249,9 @@ t_struct& patch_generator::add_structure_patch(
 t_struct& patch_generator::add_struct_value_patch(
     const t_node& annot, t_struct& value_type, t_type_ref patch_type) {
   PatchGen gen{{annot, gen_suffix_struct(annot, value_type, "ValuePatch")}};
-  gen.assign(value_type)
-      .set_doc(
-          "Assigns to a given struct. If set, all other operations are ignored.\n");
-  gen.clear().set_doc("Clears a given struct. Applied first.\n");
-  gen.patch(patch_type).set_doc("Patches a given struct. Applied second.\n");
+  gen.assign(value_type);
+  gen.clear();
+  gen.patch(patch_type);
   gen.generated.set_annotation(
       "cpp.adapter", "::apache::thrift::op::detail::StructPatchAdapter");
   return gen.generated;

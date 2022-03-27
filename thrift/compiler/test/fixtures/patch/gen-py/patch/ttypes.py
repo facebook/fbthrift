@@ -1113,7 +1113,10 @@ class BinaryPatch:
 class OptionalBoolPatch:
   """
   Attributes:
-   - clear: If the optional value should be cleared. Applied first. - patch: The patch to apply to any set value. Applied second. - ensure: The value with which to initialize any unset value. Applied third. - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
+   - clear: If the optional value should be cleared. Applied first.
+   - patch: The patch to apply to any set value. Applied second.
+   - ensure: The value with which to initialize any unset value. Applied third.
+   - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
   """
 
   thrift_spec = None
@@ -1249,7 +1252,10 @@ class OptionalBoolPatch:
 class OptionalBytePatch:
   """
   Attributes:
-   - clear: If the optional value should be cleared. Applied first. - patch: The patch to apply to any set value. Applied second. - ensure: The value with which to initialize any unset value. Applied third. - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
+   - clear: If the optional value should be cleared. Applied first.
+   - patch: The patch to apply to any set value. Applied second.
+   - ensure: The value with which to initialize any unset value. Applied third.
+   - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
   """
 
   thrift_spec = None
@@ -1387,7 +1393,10 @@ class OptionalBytePatch:
 class OptionalI16Patch:
   """
   Attributes:
-   - clear: If the optional value should be cleared. Applied first. - patch: The patch to apply to any set value. Applied second. - ensure: The value with which to initialize any unset value. Applied third. - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
+   - clear: If the optional value should be cleared. Applied first.
+   - patch: The patch to apply to any set value. Applied second.
+   - ensure: The value with which to initialize any unset value. Applied third.
+   - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
   """
 
   thrift_spec = None
@@ -1525,7 +1534,10 @@ class OptionalI16Patch:
 class OptionalI32Patch:
   """
   Attributes:
-   - clear: If the optional value should be cleared. Applied first. - patch: The patch to apply to any set value. Applied second. - ensure: The value with which to initialize any unset value. Applied third. - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
+   - clear: If the optional value should be cleared. Applied first.
+   - patch: The patch to apply to any set value. Applied second.
+   - ensure: The value with which to initialize any unset value. Applied third.
+   - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
   """
 
   thrift_spec = None
@@ -1663,7 +1675,10 @@ class OptionalI32Patch:
 class OptionalI64Patch:
   """
   Attributes:
-   - clear: If the optional value should be cleared. Applied first. - patch: The patch to apply to any set value. Applied second. - ensure: The value with which to initialize any unset value. Applied third. - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
+   - clear: If the optional value should be cleared. Applied first.
+   - patch: The patch to apply to any set value. Applied second.
+   - ensure: The value with which to initialize any unset value. Applied third.
+   - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
   """
 
   thrift_spec = None
@@ -1799,7 +1814,10 @@ class OptionalI64Patch:
 class OptionalFloatPatch:
   """
   Attributes:
-   - clear: If the optional value should be cleared. Applied first. - patch: The patch to apply to any set value. Applied second. - ensure: The value with which to initialize any unset value. Applied third. - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
+   - clear: If the optional value should be cleared. Applied first.
+   - patch: The patch to apply to any set value. Applied second.
+   - ensure: The value with which to initialize any unset value. Applied third.
+   - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
   """
 
   thrift_spec = None
@@ -1935,7 +1953,10 @@ class OptionalFloatPatch:
 class OptionalDoublePatch:
   """
   Attributes:
-   - clear: If the optional value should be cleared. Applied first. - patch: The patch to apply to any set value. Applied second. - ensure: The value with which to initialize any unset value. Applied third. - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
+   - clear: If the optional value should be cleared. Applied first.
+   - patch: The patch to apply to any set value. Applied second.
+   - ensure: The value with which to initialize any unset value. Applied third.
+   - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
   """
 
   thrift_spec = None
@@ -2071,7 +2092,10 @@ class OptionalDoublePatch:
 class OptionalStringPatch:
   """
   Attributes:
-   - clear: If the optional value should be cleared. Applied first. - patch: The patch to apply to any set value. Applied second. - ensure: The value with which to initialize any unset value. Applied third. - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
+   - clear: If the optional value should be cleared. Applied first.
+   - patch: The patch to apply to any set value. Applied second.
+   - ensure: The value with which to initialize any unset value. Applied third.
+   - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
   """
 
   thrift_spec = None
@@ -2207,7 +2231,10 @@ class OptionalStringPatch:
 class OptionalBinaryPatch:
   """
   Attributes:
-   - clear: If the optional value should be cleared. Applied first. - patch: The patch to apply to any set value. Applied second. - ensure: The value with which to initialize any unset value. Applied third. - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
+   - clear: If the optional value should be cleared. Applied first.
+   - patch: The patch to apply to any set value. Applied second.
+   - ensure: The value with which to initialize any unset value. Applied third.
+   - patchAfter: The patch to apply to any set value, including newly set values. Applied fourth.
   """
 
   thrift_spec = None

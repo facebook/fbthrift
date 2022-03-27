@@ -35,11 +35,11 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
    */
   public MyStruct assign;
   /**
-   * Clears a given struct. Applied first.
+   * Clears a given value. Applied first.
    */
   public boolean clear;
   /**
-   * Patches a given struct. Applied second.
+   * Patches a given value. Applied second.
    */
   public MyStructPatch patch;
   public static final int ASSIGN = 1;
@@ -181,14 +181,14 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
   }
 
   /**
-   * Clears a given struct. Applied first.
+   * Clears a given value. Applied first.
    */
   public boolean isClear() {
     return this.clear;
   }
 
   /**
-   * Clears a given struct. Applied first.
+   * Clears a given value. Applied first.
    */
   public MyStructValuePatch setClear(boolean clear) {
     this.clear = clear;
@@ -210,14 +210,14 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
   }
 
   /**
-   * Patches a given struct. Applied second.
+   * Patches a given value. Applied second.
    */
   public MyStructPatch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches a given struct. Applied second.
+   * Patches a given value. Applied second.
    */
   public MyStructValuePatch setPatch(MyStructPatch patch) {
     this.patch = patch;
