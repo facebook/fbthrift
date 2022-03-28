@@ -16,7 +16,7 @@
 import unittest
 
 import testing.lite_metadata
-from apache.thrift.metadata.lite_types import ThriftPrimitiveType  # @manual
+from apache.thrift.metadata.lite_types import ThriftPrimitiveType
 from testing.lite_clients import TestingService, TestingServiceChild
 from testing.lite_services import TestingServiceInterface
 from testing.lite_types import hard, HardError, Perm, mixed
