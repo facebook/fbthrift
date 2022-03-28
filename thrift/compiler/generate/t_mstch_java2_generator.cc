@@ -97,6 +97,31 @@ class t_mstch_java2_generator : public t_mstch_generator {
    * Generate multiple Java items according to the given template. Writes
    * output to package_dir underneath the global output directory.
    */
+  template <typename T, typename Generator, typename Cache>
+  void generate_rpc_interfaces(
+      Generator const* generator,
+      Cache& c,
+      const t_program* program,
+      const std::vector<T*>& items) {
+    const auto& id = program->path();
+    if (!cache_->programs_.count(id)) {
+      cache_->programs_[id] = generators_->program_generator_->generate(
+          program, generators_, cache_);
+    }
+    auto package_dir = boost::filesystem::path{
+        java::package_to_path(get_namespace_or_default(*program))};
+
+    for (const T* item : items) {
+      auto filename = java::mangle_java_name(item->get_name(), true) + ".java";
+      const auto& item_id = id + item->get_name();
+      if (!c.count(item_id)) {
+        c[item_id] = generator->generate(item, generators_, cache_);
+      }
+
+      render_to_file(
+          c[item_id], "Service", "services" / package_dir / filename);
+    }
+  }
 
   template <typename T, typename Generator, typename Cache>
   void generate_items(
@@ -1087,12 +1112,11 @@ void t_mstch_java2_generator::generate_program() {
       get_program(),
       get_program()->objects(),
       "Object");
-  generate_items(
+  generate_rpc_interfaces(
       generators_->service_generator_.get(),
       cache_->services_,
       get_program(),
-      get_program()->services(),
-      "Service");
+      get_program()->services());
   generate_services(
       generators_->service_generator_.get(),
       cache_->services_,
