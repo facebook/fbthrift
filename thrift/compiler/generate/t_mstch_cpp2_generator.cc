@@ -2297,7 +2297,8 @@ std::string t_mstch_cpp2_generator::get_cpp2_namespace(
 
 /* static */ std::string t_mstch_cpp2_generator::get_service_qualified_name(
     t_service const* service) {
-  return get_cpp2_namespace(service->program()) + "::" + cpp2::get_name(service);
+  return get_cpp2_namespace(service->program()) +
+      "::" + cpp2::get_name(service);
 }
 
 mstch::array t_mstch_cpp2_generator::get_namespace_array(
