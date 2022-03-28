@@ -998,10 +998,13 @@ void t_mstch_python_generator::generate_file(
 void t_mstch_python_generator::generate_types() {
   generate_file("lite_types.py", IsTypesFile, generate_root_path_);
   generate_file("lite_types.pyi", IsTypesFile, generate_root_path_);
+  generate_file("thrift_types.py", IsTypesFile, generate_root_path_);
+  generate_file("thrift_types.pyi", IsTypesFile, generate_root_path_);
 }
 
 void t_mstch_python_generator::generate_metadata() {
   generate_file("lite_metadata.py", IsTypesFile, generate_root_path_);
+  generate_file("thrift_metadata.py", IsTypesFile, generate_root_path_);
 }
 
 void t_mstch_python_generator::generate_clients() {
@@ -1012,6 +1015,7 @@ void t_mstch_python_generator::generate_clients() {
   }
 
   generate_file("lite_clients.py", NotTypesFile, generate_root_path_);
+  generate_file("thrift_clients.py", NotTypesFile, generate_root_path_);
 }
 
 void t_mstch_python_generator::generate_services() {
@@ -1021,6 +1025,7 @@ void t_mstch_python_generator::generate_services() {
     return;
   }
   generate_file("lite_services.py", NotTypesFile, generate_root_path_);
+  generate_file("thrift_services.py", NotTypesFile, generate_root_path_);
 }
 
 THRIFT_REGISTER_GENERATOR(
