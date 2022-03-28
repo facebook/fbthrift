@@ -17,7 +17,7 @@ import unittest
 from enum import Enum
 from typing import Type, TypeVar, cast
 
-from testing.lite_types import (
+from testing.thrift_types import (
     Color,
     ColorGroups,
     BadMembers,

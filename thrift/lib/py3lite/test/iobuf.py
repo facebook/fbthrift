@@ -16,7 +16,7 @@
 import unittest
 
 from folly.iobuf import IOBuf
-from iobuf.lite_types import Moo
+from iobuf.thrift_types import Moo
 
 
 class IOBufTests(unittest.TestCase):

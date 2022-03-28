@@ -19,8 +19,8 @@ import types
 import unittest
 from typing import Sequence
 
-from testing.lite_services import TestingServiceInterface
-from testing.lite_types import Color, easy
+from testing.thrift_services import TestingServiceInterface
+from testing.thrift_types import Color, easy
 from thrift.py3.server import (
     RequestContext,
     SocketAddress,

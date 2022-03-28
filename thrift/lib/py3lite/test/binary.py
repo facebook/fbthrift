@@ -17,9 +17,9 @@ import asyncio
 import unittest
 from typing import Any
 
-from binary.lite_clients import BinaryService
-from binary.lite_services import BinaryServiceInterface
-from binary.lite_types import Binaries, BinaryUnion
+from binary.thrift_clients import BinaryService
+from binary.thrift_services import BinaryServiceInterface
+from binary.thrift_types import Binaries, BinaryUnion
 from folly.iobuf import IOBuf
 from thrift.py3.server import SocketAddress
 from thrift.py3lite.client import get_client

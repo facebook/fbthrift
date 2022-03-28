@@ -15,7 +15,7 @@
 
 import unittest
 
-from testing.lite_types import (
+from testing.thrift_types import (
     Color,
     HardError,
     SimpleError,

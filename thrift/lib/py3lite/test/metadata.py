@@ -15,17 +15,17 @@
 
 import unittest
 
-import testing.lite_metadata
-from apache.thrift.metadata.lite_types import ThriftPrimitiveType
-from testing.lite_clients import TestingService, TestingServiceChild
-from testing.lite_services import TestingServiceInterface
-from testing.lite_types import hard, HardError, Perm, mixed
+import testing.thrift_metadata
+from apache.thrift.metadata.thrift_types import ThriftPrimitiveType
+from testing.thrift_clients import TestingService, TestingServiceChild
+from testing.thrift_services import TestingServiceInterface
+from testing.thrift_types import hard, HardError, Perm, mixed
 from thrift.py3lite.metadata import gen_metadata, ThriftKind
 
 
 class MetadataTests(unittest.TestCase):
     def test_metadata_enums(self) -> None:
-        meta = gen_metadata(testing.lite_metadata)
+        meta = gen_metadata(testing.thrift_metadata)
         enumName = "testing.Perm"
         self.assertIsNotNone(meta)
         permEnum = meta.enums[enumName]
@@ -37,7 +37,7 @@ class MetadataTests(unittest.TestCase):
         self.assertEqual(permEnum, gen_metadata(Perm(1)))
 
     def test_metadata_structs(self) -> None:
-        meta = gen_metadata(testing.lite_metadata)
+        meta = gen_metadata(testing.thrift_metadata)
         structName = "testing.hard"
         self.assertIsNotNone(meta)
         hardStruct = meta.structs[structName]
@@ -120,7 +120,7 @@ class MetadataTests(unittest.TestCase):
         self.assertEqual(other_integers.is_union, integers.is_union)
 
     def test_metadata_exceptions(self) -> None:
-        meta = gen_metadata(testing.lite_metadata)
+        meta = gen_metadata(testing.thrift_metadata)
         errorName = "testing.HardError"
         self.assertIsNotNone(meta)
         hardError = meta.exceptions[errorName]
@@ -142,7 +142,7 @@ class MetadataTests(unittest.TestCase):
         self.assertEqual(field.type.value, ThriftPrimitiveType.THRIFT_I32_TYPE)
 
     def test_metadata_services(self) -> None:
-        meta = gen_metadata(testing.lite_metadata)
+        meta = gen_metadata(testing.thrift_metadata)
         serviceName = "testing.TestingService"
         self.assertIsNotNone(meta)
         testingService = meta.services[serviceName]

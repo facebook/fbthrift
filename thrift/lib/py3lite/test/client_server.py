@@ -19,15 +19,15 @@ import unittest
 from pathlib import Path
 from typing import Optional, Sequence
 
-from derived.lite_clients import DerivedTestingService
-from derived.lite_services import DerivedTestingServiceInterface
+from derived.thrift_clients import DerivedTestingService
+from derived.thrift_services import DerivedTestingServiceInterface
 from folly.iobuf import IOBuf
-from stack_args.lite_clients import StackService
-from stack_args.lite_services import StackServiceInterface
-from stack_args.lite_types import simple
-from testing.lite_clients import TestingService
-from testing.lite_services import TestingServiceInterface
-from testing.lite_types import Color, easy, SimpleError
+from stack_args.thrift_clients import StackService
+from stack_args.thrift_services import StackServiceInterface
+from stack_args.thrift_types import simple
+from testing.thrift_clients import TestingService
+from testing.thrift_services import TestingServiceInterface
+from testing.thrift_types import Color, easy, SimpleError
 from thrift.py3.server import (
     SocketAddress,
     get_context,

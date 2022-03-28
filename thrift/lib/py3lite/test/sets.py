@@ -17,7 +17,7 @@ import copy
 import unittest
 from typing import AbstractSet, Sequence, Tuple
 
-from testing.lite_types import SetI32, SetI32Lists, SetSetI32Lists
+from testing.thrift_types import SetI32, SetI32Lists, SetSetI32Lists
 
 
 class SetTests(unittest.TestCase):

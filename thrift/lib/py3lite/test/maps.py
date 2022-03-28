@@ -15,7 +15,7 @@
 
 import unittest
 
-from testing.lite_types import (
+from testing.thrift_types import (
     F14MapFollyString,
     LocationMap,
     StrI32ListMap,

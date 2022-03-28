@@ -16,7 +16,7 @@
 import itertools
 import unittest
 
-from testing.lite_types import (
+from testing.thrift_types import (
     I32List,
     StringList,
     StrList2D,
