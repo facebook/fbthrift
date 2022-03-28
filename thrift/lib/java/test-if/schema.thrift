@@ -37,3 +37,17 @@ struct EveryLayout {
 struct JustABinary {
   1: binary aBinary;
 }
+
+struct Pet {
+  1: string name;
+  2: optional i32 age;
+  3: optional bool vegan;
+}
+
+struct Nested1 {
+  1: list<Pet> pets;
+}
+
+struct Nested2 {
+  1: map<i32, Nested1> nests;
+}
