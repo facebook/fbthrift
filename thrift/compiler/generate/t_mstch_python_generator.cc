@@ -912,7 +912,7 @@ class t_mstch_python_generator : public t_mstch_generator {
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /* option_string unused */)
       : t_mstch_generator(
-            program, std::move(context), "py3lite", parsed_options),
+            program, std::move(context), "python", parsed_options),
         generate_root_path_{package_to_path()} {
     out_dir_base_ = "gen-python";
     auto include_prefix = get_option("include_prefix");
