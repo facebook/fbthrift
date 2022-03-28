@@ -16,10 +16,10 @@
 
 namespace cpp2 apache.thrift.test
 
-struct A {
-  1: optional map<i32, B> (cpp2.template = "std::unordered_map") some_map;
+struct C {
+  1: optional map<i32, D> (cpp2.template = "std::unordered_map") some_map;
 }
 
-struct B {
+struct D {
   1: optional i32 field;
 }
