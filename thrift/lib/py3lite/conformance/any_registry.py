@@ -15,8 +15,8 @@
 import types
 import typing
 
-from thrift.conformance.any.lite_types import Any
-from thrift.conformance.protocol.lite_types import StandardProtocol
+from thrift.conformance.any.thrift_types import Any
+from thrift.conformance.protocol.thrift_types import StandardProtocol
 from thrift.py3lite.conformance.universal_name import (
     find_by_universal_hash,
     get_universal_hash,

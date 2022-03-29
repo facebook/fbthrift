@@ -14,18 +14,18 @@
 
 import unittest
 
-from thrift.conformance.protocol.lite_types import StandardProtocol
+from thrift.conformance.protocol.thrift_types import StandardProtocol
 from thrift.py3lite.conformance.any_registry import AnyRegistry
 
-# @manual=//thrift/test/testset:testset-py3lite-types
-from thrift.test.testset import lite_types
+# @manual=//thrift/test/testset:testset-python-types
+from thrift.test.testset import thrift_types
 
 
 class AnyRegistryTest(unittest.TestCase):
     def test_round_trip(self) -> None:
         registry = AnyRegistry()
-        registry.register_module(lite_types)
-        original = lite_types.struct_map_string_i32(
+        registry.register_module(thrift_types)
+        original = thrift_types.struct_map_string_i32(
             field_1={
                 "Answer to the Ultimate Question of Life, the Universe, and Everything.": 42
             }
