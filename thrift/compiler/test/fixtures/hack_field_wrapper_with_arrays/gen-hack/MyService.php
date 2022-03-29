@@ -414,6 +414,7 @@ class MyService_second_result implements \IThriftSyncStruct {
   public ?bool $success;
 
   public function __construct(?bool $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {

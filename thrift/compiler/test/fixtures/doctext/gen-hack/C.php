@@ -938,6 +938,8 @@ class C_thing_result implements \IThriftSyncStruct {
   public ?Bang $bang;
 
   public function __construct(?string $success = null, ?Bang $bang = null  )[] {
+    $this->success = $success;
+    $this->bang = $bang;
   }
 
   public static function withDefaultValues()[]: this {
@@ -1079,6 +1081,7 @@ class C_numbers_StreamResponse implements \IThriftSyncStruct {
   public ?int $success;
 
   public function __construct(?int $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {

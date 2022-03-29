@@ -295,6 +295,7 @@ class t_hack_generator : public t_oop_generator {
       std::ofstream& out,
       const t_field& field,
       const t_struct* tstruct,
+      ThriftStructType type,
       const std::string& name = "",
       bool is_default_assignment = false);
   void generate_php_struct_metadata_method(
@@ -3697,6 +3698,7 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
     std::ofstream& out,
     const t_field& field,
     const t_struct* tstruct,
+    ThriftStructType type,
     const std::string& name,
     bool is_default_assignment) {
   const t_type* t = field.type()->get_true_type();
@@ -3735,10 +3737,12 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
   // success is whatever type the method returns, but must be nullable
   // regardless, since if there is an exception we expect it to be null
   // TODO(ckwalsh) Extract this logic into a helper function
-  bool nullable = !(is_exception && is_base_exception_property(&field)) &&
-      (dval == "null" ||
-       (field.get_req() == t_field::e_req::optional &&
-        field.default_value() == nullptr));
+  bool nullable = type == ThriftStructType::RESULT ||
+      (!(is_exception && is_base_exception_property(&field)) &&
+       (dval == "null" ||
+        (field.get_req() == t_field::e_req::optional &&
+         field.default_value() == nullptr)));
+
   const std::string& field_name = field.name();
   bool need_enum_code_fixme = is_exception && field_name == "code" &&
       t->is_enum() && !enum_transparenttype_;
@@ -3796,11 +3800,10 @@ void t_hack_generator::generate_php_struct_constructor(
         << "$this->_type = " << union_field_to_enum(tstruct, nullptr, name)
         << ";\n";
   }
-  if (type != ThriftStructType::RESULT) {
-    for (const auto& field : tstruct->fields()) {
-      generate_php_struct_constructor_field_assignment(
-          out, field, tstruct, name);
-    }
+
+  for (const auto& field : tstruct->fields()) {
+    generate_php_struct_constructor_field_assignment(
+        out, field, tstruct, type, name);
   }
 
   scope_down(out);
@@ -3837,12 +3840,12 @@ void t_hack_generator::generate_php_struct_default_constructor(
           wrapped_fields.push_back(&field);
         } else {
           generate_php_struct_constructor_field_assignment(
-              out, field, tstruct, name, true);
+              out, field, tstruct, type, name, true);
         }
       }
       for (const auto& field : wrapped_fields) {
         generate_php_struct_constructor_field_assignment(
-            out, *field, tstruct, name, true);
+            out, *field, tstruct, type, name, true);
       }
     }
   }

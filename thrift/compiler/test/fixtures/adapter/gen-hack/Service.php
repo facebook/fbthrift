@@ -450,6 +450,7 @@ class Service_func_result implements \IThriftSyncStruct {
   public ?\Adapter1::THackType $success;
 
   public function __construct(?\Adapter1::THackType $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {

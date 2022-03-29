@@ -613,6 +613,7 @@ class MyService_func_result implements \IThriftSyncStruct {
   public ?MyStruct $success;
 
   public function __construct(?MyStruct $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -856,6 +857,7 @@ class MyService_func1_result implements \IThriftSyncStruct {
   public ?MyStruct $success;
 
   public function __construct(?MyStruct $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {

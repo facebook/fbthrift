@@ -2078,6 +2078,7 @@ class SinkService_method_SinkPayload implements \IThriftSyncStruct {
   public ?SinkPayload $success;
 
   public function __construct(?SinkPayload $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2156,6 +2157,7 @@ class SinkService_method_FinalResponse implements \IThriftSyncStruct {
   public ?FinalResponse $success;
 
   public function __construct(?FinalResponse $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2286,6 +2288,7 @@ class SinkService_methodAndReponse_FirstResponse implements \IThriftSyncStruct {
   public ?InitialResponse $success;
 
   public function __construct(?InitialResponse $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2364,6 +2367,7 @@ class SinkService_methodAndReponse_SinkPayload implements \IThriftSyncStruct {
   public ?SinkPayload $success;
 
   public function __construct(?SinkPayload $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2442,6 +2446,7 @@ class SinkService_methodAndReponse_FinalResponse implements \IThriftSyncStruct {
   public ?FinalResponse $success;
 
   public function __construct(?FinalResponse $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2572,6 +2577,7 @@ class SinkService_methodThrow_FirstResponse implements \IThriftSyncStruct {
   public ?InitialException $ex;
 
   public function __construct(?InitialException $ex = null  )[] {
+    $this->ex = $ex;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2650,6 +2656,7 @@ class SinkService_methodThrow_SinkPayload implements \IThriftSyncStruct {
   public ?SinkPayload $success;
 
   public function __construct(?SinkPayload $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2728,6 +2735,7 @@ class SinkService_methodThrow_FinalResponse implements \IThriftSyncStruct {
   public ?FinalResponse $success;
 
   public function __construct(?FinalResponse $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2918,6 +2926,8 @@ class SinkService_methodSinkThrow_SinkPayload implements \IThriftSyncStruct {
   public ?SinkException1 $ex;
 
   public function __construct(?SinkPayload $success = null, ?SinkException1 $ex = null  )[] {
+    $this->success = $success;
+    $this->ex = $ex;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3012,6 +3022,7 @@ class SinkService_methodSinkThrow_FinalResponse implements \IThriftSyncStruct {
   public ?FinalResponse $success;
 
   public function __construct(?FinalResponse $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3194,6 +3205,7 @@ class SinkService_methodFinalThrow_SinkPayload implements \IThriftSyncStruct {
   public ?SinkPayload $success;
 
   public function __construct(?SinkPayload $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3280,6 +3292,8 @@ class SinkService_methodFinalThrow_FinalResponse implements \IThriftSyncStruct {
   public ?SinkException2 $ex;
 
   public function __construct(?FinalResponse $success = null, ?SinkException2 $ex = null  )[] {
+    $this->success = $success;
+    $this->ex = $ex;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3486,6 +3500,8 @@ class SinkService_methodBothThrow_SinkPayload implements \IThriftSyncStruct {
   public ?SinkException1 $ex;
 
   public function __construct(?SinkPayload $success = null, ?SinkException1 $ex = null  )[] {
+    $this->success = $success;
+    $this->ex = $ex;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3588,6 +3604,8 @@ class SinkService_methodBothThrow_FinalResponse implements \IThriftSyncStruct {
   public ?SinkException2 $ex;
 
   public function __construct(?FinalResponse $success = null, ?SinkException2 $ex = null  )[] {
+    $this->success = $success;
+    $this->ex = $ex;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3786,6 +3804,7 @@ class SinkService_methodFast_SinkPayload implements \IThriftSyncStruct {
   public ?SinkPayload $success;
 
   public function __construct(?SinkPayload $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3864,6 +3883,7 @@ class SinkService_methodFast_FinalResponse implements \IThriftSyncStruct {
   public ?FinalResponse $success;
 
   public function __construct(?FinalResponse $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {

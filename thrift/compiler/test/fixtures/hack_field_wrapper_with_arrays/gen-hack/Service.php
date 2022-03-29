@@ -415,6 +415,7 @@ class Service_func_result implements \IThriftSyncStruct {
   public ?int $success;
 
   public function __construct(?int $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {

@@ -701,6 +701,7 @@ class Bar_baz_result implements \IThriftSyncStruct {
   public ?string $success;
 
   public function __construct(?string $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {

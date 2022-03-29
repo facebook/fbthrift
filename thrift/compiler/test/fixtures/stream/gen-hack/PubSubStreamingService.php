@@ -1247,6 +1247,7 @@ class PubSubStreamingService_returnstream_StreamResponse implements \IThriftSync
   public ?int $success;
 
   public function __construct(?int $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -1454,6 +1455,8 @@ class PubSubStreamingService_streamthrows_StreamResponse implements \IThriftSync
   public ?FooEx $e;
 
   public function __construct(?int $success = null, ?FooEx $e = null  )[] {
+    $this->success = $success;
+    $this->e = $e;
   }
 
   public static function withDefaultValues()[]: this {
@@ -1677,6 +1680,8 @@ class PubSubStreamingService_boththrows_StreamResponse implements \IThriftSyncSt
   public ?FooEx $e;
 
   public function __construct(?int $success = null, ?FooEx $e = null  )[] {
+    $this->success = $success;
+    $this->e = $e;
   }
 
   public static function withDefaultValues()[]: this {
@@ -1767,6 +1772,7 @@ class PubSubStreamingService_boththrows_FirstResponse implements \IThriftSyncStr
   public ?FooEx $e;
 
   public function __construct(?FooEx $e = null  )[] {
+    $this->e = $e;
   }
 
   public static function withDefaultValues()[]: this {
@@ -1926,6 +1932,8 @@ class PubSubStreamingService_responseandstreamthrows_StreamResponse implements \
   public ?FooEx $e;
 
   public function __construct(?int $success = null, ?FooEx $e = null  )[] {
+    $this->success = $success;
+    $this->e = $e;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2023,6 +2031,8 @@ class PubSubStreamingService_responseandstreamthrows_FirstResponse implements \I
   public ?FooEx $e;
 
   public function __construct(?int $success = null, ?FooEx $e = null  )[] {
+    $this->success = $success;
+    $this->e = $e;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2206,6 +2216,7 @@ class PubSubStreamingService_returnstreamFast_StreamResponse implements \IThrift
   public ?int $success;
 
   public function __construct(?int $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {

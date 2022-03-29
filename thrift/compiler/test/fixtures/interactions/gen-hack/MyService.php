@@ -2434,6 +2434,7 @@ class MyService_interactFast_result implements \IThriftSyncStruct {
   public ?int $success;
 
   public function __construct(?int $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2559,6 +2560,7 @@ class MyService_serialize_StreamResponse implements \IThriftSyncStruct {
   public ?int $success;
 
   public function __construct(?int $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2632,6 +2634,7 @@ class MyService_serialize_FirstResponse implements \IThriftSyncStruct {
   public ?int $success;
 
   public function __construct(?int $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2765,6 +2768,8 @@ class MyService_MyInteraction_frobnicate_result implements \IThriftSyncStruct {
   public ?CustomException $ex;
 
   public function __construct(?int $success = null, ?CustomException $ex = null  )[] {
+    $this->success = $success;
+    $this->ex = $ex;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2958,6 +2963,7 @@ class MyService_MyInteraction_truthify_StreamResponse implements \IThriftSyncStr
   public ?bool $success;
 
   public function __construct(?bool $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3140,6 +3146,7 @@ class MyService_MyInteraction_encode_FirstResponse implements \IThriftSyncStruct
   public ?Set<int> $success;
 
   public function __construct(?Set<int> $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3221,6 +3228,7 @@ class MyService_MyInteraction_encode_SinkPayload implements \IThriftSyncStruct {
   public ?string $success;
 
   public function __construct(?string $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3294,6 +3302,7 @@ class MyService_MyInteraction_encode_FinalResponse implements \IThriftSyncStruct
   public ?string $success;
 
   public function __construct(?string $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3419,6 +3428,7 @@ class MyService_MyInteractionFast_frobnicate_result implements \IThriftSyncStruc
   public ?int $success;
 
   public function __construct(?int $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3596,6 +3606,7 @@ class MyService_MyInteractionFast_truthify_StreamResponse implements \IThriftSyn
   public ?bool $success;
 
   public function __construct(?bool $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3778,6 +3789,7 @@ class MyService_MyInteractionFast_encode_FirstResponse implements \IThriftSyncSt
   public ?Set<int> $success;
 
   public function __construct(?Set<int> $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3859,6 +3871,7 @@ class MyService_MyInteractionFast_encode_SinkPayload implements \IThriftSyncStru
   public ?string $success;
 
   public function __construct(?string $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3932,6 +3945,7 @@ class MyService_MyInteractionFast_encode_FinalResponse implements \IThriftSyncSt
   public ?string $success;
 
   public function __construct(?string $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {

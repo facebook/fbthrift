@@ -583,6 +583,7 @@ class SomeService_bounce_map_result implements \IThriftSyncStruct {
   public ?Map<int, string> $success;
 
   public function __construct(?Map<int, string> $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -812,6 +813,7 @@ class SomeService_binary_keyed_map_result implements \IThriftSyncStruct {
   public ?Map<string, int> $success;
 
   public function __construct(?Map<string, int> $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {

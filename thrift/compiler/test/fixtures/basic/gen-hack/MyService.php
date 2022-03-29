@@ -2714,6 +2714,7 @@ class MyService_getRandomData_result implements \IThriftSyncStruct {
   public ?string $success;
 
   public function __construct(?string $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3250,6 +3251,7 @@ class MyService_hasDataById_result implements \IThriftSyncStruct {
   public ?bool $success;
 
   public function __construct(?bool $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3436,6 +3438,7 @@ class MyService_getDataById_result implements \IThriftSyncStruct {
   public ?string $success;
 
   public function __construct(?string $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -3888,6 +3891,7 @@ class MyService_invalid_return_for_hack_result implements \IThriftSyncStruct {
   public ?Set<arraykey> $success;
 
   public function __construct(?Set<arraykey> $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {

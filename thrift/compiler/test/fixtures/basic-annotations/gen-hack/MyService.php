@@ -2053,6 +2053,7 @@ class MyService_ping_result implements \IThriftSyncStruct {
   public ?MyException $myExcept;
 
   public function __construct(?MyException $myExcept = null  )[] {
+    $this->myExcept = $myExcept;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2218,6 +2219,7 @@ class MyService_getRandomData_result implements \IThriftSyncStruct {
   public ?string $success;
 
   public function __construct(?string $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2404,6 +2406,7 @@ class MyService_hasDataById_result implements \IThriftSyncStruct {
   public ?bool $success;
 
   public function __construct(?bool $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
@@ -2590,6 +2593,7 @@ class MyService_getDataById_result implements \IThriftSyncStruct {
   public ?string $success;
 
   public function __construct(?string $success = null  )[] {
+    $this->success = $success;
   }
 
   public static function withDefaultValues()[]: this {
