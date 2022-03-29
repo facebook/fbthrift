@@ -24,17 +24,11 @@
 #include <memory>
 
 #include <boost/filesystem.hpp>
-
-/**
- * Note macro expansion because this is different between OSS and internal
- * build, sigh.
- */
-#include THRIFTY_HH
+#include <thrift/compiler/parse/lexer.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
-
 namespace {
 
 class parsing_terminator : public std::runtime_error {
@@ -44,16 +38,12 @@ class parsing_terminator : public std::runtime_error {
             "Internal exception used to terminate the parsing process.") {}
 };
 
-// We don't use std::isspace since it's locale-dependent
-bool is_white_space(char c) {
-  return c == ' ' || c == '\t' || c == '\r' || c == '\n';
-}
-
 } // namespace
 
 parsing_driver::parsing_driver(
     diagnostic_context& ctx, std::string path, parsing_params parse_params)
-    : params(std::move(parse_params)),
+    : lexer_(std::make_unique<lexer>(lexer::from_string(*this, path, {}))),
+      params(std::move(parse_params)),
       doctext(boost::none),
       doctext_lineno(0),
       mode(parsing_mode::INCLUDES),
@@ -72,17 +62,18 @@ parsing_driver::parsing_driver(
  */
 parsing_driver::~parsing_driver() = default;
 
+int parsing_driver::get_lineno() const {
+  return lexer_->get_lineno();
+}
+
+std::string parsing_driver::get_text() const {
+  return lexer_->get_text();
+}
+
 std::unique_ptr<t_program_bundle> parsing_driver::parse() {
-  std::unique_ptr<t_program_bundle> result{};
-  try {
-    scanner = std::make_unique<yy_scanner>();
-  } catch (std::system_error const&) {
-    return result;
-  }
+  parser_ = std::make_unique<yy::parser>(*this, &yylval_, &yylloc_);
 
-  parser_ = std::make_unique<yy::parser>(
-      *this, scanner->get_scanner(), &yylval_, &yylloc_);
-
+  std::unique_ptr<t_program_bundle> result;
   try {
     parse_file();
     result = std::move(program_bundle);
@@ -105,8 +96,7 @@ void parsing_driver::parse_file() {
   }
 
   try {
-    scanner->start(path);
-    scanner->set_lineno(1);
+    lexer_ = std::make_unique<lexer>(lexer::from_file(*this, path));
     reset_locations();
   } catch (std::runtime_error const& ex) {
     failure(ex.what());
@@ -157,8 +147,7 @@ void parsing_driver::parse_file() {
 
   // Parse the program file
   try {
-    scanner->start(path);
-    scanner->set_lineno(1);
+    lexer_ = std::make_unique<lexer>(lexer::from_file(*this, path));
     reset_locations();
   } catch (std::runtime_error const& ex) {
     failure(ex.what());
@@ -470,42 +459,14 @@ void parsing_driver::reset_locations() {
   yylval_ = 0;
 }
 
-void parsing_driver::compute_location(
-    YYLTYPE& yylloc, YYSTYPE& yylval, const char* text) {
+void parsing_driver::compute_locations(const char* source, size_t size) {
   /* Only computing locations during second pass. */
   if (mode != parsing_mode::PROGRAM) {
     return;
   }
-
-  int i = 0;
-
-  // Updating current begin to previous end.
-  yylloc.begin = yylloc.end;
-
-  // Getting rid of useless whitespaces on begin position.
-  for (; is_white_space(text[i]); i++) {
-    yylval++;
-    if (text[i] == '\n') {
-      yylloc.begin.line++;
-      yylloc.begin.column = 1;
-      program->add_line_offset(yylval);
-    } else {
-      yylloc.begin.column++;
-    }
-  }
-
-  // Avoid scanning whitespaces twice.
-  yylloc.end = yylloc.begin;
-
-  // Updating current end position.
-  for (; text[i] != '\0'; i++) {
-    yylval++;
-    if (text[i] == '\n') {
-      yylloc.end.line++;
-      yylloc.end.column = 1;
-      program->add_line_offset(yylval);
-    } else {
-      yylloc.end.column++;
+  for (size_t i = 0; i < size; ++i) {
+    if (source[i] == '\n') {
+      program->add_line_offset(i + 1);
     }
   }
 }
@@ -515,7 +476,7 @@ std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
   auto ttype = const_struct->ttype().value(); // Copy the t_type_ref.
   auto result = std::make_unique<t_const>(
       program, std::move(ttype), "", std::move(const_struct));
-  result->set_lineno(scanner->get_lineno());
+  result->set_lineno(lexer_->get_lineno());
   return result;
 }
 
@@ -698,12 +659,12 @@ void parsing_driver::add_include(std::string name) {
 
   if (program_cache.find(path) == program_cache.end()) {
     auto included_program =
-        program->add_include(path, name, scanner->get_lineno());
+        program->add_include(path, name, lexer_->get_lineno());
     program_cache[path] = included_program.get();
     program_bundle->add_program(std::move(included_program));
   } else {
     auto include = std::make_unique<t_include>(program_cache[path]);
-    include->set_lineno(scanner->get_lineno());
+    include->set_lineno(lexer_->get_lineno());
     program->add_include(std::move(include));
   }
 }

@@ -22,8 +22,6 @@ jobs:
       run: git config --system core.longpaths true
     - name: Fetch bison
       run: python build/fbcode_builder/getdeps.py fetch --no-tests bison
-    - name: Fetch flex
-      run: python build/fbcode_builder/getdeps.py fetch --no-tests flex
     - name: Fetch libsodium
       run: python build/fbcode_builder/getdeps.py fetch --no-tests libsodium
     - name: Fetch ninja
@@ -66,8 +64,6 @@ jobs:
       run: python build/fbcode_builder/getdeps.py fetch --no-tests wangle
     - name: Build bison
       run: python build/fbcode_builder/getdeps.py build --no-tests bison
-    - name: Build flex
-      run: python build/fbcode_builder/getdeps.py build --no-tests flex
     - name: Build libsodium
       run: python build/fbcode_builder/getdeps.py build --no-tests libsodium
     - name: Build ninja
@@ -109,7 +105,7 @@ jobs:
     - name: Build wangle
       run: python build/fbcode_builder/getdeps.py build --no-tests wangle
     - name: Build fbthrift
-      run: python build/fbcode_builder/getdeps.py build --src-dir=. fbthrift 
+      run: python build/fbcode_builder/getdeps.py build --src-dir=. fbthrift
     - name: Copy artifacts
       run: python build/fbcode_builder/getdeps.py fixup-dyn-deps --src-dir=. fbthrift _artifacts/windows  --final-install-prefix /usr/local
     - uses: actions/upload-artifact@v2
@@ -117,4 +113,4 @@ jobs:
         name: fbthrift
         path: _artifacts
     - name: Test fbthrift
-      run: python build/fbcode_builder/getdeps.py test --src-dir=. fbthrift 
+      run: python build/fbcode_builder/getdeps.py test --src-dir=. fbthrift

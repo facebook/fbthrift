@@ -18,7 +18,6 @@
 
 #include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/visitor.h>
-#include <thrift/compiler/parse/parsing_driver.h>
 
 namespace apache {
 namespace thrift {

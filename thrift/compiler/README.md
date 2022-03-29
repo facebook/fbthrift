@@ -21,25 +21,17 @@ git clone https://github.com/facebook/fbthrift.git
 ## Dependencies
 - [Cmake](https://cmake.org/) package builder
 - C++ [Boost](http://www.boost.org/)
-- [Flex](https://github.com/westes/flex) and [Bison](https://www.gnu.org/software/bison/)
+- [Bison](https://www.gnu.org/software/bison/)
 
 ### Ubuntu
 ```
-sudo apt-get install \
-  cmake \
-  flex \
-  bison \
-  libboost-all-dev
+sudo apt-get install cmake bison libboost-all-dev
 ```
 
 ### macOS
 Using [Homebrew](http://brew.sh/)
 ```
-brew install \
-  cmake \
-  flex \
-  bison \
-  boost
+brew install cmake bison boost
 ```
 
 ### Windows (MSVC)
@@ -69,7 +61,7 @@ brew install \
  - Default install, it will add the path to your PATH variable
 - Download [winflexbison.zip](https://sourceforge.net/projects/winflexbison/)
  - Create a directory where your boost_1_<ver>_0 directory is called 'win_flex_bison'(or any name you want to use)
- - Unzip and move win_flex.exe, win_bison.exe, and data/ to that directory
+ - Unzip and move win_bison.exe, and data/ to that directory
  - Add the directory to your PATH variable
  ```
  # Using Powershell (make sure path matches your install directory):

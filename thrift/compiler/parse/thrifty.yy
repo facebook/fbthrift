@@ -39,6 +39,7 @@
 
 #include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_union.h>
+#include <thrift/compiler/parse/lexer.h>
 #include <thrift/compiler/parse/parsing_driver.h>
 #include <thrift/compiler/ast/t_container.h>
 
@@ -47,12 +48,6 @@
  * build, sigh.
  */
 #include THRIFTY_HH
-
-/**
- * Declare fbthrift_compiler_parse_lex() so we can use it.
- */
-YY_DECL;
-#define yylex fbthrift_compiler_parse_lex
 
 namespace apache {
 namespace thrift {
@@ -64,6 +59,11 @@ template <typename T>
 std::unique_ptr<T> own(T* ptr) {
   return std::unique_ptr<T>(ptr);
 }
+
+yy::parser::symbol_type parse_lex(parsing_driver& driver, YYSTYPE*, YYLTYPE*) {
+  return driver.get_lexer().get_next_token();
+}
+#define yylex apache::thrift::compiler::parse_lex
 
 } // namespace
 } // namespace compiler
@@ -78,6 +78,7 @@ std::unique_ptr<T> own(T* ptr) {
 #include <thrift/compiler/ast/t_enum_value.h>
 #include <thrift/compiler/ast/t_exception.h>
 #include <thrift/compiler/ast/t_function.h>
+#include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/parse/t_ref.h>
 
 namespace apache { namespace thrift { namespace compiler { namespace yy {
@@ -134,7 +135,6 @@ using t_typethrowspair = std::pair<t_type_ref, t_throws*>;
 
 %param
     {apache::thrift::compiler::parsing_driver& driver}
-    {void* raw_scanner}
     {YYSTYPE * yylval_param}
     {YYLTYPE * yylloc_param}
 
@@ -879,7 +879,7 @@ Performs:
         std::move(name),
         std::make_unique<t_paramlist>(driver.program)
       );
-      $$->set_lineno(driver.scanner->get_lineno());
+      $$->set_lineno(driver.get_lexer().get_lineno());
       $$->set_is_interaction_constructor();
     }
 

@@ -41,32 +41,18 @@
 #include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/parse/t_ref.h>
-#include <thrift/compiler/parse/yy_scanner.h>
 
-/**
- * Note macro expansion because this is different between OSS and internal
- * build, sigh.
- */
+// This is a macro because of a difference between the OSS and internal builds.
 #ifndef LOCATION_HH
 #define LOCATION_HH "thrift/compiler/parse/location.hh"
 #endif
-
 #include LOCATION_HH
-
-/**
- * Provide the custom fbthrift_compiler_parse_lex signature to flex.
- */
-#define YY_DECL                                         \
-  apache::thrift::compiler::yy::parser::symbol_type     \
-  fbthrift_compiler_parse_lex(                          \
-      apache::thrift::compiler::parsing_driver& driver, \
-      apache::thrift::compiler::yyscan_t yyscanner,     \
-      YYSTYPE* yylval_param,                            \
-      YYLTYPE* yylloc_param)
 
 namespace apache {
 namespace thrift {
 namespace compiler {
+
+class lexer;
 
 namespace yy {
 class parser;
@@ -140,6 +126,12 @@ struct parsing_params {
 };
 
 class parsing_driver {
+ private:
+  std::unique_ptr<lexer> lexer_;
+
+  int get_lineno() const;
+  std::string get_text() const;
+
  public:
   parsing_params params;
 
@@ -176,14 +168,12 @@ class parsing_driver {
    */
   std::map<std::string, t_program*> program_cache;
 
-  /**
-   * The Flex lexer used by the parser.
-   */
-  std::unique_ptr<yy_scanner> scanner;
-
   parsing_driver(
       diagnostic_context& ctx, std::string path, parsing_params parse_params);
   ~parsing_driver();
+
+  const lexer& get_lexer() const { return *lexer_; }
+  lexer& get_lexer() { return *lexer_; }
 
   /**
    * Parses a program and returns the resulted AST.
@@ -211,51 +201,36 @@ class parsing_driver {
   // directly.
   template <typename... Args>
   void debug(Args&&... args) {
-    ctx_.debug(
-        scanner->get_lineno(),
-        scanner->get_text(),
-        std::forward<Args>(args)...);
+    ctx_.debug(get_lineno(), get_text(), std::forward<Args>(args)...);
   }
 
   template <typename... Args>
   void verbose(Args&&... args) {
-    ctx_.info(
-        scanner->get_lineno(),
-        scanner->get_text(),
-        std::forward<Args>(args)...);
+    ctx_.info(get_lineno(), get_text(), std::forward<Args>(args)...);
   }
 
   template <typename... Args>
   void yyerror(Args&&... args) {
     ctx_.report(
         diagnostic_level::parse_error,
-        scanner->get_lineno(),
-        scanner->get_text(),
+        get_lineno(),
+        get_text(),
         std::forward<Args>(args)...);
   }
 
   template <typename... Args>
   void warning(Args&&... args) {
-    ctx_.warning(
-        scanner->get_lineno(),
-        scanner->get_text(),
-        std::forward<Args>(args)...);
+    ctx_.warning(get_lineno(), get_text(), std::forward<Args>(args)...);
   }
 
   template <typename... Args>
   void warning_strict(Args&&... args) {
-    ctx_.warning_strict(
-        scanner->get_lineno(),
-        scanner->get_text(),
-        std::forward<Args>(args)...);
+    ctx_.warning_strict(get_lineno(), get_text(), std::forward<Args>(args)...);
   }
 
   template <typename... Args>
   [[noreturn]] void failure(Args&&... args) {
-    ctx_.failure(
-        scanner->get_lineno(),
-        scanner->get_text(),
-        std::forward<Args>(args)...);
+    ctx_.failure(get_lineno(), get_text(), std::forward<Args>(args)...);
     end_parsing();
   }
 
@@ -328,7 +303,7 @@ class parsing_driver {
   source_range get_source_range(const YYLTYPE& loc) const;
 
   void reset_locations();
-  void compute_location(YYLTYPE& yylloc, YYSTYPE& yylval, const char* text);
+  void compute_locations(const char* source, size_t size);
 
   /*
    * To fix Bison's default location

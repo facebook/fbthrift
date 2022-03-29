@@ -80,7 +80,6 @@ Some of the dependencies `getdeps.py` uses and installs are:
 [Bison 3.1 or later](https://www.gnu.org/software/bison),
 [Boost](https://www.boost.org),
 [CMake](https://cmake.org),
-[Flex](https://www.gnu.org/software/flex),
 [OpenSSLv1.0.2g](https://www.openssl.org),
 [PThreads](https://computing.llnl.gov/tutorials/pthreads), and
 [Zlib](https://zlib.net)

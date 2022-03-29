@@ -18,18 +18,12 @@ set(COMPILER_DIR ${CMAKE_CURRENT_BINARY_DIR})
 # Override default install path for `make install` step
 set(CMAKE_INSTALL_PREFIX ${THRIFT_HOME})
 
-# Compile Flex and Bison files and tie their dependencies
-if(WIN32)
-  set(FLEX_FLAGS "--wincompat")
-endif(WIN32)
+# Compile Bison files.
 set(BISON_FLAGS "--skeleton=lalr1.cc")
 BISON_TARGET(ThriftParser parse/thrifty.yy ${COMPILER_DIR}/thrifty.cc
   DEFINES_FILE ${COMPILER_DIR}/location.hh
   DEFINES_FILE ${COMPILER_DIR}/thrifty.hh
   COMPILE_FLAGS "${BISON_FLAGS}")
-FLEX_TARGET(ThriftScanner parse/thriftl.ll ${COMPILER_DIR}/thriftl.cc
-  COMPILE_FLAGS "${FLEX_FLAGS}")
-ADD_FLEX_BISON_DEPENDENCY(ThriftScanner ThriftParser)
 
 # build compiler/parse
 add_library(
@@ -62,6 +56,8 @@ add_library(
   platform.cc
   util.cc
 
+  parse/lexer.cc
+  parse/lexer.h
   parse/parsing_driver.cc
   sema/const_checker.cc
   sema/patch_mutator.cc
@@ -69,7 +65,6 @@ add_library(
   sema/standard_mutator.cc
   sema/standard_validator.cc
 
-  ${FLEX_ThriftScanner_OUTPUTS}
   ${BISON_ThriftParser_OUTPUTS}
 )
 target_compile_definitions(
@@ -77,18 +72,6 @@ target_compile_definitions(
  PRIVATE -DTHRIFTY_HH="${COMPILER_DIR}/thrifty.hh"
  PUBLIC -DLOCATION_HH="${COMPILER_DIR}/location.hh"
 )
-if (NOT MSVC)
-  target_compile_options(
-    compiler_base
-    PUBLIC "-Wno-deprecated-register"
-  )
-  # Some versions of flex emit `register` storage qualifiers,
-  # so let's just suppress that warning.
-  target_compile_options(
-    compiler_base
-    PRIVATE "-Wno-register"
-  )
-endif()
 target_link_libraries(
   compiler_base
 

@@ -1,4 +1,4 @@
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Meta Platforms, Inc. and affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -87,10 +87,9 @@ option(thriftpy3
   OFF
 )
 
-# Find required dependencies for thrift/compiler
+# Find required dependencies for the Thrift compiler.
 if (compiler_only OR build_all)
   find_package(BISON 3.0.4 REQUIRED)
-  find_package(FLEX REQUIRED)
   include_directories(${OPENSSL_INCLUDE_DIR})
   set(THRIFT1 thrift1)
   set(THRIFTCPP2 thriftcpp2)
