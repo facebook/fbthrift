@@ -19,28 +19,15 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from thrift.transport.TTransport import *
-
+import http.client as http_client
 import os
 import socket
 import sys
 import warnings
+from io import BytesIO as StringIO
+from urllib import parse
 
-if sys.version_info[0] >= 3:
-    from http import client
-    from io import BytesIO as StringIO
-    from urllib import parse
-
-    # pyre-fixme[11]: Annotation `parse` is not defined as a type.
-    urlparse = parse
-    urllib = parse
-    # pyre-fixme[11]: Annotation `client` is not defined as a type.
-    httplib = client
-else:
-    import httplib  # @manual
-    import urllib
-    import urlparse
-    from cStringIO import StringIO
+from thrift.transport.TTransport import TTransportBase, TTransportException
 
 
 class THttpClient(TTransportBase):
@@ -68,13 +55,13 @@ class THttpClient(TTransportBase):
             self.path = path
             self.scheme = "http"
         else:
-            parsed = urlparse.urlparse(uri_or_host)
+            parsed = parse.urlparse(uri_or_host)
             self.scheme = parsed.scheme
             assert self.scheme in ("http", "https")
             if self.scheme == "http":
-                self.port = parsed.port or httplib.HTTP_PORT
+                self.port = parsed.port or http_client.HTTP_PORT
             elif self.scheme == "https":
-                self.port = parsed.port or httplib.HTTPS_PORT
+                self.port = parsed.port or http_client.HTTPS_PORT
             self.host = parsed.hostname
             self.http_host = parsed.netloc
             self.path = parsed.path
@@ -88,11 +75,11 @@ class THttpClient(TTransportBase):
 
     def open(self):
         if self.scheme == "http":
-            self.__http = httplib.HTTPConnection(
+            self.__http = http_client.HTTPConnection(
                 self.host, self.port, timeout=self.__timeout
             )
         else:
-            self.__http = httplib.HTTPSConnection(
+            self.__http = http_client.HTTPSConnection(
                 self.host, self.port, context=self.ssl_context, timeout=self.__timeout
             )
 
@@ -145,7 +132,7 @@ class THttpClient(TTransportBase):
             user_agent = "Python/THttpClient"
             script = os.path.basename(sys.argv[0])
             if script:
-                user_agent = "%s (%s)" % (user_agent, urllib.quote(script))
+                user_agent = "%s (%s)" % (user_agent, parse.quote(script))
             self.__http.putheader("User-Agent", user_agent)
 
         if self.__custom_headers:

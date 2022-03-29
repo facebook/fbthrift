@@ -20,18 +20,6 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import logging
-import os
-import sys
-import threading
-
-if sys.version_info[0] >= 3:
-    import queue
-
-    # pyre-fixme[11]: Annotation `queue` is not defined as a type.
-    Queue = queue
-else:
-    import Queue
-import warnings
 
 from thrift.protocol import TBinaryProtocol
 from thrift.protocol.THeaderProtocol import THeaderProtocolFactory

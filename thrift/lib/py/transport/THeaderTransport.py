@@ -19,24 +19,9 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import sys
-
-if sys.version_info[0] >= 3:
-    from http import server
-
-    # pyre-fixme[11]: Annotation `server` is not defined as a type.
-    BaseHTTPServer = server
-    xrange = range
-    from io import BytesIO as StringIO
-
-    PY3 = True
-else:
-    import BaseHTTPServer  # @manual
-    from cStringIO import StringIO
-
-    PY3 = False
-
+import http.server as http_server
 import zlib
+from io import BytesIO as StringIO
 from struct import pack, unpack
 
 from thrift.protocol.TBinaryProtocol import TBinaryProtocol
@@ -47,6 +32,8 @@ from thrift.transport.TTransport import (
     TTransportBase,
     CReadableTransport,
 )
+
+xrange = range
 
 # Import the snappy module if it is available
 try:
@@ -288,7 +275,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__rbuf_frame = True
         word1 = self.getTransport().readAll(4)
         sz = unpack("!I", word1)[0]
-        proto_id = word1[0] if PY3 else ord(word1[0])
+        proto_id = word1[0]
         if proto_id == TBinaryProtocol.PROTOCOL_ID:
             # unframed
             self.__client_type = CLIENT_TYPE.UNFRAMED_DEPRECATED
@@ -316,7 +303,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                 sz = unpack("!Q", self.getTransport().readAll(8))[0]
             # could be header format or framed.  Check next two bytes.
             magic = self.getTransport().readAll(2)
-            proto_id = magic[0] if PY3 else ord(magic[0])
+            proto_id = magic[0]
             if proto_id == TCompactProtocol.PROTOCOL_ID:
                 self.__client_type = CLIENT_TYPE.FRAMED_COMPACT
                 self.__proto_id = T_COMPACT_PROTOCOL
@@ -594,7 +581,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
 
 def _serialize_string(str_):
-    if PY3 and not isinstance(str_, bytes):
+    if not isinstance(str_, bytes):
         str_ = str_.encode()
     return getVarint(len(str_)) + str_
 
@@ -635,7 +622,7 @@ def _frame_size_check(sz, set_max_size, header: bool = True) -> None:
         )
 
 
-class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+class RequestHandler(http_server.BaseHTTPRequestHandler):
 
     # Same as superclass function, but append 'POST' because we
     # stripped it in the calling function.  Would be nice if

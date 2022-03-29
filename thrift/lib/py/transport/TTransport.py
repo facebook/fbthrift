@@ -19,20 +19,10 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import sys
-
-if sys.version_info[0] >= 3:
-    from io import BytesIO
-
-    from thrift.util.BytesStrIO import BytesStrIO
-
-    StringIO = BytesStrIO
-
-else:
-    from cStringIO import StringIO
 from struct import pack, unpack
 
 from thrift.Thrift import TException
+from thrift.util.BytesStrIO import BytesStrIO as StringIO
 
 
 class TTransportException(TException):
