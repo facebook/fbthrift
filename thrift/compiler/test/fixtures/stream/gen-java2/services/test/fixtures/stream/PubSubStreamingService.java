@@ -18,6 +18,83 @@ import java.util.*;
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("PubSubStreamingService")
 public interface PubSubStreamingService extends java.io.Closeable {
+    static PubSubStreamingService createBlockingClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
+      final org.apache.thrift.ProtocolId _protocolId) {
+        PubSubStreamingService.Reactive _delegate = createReactiveClient(
+            _rpcClientFactory,
+            _socketAddress,
+            _protocolId);
+        return new PubSubStreamingServiceReactiveBlockingWrapper(_delegate);
+    }
+
+    static PubSubStreamingService createBlockingClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
+      final org.apache.thrift.ProtocolId _protocolId,
+      final java.util.Map<String, String> _headers,
+      final java.util.Map<String, String> _persistentHeaders) {
+        PubSubStreamingService.Reactive _delegate = createReactiveClient(
+            _rpcClientFactory,
+            _socketAddress,
+            _protocolId,
+            _headers,
+            _persistentHeaders);
+        return new PubSubStreamingServiceReactiveBlockingWrapper(_delegate);
+    }
+
+    static PubSubStreamingService.Async createAsyncClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
+      final org.apache.thrift.ProtocolId _protocolId) {
+        PubSubStreamingService.Reactive _delegate = createReactiveClient(
+            _rpcClientFactory,
+            _socketAddress,
+            _protocolId);
+        return new PubSubStreamingServiceReactiveAsyncWrapper(_delegate);
+    }
+
+    static PubSubStreamingService.Async createAsyncClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
+      final org.apache.thrift.ProtocolId _protocolId,
+      final java.util.Map<String, String> _headers,
+      final java.util.Map<String, String> _persistentHeaders) {
+        PubSubStreamingService.Reactive _delegate = createReactiveClient(
+            _rpcClientFactory,
+            _socketAddress,
+            _protocolId,
+            _headers,
+            _persistentHeaders);
+        return new PubSubStreamingServiceReactiveAsyncWrapper(_delegate);
+    }
+
+    static PubSubStreamingService.Reactive createReactiveClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
+      final org.apache.thrift.ProtocolId _protocolId) {
+        return new PubSubStreamingServiceReactiveClient(
+            _protocolId,
+            _rpcClientFactory.createRpcClient(_socketAddress),
+            java.util.Collections.emptyMap(),
+            java.util.Collections.emptyMap());
+    }
+
+    static PubSubStreamingService.Reactive createReactiveClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
+      final org.apache.thrift.ProtocolId _protocolId,
+      final java.util.Map<String, String> _headers,
+      final java.util.Map<String, String> _persistentHeaders
+      ) {
+        return new PubSubStreamingServiceReactiveClient(
+            _protocolId,
+            _rpcClientFactory.createRpcClient(_socketAddress),
+            _headers,
+            _persistentHeaders);
+    }
+
     @com.facebook.swift.service.ThriftService("PubSubStreamingService")
     public interface Async extends java.io.Closeable {
         @java.lang.Override void close();

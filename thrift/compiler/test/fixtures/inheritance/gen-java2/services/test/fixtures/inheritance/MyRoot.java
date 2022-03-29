@@ -18,6 +18,83 @@ import java.util.*;
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("MyRoot")
 public interface MyRoot extends java.io.Closeable {
+    static MyRoot createBlockingClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
+      final org.apache.thrift.ProtocolId _protocolId) {
+        MyRoot.Reactive _delegate = createReactiveClient(
+            _rpcClientFactory,
+            _socketAddress,
+            _protocolId);
+        return new MyRootReactiveBlockingWrapper(_delegate);
+    }
+
+    static MyRoot createBlockingClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
+      final org.apache.thrift.ProtocolId _protocolId,
+      final java.util.Map<String, String> _headers,
+      final java.util.Map<String, String> _persistentHeaders) {
+        MyRoot.Reactive _delegate = createReactiveClient(
+            _rpcClientFactory,
+            _socketAddress,
+            _protocolId,
+            _headers,
+            _persistentHeaders);
+        return new MyRootReactiveBlockingWrapper(_delegate);
+    }
+
+    static MyRoot.Async createAsyncClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
+      final org.apache.thrift.ProtocolId _protocolId) {
+        MyRoot.Reactive _delegate = createReactiveClient(
+            _rpcClientFactory,
+            _socketAddress,
+            _protocolId);
+        return new MyRootReactiveAsyncWrapper(_delegate);
+    }
+
+    static MyRoot.Async createAsyncClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
+      final org.apache.thrift.ProtocolId _protocolId,
+      final java.util.Map<String, String> _headers,
+      final java.util.Map<String, String> _persistentHeaders) {
+        MyRoot.Reactive _delegate = createReactiveClient(
+            _rpcClientFactory,
+            _socketAddress,
+            _protocolId,
+            _headers,
+            _persistentHeaders);
+        return new MyRootReactiveAsyncWrapper(_delegate);
+    }
+
+    static MyRoot.Reactive createReactiveClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
+      final org.apache.thrift.ProtocolId _protocolId) {
+        return new MyRootReactiveClient(
+            _protocolId,
+            _rpcClientFactory.createRpcClient(_socketAddress),
+            java.util.Collections.emptyMap(),
+            java.util.Collections.emptyMap());
+    }
+
+    static MyRoot.Reactive createReactiveClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
+      final org.apache.thrift.ProtocolId _protocolId,
+      final java.util.Map<String, String> _headers,
+      final java.util.Map<String, String> _persistentHeaders
+      ) {
+        return new MyRootReactiveClient(
+            _protocolId,
+            _rpcClientFactory.createRpcClient(_socketAddress),
+            _headers,
+            _persistentHeaders);
+    }
+
     @com.facebook.swift.service.ThriftService("MyRoot")
     public interface Async extends java.io.Closeable {
         @java.lang.Override void close();
