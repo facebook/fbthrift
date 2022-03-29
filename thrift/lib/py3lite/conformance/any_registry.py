@@ -27,12 +27,14 @@ from thrift.py3lite.serializer import deserialize, serialize_iobuf, Protocol
 from thrift.py3lite.types import StructOrUnion
 
 
-def _to_serializer_protocol(protocol: StandardProtocol) -> Protocol:
+def _to_serializer_protocol(protocol: typing.Optional[StandardProtocol]) -> Protocol:
+    if protocol is None:
+        return Protocol.COMPACT
     if protocol == StandardProtocol.Binary:
         return Protocol.BINARY
     if protocol == StandardProtocol.Compact:
         return Protocol.COMPACT
-    raise ValueError("Unsupported Protocol")
+    raise ValueError(f"Unsupported protocol: {protocol}")
 
 
 class AnyRegistry:
@@ -60,7 +62,7 @@ class AnyRegistry:
             self.register_type(cls)
 
     def store(
-        self, obj: StructOrUnion, protocol: StandardProtocol = StandardProtocol.Binary
+        self, obj: StructOrUnion, protocol: typing.Optional[StandardProtocol] = None
     ) -> Any:
         uri = self._type_to_uri[type(obj)]
         hash = get_universal_hash(UniversalHashAlgorithm.Sha2_256, uri)
@@ -82,8 +84,5 @@ class AnyRegistry:
             cls = self._uri_to_type[obj.type]
         else:
             raise ValueError("No type information found")
-        if obj.protocol:
-            serializer_protocol = _to_serializer_protocol(obj.protocol)
-        else:
-            raise ValueError("No protocol information found")
+        serializer_protocol = _to_serializer_protocol(obj.protocol)
         return deserialize(cls, obj.data, protocol=serializer_protocol)

@@ -35,3 +35,17 @@ class AnyRegistryTest(unittest.TestCase):
         self.assertEqual(StandardProtocol.Compact, any_obj.protocol)
         loaded = registry.load(any_obj)
         self.assertEqual(original, loaded)
+
+    def test_absent_protocol(self) -> None:
+        registry = AnyRegistry()
+        registry.register_module(thrift_types)
+        original = thrift_types.struct_map_string_i32(
+            field_1={
+                "Answer to the Ultimate Question of Life, the Universe, and Everything.": 42
+            }
+        )
+        any_obj = registry.store(original)
+        self.assertIsNotNone(any_obj.typeHashPrefixSha2_256)
+        self.assertIsNone(any_obj.protocol)
+        loaded = registry.load(any_obj)
+        self.assertEqual(original, loaded)
