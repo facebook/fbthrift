@@ -67,7 +67,11 @@ testing::TestInfo* RegisterTest(
 testing::AssertionResult RunRoundTripTest(
     ConformanceServiceAsyncClient& client, RoundTripTestCase roundTrip) {
   RoundTripResponse res;
-  client.sync_roundTrip(res, *roundTrip.request_ref());
+  try {
+    client.sync_roundTrip(res, *roundTrip.request_ref());
+  } catch (const apache::thrift::TApplicationException&) {
+    return testing::AssertionFailure();
+  }
 
   const Any& expectedAny = roundTrip.expectedResponse_ref()
       ? *roundTrip.expectedResponse_ref().value_unchecked().value_ref()
