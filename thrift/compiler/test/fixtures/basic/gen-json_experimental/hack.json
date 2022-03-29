@@ -5,8 +5,9 @@
     "cpp2": "facebook.thrift.annotation.hack",
     "go": "thrift.annotation.hack",
     "hack": "facebook.thrift.annotation",
-    "java": "com.facebook.thrift.annotation.hack_deprecated",
-    "java.swift": "com.facebook.thrift.annotation.hack",
+    "java": "com.facebook.thrift.annotation.java_deprecated",
+    "java.swift": "com.facebook.thrift.annotation.java_swift",
+    "java2": "com.facebook.thrift.annotation.java",
     "py": "thrift.annotation.hack",
     "py.asyncio": "facebook_thrift_asyncio.annotation.hack",
     "py3": "facebook.thrift.annotation.hack"
@@ -18,14 +19,14 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 39,
+            "lineno" : 40,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 37
+        "lineno" : 38
       },
       "SkipCodegen" : {
         "name" : "SkipCodegen",
@@ -33,14 +34,14 @@
           "reason" : {
             "name" : "reason",
             "key" : 1,
-            "lineno" : 45,
+            "lineno" : 46,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 44
+        "lineno" : 45
       }
       },
   "source_path" : "thrift/annotation/hack",

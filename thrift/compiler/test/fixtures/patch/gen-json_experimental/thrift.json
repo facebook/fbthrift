@@ -5,7 +5,8 @@
     "cpp2": "facebook.thrift.annotation.thrift",
     "go": "thrift.annotation.thrift",
     "java": "com.facebook.thrift.annotation.thrift_deprecated",
-    "java.swift": "com.facebook.thrift.annotation.thrift",
+    "java.swift": "com.facebook.thrift.annotation.thrift_swift",
+    "java2": "com.facebook.thrift.annotation.thrift",
     "php": "facebook_thrift_annotation_thrift",
     "py": "thrift.annotation.thrift",
     "py.asyncio": "facebook_thrift_asyncio.annotation.thrift",
@@ -19,44 +20,44 @@
             "name" : "field_name",
             "default_value" : 0,
             "key" : 1,
-            "lineno" : 33,
+            "lineno" : 34,
             "required" : "opt-in-req-out",
             "type" : "bool"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 32
+        "lineno" : 33
       },
       "Experimental" : {
         "name" : "Experimental",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 40
+        "lineno" : 41
       },
       "Deprecated" : {
         "name" : "Deprecated",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 45
+        "lineno" : 46
       },
       "TerseWrite" : {
         "name" : "TerseWrite",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 50
+        "lineno" : 51
       },
       "Box" : {
         "name" : "Box",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 55
+        "lineno" : 56
       },
       "SerializeInFieldIdOrder" : {
         "name" : "SerializeInFieldIdOrder",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 62
+        "lineno" : 63
       }
       },
   "source_path" : "thrift/annotation/thrift",

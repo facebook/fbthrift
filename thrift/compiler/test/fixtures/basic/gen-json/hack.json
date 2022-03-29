@@ -3,7 +3,7 @@
   "thrift_module" : "hack",
   "structs" : {
     "FieldWrapper" : {
-      "lineno" : 37,
+      "lineno" : 38,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -13,11 +13,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 39,
+              "line" : 40,
               "column" : 3
             },
             "end" : {
-              "line" : 39,
+              "line" : 40,
               "column" : 17
             }
           }
@@ -25,17 +25,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 36,
+          "line" : 37,
           "column" : 1
         },
         "end" : {
-          "line" : 40,
+          "line" : 41,
           "column" : 68
         }
       }
     },
     "SkipCodegen" : {
-      "lineno" : 44,
+      "lineno" : 45,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -45,11 +45,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 45,
+              "line" : 46,
               "column" : 3
             },
             "end" : {
-              "line" : 45,
+              "line" : 46,
               "column" : 19
             }
           }
@@ -57,11 +57,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 42,
+          "line" : 43,
           "column" : 1
         },
         "end" : {
-          "line" : 46,
+          "line" : 47,
           "column" : 67
         }
       }

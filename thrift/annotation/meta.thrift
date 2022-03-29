@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,8 @@ include "thrift/annotation/scope.thrift"
 namespace cpp2 facebook.thrift.annotation
 namespace py3 facebook.thrift.annotation
 namespace php facebook_thrift_annotation
-namespace java.swift com.facebook.thrift.annotation
+namespace java2 com.facebook.thrift.annotation
+namespace java.swift com.facebook.thrift.annotation_swift
 namespace java com.facebook.thrift.annotation_deprecated
 namespace py.asyncio facebook_thrift_asyncio.annotation.meta
 namespace go thrift.annotation.meta

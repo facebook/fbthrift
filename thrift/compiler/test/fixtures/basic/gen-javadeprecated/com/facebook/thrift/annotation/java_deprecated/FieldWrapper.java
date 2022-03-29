@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.facebook.thrift.annotation.hack_deprecated;
+package com.facebook.thrift.annotation.java_deprecated;
 
 import java.util.List;
 import java.util.ArrayList;

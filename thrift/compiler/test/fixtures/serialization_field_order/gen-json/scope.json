@@ -3,16 +3,16 @@
   "thrift_module" : "scope",
   "typedefs" : {
     "Enum" : {
-      "lineno" : 57,
+      "lineno" : 58,
       "type_enum" : "STRUCT",
       "spec_args" : "FbthriftInternalEnum",
       "source_range" : {
         "begin" : {
-          "line" : 57,
+          "line" : 58,
           "column" : 1
         },
         "end" : {
-          "line" : 59,
+          "line" : 60,
           "column" : 2
         }
       }
@@ -20,24 +20,6 @@
   },
   "structs" : {
     "Struct" : {
-      "lineno" : 41,
-      "is_exception" : false,
-      "is_union" : false,
-      "fields" : {
-
-      },
-      "source_range" : {
-        "begin" : {
-          "line" : 41,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 41,
-          "column" : 72
-        }
-      }
-    },
-    "Union" : {
       "lineno" : 42,
       "is_exception" : false,
       "is_union" : false,
@@ -51,11 +33,11 @@
         },
         "end" : {
           "line" : 42,
-          "column" : 70
+          "column" : 72
         }
       }
     },
-    "Exception" : {
+    "Union" : {
       "lineno" : 43,
       "is_exception" : false,
       "is_union" : false,
@@ -69,11 +51,11 @@
         },
         "end" : {
           "line" : 43,
-          "column" : 78
+          "column" : 70
         }
       }
     },
-    "Field" : {
+    "Exception" : {
       "lineno" : 44,
       "is_exception" : false,
       "is_union" : false,
@@ -87,11 +69,11 @@
         },
         "end" : {
           "line" : 44,
-          "column" : 70
+          "column" : 78
         }
       }
     },
-    "Typedef" : {
+    "Field" : {
       "lineno" : 45,
       "is_exception" : false,
       "is_union" : false,
@@ -105,11 +87,11 @@
         },
         "end" : {
           "line" : 45,
-          "column" : 74
+          "column" : 70
         }
       }
     },
-    "Service" : {
+    "Typedef" : {
       "lineno" : 46,
       "is_exception" : false,
       "is_union" : false,
@@ -127,7 +109,7 @@
         }
       }
     },
-    "Interaction" : {
+    "Service" : {
       "lineno" : 47,
       "is_exception" : false,
       "is_union" : false,
@@ -140,13 +122,13 @@
           "column" : 1
         },
         "end" : {
-          "line" : 49,
-          "column" : 2
+          "line" : 47,
+          "column" : 74
         }
       }
     },
-    "Function" : {
-      "lineno" : 50,
+    "Interaction" : {
+      "lineno" : 48,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -154,16 +136,16 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 50,
+          "line" : 48,
           "column" : 1
         },
         "end" : {
           "line" : 50,
-          "column" : 76
+          "column" : 2
         }
       }
     },
-    "EnumValue" : {
+    "Function" : {
       "lineno" : 51,
       "is_exception" : false,
       "is_union" : false,
@@ -177,11 +159,11 @@
         },
         "end" : {
           "line" : 51,
-          "column" : 78
+          "column" : 76
         }
       }
     },
-    "Const" : {
+    "EnumValue" : {
       "lineno" : 52,
       "is_exception" : false,
       "is_union" : false,
@@ -195,12 +177,30 @@
         },
         "end" : {
           "line" : 52,
+          "column" : 78
+        }
+      }
+    },
+    "Const" : {
+      "lineno" : 53,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 53,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 53,
           "column" : 70
         }
       }
     },
     "FbthriftInternalEnum" : {
-      "lineno" : 56,
+      "lineno" : 57,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -208,17 +208,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 56,
+          "line" : 57,
           "column" : 1
         },
         "end" : {
-          "line" : 56,
+          "line" : 57,
           "column" : 31
         }
       }
     },
     "FbthriftInternalScopeTransitive" : {
-      "lineno" : 61,
+      "lineno" : 62,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -226,17 +226,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 61,
+          "line" : 62,
           "column" : 1
         },
         "end" : {
-          "line" : 63,
+          "line" : 64,
           "column" : 2
         }
       }
     },
     "Structured" : {
-      "lineno" : 69,
+      "lineno" : 70,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -244,17 +244,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 65,
+          "line" : 66,
           "column" : 1
         },
         "end" : {
-          "line" : 69,
+          "line" : 70,
           "column" : 21
         }
       }
     },
     "Interface" : {
-      "lineno" : 74,
+      "lineno" : 75,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -262,17 +262,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 71,
+          "line" : 72,
           "column" : 1
         },
         "end" : {
-          "line" : 74,
+          "line" : 75,
           "column" : 20
         }
       }
     },
     "RootDefinition" : {
-      "lineno" : 82,
+      "lineno" : 83,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -280,17 +280,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 76,
+          "line" : 77,
           "column" : 1
         },
         "end" : {
-          "line" : 82,
+          "line" : 83,
           "column" : 25
         }
       }
     },
     "Definition" : {
-      "lineno" : 89,
+      "lineno" : 90,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -298,11 +298,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 84,
+          "line" : 85,
           "column" : 1
         },
         "end" : {
-          "line" : 89,
+          "line" : 90,
           "column" : 21
         }
       }

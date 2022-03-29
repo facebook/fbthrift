@@ -16,32 +16,26 @@
 
 include "thrift/annotation/scope.thrift"
 
-namespace cpp2 facebook.thrift.annotation.hack
-namespace hack facebook.thrift.annotation
-namespace py3 facebook.thrift.annotation.hack
-namespace py thrift.annotation.hack
+namespace cpp2 facebook.thrift.annotation.java
+namespace py3 facebook.thrift.annotation.java
+namespace php facebook_thrift_annotation_java
 namespace java2 com.facebook.thrift.annotation.java
 namespace java.swift com.facebook.thrift.annotation.java_swift
 namespace java com.facebook.thrift.annotation.java_deprecated
-namespace py.asyncio facebook_thrift_asyncio.annotation.hack
-namespace go thrift.annotation.hack
+namespace py.asyncio facebook_thrift_asyncio.annotation.java
+namespace go thrift.annotation.java
+namespace py thrift.annotation.java
 
-// An experimental annotation that applies a Hack wrapper to fields.
+// An annotation that is applied to a Typedef field that maps it a Java type Adapter.
 // For example:
+// @java.Adapter{adapterClassName="com.facebook.thrift.TimestampAdapter", typeClassName="java.time.Instant"}
+// typedef i64 Timestamp
 //
-//   struct User {
-//     @hack.FieldWrapper{name="MyWrapper"}
-//     1: i64 id;
-//   }
-//
-@scope.Field
-struct FieldWrapper {
-  // The name of a Hack wrapper class used to wrap the field
-  1: string name;
-} (thrift.uri = "facebook.com/thrift/annotation/hack/FieldWrapper")
+@scope.Typedef
+struct Adapter {
+  // Fully qualified name to a class that implements com.facebook.thrift.adaptor.TypeAdapter
+  1: string adapterClassName;
 
-@scope.Field
-@scope.Function
-struct SkipCodegen {
-  1: string reason;
-} (thrift.uri = "facebook.com/thrift/annotation/hack/SkipCodegen")
+  // Fully qualified name the above implmenantion adapts too
+  2: string typeClassName;
+} (thrift.uri = "facebook.com/thrift/annotation/java/Adapter")
