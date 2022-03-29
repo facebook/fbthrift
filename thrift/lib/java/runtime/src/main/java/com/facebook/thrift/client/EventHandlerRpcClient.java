@@ -62,8 +62,13 @@ public class EventHandlerRpcClient implements RpcClient {
     return delegate
         .singleRequestSingleResponse(requestPayload, options)
         .doOnNext(
-            clientResponsePayload ->
-                requestPayload.setResponseHeaders(clientResponsePayload.getHeaders()))
+            clientResponsePayload -> {
+              requestPayload.setResponseHeaders(clientResponsePayload.getHeaders());
+              if (clientResponsePayload.getException() != null) {
+                requestPayload.onError(clientResponsePayload.getException());
+              }
+            })
+        .doOnError(requestPayload::onError)
         .doFinally(__ -> requestPayload.done());
   }
 
@@ -74,6 +79,7 @@ public class EventHandlerRpcClient implements RpcClient {
         new EventHandlerClientRequestPayload<>(payload, eventHandlers);
     return delegate
         .singleRequestNoResponse(requestPayload, options)
+        .doOnError(requestPayload::onError)
         .doFinally(__ -> requestPayload.done());
   }
 
@@ -120,6 +126,12 @@ public class EventHandlerRpcClient implements RpcClient {
     public void done() {
       for (int i = 0; i < handlers.size(); i++) {
         handlers.get(i).done(contexts.get(i), methodName);
+      }
+    }
+
+    public void onError(Throwable t) {
+      for (int i = 0; i < handlers.size(); i++) {
+        handlers.get(i).onError(contexts.get(i), methodName, t);
       }
     }
 

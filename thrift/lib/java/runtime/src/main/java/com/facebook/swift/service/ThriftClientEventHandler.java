@@ -29,11 +29,9 @@ public abstract class ThriftClientEventHandler {
 
   public void preRead(Object context, String methodName) {}
 
-  public void preReadException(Object context, String methodName, Throwable t) {}
-
   public void postRead(Object context, String methodName, Object result) {}
 
-  public void postReadException(Object context, String methodName, Throwable t) {}
+  public void onError(Object context, String methodName, Throwable t) {}
 
   public void done(Object context, String methodName) {}
 }
