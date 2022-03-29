@@ -74,8 +74,7 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("SimpleStruct");
     private final long age;
@@ -121,7 +120,7 @@ public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSer
     
         return
             Objects.equals(age, other.age) &&
-            Objects.equals(name, other.name) &&
+    Objects.equals(name, other.name) &&
             true;
     }
     

@@ -88,8 +88,7 @@ public final class StructWithRefTypeSharedConst implements com.facebook.thrift.p
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithRefTypeSharedConst");
     private final test.fixtures.refs.Empty defField;
@@ -146,8 +145,8 @@ public final class StructWithRefTypeSharedConst implements com.facebook.thrift.p
     
         return
             Objects.equals(defField, other.defField) &&
-            Objects.equals(optField, other.optField) &&
-            Objects.equals(reqField, other.reqField) &&
+    Objects.equals(optField, other.optField) &&
+    Objects.equals(reqField, other.reqField) &&
             true;
     }
     

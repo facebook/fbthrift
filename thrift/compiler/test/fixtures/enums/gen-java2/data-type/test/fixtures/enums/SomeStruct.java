@@ -104,8 +104,7 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("SomeStruct");
     private final test.fixtures.enums.Metasyntactic reasonable;
@@ -173,9 +172,9 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
     
         return
             Objects.equals(reasonable, other.reasonable) &&
-            Objects.equals(fine, other.fine) &&
-            Objects.equals(questionable, other.questionable) &&
-            Objects.equals(tags, other.tags) &&
+    Objects.equals(fine, other.fine) &&
+    Objects.equals(questionable, other.questionable) &&
+    Objects.equals(tags, other.tags) &&
             true;
     }
     

@@ -450,8 +450,7 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                                                                                            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("defaultStruct");
     private final long myLongDFset;
@@ -717,27 +716,27 @@ public final class DefaultStruct implements com.facebook.thrift.payload.ThriftSe
     
         return
             Objects.equals(myLongDFset, other.myLongDFset) &&
-            Objects.equals(myLongDF, other.myLongDF) &&
-            Objects.equals(portDFset, other.portDFset) &&
-            Objects.equals(portNum, other.portNum) &&
-            Arrays.equals(myBinaryDFset, other.myBinaryDFset) &&
-            Arrays.equals(myBinary, other.myBinary) &&
-            Objects.equals(myByteDFSet, other.myByteDFSet) &&
-            Objects.equals(myByte, other.myByte) &&
-            Objects.equals(myDoubleDFset, other.myDoubleDFset) &&
-            Objects.equals(myDoubleDFZero, other.myDoubleDFZero) &&
-            Objects.equals(myDouble, other.myDouble) &&
-            Objects.equals(field3, other.field3) &&
-            Objects.equals(myList, other.myList) &&
-            Objects.equals(mySet, other.mySet) &&
-            Objects.equals(simpleStruct, other.simpleStruct) &&
-            Objects.equals(listStructDFset, other.listStructDFset) &&
-            Objects.equals(myUnion, other.myUnion) &&
-            Objects.equals(listUnionDFset, other.listUnionDFset) &&
-            Objects.equals(mapNestlistStructDfSet, other.mapNestlistStructDfSet) &&
-            Objects.equals(mapJavaTypeDFset, other.mapJavaTypeDFset) &&
-            Objects.equals(emptyMap, other.emptyMap) &&
-            Objects.equals(enumMapDFset, other.enumMapDFset) &&
+    Objects.equals(myLongDF, other.myLongDF) &&
+    Objects.equals(portDFset, other.portDFset) &&
+    Objects.equals(portNum, other.portNum) &&
+    Arrays.equals(myBinaryDFset, other.myBinaryDFset) &&
+    Arrays.equals(myBinary, other.myBinary) &&
+    Objects.equals(myByteDFSet, other.myByteDFSet) &&
+    Objects.equals(myByte, other.myByte) &&
+    Objects.equals(myDoubleDFset, other.myDoubleDFset) &&
+    Objects.equals(myDoubleDFZero, other.myDoubleDFZero) &&
+    Objects.equals(myDouble, other.myDouble) &&
+    Objects.equals(field3, other.field3) &&
+    Objects.equals(myList, other.myList) &&
+    Objects.equals(mySet, other.mySet) &&
+    Objects.equals(simpleStruct, other.simpleStruct) &&
+    Objects.equals(listStructDFset, other.listStructDFset) &&
+    Objects.equals(myUnion, other.myUnion) &&
+    Objects.equals(listUnionDFset, other.listUnionDFset) &&
+    Objects.equals(mapNestlistStructDfSet, other.mapNestlistStructDfSet) &&
+    Objects.equals(mapJavaTypeDFset, other.mapJavaTypeDFset) &&
+    Objects.equals(emptyMap, other.emptyMap) &&
+    Objects.equals(enumMapDFset, other.enumMapDFset) &&
             true;
     }
     

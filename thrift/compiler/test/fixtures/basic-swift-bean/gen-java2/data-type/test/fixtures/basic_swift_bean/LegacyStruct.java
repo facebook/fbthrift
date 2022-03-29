@@ -64,8 +64,7 @@ public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSer
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("LegacyStruct");
     private int normal;
@@ -123,7 +122,7 @@ static {
     
         return
             Objects.equals(normal, other.normal) &&
-            Objects.equals(bad, other.bad) &&
+    Objects.equals(bad, other.bad) &&
             true;
     }
     

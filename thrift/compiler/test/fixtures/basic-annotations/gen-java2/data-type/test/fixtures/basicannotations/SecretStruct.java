@@ -75,8 +75,7 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("SecretStruct");
     private final long id;
@@ -123,7 +122,7 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
     
         return
             Objects.equals(id, other.id) &&
-            Objects.equals(password, other.password) &&
+    Objects.equals(password, other.password) &&
             true;
     }
     

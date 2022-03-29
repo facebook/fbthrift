@@ -74,8 +74,7 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructMapFloatThrowExp");
     private final long myLongField;
@@ -121,7 +120,7 @@ public final class MyStructMapFloatThrowExp implements com.facebook.thrift.paylo
     
         return
             Objects.equals(myLongField, other.myLongField) &&
-            Objects.equals(mapListOfFloats, other.mapListOfFloats) &&
+    Objects.equals(mapListOfFloats, other.mapListOfFloats) &&
             true;
     }
     

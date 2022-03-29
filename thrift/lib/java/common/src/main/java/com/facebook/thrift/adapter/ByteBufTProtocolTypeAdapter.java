@@ -14,39 +14,28 @@
  * limitations under the License.
  */
 
-package com.facebook.thrift.protocol;
+package com.facebook.thrift.adapter;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+import com.facebook.thrift.protocol.ByteBufTProtocol;
 import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TTransport;
 
-public abstract class ByteBufTProtocol extends TProtocol {
-  ByteBuf byteBuf;
-
-  public void wrap(ByteBuf byteBuf) {
-    reset();
-    this.byteBuf = byteBuf;
+/**
+ * A Thrift Type Adapter exposes {@link ByteBufTProtocol protocol} directly
+ *
+ * @param <T>
+ */
+public interface ByteBufTProtocolTypeAdapter<T> extends TypeAdapter<T> {
+  @Override
+  default void toThrift(T t, TProtocol protocol) {
+    toThrift(t, (ByteBufTProtocol) protocol);
   }
 
-  public void wrap(boolean strictRead, boolean strictWrite, ByteBuf byteBuf) {
-    wrap(byteBuf);
-  }
-
-  public void wrap(byte[] bytes) {
-    wrap(Unpooled.wrappedBuffer(bytes));
-  }
-
-  ByteBufTProtocol() {
-    super(null);
-  }
+  void toThrift(T t, ByteBufTProtocol protocol);
 
   @Override
-  public final TTransport getTransport() {
-    throw new UnsupportedOperationException();
+  default T fromThrift(TProtocol protocol) {
+    return fromThrift((ByteBufTProtocol) protocol);
   }
 
-  public ByteBuf getByteBuf() {
-    return byteBuf;
-  }
+  T fromThrift(ByteBufTProtocol protocol);
 }

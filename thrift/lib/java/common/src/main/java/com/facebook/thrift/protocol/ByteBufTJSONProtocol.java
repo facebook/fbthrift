@@ -16,8 +16,8 @@
 
 package com.facebook.thrift.protocol;
 
-import com.facebook.thrift.util.resources.RpcResources;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.base64.Base64;
 import io.netty.util.ReferenceCountUtil;
@@ -605,7 +605,7 @@ public class ByteBufTJSONProtocol extends ByteBufTProtocol {
   // Read in a JSON string, unescaping as appropriate.. Skip reading from the
   // context if skipContext is true.
   private ByteBuf readJSONString(boolean skipContext) throws TException {
-    ByteBuf arr = RpcResources.getByteBufAllocator().buffer(DEF_STRING_SIZE);
+    ByteBuf arr = ByteBufAllocator.DEFAULT.buffer(DEF_STRING_SIZE);
     if (!skipContext) {
       context_.read();
     }
@@ -935,5 +935,23 @@ public class ByteBufTJSONProtocol extends ByteBufTProtocol {
   @Override
   public ByteBuffer readBinary() throws TException {
     return ByteBuffer.wrap(readJSONBase64());
+  }
+
+  @Override
+  public final void writeBinaryAsByteBuf(ByteBuf bin) throws TException {
+    throw new UnsupportedOperationException(
+        "JSON protocols do not support direct memory operations");
+  }
+
+  @Override
+  public final ByteBuf getWritableBinaryAsByteBuf(int size) throws TException {
+    throw new UnsupportedOperationException(
+        "JSON protocols do not support direct memory operations");
+  }
+
+  @Override
+  public final ByteBuf readBinaryAsSlice() throws TException {
+    throw new UnsupportedOperationException(
+        "JSON protocols do not support direct memory operations");
   }
 }

@@ -102,8 +102,7 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("OptionalMyDataValuePatch");
     private final boolean clear;
@@ -171,9 +170,9 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
     
         return
             Objects.equals(clear, other.clear) &&
-            Objects.equals(patch, other.patch) &&
-            Objects.equals(ensure, other.ensure) &&
-            Objects.equals(patchAfter, other.patchAfter) &&
+    Objects.equals(patch, other.patch) &&
+    Objects.equals(ensure, other.ensure) &&
+    Objects.equals(patchAfter, other.patchAfter) &&
             true;
     }
     

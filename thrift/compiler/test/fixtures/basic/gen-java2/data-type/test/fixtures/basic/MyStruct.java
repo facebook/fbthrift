@@ -158,8 +158,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                                    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final long myIntField;
@@ -271,13 +270,13 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         return
             Objects.equals(myIntField, other.myIntField) &&
-            Objects.equals(myStringField, other.myStringField) &&
-            Objects.equals(myDataField, other.myDataField) &&
-            Objects.equals(myEnum, other.myEnum) &&
-            Objects.equals(oneway, other.oneway) &&
-            Objects.equals(readonly, other.readonly) &&
-            Objects.equals(idempotent, other.idempotent) &&
-            Objects.equals(floatSet, other.floatSet) &&
+    Objects.equals(myStringField, other.myStringField) &&
+    Objects.equals(myDataField, other.myDataField) &&
+    Objects.equals(myEnum, other.myEnum) &&
+    Objects.equals(oneway, other.oneway) &&
+    Objects.equals(readonly, other.readonly) &&
+    Objects.equals(idempotent, other.idempotent) &&
+    Objects.equals(floatSet, other.floatSet) &&
             true;
     }
     

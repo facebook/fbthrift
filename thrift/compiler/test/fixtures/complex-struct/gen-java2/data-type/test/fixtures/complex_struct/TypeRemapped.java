@@ -102,8 +102,7 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("TypeRemapped");
     private final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
@@ -171,9 +170,9 @@ public final class TypeRemapped implements com.facebook.thrift.payload.ThriftSer
     
         return
             Objects.equals(lsMap, other.lsMap) &&
-            Objects.equals(ioMap, other.ioMap) &&
-            Objects.equals(bigInteger, other.bigInteger) &&
-            Objects.equals(binaryTestBuffer, other.binaryTestBuffer) &&
+    Objects.equals(ioMap, other.ioMap) &&
+    Objects.equals(bigInteger, other.bigInteger) &&
+    Objects.equals(binaryTestBuffer, other.binaryTestBuffer) &&
             true;
     }
     

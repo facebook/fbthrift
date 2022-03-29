@@ -102,8 +102,7 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithFieldAdapter");
     private final int field;
@@ -171,9 +170,9 @@ public final class StructWithFieldAdapter implements com.facebook.thrift.payload
     
         return
             Objects.equals(field, other.field) &&
-            Objects.equals(sharedField, other.sharedField) &&
-            Objects.equals(optSharedField, other.optSharedField) &&
-            Objects.equals(optBoxedField, other.optBoxedField) &&
+    Objects.equals(sharedField, other.sharedField) &&
+    Objects.equals(optSharedField, other.optSharedField) &&
+    Objects.equals(optBoxedField, other.optBoxedField) &&
             true;
     }
     

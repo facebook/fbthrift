@@ -220,8 +220,7 @@ public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerial
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                                                    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct3");
     private short myInt16;
@@ -449,17 +448,17 @@ static {
     
         return
             Objects.equals(myInt16, other.myInt16) &&
-            Objects.equals(myInt32, other.myInt32) &&
-            Objects.equals(myInt64, other.myInt64) &&
-            Objects.equals(myString, other.myString) &&
-            Objects.equals(myBool, other.myBool) &&
-            Objects.equals(myDouble, other.myDouble) &&
-            Objects.equals(mySet, other.mySet) &&
-            Objects.equals(myDataItem, other.myDataItem) &&
-            Objects.equals(myList, other.myList) &&
-            Objects.equals(myMapList, other.myMapList) &&
-            Objects.equals(myEmptyList, other.myEmptyList) &&
-            Objects.equals(myEmptyMapList, other.myEmptyMapList) &&
+    Objects.equals(myInt32, other.myInt32) &&
+    Objects.equals(myInt64, other.myInt64) &&
+    Objects.equals(myString, other.myString) &&
+    Objects.equals(myBool, other.myBool) &&
+    Objects.equals(myDouble, other.myDouble) &&
+    Objects.equals(mySet, other.mySet) &&
+    Objects.equals(myDataItem, other.myDataItem) &&
+    Objects.equals(myList, other.myList) &&
+    Objects.equals(myMapList, other.myMapList) &&
+    Objects.equals(myEmptyList, other.myEmptyList) &&
+    Objects.equals(myEmptyMapList, other.myEmptyMapList) &&
             true;
     }
     

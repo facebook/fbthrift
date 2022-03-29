@@ -130,8 +130,7 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Bar");
     private final test.fixtures.adapter.Foo structField;
@@ -221,11 +220,11 @@ public final class Bar implements com.facebook.thrift.payload.ThriftSerializable
     
         return
             Objects.equals(structField, other.structField) &&
-            Objects.equals(optionalStructField, other.optionalStructField) &&
-            Objects.equals(structListField, other.structListField) &&
-            Objects.equals(optionalStructListField, other.optionalStructListField) &&
-            Objects.equals(unionField, other.unionField) &&
-            Objects.equals(optionalUnionField, other.optionalUnionField) &&
+    Objects.equals(optionalStructField, other.optionalStructField) &&
+    Objects.equals(structListField, other.structListField) &&
+    Objects.equals(optionalStructListField, other.optionalStructListField) &&
+    Objects.equals(unionField, other.unionField) &&
+    Objects.equals(optionalUnionField, other.optionalUnionField) &&
             true;
     }
     

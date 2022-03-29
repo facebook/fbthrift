@@ -14,5 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#field:optional?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{/field:optional?}}{{!
-}}{{^field:optional?}}{{#field:type}}{{> Type}}{{/field:type}}{{/field:optional?}}
+}}{{!
+}}{{#field:hasAdapter?}}{{field:typeClassName}}{{/field:hasAdapter?}}{{!
+}}{{^field:hasAdapter?}}{{#field:optional?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{/field:optional?}}{{!
+}}{{^field:optional?}}{{#field:type}}{{> Type}}{{/field:type}}{{/field:optional?}}{{/field:hasAdapter?}}

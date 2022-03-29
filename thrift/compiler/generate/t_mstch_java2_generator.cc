@@ -22,6 +22,8 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <thrift/compiler/lib/java/util.h>
 
+#include <thrift/compiler/ast/t_typedef.h>
+#include <thrift/compiler/gen/cpp/type_resolver.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 
@@ -558,38 +560,71 @@ class mstch_java2_field : public mstch_field {
       : mstch_field(field, generators, cache, pos, index, field_context) {
     register_methods(
         this,
-        {
-            {"field:javaName", &mstch_java2_field::java_name},
-            {"field:javaCapitalName", &mstch_java2_field::java_capital_name},
-            {"field:javaDefaultValue", &mstch_java2_field::java_default_value},
-            {"field:javaAllCapsName", &mstch_java2_field::java_all_caps_name},
-            {"field:recursive?", &mstch_java2_field::is_recursive_reference},
-            {"field:negativeId?", &mstch_java2_field::is_negative_id},
-            {"field:javaAnnotations?",
-             &mstch_java2_field::has_java_annotations},
-            {"field:javaAnnotations", &mstch_java2_field::java_annotations},
-            {"field:javaTFieldName", &mstch_java2_field::java_tfield_name},
-            {"field:isNullableOrOptionalNotEnum?",
-             &mstch_java2_field::is_nullable_or_optional_not_enum},
-            {"field:nestedDepth", &mstch_java2_field::get_nested_depth},
-            {"field:nestedDepth++", &mstch_java2_field::increment_nested_depth},
-            {"field:nestedDepth--", &mstch_java2_field::decrement_nested_depth},
-            {"field:isFirstDepth?", &mstch_java2_field::is_first_depth},
-            {"field:prevNestedDepth",
-             &mstch_java2_field::preceding_nested_depth},
-            {"field:isContainer?", &mstch_java2_field::is_container},
-            {"field:isNested?", &mstch_java2_field::get_nested_container_flag},
-            {"field:setIsNested",
-             &mstch_java2_field::set_nested_container_flag},
-            {"field:typeFieldName", &mstch_java2_field::type_field_name},
-            {"field:isSensitive?", &mstch_java2_field::is_sensitive},
-            {"field:hasInitialValue?", &mstch_java2_field::has_initial_value},
-            {"field:isPrimitive?", &mstch_java2_field::is_primitive},
-        });
+        {{"field:javaName", &mstch_java2_field::java_name},
+         {"field:javaCapitalName", &mstch_java2_field::java_capital_name},
+         {"field:javaDefaultValue", &mstch_java2_field::java_default_value},
+         {"field:javaAllCapsName", &mstch_java2_field::java_all_caps_name},
+         {"field:recursive?", &mstch_java2_field::is_recursive_reference},
+         {"field:negativeId?", &mstch_java2_field::is_negative_id},
+         {"field:javaAnnotations?", &mstch_java2_field::has_java_annotations},
+         {"field:javaAnnotations", &mstch_java2_field::java_annotations},
+         {"field:javaTFieldName", &mstch_java2_field::java_tfield_name},
+         {"field:isNullableOrOptionalNotEnum?",
+          &mstch_java2_field::is_nullable_or_optional_not_enum},
+         {"field:nestedDepth", &mstch_java2_field::get_nested_depth},
+         {"field:nestedDepth++", &mstch_java2_field::increment_nested_depth},
+         {"field:nestedDepth--", &mstch_java2_field::decrement_nested_depth},
+         {"field:isFirstDepth?", &mstch_java2_field::is_first_depth},
+         {"field:prevNestedDepth", &mstch_java2_field::preceding_nested_depth},
+         {"field:isContainer?", &mstch_java2_field::is_container},
+         {"field:isNested?", &mstch_java2_field::get_nested_container_flag},
+         {"field:setIsNested", &mstch_java2_field::set_nested_container_flag},
+         {"field:typeFieldName", &mstch_java2_field::type_field_name},
+         {"field:isSensitive?", &mstch_java2_field::is_sensitive},
+         {"field:hasInitialValue?", &mstch_java2_field::has_initial_value},
+         {"field:isPrimitive?", &mstch_java2_field::is_primitive},
+         {"field:adapterClassName",
+          &mstch_java2_field::get_structured_adapter_class_name},
+         {"field:typeClassName",
+          &mstch_java2_field::get_structured_type_class_name},
+         {"field:hasAdapter?", &mstch_java2_field::is_typedef_adapter}});
   }
 
   int32_t nestedDepth = 0;
   bool isNestedContainerFlag = false;
+
+  mstch::node is_typedef_adapter() {
+    auto type = field_->get_type();
+    if (type->is_typedef()) {
+      auto has_annotation = type->find_structured_annotation_or_null(
+          "facebook.com/thrift/annotation/java/Adapter");
+      return has_annotation != nullptr;
+    } else {
+      return false;
+    }
+  }
+
+  mstch::node get_structured_adapter_class_name() {
+    return get_structed_annotation_attribute("adapterClassName");
+  }
+
+  mstch::node get_structured_type_class_name() {
+    return get_structed_annotation_attribute("typeClassName");
+  }
+
+  mstch::node get_structed_annotation_attribute(const std::string& field) {
+    auto type = field_->get_type();
+    if (auto annotation = type->find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/java/Adapter")) {
+      for (const auto& item : annotation->value()->get_map()) {
+        if (item.first->get_string() == field) {
+          return item.second->get_string();
+        }
+      }
+    }
+
+    return nullptr;
+  }
 
   mstch::node has_initial_value() {
     if (field_->get_req() == t_field::e_req::optional) {

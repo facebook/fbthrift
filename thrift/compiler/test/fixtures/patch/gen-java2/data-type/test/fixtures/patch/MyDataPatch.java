@@ -74,8 +74,7 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyDataPatch");
     private final com.facebook.thrift.op.StringPatch data1;
@@ -121,7 +120,7 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
     
         return
             Objects.equals(data1, other.data1) &&
-            Objects.equals(data2, other.data2) &&
+    Objects.equals(data2, other.data2) &&
             true;
     }
     

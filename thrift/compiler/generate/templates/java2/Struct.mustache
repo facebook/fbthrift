@@ -45,9 +45,13 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
 
     {{> struct/ThriftConstructor}}
 
-    {{> struct/StructBuilder}}
-
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    {{> struct/StructBuilder}}{{!
+    }}{{#struct:fields}}
+    {{#field:hasAdapter?}}
+    private static final com.facebook.thrift.adapter.TypeAdapter<{{field:typeClassName}}> _{{field:javaName}}_Adapter = new {{field:adapterClassName}}();
+    {{/field:hasAdapter?}}
+    {{/struct:fields}}{{!
+    }}public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("{{struct:name}}");
     {{#struct:fields}}{{!

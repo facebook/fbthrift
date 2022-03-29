@@ -160,9 +160,18 @@ final class ByteBufTBinaryProtocol extends ByteBufTProtocol {
 
   @Override
   public void writeBinary(ByteBuffer buf) throws TException {
-    ByteBuf temp = Unpooled.wrappedBuffer(buf);
-    writeI32(temp.readableBytes());
-    byteBuf.writeBytes(temp);
+    writeBinaryAsByteBuf(Unpooled.wrappedBuffer(buf));
+  }
+
+  @Override
+  public void writeBinaryAsByteBuf(ByteBuf bin) throws TException {
+    getWritableBinaryAsByteBuf(bin.readableBytes()).writeBytes(bin);
+  }
+
+  @Override
+  public ByteBuf getWritableBinaryAsByteBuf(int size) throws TException {
+    writeI32(size);
+    return byteBuf;
   }
 
   @Override
@@ -283,8 +292,16 @@ final class ByteBufTBinaryProtocol extends ByteBufTProtocol {
   @Override
   public ByteBuffer readBinary() throws TException {
     final int size = readI32();
+    final ByteBuffer byteBuffer;
     byte[] bytes = new byte[size];
+    byteBuffer = ByteBuffer.wrap(bytes);
     byteBuf.readBytes(bytes);
-    return ByteBuffer.wrap(bytes);
+    return byteBuffer;
+  }
+
+  @Override
+  public ByteBuf readBinaryAsSlice() throws TException {
+    int size = readI32();
+    return byteBuf.readSlice(size);
   }
 }

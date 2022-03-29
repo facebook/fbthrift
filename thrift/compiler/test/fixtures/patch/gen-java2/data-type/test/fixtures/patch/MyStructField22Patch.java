@@ -102,8 +102,7 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructField22Patch");
     private final Set<String> assign;
@@ -171,9 +170,9 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
     
         return
             Objects.equals(assign, other.assign) &&
-            Objects.equals(clear, other.clear) &&
-            Objects.equals(add, other.add) &&
-            Objects.equals(remove, other.remove) &&
+    Objects.equals(clear, other.clear) &&
+    Objects.equals(add, other.add) &&
+    Objects.equals(remove, other.remove) &&
             true;
     }
     

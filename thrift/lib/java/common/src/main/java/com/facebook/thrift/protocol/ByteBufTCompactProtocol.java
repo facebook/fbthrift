@@ -258,13 +258,6 @@ final class ByteBufTCompactProtocol extends ByteBufTProtocol {
     }
   }
 
-  /** Write a byte array, using a varint for the size. */
-  public void writeBinary(ByteBuffer bin) throws TException {
-    ByteBuf temp = Unpooled.wrappedBuffer(bin);
-    writeVarInt32(temp.readableBytes());
-    byteBuf.writeBytes(temp);
-  }
-
   @Override
   public void writeFloat(float flt) throws TException {
     byteBuf.writeFloat(flt);
@@ -472,9 +465,11 @@ final class ByteBufTCompactProtocol extends ByteBufTProtocol {
   /** Read a byte[] from the wire. */
   public ByteBuffer readBinary() throws TException {
     final int size = readVarInt32();
+    final ByteBuffer byteBuffer;
     byte[] bytes = new byte[size];
+    byteBuffer = ByteBuffer.wrap(bytes);
     byteBuf.readBytes(bytes);
-    return ByteBuffer.wrap(bytes);
+    return byteBuffer;
   }
 
   // These methods are here for the struct to call, but don't have any wire
@@ -583,5 +578,24 @@ final class ByteBufTCompactProtocol extends ByteBufTProtocol {
         n >>>= 7;
       }
     }
+  }
+
+  /** Write a byte array, using a varint for the size. */
+  public void writeBinary(ByteBuffer bin) throws TException {
+    writeBinaryAsByteBuf(Unpooled.wrappedBuffer(bin));
+  }
+
+  public void writeBinaryAsByteBuf(ByteBuf bin) throws TException {
+    getWritableBinaryAsByteBuf(bin.readableBytes()).writeBytes(bin);
+  }
+
+  public ByteBuf getWritableBinaryAsByteBuf(int size) throws TException {
+    writeVarInt32(size);
+    return byteBuf;
+  }
+
+  public ByteBuf readBinaryAsSlice() {
+    final int size = readVarInt32();
+    return byteBuf.readSlice(size);
   }
 }

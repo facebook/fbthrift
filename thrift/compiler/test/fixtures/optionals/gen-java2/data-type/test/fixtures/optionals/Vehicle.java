@@ -116,8 +116,7 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                        public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Vehicle");
     private final test.fixtures.optionals.Color color;
@@ -196,10 +195,10 @@ public final class Vehicle implements com.facebook.thrift.payload.ThriftSerializ
     
         return
             Objects.equals(color, other.color) &&
-            Objects.equals(licensePlate, other.licensePlate) &&
-            Objects.equals(description, other.description) &&
-            Objects.equals(name, other.name) &&
-            Objects.equals(hasAC, other.hasAC) &&
+    Objects.equals(licensePlate, other.licensePlate) &&
+    Objects.equals(description, other.description) &&
+    Objects.equals(name, other.name) &&
+    Objects.equals(hasAC, other.hasAC) &&
             true;
     }
     

@@ -368,8 +368,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                                                                                                public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final boolean boolVal;
@@ -646,28 +645,28 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         return
             Objects.equals(boolVal, other.boolVal) &&
-            Objects.equals(byteVal, other.byteVal) &&
-            Objects.equals(i16Val, other.i16Val) &&
-            Objects.equals(i32Val, other.i32Val) &&
-            Objects.equals(i64Val, other.i64Val) &&
-            Objects.equals(floatVal, other.floatVal) &&
-            Objects.equals(doubleVal, other.doubleVal) &&
-            Objects.equals(stringVal, other.stringVal) &&
-            Arrays.equals(binaryVal, other.binaryVal) &&
-            Objects.equals(structVal, other.structVal) &&
-            Objects.equals(optBoolVal, other.optBoolVal) &&
-            Objects.equals(optByteVal, other.optByteVal) &&
-            Objects.equals(optI16Val, other.optI16Val) &&
-            Objects.equals(optI32Val, other.optI32Val) &&
-            Objects.equals(optI64Val, other.optI64Val) &&
-            Objects.equals(optFloatVal, other.optFloatVal) &&
-            Objects.equals(optDoubleVal, other.optDoubleVal) &&
-            Objects.equals(optStringVal, other.optStringVal) &&
-            Arrays.equals(optBinaryVal, other.optBinaryVal) &&
-            Objects.equals(optStructVal, other.optStructVal) &&
-            Objects.equals(optListVal, other.optListVal) &&
-            Objects.equals(optSetVal, other.optSetVal) &&
-            Objects.equals(optMapVal, other.optMapVal) &&
+    Objects.equals(byteVal, other.byteVal) &&
+    Objects.equals(i16Val, other.i16Val) &&
+    Objects.equals(i32Val, other.i32Val) &&
+    Objects.equals(i64Val, other.i64Val) &&
+    Objects.equals(floatVal, other.floatVal) &&
+    Objects.equals(doubleVal, other.doubleVal) &&
+    Objects.equals(stringVal, other.stringVal) &&
+    Arrays.equals(binaryVal, other.binaryVal) &&
+    Objects.equals(structVal, other.structVal) &&
+    Objects.equals(optBoolVal, other.optBoolVal) &&
+    Objects.equals(optByteVal, other.optByteVal) &&
+    Objects.equals(optI16Val, other.optI16Val) &&
+    Objects.equals(optI32Val, other.optI32Val) &&
+    Objects.equals(optI64Val, other.optI64Val) &&
+    Objects.equals(optFloatVal, other.optFloatVal) &&
+    Objects.equals(optDoubleVal, other.optDoubleVal) &&
+    Objects.equals(optStringVal, other.optStringVal) &&
+    Arrays.equals(optBinaryVal, other.optBinaryVal) &&
+    Objects.equals(optStructVal, other.optStructVal) &&
+    Objects.equals(optListVal, other.optListVal) &&
+    Objects.equals(optSetVal, other.optSetVal) &&
+    Objects.equals(optMapVal, other.optMapVal) &&
             true;
     }
     

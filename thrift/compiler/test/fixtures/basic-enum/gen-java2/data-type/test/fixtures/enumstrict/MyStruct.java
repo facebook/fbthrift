@@ -74,8 +74,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final test.fixtures.enumstrict.MyEnum myEnum;
@@ -121,7 +120,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         return
             Objects.equals(myEnum, other.myEnum) &&
-            Objects.equals(myBigEnum, other.myBigEnum) &&
+    Objects.equals(myBigEnum, other.myBigEnum) &&
             true;
     }
     

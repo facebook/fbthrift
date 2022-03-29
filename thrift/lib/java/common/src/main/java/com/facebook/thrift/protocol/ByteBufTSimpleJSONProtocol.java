@@ -16,6 +16,7 @@
 
 package com.facebook.thrift.protocol;
 
+import io.netty.buffer.ByteBuf;
 import java.nio.ByteBuffer;
 import java.util.Map;
 import org.apache.thrift.TException;
@@ -309,5 +310,23 @@ public class ByteBufTSimpleJSONProtocol extends ByteBufTProtocol {
   public void assertContextIsNotMapKey(String invalidKeyType)
       throws ByteBufAbstractTSimpleJSONProtocol.CollectionMapKeyException {
     delegate.assertContextIsNotMapKey(invalidKeyType);
+  }
+
+  @Override
+  public final void writeBinaryAsByteBuf(ByteBuf bin) throws TException {
+    throw new UnsupportedOperationException(
+        "JSON protocols do not support direct memory operations");
+  }
+
+  @Override
+  public final ByteBuf getWritableBinaryAsByteBuf(int size) throws TException {
+    throw new UnsupportedOperationException(
+        "JSON protocols do not support direct memory operations");
+  }
+
+  @Override
+  public final ByteBuf readBinaryAsSlice() throws TException {
+    throw new UnsupportedOperationException(
+        "JSON protocols do not support direct memory operations");
   }
 }

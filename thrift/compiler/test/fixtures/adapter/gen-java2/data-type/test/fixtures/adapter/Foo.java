@@ -158,8 +158,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                                    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Foo");
     private final int intField;
@@ -271,13 +270,13 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     
         return
             Objects.equals(intField, other.intField) &&
-            Objects.equals(optionalIntField, other.optionalIntField) &&
-            Objects.equals(intFieldWithDefault, other.intFieldWithDefault) &&
-            Objects.equals(setField, other.setField) &&
-            Objects.equals(optionalSetField, other.optionalSetField) &&
-            Objects.equals(mapField, other.mapField) &&
-            Objects.equals(optionalMapField, other.optionalMapField) &&
-            Arrays.equals(binaryField, other.binaryField) &&
+    Objects.equals(optionalIntField, other.optionalIntField) &&
+    Objects.equals(intFieldWithDefault, other.intFieldWithDefault) &&
+    Objects.equals(setField, other.setField) &&
+    Objects.equals(optionalSetField, other.optionalSetField) &&
+    Objects.equals(mapField, other.mapField) &&
+    Objects.equals(optionalMapField, other.optionalMapField) &&
+    Arrays.equals(binaryField, other.binaryField) &&
             true;
     }
     

@@ -88,8 +88,7 @@ public final class Struct3 implements com.facebook.thrift.payload.ThriftSerializ
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("struct3");
     private final String a;
@@ -146,8 +145,8 @@ public final class Struct3 implements com.facebook.thrift.payload.ThriftSerializ
     
         return
             Objects.equals(a, other.a) &&
-            Objects.equals(b, other.b) &&
-            Objects.equals(c, other.c) &&
+    Objects.equals(b, other.b) &&
+    Objects.equals(c, other.c) &&
             true;
     }
     
