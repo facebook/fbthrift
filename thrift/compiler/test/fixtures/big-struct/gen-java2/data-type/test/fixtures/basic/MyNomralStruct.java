@@ -467,6 +467,7 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
         }
     }
                                                                                                                             public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyNomralStruct");
     private final String msg1;
@@ -561,64 +562,94 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
     private static final TField MY_DOUBLE_FIELD30_FIELD_DESC = new TField("myDoubleField30", TType.DOUBLE, (short)30);
     static {
       NAMES_TO_IDS.put("msg1", 1);
+      THRIFT_NAMES_TO_IDS.put("msg1", 1);
       FIELD_METADATA.put(1, MSG1_FIELD_DESC);
       NAMES_TO_IDS.put("msg2", 2);
+      THRIFT_NAMES_TO_IDS.put("msg2", 2);
       FIELD_METADATA.put(2, MSG2_FIELD_DESC);
       NAMES_TO_IDS.put("msg3", 3);
+      THRIFT_NAMES_TO_IDS.put("msg3", 3);
       FIELD_METADATA.put(3, MSG3_FIELD_DESC);
       NAMES_TO_IDS.put("msg4", 4);
+      THRIFT_NAMES_TO_IDS.put("msg4", 4);
       FIELD_METADATA.put(4, MSG4_FIELD_DESC);
       NAMES_TO_IDS.put("msg5", 5);
+      THRIFT_NAMES_TO_IDS.put("msg5", 5);
       FIELD_METADATA.put(5, MSG5_FIELD_DESC);
       NAMES_TO_IDS.put("msg6", 6);
+      THRIFT_NAMES_TO_IDS.put("msg6", 6);
       FIELD_METADATA.put(6, MSG6_FIELD_DESC);
       NAMES_TO_IDS.put("msg7", 7);
+      THRIFT_NAMES_TO_IDS.put("msg7", 7);
       FIELD_METADATA.put(7, MSG7_FIELD_DESC);
       NAMES_TO_IDS.put("msg8", 8);
+      THRIFT_NAMES_TO_IDS.put("msg8", 8);
       FIELD_METADATA.put(8, MSG8_FIELD_DESC);
       NAMES_TO_IDS.put("msg9", 9);
+      THRIFT_NAMES_TO_IDS.put("msg9", 9);
       FIELD_METADATA.put(9, MSG9_FIELD_DESC);
       NAMES_TO_IDS.put("myIntField10", 10);
+      THRIFT_NAMES_TO_IDS.put("myIntField10", 10);
       FIELD_METADATA.put(10, MY_INT_FIELD10_FIELD_DESC);
       NAMES_TO_IDS.put("myIntField11", 11);
+      THRIFT_NAMES_TO_IDS.put("myIntField11", 11);
       FIELD_METADATA.put(11, MY_INT_FIELD11_FIELD_DESC);
       NAMES_TO_IDS.put("myIntField12", 12);
+      THRIFT_NAMES_TO_IDS.put("myIntField12", 12);
       FIELD_METADATA.put(12, MY_INT_FIELD12_FIELD_DESC);
       NAMES_TO_IDS.put("myIntField13", 13);
+      THRIFT_NAMES_TO_IDS.put("myIntField13", 13);
       FIELD_METADATA.put(13, MY_INT_FIELD13_FIELD_DESC);
       NAMES_TO_IDS.put("myIntField14", 14);
+      THRIFT_NAMES_TO_IDS.put("myIntField14", 14);
       FIELD_METADATA.put(14, MY_INT_FIELD14_FIELD_DESC);
       NAMES_TO_IDS.put("myIntField15", 15);
+      THRIFT_NAMES_TO_IDS.put("myIntField15", 15);
       FIELD_METADATA.put(15, MY_INT_FIELD15_FIELD_DESC);
       NAMES_TO_IDS.put("myIntField16", 16);
+      THRIFT_NAMES_TO_IDS.put("myIntField16", 16);
       FIELD_METADATA.put(16, MY_INT_FIELD16_FIELD_DESC);
       NAMES_TO_IDS.put("myIntField17", 17);
+      THRIFT_NAMES_TO_IDS.put("myIntField17", 17);
       FIELD_METADATA.put(17, MY_INT_FIELD17_FIELD_DESC);
       NAMES_TO_IDS.put("myIntField18", 18);
+      THRIFT_NAMES_TO_IDS.put("myIntField18", 18);
       FIELD_METADATA.put(18, MY_INT_FIELD18_FIELD_DESC);
       NAMES_TO_IDS.put("myIntField19", 19);
+      THRIFT_NAMES_TO_IDS.put("myIntField19", 19);
       FIELD_METADATA.put(19, MY_INT_FIELD19_FIELD_DESC);
       NAMES_TO_IDS.put("myIntField20", 20);
+      THRIFT_NAMES_TO_IDS.put("myIntField20", 20);
       FIELD_METADATA.put(20, MY_INT_FIELD20_FIELD_DESC);
       NAMES_TO_IDS.put("myDoubleField21", 21);
+      THRIFT_NAMES_TO_IDS.put("myDoubleField21", 21);
       FIELD_METADATA.put(21, MY_DOUBLE_FIELD21_FIELD_DESC);
       NAMES_TO_IDS.put("myDoubleField22", 22);
+      THRIFT_NAMES_TO_IDS.put("myDoubleField22", 22);
       FIELD_METADATA.put(22, MY_DOUBLE_FIELD22_FIELD_DESC);
       NAMES_TO_IDS.put("myDoubleField23", 23);
+      THRIFT_NAMES_TO_IDS.put("myDoubleField23", 23);
       FIELD_METADATA.put(23, MY_DOUBLE_FIELD23_FIELD_DESC);
       NAMES_TO_IDS.put("myDoubleField24", 24);
+      THRIFT_NAMES_TO_IDS.put("myDoubleField24", 24);
       FIELD_METADATA.put(24, MY_DOUBLE_FIELD24_FIELD_DESC);
       NAMES_TO_IDS.put("myDoubleField25", 25);
+      THRIFT_NAMES_TO_IDS.put("myDoubleField25", 25);
       FIELD_METADATA.put(25, MY_DOUBLE_FIELD25_FIELD_DESC);
       NAMES_TO_IDS.put("myDoubleField26", 26);
+      THRIFT_NAMES_TO_IDS.put("myDoubleField26", 26);
       FIELD_METADATA.put(26, MY_DOUBLE_FIELD26_FIELD_DESC);
       NAMES_TO_IDS.put("myDoubleField27", 27);
+      THRIFT_NAMES_TO_IDS.put("myDoubleField27", 27);
       FIELD_METADATA.put(27, MY_DOUBLE_FIELD27_FIELD_DESC);
       NAMES_TO_IDS.put("myDoubleField28", 28);
+      THRIFT_NAMES_TO_IDS.put("myDoubleField28", 28);
       FIELD_METADATA.put(28, MY_DOUBLE_FIELD28_FIELD_DESC);
       NAMES_TO_IDS.put("myDoubleField29", 29);
+      THRIFT_NAMES_TO_IDS.put("myDoubleField29", 29);
       FIELD_METADATA.put(29, MY_DOUBLE_FIELD29_FIELD_DESC);
       NAMES_TO_IDS.put("myDoubleField30", 30);
+      THRIFT_NAMES_TO_IDS.put("myDoubleField30", 30);
       FIELD_METADATA.put(30, MY_DOUBLE_FIELD30_FIELD_DESC);
     }
     
@@ -895,7 +926,7 @@ public final class MyNomralStruct implements com.facebook.thrift.payload.ThriftS
     
     public static MyNomralStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyNomralStruct.NAMES_TO_IDS, MyNomralStruct.FIELD_METADATA);
+      oprot.readStructBegin(MyNomralStruct.NAMES_TO_IDS, MyNomralStruct.THRIFT_NAMES_TO_IDS, MyNomralStruct.FIELD_METADATA);
       MyNomralStruct.Builder builder = new MyNomralStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

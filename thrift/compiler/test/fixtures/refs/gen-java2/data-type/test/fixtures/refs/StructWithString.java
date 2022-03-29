@@ -117,6 +117,7 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
         }
     }
                         public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithString");
     private final String defUniqueStringRef;
@@ -136,14 +137,19 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
     private static final TField SHARED_STRING_REF_FIELD_DESC = new TField("shared_string_ref", TType.STRING, (short)5);
     static {
       NAMES_TO_IDS.put("defUniqueStringRef", 1);
+      THRIFT_NAMES_TO_IDS.put("def_unique_string_ref", 1);
       FIELD_METADATA.put(1, DEF_UNIQUE_STRING_REF_FIELD_DESC);
       NAMES_TO_IDS.put("defSharedStringRef", 2);
+      THRIFT_NAMES_TO_IDS.put("def_shared_string_ref", 2);
       FIELD_METADATA.put(2, DEF_SHARED_STRING_REF_FIELD_DESC);
       NAMES_TO_IDS.put("defSharedStringConstRef", 3);
+      THRIFT_NAMES_TO_IDS.put("def_shared_string_const_ref", 3);
       FIELD_METADATA.put(3, DEF_SHARED_STRING_CONST_REF_FIELD_DESC);
       NAMES_TO_IDS.put("uniqueStringRef", 4);
+      THRIFT_NAMES_TO_IDS.put("unique_string_ref", 4);
       FIELD_METADATA.put(4, UNIQUE_STRING_REF_FIELD_DESC);
       NAMES_TO_IDS.put("sharedStringRef", 5);
+      THRIFT_NAMES_TO_IDS.put("shared_string_ref", 5);
       FIELD_METADATA.put(5, SHARED_STRING_REF_FIELD_DESC);
     }
     
@@ -220,7 +226,7 @@ public final class StructWithString implements com.facebook.thrift.payload.Thrif
     
     public static StructWithString read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(StructWithString.NAMES_TO_IDS, StructWithString.FIELD_METADATA);
+      oprot.readStructBegin(StructWithString.NAMES_TO_IDS, StructWithString.THRIFT_NAMES_TO_IDS, StructWithString.FIELD_METADATA);
       StructWithString.Builder builder = new StructWithString.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

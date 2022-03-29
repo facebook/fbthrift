@@ -176,8 +176,11 @@ public class ByteBufTSimpleJSONProtocol extends ByteBufTProtocol {
 
   @Override
   public TStruct readStructBegin(
-      Map<String, Integer> namesToIds, Map<Integer, TField> fieldMetadata) throws TException {
-    return delegate.readStructBegin(namesToIds, fieldMetadata);
+      Map<String, Integer> namesToIds,
+      Map<String, Integer> javaNamesToIds,
+      Map<Integer, TField> fieldMetadata)
+      throws TException {
+    return delegate.readStructBegin(namesToIds, javaNamesToIds, fieldMetadata);
   }
 
   @Override

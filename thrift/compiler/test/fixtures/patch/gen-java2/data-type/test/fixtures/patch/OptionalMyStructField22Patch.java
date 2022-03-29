@@ -103,6 +103,7 @@ public final class OptionalMyStructField22Patch implements com.facebook.thrift.p
         }
     }
                     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("OptionalMyStructField22Patch");
     private final boolean clear;
@@ -119,12 +120,16 @@ public final class OptionalMyStructField22Patch implements com.facebook.thrift.p
     private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)4);
     static {
       NAMES_TO_IDS.put("clear", 2);
+      THRIFT_NAMES_TO_IDS.put("clear", 2);
       FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
       NAMES_TO_IDS.put("patch", 3);
+      THRIFT_NAMES_TO_IDS.put("patch", 3);
       FIELD_METADATA.put(3, PATCH_FIELD_DESC);
       NAMES_TO_IDS.put("ensure", 1);
+      THRIFT_NAMES_TO_IDS.put("ensure", 1);
       FIELD_METADATA.put(1, ENSURE_FIELD_DESC);
       NAMES_TO_IDS.put("patchAfter", 4);
+      THRIFT_NAMES_TO_IDS.put("patchAfter", 4);
       FIELD_METADATA.put(4, PATCH_AFTER_FIELD_DESC);
     }
     
@@ -193,7 +198,7 @@ public final class OptionalMyStructField22Patch implements com.facebook.thrift.p
     
     public static OptionalMyStructField22Patch read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(OptionalMyStructField22Patch.NAMES_TO_IDS, OptionalMyStructField22Patch.FIELD_METADATA);
+      oprot.readStructBegin(OptionalMyStructField22Patch.NAMES_TO_IDS, OptionalMyStructField22Patch.THRIFT_NAMES_TO_IDS, OptionalMyStructField22Patch.FIELD_METADATA);
       OptionalMyStructField22Patch.Builder builder = new OptionalMyStructField22Patch.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

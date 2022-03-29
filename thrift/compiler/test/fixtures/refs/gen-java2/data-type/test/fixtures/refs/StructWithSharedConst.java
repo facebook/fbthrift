@@ -89,6 +89,7 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
         }
     }
                 public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithSharedConst");
     private final test.fixtures.refs.MyField optSharedConst;
@@ -102,10 +103,13 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
     private static final TField REQ_SHARED_CONST_FIELD_DESC = new TField("req_shared_const", TType.STRUCT, (short)3);
     static {
       NAMES_TO_IDS.put("optSharedConst", 1);
+      THRIFT_NAMES_TO_IDS.put("opt_shared_const", 1);
       FIELD_METADATA.put(1, OPT_SHARED_CONST_FIELD_DESC);
       NAMES_TO_IDS.put("sharedConst", 2);
+      THRIFT_NAMES_TO_IDS.put("shared_const", 2);
       FIELD_METADATA.put(2, SHARED_CONST_FIELD_DESC);
       NAMES_TO_IDS.put("reqSharedConst", 3);
+      THRIFT_NAMES_TO_IDS.put("req_shared_const", 3);
       FIELD_METADATA.put(3, REQ_SHARED_CONST_FIELD_DESC);
     }
     
@@ -166,7 +170,7 @@ public final class StructWithSharedConst implements com.facebook.thrift.payload.
     
     public static StructWithSharedConst read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(StructWithSharedConst.NAMES_TO_IDS, StructWithSharedConst.FIELD_METADATA);
+      oprot.readStructBegin(StructWithSharedConst.NAMES_TO_IDS, StructWithSharedConst.THRIFT_NAMES_TO_IDS, StructWithSharedConst.FIELD_METADATA);
       StructWithSharedConst.Builder builder = new StructWithSharedConst.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

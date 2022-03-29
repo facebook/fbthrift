@@ -173,6 +173,7 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
         }
     }
                                         public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyField");
     private final Long optValue;
@@ -204,22 +205,31 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
     private static final TField REQ_STR_VALUE_FIELD_DESC = new TField("req_str_value", TType.STRING, (short)9);
     static {
       NAMES_TO_IDS.put("optValue", 1);
+      THRIFT_NAMES_TO_IDS.put("opt_value", 1);
       FIELD_METADATA.put(1, OPT_VALUE_FIELD_DESC);
       NAMES_TO_IDS.put("value", 2);
+      THRIFT_NAMES_TO_IDS.put("value", 2);
       FIELD_METADATA.put(2, VALUE_FIELD_DESC);
       NAMES_TO_IDS.put("reqValue", 3);
+      THRIFT_NAMES_TO_IDS.put("req_value", 3);
       FIELD_METADATA.put(3, REQ_VALUE_FIELD_DESC);
       NAMES_TO_IDS.put("optEnumValue", 4);
+      THRIFT_NAMES_TO_IDS.put("opt_enum_value", 4);
       FIELD_METADATA.put(4, OPT_ENUM_VALUE_FIELD_DESC);
       NAMES_TO_IDS.put("enumValue", 5);
+      THRIFT_NAMES_TO_IDS.put("enum_value", 5);
       FIELD_METADATA.put(5, ENUM_VALUE_FIELD_DESC);
       NAMES_TO_IDS.put("reqEnumValue", 6);
+      THRIFT_NAMES_TO_IDS.put("req_enum_value", 6);
       FIELD_METADATA.put(6, REQ_ENUM_VALUE_FIELD_DESC);
       NAMES_TO_IDS.put("optStrValue", 7);
+      THRIFT_NAMES_TO_IDS.put("opt_str_value", 7);
       FIELD_METADATA.put(7, OPT_STR_VALUE_FIELD_DESC);
       NAMES_TO_IDS.put("strValue", 8);
+      THRIFT_NAMES_TO_IDS.put("str_value", 8);
       FIELD_METADATA.put(8, STR_VALUE_FIELD_DESC);
       NAMES_TO_IDS.put("reqStrValue", 9);
+      THRIFT_NAMES_TO_IDS.put("req_str_value", 9);
       FIELD_METADATA.put(9, REQ_STR_VALUE_FIELD_DESC);
     }
     
@@ -328,7 +338,7 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
     
     public static MyField read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyField.NAMES_TO_IDS, MyField.FIELD_METADATA);
+      oprot.readStructBegin(MyField.NAMES_TO_IDS, MyField.THRIFT_NAMES_TO_IDS, MyField.FIELD_METADATA);
       MyField.Builder builder = new MyField.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

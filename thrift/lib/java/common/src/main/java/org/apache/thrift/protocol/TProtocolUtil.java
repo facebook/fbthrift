@@ -94,7 +94,8 @@ public class TProtocolUtil {
         break;
 
       case TType.STRUCT:
-        prot.readStructBegin(Collections.emptyMap(), Collections.emptyMap());
+        prot.readStructBegin(
+            Collections.emptyMap(), Collections.emptyMap(), Collections.emptyMap());
         while (true) {
           TField field = prot.readFieldBegin();
           if (field.type == TType.STOP) {

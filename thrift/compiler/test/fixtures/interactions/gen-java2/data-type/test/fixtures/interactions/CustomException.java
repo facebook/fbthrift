@@ -23,6 +23,7 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
 
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     private static final TStruct STRUCT_DESC = new TStruct("CustomException");
@@ -80,7 +81,7 @@ public final class CustomException extends org.apache.thrift.TBaseException impl
     
     public static CustomException read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(CustomException.NAMES_TO_IDS, CustomException.FIELD_METADATA);
+      oprot.readStructBegin(CustomException.NAMES_TO_IDS, CustomException.THRIFT_NAMES_TO_IDS, CustomException.FIELD_METADATA);
       CustomException.Builder builder = new CustomException.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

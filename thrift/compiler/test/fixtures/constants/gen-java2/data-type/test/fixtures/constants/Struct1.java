@@ -75,6 +75,7 @@ public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializ
         }
     }
             public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("struct1");
     private final int a;
@@ -85,8 +86,10 @@ public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializ
     private static final TField B_FIELD_DESC = new TField("b", TType.STRING, (short)2);
     static {
       NAMES_TO_IDS.put("a", 1);
+      THRIFT_NAMES_TO_IDS.put("a", 1);
       FIELD_METADATA.put(1, A_FIELD_DESC);
       NAMES_TO_IDS.put("b", 2);
+      THRIFT_NAMES_TO_IDS.put("b", 2);
       FIELD_METADATA.put(2, B_FIELD_DESC);
     }
     
@@ -139,7 +142,7 @@ public final class Struct1 implements com.facebook.thrift.payload.ThriftSerializ
     
     public static Struct1 read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(Struct1.NAMES_TO_IDS, Struct1.FIELD_METADATA);
+      oprot.readStructBegin(Struct1.NAMES_TO_IDS, Struct1.THRIFT_NAMES_TO_IDS, Struct1.FIELD_METADATA);
       Struct1.Builder builder = new Struct1.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

@@ -65,6 +65,7 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
         }
     }
             public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyMutableStruct");
     private long intField;
@@ -75,8 +76,10 @@ public final class MyMutableStruct implements com.facebook.thrift.payload.Thrift
     private static final TField STRING_FIELD_FIELD_DESC = new TField("stringField", TType.STRING, (short)2);
 static {
       NAMES_TO_IDS.put("intField", 1);
+      THRIFT_NAMES_TO_IDS.put("intField", 1);
       FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("stringField", 2);
+      THRIFT_NAMES_TO_IDS.put("stringField", 2);
       FIELD_METADATA.put(2, STRING_FIELD_FIELD_DESC);
     }
     
@@ -141,7 +144,7 @@ static {
     
     public static MyMutableStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyMutableStruct.NAMES_TO_IDS, MyMutableStruct.FIELD_METADATA);
+      oprot.readStructBegin(MyMutableStruct.NAMES_TO_IDS, MyMutableStruct.THRIFT_NAMES_TO_IDS, MyMutableStruct.FIELD_METADATA);
       MyMutableStruct.Builder builder = new MyMutableStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

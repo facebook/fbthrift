@@ -325,10 +325,15 @@ public abstract class ByteBufAbstractTSimpleJSONProtocol extends ByteBufTProtoco
   /** Reading methods. */
   private class StructReadContext {
     final Map<String, Integer> namesToIds;
+    final Map<String, Integer> javaNamesToIds;
     final Map<Integer, TField> fieldMetadata;
 
-    StructReadContext(Map<String, Integer> namesToIds, Map<Integer, TField> fieldMetadata) {
+    StructReadContext(
+        Map<String, Integer> namesToIds,
+        Map<String, Integer> javaNamesToIds,
+        Map<Integer, TField> fieldMetadata) {
       this.namesToIds = namesToIds;
+      this.javaNamesToIds = javaNamesToIds;
       this.fieldMetadata = fieldMetadata;
     }
   }
@@ -765,12 +770,15 @@ public abstract class ByteBufAbstractTSimpleJSONProtocol extends ByteBufTProtoco
 
   @Override
   public TStruct readStructBegin(
-      Map<String, Integer> namesToIds, Map<Integer, TField> fieldMetadata) throws TException {
+      Map<String, Integer> namesToIds,
+      Map<String, Integer> thriftNamesToIds,
+      Map<Integer, TField> fieldMetadata)
+      throws TException {
     if (currentReadContext != null) {
       readContexts.push(currentReadContext);
     }
 
-    currentReadContext = new StructReadContext(namesToIds, fieldMetadata);
+    currentReadContext = new StructReadContext(namesToIds, thriftNamesToIds, fieldMetadata);
 
     readJSONObjectStart();
     return ANONYMOUS_STRUCT;
@@ -798,9 +806,13 @@ public abstract class ByteBufAbstractTSimpleJSONProtocol extends ByteBufTProtoco
       context_.read();
       try {
         final String fieldName = readJSONString().toString(StandardCharsets.UTF_8);
-        final Integer fieldId = currentReadContext.namesToIds.get(fieldName);
+        Integer fieldId = currentReadContext.namesToIds.get(fieldName);
         if (fieldId == null) {
-          return new TField(fieldName, getTypeIDForPeekedByte(reader_.peekNext()), (short) 0);
+          // backward compatibility
+          fieldId = currentReadContext.javaNamesToIds.get(fieldName);
+          if (fieldId == null) {
+            return new TField(fieldName, getTypeIDForPeekedByte(reader_.peekNext()), (short) 0);
+          }
         }
         return currentReadContext.fieldMetadata.get(fieldId);
       } catch (Exception e) {

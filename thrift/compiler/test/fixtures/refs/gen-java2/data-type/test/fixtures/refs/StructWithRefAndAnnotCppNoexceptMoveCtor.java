@@ -61,6 +61,7 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
         }
     }
         public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithRefAndAnnotCppNoexceptMoveCtor");
     private final test.fixtures.refs.Empty defField;
@@ -68,6 +69,7 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
     private static final TField DEF_FIELD_FIELD_DESC = new TField("def_field", TType.STRUCT, (short)1);
     static {
       NAMES_TO_IDS.put("defField", 1);
+      THRIFT_NAMES_TO_IDS.put("def_field", 1);
       FIELD_METADATA.put(1, DEF_FIELD_FIELD_DESC);
     }
     
@@ -112,7 +114,7 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.faceb
     
     public static StructWithRefAndAnnotCppNoexceptMoveCtor read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(StructWithRefAndAnnotCppNoexceptMoveCtor.NAMES_TO_IDS, StructWithRefAndAnnotCppNoexceptMoveCtor.FIELD_METADATA);
+      oprot.readStructBegin(StructWithRefAndAnnotCppNoexceptMoveCtor.NAMES_TO_IDS, StructWithRefAndAnnotCppNoexceptMoveCtor.THRIFT_NAMES_TO_IDS, StructWithRefAndAnnotCppNoexceptMoveCtor.FIELD_METADATA);
       StructWithRefAndAnnotCppNoexceptMoveCtor.Builder builder = new StructWithRefAndAnnotCppNoexceptMoveCtor.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

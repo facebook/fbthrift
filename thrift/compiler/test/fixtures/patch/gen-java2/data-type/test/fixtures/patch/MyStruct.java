@@ -369,6 +369,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         }
     }
                                                                                                 public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final boolean boolVal;
@@ -442,50 +443,73 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     private static final TField OPT_MAP_VAL_FIELD_DESC = new TField("optMapVal", TType.MAP, (short)23);
     static {
       NAMES_TO_IDS.put("boolVal", 1);
+      THRIFT_NAMES_TO_IDS.put("boolVal", 1);
       FIELD_METADATA.put(1, BOOL_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("byteVal", 2);
+      THRIFT_NAMES_TO_IDS.put("byteVal", 2);
       FIELD_METADATA.put(2, BYTE_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("i16Val", 3);
+      THRIFT_NAMES_TO_IDS.put("i16Val", 3);
       FIELD_METADATA.put(3, I16_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("i32Val", 4);
+      THRIFT_NAMES_TO_IDS.put("i32Val", 4);
       FIELD_METADATA.put(4, I32_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("i64Val", 5);
+      THRIFT_NAMES_TO_IDS.put("i64Val", 5);
       FIELD_METADATA.put(5, I64_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("floatVal", 6);
+      THRIFT_NAMES_TO_IDS.put("floatVal", 6);
       FIELD_METADATA.put(6, FLOAT_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("doubleVal", 7);
+      THRIFT_NAMES_TO_IDS.put("doubleVal", 7);
       FIELD_METADATA.put(7, DOUBLE_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("stringVal", 8);
+      THRIFT_NAMES_TO_IDS.put("stringVal", 8);
       FIELD_METADATA.put(8, STRING_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("binaryVal", 9);
+      THRIFT_NAMES_TO_IDS.put("binaryVal", 9);
       FIELD_METADATA.put(9, BINARY_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("structVal", 10);
+      THRIFT_NAMES_TO_IDS.put("structVal", 10);
       FIELD_METADATA.put(10, STRUCT_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("optBoolVal", 11);
+      THRIFT_NAMES_TO_IDS.put("optBoolVal", 11);
       FIELD_METADATA.put(11, OPT_BOOL_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("optByteVal", 12);
+      THRIFT_NAMES_TO_IDS.put("optByteVal", 12);
       FIELD_METADATA.put(12, OPT_BYTE_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("optI16Val", 13);
+      THRIFT_NAMES_TO_IDS.put("optI16Val", 13);
       FIELD_METADATA.put(13, OPT_I16_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("optI32Val", 14);
+      THRIFT_NAMES_TO_IDS.put("optI32Val", 14);
       FIELD_METADATA.put(14, OPT_I32_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("optI64Val", 15);
+      THRIFT_NAMES_TO_IDS.put("optI64Val", 15);
       FIELD_METADATA.put(15, OPT_I64_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("optFloatVal", 16);
+      THRIFT_NAMES_TO_IDS.put("optFloatVal", 16);
       FIELD_METADATA.put(16, OPT_FLOAT_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("optDoubleVal", 17);
+      THRIFT_NAMES_TO_IDS.put("optDoubleVal", 17);
       FIELD_METADATA.put(17, OPT_DOUBLE_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("optStringVal", 18);
+      THRIFT_NAMES_TO_IDS.put("optStringVal", 18);
       FIELD_METADATA.put(18, OPT_STRING_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("optBinaryVal", 19);
+      THRIFT_NAMES_TO_IDS.put("optBinaryVal", 19);
       FIELD_METADATA.put(19, OPT_BINARY_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("optStructVal", 20);
+      THRIFT_NAMES_TO_IDS.put("optStructVal", 20);
       FIELD_METADATA.put(20, OPT_STRUCT_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("optListVal", 21);
+      THRIFT_NAMES_TO_IDS.put("optListVal", 21);
       FIELD_METADATA.put(21, OPT_LIST_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("optSetVal", 22);
+      THRIFT_NAMES_TO_IDS.put("optSetVal", 22);
       FIELD_METADATA.put(22, OPT_SET_VAL_FIELD_DESC);
       NAMES_TO_IDS.put("optMapVal", 23);
+      THRIFT_NAMES_TO_IDS.put("optMapVal", 23);
       FIELD_METADATA.put(23, OPT_MAP_VAL_FIELD_DESC);
     }
     
@@ -706,7 +730,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.FIELD_METADATA);
+      oprot.readStructBegin(MyStruct.NAMES_TO_IDS, MyStruct.THRIFT_NAMES_TO_IDS, MyStruct.FIELD_METADATA);
       MyStruct.Builder builder = new MyStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

@@ -76,6 +76,7 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
         }
     }
             public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("SecretStruct");
     private final long id;
@@ -87,8 +88,10 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
     private static final TField PASSWORD_FIELD_DESC = new TField("password", TType.STRING, (short)2);
     static {
       NAMES_TO_IDS.put("id", 1);
+      THRIFT_NAMES_TO_IDS.put("id", 1);
       FIELD_METADATA.put(1, ID_FIELD_DESC);
       NAMES_TO_IDS.put("password", 2);
+      THRIFT_NAMES_TO_IDS.put("password", 2);
       FIELD_METADATA.put(2, PASSWORD_FIELD_DESC);
     }
     
@@ -141,7 +144,7 @@ public final class SecretStruct implements com.facebook.thrift.payload.ThriftSer
     
     public static SecretStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(SecretStruct.NAMES_TO_IDS, SecretStruct.FIELD_METADATA);
+      oprot.readStructBegin(SecretStruct.NAMES_TO_IDS, SecretStruct.THRIFT_NAMES_TO_IDS, SecretStruct.FIELD_METADATA);
       SecretStruct.Builder builder = new SecretStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

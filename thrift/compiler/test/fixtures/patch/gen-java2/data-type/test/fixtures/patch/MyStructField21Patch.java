@@ -103,6 +103,7 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
         }
     }
                     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructField21Patch");
     private final List<Short> assign;
@@ -119,12 +120,16 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.LIST, (short)5);
     static {
       NAMES_TO_IDS.put("assign", 1);
+      THRIFT_NAMES_TO_IDS.put("assign", 1);
       FIELD_METADATA.put(1, ASSIGN_FIELD_DESC);
       NAMES_TO_IDS.put("clear", 2);
+      THRIFT_NAMES_TO_IDS.put("clear", 2);
       FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
       NAMES_TO_IDS.put("append", 4);
+      THRIFT_NAMES_TO_IDS.put("append", 4);
       FIELD_METADATA.put(4, APPEND_FIELD_DESC);
       NAMES_TO_IDS.put("prepend", 5);
+      THRIFT_NAMES_TO_IDS.put("prepend", 5);
       FIELD_METADATA.put(5, PREPEND_FIELD_DESC);
     }
     
@@ -193,7 +198,7 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     
     public static MyStructField21Patch read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStructField21Patch.NAMES_TO_IDS, MyStructField21Patch.FIELD_METADATA);
+      oprot.readStructBegin(MyStructField21Patch.NAMES_TO_IDS, MyStructField21Patch.THRIFT_NAMES_TO_IDS, MyStructField21Patch.FIELD_METADATA);
       MyStructField21Patch.Builder builder = new MyStructField21Patch.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

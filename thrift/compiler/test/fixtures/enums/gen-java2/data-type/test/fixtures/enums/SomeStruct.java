@@ -105,6 +105,7 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
         }
     }
                     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("SomeStruct");
     private final test.fixtures.enums.Metasyntactic reasonable;
@@ -121,12 +122,16 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
     private static final TField TAGS_FIELD_DESC = new TField("tags", TType.SET, (short)4);
     static {
       NAMES_TO_IDS.put("reasonable", 1);
+      THRIFT_NAMES_TO_IDS.put("reasonable", 1);
       FIELD_METADATA.put(1, REASONABLE_FIELD_DESC);
       NAMES_TO_IDS.put("fine", 2);
+      THRIFT_NAMES_TO_IDS.put("fine", 2);
       FIELD_METADATA.put(2, FINE_FIELD_DESC);
       NAMES_TO_IDS.put("questionable", 3);
+      THRIFT_NAMES_TO_IDS.put("questionable", 3);
       FIELD_METADATA.put(3, QUESTIONABLE_FIELD_DESC);
       NAMES_TO_IDS.put("tags", 4);
+      THRIFT_NAMES_TO_IDS.put("tags", 4);
       FIELD_METADATA.put(4, TAGS_FIELD_DESC);
     }
     
@@ -195,7 +200,7 @@ public final class SomeStruct implements com.facebook.thrift.payload.ThriftSeria
     
     public static SomeStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(SomeStruct.NAMES_TO_IDS, SomeStruct.FIELD_METADATA);
+      oprot.readStructBegin(SomeStruct.NAMES_TO_IDS, SomeStruct.THRIFT_NAMES_TO_IDS, SomeStruct.FIELD_METADATA);
       SomeStruct.Builder builder = new SomeStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

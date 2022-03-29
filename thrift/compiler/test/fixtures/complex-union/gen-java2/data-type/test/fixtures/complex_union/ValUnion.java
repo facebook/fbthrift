@@ -22,6 +22,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class ValUnion implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("ValUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
 
     public static final int _V1 = 1;
@@ -31,8 +32,10 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
 
     static {
       NAMES_TO_IDS.put("v1", 1);
+      THRIFT_NAMES_TO_IDS.put("v1", 1);
       FIELD_METADATA.put(1, V1_FIELD_DESC);
       NAMES_TO_IDS.put("v2", 2);
+      THRIFT_NAMES_TO_IDS.put("v2", 2);
       FIELD_METADATA.put(2, V2_FIELD_DESC);
     }
 
@@ -193,7 +196,7 @@ public final class ValUnion implements com.facebook.thrift.payload.ThriftSeriali
       ValUnion res = new ValUnion();
       res.value = null;
       res.id = (short) 0;
-      oprot.readStructBegin(ValUnion.NAMES_TO_IDS, ValUnion.FIELD_METADATA);
+      oprot.readStructBegin(ValUnion.NAMES_TO_IDS, ValUnion.THRIFT_NAMES_TO_IDS, ValUnion.FIELD_METADATA);
       TField __field = oprot.readFieldBegin();
       if (__field.type != TType.STOP) {
           switch (__field.id) {

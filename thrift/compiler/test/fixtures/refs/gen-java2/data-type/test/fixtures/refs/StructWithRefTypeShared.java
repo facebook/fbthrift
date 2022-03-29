@@ -89,6 +89,7 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
         }
     }
                 public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithRefTypeShared");
     private final test.fixtures.refs.Empty defField;
@@ -102,10 +103,13 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
     private static final TField REQ_FIELD_FIELD_DESC = new TField("req_field", TType.STRUCT, (short)3);
     static {
       NAMES_TO_IDS.put("defField", 1);
+      THRIFT_NAMES_TO_IDS.put("def_field", 1);
       FIELD_METADATA.put(1, DEF_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("optField", 2);
+      THRIFT_NAMES_TO_IDS.put("opt_field", 2);
       FIELD_METADATA.put(2, OPT_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("reqField", 3);
+      THRIFT_NAMES_TO_IDS.put("req_field", 3);
       FIELD_METADATA.put(3, REQ_FIELD_FIELD_DESC);
     }
     
@@ -166,7 +170,7 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
     
     public static StructWithRefTypeShared read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(StructWithRefTypeShared.NAMES_TO_IDS, StructWithRefTypeShared.FIELD_METADATA);
+      oprot.readStructBegin(StructWithRefTypeShared.NAMES_TO_IDS, StructWithRefTypeShared.THRIFT_NAMES_TO_IDS, StructWithRefTypeShared.FIELD_METADATA);
       StructWithRefTypeShared.Builder builder = new StructWithRefTypeShared.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

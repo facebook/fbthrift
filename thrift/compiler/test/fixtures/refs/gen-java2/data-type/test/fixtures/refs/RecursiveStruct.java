@@ -61,6 +61,7 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
         }
     }
         public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("RecursiveStruct");
     private final List<test.fixtures.refs.RecursiveStruct> mes;
@@ -68,6 +69,7 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
     private static final TField MES_FIELD_DESC = new TField("mes", TType.LIST, (short)1);
     static {
       NAMES_TO_IDS.put("mes", 1);
+      THRIFT_NAMES_TO_IDS.put("mes", 1);
       FIELD_METADATA.put(1, MES_FIELD_DESC);
     }
     
@@ -112,7 +114,7 @@ public final class RecursiveStruct implements com.facebook.thrift.payload.Thrift
     
     public static RecursiveStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(RecursiveStruct.NAMES_TO_IDS, RecursiveStruct.FIELD_METADATA);
+      oprot.readStructBegin(RecursiveStruct.NAMES_TO_IDS, RecursiveStruct.THRIFT_NAMES_TO_IDS, RecursiveStruct.FIELD_METADATA);
       RecursiveStruct.Builder builder = new RecursiveStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

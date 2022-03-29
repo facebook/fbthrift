@@ -61,6 +61,7 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
         }
     }
         public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("CompatibleWithKeywordSink");
     private final String sink;
@@ -68,6 +69,7 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
     private static final TField SINK_FIELD_DESC = new TField("sink", TType.STRING, (short)1);
     static {
       NAMES_TO_IDS.put("sink", 1);
+      THRIFT_NAMES_TO_IDS.put("sink", 1);
       FIELD_METADATA.put(1, SINK_FIELD_DESC);
     }
     
@@ -112,7 +114,7 @@ public final class CompatibleWithKeywordSink implements com.facebook.thrift.payl
     
     public static CompatibleWithKeywordSink read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(CompatibleWithKeywordSink.NAMES_TO_IDS, CompatibleWithKeywordSink.FIELD_METADATA);
+      oprot.readStructBegin(CompatibleWithKeywordSink.NAMES_TO_IDS, CompatibleWithKeywordSink.THRIFT_NAMES_TO_IDS, CompatibleWithKeywordSink.FIELD_METADATA);
       CompatibleWithKeywordSink.Builder builder = new CompatibleWithKeywordSink.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

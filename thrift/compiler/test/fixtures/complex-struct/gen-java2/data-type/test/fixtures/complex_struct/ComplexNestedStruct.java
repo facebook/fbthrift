@@ -299,6 +299,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
         }
     }
                                                                             public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("ComplexNestedStruct");
     private final Set<Set<Integer>> setOfSetOfInt;
@@ -357,40 +358,58 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
     private static final TField MAP_KEY_LIST_VAL_SET_FIELD_DESC = new TField("mapKeyListValSet", TType.MAP, (short)18);
     static {
       NAMES_TO_IDS.put("setOfSetOfInt", 1);
+      THRIFT_NAMES_TO_IDS.put("setOfSetOfInt", 1);
       FIELD_METADATA.put(1, SET_OF_SET_OF_INT_FIELD_DESC);
       NAMES_TO_IDS.put("listofListOfListOfListOfEnum", 2);
+      THRIFT_NAMES_TO_IDS.put("listofListOfListOfListOfEnum", 2);
       FIELD_METADATA.put(2, LISTOF_LIST_OF_LIST_OF_LIST_OF_ENUM_FIELD_DESC);
       NAMES_TO_IDS.put("listOfListOfMyStruct", 3);
+      THRIFT_NAMES_TO_IDS.put("listOfListOfMyStruct", 3);
       FIELD_METADATA.put(3, LIST_OF_LIST_OF_MY_STRUCT_FIELD_DESC);
       NAMES_TO_IDS.put("setOfListOfListOfLong", 4);
+      THRIFT_NAMES_TO_IDS.put("setOfListOfListOfLong", 4);
       FIELD_METADATA.put(4, SET_OF_LIST_OF_LIST_OF_LONG_FIELD_DESC);
       NAMES_TO_IDS.put("setOfSetOfsetOfLong", 5);
+      THRIFT_NAMES_TO_IDS.put("setOfSetOfsetOfLong", 5);
       FIELD_METADATA.put(5, SET_OF_SET_OFSET_OF_LONG_FIELD_DESC);
       NAMES_TO_IDS.put("mapStructListOfListOfLong", 6);
+      THRIFT_NAMES_TO_IDS.put("mapStructListOfListOfLong", 6);
       FIELD_METADATA.put(6, MAP_STRUCT_LIST_OF_LIST_OF_LONG_FIELD_DESC);
       NAMES_TO_IDS.put("mKeyStructValInt", 7);
+      THRIFT_NAMES_TO_IDS.put("mKeyStructValInt", 7);
       FIELD_METADATA.put(7, M_KEY_STRUCT_VAL_INT_FIELD_DESC);
       NAMES_TO_IDS.put("listOfMapKeyIntValInt", 8);
+      THRIFT_NAMES_TO_IDS.put("listOfMapKeyIntValInt", 8);
       FIELD_METADATA.put(8, LIST_OF_MAP_KEY_INT_VAL_INT_FIELD_DESC);
       NAMES_TO_IDS.put("listOfMapKeyStrValList", 9);
+      THRIFT_NAMES_TO_IDS.put("listOfMapKeyStrValList", 9);
       FIELD_METADATA.put(9, LIST_OF_MAP_KEY_STR_VAL_LIST_FIELD_DESC);
       NAMES_TO_IDS.put("mapKeySetValLong", 10);
+      THRIFT_NAMES_TO_IDS.put("mapKeySetValLong", 10);
       FIELD_METADATA.put(10, MAP_KEY_SET_VAL_LONG_FIELD_DESC);
       NAMES_TO_IDS.put("mapKeyListValLong", 11);
+      THRIFT_NAMES_TO_IDS.put("mapKeyListValLong", 11);
       FIELD_METADATA.put(11, MAP_KEY_LIST_VAL_LONG_FIELD_DESC);
       NAMES_TO_IDS.put("mapKeyMapValMap", 12);
+      THRIFT_NAMES_TO_IDS.put("mapKeyMapValMap", 12);
       FIELD_METADATA.put(12, MAP_KEY_MAP_VAL_MAP_FIELD_DESC);
       NAMES_TO_IDS.put("mapKeySetValMap", 13);
+      THRIFT_NAMES_TO_IDS.put("mapKeySetValMap", 13);
       FIELD_METADATA.put(13, MAP_KEY_SET_VAL_MAP_FIELD_DESC);
       NAMES_TO_IDS.put("nestedMaps", 14);
+      THRIFT_NAMES_TO_IDS.put("NestedMaps", 14);
       FIELD_METADATA.put(14, NESTED_MAPS_FIELD_DESC);
       NAMES_TO_IDS.put("mapKeyIntValList", 15);
+      THRIFT_NAMES_TO_IDS.put("mapKeyIntValList", 15);
       FIELD_METADATA.put(15, MAP_KEY_INT_VAL_LIST_FIELD_DESC);
       NAMES_TO_IDS.put("mapKeyIntValSet", 16);
+      THRIFT_NAMES_TO_IDS.put("mapKeyIntValSet", 16);
       FIELD_METADATA.put(16, MAP_KEY_INT_VAL_SET_FIELD_DESC);
       NAMES_TO_IDS.put("mapKeySetValInt", 17);
+      THRIFT_NAMES_TO_IDS.put("mapKeySetValInt", 17);
       FIELD_METADATA.put(17, MAP_KEY_SET_VAL_INT_FIELD_DESC);
       NAMES_TO_IDS.put("mapKeyListValSet", 18);
+      THRIFT_NAMES_TO_IDS.put("mapKeyListValSet", 18);
       FIELD_METADATA.put(18, MAP_KEY_LIST_VAL_SET_FIELD_DESC);
     }
     
@@ -571,7 +590,7 @@ public final class ComplexNestedStruct implements com.facebook.thrift.payload.Th
     
     public static ComplexNestedStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(ComplexNestedStruct.NAMES_TO_IDS, ComplexNestedStruct.FIELD_METADATA);
+      oprot.readStructBegin(ComplexNestedStruct.NAMES_TO_IDS, ComplexNestedStruct.THRIFT_NAMES_TO_IDS, ComplexNestedStruct.FIELD_METADATA);
       ComplexNestedStruct.Builder builder = new ComplexNestedStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

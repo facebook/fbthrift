@@ -92,7 +92,10 @@ public abstract class TProtocol {
   public abstract void readMessageEnd() throws TException;
 
   public TStruct readStructBegin(
-      Map<String, Integer> namesToIds, Map<Integer, TField> fieldMetadata) throws TException {
+      Map<String, Integer> namesToIds,
+      Map<String, Integer> thriftNamesToIds,
+      Map<Integer, TField> fieldMetadata)
+      throws TException {
     return readStructBegin();
   }
 

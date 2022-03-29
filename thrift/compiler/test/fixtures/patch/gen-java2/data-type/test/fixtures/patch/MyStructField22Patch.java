@@ -103,6 +103,7 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
         }
     }
                     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructField22Patch");
     private final Set<String> assign;
@@ -119,12 +120,16 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
     private static final TField REMOVE_FIELD_DESC = new TField("remove", TType.SET, (short)5);
     static {
       NAMES_TO_IDS.put("assign", 1);
+      THRIFT_NAMES_TO_IDS.put("assign", 1);
       FIELD_METADATA.put(1, ASSIGN_FIELD_DESC);
       NAMES_TO_IDS.put("clear", 2);
+      THRIFT_NAMES_TO_IDS.put("clear", 2);
       FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
       NAMES_TO_IDS.put("add", 4);
+      THRIFT_NAMES_TO_IDS.put("add", 4);
       FIELD_METADATA.put(4, ADD_FIELD_DESC);
       NAMES_TO_IDS.put("remove", 5);
+      THRIFT_NAMES_TO_IDS.put("remove", 5);
       FIELD_METADATA.put(5, REMOVE_FIELD_DESC);
     }
     
@@ -193,7 +198,7 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
     
     public static MyStructField22Patch read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(MyStructField22Patch.NAMES_TO_IDS, MyStructField22Patch.FIELD_METADATA);
+      oprot.readStructBegin(MyStructField22Patch.NAMES_TO_IDS, MyStructField22Patch.THRIFT_NAMES_TO_IDS, MyStructField22Patch.FIELD_METADATA);
       MyStructField22Patch.Builder builder = new MyStructField22Patch.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

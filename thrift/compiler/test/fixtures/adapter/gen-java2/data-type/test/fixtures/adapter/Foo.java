@@ -159,6 +159,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         }
     }
                                     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Foo");
     private final int intField;
@@ -187,20 +188,28 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     private static final TField BINARY_FIELD_FIELD_DESC = new TField("binaryField", TType.STRING, (short)8);
     static {
       NAMES_TO_IDS.put("intField", 1);
+      THRIFT_NAMES_TO_IDS.put("intField", 1);
       FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("optionalIntField", 2);
+      THRIFT_NAMES_TO_IDS.put("optionalIntField", 2);
       FIELD_METADATA.put(2, OPTIONAL_INT_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("intFieldWithDefault", 3);
+      THRIFT_NAMES_TO_IDS.put("intFieldWithDefault", 3);
       FIELD_METADATA.put(3, INT_FIELD_WITH_DEFAULT_FIELD_DESC);
       NAMES_TO_IDS.put("setField", 4);
+      THRIFT_NAMES_TO_IDS.put("setField", 4);
       FIELD_METADATA.put(4, SET_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("optionalSetField", 5);
+      THRIFT_NAMES_TO_IDS.put("optionalSetField", 5);
       FIELD_METADATA.put(5, OPTIONAL_SET_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("mapField", 6);
+      THRIFT_NAMES_TO_IDS.put("mapField", 6);
       FIELD_METADATA.put(6, MAP_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("optionalMapField", 7);
+      THRIFT_NAMES_TO_IDS.put("optionalMapField", 7);
       FIELD_METADATA.put(7, OPTIONAL_MAP_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("binaryField", 8);
+      THRIFT_NAMES_TO_IDS.put("binaryField", 8);
       FIELD_METADATA.put(8, BINARY_FIELD_FIELD_DESC);
     }
     
@@ -301,7 +310,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     
     public static Foo read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(Foo.NAMES_TO_IDS, Foo.FIELD_METADATA);
+      oprot.readStructBegin(Foo.NAMES_TO_IDS, Foo.THRIFT_NAMES_TO_IDS, Foo.FIELD_METADATA);
       Foo.Builder builder = new Foo.Builder();
       while (true) {
         __field = oprot.readFieldBegin();
