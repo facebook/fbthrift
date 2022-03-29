@@ -63,19 +63,17 @@ public class SimpleThriftClientTest {
 
     LOG.info("creating client");
 
-    RpcClientManager manager =
-        new RpcClientManager(
-            RpcClientFactory.builder()
-                .setDisableLoadBalancing(true)
-                .setThriftClientConfig(
-                    new ThriftClientConfig()
-                        .setDisableSSL(true)
-                        .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
-                .build(),
-            address,
-            ProtocolId.BINARY);
+    RpcClientFactory factory =
+        RpcClientFactory.builder()
+            .setDisableLoadBalancing(true)
+            .setThriftClientConfig(
+                new ThriftClientConfig()
+                    .setDisableSSL(true)
+                    .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
+            .build();
 
-    PingService client = manager.createClient(PingService.class);
+    PingService client = PingService.createBlockingClient(factory, address, ProtocolId.BINARY);
+
     client.pingVoid(new PingRequest.Builder().setRequest("ping").build());
   }
 
@@ -94,19 +92,16 @@ public class SimpleThriftClientTest {
 
     LOG.info("creating client");
 
-    RpcClientManager manager =
-        new RpcClientManager(
-            RpcClientFactory.builder()
-                .setDisableLoadBalancing(true)
-                .setThriftClientConfig(
-                    new ThriftClientConfig()
-                        .setDisableSSL(true)
-                        .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
-                .build(),
-            address,
-            ProtocolId.BINARY);
+    RpcClientFactory factory =
+        RpcClientFactory.builder()
+            .setDisableLoadBalancing(true)
+            .setThriftClientConfig(
+                new ThriftClientConfig()
+                    .setDisableSSL(true)
+                    .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
+            .build();
 
-    PingService.Async client = manager.createClient(PingService.Async.class);
+    PingService.Async client = PingService.createAsyncClient(factory, address, ProtocolId.BINARY);
     client.pingVoid(new PingRequest.Builder().setRequest("ping").build()).get();
   }
 
@@ -124,19 +119,17 @@ public class SimpleThriftClientTest {
 
     LOG.info("creating client");
 
-    RpcClientManager manager =
-        new RpcClientManager(
-            RpcClientFactory.builder()
-                .setDisableLoadBalancing(true)
-                .setThriftClientConfig(
-                    new ThriftClientConfig()
-                        .setDisableSSL(true)
-                        .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
-                .build(),
-            address,
-            ProtocolId.BINARY);
+    RpcClientFactory factory =
+        RpcClientFactory.builder()
+            .setDisableLoadBalancing(true)
+            .setThriftClientConfig(
+                new ThriftClientConfig()
+                    .setDisableSSL(true)
+                    .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
+            .build();
 
-    PingService.Reactive client = manager.createClient(PingService.Reactive.class);
+    PingService.Reactive client =
+        PingService.createReactiveClient(factory, address, ProtocolId.BINARY);
     client.pingVoid(new PingRequest.Builder().setRequest("ping").build()).block();
   }
 
@@ -156,23 +149,19 @@ public class SimpleThriftClientTest {
 
     LOG.info("creating client");
 
-    RpcClientManager manager =
-        new RpcClientManager(
-            RpcClientFactory.builder()
-                .setDisableLoadBalancing(true)
-                .setThriftClientConfig(
-                    new ThriftClientConfig()
-                        .setDisableSSL(true)
-                        .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
-                .build(),
-            address,
-            ProtocolId.BINARY);
+    RpcClientFactory factory =
+        RpcClientFactory.builder()
+            .setDisableLoadBalancing(true)
+            .setThriftClientConfig(
+                new ThriftClientConfig()
+                    .setDisableSSL(true)
+                    .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
+            .build();
 
     PingRequest pingRequest = new PingRequest.Builder().setRequest("ping").build();
 
     try {
-      PingService open =
-          manager.createClient(PingService.class, Collections.emptyMap(), Collections.emptyMap());
+      PingService open = PingService.createBlockingClient(factory, address, ProtocolId.BINARY);
       open.ping(pingRequest);
       assertEquals(1, metrics.getChannelCount());
     } catch (Throwable t) {
@@ -181,8 +170,7 @@ public class SimpleThriftClientTest {
     }
 
     try {
-      PingService closed =
-          manager.createClient(PingService.class, Collections.emptyMap(), Collections.emptyMap());
+      PingService closed = PingService.createBlockingClient(factory, address, ProtocolId.BINARY);
       closed.ping(pingRequest);
     } catch (Throwable t) {
       assertEquals(metrics.getRejectedConnections(), 1);
@@ -207,21 +195,17 @@ public class SimpleThriftClientTest {
 
     LOG.info("creating client");
 
-    RpcClientManager manager =
-        new RpcClientManager(
-            RpcClientFactory.builder()
-                .setDisableLoadBalancing(true)
-                .setThriftClientConfig(
-                    new ThriftClientConfig()
-                        .setDisableSSL(true)
-                        .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
-                .build(),
-            address,
-            ProtocolId.BINARY);
+    RpcClientFactory factory =
+        RpcClientFactory.builder()
+            .setDisableLoadBalancing(true)
+            .setThriftClientConfig(
+                new ThriftClientConfig()
+                    .setDisableSSL(true)
+                    .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
+            .build();
 
     PingRequest pingRequest = new PingRequest.Builder().setRequest("ping").build();
-    PingService pingService =
-        manager.createClient(PingService.class, Collections.emptyMap(), Collections.emptyMap());
+    PingService pingService = PingService.createBlockingClient(factory, address, ProtocolId.BINARY);
     try {
       pingService.ping(pingRequest);
     } catch (Throwable t) {
@@ -268,20 +252,16 @@ public class SimpleThriftClientTest {
 
     LOG.info("creating client");
 
-    RpcClientManager manager =
-        new RpcClientManager(
-            RpcClientFactory.builder()
-                .setDisableLoadBalancing(true)
-                .setThriftClientConfig(
-                    new ThriftClientConfig()
-                        .setDisableSSL(true)
-                        .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
-                .build(),
-            address,
-            ProtocolId.BINARY);
+    RpcClientFactory factory =
+        RpcClientFactory.builder()
+            .setDisableLoadBalancing(true)
+            .setThriftClientConfig(
+                new ThriftClientConfig()
+                    .setDisableSSL(true)
+                    .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
+            .build();
 
-    PingService pingService =
-        manager.createClient(PingService.class, Collections.emptyMap(), Collections.emptyMap());
+    PingService pingService = PingService.createBlockingClient(factory, address, ProtocolId.BINARY);
 
     for (int i = 0; i < n; i++) {
       PingRequest pingRequest = new PingRequest.Builder().setRequest(i + "ping").build();
@@ -328,22 +308,17 @@ public class SimpleThriftClientTest {
 
     LOG.info("creating client");
 
-    RpcClientManager manager =
-        new RpcClientManager(
-            RpcClientFactory.builder()
-                .setDisableLoadBalancing(true)
-                .setThriftClientConfig(
-                    new ThriftClientConfig()
-                        .setDisableSSL(true)
-                        .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
-                .build(),
-            address,
-            ProtocolId.BINARY);
+    RpcClientFactory factory =
+        RpcClientFactory.builder()
+            .setDisableLoadBalancing(true)
+            .setThriftClientConfig(
+                new ThriftClientConfig()
+                    .setDisableSSL(true)
+                    .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
+            .build();
 
     PingService.Async pingService =
-        manager.createClient(
-            PingService.Async.class, Collections.emptyMap(), Collections.emptyMap());
-
+        PingService.createAsyncClient(factory, address, ProtocolId.BINARY);
     LOG.info("new client created, sending ping");
 
     Flux.range(0, n)

@@ -16,7 +16,7 @@
 
 package com.meta.thrift.example.ping.client;
 
-import com.facebook.thrift.client.RpcClientManager;
+import com.facebook.thrift.client.RpcClientFactory;
 import com.facebook.thrift.client.ThriftClientConfig;
 import com.facebook.thrift.example.ping.PingRequest;
 import com.facebook.thrift.example.ping.PingResponse;
@@ -25,6 +25,7 @@ import com.facebook.thrift.legacy.client.LegacyRpcClientFactory;
 import com.facebook.thrift.rsocket.client.RSocketRpcClientFactory;
 import com.google.common.collect.ImmutableMap;
 import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -122,17 +123,20 @@ public class PingClient {
     PingClientConfig config = parseArgs(args);
 
     boolean useHeader = "header".equals(config.getTransport());
-    final RpcClientManager clientManager =
-        new RpcClientManager(
-            useHeader
-                ? new LegacyRpcClientFactory(new ThriftClientConfig().setDisableSSL(true))
-                : new RSocketRpcClientFactory(new ThriftClientConfig().setDisableSSL(true)),
-            InetSocketAddress.createUnresolved(config.getHost(), config.getPort()),
-            ProtocolId.BINARY);
+    final RpcClientFactory clientFactory =
+        useHeader
+            ? new LegacyRpcClientFactory(new ThriftClientConfig().setDisableSSL(true))
+            : new RSocketRpcClientFactory(new ThriftClientConfig().setDisableSSL(true));
+    SocketAddress address = InetSocketAddress.createUnresolved(config.getHost(), config.getPort());
 
+    // NOTE: the follow code can be simplified after a better api is introduced
     final PingService client =
-        clientManager.createClient(
-            PingService.class, ImmutableMap.of("key1", "val1"), ImmutableMap.of("pkey1", "pval1"));
+        PingService.createBlockingClient(
+            clientFactory,
+            address,
+            ProtocolId.BINARY,
+            ImmutableMap.of("key1", "val1"),
+            ImmutableMap.of("pkey1", "pval1"));
 
     // Create request object
     PingRequest request = new PingRequest("Foo");
