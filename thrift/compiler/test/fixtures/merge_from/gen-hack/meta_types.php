@@ -10,7 +10,7 @@
  * Original thrift struct:-
  * Transitive
  */
-class facebook_thrift_annotation_Transitive implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+class facebook_thrift_annotation_Transitive implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -21,8 +21,6 @@ class facebook_thrift_annotation_Transitive implements \IThriftSyncStruct, \IThr
   const type TConstructorShape = shape(
   );
 
-  const type TShape = shape(
-  );
   const int STRUCTURAL_ID = 957977401221134810;
 
   public function __construct(  )[] {
@@ -33,11 +31,6 @@ class facebook_thrift_annotation_Transitive implements \IThriftSyncStruct, \IThr
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(
-    );
-  }
-
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
     );
   }
@@ -68,30 +61,8 @@ class facebook_thrift_annotation_Transitive implements \IThriftSyncStruct, \IThr
     );
   }
 
-  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
-    return Dict\map_keys($m, $key ==> (string)$key);
-  }
-
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
-  }
-
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
   }
 
 }
@@ -100,7 +71,7 @@ class facebook_thrift_annotation_Transitive implements \IThriftSyncStruct, \IThr
  * Original thrift struct:-
  * MergeFrom
  */
-class facebook_thrift_annotation_MergeFrom implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+class facebook_thrift_annotation_MergeFrom implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -117,9 +88,6 @@ class facebook_thrift_annotation_MergeFrom implements \IThriftSyncStruct, \IThri
     ?'type' => ?string,
   );
 
-  const type TShape = shape(
-    'type' => string,
-  );
   const int STRUCTURAL_ID = 75466648195691209;
   /**
    * Original thrift field:-
@@ -138,13 +106,6 @@ class facebook_thrift_annotation_MergeFrom implements \IThriftSyncStruct, \IThri
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'type'),
-    );
-  }
-
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
-    return new static(
-      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
-      idx($map, 'type'),
     );
   }
 
@@ -191,35 +152,8 @@ class facebook_thrift_annotation_MergeFrom implements \IThriftSyncStruct, \IThri
     );
   }
 
-  public static function __stringifyMapKeys<T>(dict<arraykey, T> $m)[]: dict<string, T> {
-    return Dict\map_keys($m, $key ==> (string)$key);
-  }
-
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      $shape['type'],
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'type' => $this->type,
-    );
-  }
   public function getInstanceKey()[write_props]: string {
     return \TCompactSerializer::serialize($this);
-  }
-
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-    if (idx($parsed, 'type') !== null) {
-      $this->type = /* HH_FIXME[4110] */ $parsed['type'];
-    }    
   }
 
 }
