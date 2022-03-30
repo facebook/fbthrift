@@ -60,13 +60,13 @@ struct double_t : floating_point_c {};
 struct string_t : string_c {}; // an utf-8 string
 struct binary_t : string_c {}; // an opaque binary string
 
-template <typename T> // the generated cpp type
+template <typename T> // the generated C++ type
 struct enum_t : enum_c {};
-template <typename T> // the generated cpp type
+template <typename T> // the generated C++ type
 struct struct_t : struct_c {};
-template <typename T> // the generated cpp type
+template <typename T> // the generated C++ type
 struct union_t : union_c {};
-template <typename T> // the generated cpp type
+template <typename T> // the generated C++ type
 struct exception_t : exception_c {};
 
 // Parameterized types.
@@ -81,18 +81,21 @@ struct map : map_c {};
 
 // An adapted type.
 template <
-    typename Adapter, // the cpp adpter to use
+    typename Adapter, // the C++ adapter to use
     typename Tag> // the thrift type being adapted
 struct adapted : Tag {};
 
-// A type mapped to a specific c++ type.
+// A type mapped to a specific C++ type.
 //
 // The given type must be a 'drop in' replacement for the
 // native_type it is overriding.
 template <
-    typename T, // the cpp type to use
+    typename T, // the C++ type to use
     typename Tag> // the thrift type being overridden
 struct cpp_type : Tag {};
+
+template <typename T> // the generated C++ type
+struct service {};
 
 template <FieldId Id, typename Tag>
 struct field_t;
