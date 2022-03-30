@@ -33,7 +33,7 @@ struct ForEachField<::apache::thrift::test::EmptiableStruct> {
     f(6, static_cast<T&&>(t).double_field_ref()...);
     f(7, static_cast<T&&>(t).string_field_ref()...);
     f(8, static_cast<T&&>(t).binary_field_ref()...);
-    f(9, static_cast<T&&>(t).MyEnum_ref()...);
+    f(9, static_cast<T&&>(t).enum_field_ref()...);
     f(10, static_cast<T&&>(t).list_field_ref()...);
     f(11, static_cast<T&&>(t).set_field_ref()...);
     f(12, static_cast<T&&>(t).map_field_ref()...);
@@ -54,7 +54,7 @@ struct ForEachField<::apache::thrift::test::EmptiableTerseStruct> {
     f(6, static_cast<T&&>(t).double_field_ref()...);
     f(7, static_cast<T&&>(t).string_field_ref()...);
     f(8, static_cast<T&&>(t).binary_field_ref()...);
-    f(9, static_cast<T&&>(t).MyEnum_ref()...);
+    f(9, static_cast<T&&>(t).enum_field_ref()...);
     f(10, static_cast<T&&>(t).list_field_ref()...);
     f(11, static_cast<T&&>(t).set_field_ref()...);
     f(12, static_cast<T&&>(t).map_field_ref()...);
@@ -75,7 +75,7 @@ struct ForEachField<::apache::thrift::test::NotEmptiableStruct> {
     f(6, static_cast<T&&>(t).double_field_ref()...);
     f(7, static_cast<T&&>(t).string_field_ref()...);
     f(8, static_cast<T&&>(t).binary_field_ref()...);
-    f(9, static_cast<T&&>(t).MyEnum_ref()...);
+    f(9, static_cast<T&&>(t).enum_field_ref()...);
     f(10, static_cast<T&&>(t).list_field_ref()...);
     f(11, static_cast<T&&>(t).set_field_ref()...);
     f(12, static_cast<T&&>(t).map_field_ref()...);

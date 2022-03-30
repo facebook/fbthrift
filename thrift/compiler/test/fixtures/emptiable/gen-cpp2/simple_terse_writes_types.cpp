@@ -140,7 +140,7 @@ EmptiableStruct::EmptiableStruct() :
       __fbthrift_field_long_field(),
       __fbthrift_field_float_field(),
       __fbthrift_field_double_field(),
-      __fbthrift_field_MyEnum() {
+      __fbthrift_field_enum_field() {
 }
 
 
@@ -156,7 +156,7 @@ EmptiableStruct::EmptiableStruct(EmptiableStruct&& other) noexcept  :
     __fbthrift_field_double_field(std::move(other.__fbthrift_field_double_field)),
     __fbthrift_field_string_field(std::move(other.__fbthrift_field_string_field)),
     __fbthrift_field_binary_field(std::move(other.__fbthrift_field_binary_field)),
-    __fbthrift_field_MyEnum(std::move(other.__fbthrift_field_MyEnum)),
+    __fbthrift_field_enum_field(std::move(other.__fbthrift_field_enum_field)),
     __fbthrift_field_list_field(std::move(other.__fbthrift_field_list_field)),
     __fbthrift_field_set_field(std::move(other.__fbthrift_field_set_field)),
     __fbthrift_field_map_field(std::move(other.__fbthrift_field_map_field)),
@@ -174,7 +174,7 @@ EmptiableStruct& EmptiableStruct::operator=(FOLLY_MAYBE_UNUSED EmptiableStruct&&
     this->__fbthrift_field_double_field = std::move(other.__fbthrift_field_double_field);
     this->__fbthrift_field_string_field = std::move(other.__fbthrift_field_string_field);
     this->__fbthrift_field_binary_field = std::move(other.__fbthrift_field_binary_field);
-    this->__fbthrift_field_MyEnum = std::move(other.__fbthrift_field_MyEnum);
+    this->__fbthrift_field_enum_field = std::move(other.__fbthrift_field_enum_field);
     this->__fbthrift_field_list_field = std::move(other.__fbthrift_field_list_field);
     this->__fbthrift_field_set_field = std::move(other.__fbthrift_field_set_field);
     this->__fbthrift_field_map_field = std::move(other.__fbthrift_field_map_field);
@@ -184,7 +184,7 @@ EmptiableStruct& EmptiableStruct::operator=(FOLLY_MAYBE_UNUSED EmptiableStruct&&
 }
 
 
-EmptiableStruct::EmptiableStruct(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::apache::thrift::test::MyEnum MyEnum__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::apache::thrift::test::MyStruct struct_field__arg) :
+EmptiableStruct::EmptiableStruct(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::apache::thrift::test::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::apache::thrift::test::MyStruct struct_field__arg) :
     __fbthrift_field_bool_field(std::move(bool_field__arg)),
     __fbthrift_field_byte_field(std::move(byte_field__arg)),
     __fbthrift_field_short_field(std::move(short_field__arg)),
@@ -194,7 +194,7 @@ EmptiableStruct::EmptiableStruct(apache::thrift::FragileConstructor, bool bool_f
     __fbthrift_field_double_field(std::move(double_field__arg)),
     __fbthrift_field_string_field(std::move(string_field__arg)),
     __fbthrift_field_binary_field(std::move(binary_field__arg)),
-    __fbthrift_field_MyEnum(std::move(MyEnum__arg)),
+    __fbthrift_field_enum_field(std::move(enum_field__arg)),
     __fbthrift_field_list_field(std::move(list_field__arg)),
     __fbthrift_field_set_field(std::move(set_field__arg)),
     __fbthrift_field_map_field(std::move(map_field__arg)),
@@ -227,7 +227,7 @@ void EmptiableStruct::__fbthrift_clear() {
   this->__fbthrift_field_double_field = double();
   this->__fbthrift_field_string_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_MyEnum = ::apache::thrift::test::MyEnum();
+  this->__fbthrift_field_enum_field = ::apache::thrift::test::MyEnum();
   this->__fbthrift_field_list_field.clear();
   this->__fbthrift_field_set_field.clear();
   this->__fbthrift_field_map_field.clear();
@@ -244,7 +244,7 @@ bool EmptiableStruct::__fbthrift_is_empty() const {
  !(this->__fbthrift_field_double_field != double()) &&
  !(!apache::thrift::StringTraits<std::string>::isEmpty(this->__fbthrift_field_string_field)) &&
  !(!apache::thrift::StringTraits<std::string>::isEmpty(this->__fbthrift_field_binary_field)) &&
- !(this->__fbthrift_field_MyEnum != ::apache::thrift::test::MyEnum()) &&
+ !(this->__fbthrift_field_enum_field != ::apache::thrift::test::MyEnum()) &&
  !(!this->__fbthrift_field_list_field.empty()) &&
  !(!this->__fbthrift_field_set_field.empty()) &&
  !(!this->__fbthrift_field_map_field.empty()) &&
@@ -282,7 +282,7 @@ bool EmptiableStruct::operator==(const EmptiableStruct& rhs) const {
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_binary_field, rhs.__fbthrift_field_binary_field)) {
     return false;
   }
-  if (!(lhs.MyEnum_ref() == rhs.MyEnum_ref())) {
+  if (!(lhs.enum_field_ref() == rhs.enum_field_ref())) {
     return false;
   }
   if (!(lhs.list_field_ref() == rhs.list_field_ref())) {
@@ -331,8 +331,8 @@ bool EmptiableStruct::operator<(const EmptiableStruct& rhs) const {
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_binary_field, rhs.__fbthrift_field_binary_field)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.__fbthrift_field_binary_field, rhs.__fbthrift_field_binary_field);
   }
-  if (!(lhs.MyEnum_ref() == rhs.MyEnum_ref())) {
-    return lhs.MyEnum_ref() < rhs.MyEnum_ref();
+  if (!(lhs.enum_field_ref() == rhs.enum_field_ref())) {
+    return lhs.enum_field_ref() < rhs.enum_field_ref();
   }
   if (!(lhs.list_field_ref() == rhs.list_field_ref())) {
     return lhs.list_field_ref() < rhs.list_field_ref();
@@ -393,7 +393,7 @@ void swap(EmptiableStruct& a, EmptiableStruct& b) {
   swap(a.double_field_ref().value(), b.double_field_ref().value());
   swap(a.string_field_ref().value(), b.string_field_ref().value());
   swap(a.binary_field_ref().value(), b.binary_field_ref().value());
-  swap(a.MyEnum_ref().value(), b.MyEnum_ref().value());
+  swap(a.enum_field_ref().value(), b.enum_field_ref().value());
   swap(a.list_field_ref().value(), b.list_field_ref().value());
   swap(a.set_field_ref().value(), b.set_field_ref().value());
   swap(a.map_field_ref().value(), b.map_field_ref().value());
@@ -459,7 +459,7 @@ NotEmptiableStruct::NotEmptiableStruct() :
       __fbthrift_field_long_field(),
       __fbthrift_field_float_field(),
       __fbthrift_field_double_field(),
-      __fbthrift_field_MyEnum() {
+      __fbthrift_field_enum_field() {
 }
 
 
@@ -475,7 +475,7 @@ NotEmptiableStruct::NotEmptiableStruct(NotEmptiableStruct&& other) noexcept  :
     __fbthrift_field_double_field(std::move(other.__fbthrift_field_double_field)),
     __fbthrift_field_string_field(std::move(other.__fbthrift_field_string_field)),
     __fbthrift_field_binary_field(std::move(other.__fbthrift_field_binary_field)),
-    __fbthrift_field_MyEnum(std::move(other.__fbthrift_field_MyEnum)),
+    __fbthrift_field_enum_field(std::move(other.__fbthrift_field_enum_field)),
     __fbthrift_field_list_field(std::move(other.__fbthrift_field_list_field)),
     __fbthrift_field_set_field(std::move(other.__fbthrift_field_set_field)),
     __fbthrift_field_map_field(std::move(other.__fbthrift_field_map_field)),
@@ -493,7 +493,7 @@ NotEmptiableStruct& NotEmptiableStruct::operator=(FOLLY_MAYBE_UNUSED NotEmptiabl
     this->__fbthrift_field_double_field = std::move(other.__fbthrift_field_double_field);
     this->__fbthrift_field_string_field = std::move(other.__fbthrift_field_string_field);
     this->__fbthrift_field_binary_field = std::move(other.__fbthrift_field_binary_field);
-    this->__fbthrift_field_MyEnum = std::move(other.__fbthrift_field_MyEnum);
+    this->__fbthrift_field_enum_field = std::move(other.__fbthrift_field_enum_field);
     this->__fbthrift_field_list_field = std::move(other.__fbthrift_field_list_field);
     this->__fbthrift_field_set_field = std::move(other.__fbthrift_field_set_field);
     this->__fbthrift_field_map_field = std::move(other.__fbthrift_field_map_field);
@@ -503,7 +503,7 @@ NotEmptiableStruct& NotEmptiableStruct::operator=(FOLLY_MAYBE_UNUSED NotEmptiabl
 }
 
 
-NotEmptiableStruct::NotEmptiableStruct(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::apache::thrift::test::MyEnum MyEnum__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::apache::thrift::test::MyStruct struct_field__arg) :
+NotEmptiableStruct::NotEmptiableStruct(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::apache::thrift::test::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::apache::thrift::test::MyStruct struct_field__arg) :
     __fbthrift_field_bool_field(std::move(bool_field__arg)),
     __fbthrift_field_byte_field(std::move(byte_field__arg)),
     __fbthrift_field_short_field(std::move(short_field__arg)),
@@ -513,7 +513,7 @@ NotEmptiableStruct::NotEmptiableStruct(apache::thrift::FragileConstructor, bool 
     __fbthrift_field_double_field(std::move(double_field__arg)),
     __fbthrift_field_string_field(std::move(string_field__arg)),
     __fbthrift_field_binary_field(std::move(binary_field__arg)),
-    __fbthrift_field_MyEnum(std::move(MyEnum__arg)),
+    __fbthrift_field_enum_field(std::move(enum_field__arg)),
     __fbthrift_field_list_field(std::move(list_field__arg)),
     __fbthrift_field_set_field(std::move(set_field__arg)),
     __fbthrift_field_map_field(std::move(map_field__arg)),
@@ -546,7 +546,7 @@ void NotEmptiableStruct::__fbthrift_clear() {
   this->__fbthrift_field_double_field = double();
   this->__fbthrift_field_string_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_MyEnum = ::apache::thrift::test::MyEnum();
+  this->__fbthrift_field_enum_field = ::apache::thrift::test::MyEnum();
   this->__fbthrift_field_list_field.clear();
   this->__fbthrift_field_set_field.clear();
   this->__fbthrift_field_map_field.clear();
@@ -588,7 +588,7 @@ bool NotEmptiableStruct::operator==(const NotEmptiableStruct& rhs) const {
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_binary_field, rhs.__fbthrift_field_binary_field)) {
     return false;
   }
-  if (!(lhs.MyEnum_ref() == rhs.MyEnum_ref())) {
+  if (!(lhs.enum_field_ref() == rhs.enum_field_ref())) {
     return false;
   }
   if (!(lhs.list_field_ref() == rhs.list_field_ref())) {
@@ -637,8 +637,8 @@ bool NotEmptiableStruct::operator<(const NotEmptiableStruct& rhs) const {
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.__fbthrift_field_binary_field, rhs.__fbthrift_field_binary_field)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.__fbthrift_field_binary_field, rhs.__fbthrift_field_binary_field);
   }
-  if (!(lhs.MyEnum_ref() == rhs.MyEnum_ref())) {
-    return lhs.MyEnum_ref() < rhs.MyEnum_ref();
+  if (!(lhs.enum_field_ref() == rhs.enum_field_ref())) {
+    return lhs.enum_field_ref() < rhs.enum_field_ref();
   }
   if (!(lhs.list_field_ref() == rhs.list_field_ref())) {
     return lhs.list_field_ref() < rhs.list_field_ref();
@@ -699,7 +699,7 @@ void swap(NotEmptiableStruct& a, NotEmptiableStruct& b) {
   swap(a.double_field_ref().value(), b.double_field_ref().value());
   swap(a.string_field_ref().value(), b.string_field_ref().value());
   swap(a.binary_field_ref().value(), b.binary_field_ref().value());
-  swap(a.MyEnum_ref().value(), b.MyEnum_ref().value());
+  swap(a.enum_field_ref().value(), b.enum_field_ref().value());
   swap(a.list_field_ref().value(), b.list_field_ref().value());
   swap(a.set_field_ref().value(), b.set_field_ref().value());
   swap(a.map_field_ref().value(), b.map_field_ref().value());

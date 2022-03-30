@@ -33,7 +33,7 @@ struct EmptiableStruct {
   7: double double_field;
   8: string string_field;
   9: binary binary_field;
-  10: MyEnum MyEnum;
+  10: MyEnum enum_field;
   11: list<i16> list_field;
   12: set<i16> set_field;
   13: map<i16, i16> map_field;
@@ -50,7 +50,7 @@ struct NotEmptiableStruct {
   7: double double_field;
   8: string string_field;
   9: binary binary_field;
-  10: MyEnum MyEnum;
+  10: MyEnum enum_field;
   11: list<i16> list_field;
   12: set<i16> set_field;
   13: map<i16, i16> map_field;

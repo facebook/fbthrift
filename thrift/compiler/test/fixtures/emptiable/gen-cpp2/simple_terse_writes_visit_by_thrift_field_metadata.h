@@ -48,7 +48,7 @@ struct VisitByFieldId<::apache::thrift::test::EmptiableStruct> {
     case 9:
       return f(8, static_cast<T&&>(t).binary_field_ref());
     case 10:
-      return f(9, static_cast<T&&>(t).MyEnum_ref());
+      return f(9, static_cast<T&&>(t).enum_field_ref());
     case 11:
       return f(10, static_cast<T&&>(t).list_field_ref());
     case 12:
@@ -87,7 +87,7 @@ struct VisitByFieldId<::apache::thrift::test::NotEmptiableStruct> {
     case 9:
       return f(8, static_cast<T&&>(t).binary_field_ref());
     case 10:
-      return f(9, static_cast<T&&>(t).MyEnum_ref());
+      return f(9, static_cast<T&&>(t).enum_field_ref());
     case 11:
       return f(10, static_cast<T&&>(t).list_field_ref());
     case 12:

@@ -23,7 +23,7 @@ struct float_field;
 struct double_field;
 struct string_field;
 struct binary_field;
-struct MyEnum;
+struct enum_field;
 struct list_field;
 struct set_field;
 struct map_field;
@@ -37,7 +37,7 @@ struct float_field;
 struct double_field;
 struct string_field;
 struct binary_field;
-struct MyEnum;
+struct enum_field;
 struct list_field;
 struct set_field;
 struct map_field;
@@ -80,9 +80,9 @@ APACHE_THRIFT_DEFINE_ACCESSOR(string_field);
 #define APACHE_THRIFT_ACCESSOR_binary_field
 APACHE_THRIFT_DEFINE_ACCESSOR(binary_field);
 #endif
-#ifndef APACHE_THRIFT_ACCESSOR_MyEnum
-#define APACHE_THRIFT_ACCESSOR_MyEnum
-APACHE_THRIFT_DEFINE_ACCESSOR(MyEnum);
+#ifndef APACHE_THRIFT_ACCESSOR_enum_field
+#define APACHE_THRIFT_ACCESSOR_enum_field
+APACHE_THRIFT_DEFINE_ACCESSOR(enum_field);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_list_field
 #define APACHE_THRIFT_ACCESSOR_list_field
@@ -136,9 +136,9 @@ APACHE_THRIFT_DEFINE_ACCESSOR(string_field);
 #define APACHE_THRIFT_ACCESSOR_binary_field
 APACHE_THRIFT_DEFINE_ACCESSOR(binary_field);
 #endif
-#ifndef APACHE_THRIFT_ACCESSOR_MyEnum
-#define APACHE_THRIFT_ACCESSOR_MyEnum
-APACHE_THRIFT_DEFINE_ACCESSOR(MyEnum);
+#ifndef APACHE_THRIFT_ACCESSOR_enum_field
+#define APACHE_THRIFT_ACCESSOR_enum_field
+APACHE_THRIFT_DEFINE_ACCESSOR(enum_field);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_list_field
 #define APACHE_THRIFT_ACCESSOR_list_field
@@ -321,7 +321,7 @@ class EmptiableStruct final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  EmptiableStruct(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::apache::thrift::test::MyEnum MyEnum__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::apache::thrift::test::MyStruct struct_field__arg);
+  EmptiableStruct(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::apache::thrift::test::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::apache::thrift::test::MyStruct struct_field__arg);
 
   EmptiableStruct(EmptiableStruct&&) noexcept;
 
@@ -352,7 +352,7 @@ class EmptiableStruct final  {
  private:
   ::std::string __fbthrift_field_binary_field;
  private:
-  ::apache::thrift::test::MyEnum __fbthrift_field_MyEnum;
+  ::apache::thrift::test::MyEnum __fbthrift_field_enum_field;
  private:
   ::std::vector<::std::int16_t> __fbthrift_field_list_field;
  private:
@@ -730,43 +730,43 @@ class EmptiableStruct final  {
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyEnum_ref() const& {
-    return {this->__fbthrift_field_MyEnum, __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> enum_field_ref() const& {
+    return {this->__fbthrift_field_enum_field, __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyEnum_ref() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_MyEnum), __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> enum_field_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_enum_field), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyEnum_ref() & {
-    return {this->__fbthrift_field_MyEnum, __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> enum_field_ref() & {
+    return {this->__fbthrift_field_enum_field, __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyEnum_ref() && {
-    return {static_cast<T&&>(this->__fbthrift_field_MyEnum), __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> enum_field_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_enum_field), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyEnum() const& {
-    return {this->__fbthrift_field_MyEnum, __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> enum_field() const& {
+    return {this->__fbthrift_field_enum_field, __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyEnum() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_MyEnum), __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> enum_field() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_enum_field), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyEnum() & {
-    return {this->__fbthrift_field_MyEnum, __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> enum_field() & {
+    return {this->__fbthrift_field_enum_field, __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyEnum() && {
-    return {static_cast<T&&>(this->__fbthrift_field_MyEnum), __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> enum_field() && {
+    return {static_cast<T&&>(this->__fbthrift_field_enum_field), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int16_t>>
@@ -1029,14 +1029,14 @@ class EmptiableStruct final  {
     return __fbthrift_field_binary_field;
   }
 
-  ::apache::thrift::test::MyEnum get_MyEnum() const {
-    return __fbthrift_field_MyEnum;
+  ::apache::thrift::test::MyEnum get_enum_field() const {
+    return __fbthrift_field_enum_field;
   }
 
-  [[deprecated("Use `FOO.MyEnum_ref() = BAR;` instead of `FOO.set_MyEnum(BAR);`")]]
-  ::apache::thrift::test::MyEnum& set_MyEnum(::apache::thrift::test::MyEnum MyEnum_) {
-    MyEnum_ref() = MyEnum_;
-    return __fbthrift_field_MyEnum;
+  [[deprecated("Use `FOO.enum_field_ref() = BAR;` instead of `FOO.set_enum_field(BAR);`")]]
+  ::apache::thrift::test::MyEnum& set_enum_field(::apache::thrift::test::MyEnum enum_field_) {
+    enum_field_ref() = enum_field_;
+    return __fbthrift_field_enum_field;
   }
   const ::std::vector<::std::int16_t>& get_list_field() const&;
   ::std::vector<::std::int16_t> get_list_field() &&;
@@ -1126,7 +1126,7 @@ class NotEmptiableStruct final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  NotEmptiableStruct(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::apache::thrift::test::MyEnum MyEnum__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::apache::thrift::test::MyStruct struct_field__arg);
+  NotEmptiableStruct(apache::thrift::FragileConstructor, bool bool_field__arg, ::std::int8_t byte_field__arg, ::std::int16_t short_field__arg, ::std::int32_t int_field__arg, ::std::int64_t long_field__arg, float float_field__arg, double double_field__arg, ::std::string string_field__arg, ::std::string binary_field__arg, ::apache::thrift::test::MyEnum enum_field__arg, ::std::vector<::std::int16_t> list_field__arg, ::std::set<::std::int16_t> set_field__arg, ::std::map<::std::int16_t, ::std::int16_t> map_field__arg, ::apache::thrift::test::MyStruct struct_field__arg);
 
   NotEmptiableStruct(NotEmptiableStruct&&) noexcept;
 
@@ -1157,7 +1157,7 @@ class NotEmptiableStruct final  {
  private:
   ::std::string __fbthrift_field_binary_field;
  private:
-  ::apache::thrift::test::MyEnum __fbthrift_field_MyEnum;
+  ::apache::thrift::test::MyEnum __fbthrift_field_enum_field;
  private:
   ::std::vector<::std::int16_t> __fbthrift_field_list_field;
  private:
@@ -1535,43 +1535,43 @@ class NotEmptiableStruct final  {
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyEnum_ref() const& {
-    return {this->__fbthrift_field_MyEnum, __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> enum_field_ref() const& {
+    return {this->__fbthrift_field_enum_field, __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyEnum_ref() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_MyEnum), __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> enum_field_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_enum_field), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyEnum_ref() & {
-    return {this->__fbthrift_field_MyEnum, __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> enum_field_ref() & {
+    return {this->__fbthrift_field_enum_field, __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyEnum_ref() && {
-    return {static_cast<T&&>(this->__fbthrift_field_MyEnum), __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> enum_field_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_enum_field), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyEnum() const& {
-    return {this->__fbthrift_field_MyEnum, __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> enum_field() const& {
+    return {this->__fbthrift_field_enum_field, __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyEnum() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_MyEnum), __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> enum_field() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_enum_field), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyEnum() & {
-    return {this->__fbthrift_field_MyEnum, __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> enum_field() & {
+    return {this->__fbthrift_field_enum_field, __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::apache::thrift::test::MyEnum>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyEnum() && {
-    return {static_cast<T&&>(this->__fbthrift_field_MyEnum), __isset.at(9), __isset.bit(9)};
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> enum_field() && {
+    return {static_cast<T&&>(this->__fbthrift_field_enum_field), __isset.at(9), __isset.bit(9)};
   }
 
   template <typename..., typename T = ::std::vector<::std::int16_t>>
@@ -1834,14 +1834,14 @@ class NotEmptiableStruct final  {
     return __fbthrift_field_binary_field;
   }
 
-  ::apache::thrift::test::MyEnum get_MyEnum() const {
-    return __fbthrift_field_MyEnum;
+  ::apache::thrift::test::MyEnum get_enum_field() const {
+    return __fbthrift_field_enum_field;
   }
 
-  [[deprecated("Use `FOO.MyEnum_ref() = BAR;` instead of `FOO.set_MyEnum(BAR);`")]]
-  ::apache::thrift::test::MyEnum& set_MyEnum(::apache::thrift::test::MyEnum MyEnum_) {
-    MyEnum_ref() = MyEnum_;
-    return __fbthrift_field_MyEnum;
+  [[deprecated("Use `FOO.enum_field_ref() = BAR;` instead of `FOO.set_enum_field(BAR);`")]]
+  ::apache::thrift::test::MyEnum& set_enum_field(::apache::thrift::test::MyEnum enum_field_) {
+    enum_field_ref() = enum_field_;
+    return __fbthrift_field_enum_field;
   }
   const ::std::vector<::std::int16_t>& get_list_field() const&;
   ::std::vector<::std::int16_t> get_list_field() &&;
