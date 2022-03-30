@@ -25,6 +25,7 @@ template <>
 struct ForEachField<::cpp2::FieldsInjectedToEmptyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).injected_field_ref()...);
   }
 };
 
@@ -33,6 +34,7 @@ struct ForEachField<::cpp2::FieldsInjectedToStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).string_field_ref()...);
+    f(1, static_cast<T&&>(t).injected_field_ref()...);
   }
 };
 
@@ -41,6 +43,7 @@ struct ForEachField<::cpp2::FieldsInjectedWithIncludedStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).string_field_ref()...);
+    f(1, static_cast<T&&>(t).injected_field_ref()...);
   }
 };
 } // namespace detail

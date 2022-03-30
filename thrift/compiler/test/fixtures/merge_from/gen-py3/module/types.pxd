@@ -81,6 +81,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cFieldsInjectedToEmptyStruct&)
         bint operator<=(cFieldsInjectedToEmptyStruct&)
         bint operator>=(cFieldsInjectedToEmptyStruct&)
+        __field_ref[string] injected_field_ref()
 
 
     cdef cppclass cFieldsInjectedToStruct "::cpp2::FieldsInjectedToStruct":
@@ -93,6 +94,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cFieldsInjectedToStruct&)
         bint operator>=(cFieldsInjectedToStruct&)
         __field_ref[string] string_field_ref()
+        __field_ref[string] injected_field_ref()
 
 
     cdef cppclass cFieldsInjectedWithIncludedStruct "::cpp2::FieldsInjectedWithIncludedStruct":
@@ -105,6 +107,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cFieldsInjectedWithIncludedStruct&)
         bint operator>=(cFieldsInjectedWithIncludedStruct&)
         __field_ref[string] string_field_ref()
+        __field_ref[string] injected_field_ref()
 
 
 
@@ -122,6 +125,7 @@ cdef class Fields(thrift.py3.types.Struct):
 cdef class FieldsInjectedToEmptyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cFieldsInjectedToEmptyStruct] _cpp_obj
     cdef _fbthrift_types_fields.__FieldsInjectedToEmptyStruct_FieldsSetter _fields_setter
+    cdef inline object injected_field_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cFieldsInjectedToEmptyStruct])
@@ -132,6 +136,7 @@ cdef class FieldsInjectedToStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cFieldsInjectedToStruct] _cpp_obj
     cdef _fbthrift_types_fields.__FieldsInjectedToStruct_FieldsSetter _fields_setter
     cdef inline object string_field_impl(self)
+    cdef inline object injected_field_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cFieldsInjectedToStruct])
@@ -142,6 +147,7 @@ cdef class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cFieldsInjectedWithIncludedStruct] _cpp_obj
     cdef _fbthrift_types_fields.__FieldsInjectedWithIncludedStruct_FieldsSetter _fields_setter
     cdef inline object string_field_impl(self)
+    cdef inline object injected_field_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cFieldsInjectedWithIncludedStruct])

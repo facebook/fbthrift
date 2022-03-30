@@ -25,18 +25,21 @@ class Fields_Builder(thrift.py3.builder.StructBuilder):
 
 
 class FieldsInjectedToEmptyStruct_Builder(thrift.py3.builder.StructBuilder):
+    injected_field: _typing.Optional[str]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
 class FieldsInjectedToStruct_Builder(thrift.py3.builder.StructBuilder):
     string_field: _typing.Optional[str]
+    injected_field: _typing.Optional[str]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 
 class FieldsInjectedWithIncludedStruct_Builder(thrift.py3.builder.StructBuilder):
     string_field: _typing.Optional[str]
+    injected_field: _typing.Optional[str]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

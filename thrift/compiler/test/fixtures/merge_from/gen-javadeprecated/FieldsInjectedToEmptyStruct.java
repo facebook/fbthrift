@@ -24,11 +24,19 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class FieldsInjectedToEmptyStruct implements TBase, java.io.Serializable, Cloneable, Comparable<FieldsInjectedToEmptyStruct> {
   private static final TStruct STRUCT_DESC = new TStruct("FieldsInjectedToEmptyStruct");
+  private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)100);
+
+  public String injected_field;
+  public static final int INJECTED_FIELD = 100;
+
+  // isset id assignments
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+    tmpMetaDataMap.put(INJECTED_FIELD, new FieldMetaData("injected_field", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -39,13 +47,26 @@ public class FieldsInjectedToEmptyStruct implements TBase, java.io.Serializable,
   public FieldsInjectedToEmptyStruct() {
   }
 
+  public FieldsInjectedToEmptyStruct(
+      String injected_field) {
+    this();
+    this.injected_field = injected_field;
+  }
+
   public static class Builder {
+    private String injected_field;
 
     public Builder() {
     }
 
+    public Builder setInjected_field(final String injected_field) {
+      this.injected_field = injected_field;
+      return this;
+    }
+
     public FieldsInjectedToEmptyStruct build() {
       FieldsInjectedToEmptyStruct result = new FieldsInjectedToEmptyStruct();
+      result.setInjected_field(this.injected_field);
       return result;
     }
   }
@@ -58,14 +79,49 @@ public class FieldsInjectedToEmptyStruct implements TBase, java.io.Serializable,
    * Performs a deep copy on <i>other</i>.
    */
   public FieldsInjectedToEmptyStruct(FieldsInjectedToEmptyStruct other) {
+    if (other.isSetInjected_field()) {
+      this.injected_field = TBaseHelper.deepCopy(other.injected_field);
+    }
   }
 
   public FieldsInjectedToEmptyStruct deepCopy() {
     return new FieldsInjectedToEmptyStruct(this);
   }
 
+  public String getInjected_field() {
+    return this.injected_field;
+  }
+
+  public FieldsInjectedToEmptyStruct setInjected_field(String injected_field) {
+    this.injected_field = injected_field;
+    return this;
+  }
+
+  public void unsetInjected_field() {
+    this.injected_field = null;
+  }
+
+  // Returns true if field injected_field is set (has been assigned a value) and false otherwise
+  public boolean isSetInjected_field() {
+    return this.injected_field != null;
+  }
+
+  public void setInjected_fieldIsSet(boolean __value) {
+    if (!__value) {
+      this.injected_field = null;
+    }
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
+    case INJECTED_FIELD:
+      if (__value == null) {
+        unsetInjected_field();
+      } else {
+        setInjected_field((String)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -73,6 +129,9 @@ public class FieldsInjectedToEmptyStruct implements TBase, java.io.Serializable,
 
   public Object getFieldValue(int fieldID) {
     switch (fieldID) {
+    case INJECTED_FIELD:
+      return getInjected_field();
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -88,12 +147,14 @@ public class FieldsInjectedToEmptyStruct implements TBase, java.io.Serializable,
       return false;
     FieldsInjectedToEmptyStruct that = (FieldsInjectedToEmptyStruct)_that;
 
+    if (!TBaseHelper.equalsNobinary(this.isSetInjected_field(), that.isSetInjected_field(), this.injected_field, that.injected_field)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {});
+    return Arrays.deepHashCode(new Object[] {injected_field});
   }
 
   @Override
@@ -108,6 +169,14 @@ public class FieldsInjectedToEmptyStruct implements TBase, java.io.Serializable,
     }
     int lastComparison = 0;
 
+    lastComparison = Boolean.valueOf(isSetInjected_field()).compareTo(other.isSetInjected_field());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(injected_field, other.injected_field);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -122,6 +191,13 @@ public class FieldsInjectedToEmptyStruct implements TBase, java.io.Serializable,
       }
       switch (__field.id)
       {
+        case INJECTED_FIELD:
+          if (__field.type == TType.STRING) {
+            this.injected_field = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -139,6 +215,11 @@ public class FieldsInjectedToEmptyStruct implements TBase, java.io.Serializable,
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    if (this.injected_field != null) {
+      oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
+      oprot.writeString(this.injected_field);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -159,6 +240,16 @@ public class FieldsInjectedToEmptyStruct implements TBase, java.io.Serializable,
     sb.append(newLine);
     boolean first = true;
 
+    sb.append(indentStr);
+    sb.append("injected_field");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getInjected_field() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getInjected_field(), indent + 1, prettyPrint));
+    }
+    first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");
     return sb.toString();

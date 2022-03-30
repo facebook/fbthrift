@@ -128,22 +128,43 @@ void TccStructTraits<::cpp2::FieldsInjectedToEmptyStruct>::translateFieldName(
 
 namespace cpp2 {
 
+FieldsInjectedToEmptyStruct::FieldsInjectedToEmptyStruct(const FieldsInjectedToEmptyStruct&) = default;
+FieldsInjectedToEmptyStruct& FieldsInjectedToEmptyStruct::operator=(const FieldsInjectedToEmptyStruct&) = default;
+FieldsInjectedToEmptyStruct::FieldsInjectedToEmptyStruct(FieldsInjectedToEmptyStruct&& other) noexcept  :
+    __fbthrift_field_injected_field(std::move(other.__fbthrift_field_injected_field)),
+    __isset(other.__isset) {
+}
 
-FieldsInjectedToEmptyStruct::FieldsInjectedToEmptyStruct(apache::thrift::FragileConstructor) {}
+FieldsInjectedToEmptyStruct& FieldsInjectedToEmptyStruct::operator=(FOLLY_MAYBE_UNUSED FieldsInjectedToEmptyStruct&& other) noexcept {
+    this->__fbthrift_field_injected_field = std::move(other.__fbthrift_field_injected_field);
+    __isset = other.__isset;
+    return *this;
+}
+
+
+FieldsInjectedToEmptyStruct::FieldsInjectedToEmptyStruct(apache::thrift::FragileConstructor, ::std::string injected_field__arg) :
+    __fbthrift_field_injected_field(std::move(injected_field__arg)) {
+  __isset.set(folly::index_constant<0>(), true);
+}
 
 
 void FieldsInjectedToEmptyStruct::__fbthrift_clear() {
   // clear all fields
+  this->__fbthrift_field_injected_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  __isset = {};
 }
 
 bool FieldsInjectedToEmptyStruct::__fbthrift_is_empty() const {
-  return true;
+  return false;
 }
 
 bool FieldsInjectedToEmptyStruct::operator==(const FieldsInjectedToEmptyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
+  if (!(lhs.injected_field_ref() == rhs.injected_field_ref())) {
+    return false;
+  }
   return true;
 }
 
@@ -151,14 +172,17 @@ bool FieldsInjectedToEmptyStruct::operator<(const FieldsInjectedToEmptyStruct& r
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
+  if (!(lhs.injected_field_ref() == rhs.injected_field_ref())) {
+    return lhs.injected_field_ref() < rhs.injected_field_ref();
+  }
   return false;
 }
 
 
 void swap(FieldsInjectedToEmptyStruct& a, FieldsInjectedToEmptyStruct& b) {
   using ::std::swap;
-  (void)a;
-  (void)b;
+  swap(a.injected_field_ref().value(), b.injected_field_ref().value());
+  swap(a.__isset, b.__isset);
 }
 
 template void FieldsInjectedToEmptyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -201,25 +225,30 @@ FieldsInjectedToStruct::FieldsInjectedToStruct(const FieldsInjectedToStruct&) = 
 FieldsInjectedToStruct& FieldsInjectedToStruct::operator=(const FieldsInjectedToStruct&) = default;
 FieldsInjectedToStruct::FieldsInjectedToStruct(FieldsInjectedToStruct&& other) noexcept  :
     __fbthrift_field_string_field(std::move(other.__fbthrift_field_string_field)),
+    __fbthrift_field_injected_field(std::move(other.__fbthrift_field_injected_field)),
     __isset(other.__isset) {
 }
 
 FieldsInjectedToStruct& FieldsInjectedToStruct::operator=(FOLLY_MAYBE_UNUSED FieldsInjectedToStruct&& other) noexcept {
     this->__fbthrift_field_string_field = std::move(other.__fbthrift_field_string_field);
+    this->__fbthrift_field_injected_field = std::move(other.__fbthrift_field_injected_field);
     __isset = other.__isset;
     return *this;
 }
 
 
-FieldsInjectedToStruct::FieldsInjectedToStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg) :
-    __fbthrift_field_string_field(std::move(string_field__arg)) {
+FieldsInjectedToStruct::FieldsInjectedToStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg, ::std::string injected_field__arg) :
+    __fbthrift_field_string_field(std::move(string_field__arg)),
+    __fbthrift_field_injected_field(std::move(injected_field__arg)) {
   __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
 void FieldsInjectedToStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_string_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_injected_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -234,6 +263,9 @@ bool FieldsInjectedToStruct::operator==(const FieldsInjectedToStruct& rhs) const
   if (!(lhs.string_field_ref() == rhs.string_field_ref())) {
     return false;
   }
+  if (!(lhs.injected_field_ref() == rhs.injected_field_ref())) {
+    return false;
+  }
   return true;
 }
 
@@ -244,6 +276,9 @@ bool FieldsInjectedToStruct::operator<(const FieldsInjectedToStruct& rhs) const 
   if (!(lhs.string_field_ref() == rhs.string_field_ref())) {
     return lhs.string_field_ref() < rhs.string_field_ref();
   }
+  if (!(lhs.injected_field_ref() == rhs.injected_field_ref())) {
+    return lhs.injected_field_ref() < rhs.injected_field_ref();
+  }
   return false;
 }
 
@@ -251,6 +286,7 @@ bool FieldsInjectedToStruct::operator<(const FieldsInjectedToStruct& rhs) const 
 void swap(FieldsInjectedToStruct& a, FieldsInjectedToStruct& b) {
   using ::std::swap;
   swap(a.string_field_ref().value(), b.string_field_ref().value());
+  swap(a.injected_field_ref().value(), b.injected_field_ref().value());
   swap(a.__isset, b.__isset);
 }
 
@@ -294,25 +330,30 @@ FieldsInjectedWithIncludedStruct::FieldsInjectedWithIncludedStruct(const FieldsI
 FieldsInjectedWithIncludedStruct& FieldsInjectedWithIncludedStruct::operator=(const FieldsInjectedWithIncludedStruct&) = default;
 FieldsInjectedWithIncludedStruct::FieldsInjectedWithIncludedStruct(FieldsInjectedWithIncludedStruct&& other) noexcept  :
     __fbthrift_field_string_field(std::move(other.__fbthrift_field_string_field)),
+    __fbthrift_field_injected_field(std::move(other.__fbthrift_field_injected_field)),
     __isset(other.__isset) {
 }
 
 FieldsInjectedWithIncludedStruct& FieldsInjectedWithIncludedStruct::operator=(FOLLY_MAYBE_UNUSED FieldsInjectedWithIncludedStruct&& other) noexcept {
     this->__fbthrift_field_string_field = std::move(other.__fbthrift_field_string_field);
+    this->__fbthrift_field_injected_field = std::move(other.__fbthrift_field_injected_field);
     __isset = other.__isset;
     return *this;
 }
 
 
-FieldsInjectedWithIncludedStruct::FieldsInjectedWithIncludedStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg) :
-    __fbthrift_field_string_field(std::move(string_field__arg)) {
+FieldsInjectedWithIncludedStruct::FieldsInjectedWithIncludedStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg, ::std::string injected_field__arg) :
+    __fbthrift_field_string_field(std::move(string_field__arg)),
+    __fbthrift_field_injected_field(std::move(injected_field__arg)) {
   __isset.set(folly::index_constant<0>(), true);
+  __isset.set(folly::index_constant<1>(), true);
 }
 
 
 void FieldsInjectedWithIncludedStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_string_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_injected_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -327,6 +368,9 @@ bool FieldsInjectedWithIncludedStruct::operator==(const FieldsInjectedWithInclud
   if (!(lhs.string_field_ref() == rhs.string_field_ref())) {
     return false;
   }
+  if (!(lhs.injected_field_ref() == rhs.injected_field_ref())) {
+    return false;
+  }
   return true;
 }
 
@@ -337,6 +381,9 @@ bool FieldsInjectedWithIncludedStruct::operator<(const FieldsInjectedWithInclude
   if (!(lhs.string_field_ref() == rhs.string_field_ref())) {
     return lhs.string_field_ref() < rhs.string_field_ref();
   }
+  if (!(lhs.injected_field_ref() == rhs.injected_field_ref())) {
+    return lhs.injected_field_ref() < rhs.injected_field_ref();
+  }
   return false;
 }
 
@@ -344,6 +391,7 @@ bool FieldsInjectedWithIncludedStruct::operator<(const FieldsInjectedWithInclude
 void swap(FieldsInjectedWithIncludedStruct& a, FieldsInjectedWithIncludedStruct& b) {
   using ::std::swap;
   swap(a.string_field_ref().value(), b.string_field_ref().value());
+  swap(a.injected_field_ref().value(), b.injected_field_ref().value());
   swap(a.__isset, b.__isset);
 }
 

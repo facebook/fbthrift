@@ -52,6 +52,7 @@ cdef class __FieldsInjectedToEmptyStruct_FieldsSetter(__StructFieldsSetter):
     cdef __FieldsInjectedToEmptyStruct_FieldsSetter _fbthrift_create(_module_types.cFieldsInjectedToEmptyStruct* struct_cpp_obj):
         cdef __FieldsInjectedToEmptyStruct_FieldsSetter __fbthrift_inst = __FieldsInjectedToEmptyStruct_FieldsSetter.__new__(__FieldsInjectedToEmptyStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        __fbthrift_inst._setters[__cstring_view(<const char*>"injected_field")] = __FieldsInjectedToEmptyStruct_FieldsSetter._set_field_0
         return __fbthrift_inst
 
     cdef void set_field(__FieldsInjectedToEmptyStruct_FieldsSetter self, const char* name, object value) except *:
@@ -60,6 +61,15 @@ cdef class __FieldsInjectedToEmptyStruct_FieldsSetter(__StructFieldsSetter):
         if found == self._setters.end():
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
+
+    cdef void _set_field_0(self, _fbthrift_value) except *:
+        # for field injected_field
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cFieldsInjectedToEmptyStruct](deref(self._struct_cpp_obj), 0)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'injected_field is not a { str !r}.')
+        deref(self._struct_cpp_obj).injected_field_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
 
 
 @__cython.auto_pickle(False)
@@ -70,6 +80,7 @@ cdef class __FieldsInjectedToStruct_FieldsSetter(__StructFieldsSetter):
         cdef __FieldsInjectedToStruct_FieldsSetter __fbthrift_inst = __FieldsInjectedToStruct_FieldsSetter.__new__(__FieldsInjectedToStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"string_field")] = __FieldsInjectedToStruct_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"injected_field")] = __FieldsInjectedToStruct_FieldsSetter._set_field_1
         return __fbthrift_inst
 
     cdef void set_field(__FieldsInjectedToStruct_FieldsSetter self, const char* name, object value) except *:
@@ -88,6 +99,15 @@ cdef class __FieldsInjectedToStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'string_field is not a { str !r}.')
         deref(self._struct_cpp_obj).string_field_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
 
+    cdef void _set_field_1(self, _fbthrift_value) except *:
+        # for field injected_field
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cFieldsInjectedToStruct](deref(self._struct_cpp_obj), 1)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'injected_field is not a { str !r}.')
+        deref(self._struct_cpp_obj).injected_field_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
+
 
 @__cython.auto_pickle(False)
 cdef class __FieldsInjectedWithIncludedStruct_FieldsSetter(__StructFieldsSetter):
@@ -97,6 +117,7 @@ cdef class __FieldsInjectedWithIncludedStruct_FieldsSetter(__StructFieldsSetter)
         cdef __FieldsInjectedWithIncludedStruct_FieldsSetter __fbthrift_inst = __FieldsInjectedWithIncludedStruct_FieldsSetter.__new__(__FieldsInjectedWithIncludedStruct_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"string_field")] = __FieldsInjectedWithIncludedStruct_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"injected_field")] = __FieldsInjectedWithIncludedStruct_FieldsSetter._set_field_1
         return __fbthrift_inst
 
     cdef void set_field(__FieldsInjectedWithIncludedStruct_FieldsSetter self, const char* name, object value) except *:
@@ -114,4 +135,13 @@ cdef class __FieldsInjectedWithIncludedStruct_FieldsSetter(__StructFieldsSetter)
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'string_field is not a { str !r}.')
         deref(self._struct_cpp_obj).string_field_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
+
+    cdef void _set_field_1(self, _fbthrift_value) except *:
+        # for field injected_field
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cFieldsInjectedWithIncludedStruct](deref(self._struct_cpp_obj), 1)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'injected_field is not a { str !r}.')
+        deref(self._struct_cpp_obj).injected_field_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
 

@@ -25,6 +25,7 @@ namespace compiler {
 
 constexpr auto kTerseWriteUri =
     "facebook.com/thrift/annotation/thrift/TerseWrite";
+constexpr auto kMergeFromUri = "facebook.com/thrift/annotation/meta/MergeFrom";
 
 // TODO(afuller): Instead of mutating the AST, readers should look for
 // the interaction level annotation and the validation logic should be moved to
@@ -100,6 +101,62 @@ void mutate_terse_write_annotation_struct(
   }
 }
 
+void mutate_merge_from(
+    diagnostic_context& ctx, mutator_context&, t_struct& node) {
+  const t_const* merge_from_annotation =
+      node.find_structured_annotation_or_null(kMergeFromUri);
+  if (!merge_from_annotation) {
+    return;
+  }
+
+  const auto& annotations = merge_from_annotation->value()->get_map();
+  const auto it = std::find_if(
+      annotations.begin(), annotations.end(), [](const auto& item) {
+        return item.first->get_string() == "type";
+      });
+  if (it == annotations.end()) {
+    ctx.failure([&](auto& o) {
+      o << "`@meta.MergeFrom` cannot be used without `type` specified in `"
+        << node.name() << "`.";
+    });
+    return;
+  }
+  std::string type_string = it->second->get_string();
+  // If the specified type is from the current program, append the current
+  // program name.
+  if (type_string.find(".") == std::string::npos) {
+    type_string = node.program()->name() + "." + type_string;
+  }
+
+  const auto* type = node.program()->scope()->find_type(type_string);
+  if (!type) {
+    ctx.failure([&](auto& o) {
+      o << "Can not find expected type `" << it->second->get_string()
+        << "` specified in `@meta.MergeFrom` in the current scope."
+        << " Please check the include.";
+    });
+    return;
+  }
+
+  const auto* structured = dynamic_cast<const t_struct*>(type);
+  // We only allow merging from a struct type.
+  if (structured == nullptr || type->is_union() || type->is_exception() ||
+      type->is_paramlist()) {
+    ctx.failure([&](auto& o) {
+      o << "`" << it->second->get_string() << "` is not a struct type."
+        << " `@meta.MergeFrom` can be only used with a struct type.";
+    });
+    return;
+  }
+  for (const auto& field : structured->fields()) {
+    ctx.failure_if(
+        !node.try_append_field(field.clone_DO_NOT_USE()), [&](auto& o) {
+          o << "Field id `" << field.id() << "` is already used in `"
+            << node.name() << "`.";
+        });
+  }
+}
+
 void assign_uri(diagnostic_context& ctx, mutator_context&, t_named& node) {
   if (auto* uri = node.find_annotation_or_null("thrift.uri")) {
     // Manually assigned.
@@ -172,6 +229,7 @@ ast_mutators standard_mutators() {
     auto& main = mutators[standard_mutator_stage::main];
     main.add_field_visitor(&mutate_terse_write_annotation_field);
     main.add_struct_visitor(&mutate_terse_write_annotation_struct);
+    main.add_struct_visitor(&mutate_merge_from);
   }
   add_patch_mutators(mutators);
   return mutators;

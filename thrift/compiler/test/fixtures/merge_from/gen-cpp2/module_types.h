@@ -17,10 +17,17 @@ namespace apache {
 namespace thrift {
 namespace tag {
 struct injected_field;
+struct injected_field;
 struct string_field;
+struct injected_field;
 struct string_field;
+struct injected_field;
 } // namespace tag
 namespace detail {
+#ifndef APACHE_THRIFT_ACCESSOR_injected_field
+#define APACHE_THRIFT_ACCESSOR_injected_field
+APACHE_THRIFT_DEFINE_ACCESSOR(injected_field);
+#endif
 #ifndef APACHE_THRIFT_ACCESSOR_injected_field
 #define APACHE_THRIFT_ACCESSOR_injected_field
 APACHE_THRIFT_DEFINE_ACCESSOR(injected_field);
@@ -29,9 +36,17 @@ APACHE_THRIFT_DEFINE_ACCESSOR(injected_field);
 #define APACHE_THRIFT_ACCESSOR_string_field
 APACHE_THRIFT_DEFINE_ACCESSOR(string_field);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_injected_field
+#define APACHE_THRIFT_ACCESSOR_injected_field
+APACHE_THRIFT_DEFINE_ACCESSOR(injected_field);
+#endif
 #ifndef APACHE_THRIFT_ACCESSOR_string_field
 #define APACHE_THRIFT_ACCESSOR_string_field
 APACHE_THRIFT_DEFINE_ACCESSOR(string_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_injected_field
+#define APACHE_THRIFT_ACCESSOR_injected_field
+APACHE_THRIFT_DEFINE_ACCESSOR(injected_field);
 #endif
 } // namespace detail
 } // namespace thrift
@@ -208,21 +223,79 @@ class FieldsInjectedToEmptyStruct final  {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  FieldsInjectedToEmptyStruct(apache::thrift::FragileConstructor);
+  FieldsInjectedToEmptyStruct(apache::thrift::FragileConstructor, ::std::string injected_field__arg);
 
-  FieldsInjectedToEmptyStruct(FieldsInjectedToEmptyStruct&&) = default;
+  FieldsInjectedToEmptyStruct(FieldsInjectedToEmptyStruct&&) noexcept;
 
-  FieldsInjectedToEmptyStruct(const FieldsInjectedToEmptyStruct&) = default;
+  FieldsInjectedToEmptyStruct(const FieldsInjectedToEmptyStruct& src);
 
 
-  FieldsInjectedToEmptyStruct& operator=(FieldsInjectedToEmptyStruct&&) = default;
-
-  FieldsInjectedToEmptyStruct& operator=(const FieldsInjectedToEmptyStruct&) = default;
+  FieldsInjectedToEmptyStruct& operator=(FieldsInjectedToEmptyStruct&&) noexcept;
+  FieldsInjectedToEmptyStruct& operator=(const FieldsInjectedToEmptyStruct& src);
+ private:
+  ::std::string __fbthrift_field_injected_field;
+ private:
+  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
   bool operator==(const FieldsInjectedToEmptyStruct&) const;
   bool operator<(const FieldsInjectedToEmptyStruct&) const;
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> injected_field_ref() const& {
+    return {this->__fbthrift_field_injected_field, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> injected_field_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_injected_field), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> injected_field_ref() & {
+    return {this->__fbthrift_field_injected_field, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> injected_field_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_injected_field), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> injected_field() const& {
+    return {this->__fbthrift_field_injected_field, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> injected_field() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_injected_field), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> injected_field() & {
+    return {this->__fbthrift_field_injected_field, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> injected_field() && {
+    return {static_cast<T&&>(this->__fbthrift_field_injected_field), __isset.at(0), __isset.bit(0)};
+  }
+
+  const ::std::string& get_injected_field() const& {
+    return __fbthrift_field_injected_field;
+  }
+
+  ::std::string get_injected_field() && {
+    return std::move(__fbthrift_field_injected_field);
+  }
+
+  template <typename T_FieldsInjectedToEmptyStruct_injected_field_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.injected_field_ref() = BAR;` instead of `FOO.set_injected_field(BAR);`")]]
+  ::std::string& set_injected_field(T_FieldsInjectedToEmptyStruct_injected_field_struct_setter&& injected_field_) {
+    injected_field_ref() = std::forward<T_FieldsInjectedToEmptyStruct_injected_field_struct_setter>(injected_field_);
+    return __fbthrift_field_injected_field;
+  }
 
   template <class Protocol_>
   unsigned long read(Protocol_* iprot);
@@ -274,7 +347,7 @@ class FieldsInjectedToStruct final  {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  FieldsInjectedToStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg);
+  FieldsInjectedToStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg, ::std::string injected_field__arg);
 
   FieldsInjectedToStruct(FieldsInjectedToStruct&&) noexcept;
 
@@ -286,7 +359,9 @@ class FieldsInjectedToStruct final  {
  private:
   ::std::string __fbthrift_field_string_field;
  private:
-  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+  ::std::string __fbthrift_field_injected_field;
+ private:
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -333,6 +408,46 @@ class FieldsInjectedToStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_string_field), __isset.at(0), __isset.bit(0)};
   }
 
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> injected_field_ref() const& {
+    return {this->__fbthrift_field_injected_field, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> injected_field_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_injected_field), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> injected_field_ref() & {
+    return {this->__fbthrift_field_injected_field, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> injected_field_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_injected_field), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> injected_field() const& {
+    return {this->__fbthrift_field_injected_field, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> injected_field() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_injected_field), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> injected_field() & {
+    return {this->__fbthrift_field_injected_field, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> injected_field() && {
+    return {static_cast<T&&>(this->__fbthrift_field_injected_field), __isset.at(1), __isset.bit(1)};
+  }
+
   const ::std::string& get_string_field() const& {
     return __fbthrift_field_string_field;
   }
@@ -346,6 +461,21 @@ class FieldsInjectedToStruct final  {
   ::std::string& set_string_field(T_FieldsInjectedToStruct_string_field_struct_setter&& string_field_) {
     string_field_ref() = std::forward<T_FieldsInjectedToStruct_string_field_struct_setter>(string_field_);
     return __fbthrift_field_string_field;
+  }
+
+  const ::std::string& get_injected_field() const& {
+    return __fbthrift_field_injected_field;
+  }
+
+  ::std::string get_injected_field() && {
+    return std::move(__fbthrift_field_injected_field);
+  }
+
+  template <typename T_FieldsInjectedToStruct_injected_field_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.injected_field_ref() = BAR;` instead of `FOO.set_injected_field(BAR);`")]]
+  ::std::string& set_injected_field(T_FieldsInjectedToStruct_injected_field_struct_setter&& injected_field_) {
+    injected_field_ref() = std::forward<T_FieldsInjectedToStruct_injected_field_struct_setter>(injected_field_);
+    return __fbthrift_field_injected_field;
   }
 
   template <class Protocol_>
@@ -398,7 +528,7 @@ class FieldsInjectedWithIncludedStruct final  {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  FieldsInjectedWithIncludedStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg);
+  FieldsInjectedWithIncludedStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg, ::std::string injected_field__arg);
 
   FieldsInjectedWithIncludedStruct(FieldsInjectedWithIncludedStruct&&) noexcept;
 
@@ -410,7 +540,9 @@ class FieldsInjectedWithIncludedStruct final  {
  private:
   ::std::string __fbthrift_field_string_field;
  private:
-  apache::thrift::detail::isset_bitset<1, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+  ::std::string __fbthrift_field_injected_field;
+ private:
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -457,6 +589,46 @@ class FieldsInjectedWithIncludedStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_string_field), __isset.at(0), __isset.bit(0)};
   }
 
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> injected_field_ref() const& {
+    return {this->__fbthrift_field_injected_field, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> injected_field_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_injected_field), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> injected_field_ref() & {
+    return {this->__fbthrift_field_injected_field, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> injected_field_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_injected_field), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> injected_field() const& {
+    return {this->__fbthrift_field_injected_field, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> injected_field() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_injected_field), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> injected_field() & {
+    return {this->__fbthrift_field_injected_field, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> injected_field() && {
+    return {static_cast<T&&>(this->__fbthrift_field_injected_field), __isset.at(1), __isset.bit(1)};
+  }
+
   const ::std::string& get_string_field() const& {
     return __fbthrift_field_string_field;
   }
@@ -470,6 +642,21 @@ class FieldsInjectedWithIncludedStruct final  {
   ::std::string& set_string_field(T_FieldsInjectedWithIncludedStruct_string_field_struct_setter&& string_field_) {
     string_field_ref() = std::forward<T_FieldsInjectedWithIncludedStruct_string_field_struct_setter>(string_field_);
     return __fbthrift_field_string_field;
+  }
+
+  const ::std::string& get_injected_field() const& {
+    return __fbthrift_field_injected_field;
+  }
+
+  ::std::string get_injected_field() && {
+    return std::move(__fbthrift_field_injected_field);
+  }
+
+  template <typename T_FieldsInjectedWithIncludedStruct_injected_field_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.injected_field_ref() = BAR;` instead of `FOO.set_injected_field(BAR);`")]]
+  ::std::string& set_injected_field(T_FieldsInjectedWithIncludedStruct_injected_field_struct_setter&& injected_field_) {
+    injected_field_ref() = std::forward<T_FieldsInjectedWithIncludedStruct_injected_field_struct_setter>(injected_field_);
+    return __fbthrift_field_injected_field;
   }
 
   template <class Protocol_>

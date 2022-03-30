@@ -62,6 +62,18 @@ cdef __StructSpec get_reflection__FieldsInjectedToEmptyStruct():
         annotations={
         },
     )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=100,
+            name="injected_field",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__FieldsInjectedToStruct():
     cdef _module_types.FieldsInjectedToStruct defaults = _module_types.FieldsInjectedToStruct._fbthrift_create(
@@ -87,6 +99,18 @@ cdef __StructSpec get_reflection__FieldsInjectedToStruct():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=100,
+            name="injected_field",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__FieldsInjectedWithIncludedStruct():
     cdef _module_types.FieldsInjectedWithIncludedStruct defaults = _module_types.FieldsInjectedWithIncludedStruct._fbthrift_create(
@@ -104,6 +128,18 @@ cdef __StructSpec get_reflection__FieldsInjectedWithIncludedStruct():
         __FieldSpec._fbthrift_create(
             id=1,
             name="string_field",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=100,
+            name="injected_field",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,

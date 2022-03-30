@@ -41,6 +41,13 @@ class Fields(metaclass=_fbthrift_py3lite_types.StructMeta):
 
 class FieldsInjectedToEmptyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
+        (
+            100,  # id
+            True,  # isUnqualified
+            "injected_field",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+        ),
     )
 
     @staticmethod
@@ -66,6 +73,13 @@ class FieldsInjectedToStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
         ),
+        (
+            100,  # id
+            True,  # isUnqualified
+            "injected_field",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+        ),
     )
 
     @staticmethod
@@ -88,6 +102,13 @@ class FieldsInjectedWithIncludedStruct(metaclass=_fbthrift_py3lite_types.StructM
             1,  # id
             True,  # isUnqualified
             "string_field",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+        ),
+        (
+            100,  # id
+            True,  # isUnqualified
+            "injected_field",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
         ),

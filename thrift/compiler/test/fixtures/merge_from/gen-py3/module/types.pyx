@@ -168,13 +168,21 @@ cdef class FieldsInjectedToEmptyStruct(thrift.py3.types.Struct):
         super().__init__(**kwargs)
 
     def __call__(FieldsInjectedToEmptyStruct self, **kwargs):
-        return self
+        if not kwargs:
+            return self
+        cdef FieldsInjectedToEmptyStruct __fbthrift_inst = FieldsInjectedToEmptyStruct.__new__(FieldsInjectedToEmptyStruct)
+        __fbthrift_inst._cpp_obj = make_shared[cFieldsInjectedToEmptyStruct](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__FieldsInjectedToEmptyStruct_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
 
     cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("FieldsInjectedToEmptyStruct", {
+          "injected_field": deref(self._cpp_obj).injected_field_ref().has_value(),
         })
 
     @staticmethod
@@ -182,6 +190,14 @@ cdef class FieldsInjectedToEmptyStruct(thrift.py3.types.Struct):
         __fbthrift_inst = <FieldsInjectedToEmptyStruct>FieldsInjectedToEmptyStruct.__new__(FieldsInjectedToEmptyStruct)
         __fbthrift_inst._cpp_obj = cmove(cpp_obj)
         return __fbthrift_inst
+
+    cdef inline injected_field_impl(self):
+
+        return (<bytes>deref(self._cpp_obj).injected_field_ref().value()).decode('UTF-8')
+
+    @property
+    def injected_field(self):
+        return self.injected_field_impl()
 
 
     def __hash__(FieldsInjectedToEmptyStruct self):
@@ -226,7 +242,7 @@ cdef class FieldsInjectedToEmptyStruct(thrift.py3.types.Struct):
         return __get_field_name_by_index[cFieldsInjectedToEmptyStruct](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 0
+        self._fbthrift_struct_size = 1
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(FieldsInjectedToEmptyStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -265,6 +281,7 @@ cdef class FieldsInjectedToStruct(thrift.py3.types.Struct):
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("FieldsInjectedToStruct", {
           "string_field": deref(self._cpp_obj).string_field_ref().has_value(),
+          "injected_field": deref(self._cpp_obj).injected_field_ref().has_value(),
         })
 
     @staticmethod
@@ -280,6 +297,14 @@ cdef class FieldsInjectedToStruct(thrift.py3.types.Struct):
     @property
     def string_field(self):
         return self.string_field_impl()
+
+    cdef inline injected_field_impl(self):
+
+        return (<bytes>deref(self._cpp_obj).injected_field_ref().value()).decode('UTF-8')
+
+    @property
+    def injected_field(self):
+        return self.injected_field_impl()
 
 
     def __hash__(FieldsInjectedToStruct self):
@@ -324,7 +349,7 @@ cdef class FieldsInjectedToStruct(thrift.py3.types.Struct):
         return __get_field_name_by_index[cFieldsInjectedToStruct](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 2
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(FieldsInjectedToStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -363,6 +388,7 @@ cdef class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct):
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("FieldsInjectedWithIncludedStruct", {
           "string_field": deref(self._cpp_obj).string_field_ref().has_value(),
+          "injected_field": deref(self._cpp_obj).injected_field_ref().has_value(),
         })
 
     @staticmethod
@@ -378,6 +404,14 @@ cdef class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct):
     @property
     def string_field(self):
         return self.string_field_impl()
+
+    cdef inline injected_field_impl(self):
+
+        return (<bytes>deref(self._cpp_obj).injected_field_ref().value()).decode('UTF-8')
+
+    @property
+    def injected_field(self):
+        return self.injected_field_impl()
 
 
     def __hash__(FieldsInjectedWithIncludedStruct self):
@@ -422,7 +456,7 @@ cdef class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct):
         return __get_field_name_by_index[cFieldsInjectedWithIncludedStruct](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 2
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(FieldsInjectedWithIncludedStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

@@ -33,6 +33,9 @@ template<>
 void reset_field<::cpp2::FieldsInjectedToEmptyStruct>(
     ::cpp2::FieldsInjectedToEmptyStruct& obj, uint16_t index) {
   switch (index) {
+    case 0:
+      obj.injected_field_ref().copy_from(default_inst<::cpp2::FieldsInjectedToEmptyStruct>().injected_field_ref());
+      return;
   }
 }
 
@@ -43,6 +46,9 @@ void reset_field<::cpp2::FieldsInjectedToStruct>(
     case 0:
       obj.string_field_ref().copy_from(default_inst<::cpp2::FieldsInjectedToStruct>().string_field_ref());
       return;
+    case 1:
+      obj.injected_field_ref().copy_from(default_inst<::cpp2::FieldsInjectedToStruct>().injected_field_ref());
+      return;
   }
 }
 
@@ -52,6 +58,9 @@ void reset_field<::cpp2::FieldsInjectedWithIncludedStruct>(
   switch (index) {
     case 0:
       obj.string_field_ref().copy_from(default_inst<::cpp2::FieldsInjectedWithIncludedStruct>().string_field_ref());
+      return;
+    case 1:
+      obj.injected_field_ref().copy_from(default_inst<::cpp2::FieldsInjectedWithIncludedStruct>().injected_field_ref());
       return;
   }
 }

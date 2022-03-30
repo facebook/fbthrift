@@ -14,17 +14,19 @@ cdef class FieldsInjectedToEmptyStruct_Builder(thrift.py3.builder.StructBuilder)
     _struct_type = _module_types.FieldsInjectedToEmptyStruct
 
     def __iter__(self):
-        pass
+        yield "injected_field", self.injected_field
 
 cdef class FieldsInjectedToStruct_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.FieldsInjectedToStruct
 
     def __iter__(self):
         yield "string_field", self.string_field
+        yield "injected_field", self.injected_field
 
 cdef class FieldsInjectedWithIncludedStruct_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.FieldsInjectedWithIncludedStruct
 
     def __iter__(self):
         yield "string_field", self.string_field
+        yield "injected_field", self.injected_field
 

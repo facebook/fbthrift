@@ -25,6 +25,7 @@ pub mod types {
 
     #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct FieldsInjectedToEmptyStruct {
+        pub injected_field: ::std::string::String,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -36,6 +37,7 @@ pub mod types {
     #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct FieldsInjectedToStruct {
         pub string_field: ::std::string::String,
+        pub injected_field: ::std::string::String,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -47,6 +49,7 @@ pub mod types {
     #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct FieldsInjectedWithIncludedStruct {
         pub string_field: ::std::string::String,
+        pub injected_field: ::std::string::String,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -125,6 +128,7 @@ pub mod types {
     impl ::std::default::Default for self::FieldsInjectedToEmptyStruct {
         fn default() -> Self {
             Self {
+                injected_field: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -134,6 +138,7 @@ pub mod types {
         fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
             formatter
                 .debug_struct("FieldsInjectedToEmptyStruct")
+                .field("injected_field", &self.injected_field)
                 .finish()
         }
     }
@@ -151,6 +156,9 @@ pub mod types {
     {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("FieldsInjectedToEmptyStruct");
+            p.write_field_begin("injected_field", ::fbthrift::TType::String, 100);
+            ::fbthrift::Serialize::write(&self.injected_field, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -162,18 +170,22 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("injected_field", ::fbthrift::TType::String, 100),
             ];
+            let mut field_injected_field = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
                 match (fty, fid as ::std::primitive::i32) {
                     (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::String, 100) => field_injected_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
+                injected_field: field_injected_field.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
@@ -184,6 +196,7 @@ pub mod types {
         fn default() -> Self {
             Self {
                 string_field: ::std::default::Default::default(),
+                injected_field: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -194,6 +207,7 @@ pub mod types {
             formatter
                 .debug_struct("FieldsInjectedToStruct")
                 .field("string_field", &self.string_field)
+                .field("injected_field", &self.injected_field)
                 .finish()
         }
     }
@@ -214,6 +228,9 @@ pub mod types {
             p.write_field_begin("string_field", ::fbthrift::TType::String, 1);
             ::fbthrift::Serialize::write(&self.string_field, p);
             p.write_field_end();
+            p.write_field_begin("injected_field", ::fbthrift::TType::String, 100);
+            ::fbthrift::Serialize::write(&self.injected_field, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -225,15 +242,18 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("injected_field", ::fbthrift::TType::String, 100),
                 ::fbthrift::Field::new("string_field", ::fbthrift::TType::String, 1),
             ];
             let mut field_string_field = ::std::option::Option::None;
+            let mut field_injected_field = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
                 match (fty, fid as ::std::primitive::i32) {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::String, 1) => field_string_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 100) => field_injected_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -241,6 +261,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 string_field: field_string_field.unwrap_or_default(),
+                injected_field: field_injected_field.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
@@ -251,6 +272,7 @@ pub mod types {
         fn default() -> Self {
             Self {
                 string_field: ::std::default::Default::default(),
+                injected_field: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -261,6 +283,7 @@ pub mod types {
             formatter
                 .debug_struct("FieldsInjectedWithIncludedStruct")
                 .field("string_field", &self.string_field)
+                .field("injected_field", &self.injected_field)
                 .finish()
         }
     }
@@ -281,6 +304,9 @@ pub mod types {
             p.write_field_begin("string_field", ::fbthrift::TType::String, 1);
             ::fbthrift::Serialize::write(&self.string_field, p);
             p.write_field_end();
+            p.write_field_begin("injected_field", ::fbthrift::TType::String, 100);
+            ::fbthrift::Serialize::write(&self.injected_field, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -292,15 +318,18 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("injected_field", ::fbthrift::TType::String, 100),
                 ::fbthrift::Field::new("string_field", ::fbthrift::TType::String, 1),
             ];
             let mut field_string_field = ::std::option::Option::None;
+            let mut field_injected_field = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
                 match (fty, fid as ::std::primitive::i32) {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::String, 1) => field_string_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 100) => field_injected_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -308,6 +337,7 @@ pub mod types {
             p.read_struct_end()?;
             ::std::result::Result::Ok(Self {
                 string_field: field_string_field.unwrap_or_default(),
+                injected_field: field_injected_field.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }

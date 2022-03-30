@@ -50,14 +50,19 @@ class Fields(thrift.py3.types.Struct, _typing.Hashable):
 
 class FieldsInjectedToEmptyStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
+        injected_field: bool
         pass
 
+    injected_field: Final[str] = ...
+
     def __init__(
-        self, 
+        self, *,
+        injected_field: _typing.Optional[str]=None
     ) -> None: ...
 
     def __call__(
-        self, 
+        self, *,
+        injected_field: _typing.Union[str, __NotSet, None]=NOTSET
     ) -> FieldsInjectedToEmptyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['FieldsInjectedToEmptyStruct'], bytes]]: ...
@@ -73,18 +78,23 @@ class FieldsInjectedToEmptyStruct(thrift.py3.types.Struct, _typing.Hashable):
 class FieldsInjectedToStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         string_field: bool
+        injected_field: bool
         pass
 
     string_field: Final[str] = ...
 
+    injected_field: Final[str] = ...
+
     def __init__(
         self, *,
-        string_field: _typing.Optional[str]=None
+        string_field: _typing.Optional[str]=None,
+        injected_field: _typing.Optional[str]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        string_field: _typing.Union[str, __NotSet, None]=NOTSET
+        string_field: _typing.Union[str, __NotSet, None]=NOTSET,
+        injected_field: _typing.Union[str, __NotSet, None]=NOTSET
     ) -> FieldsInjectedToStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['FieldsInjectedToStruct'], bytes]]: ...
@@ -100,18 +110,23 @@ class FieldsInjectedToStruct(thrift.py3.types.Struct, _typing.Hashable):
 class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         string_field: bool
+        injected_field: bool
         pass
 
     string_field: Final[str] = ...
 
+    injected_field: Final[str] = ...
+
     def __init__(
         self, *,
-        string_field: _typing.Optional[str]=None
+        string_field: _typing.Optional[str]=None,
+        injected_field: _typing.Optional[str]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        string_field: _typing.Union[str, __NotSet, None]=NOTSET
+        string_field: _typing.Union[str, __NotSet, None]=NOTSET,
+        injected_field: _typing.Union[str, __NotSet, None]=NOTSET
     ) -> FieldsInjectedWithIncludedStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['FieldsInjectedWithIncludedStruct'], bytes]]: ...

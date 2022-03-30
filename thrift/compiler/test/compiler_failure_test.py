@@ -1792,3 +1792,82 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
 
         self.assertEqual(ret, 0)
+
+    def test_merge_from_annotation(self):
+        write_file(
+            "thrift/annotation/meta.thrift",
+            textwrap.dedent(
+                """\
+                struct MergeFrom {
+                    1: string name;
+                } (thrift.uri = "facebook.com/thrift/annotation/meta/MergeFrom")
+                """
+            ),
+        )
+
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct Fields {
+                    1: i64 field1;
+                    2: optional i64 field2;
+                    3: required i64 field3;
+                }
+                """
+            ),
+        )
+
+        write_file(
+            "bar.thrift",
+            textwrap.dedent(
+                """\
+                include "thrift/annotation/meta.thrift"
+
+                typedef i64 MyI64
+
+                union UnionFields {
+                    1: i64 field1;
+                    2: i64 field2;
+                }
+
+                struct Fields {
+                    1: i64 field1;
+                    2: optional i64 field2;
+                    3: required i64 field3;
+                }
+
+                @meta.MergeFrom{type="foo.Fields"}
+                struct Extended1 {}
+
+                @meta.MergeFrom
+                struct Extended2 {}
+
+                @meta.MergeFrom{type="UnionFields"}
+                struct Extended3 {}
+
+                @meta.MergeFrom{type="MyI64"}
+                struct Extended4 {}
+
+                @meta.MergeFrom{type="Fields"}
+                struct Extended5 {
+                    1: i64 field1;
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("bar.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:bar.thrift:17] Can not find expected type `foo.Fields` specified in `@meta.MergeFrom`"
+            " in the current scope. Please check the include.\n"
+            "[FAILURE:bar.thrift:20] `@meta.MergeFrom` cannot be used without `type` specified in `Extended2`.\n"
+            "[FAILURE:bar.thrift:23] `UnionFields` is not a struct type. "
+            "`@meta.MergeFrom` can be only used with a struct type.\n"
+            "[FAILURE:bar.thrift:26] `MyI64` is not a struct type. "
+            "`@meta.MergeFrom` can be only used with a struct type.\n"
+            "[FAILURE:bar.thrift:29] Field id `1` is already used in `Extended5`.\n",
+        )

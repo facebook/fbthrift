@@ -25,19 +25,23 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
 
     @ThriftConstructor
     public FieldsInjectedWithIncludedStruct(
-        @com.facebook.swift.codec.ThriftField(value=1, name="string_field", requiredness=Requiredness.NONE) final String stringField
+        @com.facebook.swift.codec.ThriftField(value=1, name="string_field", requiredness=Requiredness.NONE) final String stringField,
+        @com.facebook.swift.codec.ThriftField(value=100, name="injected_field", requiredness=Requiredness.NONE) final String injectedField
     ) {
         this.stringField = stringField;
+        this.injectedField = injectedField;
     }
     
     @ThriftConstructor
     protected FieldsInjectedWithIncludedStruct() {
       this.stringField = null;
+      this.injectedField = null;
     }
     
     public static class Builder {
     
         private String stringField = null;
+        private String injectedField = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="string_field", requiredness=Requiredness.NONE)
         public Builder setStringField(String stringField) {
@@ -47,15 +51,25 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
     
         public String getStringField() { return stringField; }
     
+            @com.facebook.swift.codec.ThriftField(value=100, name="injected_field", requiredness=Requiredness.NONE)
+        public Builder setInjectedField(String injectedField) {
+            this.injectedField = injectedField;
+            return this;
+        }
+    
+        public String getInjectedField() { return injectedField; }
+    
         public Builder() { }
         public Builder(FieldsInjectedWithIncludedStruct other) {
             this.stringField = other.stringField;
+            this.injectedField = other.injectedField;
         }
     
         @ThriftConstructor
         public FieldsInjectedWithIncludedStruct build() {
             FieldsInjectedWithIncludedStruct result = new FieldsInjectedWithIncludedStruct (
-                this.stringField
+                this.stringField,
+                this.injectedField
             );
             return result;
         }
@@ -68,20 +82,32 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
     private final String stringField;
     public static final int _STRING_FIELD = 1;
     private static final TField STRING_FIELD_FIELD_DESC = new TField("string_field", TType.STRING, (short)1);
+        private final String injectedField;
+    public static final int _INJECTED_FIELD = 100;
+    private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)100);
     static {
       NAMES_TO_IDS.put("stringField", 1);
       THRIFT_NAMES_TO_IDS.put("string_field", 1);
       FIELD_METADATA.put(1, STRING_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("injectedField", 100);
+      THRIFT_NAMES_TO_IDS.put("injected_field", 100);
+      FIELD_METADATA.put(100, INJECTED_FIELD_FIELD_DESC);
     }
     
     @Nullable
     @com.facebook.swift.codec.ThriftField(value=1, name="string_field", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
     
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=100, name="injected_field", requiredness=Requiredness.NONE)
+    public String getInjectedField() { return injectedField; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("stringField", stringField);
+        helper.add("injectedField", injectedField);
         return helper.toString();
     }
     
@@ -98,13 +124,15 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
     
         return
             Objects.equals(stringField, other.stringField) &&
+            Objects.equals(injectedField, other.injectedField) &&
             true;
     }
     
     @java.lang.Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
-            stringField
+            stringField,
+            injectedField
         });
     }
     
@@ -129,6 +157,14 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _INJECTED_FIELD:
+          if (__field.type == TType.STRING) {
+            String injectedField = oprot.readString();
+            builder.setInjectedField(injectedField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -144,6 +180,11 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
       if (this.stringField != null) {
         oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
         oprot.writeString(this.stringField);
+        oprot.writeFieldEnd();
+      }
+      if (this.injectedField != null) {
+        oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
+        oprot.writeString(this.injectedField);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

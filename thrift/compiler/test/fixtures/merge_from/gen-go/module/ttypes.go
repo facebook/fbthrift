@@ -138,13 +138,21 @@ func (p *Fields) String() string {
   return fmt.Sprintf("Fields({InjectedField:%s})", injectedFieldVal)
 }
 
+// Attributes:
+//  - InjectedField
 type FieldsInjectedToEmptyStruct struct {
+  // unused fields # 1 to 99
+  InjectedField string `thrift:"injected_field,100" db:"injected_field" json:"injected_field"`
 }
 
 func NewFieldsInjectedToEmptyStruct() *FieldsInjectedToEmptyStruct {
   return &FieldsInjectedToEmptyStruct{}
 }
 
+
+func (p *FieldsInjectedToEmptyStruct) GetInjectedField() string {
+  return p.InjectedField
+}
 type FieldsInjectedToEmptyStructBuilder struct {
   obj *FieldsInjectedToEmptyStruct
 }
@@ -157,7 +165,18 @@ func NewFieldsInjectedToEmptyStructBuilder() *FieldsInjectedToEmptyStructBuilder
 
 func (p FieldsInjectedToEmptyStructBuilder) Emit() *FieldsInjectedToEmptyStruct{
   return &FieldsInjectedToEmptyStruct{
+    InjectedField: p.obj.InjectedField,
   }
+}
+
+func (f *FieldsInjectedToEmptyStructBuilder) InjectedField(injectedField string) *FieldsInjectedToEmptyStructBuilder {
+  f.obj.InjectedField = injectedField
+  return f
+}
+
+func (f *FieldsInjectedToEmptyStruct) SetInjectedField(injectedField string) *FieldsInjectedToEmptyStruct {
+  f.InjectedField = injectedField
+  return f
 }
 
 func (p *FieldsInjectedToEmptyStruct) Read(iprot thrift.Protocol) error {
@@ -172,8 +191,15 @@ func (p *FieldsInjectedToEmptyStruct) Read(iprot thrift.Protocol) error {
       return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
     }
     if fieldTypeId == thrift.STOP { break; }
-    if err := iprot.Skip(fieldTypeId); err != nil {
-      return err
+    switch fieldId {
+    case 100:
+      if err := p.ReadField100(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
     }
     if err := iprot.ReadFieldEnd(); err != nil {
       return err
@@ -185,9 +211,19 @@ func (p *FieldsInjectedToEmptyStruct) Read(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *FieldsInjectedToEmptyStruct)  ReadField100(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 100: ", err)
+  } else {
+    p.InjectedField = v
+  }
+  return nil
+}
+
 func (p *FieldsInjectedToEmptyStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("FieldsInjectedToEmptyStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField100(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -195,18 +231,32 @@ func (p *FieldsInjectedToEmptyStruct) Write(oprot thrift.Protocol) error {
   return nil
 }
 
+func (p *FieldsInjectedToEmptyStruct) writeField100(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("injected_field", thrift.STRING, 100); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 100:injected_field: ", p), err) }
+  if err := oprot.WriteString(string(p.InjectedField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.injected_field (100) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 100:injected_field: ", p), err) }
+  return err
+}
+
 func (p *FieldsInjectedToEmptyStruct) String() string {
   if p == nil {
     return "<nil>"
   }
 
-  return fmt.Sprintf("FieldsInjectedToEmptyStruct({})")
+  injectedFieldVal := fmt.Sprintf("%v", p.InjectedField)
+  return fmt.Sprintf("FieldsInjectedToEmptyStruct({InjectedField:%s})", injectedFieldVal)
 }
 
 // Attributes:
 //  - StringField
+//  - InjectedField
 type FieldsInjectedToStruct struct {
   StringField string `thrift:"string_field,1" db:"string_field" json:"string_field"`
+  // unused fields # 2 to 99
+  InjectedField string `thrift:"injected_field,100" db:"injected_field" json:"injected_field"`
 }
 
 func NewFieldsInjectedToStruct() *FieldsInjectedToStruct {
@@ -216,6 +266,10 @@ func NewFieldsInjectedToStruct() *FieldsInjectedToStruct {
 
 func (p *FieldsInjectedToStruct) GetStringField() string {
   return p.StringField
+}
+
+func (p *FieldsInjectedToStruct) GetInjectedField() string {
+  return p.InjectedField
 }
 type FieldsInjectedToStructBuilder struct {
   obj *FieldsInjectedToStruct
@@ -230,6 +284,7 @@ func NewFieldsInjectedToStructBuilder() *FieldsInjectedToStructBuilder{
 func (p FieldsInjectedToStructBuilder) Emit() *FieldsInjectedToStruct{
   return &FieldsInjectedToStruct{
     StringField: p.obj.StringField,
+    InjectedField: p.obj.InjectedField,
   }
 }
 
@@ -238,8 +293,18 @@ func (f *FieldsInjectedToStructBuilder) StringField(stringField string) *FieldsI
   return f
 }
 
+func (f *FieldsInjectedToStructBuilder) InjectedField(injectedField string) *FieldsInjectedToStructBuilder {
+  f.obj.InjectedField = injectedField
+  return f
+}
+
 func (f *FieldsInjectedToStruct) SetStringField(stringField string) *FieldsInjectedToStruct {
   f.StringField = stringField
+  return f
+}
+
+func (f *FieldsInjectedToStruct) SetInjectedField(injectedField string) *FieldsInjectedToStruct {
+  f.InjectedField = injectedField
   return f
 }
 
@@ -258,6 +323,10 @@ func (p *FieldsInjectedToStruct) Read(iprot thrift.Protocol) error {
     switch fieldId {
     case 1:
       if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 100:
+      if err := p.ReadField100(iprot); err != nil {
         return err
       }
     default:
@@ -284,10 +353,20 @@ func (p *FieldsInjectedToStruct)  ReadField1(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *FieldsInjectedToStruct)  ReadField100(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 100: ", err)
+  } else {
+    p.InjectedField = v
+  }
+  return nil
+}
+
 func (p *FieldsInjectedToStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("FieldsInjectedToStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField100(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -305,19 +384,33 @@ func (p *FieldsInjectedToStruct) writeField1(oprot thrift.Protocol) (err error) 
   return err
 }
 
+func (p *FieldsInjectedToStruct) writeField100(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("injected_field", thrift.STRING, 100); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 100:injected_field: ", p), err) }
+  if err := oprot.WriteString(string(p.InjectedField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.injected_field (100) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 100:injected_field: ", p), err) }
+  return err
+}
+
 func (p *FieldsInjectedToStruct) String() string {
   if p == nil {
     return "<nil>"
   }
 
   stringFieldVal := fmt.Sprintf("%v", p.StringField)
-  return fmt.Sprintf("FieldsInjectedToStruct({StringField:%s})", stringFieldVal)
+  injectedFieldVal := fmt.Sprintf("%v", p.InjectedField)
+  return fmt.Sprintf("FieldsInjectedToStruct({StringField:%s InjectedField:%s})", stringFieldVal, injectedFieldVal)
 }
 
 // Attributes:
 //  - StringField
+//  - InjectedField
 type FieldsInjectedWithIncludedStruct struct {
   StringField string `thrift:"string_field,1" db:"string_field" json:"string_field"`
+  // unused fields # 2 to 99
+  InjectedField string `thrift:"injected_field,100" db:"injected_field" json:"injected_field"`
 }
 
 func NewFieldsInjectedWithIncludedStruct() *FieldsInjectedWithIncludedStruct {
@@ -327,6 +420,10 @@ func NewFieldsInjectedWithIncludedStruct() *FieldsInjectedWithIncludedStruct {
 
 func (p *FieldsInjectedWithIncludedStruct) GetStringField() string {
   return p.StringField
+}
+
+func (p *FieldsInjectedWithIncludedStruct) GetInjectedField() string {
+  return p.InjectedField
 }
 type FieldsInjectedWithIncludedStructBuilder struct {
   obj *FieldsInjectedWithIncludedStruct
@@ -341,6 +438,7 @@ func NewFieldsInjectedWithIncludedStructBuilder() *FieldsInjectedWithIncludedStr
 func (p FieldsInjectedWithIncludedStructBuilder) Emit() *FieldsInjectedWithIncludedStruct{
   return &FieldsInjectedWithIncludedStruct{
     StringField: p.obj.StringField,
+    InjectedField: p.obj.InjectedField,
   }
 }
 
@@ -349,8 +447,18 @@ func (f *FieldsInjectedWithIncludedStructBuilder) StringField(stringField string
   return f
 }
 
+func (f *FieldsInjectedWithIncludedStructBuilder) InjectedField(injectedField string) *FieldsInjectedWithIncludedStructBuilder {
+  f.obj.InjectedField = injectedField
+  return f
+}
+
 func (f *FieldsInjectedWithIncludedStruct) SetStringField(stringField string) *FieldsInjectedWithIncludedStruct {
   f.StringField = stringField
+  return f
+}
+
+func (f *FieldsInjectedWithIncludedStruct) SetInjectedField(injectedField string) *FieldsInjectedWithIncludedStruct {
+  f.InjectedField = injectedField
   return f
 }
 
@@ -369,6 +477,10 @@ func (p *FieldsInjectedWithIncludedStruct) Read(iprot thrift.Protocol) error {
     switch fieldId {
     case 1:
       if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 100:
+      if err := p.ReadField100(iprot); err != nil {
         return err
       }
     default:
@@ -395,10 +507,20 @@ func (p *FieldsInjectedWithIncludedStruct)  ReadField1(iprot thrift.Protocol) er
   return nil
 }
 
+func (p *FieldsInjectedWithIncludedStruct)  ReadField100(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 100: ", err)
+  } else {
+    p.InjectedField = v
+  }
+  return nil
+}
+
 func (p *FieldsInjectedWithIncludedStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("FieldsInjectedWithIncludedStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField100(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -416,12 +538,23 @@ func (p *FieldsInjectedWithIncludedStruct) writeField1(oprot thrift.Protocol) (e
   return err
 }
 
+func (p *FieldsInjectedWithIncludedStruct) writeField100(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("injected_field", thrift.STRING, 100); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 100:injected_field: ", p), err) }
+  if err := oprot.WriteString(string(p.InjectedField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.injected_field (100) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 100:injected_field: ", p), err) }
+  return err
+}
+
 func (p *FieldsInjectedWithIncludedStruct) String() string {
   if p == nil {
     return "<nil>"
   }
 
   stringFieldVal := fmt.Sprintf("%v", p.StringField)
-  return fmt.Sprintf("FieldsInjectedWithIncludedStruct({StringField:%s})", stringFieldVal)
+  injectedFieldVal := fmt.Sprintf("%v", p.InjectedField)
+  return fmt.Sprintf("FieldsInjectedWithIncludedStruct({StringField:%s InjectedField:%s})", stringFieldVal, injectedFieldVal)
 }
 

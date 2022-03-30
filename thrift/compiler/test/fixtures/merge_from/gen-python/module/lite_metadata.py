@@ -43,6 +43,8 @@ def _fbthrift_gen_metadata_struct_FieldsInjectedToEmptyStruct(metadata_struct: _
     if qualified_name in metadata_struct.structs:
         return metadata_struct
     fields = [
+        _fbthrift_metadata.ThriftField(id=100, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="injected_field", is_optional=False, structured_annotations=[
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
@@ -52,6 +54,7 @@ def _fbthrift_gen_metadata_struct_FieldsInjectedToEmptyStruct(metadata_struct: _
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
+     # injected_field
 
     return new_struct
 def gen_metadata_struct_FieldsInjectedToEmptyStruct() -> _fbthrift_metadata.ThriftMetadata:
@@ -67,6 +70,8 @@ def _fbthrift_gen_metadata_struct_FieldsInjectedToStruct(metadata_struct: _fbthr
     fields = [
         _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="string_field", is_optional=False, structured_annotations=[
         ]),
+        _fbthrift_metadata.ThriftField(id=100, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="injected_field", is_optional=False, structured_annotations=[
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
@@ -77,6 +82,7 @@ def _fbthrift_gen_metadata_struct_FieldsInjectedToStruct(metadata_struct: _fbthr
     new_struct = metadata_struct(structs=struct_dict)
 
      # string_field
+     # injected_field
 
     return new_struct
 def gen_metadata_struct_FieldsInjectedToStruct() -> _fbthrift_metadata.ThriftMetadata:
@@ -92,6 +98,8 @@ def _fbthrift_gen_metadata_struct_FieldsInjectedWithIncludedStruct(metadata_stru
     fields = [
         _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="string_field", is_optional=False, structured_annotations=[
         ]),
+        _fbthrift_metadata.ThriftField(id=100, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="injected_field", is_optional=False, structured_annotations=[
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
@@ -102,6 +110,7 @@ def _fbthrift_gen_metadata_struct_FieldsInjectedWithIncludedStruct(metadata_stru
     new_struct = metadata_struct(structs=struct_dict)
 
      # string_field
+     # injected_field
 
     return new_struct
 def gen_metadata_struct_FieldsInjectedWithIncludedStruct() -> _fbthrift_metadata.ThriftMetadata:

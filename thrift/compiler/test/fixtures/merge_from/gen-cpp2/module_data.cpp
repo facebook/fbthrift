@@ -22,30 +22,39 @@ const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::Fields>::fields_
   TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::FieldsInjectedToEmptyStruct>::fields_names = {{
+const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::FieldsInjectedToEmptyStruct>::fields_names = {{
+  "injected_field",
 }};
-const std::array<int16_t, 0> TStructDataStorage<::cpp2::FieldsInjectedToEmptyStruct>::fields_ids = {{
+const std::array<int16_t, 1> TStructDataStorage<::cpp2::FieldsInjectedToEmptyStruct>::fields_ids = {{
+  100,
 }};
-const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::FieldsInjectedToEmptyStruct>::fields_types = {{
-}};
-
-const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::FieldsInjectedToStruct>::fields_names = {{
-  "string_field",
-}};
-const std::array<int16_t, 1> TStructDataStorage<::cpp2::FieldsInjectedToStruct>::fields_ids = {{
-  1,
-}};
-const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::FieldsInjectedToStruct>::fields_types = {{
+const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::FieldsInjectedToEmptyStruct>::fields_types = {{
   TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::FieldsInjectedWithIncludedStruct>::fields_names = {{
+const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::FieldsInjectedToStruct>::fields_names = {{
   "string_field",
+  "injected_field",
 }};
-const std::array<int16_t, 1> TStructDataStorage<::cpp2::FieldsInjectedWithIncludedStruct>::fields_ids = {{
+const std::array<int16_t, 2> TStructDataStorage<::cpp2::FieldsInjectedToStruct>::fields_ids = {{
   1,
+  100,
 }};
-const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::FieldsInjectedWithIncludedStruct>::fields_types = {{
+const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::FieldsInjectedToStruct>::fields_types = {{
+  TType::T_STRING,
+  TType::T_STRING,
+}};
+
+const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::FieldsInjectedWithIncludedStruct>::fields_names = {{
+  "string_field",
+  "injected_field",
+}};
+const std::array<int16_t, 2> TStructDataStorage<::cpp2::FieldsInjectedWithIncludedStruct>::fields_ids = {{
+  1,
+  100,
+}};
+const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::FieldsInjectedWithIncludedStruct>::fields_types = {{
+  TType::T_STRING,
   TType::T_STRING,
 }};
 

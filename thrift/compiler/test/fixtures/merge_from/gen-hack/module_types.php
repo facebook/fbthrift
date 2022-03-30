@@ -96,16 +96,28 @@ class FieldsInjectedToEmptyStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
+    100 => shape(
+      'var' => 'injected_field',
+      'type' => \TType::STRING,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
+    'injected_field' => 100,
   ];
 
   const type TConstructorShape = shape(
+    ?'injected_field' => ?string,
   );
 
-  const int STRUCTURAL_ID = 957977401221134810;
+  const int STRUCTURAL_ID = 8264058527515912971;
+  /**
+   * Original thrift field:-
+   * 100: string injected_field
+   */
+  public string $injected_field;
 
-  public function __construct(  )[] {
+  public function __construct(?string $injected_field = null  )[] {
+    $this->injected_field = $injected_field ?? '';
   }
 
   public static function withDefaultValues()[]: this {
@@ -114,6 +126,7 @@ class FieldsInjectedToEmptyStruct implements \IThriftSyncStruct {
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
+      Shapes::idx($shape, 'injected_field'),
     );
   }
 
@@ -125,6 +138,19 @@ class FieldsInjectedToEmptyStruct implements \IThriftSyncStruct {
     return tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.FieldsInjectedToEmptyStruct",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 100,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "injected_field",
+            )
+          ),
+        ],
         "is_union" => false,
       )
     );
@@ -162,24 +188,36 @@ class FieldsInjectedToStruct implements \IThriftSyncStruct {
       'var' => 'string_field',
       'type' => \TType::STRING,
     ),
+    100 => shape(
+      'var' => 'injected_field',
+      'type' => \TType::STRING,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'string_field' => 1,
+    'injected_field' => 100,
   ];
 
   const type TConstructorShape = shape(
     ?'string_field' => ?string,
+    ?'injected_field' => ?string,
   );
 
-  const int STRUCTURAL_ID = 4120882154470570977;
+  const int STRUCTURAL_ID = 5990477315205863582;
   /**
    * Original thrift field:-
    * 1: string string_field
    */
   public string $string_field;
+  /**
+   * Original thrift field:-
+   * 100: string injected_field
+   */
+  public string $injected_field;
 
-  public function __construct(?string $string_field = null  )[] {
+  public function __construct(?string $string_field = null, ?string $injected_field = null  )[] {
     $this->string_field = $string_field ?? '';
+    $this->injected_field = $injected_field ?? '';
   }
 
   public static function withDefaultValues()[]: this {
@@ -189,6 +227,7 @@ class FieldsInjectedToStruct implements \IThriftSyncStruct {
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'string_field'),
+      Shapes::idx($shape, 'injected_field'),
     );
   }
 
@@ -210,6 +249,17 @@ class FieldsInjectedToStruct implements \IThriftSyncStruct {
                 )
               ),
               "name" => "string_field",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 100,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "injected_field",
             )
           ),
         ],
@@ -250,24 +300,36 @@ class FieldsInjectedWithIncludedStruct implements \IThriftSyncStruct {
       'var' => 'string_field',
       'type' => \TType::STRING,
     ),
+    100 => shape(
+      'var' => 'injected_field',
+      'type' => \TType::STRING,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'string_field' => 1,
+    'injected_field' => 100,
   ];
 
   const type TConstructorShape = shape(
     ?'string_field' => ?string,
+    ?'injected_field' => ?string,
   );
 
-  const int STRUCTURAL_ID = 4120882154470570977;
+  const int STRUCTURAL_ID = 5990477315205863582;
   /**
    * Original thrift field:-
    * 1: string string_field
    */
   public string $string_field;
+  /**
+   * Original thrift field:-
+   * 100: string injected_field
+   */
+  public string $injected_field;
 
-  public function __construct(?string $string_field = null  )[] {
+  public function __construct(?string $string_field = null, ?string $injected_field = null  )[] {
     $this->string_field = $string_field ?? '';
+    $this->injected_field = $injected_field ?? '';
   }
 
   public static function withDefaultValues()[]: this {
@@ -277,6 +339,7 @@ class FieldsInjectedWithIncludedStruct implements \IThriftSyncStruct {
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'string_field'),
+      Shapes::idx($shape, 'injected_field'),
     );
   }
 
@@ -298,6 +361,17 @@ class FieldsInjectedWithIncludedStruct implements \IThriftSyncStruct {
                 )
               ),
               "name" => "string_field",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 100,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "injected_field",
             )
           ),
         ],

@@ -106,10 +106,15 @@ class Fields:
   __hash__ = object.__hash__
 
 class FieldsInjectedToEmptyStruct:
+  """
+  Attributes:
+   - injected_field
+  """
 
   thrift_spec = None
   thrift_field_annotations = None
   thrift_struct_annotations = None
+  __init__ = None
   @staticmethod
   def isUnion():
     return False
@@ -126,6 +131,11 @@ class FieldsInjectedToEmptyStruct:
       (fname, ftype, fid) = iprot.readFieldBegin()
       if ftype == TType.STOP:
         break
+      if fid == 100:
+        if ftype == TType.STRING:
+          self.injected_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -139,12 +149,20 @@ class FieldsInjectedToEmptyStruct:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('FieldsInjectedToEmptyStruct')
+    if self.injected_field != None:
+      oprot.writeFieldBegin('injected_field', TType.STRING, 100)
+      oprot.writeString(self.injected_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.injected_field, bytes) else oprot.writeString(self.injected_field)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
   def __repr__(self):
     L = []
     padding = ' ' * 4
+    if self.injected_field is not None:
+      value = pprint.pformat(self.injected_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    injected_field=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -163,6 +181,7 @@ class FieldsInjectedToStruct:
   """
   Attributes:
    - string_field
+   - injected_field
   """
 
   thrift_spec = None
@@ -188,6 +207,11 @@ class FieldsInjectedToStruct:
       if fid == 1:
         if ftype == TType.STRING:
           self.string_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 100:
+        if ftype == TType.STRING:
+          self.injected_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
       else:
@@ -207,6 +231,10 @@ class FieldsInjectedToStruct:
       oprot.writeFieldBegin('string_field', TType.STRING, 1)
       oprot.writeString(self.string_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.string_field, bytes) else oprot.writeString(self.string_field)
       oprot.writeFieldEnd()
+    if self.injected_field != None:
+      oprot.writeFieldBegin('injected_field', TType.STRING, 100)
+      oprot.writeString(self.injected_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.injected_field, bytes) else oprot.writeString(self.injected_field)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -217,6 +245,10 @@ class FieldsInjectedToStruct:
       value = pprint.pformat(self.string_field, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    string_field=%s' % (value))
+    if self.injected_field is not None:
+      value = pprint.pformat(self.injected_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    injected_field=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -235,6 +267,7 @@ class FieldsInjectedWithIncludedStruct:
   """
   Attributes:
    - string_field
+   - injected_field
   """
 
   thrift_spec = None
@@ -262,6 +295,11 @@ class FieldsInjectedWithIncludedStruct:
           self.string_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 100:
+        if ftype == TType.STRING:
+          self.injected_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -279,6 +317,10 @@ class FieldsInjectedWithIncludedStruct:
       oprot.writeFieldBegin('string_field', TType.STRING, 1)
       oprot.writeString(self.string_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.string_field, bytes) else oprot.writeString(self.string_field)
       oprot.writeFieldEnd()
+    if self.injected_field != None:
+      oprot.writeFieldBegin('injected_field', TType.STRING, 100)
+      oprot.writeString(self.injected_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.injected_field, bytes) else oprot.writeString(self.injected_field)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -289,6 +331,10 @@ class FieldsInjectedWithIncludedStruct:
       value = pprint.pformat(self.string_field, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    string_field=%s' % (value))
+    if self.injected_field is not None:
+      value = pprint.pformat(self.injected_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    injected_field=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -427,6 +473,107 @@ Fields.__setstate__ = Fields__setstate__
 
 all_structs.append(FieldsInjectedToEmptyStruct)
 FieldsInjectedToEmptyStruct.thrift_spec = (
+  None, # 0
+  None, # 1
+  None, # 2
+  None, # 3
+  None, # 4
+  None, # 5
+  None, # 6
+  None, # 7
+  None, # 8
+  None, # 9
+  None, # 10
+  None, # 11
+  None, # 12
+  None, # 13
+  None, # 14
+  None, # 15
+  None, # 16
+  None, # 17
+  None, # 18
+  None, # 19
+  None, # 20
+  None, # 21
+  None, # 22
+  None, # 23
+  None, # 24
+  None, # 25
+  None, # 26
+  None, # 27
+  None, # 28
+  None, # 29
+  None, # 30
+  None, # 31
+  None, # 32
+  None, # 33
+  None, # 34
+  None, # 35
+  None, # 36
+  None, # 37
+  None, # 38
+  None, # 39
+  None, # 40
+  None, # 41
+  None, # 42
+  None, # 43
+  None, # 44
+  None, # 45
+  None, # 46
+  None, # 47
+  None, # 48
+  None, # 49
+  None, # 50
+  None, # 51
+  None, # 52
+  None, # 53
+  None, # 54
+  None, # 55
+  None, # 56
+  None, # 57
+  None, # 58
+  None, # 59
+  None, # 60
+  None, # 61
+  None, # 62
+  None, # 63
+  None, # 64
+  None, # 65
+  None, # 66
+  None, # 67
+  None, # 68
+  None, # 69
+  None, # 70
+  None, # 71
+  None, # 72
+  None, # 73
+  None, # 74
+  None, # 75
+  None, # 76
+  None, # 77
+  None, # 78
+  None, # 79
+  None, # 80
+  None, # 81
+  None, # 82
+  None, # 83
+  None, # 84
+  None, # 85
+  None, # 86
+  None, # 87
+  None, # 88
+  None, # 89
+  None, # 90
+  None, # 91
+  None, # 92
+  None, # 93
+  None, # 94
+  None, # 95
+  None, # 96
+  None, # 97
+  None, # 98
+  None, # 99
+  (100, TType.STRING, 'injected_field', True, None, 2, ), # 100
 )
 
 FieldsInjectedToEmptyStruct.thrift_struct_annotations = {
@@ -434,10 +581,121 @@ FieldsInjectedToEmptyStruct.thrift_struct_annotations = {
 FieldsInjectedToEmptyStruct.thrift_field_annotations = {
 }
 
+def FieldsInjectedToEmptyStruct__init__(self, injected_field=None,):
+  self.injected_field = injected_field
+
+FieldsInjectedToEmptyStruct.__init__ = FieldsInjectedToEmptyStruct__init__
+
+def FieldsInjectedToEmptyStruct__setstate__(self, state):
+  state.setdefault('injected_field', None)
+  self.__dict__ = state
+
+FieldsInjectedToEmptyStruct.__getstate__ = lambda self: self.__dict__.copy()
+FieldsInjectedToEmptyStruct.__setstate__ = FieldsInjectedToEmptyStruct__setstate__
+
 all_structs.append(FieldsInjectedToStruct)
 FieldsInjectedToStruct.thrift_spec = (
   None, # 0
   (1, TType.STRING, 'string_field', True, None, 2, ), # 1
+  None, # 2
+  None, # 3
+  None, # 4
+  None, # 5
+  None, # 6
+  None, # 7
+  None, # 8
+  None, # 9
+  None, # 10
+  None, # 11
+  None, # 12
+  None, # 13
+  None, # 14
+  None, # 15
+  None, # 16
+  None, # 17
+  None, # 18
+  None, # 19
+  None, # 20
+  None, # 21
+  None, # 22
+  None, # 23
+  None, # 24
+  None, # 25
+  None, # 26
+  None, # 27
+  None, # 28
+  None, # 29
+  None, # 30
+  None, # 31
+  None, # 32
+  None, # 33
+  None, # 34
+  None, # 35
+  None, # 36
+  None, # 37
+  None, # 38
+  None, # 39
+  None, # 40
+  None, # 41
+  None, # 42
+  None, # 43
+  None, # 44
+  None, # 45
+  None, # 46
+  None, # 47
+  None, # 48
+  None, # 49
+  None, # 50
+  None, # 51
+  None, # 52
+  None, # 53
+  None, # 54
+  None, # 55
+  None, # 56
+  None, # 57
+  None, # 58
+  None, # 59
+  None, # 60
+  None, # 61
+  None, # 62
+  None, # 63
+  None, # 64
+  None, # 65
+  None, # 66
+  None, # 67
+  None, # 68
+  None, # 69
+  None, # 70
+  None, # 71
+  None, # 72
+  None, # 73
+  None, # 74
+  None, # 75
+  None, # 76
+  None, # 77
+  None, # 78
+  None, # 79
+  None, # 80
+  None, # 81
+  None, # 82
+  None, # 83
+  None, # 84
+  None, # 85
+  None, # 86
+  None, # 87
+  None, # 88
+  None, # 89
+  None, # 90
+  None, # 91
+  None, # 92
+  None, # 93
+  None, # 94
+  None, # 95
+  None, # 96
+  None, # 97
+  None, # 98
+  None, # 99
+  (100, TType.STRING, 'injected_field', True, None, 2, ), # 100
 )
 
 FieldsInjectedToStruct.thrift_struct_annotations = {
@@ -445,13 +703,15 @@ FieldsInjectedToStruct.thrift_struct_annotations = {
 FieldsInjectedToStruct.thrift_field_annotations = {
 }
 
-def FieldsInjectedToStruct__init__(self, string_field=None,):
+def FieldsInjectedToStruct__init__(self, string_field=None, injected_field=None,):
   self.string_field = string_field
+  self.injected_field = injected_field
 
 FieldsInjectedToStruct.__init__ = FieldsInjectedToStruct__init__
 
 def FieldsInjectedToStruct__setstate__(self, state):
   state.setdefault('string_field', None)
+  state.setdefault('injected_field', None)
   self.__dict__ = state
 
 FieldsInjectedToStruct.__getstate__ = lambda self: self.__dict__.copy()
@@ -461,6 +721,105 @@ all_structs.append(FieldsInjectedWithIncludedStruct)
 FieldsInjectedWithIncludedStruct.thrift_spec = (
   None, # 0
   (1, TType.STRING, 'string_field', True, None, 2, ), # 1
+  None, # 2
+  None, # 3
+  None, # 4
+  None, # 5
+  None, # 6
+  None, # 7
+  None, # 8
+  None, # 9
+  None, # 10
+  None, # 11
+  None, # 12
+  None, # 13
+  None, # 14
+  None, # 15
+  None, # 16
+  None, # 17
+  None, # 18
+  None, # 19
+  None, # 20
+  None, # 21
+  None, # 22
+  None, # 23
+  None, # 24
+  None, # 25
+  None, # 26
+  None, # 27
+  None, # 28
+  None, # 29
+  None, # 30
+  None, # 31
+  None, # 32
+  None, # 33
+  None, # 34
+  None, # 35
+  None, # 36
+  None, # 37
+  None, # 38
+  None, # 39
+  None, # 40
+  None, # 41
+  None, # 42
+  None, # 43
+  None, # 44
+  None, # 45
+  None, # 46
+  None, # 47
+  None, # 48
+  None, # 49
+  None, # 50
+  None, # 51
+  None, # 52
+  None, # 53
+  None, # 54
+  None, # 55
+  None, # 56
+  None, # 57
+  None, # 58
+  None, # 59
+  None, # 60
+  None, # 61
+  None, # 62
+  None, # 63
+  None, # 64
+  None, # 65
+  None, # 66
+  None, # 67
+  None, # 68
+  None, # 69
+  None, # 70
+  None, # 71
+  None, # 72
+  None, # 73
+  None, # 74
+  None, # 75
+  None, # 76
+  None, # 77
+  None, # 78
+  None, # 79
+  None, # 80
+  None, # 81
+  None, # 82
+  None, # 83
+  None, # 84
+  None, # 85
+  None, # 86
+  None, # 87
+  None, # 88
+  None, # 89
+  None, # 90
+  None, # 91
+  None, # 92
+  None, # 93
+  None, # 94
+  None, # 95
+  None, # 96
+  None, # 97
+  None, # 98
+  None, # 99
+  (100, TType.STRING, 'injected_field', True, None, 2, ), # 100
 )
 
 FieldsInjectedWithIncludedStruct.thrift_struct_annotations = {
@@ -468,13 +827,15 @@ FieldsInjectedWithIncludedStruct.thrift_struct_annotations = {
 FieldsInjectedWithIncludedStruct.thrift_field_annotations = {
 }
 
-def FieldsInjectedWithIncludedStruct__init__(self, string_field=None,):
+def FieldsInjectedWithIncludedStruct__init__(self, string_field=None, injected_field=None,):
   self.string_field = string_field
+  self.injected_field = injected_field
 
 FieldsInjectedWithIncludedStruct.__init__ = FieldsInjectedWithIncludedStruct__init__
 
 def FieldsInjectedWithIncludedStruct__setstate__(self, state):
   state.setdefault('string_field', None)
+  state.setdefault('injected_field', None)
   self.__dict__ = state
 
 FieldsInjectedWithIncludedStruct.__getstate__ = lambda self: self.__dict__.copy()

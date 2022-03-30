@@ -64,6 +64,7 @@ cdef class __FieldsInjectedToEmptyStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __FieldsInjectedToEmptyStruct_FieldsSetter _fbthrift_create(_module_types.cFieldsInjectedToEmptyStruct* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
 
 
 ctypedef void (*__FieldsInjectedToStruct_FieldsSetterFunc)(__FieldsInjectedToStruct_FieldsSetter, object) except *
@@ -75,6 +76,7 @@ cdef class __FieldsInjectedToStruct_FieldsSetter(__StructFieldsSetter):
     @staticmethod
     cdef __FieldsInjectedToStruct_FieldsSetter _fbthrift_create(_module_types.cFieldsInjectedToStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
 
 
 ctypedef void (*__FieldsInjectedWithIncludedStruct_FieldsSetterFunc)(__FieldsInjectedWithIncludedStruct_FieldsSetter, object) except *
@@ -86,4 +88,5 @@ cdef class __FieldsInjectedWithIncludedStruct_FieldsSetter(__StructFieldsSetter)
     @staticmethod
     cdef __FieldsInjectedWithIncludedStruct_FieldsSetter _fbthrift_create(_module_types.cFieldsInjectedWithIncludedStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
 
