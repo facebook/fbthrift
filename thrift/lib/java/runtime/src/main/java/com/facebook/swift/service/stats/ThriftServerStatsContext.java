@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.facebook.thrift.service.stats;
+package com.facebook.swift.service.stats;
 
 import com.facebook.nifty.core.RequestContext;
 
