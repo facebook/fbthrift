@@ -147,7 +147,6 @@ where
         seqid: u32,
     ) -> Result<ProtocolEncodedFinal<P>, Error>;
 
-
     /// Given a method name, return a reference to the interaction creation fn for that index
     fn create_interaction_idx(&self, _name: &str) -> ::anyhow::Result<::std::primitive::usize> {
         bail!("Processor does not support interactions");

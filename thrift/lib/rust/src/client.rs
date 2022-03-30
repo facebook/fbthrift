@@ -86,7 +86,6 @@ pub trait Transport: Framing + Send + Sized + 'static {
         .boxed()
     }
 
-
     fn create_interaction(&self, _method_name: &'static CStr) -> Result<Self, anyhow::Error> {
         anyhow::bail!("Interactions are not supported by this transport");
     }
