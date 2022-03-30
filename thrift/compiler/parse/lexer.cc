@@ -17,14 +17,17 @@
 #include <thrift/compiler/parse/lexer.h>
 
 #include <assert.h>
+#include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <algorithm>
 #include <stdexcept>
 #include <unordered_map>
+#include <utility>
 
-#include <thrift/compiler/parse/parsing_driver.h>
+#include <thrift/compiler/ast/diagnostic_context.h>
 
 using apache::thrift::compiler::yy::parser;
 
@@ -186,8 +189,12 @@ const std::unordered_map<std::string, make_token_fun> keywords = {
 } // namespace
 
 lexer::lexer(
-    parsing_driver& driver, std::string filename, std::vector<char> source)
-    : driver_(&driver),
+    lex_handler& handler,
+    diagnostic_context& diag_ctx,
+    std::string filename,
+    std::vector<char> source)
+    : handler_(&handler),
+      diag_ctx_(&diag_ctx),
       filename_(std::move(filename)),
       source_(std::move(source)) {
   ptr_ = source_.data();
@@ -195,7 +202,8 @@ lexer::lexer(
   line_start_ = ptr_;
 }
 
-lexer lexer::from_file(parsing_driver& driver, std::string filename) {
+lexer lexer::from_file(
+    lex_handler& handler, diagnostic_context& diag_ctx, std::string filename) {
   auto f = file(filename.c_str(), "rb");
   char buffer[4096];
   auto source = std::vector<char>();
@@ -203,12 +211,51 @@ lexer lexer::from_file(parsing_driver& driver, std::string filename) {
     source.insert(source.end(), buffer, buffer + count);
   }
   source.push_back('\0');
-  return {driver, std::move(filename), std::move(source)};
+  return {handler, diag_ctx, std::move(filename), std::move(source)};
+}
+
+parser::symbol_type lexer::make_int_constant(int offset, int base) {
+  std::string text = token_text();
+  errno = 0;
+  uint64_t val = strtoull(text.c_str() + offset, nullptr, base);
+  if (errno == ERANGE) {
+    return report_error(
+        [&](auto& o) { o << "This integer is too big: " << text << "\n"; });
+  }
+  return parser::make_tok_int_constant(val, make_location());
+}
+
+parser::symbol_type lexer::make_float_constant() {
+  std::string text = token_text();
+  errno = 0;
+  double val = strtod(text.c_str(), nullptr);
+  if (errno == ERANGE) {
+    if (val == 0) {
+      return report_error([&](auto& o) {
+        o << "This number is too infinitesimal: " << text << "\n";
+      });
+    } else if (val == HUGE_VAL) {
+      return report_error(
+          [&](auto& o) { o << "This number is too big: " << text << "\n"; });
+    } else if (val == -HUGE_VAL) {
+      return report_error(
+          [&](auto& o) { o << "This number is too small: " << text << "\n"; });
+    }
+    // Allow subnormals.
+  }
+  return parser::make_tok_dub_constant(val, make_location());
+}
+
+template <typename... T>
+parser::symbol_type lexer::report_error(T&&... args) {
+  diag_ctx_->failure(lineno_, token_text(), std::forward<T>(args)...);
+  return parser::make_tok_error(make_location());
 }
 
 parser::symbol_type lexer::unexpected_token() {
-  driver_->unexpected_token(get_text().c_str());
-  return {};
+  return report_error([&](auto& o) {
+    o << "Unexpected token in input: " << token_text() << "\n";
+  });
 }
 
 void lexer::update_line() {
@@ -242,7 +289,7 @@ bool lexer::lex_doc_comment() {
   } while (strncmp(ptr_, prefix, prefix_size) == 0);
   update_line();
   if (!is_inline) {
-    driver_->push_doctext(get_text().c_str(), get_lineno());
+    handler_->on_doc_comment(token_text().c_str(), lineno_);
   }
   return is_inline;
 }
@@ -268,7 +315,7 @@ lexer::comment_lex_result lexer::lex_block_comment() {
     auto non_star = std::find_if(
         token_start_ + 2, ptr_ - 1, [](char c) { return c != '*'; });
     if (non_star != ptr_ - 1) {
-      driver_->push_doctext(get_text().c_str(), get_lineno());
+      handler_->on_doc_comment(token_text().c_str(), lineno_);
     }
   }
   return comment_lex_result::skipped;
@@ -319,8 +366,7 @@ lexer::comment_lex_result lexer::lex_whitespace_or_comment() {
 parser::symbol_type lexer::get_next_token() {
   lineno_ = std::max(lineno_, 1);
   if (lex_whitespace_or_comment() == comment_lex_result::doc_comment) {
-    return parser::make_tok_inline_doc(
-        driver_->strip_doctext(get_text().c_str()), make_location());
+    return parser::make_tok_inline_doc(token_text(), make_location());
   }
 
   start_token();
@@ -331,7 +377,7 @@ parser::symbol_type lexer::get_next_token() {
     while (is_identifier_char(*ptr_)) {
       ++ptr_;
     }
-    auto text = get_text();
+    auto text = token_text();
     auto it = keywords.find(text);
     if (it != keywords.end()) {
       return it->second(make_location());
@@ -340,8 +386,7 @@ parser::symbol_type lexer::get_next_token() {
   } else if (c == '.') {
     if (const char* p = lex_float_constant(ptr_)) {
       ptr_ = p;
-      return parser::make_tok_dub_constant(
-          driver_->parse_double(get_text().c_str()), make_location());
+      return make_float_constant();
     }
   } else if (is_dec_digit(c)) {
     if (c == '0') {
@@ -356,9 +401,7 @@ parser::symbol_type lexer::get_next_token() {
           while (is_hex_digit(*ptr_)) {
             ++ptr_;
           }
-          return parser::make_tok_int_constant(
-              driver_->parse_integer(get_text().c_str(), 2, 16),
-              make_location());
+          return make_int_constant(2, 16);
         case 'b':
         case 'B':
           // Lex a binary constant.
@@ -369,9 +412,7 @@ parser::symbol_type lexer::get_next_token() {
           while (is_bin_digit(*ptr_)) {
             ++ptr_;
           }
-          return parser::make_tok_int_constant(
-              driver_->parse_integer(get_text().c_str(), 2, 2),
-              make_location());
+          return make_int_constant(2, 2);
       }
     }
     // Lex a decimal, octal or floating-point constant.
@@ -380,23 +421,20 @@ parser::symbol_type lexer::get_next_token() {
       case '.':
         if (const char* p = lex_float_constant(ptr_ + 1)) {
           ptr_ = p;
-          return parser::make_tok_dub_constant(
-              driver_->parse_double(get_text().c_str()), make_location());
+          return make_float_constant();
         }
         break;
       case 'e':
       case 'E':
         if (const char* p = lex_float_exponent(ptr_)) {
           ptr_ = p;
-          return parser::make_tok_dub_constant(
-              driver_->parse_double(get_text().c_str()), make_location());
+          return make_float_constant();
         }
         break;
     }
     if (c != '0') {
       // Lex a decimal constant.
-      return parser::make_tok_int_constant(
-          driver_->parse_integer(get_text().c_str(), 0, 10), make_location());
+      return make_int_constant(0, 10);
     }
     // Lex an octal constant.
     const char* p = std::find_if(
@@ -404,8 +442,7 @@ parser::symbol_type lexer::get_next_token() {
     if (p != ptr_) {
       return unexpected_token();
     }
-    return parser::make_tok_int_constant(
-        driver_->parse_integer(get_text().c_str(), 1, 8), make_location());
+    return make_int_constant(1, 8);
   } else if (c == '"' || c == '\'') {
     // Lex a string literal.
     const char* p = std::find(ptr_, end(), c);
@@ -417,7 +454,6 @@ parser::symbol_type lexer::get_next_token() {
     }
   } else if (!c && ptr_ > end()) {
     --ptr_; // Put '\0' back in case get_next_token() is called again.
-    driver_->compute_locations(source_.data(), source_.size() - 1);
     return parser::make_tok_eof(make_location());
   }
 

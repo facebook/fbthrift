@@ -18,6 +18,7 @@
 
 #include <string>
 #include <vector>
+#include <boost/utility/string_view.hpp>
 
 // This is a macro because of a difference between the OSS and internal builds.
 #ifndef THRIFTY_HH
@@ -29,12 +30,22 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-class parsing_driver;
+class diagnostic_context;
+
+// An interface that receives notifications of lexical elements.
+class lex_handler {
+ public:
+  virtual ~lex_handler() {}
+
+  // Invoked on a documentation comment such as `/** ... */` or `/// ...`.
+  virtual void on_doc_comment(const char* text, int lineno) = 0;
+};
 
 // A Thrift lexer.
 class lexer {
  private:
-  parsing_driver* driver_;
+  lex_handler* handler_;
+  diagnostic_context* diag_ctx_;
   std::string filename_;
   std::vector<char> source_; // Source being lexed with a terminating '\0'.
   const char* ptr_; // Current position in the source.
@@ -43,7 +54,11 @@ class lexer {
   const char* line_start_;
   int lineno_ = 0;
 
-  lexer(parsing_driver& driver, std::string filename, std::vector<char> source);
+  lexer(
+      lex_handler& handler,
+      diagnostic_context& diag_ctx,
+      std::string filename,
+      std::vector<char> source);
 
   const char* end() const { return source_.data() + source_.size() - 1; }
 
@@ -57,6 +72,13 @@ class lexer {
     token_pos_ = make_position();
   }
 
+  // Reports a failure if the parsed value cannot fit in the widest supported
+  // representation, i.e. int64_t and double.
+  yy::parser::symbol_type make_int_constant(int offset, int base);
+  yy::parser::symbol_type make_float_constant();
+
+  template <typename... T>
+  yy::parser::symbol_type report_error(T&&... args);
   yy::parser::symbol_type unexpected_token();
 
   void update_line();
@@ -73,21 +95,33 @@ class lexer {
   lexer& operator=(lexer&& other) = default;
 
   // Creates a lexer from a file.
-  static lexer from_file(parsing_driver& driver, std::string filename);
+  static lexer from_file(
+      lex_handler& handler, diagnostic_context& diag_ctx, std::string filename);
 
   // Creates a lexer from a string; filename is used for source locations.
   static lexer from_string(
-      parsing_driver& driver, std::string filename, std::string source) {
+      lex_handler& handler,
+      diagnostic_context& diag_ctx,
+      std::string filename,
+      std::string source) {
     const char* start = source.c_str();
-    return {driver, std::move(filename), {start, start + source.size() + 1}};
+    return {
+        handler,
+        diag_ctx,
+        std::move(filename),
+        {start, start + source.size() + 1}};
   }
 
   yy::parser::symbol_type get_next_token();
 
-  int get_lineno() const { return lineno_; }
+  int lineno() const { return lineno_; }
 
   // Returns the current token as a string.
-  std::string get_text() const { return {token_start_, ptr_}; }
+  std::string token_text() const { return {token_start_, ptr_}; }
+
+  boost::string_view source() const {
+    return {source_.data(), source_.size() - 1};
+  }
 };
 
 } // namespace compiler

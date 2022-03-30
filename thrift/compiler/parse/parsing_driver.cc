@@ -40,9 +40,31 @@ class parsing_terminator : public std::runtime_error {
 
 } // namespace
 
+class parsing_driver::lex_handler_impl : public lex_handler {
+ private:
+  parsing_driver& driver_;
+
+ public:
+  explicit lex_handler_impl(parsing_driver& d) : driver_(d) {}
+
+  // Consume doctext and store it in `driver_.doctext`.
+  //
+  // It is non-trivial for a yacc-style LR(1) parser to accept doctext
+  // as an optional prefix before either a definition or standalone at
+  // the header. Hence this method of "pushing" it into the driver and
+  // "pop-ing" it on the node as needed.
+  void on_doc_comment(const char* text, int lineno) override {
+    driver_.clear_doctext();
+    driver_.doctext = driver_.strip_doctext(text);
+    driver_.doctext_lineno = lineno;
+  }
+};
+
 parsing_driver::parsing_driver(
     diagnostic_context& ctx, std::string path, parsing_params parse_params)
-    : lexer_(std::make_unique<lexer>(lexer::from_string(*this, path, {}))),
+    : lex_handler_(std::make_unique<lex_handler_impl>(*this)),
+      lexer_(std::make_unique<lexer>(
+          lexer::from_string(*lex_handler_, ctx, path, {}))),
       params(std::move(parse_params)),
       doctext(boost::none),
       doctext_lineno(0),
@@ -63,11 +85,11 @@ parsing_driver::parsing_driver(
 parsing_driver::~parsing_driver() = default;
 
 int parsing_driver::get_lineno() const {
-  return lexer_->get_lineno();
+  return lexer_->lineno();
 }
 
 std::string parsing_driver::get_text() const {
-  return lexer_->get_text();
+  return lexer_->token_text();
 }
 
 std::unique_ptr<t_program_bundle> parsing_driver::parse() {
@@ -96,7 +118,8 @@ void parsing_driver::parse_file() {
   }
 
   try {
-    lexer_ = std::make_unique<lexer>(lexer::from_file(*this, path));
+    lexer_ =
+        std::make_unique<lexer>(lexer::from_file(*lex_handler_, ctx_, path));
     reset_locations();
   } catch (std::runtime_error const& ex) {
     failure(ex.what());
@@ -147,10 +170,19 @@ void parsing_driver::parse_file() {
 
   // Parse the program file
   try {
-    lexer_ = std::make_unique<lexer>(lexer::from_file(*this, path));
+    lexer_ =
+        std::make_unique<lexer>(lexer::from_file(*lex_handler_, ctx_, path));
     reset_locations();
   } catch (std::runtime_error const& ex) {
     failure(ex.what());
+  }
+
+  // Compute locations in the program mode.
+  boost::string_view source = lexer_->source();
+  for (size_t i = 0; i < source.size(); ++i) {
+    if (source[i] == '\n') {
+      program->add_line_offset(i + 1);
+    }
   }
 
   mode = parsing_mode::PROGRAM;
@@ -459,24 +491,12 @@ void parsing_driver::reset_locations() {
   yylval_ = 0;
 }
 
-void parsing_driver::compute_locations(const char* source, size_t size) {
-  /* Only computing locations during second pass. */
-  if (mode != parsing_mode::PROGRAM) {
-    return;
-  }
-  for (size_t i = 0; i < size; ++i) {
-    if (source[i] == '\n') {
-      program->add_line_offset(i + 1);
-    }
-  }
-}
-
 std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
     std::unique_ptr<t_const_value> const_struct) {
   auto ttype = const_struct->ttype().value(); // Copy the t_type_ref.
   auto result = std::make_unique<t_const>(
       program, std::move(ttype), "", std::move(const_struct));
-  result->set_lineno(lexer_->get_lineno());
+  result->set_lineno(lexer_->lineno());
   return result;
 }
 
@@ -658,13 +678,12 @@ void parsing_driver::add_include(std::string name) {
   assert(!path.empty()); // Should have throw an exception if not found.
 
   if (program_cache.find(path) == program_cache.end()) {
-    auto included_program =
-        program->add_include(path, name, lexer_->get_lineno());
+    auto included_program = program->add_include(path, name, lexer_->lineno());
     program_cache[path] = included_program.get();
     program_bundle->add_program(std::move(included_program));
   } else {
     auto include = std::make_unique<t_include>(program_cache[path]);
-    include->set_lineno(lexer_->get_lineno());
+    include->set_lineno(lexer_->lineno());
     program->add_include(std::move(include));
   }
 }
@@ -785,15 +804,6 @@ std::unique_ptr<t_const_value> parsing_driver::to_const_value(
   return node;
 }
 
-uint64_t parsing_driver::parse_integer(const char* text, int offset, int base) {
-  errno = 0;
-  uint64_t val = strtoull(text + offset, nullptr, base);
-  if (errno == ERANGE) {
-    failure([&](auto& o) { o << "This integer is too big: " << text << "\n"; });
-  }
-  return val;
-}
-
 int64_t parsing_driver::to_int(uint64_t val, bool negative) {
   constexpr uint64_t i64max = std::numeric_limits<int64_t>::max();
   if (negative) {
@@ -807,32 +817,6 @@ int64_t parsing_driver::to_int(uint64_t val, bool negative) {
     failure([&](auto& o) { o << "This integer is too big: " << val << "\n"; });
   }
   return val;
-}
-
-double parsing_driver::parse_double(const char* text) {
-  errno = 0;
-  double val = strtod(text, nullptr);
-  if (errno == ERANGE) {
-    if (val == 0) {
-      failure([&](auto& o) {
-        o << "This number is too infinitesimal: " << text << "\n";
-      });
-    } else if (val == HUGE_VAL) {
-      failure(
-          [&](auto& o) { o << "This number is too big: " << text << "\n"; });
-    } else if (val == -HUGE_VAL) {
-      failure(
-          [&](auto& o) { o << "This number is too small: " << text << "\n"; });
-    }
-    // Allow subnormals.
-  }
-  return val;
-}
-
-void parsing_driver::push_doctext(const char* text, int lineno) {
-  clear_doctext();
-  doctext = strip_doctext(text);
-  doctext_lineno = lineno;
 }
 
 t_doc parsing_driver::strip_doctext(const char* text) {

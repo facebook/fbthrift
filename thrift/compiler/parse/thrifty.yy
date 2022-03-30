@@ -61,7 +61,11 @@ std::unique_ptr<T> own(T* ptr) {
 }
 
 yy::parser::symbol_type parse_lex(parsing_driver& driver, YYSTYPE*, YYLTYPE*) {
-  return driver.get_lexer().get_next_token();
+  auto token = driver.get_lexer().get_next_token();
+  if (token.token() == yy::parser::token::tok_error) {
+    driver.end_parsing();
+  }
+  return token;
 }
 #define yylex apache::thrift::compiler::parse_lex
 
@@ -239,6 +243,7 @@ using t_typethrowspair = std::pair<t_type_ref, t_throws*>;
 %token tok_performs
 
 %token tok_eof 0
+%token tok_error
 
 /**
  * Grammar nodes
@@ -391,7 +396,7 @@ InlineDocOptional:
   tok_inline_doc
     {
       driver.debug("Inline doc");
-      $$ = std::move($1);
+      $$ = driver.strip_doctext($1->c_str());
     }
 |
   { $$ = boost::none; }
@@ -879,7 +884,7 @@ Performs:
         std::move(name),
         std::make_unique<t_paramlist>(driver.program)
       );
-      $$->set_lineno(driver.get_lexer().get_lineno());
+      $$->set_lineno(driver.get_lexer().lineno());
       $$->set_is_interaction_constructor();
     }
 

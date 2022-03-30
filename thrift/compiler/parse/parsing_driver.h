@@ -52,6 +52,7 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+class lex_handler;
 class lexer;
 
 namespace yy {
@@ -127,6 +128,8 @@ struct parsing_params {
 
 class parsing_driver {
  private:
+  class lex_handler_impl;
+  std::unique_ptr<lex_handler_impl> lex_handler_;
   std::unique_ptr<lexer> lexer_;
 
   int get_lineno() const;
@@ -234,11 +237,6 @@ class parsing_driver {
     end_parsing();
   }
 
-  [[noreturn]] void unexpected_token(const char* text) {
-    failure(
-        [&](auto& o) { o << "Unexpected token in input: " << text << "\n"; });
-  }
-
   [[noreturn]] void end_parsing();
 
   /**
@@ -303,7 +301,6 @@ class parsing_driver {
   source_range get_source_range(const YYLTYPE& loc) const;
 
   void reset_locations();
-  void compute_locations(const char* source, size_t size);
 
   /*
    * To fix Bison's default location
@@ -383,19 +380,6 @@ class parsing_driver {
   }
   std::unique_ptr<t_const_value> to_const_value(int64_t int_const);
 
-  // Reports a failure if the parsed value cannot fit in the widest supported
-  // representation, i.e. int64_t and double.
-  uint64_t parse_integer(const char* text, int offset, int base);
-  double parse_double(const char* text);
-
-  /** Consume doctext, store it in `driver.doctext`
-   *
-   * It is non-trivial for a yacc-style LR(1) parser to accept doctext
-   * as an optional prefix before either a definition or standalone at
-   * the header. Hence this method of "pushing" it into the driver and
-   * "pop-ing" it on the node as needed.
-   */
-  void push_doctext(const char* text, int lineno);
   int64_t to_int(uint64_t val, bool negative = false);
 
   const t_service* find_service(const std::string& name);

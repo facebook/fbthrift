@@ -15,23 +15,27 @@
  */
 
 #include <folly/portability/GTest.h>
+#include <thrift/compiler/ast/diagnostic_context.h>
 #include <thrift/compiler/parse/lexer.h>
-#include <thrift/compiler/parse/parsing_driver.h>
 
 using namespace apache::thrift::compiler;
 
+struct test_lex_handler : lex_handler {
+  std::string doc_comment;
+
+  void on_doc_comment(const char* text, int) override { doc_comment = text; }
+};
+
 class LexerTest : public testing::Test {
  public:
+  test_lex_handler handler;
   diagnostic_context diag_ctx;
-  parsing_driver driver;
 
-  lexer make_lexer(const std::string& input) {
-    return lexer::from_string(driver, "", input);
+  lexer make_lexer(const std::string& source) {
+    return lexer::from_string(handler, diag_ctx, "", source);
   }
 
-  LexerTest() : diag_ctx([](diagnostic) {}), driver(diag_ctx, "", {}) {
-    driver.mode = parsing_mode::PROGRAM;
-  }
+  LexerTest() : diag_ctx([](diagnostic) {}) {}
 };
 
 TEST_F(LexerTest, move) {
@@ -125,7 +129,7 @@ TEST_F(LexerTest, block_doc_comment) {
       )");
   auto token = lexer.get_next_token();
   EXPECT_EQ(token.token(), yy::parser::token::tok_int_constant);
-  EXPECT_EQ(*driver.doctext, "Block comment\n");
+  EXPECT_EQ(handler.doc_comment, "/** Block comment */");
 }
 
 TEST_F(LexerTest, line_doc_comment) {
