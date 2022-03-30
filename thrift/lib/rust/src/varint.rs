@@ -134,7 +134,7 @@ mod test {
     use bytes::BytesMut;
     use quickcheck::quickcheck;
     use std::io::Cursor;
-    use std::{i8, i16, i32, i64, u64};
+    use std::{i16, i32, i64, i8, u64};
 
     fn baseline_varint_u64<T: BufMut>(buf: &mut T, v: u64) {
         let mut v = v;
