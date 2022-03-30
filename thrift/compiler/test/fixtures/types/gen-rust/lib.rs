@@ -3108,7 +3108,15 @@ pub mod client {
         _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
     }
 
-    impl<P, T, S> SomeServiceImpl<P, T, S> {
+    impl<P, T, S> SomeServiceImpl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
         pub fn new(
             transport: T,
         ) -> Self {
@@ -3121,6 +3129,97 @@ pub mod client {
         pub fn transport(&self) -> &T {
             &self.transport
         }
+
+
+        fn _bounce_map_impl(
+            &self,
+            arg_m: &include::types::SomeMap,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "SomeService";
+                METHOD_NAME = "SomeService.bounce_map";
+            }
+            let args = self::Args_SomeService_bounce_map {
+                m: arg_m,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            // need to do call setup outside of async block because T: Transport isn't Send
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("bounce_map", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
+
+            let call = self.transport()
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
+                .instrument(::tracing::trace_span!("call", function = "SomeService.bounce_map"));
+
+            async move {
+                let reply_env = call.await?;
+
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::some_service::BounceMapExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
+
+                match res {
+                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
+                    ::std::result::Result::Err(aexn) =>
+                        ::std::result::Result::Err(crate::errors::some_service::BounceMapError::ApplicationException(aexn))
+                }
+            }
+            .instrument(::tracing::info_span!("SomeService.bounce_map"))
+            .boxed()
+        }
+
+        fn _binary_keyed_map_impl(
+            &self,
+            arg_r: &[::std::primitive::i64],
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "SomeService";
+                METHOD_NAME = "SomeService.binary_keyed_map";
+            }
+            let args = self::Args_SomeService_binary_keyed_map {
+                r: arg_r,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            // need to do call setup outside of async block because T: Transport isn't Send
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("binary_keyed_map", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
+
+            let call = self.transport()
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
+                .instrument(::tracing::trace_span!("call", function = "SomeService.binary_keyed_map"));
+
+            async move {
+                let reply_env = call.await?;
+
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::some_service::BinaryKeyedMapExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
+
+                match res {
+                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
+                    ::std::result::Result::Err(aexn) =>
+                        ::std::result::Result::Err(crate::errors::some_service::BinaryKeyedMapError::ApplicationException(aexn))
+                }
+            }
+            .instrument(::tracing::info_span!("SomeService.binary_keyed_map"))
+            .boxed()
+        }
     }
 
     pub trait SomeService: ::std::marker::Send {
@@ -3132,6 +3231,22 @@ pub mod client {
         fn binary_keyed_map(
             &self,
             arg_r: &[::std::primitive::i64],
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>>;
+    }
+
+    pub trait SomeServiceExt<T>: SomeService
+    where
+        T: ::fbthrift::Transport,
+    {
+        fn bounce_map_with_rpc_opts(
+            &self,
+            arg_m: &include::types::SomeMap,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>>;
+        fn binary_keyed_map_with_rpc_opts(
+            &self,
+            arg_r: &[::std::primitive::i64],
+            rpc_options: T::RpcOptions,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>>;
     }
 
@@ -3184,90 +3299,52 @@ pub mod client {
             &self,
             arg_m: &include::types::SomeMap,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>> {
-            use ::const_cstr::const_cstr;
-            use ::tracing::Instrument as _;
-            use ::futures::FutureExt as _;
-
-            const_cstr! {
-                SERVICE_NAME = "SomeService";
-                METHOD_NAME = "SomeService.bounce_map";
-            }
-            let args = self::Args_SomeService_bounce_map {
-                m: arg_m,
-                _phantom: ::std::marker::PhantomData,
-            };
-
-            // need to do call setup outside of async block because T: Transport isn't Send
-            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("bounce_map", &args) {
-                ::std::result::Result::Ok(res) => res,
-                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
-            };
-
             let rpc_options = T::RpcOptions::default();
-            let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
-                .instrument(::tracing::trace_span!("call", function = "SomeService.bounce_map"));
-
-            async move {
-                let reply_env = call.await?;
-
-                let de = P::deserializer(reply_env);
-                let (res, _de): (::std::result::Result<crate::services::some_service::BounceMapExn, _>, _) =
-                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
-
-                match res {
-                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
-                    ::std::result::Result::Err(aexn) =>
-                        ::std::result::Result::Err(crate::errors::some_service::BounceMapError::ApplicationException(aexn))
-                }
-            }
-            .instrument(::tracing::info_span!("SomeService.bounce_map"))
-            .boxed()
+            self._bounce_map_impl(
+                arg_m,
+                rpc_options,
+            )
         }
-
         fn binary_keyed_map(
             &self,
             arg_r: &[::std::primitive::i64],
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>> {
-            use ::const_cstr::const_cstr;
-            use ::tracing::Instrument as _;
-            use ::futures::FutureExt as _;
-
-            const_cstr! {
-                SERVICE_NAME = "SomeService";
-                METHOD_NAME = "SomeService.binary_keyed_map";
-            }
-            let args = self::Args_SomeService_binary_keyed_map {
-                r: arg_r,
-                _phantom: ::std::marker::PhantomData,
-            };
-
-            // need to do call setup outside of async block because T: Transport isn't Send
-            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("binary_keyed_map", &args) {
-                ::std::result::Result::Ok(res) => res,
-                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
-            };
-
             let rpc_options = T::RpcOptions::default();
-            let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
-                .instrument(::tracing::trace_span!("call", function = "SomeService.binary_keyed_map"));
+            self._binary_keyed_map_impl(
+                arg_r,
+                rpc_options,
+            )
+        }
+    }
 
-            async move {
-                let reply_env = call.await?;
-
-                let de = P::deserializer(reply_env);
-                let (res, _de): (::std::result::Result<crate::services::some_service::BinaryKeyedMapExn, _>, _) =
-                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
-
-                match res {
-                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
-                    ::std::result::Result::Err(aexn) =>
-                        ::std::result::Result::Err(crate::errors::some_service::BinaryKeyedMapError::ApplicationException(aexn))
-                }
-            }
-            .instrument(::tracing::info_span!("SomeService.binary_keyed_map"))
-            .boxed()
+    impl<P, T, S> SomeServiceExt<T> for SomeServiceImpl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
+        fn bounce_map_with_rpc_opts(
+            &self,
+            arg_m: &include::types::SomeMap,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>> {
+            self._bounce_map_impl(
+                arg_m,
+                rpc_options,
+            )
+        }
+        fn binary_keyed_map_with_rpc_opts(
+            &self,
+            arg_r: &[::std::primitive::i64],
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>> {
+            self._binary_keyed_map_impl(
+                arg_r,
+                rpc_options,
+            )
         }
     }
 
@@ -3332,6 +3409,38 @@ pub mod client {
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
+        {
+            let _ = protocol;
+            let _ = spawner;
+            ::std::sync::Arc::new(SomeServiceImpl::<P, T, S>::new(transport))
+        }
+    }
+
+    impl<T> dyn SomeServiceExt<T>
+    where
+        T: ::fbthrift::Transport,
+    {
+        pub fn new<P>(
+            protocol: P,
+            transport: T,
+        ) -> ::std::sync::Arc<impl SomeServiceExt<T> + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            P::Deserializer: ::std::marker::Send,
+        {
+            let spawner = ::fbthrift::help::NoopSpawner;
+            Self::with_spawner(protocol, transport, spawner)
+        }
+
+        pub fn with_spawner<P, S>(
+            protocol: P,
+            transport: T,
+            spawner: S,
+        ) -> ::std::sync::Arc<impl SomeServiceExt<T> + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
             P::Deserializer: ::std::marker::Send,
             S: ::fbthrift::help::Spawner,
         {

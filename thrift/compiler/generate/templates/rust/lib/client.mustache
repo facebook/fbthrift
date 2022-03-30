@@ -28,7 +28,16 @@
         {{/service:extends}}
     }
 
-    impl<P, T, S> {{service:name}}Impl<P, T, S> {
+    impl<P, T, S> {{service:name}}Impl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        {{! require P::Frame and T to have compatible DecBuf and EncBuf::Final }}
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
         pub fn new(
             transport: T,
         ) -> Self {
@@ -52,6 +61,143 @@
             &self.transport
             {{/service:extends}}
         }
+
+        {{#service:rustFunctions}}
+        {{^function:starts_interaction?}}{{^function:returns_streams?}}
+
+        fn _{{function:rust_name}}_impl(
+            &self,{{!
+            }}{{#function:args}}
+            arg_{{field:name}}: {{>lib/arg}},{{!
+            }}{{/function:args}}
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
+            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
+            }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
+        }}>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "{{service:name}}";
+                METHOD_NAME = "{{service:name}}.{{function:name}}";
+            }
+            let args = self::Args_{{service:name}}_{{function:name}} {
+                {{#function:args}}
+                {{field:rust_name}}: arg_{{field:name}},
+                {{/function:args}}
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            // need to do call setup outside of async block because T: Transport isn't Send
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("{{#service:interaction?}}{{service:name}}.{{/service:interaction?}}{{function:name}}", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
+
+            let call = self.transport()
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
+                .instrument(::tracing::trace_span!("call", function = "{{service:name}}.{{function:name}}"));
+
+            async move {
+                let reply_env = call.await?;
+
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
+
+                match res {
+                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
+                    ::std::result::Result::Err(aexn) =>
+                        ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ApplicationException(aexn))
+                }
+            }
+            .instrument(::tracing::info_span!("{{service:name}}.{{function:name}}"))
+            .boxed()
+        }
+        {{/function:returns_streams?}}{{#function:returns_streams?}}
+
+        fn _{{function:rust_name}}_impl(
+            &self,{{!
+            }}{{#function:args}}
+            arg_{{field:name}}: {{>lib/arg}},{{!
+            }}{{/function:args}}
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
+            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
+            }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
+        }}>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::futures::future::FutureExt as _;
+            use ::tracing::Instrument as _;
+            use ::futures::StreamExt as _;
+            use ::fbthrift::Deserialize as _;
+
+            const_cstr! {
+                SERVICE_NAME = "{{service:name}}";
+                METHOD_NAME = "{{service:name}}.{{function:name}}";
+            }
+            let args = self::Args_{{service:name}}_{{function:name}} {
+                {{#function:args}}
+                {{field:rust_name}}: arg_{{field:name}},
+                {{/function:args}}
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("{{#service:interaction?}}{{service:name}}.{{/service:interaction?}}{{function:name}}", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
+
+            let call_stream = self.transport()
+                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
+                .instrument(::tracing::trace_span!("call_stream", method = "{{service:name}}.{{function:name}}"));
+
+            async move {
+                let (_initial, stream) = call_stream.await?;
+
+                let new_stream = stream.then(|item_res| {
+                    async move {
+                        match item_res {
+                            ::std::result::Result::Err(err) =>
+                                ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError::from(err)),
+                            ::std::result::Result::Ok(item_enc) => {
+                                let res = S::spawn(move || {
+                                    let mut de = P::deserializer(item_enc);
+                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::read(&mut de)
+                                }).await?;
+
+                                let item: ::std::result::Result<{{!
+                                    }}{{>lib/function_stream_elem_type}}, {{!
+                                    }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError> =
+                                    ::std::convert::From::from(res);
+                                item
+                            }
+                        }
+                    }
+                })
+                .boxed();
+
+                {{#function:stream_has_first_response?}}
+                let de = P::deserializer(_initial);
+                let res: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
+
+                let initial: ::std::result::Result<{{>lib/function_stream_first_response_type}}, {{!
+                    }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error> =
+                    ::std::convert::From::from(res);
+                initial.map(move |initial| (initial, new_stream))
+                {{/function:stream_has_first_response?}}
+                {{^function:stream_has_first_response?}}
+                ::std::result::Result::Ok(new_stream)
+                {{/function:stream_has_first_response?}}
+            }
+            .instrument(::tracing::info_span!("{{service:name}}.{{function:name}}"))
+            .boxed()
+        }
+        {{/function:returns_streams?}}{{/function:starts_interaction?}}
+        {{/service:rustFunctions}}
     }
 
     {{#service:extendedServices}}
@@ -108,6 +254,30 @@
         }}::anyhow::Error>;
         {{/function:starts_interaction?}}{{/service:rustFunctions}}
     }
+
+    pub trait {{service:name}}Ext<T>: {{service:name}}
+    where
+        T: ::fbthrift::Transport,
+    {{>lib/block}}
+
+        {{#service:rustFunctions}}
+        {{#function:docs?}}
+        #[doc = {{function:docs}}]
+        {{/function:docs?}}
+        {{^function:starts_interaction?}}
+        fn {{function:rust_name}}_with_rpc_opts(
+            &self,
+            {{#function:args}}
+            arg_{{field:name}}: {{>lib/arg}},
+            {{/function:args}}
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
+            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
+            }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
+        }}>> + ::std::marker::Send + 'static>>;
+        {{/function:starts_interaction?}}
+        {{/service:rustFunctions}}
+    }
     {{#service:rustFunctions}}{{^function:starts_interaction?}}
 
     struct Args_{{service:name}}_{{function:name}}<'a> {
@@ -146,10 +316,10 @@
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
         S: ::fbthrift::help::Spawner,
-    {{>lib/block}}{{!
-        }}{{#service:rustFunctions}}
-        {{^function:starts_interaction?}}{{^function:returns_streams?}}
+    {{>lib/block}}
 
+        {{#service:rustFunctions}}
+        {{^function:starts_interaction?}}
         fn {{function:rust_name}}(
             &self,{{!
             }}{{#function:args}}
@@ -159,129 +329,15 @@
             }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + ::std::marker::Send + 'static>> {
-            use ::const_cstr::const_cstr;
-            use ::tracing::Instrument as _;
-            use ::futures::FutureExt as _;
-
-            const_cstr! {
-                SERVICE_NAME = "{{service:name}}";
-                METHOD_NAME = "{{service:name}}.{{function:name}}";
-            }
-            let args = self::Args_{{service:name}}_{{function:name}} {
-                {{#function:args}}
-                {{field:rust_name}}: arg_{{field:name}},
-                {{/function:args}}
-                _phantom: ::std::marker::PhantomData,
-            };
-
-            // need to do call setup outside of async block because T: Transport isn't Send
-            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("{{#service:interaction?}}{{service:name}}.{{/service:interaction?}}{{function:name}}", &args) {
-                ::std::result::Result::Ok(res) => res,
-                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
-            };
-
             let rpc_options = T::RpcOptions::default();
-            let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
-                .instrument(::tracing::trace_span!("call", function = "{{service:name}}.{{function:name}}"));
-
-            async move {
-                let reply_env = call.await?;
-
-                let de = P::deserializer(reply_env);
-                let (res, _de): (::std::result::Result<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn, _>, _) =
-                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
-
-                match res {
-                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
-                    ::std::result::Result::Err(aexn) =>
-                        ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ApplicationException(aexn))
-                }
-            }
-            .instrument(::tracing::info_span!("{{service:name}}.{{function:name}}"))
-            .boxed()
-        }
-        {{/function:returns_streams?}}{{#function:returns_streams?}}
-
-        fn {{function:rust_name}}(
-            &self,{{!
-            }}{{#function:args}}
-            arg_{{field:name}}: {{>lib/arg}},{{!
-            }}{{/function:args}}
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
-            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
-            }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
-        }}>> + ::std::marker::Send + 'static>> {
-            use ::const_cstr::const_cstr;
-            use ::futures::future::FutureExt as _;
-            use ::tracing::Instrument as _;
-            use ::futures::StreamExt as _;
-            use ::fbthrift::Deserialize as _;
-
-            const_cstr! {
-                SERVICE_NAME = "{{service:name}}";
-                METHOD_NAME = "{{service:name}}.{{function:name}}";
-            }
-            let args = self::Args_{{service:name}}_{{function:name}} {
+            self._{{function:rust_name}}_impl(
                 {{#function:args}}
-                {{field:rust_name}}: arg_{{field:name}},
+                arg_{{field:name}},
                 {{/function:args}}
-                _phantom: ::std::marker::PhantomData,
-            };
-
-            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("{{#service:interaction?}}{{service:name}}.{{/service:interaction?}}{{function:name}}", &args) {
-                ::std::result::Result::Ok(res) => res,
-                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
-            };
-
-            let rpc_options = T::RpcOptions::default();
-            let call_stream = self.transport()
-                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
-                .instrument(::tracing::trace_span!("call_stream", method = "{{service:name}}.{{function:name}}"));
-
-            async move {
-                let (_initial, stream) = call_stream.await?;
-
-                let new_stream = stream.then(|item_res| {
-                    async move {
-                        match item_res {
-                            ::std::result::Result::Err(err) =>
-                                ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError::from(err)),
-                            ::std::result::Result::Ok(item_enc) => {
-                                let res = S::spawn(move || {
-                                    let mut de = P::deserializer(item_enc);
-                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::read(&mut de)
-                                }).await?;
-
-                                let item: ::std::result::Result<{{!
-                                    }}{{>lib/function_stream_elem_type}}, {{!
-                                    }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError> =
-                                    ::std::convert::From::from(res);
-                                item
-                            }
-                        }
-                    }
-                })
-                .boxed();
-
-                {{#function:stream_has_first_response?}}
-                let de = P::deserializer(_initial);
-                let res: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn =
-                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
-
-                let initial: ::std::result::Result<{{>lib/function_stream_first_response_type}}, {{!
-                    }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error> =
-                    ::std::convert::From::from(res);
-                initial.map(move |initial| (initial, new_stream))
-                {{/function:stream_has_first_response?}}
-                {{^function:stream_has_first_response?}}
-                ::std::result::Result::Ok(new_stream)
-                {{/function:stream_has_first_response?}}
-            }
-            .instrument(::tracing::info_span!("{{service:name}}.{{function:name}}"))
-            .boxed()
+                rpc_options,
+            )
         }
-        {{/function:returns_streams?}}{{/function:starts_interaction?}}{{#function:starts_interaction?}}
+        {{/function:starts_interaction?}}{{#function:starts_interaction?}}
 
         fn {{function:name}}(
             &self,
@@ -301,6 +357,40 @@
             )
         }
         {{/function:starts_interaction?}}{{/service:rustFunctions}}
+    }
+
+    impl<P, T, S> {{service:name}}Ext<T> for {{service:name}}Impl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        {{! require P::Frame and T to have compatible DecBuf and EncBuf::Final }}
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {{>lib/block}}
+
+        {{#service:rustFunctions}}
+        {{^function:starts_interaction?}}
+        fn {{function:rust_name}}_with_rpc_opts(
+            &self,{{!
+            }}{{#function:args}}
+            arg_{{field:name}}: {{>lib/arg}},{{!
+            }}{{/function:args}}
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
+            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
+            }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
+        }}>> + ::std::marker::Send + 'static>> {
+            self._{{function:rust_name}}_impl(
+                {{#function:args}}
+                arg_{{field:name}},
+                {{/function:args}}
+                rpc_options,
+            )
+        }
+        {{/function:starts_interaction?}}
+        {{/service:rustFunctions}}
     }
 
     impl<'a, T> {{service:name}} for T
@@ -384,6 +474,38 @@
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
+        {
+            let _ = protocol;
+            let _ = spawner;
+            ::std::sync::Arc::new({{service:name}}Impl::<P, T, S>::new(transport))
+        }
+    }
+
+    impl<T> dyn {{service:name}}Ext<T>
+    where
+        T: ::fbthrift::Transport,
+    {
+        pub fn new<P>(
+            protocol: P,
+            transport: T,
+        ) -> ::std::sync::Arc<impl {{service:name}}Ext<T> + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            P::Deserializer: ::std::marker::Send,
+        {
+            let spawner = ::fbthrift::help::NoopSpawner;
+            Self::with_spawner(protocol, transport, spawner)
+        }
+
+        pub fn with_spawner<P, S>(
+            protocol: P,
+            transport: T,
+            spawner: S,
+        ) -> ::std::sync::Arc<impl {{service:name}}Ext<T> + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
             P::Deserializer: ::std::marker::Send,
             S: ::fbthrift::help::Spawner,
         {

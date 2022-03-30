@@ -360,7 +360,15 @@ pub mod client {
         _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
     }
 
-    impl<P, T, S> FooImpl<P, T, S> {
+    impl<P, T, S> FooImpl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
         pub fn new(
             transport: T,
         ) -> Self {
@@ -373,6 +381,97 @@ pub mod client {
         pub fn transport(&self) -> &T {
             &self.transport
         }
+
+
+        fn _r#return_impl(
+            &self,
+            arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "Foo";
+                METHOD_NAME = "Foo.return";
+            }
+            let args = self::Args_Foo_return {
+                bar: arg_bar,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            // need to do call setup outside of async block because T: Transport isn't Send
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("return", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
+
+            let call = self.transport()
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
+                .instrument(::tracing::trace_span!("call", function = "Foo.return"));
+
+            async move {
+                let reply_env = call.await?;
+
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::foo::ReturnExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
+
+                match res {
+                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
+                    ::std::result::Result::Err(aexn) =>
+                        ::std::result::Result::Err(crate::errors::foo::ReturnError::ApplicationException(aexn))
+                }
+            }
+            .instrument(::tracing::info_span!("Foo.return"))
+            .boxed()
+        }
+
+        fn _super__impl(
+            &self,
+            arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "Foo";
+                METHOD_NAME = "Foo.super";
+            }
+            let args = self::Args_Foo_super {
+                bar: arg_bar,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            // need to do call setup outside of async block because T: Transport isn't Send
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("super", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
+
+            let call = self.transport()
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
+                .instrument(::tracing::trace_span!("call", function = "Foo.super"));
+
+            async move {
+                let reply_env = call.await?;
+
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::foo::SuperExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
+
+                match res {
+                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
+                    ::std::result::Result::Err(aexn) =>
+                        ::std::result::Result::Err(crate::errors::foo::SuperError::ApplicationException(aexn))
+                }
+            }
+            .instrument(::tracing::info_span!("Foo.super"))
+            .boxed()
+        }
     }
 
     pub trait Foo: ::std::marker::Send {
@@ -384,6 +483,22 @@ pub mod client {
         fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>>;
+    }
+
+    pub trait FooExt<T>: Foo
+    where
+        T: ::fbthrift::Transport,
+    {
+        fn r#return_with_rpc_opts(
+            &self,
+            arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>>;
+        fn super__with_rpc_opts(
+            &self,
+            arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
+            rpc_options: T::RpcOptions,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>>;
     }
 
@@ -436,90 +551,52 @@ pub mod client {
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
-            use ::const_cstr::const_cstr;
-            use ::tracing::Instrument as _;
-            use ::futures::FutureExt as _;
-
-            const_cstr! {
-                SERVICE_NAME = "Foo";
-                METHOD_NAME = "Foo.return";
-            }
-            let args = self::Args_Foo_return {
-                bar: arg_bar,
-                _phantom: ::std::marker::PhantomData,
-            };
-
-            // need to do call setup outside of async block because T: Transport isn't Send
-            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("return", &args) {
-                ::std::result::Result::Ok(res) => res,
-                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
-            };
-
             let rpc_options = T::RpcOptions::default();
-            let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
-                .instrument(::tracing::trace_span!("call", function = "Foo.return"));
-
-            async move {
-                let reply_env = call.await?;
-
-                let de = P::deserializer(reply_env);
-                let (res, _de): (::std::result::Result<crate::services::foo::ReturnExn, _>, _) =
-                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
-
-                match res {
-                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
-                    ::std::result::Result::Err(aexn) =>
-                        ::std::result::Result::Err(crate::errors::foo::ReturnError::ApplicationException(aexn))
-                }
-            }
-            .instrument(::tracing::info_span!("Foo.return"))
-            .boxed()
+            self._r#return_impl(
+                arg_bar,
+                rpc_options,
+            )
         }
-
         fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
-            use ::const_cstr::const_cstr;
-            use ::tracing::Instrument as _;
-            use ::futures::FutureExt as _;
-
-            const_cstr! {
-                SERVICE_NAME = "Foo";
-                METHOD_NAME = "Foo.super";
-            }
-            let args = self::Args_Foo_super {
-                bar: arg_bar,
-                _phantom: ::std::marker::PhantomData,
-            };
-
-            // need to do call setup outside of async block because T: Transport isn't Send
-            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("super", &args) {
-                ::std::result::Result::Ok(res) => res,
-                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
-            };
-
             let rpc_options = T::RpcOptions::default();
-            let call = self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
-                .instrument(::tracing::trace_span!("call", function = "Foo.super"));
+            self._super__impl(
+                arg_bar,
+                rpc_options,
+            )
+        }
+    }
 
-            async move {
-                let reply_env = call.await?;
-
-                let de = P::deserializer(reply_env);
-                let (res, _de): (::std::result::Result<crate::services::foo::SuperExn, _>, _) =
-                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
-
-                match res {
-                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
-                    ::std::result::Result::Err(aexn) =>
-                        ::std::result::Result::Err(crate::errors::foo::SuperError::ApplicationException(aexn))
-                }
-            }
-            .instrument(::tracing::info_span!("Foo.super"))
-            .boxed()
+    impl<P, T, S> FooExt<T> for FooImpl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
+        fn r#return_with_rpc_opts(
+            &self,
+            arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
+            self._r#return_impl(
+                arg_bar,
+                rpc_options,
+            )
+        }
+        fn super__with_rpc_opts(
+            &self,
+            arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
+            self._super__impl(
+                arg_bar,
+                rpc_options,
+            )
         }
     }
 
@@ -584,6 +661,38 @@ pub mod client {
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
+        {
+            let _ = protocol;
+            let _ = spawner;
+            ::std::sync::Arc::new(FooImpl::<P, T, S>::new(transport))
+        }
+    }
+
+    impl<T> dyn FooExt<T>
+    where
+        T: ::fbthrift::Transport,
+    {
+        pub fn new<P>(
+            protocol: P,
+            transport: T,
+        ) -> ::std::sync::Arc<impl FooExt<T> + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            P::Deserializer: ::std::marker::Send,
+        {
+            let spawner = ::fbthrift::help::NoopSpawner;
+            Self::with_spawner(protocol, transport, spawner)
+        }
+
+        pub fn with_spawner<P, S>(
+            protocol: P,
+            transport: T,
+            spawner: S,
+        ) -> ::std::sync::Arc<impl FooExt<T> + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
             P::Deserializer: ::std::marker::Send,
             S: ::fbthrift::help::Spawner,
         {
