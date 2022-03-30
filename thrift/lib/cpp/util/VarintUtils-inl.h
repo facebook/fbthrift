@@ -175,7 +175,7 @@ uint8_t writeVarintBMI2(Cursor& c, T valueS) {
   }
 
   constexpr uint64_t kMask = 0x8080808080808080ULL;
-  static constexpr std::array<uint8_t, 64> kShift = []() {
+  static const std::array<uint8_t, 64> kShift = []() {
     std::array<uint8_t, 64> v = {};
     for (size_t i = 0; i < 64; i++) {
       uint8_t byteShift = folly::to_narrow(i == 0 ? 0 : (8 - ((63 - i) / 7)));
@@ -183,7 +183,7 @@ uint8_t writeVarintBMI2(Cursor& c, T valueS) {
     }
     return v;
   }();
-  static constexpr std::array<uint8_t, 64> kSize = []() {
+  static const std::array<uint8_t, 64> kSize = []() {
     std::array<uint8_t, 64> v = {};
     for (size_t i = 0; i < 64; i++) {
       v[i] = folly::to_narrow(((63 - i) / 7) + 1);
