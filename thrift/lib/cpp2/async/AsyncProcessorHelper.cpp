@@ -103,21 +103,16 @@ namespace apache::thrift {
 }
 
 /* static */ SelectPoolResult AsyncProcessorHelper::selectResourcePool(
-    AsyncProcessor& processor,
     const ServerRequest& request,
-    const AsyncProcessorFactory::MethodMetadata& methodMetadata) {
-  auto result = processor.selectResourcePool(request, methodMetadata);
-  if (std::holds_alternative<std::monostate>(result)) {
-    if (auto requestInfo = request.requestInfo()) {
-      if (requestInfo->isSync) {
-        return std::ref(ResourcePoolHandle::defaultSync());
-      } else {
-        return std::ref(ResourcePoolHandle::defaultAsync());
-      }
+    const AsyncProcessorFactory::MethodMetadata&) {
+  if (auto requestInfo = request.requestInfo()) {
+    if (requestInfo->isSync) {
+      return std::ref(ResourcePoolHandle::defaultSync());
+    } else {
+      return std::ref(ResourcePoolHandle::defaultAsync());
     }
-    return std::ref(ResourcePoolHandle::defaultAsync());
   }
-  return result;
+  return std::ref(ResourcePoolHandle::defaultAsync());
 }
 
 } // namespace apache::thrift

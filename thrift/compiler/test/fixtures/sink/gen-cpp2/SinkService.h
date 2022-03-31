@@ -191,11 +191,6 @@ class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   SinkServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::SinkService>* iface) :
       iface_(iface) {}
   ~SinkServiceAsyncProcessor() override {}
-
-  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
-    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
-    return iface_->selectResourcePool(request);
-  }
 };
 
 } // cpp2

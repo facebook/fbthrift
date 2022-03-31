@@ -82,12 +82,6 @@ class AsyncProcessorHolder final : public AsyncProcessor {
     processor_->destroyAllInteractions(ctx, eb);
   }
 
-  apache::thrift::SelectPoolResult selectResourcePool(
-      ServerRequest const& request,
-      const MethodMetadata& methodMetadata) const override {
-    return processor_->selectResourcePool(request, methodMetadata);
-  }
-
   std::pair<AsyncProcessor*, const AsyncProcessorFactory::MethodMetadata*>
   getRequestsProcessor(
       const AsyncProcessorFactory::MethodMetadata& methodMetadata) override {

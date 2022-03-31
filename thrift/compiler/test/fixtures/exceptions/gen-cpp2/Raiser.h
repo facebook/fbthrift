@@ -147,11 +147,6 @@ class RaiserAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   RaiserAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::Raiser>* iface) :
       iface_(iface) {}
   ~RaiserAsyncProcessor() override {}
-
-  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
-    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
-    return iface_->selectResourcePool(request);
-  }
 };
 
 } // cpp2

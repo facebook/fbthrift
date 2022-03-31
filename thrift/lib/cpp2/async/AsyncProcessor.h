@@ -393,12 +393,6 @@ class AsyncProcessor : public AsyncProcessorSet {
   virtual void destroyAllInteractions(
       Cpp2ConnContext& conn, folly::EventBase&) noexcept;
 
-  // Allow the AsyncProcessor implementation to choose the resource pool to use
-  // for a request.
-  virtual SelectPoolResult selectResourcePool(
-      ServerRequest const& request,
-      const AsyncProcessorFactory::MethodMetadata& methodMetadata) const;
-
   // This is the main interface we are migrating to. Eventually it should
   // replace all the processSerialized... methods.
   //

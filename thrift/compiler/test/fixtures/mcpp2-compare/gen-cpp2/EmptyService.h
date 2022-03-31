@@ -85,11 +85,6 @@ class EmptyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   EmptyServiceAsyncProcessor(::apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>* iface) :
       iface_(iface) {}
   ~EmptyServiceAsyncProcessor() override {}
-
-  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
-    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
-    return iface_->selectResourcePool(request);
-  }
 };
 
 }}} // some::valid::ns

@@ -182,11 +182,6 @@ class service3AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   service3AsyncProcessor(::apache::thrift::ServiceHandler<::test_cpp2::cpp_reflection::service3>* iface) :
       iface_(iface) {}
   ~service3AsyncProcessor() override {}
-
-  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
-    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
-    return iface_->selectResourcePool(request);
-  }
 };
 
 }} // test_cpp2::cpp_reflection

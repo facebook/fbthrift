@@ -83,11 +83,6 @@ class NullServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   NullServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::NullService>* iface) :
       iface_(iface) {}
   ~NullServiceAsyncProcessor() override {}
-
-  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
-    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
-    return iface_->selectResourcePool(request);
-  }
 };
 
 } // cpp2

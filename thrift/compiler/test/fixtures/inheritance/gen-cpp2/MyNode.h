@@ -101,11 +101,6 @@ class MyNodeAsyncProcessor : public ::cpp2::MyRootAsyncProcessor {
       ::cpp2::MyRootAsyncProcessor(iface),
       iface_(iface) {}
   ~MyNodeAsyncProcessor() override {}
-
-  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
-    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
-    return iface_->selectResourcePool(request);
-  }
 };
 
 } // cpp2

@@ -116,11 +116,6 @@ class SomeServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   SomeServiceAsyncProcessor(::apache::thrift::ServiceHandler<::apache::thrift::fixtures::types::SomeService>* iface) :
       iface_(iface) {}
   ~SomeServiceAsyncProcessor() override {}
-
-  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
-    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
-    return iface_->selectResourcePool(request);
-  }
 };
 
 }}}} // apache::thrift::fixtures::types

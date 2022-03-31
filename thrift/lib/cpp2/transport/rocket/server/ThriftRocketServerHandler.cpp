@@ -651,7 +651,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
         }
 
         auto poolResult = AsyncProcessorHelper::selectResourcePool(
-            *processor_, serverRequest, found->metadata);
+            serverRequest, found->metadata);
         if (auto* reject = std::get_if<ServerRequestRejection>(&poolResult)) {
           auto errorCode = kAppOverloadedErrorCode;
           if (reject->applicationException().getType() ==

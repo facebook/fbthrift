@@ -318,13 +318,6 @@ class MultiplexAsyncProcessor final : public AsyncProcessor {
     DCHECK(!processors_.empty());
   }
 
-  apache::thrift::SelectPoolResult selectResourcePool(
-      ServerRequest const& request,
-      const MethodMetadata& methodMetadata) const override {
-    auto [processor, metadata] = derefProcessor(methodMetadata);
-    return processor->selectResourcePool(request, *metadata);
-  }
-
   void executeRequest(
       ServerRequest&& request, const MethodMetadata& methodMetadata) override {
     auto [processor, metadata] = derefProcessor(methodMetadata);

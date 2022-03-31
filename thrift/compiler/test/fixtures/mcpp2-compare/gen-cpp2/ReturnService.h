@@ -391,11 +391,6 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   ReturnServiceAsyncProcessor(::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>* iface) :
       iface_(iface) {}
   ~ReturnServiceAsyncProcessor() override {}
-
-  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
-    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
-    return iface_->selectResourcePool(request);
-  }
 };
 
 }}} // some::valid::ns

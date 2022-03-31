@@ -101,11 +101,6 @@ class RederivedServiceAsyncProcessor : public ::py3::simple::DerivedServiceAsync
       ::py3::simple::DerivedServiceAsyncProcessor(iface),
       iface_(iface) {}
   ~RederivedServiceAsyncProcessor() override {}
-
-  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
-    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
-    return iface_->selectResourcePool(request);
-  }
 };
 
 }} // py3::simple

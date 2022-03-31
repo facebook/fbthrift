@@ -70,7 +70,6 @@ class AsyncProcessorHelper {
 
   // Helper code to choose a valid resource pool.
   static SelectPoolResult selectResourcePool(
-      AsyncProcessor& processor,
       const ServerRequest& request,
       const AsyncProcessorFactory::MethodMetadata& methodMetadata);
 };

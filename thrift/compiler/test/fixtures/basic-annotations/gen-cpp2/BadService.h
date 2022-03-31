@@ -151,11 +151,6 @@ class GoodServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   GoodServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::GoodService>* iface) :
       iface_(iface) {}
   ~GoodServiceAsyncProcessor() override {}
-
-  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
-    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
-    return iface_->selectResourcePool(request);
-  }
 };
 
 } // cpp2

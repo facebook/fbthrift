@@ -155,11 +155,6 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   PubSubStreamingServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>* iface) :
       iface_(iface) {}
   ~PubSubStreamingServiceAsyncProcessor() override {}
-
-  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
-    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
-    return iface_->selectResourcePool(request);
-  }
 };
 
 } // cpp2

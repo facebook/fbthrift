@@ -123,11 +123,6 @@ class MyServiceFastAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   MyServiceFastAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::MyServiceFast>* iface) :
       iface_(iface) {}
   ~MyServiceFastAsyncProcessor() override {}
-
-  apache::thrift::SelectPoolResult selectResourcePool(apache::thrift::ServerRequest const& request,
-    const apache::thrift::AsyncProcessorFactory::MethodMetadata&) const override {
-    return iface_->selectResourcePool(request);
-  }
 };
 
 } // cpp2
