@@ -127,7 +127,8 @@ struct struct_private_access {
   struct get_fn {
     template <typename T>
     decltype(auto) operator()(T&& t) const {
-      return static_cast<T&&>(t).template __fbthrift_get<Id>();
+      return static_cast<T&&>(t)
+          .template __fbthrift_get<folly::to_underlying(Id)>();
     }
   };
 };

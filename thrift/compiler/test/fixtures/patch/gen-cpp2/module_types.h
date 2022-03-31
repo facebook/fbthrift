@@ -625,18 +625,18 @@ class MyData final  {
     return {static_cast<T&&>(this->__fbthrift_field_data2), __isset.at(1), __isset.bit(1)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return data1_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return data1_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).data1_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).data1_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return data2_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return data2_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).data2_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).data2_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return data1_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return data1_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).data1_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).data1_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &       { return data2_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return data2_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).data2_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).data2_ref(); }
 
  public:
 
@@ -1727,102 +1727,102 @@ class MyStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_optMapVal), __isset.at(22), __isset.bit(22)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return boolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return boolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).boolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).boolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return byteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return byteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).byteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).byteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &       { return i16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&  { return i16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &&      { return std::move(*this).i16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&& { return std::move(*this).i16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &       { return i32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&  { return i32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &&      { return std::move(*this).i32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&& { return std::move(*this).i32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() &       { return i64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() const&  { return i64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() &&      { return std::move(*this).i64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() const&& { return std::move(*this).i64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() &       { return floatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() const&  { return floatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() &&      { return std::move(*this).floatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() const&& { return std::move(*this).floatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() &       { return doubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() const&  { return doubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() &&      { return std::move(*this).doubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() const&& { return std::move(*this).doubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() &       { return stringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() const&  { return stringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() &&      { return std::move(*this).stringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() const&& { return std::move(*this).stringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{9}>() &       { return binaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{9}>() const&  { return binaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{9}>() &&      { return std::move(*this).binaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{9}>() const&& { return std::move(*this).binaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{10}>() &       { return structVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{10}>() const&  { return structVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{10}>() &&      { return std::move(*this).structVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{10}>() const&& { return std::move(*this).structVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{11}>() &       { return optBoolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{11}>() const&  { return optBoolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{11}>() &&      { return std::move(*this).optBoolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{11}>() const&& { return std::move(*this).optBoolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{12}>() &       { return optByteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{12}>() const&  { return optByteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{12}>() &&      { return std::move(*this).optByteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{12}>() const&& { return std::move(*this).optByteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{13}>() &       { return optI16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{13}>() const&  { return optI16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{13}>() &&      { return std::move(*this).optI16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{13}>() const&& { return std::move(*this).optI16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{14}>() &       { return optI32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{14}>() const&  { return optI32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{14}>() &&      { return std::move(*this).optI32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{14}>() const&& { return std::move(*this).optI32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{15}>() &       { return optI64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{15}>() const&  { return optI64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{15}>() &&      { return std::move(*this).optI64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{15}>() const&& { return std::move(*this).optI64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{16}>() &       { return optFloatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{16}>() const&  { return optFloatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{16}>() &&      { return std::move(*this).optFloatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{16}>() const&& { return std::move(*this).optFloatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{17}>() &       { return optDoubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{17}>() const&  { return optDoubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{17}>() &&      { return std::move(*this).optDoubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{17}>() const&& { return std::move(*this).optDoubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{18}>() &       { return optStringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{18}>() const&  { return optStringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{18}>() &&      { return std::move(*this).optStringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{18}>() const&& { return std::move(*this).optStringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{19}>() &       { return optBinaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{19}>() const&  { return optBinaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{19}>() &&      { return std::move(*this).optBinaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{19}>() const&& { return std::move(*this).optBinaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{20}>() &       { return optStructVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{20}>() const&  { return optStructVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{20}>() &&      { return std::move(*this).optStructVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{20}>() const&& { return std::move(*this).optStructVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{21}>() &       { return optListVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{21}>() const&  { return optListVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{21}>() &&      { return std::move(*this).optListVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{21}>() const&& { return std::move(*this).optListVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{22}>() &       { return optSetVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{22}>() const&  { return optSetVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{22}>() &&      { return std::move(*this).optSetVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{22}>() const&& { return std::move(*this).optSetVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{23}>() &       { return optMapVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{23}>() const&  { return optMapVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{23}>() &&      { return std::move(*this).optMapVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{23}>() const&& { return std::move(*this).optMapVal_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return boolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return boolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).boolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).boolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &       { return byteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return byteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).byteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).byteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &       { return i16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&  { return i16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).i16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).i16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return i32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return i32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).i32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).i32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &       { return i64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&  { return i64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &&      { return std::move(*this).i64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&& { return std::move(*this).i64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() &       { return floatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() const&  { return floatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() &&      { return std::move(*this).floatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() const&& { return std::move(*this).floatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<7>() &       { return doubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<7>() const&  { return doubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<7>() &&      { return std::move(*this).doubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<7>() const&& { return std::move(*this).doubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<8>() &       { return stringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<8>() const&  { return stringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<8>() &&      { return std::move(*this).stringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<8>() const&& { return std::move(*this).stringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<9>() &       { return binaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<9>() const&  { return binaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<9>() &&      { return std::move(*this).binaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<9>() const&& { return std::move(*this).binaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<10>() &       { return structVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<10>() const&  { return structVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<10>() &&      { return std::move(*this).structVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<10>() const&& { return std::move(*this).structVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<11>() &       { return optBoolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<11>() const&  { return optBoolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<11>() &&      { return std::move(*this).optBoolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<11>() const&& { return std::move(*this).optBoolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<12>() &       { return optByteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<12>() const&  { return optByteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<12>() &&      { return std::move(*this).optByteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<12>() const&& { return std::move(*this).optByteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<13>() &       { return optI16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<13>() const&  { return optI16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<13>() &&      { return std::move(*this).optI16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<13>() const&& { return std::move(*this).optI16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<14>() &       { return optI32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<14>() const&  { return optI32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<14>() &&      { return std::move(*this).optI32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<14>() const&& { return std::move(*this).optI32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<15>() &       { return optI64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<15>() const&  { return optI64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<15>() &&      { return std::move(*this).optI64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<15>() const&& { return std::move(*this).optI64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<16>() &       { return optFloatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<16>() const&  { return optFloatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<16>() &&      { return std::move(*this).optFloatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<16>() const&& { return std::move(*this).optFloatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<17>() &       { return optDoubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<17>() const&  { return optDoubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<17>() &&      { return std::move(*this).optDoubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<17>() const&& { return std::move(*this).optDoubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<18>() &       { return optStringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<18>() const&  { return optStringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<18>() &&      { return std::move(*this).optStringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<18>() const&& { return std::move(*this).optStringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<19>() &       { return optBinaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<19>() const&  { return optBinaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<19>() &&      { return std::move(*this).optBinaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<19>() const&& { return std::move(*this).optBinaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<20>() &       { return optStructVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<20>() const&  { return optStructVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<20>() &&      { return std::move(*this).optStructVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<20>() const&& { return std::move(*this).optStructVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<21>() &       { return optListVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<21>() const&  { return optListVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<21>() &&      { return std::move(*this).optListVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<21>() const&& { return std::move(*this).optListVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<22>() &       { return optSetVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<22>() const&  { return optSetVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<22>() &&      { return std::move(*this).optSetVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<22>() const&& { return std::move(*this).optSetVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<23>() &       { return optMapVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<23>() const&  { return optMapVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<23>() &&      { return std::move(*this).optMapVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<23>() const&& { return std::move(*this).optMapVal_ref(); }
 
  public:
 
@@ -2269,18 +2269,18 @@ class MyDataPatch final  {
     return {static_cast<T&&>(this->__fbthrift_field_data2), __isset.at(1), __isset.bit(1)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return data1_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return data1_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).data1_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).data1_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return data2_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return data2_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).data2_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).data2_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return data1_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return data1_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).data1_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).data1_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &       { return data2_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return data2_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).data2_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).data2_ref(); }
 
  public:
 
@@ -2484,22 +2484,22 @@ class MyDataValuePatch final  {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &       { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&  { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &&      { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&& { return std::move(*this).patch_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &       { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &       { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
 
  public:
 
@@ -2766,26 +2766,26 @@ class OptionalMyDataValuePatch final  {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &       { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&  { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &&      { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&& { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &       { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&  { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &&      { return std::move(*this).patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&& { return std::move(*this).patchAfter_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<2>() &       { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &       { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &       { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).patchAfter_ref(); }
 
  public:
 
@@ -3042,26 +3042,26 @@ class MyStructField21Patch final  {
     return {static_cast<T&&>(this->__fbthrift_field_prepend), __isset.at(3), __isset.bit(3)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &       { return append_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&  { return append_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &&      { return std::move(*this).append_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&& { return std::move(*this).append_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() &       { return prepend_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() const&  { return prepend_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() &&      { return std::move(*this).prepend_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() const&& { return std::move(*this).prepend_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &       { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return append_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return append_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).append_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).append_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &       { return prepend_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&  { return prepend_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &&      { return std::move(*this).prepend_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&& { return std::move(*this).prepend_ref(); }
 
  public:
   const ::std::vector<::std::int16_t>* get_assign() const&;
@@ -3347,26 +3347,26 @@ class OptionalMyStructField21Patch final  {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &       { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&  { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &&      { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&& { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &       { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&  { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &&      { return std::move(*this).patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&& { return std::move(*this).patchAfter_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<2>() &       { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &       { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &       { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).patchAfter_ref(); }
 
  public:
 
@@ -3633,26 +3633,26 @@ class MyStructField22Patch final  {
     return {static_cast<T&&>(this->__fbthrift_field_remove), __isset.at(3), __isset.bit(3)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &       { return add_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&  { return add_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &&      { return std::move(*this).add_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&& { return std::move(*this).add_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() &       { return remove_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() const&  { return remove_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() &&      { return std::move(*this).remove_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() const&& { return std::move(*this).remove_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &       { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return add_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return add_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).add_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).add_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &       { return remove_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&  { return remove_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &&      { return std::move(*this).remove_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&& { return std::move(*this).remove_ref(); }
 
  public:
   const ::std::set<::std::string>* get_assign() const&;
@@ -3938,26 +3938,26 @@ class OptionalMyStructField22Patch final  {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &       { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&  { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &&      { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&& { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &       { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&  { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &&      { return std::move(*this).patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&& { return std::move(*this).patchAfter_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<2>() &       { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &       { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &       { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).patchAfter_ref(); }
 
  public:
 
@@ -4224,26 +4224,26 @@ class MyStructField23Patch final  {
     return {static_cast<T&&>(this->__fbthrift_field_removeIf), __isset.at(3), __isset.bit(3)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &       { return add_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&  { return add_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &&      { return std::move(*this).add_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&& { return std::move(*this).add_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() &       { return removeIf_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() const&  { return removeIf_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() &&      { return std::move(*this).removeIf_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() const&& { return std::move(*this).removeIf_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &       { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return add_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return add_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).add_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).add_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() &       { return removeIf_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() const&  { return removeIf_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() &&      { return std::move(*this).removeIf_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() const&& { return std::move(*this).removeIf_ref(); }
 
  public:
   const ::std::map<::std::string, ::std::string>* get_assign() const&;
@@ -4529,26 +4529,26 @@ class OptionalMyStructField23Patch final  {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &       { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&  { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &&      { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&& { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &       { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&  { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &&      { return std::move(*this).patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&& { return std::move(*this).patchAfter_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<2>() &       { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &       { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &       { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).patchAfter_ref(); }
 
  public:
 
@@ -5653,102 +5653,102 @@ class MyStructPatch final  {
     return {static_cast<T&&>(this->__fbthrift_field_optMapVal), __isset.at(22), __isset.bit(22)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return boolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return boolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).boolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).boolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return byteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return byteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).byteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).byteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &       { return i16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&  { return i16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &&      { return std::move(*this).i16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&& { return std::move(*this).i16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &       { return i32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&  { return i32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &&      { return std::move(*this).i32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&& { return std::move(*this).i32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() &       { return i64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() const&  { return i64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() &&      { return std::move(*this).i64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() const&& { return std::move(*this).i64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() &       { return floatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() const&  { return floatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() &&      { return std::move(*this).floatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() const&& { return std::move(*this).floatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() &       { return doubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() const&  { return doubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() &&      { return std::move(*this).doubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() const&& { return std::move(*this).doubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() &       { return stringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() const&  { return stringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() &&      { return std::move(*this).stringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() const&& { return std::move(*this).stringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{9}>() &       { return binaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{9}>() const&  { return binaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{9}>() &&      { return std::move(*this).binaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{9}>() const&& { return std::move(*this).binaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{10}>() &       { return structVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{10}>() const&  { return structVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{10}>() &&      { return std::move(*this).structVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{10}>() const&& { return std::move(*this).structVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{11}>() &       { return optBoolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{11}>() const&  { return optBoolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{11}>() &&      { return std::move(*this).optBoolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{11}>() const&& { return std::move(*this).optBoolVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{12}>() &       { return optByteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{12}>() const&  { return optByteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{12}>() &&      { return std::move(*this).optByteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{12}>() const&& { return std::move(*this).optByteVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{13}>() &       { return optI16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{13}>() const&  { return optI16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{13}>() &&      { return std::move(*this).optI16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{13}>() const&& { return std::move(*this).optI16Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{14}>() &       { return optI32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{14}>() const&  { return optI32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{14}>() &&      { return std::move(*this).optI32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{14}>() const&& { return std::move(*this).optI32Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{15}>() &       { return optI64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{15}>() const&  { return optI64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{15}>() &&      { return std::move(*this).optI64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{15}>() const&& { return std::move(*this).optI64Val_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{16}>() &       { return optFloatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{16}>() const&  { return optFloatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{16}>() &&      { return std::move(*this).optFloatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{16}>() const&& { return std::move(*this).optFloatVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{17}>() &       { return optDoubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{17}>() const&  { return optDoubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{17}>() &&      { return std::move(*this).optDoubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{17}>() const&& { return std::move(*this).optDoubleVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{18}>() &       { return optStringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{18}>() const&  { return optStringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{18}>() &&      { return std::move(*this).optStringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{18}>() const&& { return std::move(*this).optStringVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{19}>() &       { return optBinaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{19}>() const&  { return optBinaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{19}>() &&      { return std::move(*this).optBinaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{19}>() const&& { return std::move(*this).optBinaryVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{20}>() &       { return optStructVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{20}>() const&  { return optStructVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{20}>() &&      { return std::move(*this).optStructVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{20}>() const&& { return std::move(*this).optStructVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{21}>() &       { return optListVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{21}>() const&  { return optListVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{21}>() &&      { return std::move(*this).optListVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{21}>() const&& { return std::move(*this).optListVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{22}>() &       { return optSetVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{22}>() const&  { return optSetVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{22}>() &&      { return std::move(*this).optSetVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{22}>() const&& { return std::move(*this).optSetVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{23}>() &       { return optMapVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{23}>() const&  { return optMapVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{23}>() &&      { return std::move(*this).optMapVal_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{23}>() const&& { return std::move(*this).optMapVal_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return boolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return boolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).boolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).boolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &       { return byteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return byteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).byteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).byteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &       { return i16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&  { return i16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).i16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).i16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return i32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return i32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).i32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).i32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &       { return i64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&  { return i64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &&      { return std::move(*this).i64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&& { return std::move(*this).i64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() &       { return floatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() const&  { return floatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() &&      { return std::move(*this).floatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() const&& { return std::move(*this).floatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<7>() &       { return doubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<7>() const&  { return doubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<7>() &&      { return std::move(*this).doubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<7>() const&& { return std::move(*this).doubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<8>() &       { return stringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<8>() const&  { return stringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<8>() &&      { return std::move(*this).stringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<8>() const&& { return std::move(*this).stringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<9>() &       { return binaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<9>() const&  { return binaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<9>() &&      { return std::move(*this).binaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<9>() const&& { return std::move(*this).binaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<10>() &       { return structVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<10>() const&  { return structVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<10>() &&      { return std::move(*this).structVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<10>() const&& { return std::move(*this).structVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<11>() &       { return optBoolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<11>() const&  { return optBoolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<11>() &&      { return std::move(*this).optBoolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<11>() const&& { return std::move(*this).optBoolVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<12>() &       { return optByteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<12>() const&  { return optByteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<12>() &&      { return std::move(*this).optByteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<12>() const&& { return std::move(*this).optByteVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<13>() &       { return optI16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<13>() const&  { return optI16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<13>() &&      { return std::move(*this).optI16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<13>() const&& { return std::move(*this).optI16Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<14>() &       { return optI32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<14>() const&  { return optI32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<14>() &&      { return std::move(*this).optI32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<14>() const&& { return std::move(*this).optI32Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<15>() &       { return optI64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<15>() const&  { return optI64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<15>() &&      { return std::move(*this).optI64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<15>() const&& { return std::move(*this).optI64Val_ref(); }
+  template<> decltype(auto) __fbthrift_get<16>() &       { return optFloatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<16>() const&  { return optFloatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<16>() &&      { return std::move(*this).optFloatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<16>() const&& { return std::move(*this).optFloatVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<17>() &       { return optDoubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<17>() const&  { return optDoubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<17>() &&      { return std::move(*this).optDoubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<17>() const&& { return std::move(*this).optDoubleVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<18>() &       { return optStringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<18>() const&  { return optStringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<18>() &&      { return std::move(*this).optStringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<18>() const&& { return std::move(*this).optStringVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<19>() &       { return optBinaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<19>() const&  { return optBinaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<19>() &&      { return std::move(*this).optBinaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<19>() const&& { return std::move(*this).optBinaryVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<20>() &       { return optStructVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<20>() const&  { return optStructVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<20>() &&      { return std::move(*this).optStructVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<20>() const&& { return std::move(*this).optStructVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<21>() &       { return optListVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<21>() const&  { return optListVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<21>() &&      { return std::move(*this).optListVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<21>() const&& { return std::move(*this).optListVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<22>() &       { return optSetVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<22>() const&  { return optSetVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<22>() &&      { return std::move(*this).optSetVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<22>() const&& { return std::move(*this).optSetVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<23>() &       { return optMapVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<23>() const&  { return optMapVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<23>() &&      { return std::move(*this).optMapVal_ref(); }
+  template<> decltype(auto) __fbthrift_get<23>() const&& { return std::move(*this).optMapVal_ref(); }
 
  public:
 
@@ -5952,22 +5952,22 @@ class MyStructValuePatch final  {
     return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).assign_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &       { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&  { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &&      { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&& { return std::move(*this).patch_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).assign_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &       { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &       { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
 
  public:
 
@@ -6234,26 +6234,26 @@ class OptionalMyStructValuePatch final  {
     return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &       { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&  { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &&      { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&& { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &       { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&  { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &&      { return std::move(*this).patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&& { return std::move(*this).patchAfter_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<2>() &       { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &       { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &       { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).patchAfter_ref(); }
 
  public:
 

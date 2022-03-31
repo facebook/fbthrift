@@ -144,14 +144,14 @@ class MyStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_myString), __isset.at(0), __isset.bit(0)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return myString_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return myString_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).myString_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).myString_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).myString_ref(); }
 
  public:
 
@@ -485,14 +485,14 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
     return {static_cast<T&&>(this->myString), __isset.at(0), __isset.bit(0)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return myString_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return myString_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).myString_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).myString_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).myString_ref(); }
 
  public:
 

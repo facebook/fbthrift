@@ -612,42 +612,42 @@ class MyStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_floatSet), __isset.at(7), __isset.bit(7)};
   }
  private:
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() &&;
-  template<::apache::thrift::FieldId> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &       { return MyIntField_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&  { return MyIntField_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() &&      { return std::move(*this).MyIntField_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{1}>() const&& { return std::move(*this).MyIntField_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &       { return MyStringField_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&  { return MyStringField_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() &&      { return std::move(*this).MyStringField_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{2}>() const&& { return std::move(*this).MyStringField_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &       { return MyDataField_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&  { return MyDataField_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() &&      { return std::move(*this).MyDataField_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{3}>() const&& { return std::move(*this).MyDataField_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &       { return myEnum_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&  { return myEnum_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() &&      { return std::move(*this).myEnum_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{4}>() const&& { return std::move(*this).myEnum_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() &       { return oneway_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() const&  { return oneway_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() &&      { return std::move(*this).oneway_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{5}>() const&& { return std::move(*this).oneway_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() &       { return readonly_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() const&  { return readonly_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() &&      { return std::move(*this).readonly_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{6}>() const&& { return std::move(*this).readonly_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() &       { return idempotent_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() const&  { return idempotent_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() &&      { return std::move(*this).idempotent_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{7}>() const&& { return std::move(*this).idempotent_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() &       { return floatSet_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() const&  { return floatSet_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() &&      { return std::move(*this).floatSet_ref(); }
-  template<> decltype(auto) __fbthrift_get<::apache::thrift::FieldId{8}>() const&& { return std::move(*this).floatSet_ref(); }
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return MyIntField_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return MyIntField_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).MyIntField_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).MyIntField_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &       { return MyStringField_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return MyStringField_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).MyStringField_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).MyStringField_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &       { return MyDataField_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&  { return MyDataField_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).MyDataField_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).MyDataField_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return myEnum_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return myEnum_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).myEnum_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).myEnum_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &       { return oneway_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&  { return oneway_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &&      { return std::move(*this).oneway_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&& { return std::move(*this).oneway_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() &       { return readonly_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() const&  { return readonly_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() &&      { return std::move(*this).readonly_ref(); }
+  template<> decltype(auto) __fbthrift_get<6>() const&& { return std::move(*this).readonly_ref(); }
+  template<> decltype(auto) __fbthrift_get<7>() &       { return idempotent_ref(); }
+  template<> decltype(auto) __fbthrift_get<7>() const&  { return idempotent_ref(); }
+  template<> decltype(auto) __fbthrift_get<7>() &&      { return std::move(*this).idempotent_ref(); }
+  template<> decltype(auto) __fbthrift_get<7>() const&& { return std::move(*this).idempotent_ref(); }
+  template<> decltype(auto) __fbthrift_get<8>() &       { return floatSet_ref(); }
+  template<> decltype(auto) __fbthrift_get<8>() const&  { return floatSet_ref(); }
+  template<> decltype(auto) __fbthrift_get<8>() &&      { return std::move(*this).floatSet_ref(); }
+  template<> decltype(auto) __fbthrift_get<8>() const&& { return std::move(*this).floatSet_ref(); }
 
  public:
 
