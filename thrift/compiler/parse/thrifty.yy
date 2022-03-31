@@ -61,11 +61,7 @@ std::unique_ptr<T> own(T* ptr) {
 }
 
 yy::parser::symbol_type parse_lex(parsing_driver& driver, YYSTYPE*, YYLTYPE*) {
-  auto token = driver.get_lexer().get_next_token();
-  if (token.token() == yy::parser::token::tok_error) {
-    driver.end_parsing();
-  }
-  return token;
+  return driver.get_lexer().get_next_token();
 }
 #define yylex apache::thrift::compiler::parse_lex
 
