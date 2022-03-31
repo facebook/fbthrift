@@ -646,6 +646,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       std::shared_ptr<apache::thrift::concurrency::ThreadManager>
           threadManager) {
     setThreadManagerInternal(threadManager);
+    runtimeDisableResourcePools();
     usingCustomThreadManager_ = true;
   }
 
@@ -660,6 +661,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     setThreadManagerInternal(
         std::make_shared<concurrency::ThreadManagerExecutorAdapter>(
             folly::getKeepAliveToken(executor), std::move(opts)));
+    runtimeDisableResourcePools();
     usingCustomThreadManager_ = true;
   }
 

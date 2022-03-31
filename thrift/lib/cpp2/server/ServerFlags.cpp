@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <folly/GLog.h>
+#include <folly/synchronization/RelaxedAtomic.h>
 #include <thrift/lib/cpp2/server/ServerFlags.h>
 
 THRIFT_FLAG_DEFINE_bool(experimental_use_resource_pools, false);
@@ -21,3 +23,51 @@ DEFINE_bool(
     thrift_experimental_use_resource_pools,
     false,
     "Use experimental resource pools");
+
+namespace apache::thrift {
+
+namespace {
+folly::relaxed_atomic<bool>& getResourcePoolsRuntimeDisabled() {
+  static folly::relaxed_atomic<bool> resourcePoolsRuntimeDisabled{false};
+  return resourcePoolsRuntimeDisabled;
+}
+
+folly::relaxed_atomic<bool>& getResourcePoolsRuntimeRequested() {
+  static folly::relaxed_atomic<bool> resourcePoolsRuntimeRequested{false};
+  return resourcePoolsRuntimeRequested;
+}
+
+} // namespace
+
+void runtimeDisableResourcePools() {
+  getResourcePoolsRuntimeDisabled().store(true);
+  // Call this to ensure setting is fixed and we detect conflicts going forward.
+  CHECK_EQ(useResourcePools(), false);
+}
+
+void requireResourcePools() {
+  getResourcePoolsRuntimeRequested().store(true);
+  // Call this to ensure setting is fixed and we detect conflicts going forward.
+  CHECK_EQ(useResourcePools(), true);
+}
+
+bool useResourcePools() {
+  static bool thriftAndGFlags = THRIFT_FLAG(experimental_use_resource_pools) ||
+      FLAGS_thrift_experimental_use_resource_pools;
+  static bool firstResult =
+      (thriftAndGFlags || getResourcePoolsRuntimeRequested().load()) &&
+      !getResourcePoolsRuntimeDisabled().load();
+  bool result =
+      (thriftAndGFlags || getResourcePoolsRuntimeRequested().load()) &&
+      !getResourcePoolsRuntimeDisabled().load();
+  if (result == firstResult) {
+    return result;
+  }
+  LOG(FATAL) << "Inconsistent results from useResourcePoolsFlagsSet";
+}
+
+bool useResourcePoolsFlagsSet() {
+  return useResourcePools();
+}
+
+} // namespace apache::thrift

@@ -425,6 +425,7 @@ void ThriftServer::setup() {
 
     if (!useResourcePoolsFlagsSet()) {
       // We always need a threadmanager for cpp2.
+      LOG(INFO) << "Using thread manager (resource pools not enabled)";
       setupThreadManager();
       threadManager_->setExpireCallback([&](std::shared_ptr<Runnable> r) {
         EventTask* task = dynamic_cast<EventTask*>(r.get());
@@ -443,6 +444,7 @@ void ThriftServer::setup() {
         }
       });
     } else {
+      LOG(INFO) << "Using resource pools";
       DCHECK(!threadManager_);
       ensureResourcePools();
       // Keep concurrency controller in sync with max requests for now.

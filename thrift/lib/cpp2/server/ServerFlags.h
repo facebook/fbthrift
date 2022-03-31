@@ -24,26 +24,33 @@ DECLARE_bool(thrift_experimental_use_resource_pools);
 
 namespace apache::thrift {
 
-FOLLY_ALWAYS_INLINE bool useResourcePoolsFlagsSet() {
-  return THRIFT_FLAG(experimental_use_resource_pools) ||
-      FLAGS_thrift_experimental_use_resource_pools;
-}
+// Determine whether we should use resource pools.
+bool useResourcePools();
+
+[[deprecated("Use useResourcePools instead")]] bool useResourcePoolsFlagsSet();
+
+// Call this to indictate that this binary cannot use resource pools because of
+// some setting determined at runtime.
+void runtimeDisableResourcePools();
+
+// Call this to require the use of resource pools from code.
+void requireResourcePools();
 
 // This is a temporary solution during resource pools roll out. Once
 // roll out is complete there will be no tests that require this and it
 // will be removed.
-#define THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS()        \
-  do {                                                \
-    if (apache::thrift::useResourcePoolsFlagsSet()) { \
-      return;                                         \
-    }                                                 \
+#define THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS() \
+  do {                                         \
+    if (apache::thrift::useResourcePools()) {  \
+      return;                                  \
+    }                                          \
   } while (false)
 
-#define THRIFT_CO_OMIT_TEST_WITH_RESOURCE_POOLS()     \
-  do {                                                \
-    if (apache::thrift::useResourcePoolsFlagsSet()) { \
-      co_return;                                      \
-    }                                                 \
+#define THRIFT_CO_OMIT_TEST_WITH_RESOURCE_POOLS() \
+  do {                                            \
+    if (apache::thrift::useResourcePools()) {     \
+      co_return;                                  \
+    }                                             \
   } while (false)
 
 } // namespace apache::thrift
