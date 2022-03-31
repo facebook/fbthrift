@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Set the compiler directory
+# Set the compiler directory.
 set(COMPILER_DIR ${CMAKE_CURRENT_BINARY_DIR})
 
-# Override default install path for `make install` step
+# Override the default install path for `make install` step.
 set(CMAKE_INSTALL_PREFIX ${THRIFT_HOME})
 
 # Compile Bison files.
@@ -25,7 +25,7 @@ BISON_TARGET(ThriftParser parse/thrifty.yy ${COMPILER_DIR}/thrifty.cc
   DEFINES_FILE ${COMPILER_DIR}/thrifty.hh
   COMPILE_FLAGS "${BISON_FLAGS}")
 
-# build compiler/parse
+# The Thrift AST library.
 add_library(
   compiler_ast
 
@@ -47,7 +47,7 @@ add_library(
 )
 target_link_libraries(compiler_ast ${OPENSSL_LIBRARIES})
 
-# build the base libraries
+# The base library.
 add_library(
   compiler_base
 
@@ -68,20 +68,19 @@ add_library(
   ${BISON_ThriftParser_OUTPUTS}
 )
 target_compile_definitions(
- compiler_base
- PRIVATE -DTHRIFTY_HH="${COMPILER_DIR}/thrifty.hh"
- PUBLIC -DLOCATION_HH="${COMPILER_DIR}/location.hh"
+  compiler_base
+  PRIVATE -DTHRIFTY_HH="${COMPILER_DIR}/thrifty.hh"
+  PUBLIC -DLOCATION_HH="${COMPILER_DIR}/location.hh"
 )
 target_link_libraries(
   compiler_base
-
   compiler_ast
   ${Boost_LIBRARIES}
 )
 
-# build compiler/lib
+# The Thrift compiler library.
 add_library(
-  compiler_lib
+  compiler
 
   gen/cpp/detail/gen.cc
   gen/cpp/namespace_resolver.cc
@@ -92,16 +91,13 @@ add_library(
   lib/java/util.cc
 )
 target_link_libraries(
-  compiler_lib
-
+  compiler
   compiler_ast
   ${Boost_LIBRARIES}
 )
 
-#build compiler/mustache
 add_library(
-  mustache_lib
-
+  mustache
   detail/mustache/mstch.cpp
   detail/mustache/render_context.cpp
   detail/mustache/state/in_section.cpp
@@ -110,55 +106,53 @@ add_library(
   detail/mustache/token.cpp
   detail/mustache/utils.cpp
 )
-target_link_libraries(mustache_lib ${Boost_LIBRARIES})
+target_link_libraries(mustache ${Boost_LIBRARIES})
 
 add_subdirectory(generate)
 
 # Force compiler_generators linking (compiler will optimize it out otherwise).
 if (MSVC)
-  set(GENERATE_LINKED compiler_generators) #MSVC WHOLEARCHIVE is set after exe
+  set(GENERATE_LINKED compiler_generators) # MSVC WHOLEARCHIVE is set after exe.
 elseif (APPLE)
   set(GENERATE_LINKED -Wl,-force_load compiler_generators)
 else ()
-  set(GENERATE_LINKED -Wl,--whole-archive compiler_generators -Wl,--no-whole-archive)
+  set(GENERATE_LINKED
+      -Wl,--whole-archive compiler_generators -Wl,--no-whole-archive)
 endif ()
 
-# Create the thrift compiler binary
+# Create the Thrift compiler binary.
 add_executable(
   thrift1
-
   main.cc
   compiler.cc
   mutator/mutator.cc
   validator/validator.cc
-  ast/visitor.cc
 )
 target_link_libraries(
   thrift1
-
   compiler_ast
   compiler_base
   ${GENERATE_LINKED}
   ${Boost_LIBRARIES}
 )
-# Force compiler_generators linking (compiler will optimize it out otherwise)
-if(MSVC)
+# Force compiler_generators linking (compiler will optimize it out otherwise).
+if (MSVC)
   set_target_properties(
     thrift1
     PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:compiler_generators"
   )
-endif(MSVC)
+endif ()
 
 if (BUILD_SHARED_LIBS)
-  # all but thrift1 since it's a binary
-  set_target_properties(compiler_ast compiler_base compiler_lib mustache_lib
-    compiler_generators
+  # All but thrift1 since it's a binary.
+  set_target_properties(
+    compiler_ast compiler_base compiler mustache compiler_generators
     PROPERTIES VERSION ${PACKAGE_VERSION}
-    )
-endif()
+  )
+endif ()
 
 install(
-  TARGETS thrift1 compiler_ast compiler_base compiler_lib mustache_lib
+  TARGETS thrift1 compiler_ast compiler_base compiler mustache
   EXPORT fbthrift-exports
   RUNTIME DESTINATION ${BIN_INSTALL_DIR}
   LIBRARY DESTINATION ${LIB_INSTALL_DIR}

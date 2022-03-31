@@ -43,8 +43,8 @@ target_link_libraries(
   compiler_generators
   compiler_ast
   compiler_base
-  compiler_lib
-  mustache_lib
+  compiler
+  mustache
   ${Boost_LIBRARIES}
   ${OPENSSL_LIBRARIES}
 )
