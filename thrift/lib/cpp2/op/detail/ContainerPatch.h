@@ -226,6 +226,67 @@ class SetPatch : public BaseClearablePatch<Patch, SetPatch<Patch>> {
   using Base::patch_;
 };
 
+// Patch must have the following fields:
+//   optional map<K, V> assign;
+//   bool clear;
+//   map<K, V> put;
+template <typename Patch>
+class MapPatch : public BaseClearablePatch<Patch, MapPatch<Patch>> {
+  using Base = BaseClearablePatch<Patch, MapPatch>;
+  using T = typename Base::value_type;
+
+ public:
+  using Base::apply;
+  using Base::Base;
+  using Base::operator=;
+
+  template <typename C = T>
+  static MapPatch createPut(C&& entries) {
+    MapPatch result;
+    *result.patch_.put() = std::forward<C>(entries);
+    return result;
+  }
+
+  template <typename C = T>
+  void put(C&& entries) {
+    auto& field = assignOr(*patch_.put());
+    for (auto&& entry : entries) {
+      field.insert_or_assign(
+          std::forward<decltype(entry)>(entry).first,
+          std::forward<decltype(entry)>(entry).second);
+    }
+  }
+  template <typename K, typename V>
+  void insert_or_assign(K&& key, V&& value) {
+    assignOr(*patch_.put())
+        .insert_or_assign(std::forward<K>(key), std::forward<V>(value));
+  }
+
+  void apply(T& val) const {
+    if (!applyAssign(val)) {
+      if (patch_.clear() == true) {
+        val.clear();
+      }
+      for (const auto& entry : *patch_.put()) {
+        val.insert_or_assign(entry.first, entry.second);
+      }
+    }
+  }
+
+  template <typename U>
+  void merge(U&& next) {
+    if (!mergeAssignAndClear(std::forward<U>(next))) {
+      put(*std::forward<U>(next).get().put());
+    }
+  }
+
+ private:
+  using Base::applyAssign;
+  using Base::assignOr;
+  using Base::mergeAssignAndClear;
+  using Base::patch_;
+};
+
 } // namespace detail
 } // namespace op
 } // namespace thrift

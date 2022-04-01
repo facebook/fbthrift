@@ -3897,7 +3897,7 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
    */
   public bool $clear;
   /**
-   * Adds or assigns the given key/value pairs. Currently Ignored.
+   * Adds or replaces the given key/value pairs. Applies Second.
    * 
    * Original thrift field:-
    * 7: map<string, string> put

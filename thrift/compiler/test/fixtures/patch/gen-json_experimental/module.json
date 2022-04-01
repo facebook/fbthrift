@@ -789,7 +789,7 @@
           },
           "put" : {
             "name" : "put",
-            "docstring" : "Adds or assigns the given key/value pairs. Currently Ignored.\n",
+            "docstring" : "Adds or replaces the given key/value pairs. Applies Second.\n",
             "key" : 7,
             "lineno" : 33,
             "required" : "opt-in-req-out",

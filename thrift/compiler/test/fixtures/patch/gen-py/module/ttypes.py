@@ -2184,7 +2184,7 @@ class MyStructField23Patch:
   Attributes:
    - assign: Assigns to a given struct. If set, all other operations are ignored.
    - clear: Clears a given value. Applies first.
-   - put: Adds or assigns the given key/value pairs. Currently Ignored.
+   - put: Adds or replaces the given key/value pairs. Applies Second.
   """
 
   thrift_spec = None

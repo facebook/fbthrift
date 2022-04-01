@@ -222,7 +222,7 @@ using StructPatchAdapter = PatchAdapter<StructPatch>;
 // Adapters for containers.
 using ListPatchAdapter = PatchAdapter<ListPatch>;
 using SetPatchAdapter = PatchAdapter<SetPatch>;
-using MapPatchAdapter = AssignPatchAdapter;
+using MapPatchAdapter = PatchAdapter<MapPatch>;
 
 // Adapter for all optional values.
 using OptionalPatchAdapter = PatchAdapter<OptionalPatch>;

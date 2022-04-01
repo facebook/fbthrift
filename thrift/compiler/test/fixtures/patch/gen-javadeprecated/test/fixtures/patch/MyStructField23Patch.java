@@ -39,7 +39,7 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
    */
   public boolean clear;
   /**
-   * Adds or assigns the given key/value pairs. Currently Ignored.
+   * Adds or replaces the given key/value pairs. Applies Second.
    */
   public Map<String,String> put;
   public static final int ASSIGN = 1;
@@ -214,14 +214,14 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
   }
 
   /**
-   * Adds or assigns the given key/value pairs. Currently Ignored.
+   * Adds or replaces the given key/value pairs. Applies Second.
    */
   public Map<String,String> getPut() {
     return this.put;
   }
 
   /**
-   * Adds or assigns the given key/value pairs. Currently Ignored.
+   * Adds or replaces the given key/value pairs. Applies Second.
    */
   public MyStructField23Patch setPut(Map<String,String> put) {
     this.put = put;

@@ -214,7 +214,7 @@ pub mod types {
         pub assign: ::std::option::Option<::std::collections::BTreeMap<::std::string::String, ::std::string::String>>,
         #[doc = "Clears a given value. Applies first."]
         pub clear: ::std::primitive::bool,
-        #[doc = "Adds or assigns the given key/value pairs. Currently Ignored."]
+        #[doc = "Adds or replaces the given key/value pairs. Applies Second."]
         pub put: ::std::collections::BTreeMap<::std::string::String, ::std::string::String>,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to

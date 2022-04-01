@@ -4707,7 +4707,7 @@ func (p *OptionalMyStructField22Patch) String() string {
 // Attributes:
 //  - Assign: Assigns to a given struct. If set, all other operations are ignored.
 //  - Clear: Clears a given value. Applies first.
-//  - Put: Adds or assigns the given key/value pairs. Currently Ignored.
+//  - Put: Adds or replaces the given key/value pairs. Applies Second.
 type MyStructField23Patch struct {
   Assign map[string]string `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`

@@ -204,7 +204,7 @@ struct PatchGen : StructGen {
   // {kPutId}: {type} put;
   t_field& put(t_type_ref type) {
     return doc(
-        "Adds or assigns the given key/value pairs. Currently Ignored.",
+        "Adds or replaces the given key/value pairs. Applies Second.",
         field(kPutId, type, "put"));
   }
 

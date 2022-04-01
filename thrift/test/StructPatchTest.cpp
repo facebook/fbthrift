@@ -36,6 +36,8 @@ using ListPatch = std::decay_t<
     decltype(std::declval<TestStructPatch>()->optListVal()->ensure())>;
 using SetPatch = std::decay_t<
     decltype(std::declval<TestStructPatch>()->optSetVal()->ensure())>;
+using MapPatch = std::decay_t<
+    decltype(std::declval<TestStructPatch>()->optMapVal()->ensure())>;
 
 MyStruct testValue() {
   MyStruct val;
@@ -348,6 +350,26 @@ TEST(StructPatchTest, SetPatch) {
   assignPatch.remove({"c", "d"});
   EXPECT_THAT(
       *assignPatch.get().assign(), ::testing::ElementsAre("a", "b", "e"));
+}
+
+TEST(StructPatchTest, MapPatch) {
+  MapPatch patch;
+  patch.put({{"a", "1"}, {"b", "2"}});
+  patch.insert_or_assign("b", "3");
+  patch.insert_or_assign("c", "4");
+
+  test::expectPatch(patch, {}, {{"a", "1"}, {"b", "3"}, {"c", "4"}});
+  test::expectPatch(
+      patch, {{"a", "5"}, {"c", "6"}}, {{"a", "1"}, {"b", "3"}, {"c", "4"}});
+
+  auto assignPatch = MapPatch::createAssign({{"a", "5"}, {"c", "6"}});
+  assignPatch.put({{"a", "1"}, {"b", "2"}});
+  assignPatch.insert_or_assign("b", "3");
+  assignPatch.insert_or_assign("c", "4");
+  EXPECT_EQ(
+      *assignPatch.get().assign(),
+      (std::map<std::string, std::string>(
+          {{"a", "1"}, {"b", "3"}, {"c", "4"}})));
 }
 
 } // namespace
