@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1609,8 +1609,18 @@ size_t ThreadManagerExecutorAdapter::workerCount() const {
   return aggregateForEachThreadManager(executors_, &ThreadManager::workerCount);
 }
 size_t ThreadManagerExecutorAdapter::pendingUpstreamTaskCount() const {
-  return aggregateForEachThreadManager(
-      executors_, &ThreadManager::pendingUpstreamTaskCount);
+  size_t count = 0;
+  for (size_t i = 0; i < N_PRIORITIES; i++) {
+    auto executorIdx = idxFromPriSrc(i, static_cast<int>(Source::UPSTREAM));
+    if (auto tm = dynamic_cast<ThreadManager*>(executors_[executorIdx])) {
+      count += tm->pendingUpstreamTaskCount();
+    } else if (
+        auto meteredExecutor =
+            dynamic_cast<folly::MeteredExecutor*>(executors_[executorIdx])) {
+      count += meteredExecutor->pendingTasks();
+    }
+  }
+  return count;
 }
 size_t ThreadManagerExecutorAdapter::pendingTaskCount() const {
   return aggregateForEachThreadManager(
