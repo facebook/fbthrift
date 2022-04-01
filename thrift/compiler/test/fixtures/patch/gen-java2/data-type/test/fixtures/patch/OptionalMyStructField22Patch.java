@@ -131,6 +131,9 @@ public final class OptionalMyStructField22Patch implements com.facebook.thrift.p
       NAMES_TO_IDS.put("patchAfter", 4);
       THRIFT_NAMES_TO_IDS.put("patchAfter", 4);
       FIELD_METADATA.put(4, PATCH_AFTER_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/OptionalMyStructField22Patch"), 
+        OptionalMyStructField22Patch.class, OptionalMyStructField22Patch::read0));
     }
     
     

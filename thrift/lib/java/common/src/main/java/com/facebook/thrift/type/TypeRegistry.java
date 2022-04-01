@@ -46,10 +46,12 @@ public final class TypeRegistry {
    * If universal name or class is already associated with another entry, IllegalArgumentException
    * is thrown.
    *
-   * @param universalName
-   * @param clazz
+   * @param type
    */
-  private static void validate(UniversalName universalName, Class clazz) {
+  private static synchronized void validate(Type type) {
+    Class clazz = type.getClazz();
+    UniversalName universalName = type.getUniversalName();
+
     if (exist(universalName) && hashMap.get(universalName.getHashBytes()).getClazz() != clazz) {
       String msg =
           "Universal name already registered with another class "
@@ -72,22 +74,20 @@ public final class TypeRegistry {
   }
 
   /**
-   * Add the given universal name and class to the registry. If universal name or class is already
-   * associated with another entry, IllegalArgumentException is thrown.
+   * Add the given type to the registry. If universal name or class is already associated with
+   * another entry, IllegalArgumentException is thrown.
    *
-   * @param universalName UniversalName associated with the class
-   * @param clazz Class name associated with the UniversalName
+   * @param type Type info containing universal name, class name and other metadata.
    * @return Hash bytes as hexadecimal value.
    */
-  public static String add(UniversalName universalName, Class clazz) {
-    validate(universalName, clazz);
-    LOGGER.info("Adding universal name ? and class ?", universalName, clazz.getName());
+  public static String add(Type type) {
+    validate(type);
+    LOGGER.info("Adding type to the registry: ?", type);
 
-    Type type = new Type(universalName, clazz);
-    hashMap.put(universalName.getHashBytes(), type);
-    classMap.put(clazz, type);
+    hashMap.put(type.getUniversalName().getHashBytes(), type);
+    classMap.put(type.getClazz(), type);
 
-    return universalName.getHash();
+    return type.getUniversalName().getHash();
   }
 
   private static boolean startsWith(ByteBuf bytes, ByteBuf prefix) {
@@ -189,5 +189,13 @@ public final class TypeRegistry {
     LOGGER.info("Clearing type registry");
     hashMap.clear();
     classMap.clear();
+  }
+
+  @VisibleForTesting
+  public static void print() {
+    for (ByteBuf key : hashMap.keySet()) {
+      System.out.println(
+          ByteBufUtil.hexDump(key) + " " + hashMap.get(key).getUniversalName().getUri());
+    }
   }
 }

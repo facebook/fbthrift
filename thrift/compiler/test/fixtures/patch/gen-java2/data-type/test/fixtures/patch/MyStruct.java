@@ -511,6 +511,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       NAMES_TO_IDS.put("optMapVal", 23);
       THRIFT_NAMES_TO_IDS.put("optMapVal", 23);
       FIELD_METADATA.put(23, OPT_MAP_VAL_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyStruct"), 
+        MyStruct.class, MyStruct::read0));
     }
     
     

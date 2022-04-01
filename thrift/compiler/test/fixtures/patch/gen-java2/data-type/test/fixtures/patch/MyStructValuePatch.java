@@ -111,6 +111,9 @@ public final class MyStructValuePatch implements com.facebook.thrift.payload.Thr
       NAMES_TO_IDS.put("patch", 3);
       THRIFT_NAMES_TO_IDS.put("patch", 3);
       FIELD_METADATA.put(3, PATCH_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyStructValuePatch"), 
+        MyStructValuePatch.class, MyStructValuePatch::read0));
     }
     
     @Nullable

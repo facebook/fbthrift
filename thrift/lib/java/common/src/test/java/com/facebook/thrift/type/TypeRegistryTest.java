@@ -17,7 +17,9 @@
 package com.facebook.thrift.type;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import java.lang.reflect.Constructor;
@@ -74,7 +76,11 @@ public class TypeRegistryTest {
   @Before
   public void init() throws Exception {
     for (int i = 0; i < 20; i++) {
-      TypeRegistry.add(new UniversalName("facebook.com/thrift/conformance/Object" + i), classes[i]);
+      TypeRegistry.add(
+          new Type(
+              new UniversalName("facebook.com/thrift/conformance/Object" + i),
+              classes[i],
+              p -> null));
     }
   }
 
@@ -107,7 +113,7 @@ public class TypeRegistryTest {
     assertEquals("facebook.com/thrift/conformance/Object0", type.getUniversalName().getUri());
     assertEquals(Object.class, type.getClazz());
 
-    type = TypeRegistry.findByHashPrefix(Unpooled.wrappedBuffer(ByteBufUtil.decodeHexDump("e4de")));
+    type = TypeRegistry.findByHashPrefix(toByteBuf("e4de"));
     assertEquals("facebook.com/thrift/conformance/Object13", type.getUniversalName().getUri());
     assertEquals(Set.class, type.getClazz());
   }
@@ -147,7 +153,10 @@ public class TypeRegistryTest {
     expectedException.expect(IllegalArgumentException.class);
     expectedException.expectMessage("Universal name already registered with another class");
     TypeRegistry.add(
-        new UniversalName("facebook.com/thrift/conformance/Object12"), UniversalName.class);
+        new Type(
+            new UniversalName("facebook.com/thrift/conformance/Object12"),
+            UniversalName.class,
+            null));
   }
 
   @Test
@@ -155,7 +164,10 @@ public class TypeRegistryTest {
     expectedException.expect(IllegalArgumentException.class);
     expectedException.expectMessage("Universal name already registered with another class");
     TypeRegistry.add(
-        new UniversalName("facebook.com/thrift/conformance/Object12"), Constructor.class);
+        new Type(
+            new UniversalName("facebook.com/thrift/conformance/Object12"),
+            Constructor.class,
+            null));
   }
 
   @Test
@@ -163,13 +175,16 @@ public class TypeRegistryTest {
     expectedException.expect(IllegalArgumentException.class);
     expectedException.expectMessage("Class name already registered with another universal name");
     TypeRegistry.add(
-        new UniversalName("facebook.com/thrift/conformance/Object100"), UniversalName.class);
+        new Type(
+            new UniversalName("facebook.com/thrift/conformance/Object100"),
+            UniversalName.class,
+            null));
   }
 
   @Test
   public void testShortUri() throws Exception {
     UniversalName un = new UniversalName("a.co/b/c");
-    TypeRegistry.add(un, TypeRegistryTest.class);
+    TypeRegistry.add(new Type(un, TypeRegistryTest.class, null));
     Type type = TypeRegistry.findByUniversalName(new UniversalName("a.co/b/c"));
     assertEquals(un, type.getUniversalName());
   }
@@ -188,5 +203,44 @@ public class TypeRegistryTest {
     TypeRegistry.clear();
     Type type = TypeRegistry.findByHashPrefix("2114");
     assertEquals(null, type);
+  }
+
+  private ByteBuf toByteBuf(String hex) {
+    return Unpooled.wrappedBuffer(ByteBufUtil.decodeHexDump(hex));
+  }
+
+  @Test
+  public void testCustomHashGenerator() {
+    TypeRegistry.add(
+        new Type(
+            new UniversalName(
+                "foo.com/thrift/conformance/1",
+                p -> {
+                  return toByteBuf("abababababababab");
+                }),
+            HashAlgorithmSHA256.class,
+            p -> null));
+    TypeRegistry.add(
+        new Type(
+            new UniversalName(
+                "foo.com/thrift/conformance/2",
+                p -> {
+                  return toByteBuf("abababababababac");
+                }),
+            Runtime.class,
+            p -> null));
+
+    Type type = TypeRegistry.findByHashPrefix("abababababababab");
+    assertEquals("foo.com/thrift/conformance/1", type.getUniversalName().getUri());
+
+    type = TypeRegistry.findByHashPrefix("abababababababac");
+    assertEquals("foo.com/thrift/conformance/2", type.getUniversalName().getUri());
+
+    try {
+      type = TypeRegistry.findByHashPrefix("ababababab");
+      fail();
+    } catch (AmbiguousUniversalNameException a) {
+      // expected.
+    }
   }
 }

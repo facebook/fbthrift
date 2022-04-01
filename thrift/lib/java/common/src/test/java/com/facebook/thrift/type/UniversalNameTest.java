@@ -33,7 +33,7 @@ public class UniversalNameTest {
     assertEquals("b7f183390eaa9c1a", un.getHashPrefix(3));
     assertEquals("b7f183390eaa9c1a", un.getHashPrefix(4));
     assertEquals("b7f183390eaa9c1a", ByteBufUtil.hexDump(un.getHashPrefixBytes(4)));
-    assertEquals(UniversalHashAlgorithm.SHA256, un.getAlgorithm());
+    // assertEquals(UniversalHashAlgorithm.SHA256, un.getAlgorithm());
     assertEquals(true, un.toString().contains("foo.com/storage/cloud/bucket"));
     assertEquals(true, un.toString().contains("b7f183390eaa9c1abef2f452c05bd4b2"));
     assertEquals(true, un.toString().contains("SHA256"));
@@ -50,11 +50,10 @@ public class UniversalNameTest {
 
   @Test
   public void testInvalidUri() throws Exception {
+    checkUri("Foo.com/cloud/bucket", false);
+    checkUri("foo.COM/cloud/bucket", false);
     checkUri("foo/cloud/bucket", false);
     checkUri("foo..com/cloud/bucket", false);
-    checkUri("foo.c/cloud/bucket", false);
-    checkUri("-foo.com/cloud/bucket", false);
-    checkUri("foo-.com/cloud/bucket", false);
     checkUri("foo.com//cloud/bucket", false);
     checkUri("foo.com/#/cloud/bucket", false);
     checkUri("foo.com/??/cloud/bucket", false);
@@ -64,21 +63,23 @@ public class UniversalNameTest {
     checkUri("foo.com/storage/+", false);
     checkUri("foo.com_/storage/bucket", false);
     checkUri("_foo.com/storage/Bucket", false);
-    checkUri("foo.com-/storage/bucket", false);
-    checkUri("-foo.com/storage/bucket", false);
     checkUri("foo", false);
   }
 
   @Test
   public void testValidUri() throws Exception {
-    new UniversalName("foo.com/storage/Bucket", UniversalHashAlgorithm.SHA256);
+    new UniversalName("foo.com/storage/Bucket");
     checkUri("facebook.com/thrift/conformance/Object", true);
     checkUri("f.com/_thri-ft/c-onformance/-_Object", true);
+    checkUri("foo.c/cloud/bucket", true);
+    checkUri("-foo.com/cloud/bucket", true);
+    checkUri("foo-.com/cloud/bucket", true);
+    checkUri("foo.com-/storage/bucket", true);
   }
 
   @Test
   public void testMinHashSize() throws Exception {
-    UniversalName un = new UniversalName("foo.com/storage/Bucket", UniversalHashAlgorithm.SHA256);
+    UniversalName un = new UniversalName("foo.com/storage/Bucket");
     assertEquals("56f66fc99e84b522f44a72cbfc83dd4c", un.getHash());
     assertEquals("56f66fc99e84b522f44a72cbfc83dd4c", un.getHashPrefix(200));
     assertEquals("56f66fc99e84b522f44a72cb", un.getHashPrefix(12));

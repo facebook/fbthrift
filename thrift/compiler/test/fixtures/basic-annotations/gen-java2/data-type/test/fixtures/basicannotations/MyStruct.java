@@ -231,6 +231,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       NAMES_TO_IDS.put("myUnion", 9);
       THRIFT_NAMES_TO_IDS.put("my_union", 9);
       FIELD_METADATA.put(9, MY_UNION_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct"), 
+        MyStruct.class, MyStruct::read0));
     }
     
     

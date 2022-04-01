@@ -83,6 +83,11 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
       THRIFT_NAMES_TO_IDS.put("{{field:name}}", {{field:key}});
       FIELD_METADATA.put({{field:key}}, {{field:javaTFieldName}});
       {{/struct:fields}}
+      {{#struct:thrift_uri}}
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("{{struct:thrift_uri}}"), 
+        {{struct:javaCapitalName}}.class, {{struct:javaCapitalName}}::read0));
+      {{/struct:thrift_uri}}
     }{{!
 
     }}{{#struct:fields}}

@@ -16,22 +16,13 @@
 
 package com.facebook.thrift.type;
 
-import static com.facebook.thrift.type.UniversalHashAlgorithm.SHA256;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
-import io.netty.buffer.Unpooled;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 
 public class UniversalName {
 
-  private static final String THRIFT_SCHEME = "fbthrift://";
-
-  private static final String DOMAIN_NAME_PATTERN =
-      "^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\\.)+[A-Za-z]{2,6}/";
+  private static final String DOMAIN_NAME_PATTERN = "(([a-z0-9-]{1,})\\.)+[a-z0-9-]{1,}/";
   private static final String PACKAGE_NAME_PATTERN = "(([a-zA-Z0-9_-]{1,})/)+";
   private static final String TYPE_PATTERN = "[a-zA-Z0-9_-]{1,}";
   private static final String UNIVERSAL_NAME_PATTERN =
@@ -43,45 +34,37 @@ public class UniversalName {
     namePattern = Pattern.compile(UNIVERSAL_NAME_PATTERN);
   }
 
-  private final UniversalHashAlgorithm algorithm;
+  private final HashAlgorithm algorithm;
   private final String uri;
-  private ByteBuf hash;
+  private final ByteBuf hash;
 
-  public UniversalName(String uri, UniversalHashAlgorithm algorithm)
+  /**
+   * Creates a new universal name by given uri and hash algorithm. Given uri is validated based on
+   * the rules defined. When the thrift compiler validates all uri's in thrift IDL file, this
+   * validation might be lifted.
+   *
+   * @param uri uri of the universal name.
+   * @param algorithm Hash algorithm.
+   * @throws InvalidUniversalNameURIException If the uri syntax is invalid.
+   */
+  public UniversalName(String uri, HashAlgorithm algorithm)
       throws InvalidUniversalNameURIException {
     if (!namePattern.matcher(uri).matches()) {
       throw new InvalidUniversalNameURIException(uri);
     }
     this.uri = uri;
     this.algorithm = algorithm;
-    generateHash();
+    this.hash = algorithm.generateHash(uri);
   }
 
+  /**
+   * Creates new universal name object with the SHA-256 algorithm.
+   *
+   * @param uri uri of the universal name.
+   * @throws InvalidUniversalNameURIException If the uri syntax is invalid.
+   */
   public UniversalName(String uri) throws InvalidUniversalNameURIException {
-    this(uri, SHA256);
-  }
-
-  private void generateHash() {
-    try {
-      switch (algorithm) {
-        case SHA256:
-          {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            hash =
-                Unpooled.wrappedBuffer(
-                    digest.digest((THRIFT_SCHEME + this.uri).getBytes(StandardCharsets.UTF_8)));
-            break;
-          }
-        default:
-          throw new RuntimeException("Algorithm not supported, " + algorithm);
-      }
-    } catch (NoSuchAlgorithmException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  public UniversalHashAlgorithm getAlgorithm() {
-    return this.algorithm;
+    this(uri, HashAlgorithmSHA256.INSTANCE);
   }
 
   public String getHash() {

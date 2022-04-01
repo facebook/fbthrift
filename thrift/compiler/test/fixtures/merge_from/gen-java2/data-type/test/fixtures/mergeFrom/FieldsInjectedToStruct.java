@@ -75,6 +75,7 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
         }
     }
             public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+    public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("FieldsInjectedToStruct");
     private final String stringField;
@@ -85,8 +86,10 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
     private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)100);
     static {
       NAMES_TO_IDS.put("stringField", 1);
+      THRIFT_NAMES_TO_IDS.put("string_field", 1);
       FIELD_METADATA.put(1, STRING_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("injectedField", 100);
+      THRIFT_NAMES_TO_IDS.put("injected_field", 100);
       FIELD_METADATA.put(100, INJECTED_FIELD_FIELD_DESC);
     }
     
@@ -139,7 +142,7 @@ public final class FieldsInjectedToStruct implements com.facebook.thrift.payload
     
     public static FieldsInjectedToStruct read0(TProtocol oprot) throws TException {
       TField __field;
-      oprot.readStructBegin(FieldsInjectedToStruct.NAMES_TO_IDS, FieldsInjectedToStruct.FIELD_METADATA);
+      oprot.readStructBegin(FieldsInjectedToStruct.NAMES_TO_IDS, FieldsInjectedToStruct.THRIFT_NAMES_TO_IDS, FieldsInjectedToStruct.FIELD_METADATA);
       FieldsInjectedToStruct.Builder builder = new FieldsInjectedToStruct.Builder();
       while (true) {
         __field = oprot.readFieldBegin();

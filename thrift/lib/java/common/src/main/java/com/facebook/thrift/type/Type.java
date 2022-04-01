@@ -16,24 +16,34 @@
 
 package com.facebook.thrift.type;
 
-public enum UniversalHashAlgorithm {
-  SHA256(1, 8, 16);
+import com.facebook.thrift.payload.Reader;
 
-  private int value;
-  private int minHashBytes;
-  private int defaultHashBytes;
+public class Type<T> {
 
-  UniversalHashAlgorithm(int value, int minHashBytes, int defaultHashBytes) {
-    this.value = value;
-    this.minHashBytes = minHashBytes;
-    this.defaultHashBytes = defaultHashBytes;
+  private UniversalName universalName;
+  private Class<T> clazz;
+  private Reader<T> reader;
+
+  public Type(UniversalName universalName, Class<T> clazz, Reader<T> reader) {
+    this.universalName = universalName;
+    this.clazz = clazz;
+    this.reader = reader;
   }
 
-  public int getMinHashBytes() {
-    return this.minHashBytes;
+  public UniversalName getUniversalName() {
+    return universalName;
   }
 
-  public int getDefaultHashBytes() {
-    return this.defaultHashBytes;
+  public Class<T> getClazz() {
+    return clazz;
+  }
+
+  public Reader<T> getReader() {
+    return reader;
+  }
+
+  @Override
+  public String toString() {
+    return "Type{" + "universalName=" + universalName + ", class=" + clazz + '}';
   }
 }

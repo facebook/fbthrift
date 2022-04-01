@@ -16,21 +16,16 @@
 
 package com.facebook.thrift.type;
 
-public class Type {
+import io.netty.buffer.ByteBuf;
 
-  private UniversalName universalName;
-  private Class clazz;
-
-  public Type(UniversalName universalName, Class clazz) {
-    this.universalName = universalName;
-    this.clazz = clazz;
+public interface HashAlgorithm {
+  default int getMinHashBytes() {
+    return 4;
   }
 
-  public UniversalName getUniversalName() {
-    return universalName;
+  default int getDefaultHashBytes() {
+    return 8;
   }
 
-  public Class getClazz() {
-    return clazz;
-  }
+  ByteBuf generateHash(String uri);
 }

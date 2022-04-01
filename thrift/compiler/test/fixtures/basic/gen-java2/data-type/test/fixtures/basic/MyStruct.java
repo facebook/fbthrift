@@ -211,6 +211,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       NAMES_TO_IDS.put("floatSet", 8);
       THRIFT_NAMES_TO_IDS.put("floatSet", 8);
       FIELD_METADATA.put(8, FLOAT_SET_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/basic/MyStruct"), 
+        MyStruct.class, MyStruct::read0));
     }
     
     

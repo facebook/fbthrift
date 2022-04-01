@@ -131,6 +131,9 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
       NAMES_TO_IDS.put("remove", 5);
       THRIFT_NAMES_TO_IDS.put("remove", 5);
       FIELD_METADATA.put(5, REMOVE_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyStructField22Patch"), 
+        MyStructField22Patch.class, MyStructField22Patch::read0));
     }
     
     @Nullable
