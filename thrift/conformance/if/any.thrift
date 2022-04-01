@@ -46,4 +46,4 @@ struct Any {
   // TODO(afuller): Consider switching to std::unique_ptr<folly::IOBuf> to make
   // moves cheaper (profile to see if this is better).
   5: binary (cpp.type = "folly::IOBuf") data;
-}
+} (rust.ord)
