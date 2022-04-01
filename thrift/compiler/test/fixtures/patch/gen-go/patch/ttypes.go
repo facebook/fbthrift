@@ -1330,14 +1330,14 @@ func (p *DoublePatch) String() string {
 // Attributes:
 //  - Assign
 //  - Clear
-//  - Append
 //  - Prepend
+//  - Append
 type StringPatch struct {
   Assign *string `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
   // unused field # 3
-  Append string `thrift:"append,4" db:"append" json:"append"`
-  Prepend string `thrift:"prepend,5" db:"prepend" json:"prepend"`
+  Prepend string `thrift:"prepend,4" db:"prepend" json:"prepend"`
+  Append string `thrift:"append,5" db:"append" json:"append"`
 }
 
 func NewStringPatch() *StringPatch {
@@ -1356,12 +1356,12 @@ func (p *StringPatch) GetClear() bool {
   return p.Clear
 }
 
-func (p *StringPatch) GetAppend() string {
-  return p.Append
-}
-
 func (p *StringPatch) GetPrepend() string {
   return p.Prepend
+}
+
+func (p *StringPatch) GetAppend() string {
+  return p.Append
 }
 func (p *StringPatch) IsSetAssign() bool {
   return p != nil && p.Assign != nil
@@ -1381,8 +1381,8 @@ func (p StringPatchBuilder) Emit() *StringPatch{
   return &StringPatch{
     Assign: p.obj.Assign,
     Clear: p.obj.Clear,
-    Append: p.obj.Append,
     Prepend: p.obj.Prepend,
+    Append: p.obj.Append,
   }
 }
 
@@ -1396,13 +1396,13 @@ func (s *StringPatchBuilder) Clear(clear bool) *StringPatchBuilder {
   return s
 }
 
-func (s *StringPatchBuilder) Append(append string) *StringPatchBuilder {
-  s.obj.Append = append
+func (s *StringPatchBuilder) Prepend(prepend string) *StringPatchBuilder {
+  s.obj.Prepend = prepend
   return s
 }
 
-func (s *StringPatchBuilder) Prepend(prepend string) *StringPatchBuilder {
-  s.obj.Prepend = prepend
+func (s *StringPatchBuilder) Append(append string) *StringPatchBuilder {
+  s.obj.Append = append
   return s
 }
 
@@ -1416,13 +1416,13 @@ func (s *StringPatch) SetClear(clear bool) *StringPatch {
   return s
 }
 
-func (s *StringPatch) SetAppend(append string) *StringPatch {
-  s.Append = append
+func (s *StringPatch) SetPrepend(prepend string) *StringPatch {
+  s.Prepend = prepend
   return s
 }
 
-func (s *StringPatch) SetPrepend(prepend string) *StringPatch {
-  s.Prepend = prepend
+func (s *StringPatch) SetAppend(append string) *StringPatch {
+  s.Append = append
   return s
 }
 
@@ -1492,7 +1492,7 @@ func (p *StringPatch)  ReadField4(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 4: ", err)
   } else {
-    p.Append = v
+    p.Prepend = v
   }
   return nil
 }
@@ -1501,7 +1501,7 @@ func (p *StringPatch)  ReadField5(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 5: ", err)
   } else {
-    p.Prepend = v
+    p.Append = v
   }
   return nil
 }
@@ -1543,22 +1543,22 @@ func (p *StringPatch) writeField2(oprot thrift.Protocol) (err error) {
 }
 
 func (p *StringPatch) writeField4(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("append", thrift.STRING, 4); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:append: ", p), err) }
-  if err := oprot.WriteString(string(p.Append)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.append (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("prepend", thrift.STRING, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:prepend: ", p), err) }
+  if err := oprot.WriteString(string(p.Prepend)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.prepend (4) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:append: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:prepend: ", p), err) }
   return err
 }
 
 func (p *StringPatch) writeField5(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("prepend", thrift.STRING, 5); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:prepend: ", p), err) }
-  if err := oprot.WriteString(string(p.Prepend)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.prepend (5) field write error: ", p), err) }
+  if err := oprot.WriteFieldBegin("append", thrift.STRING, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:append: ", p), err) }
+  if err := oprot.WriteString(string(p.Append)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.append (5) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:prepend: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:append: ", p), err) }
   return err
 }
 
@@ -1574,9 +1574,9 @@ func (p *StringPatch) String() string {
     assignVal = fmt.Sprintf("%v", *p.Assign)
   }
   clearVal := fmt.Sprintf("%v", p.Clear)
-  appendVal := fmt.Sprintf("%v", p.Append)
   prependVal := fmt.Sprintf("%v", p.Prepend)
-  return fmt.Sprintf("StringPatch({Assign:%s Clear:%s Append:%s Prepend:%s})", assignVal, clearVal, appendVal, prependVal)
+  appendVal := fmt.Sprintf("%v", p.Append)
+  return fmt.Sprintf("StringPatch({Assign:%s Clear:%s Prepend:%s Append:%s})", assignVal, clearVal, prependVal, appendVal)
 }
 
 // Attributes:

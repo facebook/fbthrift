@@ -909,8 +909,8 @@ class StringPatch:
   Attributes:
    - assign
    - clear
-   - append
    - prepend
+   - append
   """
 
   thrift_spec = None
@@ -945,12 +945,12 @@ class StringPatch:
           iprot.skip(ftype)
       elif fid == 4:
         if ftype == TType.STRING:
-          self.append = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+          self.prepend = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
       elif fid == 5:
         if ftype == TType.STRING:
-          self.prepend = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+          self.append = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
       else:
@@ -974,13 +974,13 @@ class StringPatch:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
       oprot.writeFieldEnd()
-    if self.append != None:
-      oprot.writeFieldBegin('append', TType.STRING, 4)
-      oprot.writeString(self.append.encode('utf-8')) if UTF8STRINGS and not isinstance(self.append, bytes) else oprot.writeString(self.append)
-      oprot.writeFieldEnd()
     if self.prepend != None:
-      oprot.writeFieldBegin('prepend', TType.STRING, 5)
+      oprot.writeFieldBegin('prepend', TType.STRING, 4)
       oprot.writeString(self.prepend.encode('utf-8')) if UTF8STRINGS and not isinstance(self.prepend, bytes) else oprot.writeString(self.prepend)
+      oprot.writeFieldEnd()
+    if self.append != None:
+      oprot.writeFieldBegin('append', TType.STRING, 5)
+      oprot.writeString(self.append.encode('utf-8')) if UTF8STRINGS and not isinstance(self.append, bytes) else oprot.writeString(self.append)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
@@ -1001,10 +1001,10 @@ class StringPatch:
       self.assign = json_obj['assign']
     if 'clear' in json_obj and json_obj['clear'] is not None:
       self.clear = json_obj['clear']
-    if 'append' in json_obj and json_obj['append'] is not None:
-      self.append = json_obj['append']
     if 'prepend' in json_obj and json_obj['prepend'] is not None:
       self.prepend = json_obj['prepend']
+    if 'append' in json_obj and json_obj['append'] is not None:
+      self.append = json_obj['append']
 
   def __repr__(self):
     L = []
@@ -1017,14 +1017,14 @@ class StringPatch:
       value = pprint.pformat(self.clear, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    clear=%s' % (value))
-    if self.append is not None:
-      value = pprint.pformat(self.append, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    append=%s' % (value))
     if self.prepend is not None:
       value = pprint.pformat(self.prepend, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    prepend=%s' % (value))
+    if self.append is not None:
+      value = pprint.pformat(self.append, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    append=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -2605,8 +2605,8 @@ StringPatch.thrift_spec = (
   (1, TType.STRING, 'assign', True, None, 1, ), # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   None, # 3
-  (4, TType.STRING, 'append', True, None, 2, ), # 4
-  (5, TType.STRING, 'prepend', True, None, 2, ), # 5
+  (4, TType.STRING, 'prepend', True, None, 2, ), # 4
+  (5, TType.STRING, 'append', True, None, 2, ), # 5
 )
 
 StringPatch.thrift_struct_annotations = {
@@ -2616,19 +2616,19 @@ StringPatch.thrift_struct_annotations = {
 StringPatch.thrift_field_annotations = {
 }
 
-def StringPatch__init__(self, assign=None, clear=None, append=None, prepend=None,):
+def StringPatch__init__(self, assign=None, clear=None, prepend=None, append=None,):
   self.assign = assign
   self.clear = clear
-  self.append = append
   self.prepend = prepend
+  self.append = append
 
 StringPatch.__init__ = StringPatch__init__
 
 def StringPatch__setstate__(self, state):
   state.setdefault('assign', None)
   state.setdefault('clear', None)
-  state.setdefault('append', None)
   state.setdefault('prepend', None)
+  state.setdefault('append', None)
   self.__dict__ = state
 
 StringPatch.__getstate__ = lambda self: self.__dict__.copy()

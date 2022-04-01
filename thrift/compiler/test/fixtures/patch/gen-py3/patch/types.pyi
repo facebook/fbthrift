@@ -293,32 +293,32 @@ class StringPatch(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         assign: bool
         clear: bool
-        append: bool
         prepend: bool
+        append: bool
         pass
 
     assign: Final[_typing.Optional[str]] = ...
 
     clear: Final[bool] = ...
 
-    append: Final[str] = ...
-
     prepend: Final[str] = ...
+
+    append: Final[str] = ...
 
     def __init__(
         self, *,
         assign: _typing.Optional[str]=None,
         clear: _typing.Optional[bool]=None,
-        append: _typing.Optional[str]=None,
-        prepend: _typing.Optional[str]=None
+        prepend: _typing.Optional[str]=None,
+        append: _typing.Optional[str]=None
     ) -> None: ...
 
     def __call__(
         self, *,
         assign: _typing.Union[str, __NotSet, None]=NOTSET,
         clear: _typing.Union[bool, __NotSet, None]=NOTSET,
-        append: _typing.Union[str, __NotSet, None]=NOTSET,
-        prepend: _typing.Union[str, __NotSet, None]=NOTSET
+        prepend: _typing.Union[str, __NotSet, None]=NOTSET,
+        append: _typing.Union[str, __NotSet, None]=NOTSET
     ) -> StringPatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StringPatch'], bytes]]: ...

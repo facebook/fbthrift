@@ -994,7 +994,7 @@
             }
           }
         },
-        "append" : {
+        "prepend" : {
           "type_enum" : "LIST",
           "spec_args" : { "type_enum" : "I16", "spec_args" : null} ,
           "required" : true,
@@ -1009,7 +1009,7 @@
             }
           }
         },
-        "prepend" : {
+        "append" : {
           "type_enum" : "LIST",
           "spec_args" : { "type_enum" : "I16", "spec_args" : null} ,
           "required" : true,
@@ -1148,7 +1148,7 @@
             }
           }
         },
-        "add" : {
+        "remove" : {
           "type_enum" : "SET",
           "spec_args" : { "type_enum" : "STRING", "spec_args" : null} ,
           "required" : true,
@@ -1163,7 +1163,7 @@
             }
           }
         },
-        "remove" : {
+        "add" : {
           "type_enum" : "SET",
           "spec_args" : { "type_enum" : "STRING", "spec_args" : null} ,
           "required" : true,
@@ -1302,7 +1302,7 @@
             }
           }
         },
-        "add" : {
+        "put" : {
           "type_enum" : "MAP",
           "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } ,
           "required" : true,
@@ -1317,7 +1317,7 @@
             }
           }
         },
-        "removeIf" : {
+        "add" : {
           "type_enum" : "MAP",
           "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } ,
           "required" : true,

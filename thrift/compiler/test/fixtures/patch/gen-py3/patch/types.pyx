@@ -1013,8 +1013,8 @@ cdef class StringPatch(thrift.py3.types.Struct):
         return thrift.py3.types._IsSet("StringPatch", {
           "assign": deref(self._cpp_obj).assign_ref().has_value(),
           "clear": deref(self._cpp_obj).clear_ref().has_value(),
-          "append": deref(self._cpp_obj).append_ref().has_value(),
           "prepend": deref(self._cpp_obj).prepend_ref().has_value(),
+          "append": deref(self._cpp_obj).append_ref().has_value(),
         })
 
     @staticmethod
@@ -1041,14 +1041,6 @@ cdef class StringPatch(thrift.py3.types.Struct):
     def clear(self):
         return self.clear_impl()
 
-    cdef inline append_impl(self):
-
-        return (<bytes>deref(self._cpp_obj).append_ref().value()).decode('UTF-8')
-
-    @property
-    def append(self):
-        return self.append_impl()
-
     cdef inline prepend_impl(self):
 
         return (<bytes>deref(self._cpp_obj).prepend_ref().value()).decode('UTF-8')
@@ -1056,6 +1048,14 @@ cdef class StringPatch(thrift.py3.types.Struct):
     @property
     def prepend(self):
         return self.prepend_impl()
+
+    cdef inline append_impl(self):
+
+        return (<bytes>deref(self._cpp_obj).append_ref().value()).decode('UTF-8')
+
+    @property
+    def append(self):
+        return self.append_impl()
 
 
     def __hash__(StringPatch self):

@@ -27,29 +27,29 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
     public MyStructField22Patch(
         @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL) final Set<String> assign,
         @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=4, name="add", requiredness=Requiredness.NONE) final Set<String> add,
-        @com.facebook.swift.codec.ThriftField(value=5, name="remove", requiredness=Requiredness.NONE) final Set<String> remove
+        @com.facebook.swift.codec.ThriftField(value=4, name="remove", requiredness=Requiredness.NONE) final Set<String> remove,
+        @com.facebook.swift.codec.ThriftField(value=5, name="add", requiredness=Requiredness.NONE) final Set<String> add
     ) {
         this.assign = assign;
         this.clear = clear;
-        this.add = add;
         this.remove = remove;
+        this.add = add;
     }
     
     @ThriftConstructor
     protected MyStructField22Patch() {
       this.assign = null;
       this.clear = false;
-      this.add = null;
       this.remove = null;
+      this.add = null;
     }
     
     public static class Builder {
     
         private Set<String> assign = null;
         private boolean clear = false;
-        private Set<String> add = null;
         private Set<String> remove = null;
+        private Set<String> add = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL)
         public Builder setAssign(Set<String> assign) {
@@ -67,15 +67,7 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=4, name="add", requiredness=Requiredness.NONE)
-        public Builder setAdd(Set<String> add) {
-            this.add = add;
-            return this;
-        }
-    
-        public Set<String> getAdd() { return add; }
-    
-            @com.facebook.swift.codec.ThriftField(value=5, name="remove", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="remove", requiredness=Requiredness.NONE)
         public Builder setRemove(Set<String> remove) {
             this.remove = remove;
             return this;
@@ -83,12 +75,20 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
     
         public Set<String> getRemove() { return remove; }
     
+            @com.facebook.swift.codec.ThriftField(value=5, name="add", requiredness=Requiredness.NONE)
+        public Builder setAdd(Set<String> add) {
+            this.add = add;
+            return this;
+        }
+    
+        public Set<String> getAdd() { return add; }
+    
         public Builder() { }
         public Builder(MyStructField22Patch other) {
             this.assign = other.assign;
             this.clear = other.clear;
-            this.add = other.add;
             this.remove = other.remove;
+            this.add = other.add;
         }
     
         @ThriftConstructor
@@ -96,8 +96,8 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
             MyStructField22Patch result = new MyStructField22Patch (
                 this.assign,
                 this.clear,
-                this.add,
-                this.remove
+                this.remove,
+                this.add
             );
             return result;
         }
@@ -113,12 +113,12 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
         private final boolean clear;
     public static final int _CLEAR = 2;
     private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
-        private final Set<String> add;
-    public static final int _ADD = 4;
-    private static final TField ADD_FIELD_DESC = new TField("add", TType.SET, (short)4);
         private final Set<String> remove;
-    public static final int _REMOVE = 5;
-    private static final TField REMOVE_FIELD_DESC = new TField("remove", TType.SET, (short)5);
+    public static final int _REMOVE = 4;
+    private static final TField REMOVE_FIELD_DESC = new TField("remove", TType.SET, (short)4);
+        private final Set<String> add;
+    public static final int _ADD = 5;
+    private static final TField ADD_FIELD_DESC = new TField("add", TType.SET, (short)5);
     static {
       NAMES_TO_IDS.put("assign", 1);
       THRIFT_NAMES_TO_IDS.put("assign", 1);
@@ -126,12 +126,12 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
       NAMES_TO_IDS.put("clear", 2);
       THRIFT_NAMES_TO_IDS.put("clear", 2);
       FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
-      NAMES_TO_IDS.put("add", 4);
-      THRIFT_NAMES_TO_IDS.put("add", 4);
-      FIELD_METADATA.put(4, ADD_FIELD_DESC);
-      NAMES_TO_IDS.put("remove", 5);
-      THRIFT_NAMES_TO_IDS.put("remove", 5);
-      FIELD_METADATA.put(5, REMOVE_FIELD_DESC);
+      NAMES_TO_IDS.put("remove", 4);
+      THRIFT_NAMES_TO_IDS.put("remove", 4);
+      FIELD_METADATA.put(4, REMOVE_FIELD_DESC);
+      NAMES_TO_IDS.put("add", 5);
+      THRIFT_NAMES_TO_IDS.put("add", 5);
+      FIELD_METADATA.put(5, ADD_FIELD_DESC);
     }
     
     @Nullable
@@ -145,21 +145,21 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=4, name="add", requiredness=Requiredness.NONE)
-    public Set<String> getAdd() { return add; }
+    @com.facebook.swift.codec.ThriftField(value=4, name="remove", requiredness=Requiredness.NONE)
+    public Set<String> getRemove() { return remove; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=5, name="remove", requiredness=Requiredness.NONE)
-    public Set<String> getRemove() { return remove; }
+    @com.facebook.swift.codec.ThriftField(value=5, name="add", requiredness=Requiredness.NONE)
+    public Set<String> getAdd() { return add; }
     
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("assign", assign);
         helper.add("clear", clear);
-        helper.add("add", add);
         helper.add("remove", remove);
+        helper.add("add", add);
         return helper.toString();
     }
     
@@ -177,8 +177,8 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
         return
             Objects.equals(assign, other.assign) &&
             Objects.equals(clear, other.clear) &&
-            Objects.equals(add, other.add) &&
             Objects.equals(remove, other.remove) &&
+            Objects.equals(add, other.add) &&
             true;
     }
     
@@ -187,8 +187,8 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
         return Arrays.deepHashCode(new Object[] {
             assign,
             clear,
-            add,
-            remove
+            remove,
+            add
         });
     }
     
@@ -231,24 +231,6 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
-        case _ADD:
-          if (__field.type == TType.SET) {
-            Set<String> add;
-            {
-            TSet _set = oprot.readSetBegin();
-            add = new HashSet<String>(Math.max(0, _set.size));
-            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
-                
-                String _value1 = oprot.readString();
-                add.add(_value1);
-            }
-            oprot.readSetEnd();
-            }
-            builder.setAdd(add);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
         case _REMOVE:
           if (__field.type == TType.SET) {
             Set<String> remove;
@@ -263,6 +245,24 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
             oprot.readSetEnd();
             }
             builder.setRemove(remove);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _ADD:
+          if (__field.type == TType.SET) {
+            Set<String> add;
+            {
+            TSet _set = oprot.readSetBegin();
+            add = new HashSet<String>(Math.max(0, _set.size));
+            for (int _i = 0; (_set.size < 0) ? oprot.peekSet() : (_i < _set.size); _i++) {
+                
+                String _value1 = oprot.readString();
+                add.add(_value1);
+            }
+            oprot.readSetEnd();
+            }
+            builder.setAdd(add);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
@@ -292,9 +292,9 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
       oprot.writeFieldBegin(CLEAR_FIELD_DESC);
       oprot.writeBool(this.clear);
       oprot.writeFieldEnd();
-      if (this.add != null) {
-        oprot.writeFieldBegin(ADD_FIELD_DESC);
-        Set<String> _iter0 = this.add;
+      if (this.remove != null) {
+        oprot.writeFieldBegin(REMOVE_FIELD_DESC);
+        Set<String> _iter0 = this.remove;
         oprot.writeSetBegin(new TSet(TType.STRING, _iter0.size()));
         for (String _iter1 : _iter0) {
           oprot.writeString(_iter1);
@@ -302,9 +302,9 @@ public final class MyStructField22Patch implements com.facebook.thrift.payload.T
         oprot.writeSetEnd();
         oprot.writeFieldEnd();
       }
-      if (this.remove != null) {
-        oprot.writeFieldBegin(REMOVE_FIELD_DESC);
-        Set<String> _iter0 = this.remove;
+      if (this.add != null) {
+        oprot.writeFieldBegin(ADD_FIELD_DESC);
+        Set<String> _iter0 = this.add;
         oprot.writeSetBegin(new TSet(TType.STRING, _iter0.size()));
         for (String _iter1 : _iter0) {
           oprot.writeString(_iter1);

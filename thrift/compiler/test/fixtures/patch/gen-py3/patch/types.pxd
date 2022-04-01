@@ -188,8 +188,8 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" name
         bint operator>=(cStringPatch&)
         __optional_field_ref[string] assign_ref()
         __field_ref[cbool] clear_ref()
-        __field_ref[string] append_ref()
         __field_ref[string] prepend_ref()
+        __field_ref[string] append_ref()
 
 
     cdef cppclass cBinaryPatch "::apache::thrift::op::BinaryPatch":
@@ -441,8 +441,8 @@ cdef class StringPatch(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__StringPatch_FieldsSetter _fields_setter
     cdef inline object assign_impl(self)
     cdef inline object clear_impl(self)
-    cdef inline object append_impl(self)
     cdef inline object prepend_impl(self)
+    cdef inline object append_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cStringPatch])

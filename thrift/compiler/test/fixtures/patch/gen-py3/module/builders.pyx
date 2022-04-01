@@ -97,8 +97,8 @@ cdef class MyStructField21Patch_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self):
         yield "assign", self.assign
         yield "clear", self.clear
-        yield "append", self.append
         yield "prepend", self.prepend
+        yield "append", self.append
 
 cdef class OptionalMyStructField21Patch_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.OptionalMyStructField21Patch
@@ -115,8 +115,8 @@ cdef class MyStructField22Patch_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self):
         yield "assign", self.assign
         yield "clear", self.clear
-        yield "add", self.add
         yield "remove", self.remove
+        yield "add", self.add
 
 cdef class OptionalMyStructField22Patch_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.OptionalMyStructField22Patch
@@ -133,8 +133,8 @@ cdef class MyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
     def __iter__(self):
         yield "assign", self.assign
         yield "clear", self.clear
+        yield "put", self.put
         yield "add", self.add
-        yield "removeIf", self.removeIf
 
 cdef class OptionalMyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.OptionalMyStructField23Patch

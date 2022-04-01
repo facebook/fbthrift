@@ -16,10 +16,12 @@
 
 #pragma once
 
+#include <forward_list>
 #include <type_traits>
 #include <utility>
 
 #include <thrift/lib/cpp2/op/detail/BasePatch.h>
+#include <thrift/lib/cpp2/op/detail/ContainerPatch.h>
 #include <thrift/lib/cpp2/op/detail/StructPatch.h>
 #include <thrift/lib/cpp2/op/detail/ValuePatch.h>
 
@@ -218,7 +220,7 @@ using StringPatchAdapter = PatchAdapter<StringPatch>;
 using StructPatchAdapter = PatchAdapter<StructPatch>;
 
 // Adapters for containers.
-using ListPatchAdapter = AssignPatchAdapter;
+using ListPatchAdapter = PatchAdapter<ListPatch>;
 using SetPatchAdapter = AssignPatchAdapter;
 using MapPatchAdapter = AssignPatchAdapter;
 

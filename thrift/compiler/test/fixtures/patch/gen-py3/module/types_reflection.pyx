@@ -825,7 +825,7 @@ cdef __StructSpec get_reflection__MyStructField21Patch():
     spec.add_field(
         __FieldSpec._fbthrift_create(
             id=4,
-            name="append",
+            name="prepend",
             type=_module_types.List__i16,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
@@ -837,7 +837,7 @@ cdef __StructSpec get_reflection__MyStructField21Patch():
     spec.add_field(
         __FieldSpec._fbthrift_create(
             id=5,
-            name="prepend",
+            name="append",
             type=_module_types.List__i16,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
@@ -947,7 +947,7 @@ cdef __StructSpec get_reflection__MyStructField22Patch():
     spec.add_field(
         __FieldSpec._fbthrift_create(
             id=4,
-            name="add",
+            name="remove",
             type=_module_types.Set__string,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
@@ -959,7 +959,7 @@ cdef __StructSpec get_reflection__MyStructField22Patch():
     spec.add_field(
         __FieldSpec._fbthrift_create(
             id=5,
-            name="remove",
+            name="add",
             type=_module_types.Set__string,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
@@ -1068,8 +1068,8 @@ cdef __StructSpec get_reflection__MyStructField23Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
-            name="add",
+            id=7,
+            name="put",
             type=_module_types.Map__string_string,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
@@ -1080,8 +1080,8 @@ cdef __StructSpec get_reflection__MyStructField23Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=6,
-            name="removeIf",
+            id=5,
+            name="add",
             type=_module_types.Map__string_string,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,

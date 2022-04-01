@@ -402,33 +402,33 @@
             }
           }
         },
-        "append" : {
-          "type_enum" : "STRING",
-          "spec_args" : null,
-          "required" : true,
-          "source_range" : {
-            "begin" : {
-              "line" : 162,
-              "column" : 3
-            },
-            "end" : {
-              "line" : 162,
-              "column" : 19
-            }
-          }
-        },
         "prepend" : {
           "type_enum" : "STRING",
           "spec_args" : null,
           "required" : true,
           "source_range" : {
             "begin" : {
+              "line" : 162,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 162,
+              "column" : 20
+            }
+          }
+        },
+        "append" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
               "line" : 165,
               "column" : 3
             },
             "end" : {
               "line" : 165,
-              "column" : 20
+              "column" : 19
             }
           }
         }

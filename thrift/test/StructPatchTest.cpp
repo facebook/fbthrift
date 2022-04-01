@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/op/Get.h>
 #include <thrift/lib/cpp2/op/Patch.h>
@@ -24,12 +25,15 @@
 #include <thrift/test/gen-cpp2/StructPatchTest_types.h>
 
 namespace apache::thrift {
+namespace {
 using test::patch::MyData;
 using test::patch::MyStruct;
 using test::patch::MyStructPatch;
 using test::patch::MyStructValuePatch;
 
 using TestStructPatch = op::detail::StructPatch<MyStructValuePatch>;
+using ListPatch = std::decay_t<
+    decltype(std::declval<TestStructPatch>()->optListVal()->ensure())>;
 
 MyStruct testValue() {
   MyStruct val;
@@ -307,4 +311,21 @@ TEST(StructPatchTest, FieldPatch) {
   test::expectPatch(patch, {}, expected);
 }
 
+TEST(StructPatchTest, ListPatch) {
+  ListPatch patch;
+  patch.prepend({3, 4});
+  patch.emplace_front(2);
+  patch.push_front(1);
+  ListPatch::value_type actual{5, 6};
+  patch.append({7, 8});
+  patch.emplace_back(9);
+  patch.push_back(10);
+  test::expectPatch(
+      patch,
+      actual,
+      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+      {1, 2, 3, 4, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 7, 8, 9, 10});
+}
+
+} // namespace
 } // namespace apache::thrift

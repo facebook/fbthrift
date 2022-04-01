@@ -293,14 +293,14 @@ class StringPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         (
             4,  # id
             True,  # isUnqualified
-            "append",  # name
+            "prepend",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
         ),
         (
             5,  # id
             True,  # isUnqualified
-            "prepend",  # name
+            "append",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
         ),

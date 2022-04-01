@@ -1268,36 +1268,36 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'type' => \TType::BOOL,
     ),
     4 => shape(
-      'var' => 'append',
+      'var' => 'prepend',
       'type' => \TType::STRING,
     ),
     5 => shape(
-      'var' => 'prepend',
+      'var' => 'append',
       'type' => \TType::STRING,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'assign' => 1,
     'clear' => 2,
-    'append' => 4,
-    'prepend' => 5,
+    'prepend' => 4,
+    'append' => 5,
   ];
 
   const type TConstructorShape = shape(
     ?'assign' => ?string,
     ?'clear' => ?bool,
-    ?'append' => ?string,
     ?'prepend' => ?string,
+    ?'append' => ?string,
   );
 
   const type TShape = shape(
     ?'assign' => ?string,
     'clear' => bool,
-    'append' => string,
     'prepend' => string,
+    'append' => string,
     ...
   );
-  const int STRUCTURAL_ID = 4065365908896453442;
+  const int STRUCTURAL_ID = 232939075192446478;
   /**
    * Original thrift field:-
    * 1: string assign
@@ -1310,20 +1310,20 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public bool $clear;
   /**
    * Original thrift field:-
-   * 4: string append
-   */
-  public string $append;
-  /**
-   * Original thrift field:-
-   * 5: string prepend
+   * 4: string prepend
    */
   public string $prepend;
+  /**
+   * Original thrift field:-
+   * 5: string append
+   */
+  public string $append;
 
-  public function __construct(?string $assign = null, ?bool $clear = null, ?string $append = null, ?string $prepend = null  )[] {
+  public function __construct(?string $assign = null, ?bool $clear = null, ?string $prepend = null, ?string $append = null  )[] {
     $this->assign = $assign;
     $this->clear = $clear ?? false;
-    $this->append = $append ?? '';
     $this->prepend = $prepend ?? '';
+    $this->append = $append ?? '';
   }
 
   public static function withDefaultValues()[]: this {
@@ -1334,8 +1334,8 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return new static(
       Shapes::idx($shape, 'assign'),
       Shapes::idx($shape, 'clear'),
-      Shapes::idx($shape, 'append'),
       Shapes::idx($shape, 'prepend'),
+      Shapes::idx($shape, 'append'),
     );
   }
 
@@ -1379,7 +1379,7 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                 )
               ),
-              "name" => "append",
+              "name" => "prepend",
             )
           ),
           tmeta_ThriftField::fromShape(
@@ -1390,7 +1390,7 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                 )
               ),
-              "name" => "prepend",
+              "name" => "append",
             )
           ),
         ],
@@ -1420,8 +1420,8 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return new static(
       Shapes::idx($shape, 'assign'),
       $shape['clear'],
-      $shape['append'],
       $shape['prepend'],
+      $shape['append'],
     );
   }
 
@@ -1429,8 +1429,8 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return shape(
       'assign' => $this->assign,
       'clear' => $this->clear,
-      'append' => $this->append,
       'prepend' => $this->prepend,
+      'append' => $this->append,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -1450,11 +1450,11 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     if (idx($parsed, 'clear') !== null) {
       $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
     }    
-    if (idx($parsed, 'append') !== null) {
-      $this->append = /* HH_FIXME[4110] */ $parsed['append'];
-    }    
     if (idx($parsed, 'prepend') !== null) {
       $this->prepend = /* HH_FIXME[4110] */ $parsed['prepend'];
+    }    
+    if (idx($parsed, 'append') !== null) {
+      $this->append = /* HH_FIXME[4110] */ $parsed['append'];
     }    
   }
 

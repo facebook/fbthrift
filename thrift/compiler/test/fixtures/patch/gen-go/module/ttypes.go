@@ -3479,14 +3479,14 @@ func (p *MyStructPatch) String() string {
 // Attributes:
 //  - Assign: Assigns to a given struct. If set, all other operations are ignored.
 //  - Clear: Clears a given value. Applies first.
-//  - Append: Appends to a given list. Currently Ignored.
-//  - Prepend: Prepends to a given list. Currently Ignored.
+//  - Prepend: Prepends to the front of a given list.
+//  - Append: Appends to the back of a given list.
 type MyStructField21Patch struct {
   Assign []int16 `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
   // unused field # 3
-  Append []int16 `thrift:"append,4" db:"append" json:"append"`
-  Prepend []int16 `thrift:"prepend,5" db:"prepend" json:"prepend"`
+  Prepend []int16 `thrift:"prepend,4" db:"prepend" json:"prepend"`
+  Append []int16 `thrift:"append,5" db:"append" json:"append"`
 }
 
 func NewMyStructField21Patch() *MyStructField21Patch {
@@ -3503,12 +3503,12 @@ func (p *MyStructField21Patch) GetClear() bool {
   return p.Clear
 }
 
-func (p *MyStructField21Patch) GetAppend() []int16 {
-  return p.Append
-}
-
 func (p *MyStructField21Patch) GetPrepend() []int16 {
   return p.Prepend
+}
+
+func (p *MyStructField21Patch) GetAppend() []int16 {
+  return p.Append
 }
 func (p *MyStructField21Patch) IsSetAssign() bool {
   return p != nil && p.Assign != nil
@@ -3528,8 +3528,8 @@ func (p MyStructField21PatchBuilder) Emit() *MyStructField21Patch{
   return &MyStructField21Patch{
     Assign: p.obj.Assign,
     Clear: p.obj.Clear,
-    Append: p.obj.Append,
     Prepend: p.obj.Prepend,
+    Append: p.obj.Append,
   }
 }
 
@@ -3543,13 +3543,13 @@ func (m *MyStructField21PatchBuilder) Clear(clear bool) *MyStructField21PatchBui
   return m
 }
 
-func (m *MyStructField21PatchBuilder) Append(append []int16) *MyStructField21PatchBuilder {
-  m.obj.Append = append
+func (m *MyStructField21PatchBuilder) Prepend(prepend []int16) *MyStructField21PatchBuilder {
+  m.obj.Prepend = prepend
   return m
 }
 
-func (m *MyStructField21PatchBuilder) Prepend(prepend []int16) *MyStructField21PatchBuilder {
-  m.obj.Prepend = prepend
+func (m *MyStructField21PatchBuilder) Append(append []int16) *MyStructField21PatchBuilder {
+  m.obj.Append = append
   return m
 }
 
@@ -3563,13 +3563,13 @@ func (m *MyStructField21Patch) SetClear(clear bool) *MyStructField21Patch {
   return m
 }
 
-func (m *MyStructField21Patch) SetAppend(append []int16) *MyStructField21Patch {
-  m.Append = append
+func (m *MyStructField21Patch) SetPrepend(prepend []int16) *MyStructField21Patch {
+  m.Prepend = prepend
   return m
 }
 
-func (m *MyStructField21Patch) SetPrepend(prepend []int16) *MyStructField21Patch {
-  m.Prepend = prepend
+func (m *MyStructField21Patch) SetAppend(append []int16) *MyStructField21Patch {
+  m.Append = append
   return m
 }
 
@@ -3654,7 +3654,7 @@ func (p *MyStructField21Patch)  ReadField4(iprot thrift.Protocol) error {
     return thrift.PrependError("error reading list begin: ", err)
   }
   tSlice := make([]int16, 0, size)
-  p.Append =  tSlice
+  p.Prepend =  tSlice
   for i := 0; i < size; i ++ {
     var _elem6 int16
     if v, err := iprot.ReadI16(); err != nil {
@@ -3662,7 +3662,7 @@ func (p *MyStructField21Patch)  ReadField4(iprot thrift.Protocol) error {
     } else {
       _elem6 = v
     }
-    p.Append = append(p.Append, _elem6)
+    p.Prepend = append(p.Prepend, _elem6)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -3676,7 +3676,7 @@ func (p *MyStructField21Patch)  ReadField5(iprot thrift.Protocol) error {
     return thrift.PrependError("error reading list begin: ", err)
   }
   tSlice := make([]int16, 0, size)
-  p.Prepend =  tSlice
+  p.Append =  tSlice
   for i := 0; i < size; i ++ {
     var _elem7 int16
     if v, err := iprot.ReadI16(); err != nil {
@@ -3684,7 +3684,7 @@ func (p *MyStructField21Patch)  ReadField5(iprot thrift.Protocol) error {
     } else {
       _elem7 = v
     }
-    p.Prepend = append(p.Prepend, _elem7)
+    p.Append = append(p.Append, _elem7)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -3737,26 +3737,8 @@ func (p *MyStructField21Patch) writeField2(oprot thrift.Protocol) (err error) {
 }
 
 func (p *MyStructField21Patch) writeField4(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("append", thrift.LIST, 4); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:append: ", p), err) }
-  if err := oprot.WriteListBegin(thrift.I16, len(p.Append)); err != nil {
-    return thrift.PrependError("error writing list begin: ", err)
-  }
-  for _, v := range p.Append {
-    if err := oprot.WriteI16(int16(v)); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
-  }
-  if err := oprot.WriteListEnd(); err != nil {
-    return thrift.PrependError("error writing list end: ", err)
-  }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:append: ", p), err) }
-  return err
-}
-
-func (p *MyStructField21Patch) writeField5(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("prepend", thrift.LIST, 5); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:prepend: ", p), err) }
+  if err := oprot.WriteFieldBegin("prepend", thrift.LIST, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:prepend: ", p), err) }
   if err := oprot.WriteListBegin(thrift.I16, len(p.Prepend)); err != nil {
     return thrift.PrependError("error writing list begin: ", err)
   }
@@ -3768,7 +3750,25 @@ func (p *MyStructField21Patch) writeField5(oprot thrift.Protocol) (err error) {
     return thrift.PrependError("error writing list end: ", err)
   }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:prepend: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:prepend: ", p), err) }
+  return err
+}
+
+func (p *MyStructField21Patch) writeField5(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("append", thrift.LIST, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:append: ", p), err) }
+  if err := oprot.WriteListBegin(thrift.I16, len(p.Append)); err != nil {
+    return thrift.PrependError("error writing list begin: ", err)
+  }
+  for _, v := range p.Append {
+    if err := oprot.WriteI16(int16(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteListEnd(); err != nil {
+    return thrift.PrependError("error writing list end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:append: ", p), err) }
   return err
 }
 
@@ -3779,9 +3779,9 @@ func (p *MyStructField21Patch) String() string {
 
   assignVal := fmt.Sprintf("%v", p.Assign)
   clearVal := fmt.Sprintf("%v", p.Clear)
-  appendVal := fmt.Sprintf("%v", p.Append)
   prependVal := fmt.Sprintf("%v", p.Prepend)
-  return fmt.Sprintf("MyStructField21Patch({Assign:%s Clear:%s Append:%s Prepend:%s})", assignVal, clearVal, appendVal, prependVal)
+  appendVal := fmt.Sprintf("%v", p.Append)
+  return fmt.Sprintf("MyStructField21Patch({Assign:%s Clear:%s Prepend:%s Append:%s})", assignVal, clearVal, prependVal, appendVal)
 }
 
 // Attributes:
@@ -4079,14 +4079,14 @@ func (p *OptionalMyStructField21Patch) String() string {
 // Attributes:
 //  - Assign: Assigns to a given struct. If set, all other operations are ignored.
 //  - Clear: Clears a given value. Applies first.
-//  - Add: Adds entries, if not already present. Currently Ignored.
 //  - Remove: Removes entries, if present. Currently Ignored.
+//  - Add: Adds entries, if not already present. Currently Ignored.
 type MyStructField22Patch struct {
   Assign []string `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
   // unused field # 3
-  Add []string `thrift:"add,4" db:"add" json:"add"`
-  Remove []string `thrift:"remove,5" db:"remove" json:"remove"`
+  Remove []string `thrift:"remove,4" db:"remove" json:"remove"`
+  Add []string `thrift:"add,5" db:"add" json:"add"`
 }
 
 func NewMyStructField22Patch() *MyStructField22Patch {
@@ -4103,12 +4103,12 @@ func (p *MyStructField22Patch) GetClear() bool {
   return p.Clear
 }
 
-func (p *MyStructField22Patch) GetAdd() []string {
-  return p.Add
-}
-
 func (p *MyStructField22Patch) GetRemove() []string {
   return p.Remove
+}
+
+func (p *MyStructField22Patch) GetAdd() []string {
+  return p.Add
 }
 func (p *MyStructField22Patch) IsSetAssign() bool {
   return p != nil && p.Assign != nil
@@ -4128,8 +4128,8 @@ func (p MyStructField22PatchBuilder) Emit() *MyStructField22Patch{
   return &MyStructField22Patch{
     Assign: p.obj.Assign,
     Clear: p.obj.Clear,
-    Add: p.obj.Add,
     Remove: p.obj.Remove,
+    Add: p.obj.Add,
   }
 }
 
@@ -4143,13 +4143,13 @@ func (m *MyStructField22PatchBuilder) Clear(clear bool) *MyStructField22PatchBui
   return m
 }
 
-func (m *MyStructField22PatchBuilder) Add(add []string) *MyStructField22PatchBuilder {
-  m.obj.Add = add
+func (m *MyStructField22PatchBuilder) Remove(remove []string) *MyStructField22PatchBuilder {
+  m.obj.Remove = remove
   return m
 }
 
-func (m *MyStructField22PatchBuilder) Remove(remove []string) *MyStructField22PatchBuilder {
-  m.obj.Remove = remove
+func (m *MyStructField22PatchBuilder) Add(add []string) *MyStructField22PatchBuilder {
+  m.obj.Add = add
   return m
 }
 
@@ -4163,13 +4163,13 @@ func (m *MyStructField22Patch) SetClear(clear bool) *MyStructField22Patch {
   return m
 }
 
-func (m *MyStructField22Patch) SetAdd(add []string) *MyStructField22Patch {
-  m.Add = add
+func (m *MyStructField22Patch) SetRemove(remove []string) *MyStructField22Patch {
+  m.Remove = remove
   return m
 }
 
-func (m *MyStructField22Patch) SetRemove(remove []string) *MyStructField22Patch {
-  m.Remove = remove
+func (m *MyStructField22Patch) SetAdd(add []string) *MyStructField22Patch {
+  m.Add = add
   return m
 }
 
@@ -4254,7 +4254,7 @@ func (p *MyStructField22Patch)  ReadField4(iprot thrift.Protocol) error {
     return thrift.PrependError("error reading set begin: ", err)
   }
   tSet := make([]string, 0, size)
-  p.Add =  tSet
+  p.Remove =  tSet
   for i := 0; i < size; i ++ {
     var _elem10 string
     if v, err := iprot.ReadString(); err != nil {
@@ -4262,7 +4262,7 @@ func (p *MyStructField22Patch)  ReadField4(iprot thrift.Protocol) error {
     } else {
       _elem10 = v
     }
-    p.Add = append(p.Add, _elem10)
+    p.Remove = append(p.Remove, _elem10)
   }
   if err := iprot.ReadSetEnd(); err != nil {
     return thrift.PrependError("error reading set end: ", err)
@@ -4276,7 +4276,7 @@ func (p *MyStructField22Patch)  ReadField5(iprot thrift.Protocol) error {
     return thrift.PrependError("error reading set begin: ", err)
   }
   tSet := make([]string, 0, size)
-  p.Remove =  tSet
+  p.Add =  tSet
   for i := 0; i < size; i ++ {
     var _elem11 string
     if v, err := iprot.ReadString(); err != nil {
@@ -4284,7 +4284,7 @@ func (p *MyStructField22Patch)  ReadField5(iprot thrift.Protocol) error {
     } else {
       _elem11 = v
     }
-    p.Remove = append(p.Remove, _elem11)
+    p.Add = append(p.Add, _elem11)
   }
   if err := iprot.ReadSetEnd(); err != nil {
     return thrift.PrependError("error reading set end: ", err)
@@ -4344,33 +4344,8 @@ func (p *MyStructField22Patch) writeField2(oprot thrift.Protocol) (err error) {
 }
 
 func (p *MyStructField22Patch) writeField4(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("add", thrift.SET, 4); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:add: ", p), err) }
-  if err := oprot.WriteSetBegin(thrift.STRING, len(p.Add)); err != nil {
-    return thrift.PrependError("error writing set begin: ", err)
-  }
-  set := make(map[string]bool, len(p.Add))
-  for _, v := range p.Add {
-    if ok := set[v]; ok {
-      return thrift.PrependError("", fmt.Errorf("%T error writing set field: slice is not unique", v))
-    }
-    set[v] = true
-  }
-  for _, v := range p.Add {
-    if err := oprot.WriteString(string(v)); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
-  }
-  if err := oprot.WriteSetEnd(); err != nil {
-    return thrift.PrependError("error writing set end: ", err)
-  }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:add: ", p), err) }
-  return err
-}
-
-func (p *MyStructField22Patch) writeField5(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("remove", thrift.SET, 5); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:remove: ", p), err) }
+  if err := oprot.WriteFieldBegin("remove", thrift.SET, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:remove: ", p), err) }
   if err := oprot.WriteSetBegin(thrift.STRING, len(p.Remove)); err != nil {
     return thrift.PrependError("error writing set begin: ", err)
   }
@@ -4389,7 +4364,32 @@ func (p *MyStructField22Patch) writeField5(oprot thrift.Protocol) (err error) {
     return thrift.PrependError("error writing set end: ", err)
   }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:remove: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:remove: ", p), err) }
+  return err
+}
+
+func (p *MyStructField22Patch) writeField5(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("add", thrift.SET, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:add: ", p), err) }
+  if err := oprot.WriteSetBegin(thrift.STRING, len(p.Add)); err != nil {
+    return thrift.PrependError("error writing set begin: ", err)
+  }
+  set := make(map[string]bool, len(p.Add))
+  for _, v := range p.Add {
+    if ok := set[v]; ok {
+      return thrift.PrependError("", fmt.Errorf("%T error writing set field: slice is not unique", v))
+    }
+    set[v] = true
+  }
+  for _, v := range p.Add {
+    if err := oprot.WriteString(string(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteSetEnd(); err != nil {
+    return thrift.PrependError("error writing set end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:add: ", p), err) }
   return err
 }
 
@@ -4400,9 +4400,9 @@ func (p *MyStructField22Patch) String() string {
 
   assignVal := fmt.Sprintf("%v", p.Assign)
   clearVal := fmt.Sprintf("%v", p.Clear)
-  addVal := fmt.Sprintf("%v", p.Add)
   removeVal := fmt.Sprintf("%v", p.Remove)
-  return fmt.Sprintf("MyStructField22Patch({Assign:%s Clear:%s Add:%s Remove:%s})", assignVal, clearVal, addVal, removeVal)
+  addVal := fmt.Sprintf("%v", p.Add)
+  return fmt.Sprintf("MyStructField22Patch({Assign:%s Clear:%s Remove:%s Add:%s})", assignVal, clearVal, removeVal, addVal)
 }
 
 // Attributes:
@@ -4707,15 +4707,15 @@ func (p *OptionalMyStructField22Patch) String() string {
 // Attributes:
 //  - Assign: Assigns to a given struct. If set, all other operations are ignored.
 //  - Clear: Clears a given value. Applies first.
+//  - Put: Adds or assigns the given key/value pairs. Currently Ignored.
 //  - Add: Adds entries, if not already present. Currently Ignored.
-//  - RemoveIf: Removes the given key/value pairs, if present. Currently Ignored.
 type MyStructField23Patch struct {
   Assign map[string]string `thrift:"assign,1,optional" db:"assign" json:"assign,omitempty"`
   Clear bool `thrift:"clear,2" db:"clear" json:"clear"`
-  // unused field # 3
-  Add map[string]string `thrift:"add,4" db:"add" json:"add"`
-  // unused field # 5
-  RemoveIf map[string]string `thrift:"removeIf,6" db:"removeIf" json:"removeIf"`
+  // unused fields # 3 to 4
+  Add map[string]string `thrift:"add,5" db:"add" json:"add"`
+  // unused field # 6
+  Put map[string]string `thrift:"put,7" db:"put" json:"put"`
 }
 
 func NewMyStructField23Patch() *MyStructField23Patch {
@@ -4732,12 +4732,12 @@ func (p *MyStructField23Patch) GetClear() bool {
   return p.Clear
 }
 
-func (p *MyStructField23Patch) GetAdd() map[string]string {
-  return p.Add
+func (p *MyStructField23Patch) GetPut() map[string]string {
+  return p.Put
 }
 
-func (p *MyStructField23Patch) GetRemoveIf() map[string]string {
-  return p.RemoveIf
+func (p *MyStructField23Patch) GetAdd() map[string]string {
+  return p.Add
 }
 func (p *MyStructField23Patch) IsSetAssign() bool {
   return p != nil && p.Assign != nil
@@ -4757,8 +4757,8 @@ func (p MyStructField23PatchBuilder) Emit() *MyStructField23Patch{
   return &MyStructField23Patch{
     Assign: p.obj.Assign,
     Clear: p.obj.Clear,
+    Put: p.obj.Put,
     Add: p.obj.Add,
-    RemoveIf: p.obj.RemoveIf,
   }
 }
 
@@ -4772,13 +4772,13 @@ func (m *MyStructField23PatchBuilder) Clear(clear bool) *MyStructField23PatchBui
   return m
 }
 
-func (m *MyStructField23PatchBuilder) Add(add map[string]string) *MyStructField23PatchBuilder {
-  m.obj.Add = add
+func (m *MyStructField23PatchBuilder) Put(put map[string]string) *MyStructField23PatchBuilder {
+  m.obj.Put = put
   return m
 }
 
-func (m *MyStructField23PatchBuilder) RemoveIf(removeIf map[string]string) *MyStructField23PatchBuilder {
-  m.obj.RemoveIf = removeIf
+func (m *MyStructField23PatchBuilder) Add(add map[string]string) *MyStructField23PatchBuilder {
+  m.obj.Add = add
   return m
 }
 
@@ -4792,13 +4792,13 @@ func (m *MyStructField23Patch) SetClear(clear bool) *MyStructField23Patch {
   return m
 }
 
-func (m *MyStructField23Patch) SetAdd(add map[string]string) *MyStructField23Patch {
-  m.Add = add
+func (m *MyStructField23Patch) SetPut(put map[string]string) *MyStructField23Patch {
+  m.Put = put
   return m
 }
 
-func (m *MyStructField23Patch) SetRemoveIf(removeIf map[string]string) *MyStructField23Patch {
-  m.RemoveIf = removeIf
+func (m *MyStructField23Patch) SetAdd(add map[string]string) *MyStructField23Patch {
+  m.Add = add
   return m
 }
 
@@ -4823,12 +4823,12 @@ func (p *MyStructField23Patch) Read(iprot thrift.Protocol) error {
       if err := p.ReadField2(iprot); err != nil {
         return err
       }
-    case 4:
-      if err := p.ReadField4(iprot); err != nil {
+    case 7:
+      if err := p.ReadField7(iprot); err != nil {
         return err
       }
-    case 6:
-      if err := p.ReadField6(iprot); err != nil {
+    case 5:
+      if err := p.ReadField5(iprot); err != nil {
         return err
       }
     default:
@@ -4883,13 +4883,13 @@ func (p *MyStructField23Patch)  ReadField2(iprot thrift.Protocol) error {
   return nil
 }
 
-func (p *MyStructField23Patch)  ReadField4(iprot thrift.Protocol) error {
+func (p *MyStructField23Patch)  ReadField7(iprot thrift.Protocol) error {
   _, _, size, err := iprot.ReadMapBegin()
   if err != nil {
     return thrift.PrependError("error reading map begin: ", err)
   }
   tMap := make(map[string]string, size)
-  p.Add =  tMap
+  p.Put =  tMap
   for i := 0; i < size; i ++ {
     var _key15 string
     if v, err := iprot.ReadString(); err != nil {
@@ -4903,7 +4903,7 @@ func (p *MyStructField23Patch)  ReadField4(iprot thrift.Protocol) error {
     } else {
       _val16 = v
     }
-    p.Add[_key15] = _val16
+    p.Put[_key15] = _val16
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -4911,13 +4911,13 @@ func (p *MyStructField23Patch)  ReadField4(iprot thrift.Protocol) error {
   return nil
 }
 
-func (p *MyStructField23Patch)  ReadField6(iprot thrift.Protocol) error {
+func (p *MyStructField23Patch)  ReadField5(iprot thrift.Protocol) error {
   _, _, size, err := iprot.ReadMapBegin()
   if err != nil {
     return thrift.PrependError("error reading map begin: ", err)
   }
   tMap := make(map[string]string, size)
-  p.RemoveIf =  tMap
+  p.Add =  tMap
   for i := 0; i < size; i ++ {
     var _key17 string
     if v, err := iprot.ReadString(); err != nil {
@@ -4931,7 +4931,7 @@ func (p *MyStructField23Patch)  ReadField6(iprot thrift.Protocol) error {
     } else {
       _val18 = v
     }
-    p.RemoveIf[_key17] = _val18
+    p.Add[_key17] = _val18
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -4944,8 +4944,8 @@ func (p *MyStructField23Patch) Write(oprot thrift.Protocol) error {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
   if err := p.writeField2(oprot); err != nil { return err }
-  if err := p.writeField4(oprot); err != nil { return err }
-  if err := p.writeField6(oprot); err != nil { return err }
+  if err := p.writeField5(oprot); err != nil { return err }
+  if err := p.writeField7(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -4985,9 +4985,9 @@ func (p *MyStructField23Patch) writeField2(oprot thrift.Protocol) (err error) {
   return err
 }
 
-func (p *MyStructField23Patch) writeField4(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("add", thrift.MAP, 4); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:add: ", p), err) }
+func (p *MyStructField23Patch) writeField5(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("add", thrift.MAP, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:add: ", p), err) }
   if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Add)); err != nil {
     return thrift.PrependError("error writing map begin: ", err)
   }
@@ -5001,17 +5001,17 @@ func (p *MyStructField23Patch) writeField4(oprot thrift.Protocol) (err error) {
     return thrift.PrependError("error writing map end: ", err)
   }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:add: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:add: ", p), err) }
   return err
 }
 
-func (p *MyStructField23Patch) writeField6(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("removeIf", thrift.MAP, 6); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:removeIf: ", p), err) }
-  if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.RemoveIf)); err != nil {
+func (p *MyStructField23Patch) writeField7(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("put", thrift.MAP, 7); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:put: ", p), err) }
+  if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Put)); err != nil {
     return thrift.PrependError("error writing map begin: ", err)
   }
-  for k, v := range p.RemoveIf {
+  for k, v := range p.Put {
     if err := oprot.WriteString(string(k)); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
     if err := oprot.WriteString(string(v)); err != nil {
@@ -5021,7 +5021,7 @@ func (p *MyStructField23Patch) writeField6(oprot thrift.Protocol) (err error) {
     return thrift.PrependError("error writing map end: ", err)
   }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:removeIf: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:put: ", p), err) }
   return err
 }
 
@@ -5033,8 +5033,8 @@ func (p *MyStructField23Patch) String() string {
   assignVal := fmt.Sprintf("%v", p.Assign)
   clearVal := fmt.Sprintf("%v", p.Clear)
   addVal := fmt.Sprintf("%v", p.Add)
-  removeIfVal := fmt.Sprintf("%v", p.RemoveIf)
-  return fmt.Sprintf("MyStructField23Patch({Assign:%s Clear:%s Add:%s RemoveIf:%s})", assignVal, clearVal, addVal, removeIfVal)
+  putVal := fmt.Sprintf("%v", p.Put)
+  return fmt.Sprintf("MyStructField23Patch({Assign:%s Clear:%s Add:%s Put:%s})", assignVal, clearVal, addVal, putVal)
 }
 
 // Attributes:

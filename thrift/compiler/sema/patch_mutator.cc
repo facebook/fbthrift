@@ -128,83 +128,84 @@ struct PatchGen : StructGen {
     kClearId = 2,
     kPatchId = 3,
 
-    kAppendId = 4, // List, String, Binary Patch
-    kAddId = 4, // Set, Map Patch
+    kPrependId = 4, // List, String, Binary Patch
+    kRemoveId = 4, // Set, Map Patch
     kPatchAfterId = 4, // Optional Patch
 
-    kPrependId = 5, // List, String, Binary Patch
-    kRemoveId = 5, // Set, Map Patch
+    kAppendId = 5, // List, String, Binary Patch
+    kAddId = 5, // Set, Map Patch
 
-    kRemoveIfId = 6, // Map Patch
+    // TODO(afuller): Add 'replace' op.
+    // kReplaceId = 6,
+    kPutId = 7, // Map Patch
+
   };
 
-  // 1: optional {type} assign (thrift.box);
+  // {kAssignId}: optional {type} assign (thrift.box);
   t_field& assign(t_type_ref type) {
     return doc(
         "Assigns to a given struct. If set, all other operations are ignored.",
         box(field(kAssignId, type, "assign")));
   }
 
-  // 1: optional {type} ensure (thrift.box);
+  // {kEnsureId}: optional {type} ensure (thrift.box);
   t_field& ensure(t_type_ref type) {
     return doc(
         "Initializes any unset value. Applies third.",
         box(field(kEnsureId, type, "ensure")));
   }
 
-  // 2: bool clear;
+  // {kClearId}: bool clear;
   t_field& clear() {
     return doc(
         "Clears a given value. Applies first.",
         field(kClearId, t_base_type::t_bool(), "clear"));
   }
 
-  // 3: {patch_type} patch;
+  // {kPatchId}: {patch_type} patch;
   t_field& patch(t_type_ref patch_type) {
     return doc(
         "Patches a given value. Applies second.",
         field(kPatchId, patch_type, "patch"));
   }
-
-  // 4: {type} append;
-  t_field& append(t_type_ref type) {
-    return doc(
-        "Appends to a given list. Currently Ignored.",
-        field(kAppendId, type, "append"));
-  }
-  // 5: {type} prepend;
-  t_field& prepend(t_type_ref type) {
-    return doc(
-        "Prepends to a given list. Currently Ignored.",
-        field(kPrependId, type, "prepend"));
-  }
-
-  // 4: {type} add;
-  t_field& add(t_type_ref type) {
-    return doc(
-        "Adds entries, if not already present. Currently Ignored.",
-        field(kAddId, type, "add"));
-  }
-
-  // 5: {type} remove;
-  t_field& remove(t_type_ref type) {
-    return doc(
-        "Removes entries, if present. Currently Ignored.",
-        field(kRemoveId, type, "remove"));
-  }
-
-  // 4: {patch_type} patchAfter;
+  // {kPatchAfterId}: {patch_type} patchAfter;
   t_field& patchAfter(t_type_ref patch_type) {
     return doc(
         "Patches any set value, including newly set values. Applies fourth.",
         field(kPatchAfterId, patch_type, "patchAfter"));
   }
 
-  // 6: {type} removeIf;
-  t_field& removeIf(t_type_ref type) {
+  // {kPrependId}: {type} prepend;
+  t_field& prepend(t_type_ref type) {
     return doc(
-        "Removes the given key/value pairs, if present. Currently Ignored.",
-        field(kRemoveIfId, type, "removeIf"));
+        "Prepends to the front of a given list.",
+        field(kPrependId, type, "prepend"));
+  }
+  // {kAppendId}: {type} append;
+  t_field& append(t_type_ref type) {
+    return doc(
+        "Appends to the back of a given list.",
+        field(kAppendId, type, "append"));
+  }
+
+  // {kRemoveId}: {type} remove;
+  t_field& remove(t_type_ref type) {
+    return doc(
+        "Removes entries, if present. Currently Ignored.",
+        field(kRemoveId, type, "remove"));
+  }
+  // {kAddId}: {type} add;
+  t_field& add(t_type_ref type) {
+    return doc(
+        "Adds entries, if not already present. Currently Ignored.",
+        field(kAddId, type, "add"));
+  }
+
+  // {kPutId}: {type} put;
+  t_field& put(t_type_ref type) {
+    return doc(
+        "Adds or assigns the given key/value pairs. Currently Ignored.",
+        field(kPutId, type, "put"));
   }
 
   void set_adapter(std::string name) {
@@ -356,22 +357,28 @@ t_type_ref patch_generator::find_patch_type(
   gen.assign(field.type());
   if (auto* container = dynamic_cast<const t_container*>(type)) {
     gen.clear();
-    // TODO(afuller): support gen.patch(...).
     switch (container->container_type()) {
       case t_container::type::t_list:
-        gen.append(field.type());
+        // TODO(afuller): support 'patch'.
+        // TODO(afuller): support 'replace' op.
+        // TODO(afuller): support 'removeIf' op.
         gen.prepend(field.type());
+        gen.append(field.type());
         gen.set_adapter("ListPatchAdapter");
         break;
       case t_container::type::t_set:
-        gen.add(field.type());
+        // TODO(afuller): support 'replace' op.
         gen.remove(field.type());
+        gen.add(field.type());
         gen.set_adapter("SetPatchAdapter");
         break;
       case t_container::type::t_map:
+        // TODO(afuller): support 'patch' op.
+        // TODO(afuller): support 'remove' op.
+        // TODO(afuller): support 'replace' op.
+        // TODO(afuller): support 'removeIf' op.
+        gen.put(field.type());
         gen.add(field.type());
-        // TODO(afuller): support remove
-        gen.removeIf(field.type());
         gen.set_adapter("MapPatchAdapter");
         break;
     }

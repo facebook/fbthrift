@@ -142,10 +142,10 @@ pub mod types {
         pub assign: ::std::option::Option<::std::vec::Vec<::std::primitive::i16>>,
         #[doc = "Clears a given value. Applies first."]
         pub clear: ::std::primitive::bool,
-        #[doc = "Appends to a given list. Currently Ignored."]
-        pub append: ::std::vec::Vec<::std::primitive::i16>,
-        #[doc = "Prepends to a given list. Currently Ignored."]
+        #[doc = "Prepends to the front of a given list."]
         pub prepend: ::std::vec::Vec<::std::primitive::i16>,
+        #[doc = "Appends to the back of a given list."]
+        pub append: ::std::vec::Vec<::std::primitive::i16>,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -178,10 +178,10 @@ pub mod types {
         pub assign: ::std::option::Option<::std::collections::BTreeSet<::std::string::String>>,
         #[doc = "Clears a given value. Applies first."]
         pub clear: ::std::primitive::bool,
-        #[doc = "Adds entries, if not already present. Currently Ignored."]
-        pub add: ::std::collections::BTreeSet<::std::string::String>,
         #[doc = "Removes entries, if present. Currently Ignored."]
         pub remove: ::std::collections::BTreeSet<::std::string::String>,
+        #[doc = "Adds entries, if not already present. Currently Ignored."]
+        pub add: ::std::collections::BTreeSet<::std::string::String>,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -214,10 +214,10 @@ pub mod types {
         pub assign: ::std::option::Option<::std::collections::BTreeMap<::std::string::String, ::std::string::String>>,
         #[doc = "Clears a given value. Applies first."]
         pub clear: ::std::primitive::bool,
+        #[doc = "Adds or assigns the given key/value pairs. Currently Ignored."]
+        pub put: ::std::collections::BTreeMap<::std::string::String, ::std::string::String>,
         #[doc = "Adds entries, if not already present. Currently Ignored."]
         pub add: ::std::collections::BTreeMap<::std::string::String, ::std::string::String>,
-        #[doc = "Removes the given key/value pairs, if present. Currently Ignored."]
-        pub removeIf: ::std::collections::BTreeMap<::std::string::String, ::std::string::String>,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -1174,8 +1174,8 @@ pub mod types {
             Self {
                 assign: ::std::option::Option::None,
                 clear: ::std::default::Default::default(),
-                append: ::std::default::Default::default(),
                 prepend: ::std::default::Default::default(),
+                append: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -1187,8 +1187,8 @@ pub mod types {
                 .debug_struct("MyStructField21Patch")
                 .field("assign", &self.assign)
                 .field("clear", &self.clear)
-                .field("append", &self.append)
                 .field("prepend", &self.prepend)
+                .field("append", &self.append)
                 .finish()
         }
     }
@@ -1214,11 +1214,11 @@ pub mod types {
             p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
             ::fbthrift::Serialize::write(&self.clear, p);
             p.write_field_end();
-            p.write_field_begin("append", ::fbthrift::TType::List, 4);
-            ::fbthrift::Serialize::write(&self.append, p);
-            p.write_field_end();
-            p.write_field_begin("prepend", ::fbthrift::TType::List, 5);
+            p.write_field_begin("prepend", ::fbthrift::TType::List, 4);
             ::fbthrift::Serialize::write(&self.prepend, p);
+            p.write_field_end();
+            p.write_field_begin("append", ::fbthrift::TType::List, 5);
+            ::fbthrift::Serialize::write(&self.append, p);
             p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
@@ -1231,15 +1231,15 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("append", ::fbthrift::TType::List, 4),
+                ::fbthrift::Field::new("append", ::fbthrift::TType::List, 5),
                 ::fbthrift::Field::new("assign", ::fbthrift::TType::List, 1),
                 ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
-                ::fbthrift::Field::new("prepend", ::fbthrift::TType::List, 5),
+                ::fbthrift::Field::new("prepend", ::fbthrift::TType::List, 4),
             ];
             let mut field_assign = ::std::option::Option::None;
             let mut field_clear = ::std::option::Option::None;
-            let mut field_append = ::std::option::Option::None;
             let mut field_prepend = ::std::option::Option::None;
+            let mut field_append = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -1247,8 +1247,8 @@ pub mod types {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::List, 1) => field_assign = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::List, 4) => field_append = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::List, 5) => field_prepend = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::List, 4) => field_prepend = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::List, 5) => field_append = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1257,8 +1257,8 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 assign: field_assign,
                 clear: field_clear.unwrap_or_default(),
-                append: field_append.unwrap_or_default(),
                 prepend: field_prepend.unwrap_or_default(),
+                append: field_append.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
@@ -1366,8 +1366,8 @@ pub mod types {
             Self {
                 assign: ::std::option::Option::None,
                 clear: ::std::default::Default::default(),
-                add: ::std::default::Default::default(),
                 remove: ::std::default::Default::default(),
+                add: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -1379,8 +1379,8 @@ pub mod types {
                 .debug_struct("MyStructField22Patch")
                 .field("assign", &self.assign)
                 .field("clear", &self.clear)
-                .field("add", &self.add)
                 .field("remove", &self.remove)
+                .field("add", &self.add)
                 .finish()
         }
     }
@@ -1406,11 +1406,11 @@ pub mod types {
             p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
             ::fbthrift::Serialize::write(&self.clear, p);
             p.write_field_end();
-            p.write_field_begin("add", ::fbthrift::TType::Set, 4);
-            ::fbthrift::Serialize::write(&self.add, p);
-            p.write_field_end();
-            p.write_field_begin("remove", ::fbthrift::TType::Set, 5);
+            p.write_field_begin("remove", ::fbthrift::TType::Set, 4);
             ::fbthrift::Serialize::write(&self.remove, p);
+            p.write_field_end();
+            p.write_field_begin("add", ::fbthrift::TType::Set, 5);
+            ::fbthrift::Serialize::write(&self.add, p);
             p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
@@ -1423,15 +1423,15 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("add", ::fbthrift::TType::Set, 4),
+                ::fbthrift::Field::new("add", ::fbthrift::TType::Set, 5),
                 ::fbthrift::Field::new("assign", ::fbthrift::TType::Set, 1),
                 ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
-                ::fbthrift::Field::new("remove", ::fbthrift::TType::Set, 5),
+                ::fbthrift::Field::new("remove", ::fbthrift::TType::Set, 4),
             ];
             let mut field_assign = ::std::option::Option::None;
             let mut field_clear = ::std::option::Option::None;
-            let mut field_add = ::std::option::Option::None;
             let mut field_remove = ::std::option::Option::None;
+            let mut field_add = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -1439,8 +1439,8 @@ pub mod types {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::Set, 1) => field_assign = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Set, 4) => field_add = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Set, 5) => field_remove = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Set, 4) => field_remove = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Set, 5) => field_add = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1449,8 +1449,8 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 assign: field_assign,
                 clear: field_clear.unwrap_or_default(),
-                add: field_add.unwrap_or_default(),
                 remove: field_remove.unwrap_or_default(),
+                add: field_add.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
@@ -1558,8 +1558,8 @@ pub mod types {
             Self {
                 assign: ::std::option::Option::None,
                 clear: ::std::default::Default::default(),
+                put: ::std::default::Default::default(),
                 add: ::std::default::Default::default(),
-                removeIf: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -1571,8 +1571,8 @@ pub mod types {
                 .debug_struct("MyStructField23Patch")
                 .field("assign", &self.assign)
                 .field("clear", &self.clear)
+                .field("put", &self.put)
                 .field("add", &self.add)
-                .field("removeIf", &self.removeIf)
                 .finish()
         }
     }
@@ -1598,11 +1598,11 @@ pub mod types {
             p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
             ::fbthrift::Serialize::write(&self.clear, p);
             p.write_field_end();
-            p.write_field_begin("add", ::fbthrift::TType::Map, 4);
-            ::fbthrift::Serialize::write(&self.add, p);
+            p.write_field_begin("put", ::fbthrift::TType::Map, 7);
+            ::fbthrift::Serialize::write(&self.put, p);
             p.write_field_end();
-            p.write_field_begin("removeIf", ::fbthrift::TType::Map, 6);
-            ::fbthrift::Serialize::write(&self.removeIf, p);
+            p.write_field_begin("add", ::fbthrift::TType::Map, 5);
+            ::fbthrift::Serialize::write(&self.add, p);
             p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
@@ -1615,15 +1615,15 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("add", ::fbthrift::TType::Map, 4),
+                ::fbthrift::Field::new("add", ::fbthrift::TType::Map, 5),
                 ::fbthrift::Field::new("assign", ::fbthrift::TType::Map, 1),
                 ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
-                ::fbthrift::Field::new("removeIf", ::fbthrift::TType::Map, 6),
+                ::fbthrift::Field::new("put", ::fbthrift::TType::Map, 7),
             ];
             let mut field_assign = ::std::option::Option::None;
             let mut field_clear = ::std::option::Option::None;
+            let mut field_put = ::std::option::Option::None;
             let mut field_add = ::std::option::Option::None;
-            let mut field_removeIf = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -1631,8 +1631,8 @@ pub mod types {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::Map, 1) => field_assign = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Map, 4) => field_add = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Map, 6) => field_removeIf = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Map, 7) => field_put = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Map, 5) => field_add = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1641,8 +1641,8 @@ pub mod types {
             ::std::result::Result::Ok(Self {
                 assign: field_assign,
                 clear: field_clear.unwrap_or_default(),
+                put: field_put.unwrap_or_default(),
                 add: field_add.unwrap_or_default(),
-                removeIf: field_removeIf.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }

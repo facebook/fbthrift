@@ -158,11 +158,11 @@ struct StringPatch {
   // Clear a given string.
   2: bool clear;
 
-  // Append to a given value.
-  4: string append;
-
   // Prepend to a given value.
-  5: string prepend;
+  4: string prepend;
+
+  // Append to a given value.
+  5: string append;
 } (
   cpp.name = "StringPatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::StringPatchAdapter",

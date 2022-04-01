@@ -80,8 +80,8 @@ class DoublePatch_Builder(thrift.py3.builder.StructBuilder):
 class StringPatch_Builder(thrift.py3.builder.StructBuilder):
     assign: _typing.Optional[str]
     clear: _typing.Optional[bool]
-    append: _typing.Optional[str]
     prepend: _typing.Optional[str]
+    append: _typing.Optional[str]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

@@ -590,9 +590,9 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "append" : {
-            "name" : "append",
-            "docstring" : "Appends to a given list. Currently Ignored.\n",
+          "prepend" : {
+            "name" : "prepend",
+            "docstring" : "Prepends to the front of a given list.\n",
             "key" : 4,
             "lineno" : 33,
             "required" : "opt-in-req-out",
@@ -601,9 +601,9 @@
   "inner_type" : "i16"
 }
           },
-          "prepend" : {
-            "name" : "prepend",
-            "docstring" : "Prepends to a given list. Currently Ignored.\n",
+          "append" : {
+            "name" : "append",
+            "docstring" : "Appends to the back of a given list.\n",
             "key" : 5,
             "lineno" : 33,
             "required" : "opt-in-req-out",
@@ -688,9 +688,9 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "add" : {
-            "name" : "add",
-            "docstring" : "Adds entries, if not already present. Currently Ignored.\n",
+          "remove" : {
+            "name" : "remove",
+            "docstring" : "Removes entries, if present. Currently Ignored.\n",
             "key" : 4,
             "lineno" : 33,
             "required" : "opt-in-req-out",
@@ -699,9 +699,9 @@
   "inner_type" : "string"
 }
           },
-          "remove" : {
-            "name" : "remove",
-            "docstring" : "Removes entries, if present. Currently Ignored.\n",
+          "add" : {
+            "name" : "add",
+            "docstring" : "Adds entries, if not already present. Currently Ignored.\n",
             "key" : 5,
             "lineno" : 33,
             "required" : "opt-in-req-out",
@@ -787,10 +787,10 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "add" : {
-            "name" : "add",
-            "docstring" : "Adds entries, if not already present. Currently Ignored.\n",
-            "key" : 4,
+          "put" : {
+            "name" : "put",
+            "docstring" : "Adds or assigns the given key/value pairs. Currently Ignored.\n",
+            "key" : 7,
             "lineno" : 33,
             "required" : "opt-in-req-out",
             "type" : {
@@ -799,10 +799,10 @@
   "value_type" : "string"
 }
           },
-          "removeIf" : {
-            "name" : "removeIf",
-            "docstring" : "Removes the given key/value pairs, if present. Currently Ignored.\n",
-            "key" : 6,
+          "add" : {
+            "name" : "add",
+            "docstring" : "Adds entries, if not already present. Currently Ignored.\n",
+            "key" : 5,
             "lineno" : 33,
             "required" : "opt-in-req-out",
             "type" : {

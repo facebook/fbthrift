@@ -88,8 +88,8 @@ struct ForEachField<::cpp2::MyStructField21Patch> {
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).assign_ref()...);
     f(1, static_cast<T&&>(t).clear_ref()...);
-    f(2, static_cast<T&&>(t).append_ref()...);
-    f(3, static_cast<T&&>(t).prepend_ref()...);
+    f(2, static_cast<T&&>(t).prepend_ref()...);
+    f(3, static_cast<T&&>(t).append_ref()...);
   }
 };
 
@@ -110,8 +110,8 @@ struct ForEachField<::cpp2::MyStructField22Patch> {
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).assign_ref()...);
     f(1, static_cast<T&&>(t).clear_ref()...);
-    f(2, static_cast<T&&>(t).add_ref()...);
-    f(3, static_cast<T&&>(t).remove_ref()...);
+    f(2, static_cast<T&&>(t).remove_ref()...);
+    f(3, static_cast<T&&>(t).add_ref()...);
   }
 };
 
@@ -132,8 +132,8 @@ struct ForEachField<::cpp2::MyStructField23Patch> {
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).assign_ref()...);
     f(1, static_cast<T&&>(t).clear_ref()...);
-    f(2, static_cast<T&&>(t).add_ref()...);
-    f(3, static_cast<T&&>(t).removeIf_ref()...);
+    f(2, static_cast<T&&>(t).put_ref()...);
+    f(3, static_cast<T&&>(t).add_ref()...);
   }
 };
 

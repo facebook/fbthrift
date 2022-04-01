@@ -63,8 +63,8 @@ cdef class DoublePatch_Builder(thrift.py3.builder.StructBuilder):
 cdef class StringPatch_Builder(thrift.py3.builder.StructBuilder):
     cdef public str assign
     cdef public pbool clear
-    cdef public str append
     cdef public str prepend
+    cdef public str append
 
 
 cdef class BinaryPatch_Builder(thrift.py3.builder.StructBuilder):

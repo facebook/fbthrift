@@ -272,9 +272,9 @@ def _fbthrift_gen_metadata_struct_StringPatch(metadata_struct: _fbthrift_metadat
         ]),
         _fbthrift_metadata.ThriftField(id=2, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_BOOL_TYPE), name="clear", is_optional=False, structured_annotations=[
         ]),
-        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="append", is_optional=False, structured_annotations=[
+        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="prepend", is_optional=False, structured_annotations=[
         ]),
-        _fbthrift_metadata.ThriftField(id=5, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="prepend", is_optional=False, structured_annotations=[
+        _fbthrift_metadata.ThriftField(id=5, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="append", is_optional=False, structured_annotations=[
         ]),
     ]
     struct_dict = dict(metadata_struct.structs)
@@ -288,8 +288,8 @@ def _fbthrift_gen_metadata_struct_StringPatch(metadata_struct: _fbthrift_metadat
 
      # assign
      # clear
-     # append
      # prepend
+     # append
 
     return new_struct
 def gen_metadata_struct_StringPatch() -> _fbthrift_metadata.ThriftMetadata:

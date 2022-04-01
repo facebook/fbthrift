@@ -106,8 +106,8 @@ class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
 class MyStructField21Patch_Builder(thrift.py3.builder.StructBuilder):
     assign: _typing.Optional[list]
     clear: _typing.Optional[bool]
-    append: _typing.Optional[list]
     prepend: _typing.Optional[list]
+    append: _typing.Optional[list]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
@@ -124,8 +124,8 @@ class OptionalMyStructField21Patch_Builder(thrift.py3.builder.StructBuilder):
 class MyStructField22Patch_Builder(thrift.py3.builder.StructBuilder):
     assign: _typing.Optional[set]
     clear: _typing.Optional[bool]
-    add: _typing.Optional[set]
     remove: _typing.Optional[set]
+    add: _typing.Optional[set]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
@@ -142,8 +142,8 @@ class OptionalMyStructField22Patch_Builder(thrift.py3.builder.StructBuilder):
 class MyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
     assign: _typing.Optional[dict]
     clear: _typing.Optional[bool]
+    put: _typing.Optional[dict]
     add: _typing.Optional[dict]
-    removeIf: _typing.Optional[dict]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

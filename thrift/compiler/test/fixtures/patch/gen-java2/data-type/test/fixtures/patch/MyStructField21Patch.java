@@ -27,29 +27,29 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     public MyStructField21Patch(
         @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL) final List<Short> assign,
         @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=4, name="append", requiredness=Requiredness.NONE) final List<Short> append,
-        @com.facebook.swift.codec.ThriftField(value=5, name="prepend", requiredness=Requiredness.NONE) final List<Short> prepend
+        @com.facebook.swift.codec.ThriftField(value=4, name="prepend", requiredness=Requiredness.NONE) final List<Short> prepend,
+        @com.facebook.swift.codec.ThriftField(value=5, name="append", requiredness=Requiredness.NONE) final List<Short> append
     ) {
         this.assign = assign;
         this.clear = clear;
-        this.append = append;
         this.prepend = prepend;
+        this.append = append;
     }
     
     @ThriftConstructor
     protected MyStructField21Patch() {
       this.assign = null;
       this.clear = false;
-      this.append = null;
       this.prepend = null;
+      this.append = null;
     }
     
     public static class Builder {
     
         private List<Short> assign = null;
         private boolean clear = false;
-        private List<Short> append = null;
         private List<Short> prepend = null;
+        private List<Short> append = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL)
         public Builder setAssign(List<Short> assign) {
@@ -67,15 +67,7 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=4, name="append", requiredness=Requiredness.NONE)
-        public Builder setAppend(List<Short> append) {
-            this.append = append;
-            return this;
-        }
-    
-        public List<Short> getAppend() { return append; }
-    
-            @com.facebook.swift.codec.ThriftField(value=5, name="prepend", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="prepend", requiredness=Requiredness.NONE)
         public Builder setPrepend(List<Short> prepend) {
             this.prepend = prepend;
             return this;
@@ -83,12 +75,20 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     
         public List<Short> getPrepend() { return prepend; }
     
+            @com.facebook.swift.codec.ThriftField(value=5, name="append", requiredness=Requiredness.NONE)
+        public Builder setAppend(List<Short> append) {
+            this.append = append;
+            return this;
+        }
+    
+        public List<Short> getAppend() { return append; }
+    
         public Builder() { }
         public Builder(MyStructField21Patch other) {
             this.assign = other.assign;
             this.clear = other.clear;
-            this.append = other.append;
             this.prepend = other.prepend;
+            this.append = other.append;
         }
     
         @ThriftConstructor
@@ -96,8 +96,8 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
             MyStructField21Patch result = new MyStructField21Patch (
                 this.assign,
                 this.clear,
-                this.append,
-                this.prepend
+                this.prepend,
+                this.append
             );
             return result;
         }
@@ -112,12 +112,12 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
         private final boolean clear;
     public static final int _CLEAR = 2;
     private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
-        private final List<Short> append;
-    public static final int _APPEND = 4;
-    private static final TField APPEND_FIELD_DESC = new TField("append", TType.LIST, (short)4);
         private final List<Short> prepend;
-    public static final int _PREPEND = 5;
-    private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.LIST, (short)5);
+    public static final int _PREPEND = 4;
+    private static final TField PREPEND_FIELD_DESC = new TField("prepend", TType.LIST, (short)4);
+        private final List<Short> append;
+    public static final int _APPEND = 5;
+    private static final TField APPEND_FIELD_DESC = new TField("append", TType.LIST, (short)5);
     static {
       NAMES_TO_IDS.put("assign", 1);
       THRIFT_NAMES_TO_IDS.put("assign", 1);
@@ -125,12 +125,12 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
       NAMES_TO_IDS.put("clear", 2);
       THRIFT_NAMES_TO_IDS.put("clear", 2);
       FIELD_METADATA.put(2, CLEAR_FIELD_DESC);
-      NAMES_TO_IDS.put("append", 4);
-      THRIFT_NAMES_TO_IDS.put("append", 4);
-      FIELD_METADATA.put(4, APPEND_FIELD_DESC);
-      NAMES_TO_IDS.put("prepend", 5);
-      THRIFT_NAMES_TO_IDS.put("prepend", 5);
-      FIELD_METADATA.put(5, PREPEND_FIELD_DESC);
+      NAMES_TO_IDS.put("prepend", 4);
+      THRIFT_NAMES_TO_IDS.put("prepend", 4);
+      FIELD_METADATA.put(4, PREPEND_FIELD_DESC);
+      NAMES_TO_IDS.put("append", 5);
+      THRIFT_NAMES_TO_IDS.put("append", 5);
+      FIELD_METADATA.put(5, APPEND_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
         new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyStructField21Patch"), 
         MyStructField21Patch.class, MyStructField21Patch::read0));
@@ -147,21 +147,21 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=4, name="append", requiredness=Requiredness.NONE)
-    public List<Short> getAppend() { return append; }
+    @com.facebook.swift.codec.ThriftField(value=4, name="prepend", requiredness=Requiredness.NONE)
+    public List<Short> getPrepend() { return prepend; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=5, name="prepend", requiredness=Requiredness.NONE)
-    public List<Short> getPrepend() { return prepend; }
+    @com.facebook.swift.codec.ThriftField(value=5, name="append", requiredness=Requiredness.NONE)
+    public List<Short> getAppend() { return append; }
     
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("assign", assign);
         helper.add("clear", clear);
-        helper.add("append", append);
         helper.add("prepend", prepend);
+        helper.add("append", append);
         return helper.toString();
     }
     
@@ -179,8 +179,8 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
         return
             Objects.equals(assign, other.assign) &&
     Objects.equals(clear, other.clear) &&
-    Objects.equals(append, other.append) &&
     Objects.equals(prepend, other.prepend) &&
+    Objects.equals(append, other.append) &&
             true;
     }
     
@@ -189,8 +189,8 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
         return Arrays.deepHashCode(new Object[] {
             assign,
             clear,
-            append,
-            prepend
+            prepend,
+            append
         });
     }
     
@@ -233,24 +233,6 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
-        case _APPEND:
-          if (__field.type == TType.LIST) {
-            List<Short> append;
-            {
-            TList _list = oprot.readListBegin();
-            append = new ArrayList<Short>(Math.max(0, _list.size));
-            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
-                
-                short _value1 = oprot.readI16();
-                append.add(_value1);
-            }
-            oprot.readListEnd();
-            }
-            builder.setAppend(append);
-          } else {
-            TProtocolUtil.skip(oprot, __field.type);
-          }
-          break;
         case _PREPEND:
           if (__field.type == TType.LIST) {
             List<Short> prepend;
@@ -265,6 +247,24 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
             oprot.readListEnd();
             }
             builder.setPrepend(prepend);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _APPEND:
+          if (__field.type == TType.LIST) {
+            List<Short> append;
+            {
+            TList _list = oprot.readListBegin();
+            append = new ArrayList<Short>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                
+                short _value1 = oprot.readI16();
+                append.add(_value1);
+            }
+            oprot.readListEnd();
+            }
+            builder.setAppend(append);
           } else {
             TProtocolUtil.skip(oprot, __field.type);
           }
@@ -294,9 +294,9 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
       oprot.writeFieldBegin(CLEAR_FIELD_DESC);
       oprot.writeBool(this.clear);
       oprot.writeFieldEnd();
-      if (this.append != null) {
-        oprot.writeFieldBegin(APPEND_FIELD_DESC);
-        List<Short> _iter0 = this.append;
+      if (this.prepend != null) {
+        oprot.writeFieldBegin(PREPEND_FIELD_DESC);
+        List<Short> _iter0 = this.prepend;
         oprot.writeListBegin(new TList(TType.I16, _iter0.size()));
         for (short _iter1 : _iter0) {
           oprot.writeI16(_iter1);
@@ -304,9 +304,9 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
         oprot.writeListEnd();
         oprot.writeFieldEnd();
       }
-      if (this.prepend != null) {
-        oprot.writeFieldBegin(PREPEND_FIELD_DESC);
-        List<Short> _iter0 = this.prepend;
+      if (this.append != null) {
+        oprot.writeFieldBegin(APPEND_FIELD_DESC);
+        List<Short> _iter0 = this.append;
         oprot.writeListBegin(new TList(TType.I16, _iter0.size()));
         for (short _iter1 : _iter0) {
           oprot.writeI16(_iter1);

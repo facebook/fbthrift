@@ -190,15 +190,15 @@
             "required" : "opt-in-req-out",
             "type" : "bool"
           },
-          "append" : {
-            "name" : "append",
+          "prepend" : {
+            "name" : "prepend",
             "key" : 4,
             "lineno" : 162,
             "required" : "opt-in-req-out",
             "type" : "string"
           },
-          "prepend" : {
-            "name" : "prepend",
+          "append" : {
+            "name" : "append",
             "key" : 5,
             "lineno" : 165,
             "required" : "opt-in-req-out",

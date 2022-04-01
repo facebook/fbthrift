@@ -349,7 +349,7 @@ cdef __StructSpec get_reflection__StringPatch():
     spec.add_field(
         __FieldSpec._fbthrift_create(
             id=4,
-            name="append",
+            name="prepend",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
@@ -361,7 +361,7 @@ cdef __StructSpec get_reflection__StringPatch():
     spec.add_field(
         __FieldSpec._fbthrift_create(
             id=5,
-            name="prepend",
+            name="append",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,

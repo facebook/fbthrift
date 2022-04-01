@@ -93,8 +93,8 @@ cdef class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
 cdef class MyStructField21Patch_Builder(thrift.py3.builder.StructBuilder):
     cdef public list assign
     cdef public pbool clear
-    cdef public list append
     cdef public list prepend
+    cdef public list append
 
 
 cdef class OptionalMyStructField21Patch_Builder(thrift.py3.builder.StructBuilder):
@@ -107,8 +107,8 @@ cdef class OptionalMyStructField21Patch_Builder(thrift.py3.builder.StructBuilder
 cdef class MyStructField22Patch_Builder(thrift.py3.builder.StructBuilder):
     cdef public set assign
     cdef public pbool clear
-    cdef public set add
     cdef public set remove
+    cdef public set add
 
 
 cdef class OptionalMyStructField22Patch_Builder(thrift.py3.builder.StructBuilder):
@@ -121,8 +121,8 @@ cdef class OptionalMyStructField22Patch_Builder(thrift.py3.builder.StructBuilder
 cdef class MyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
     cdef public dict assign
     cdef public pbool clear
+    cdef public dict put
     cdef public dict add
-    cdef public dict removeIf
 
 
 cdef class OptionalMyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
