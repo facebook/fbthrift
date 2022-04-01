@@ -21,9 +21,9 @@
 #include <string>
 #include <utility>
 
-#include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_program_bundle.h>
+#include <thrift/compiler/diagnostic.h>
 #include <thrift/compiler/parse/parsing_driver.h>
 
 namespace apache {

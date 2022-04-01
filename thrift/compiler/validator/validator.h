@@ -19,8 +19,8 @@
 #include <string>
 #include <vector>
 
-#include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/visitor.h>
+#include <thrift/compiler/diagnostic.h>
 #include <thrift/compiler/lib/cpp2/util.h>
 
 #include <boost/optional.hpp>

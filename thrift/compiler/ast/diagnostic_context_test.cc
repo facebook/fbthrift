@@ -20,10 +20,10 @@
 
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
-#include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_type.h>
+#include <thrift/compiler/diagnostic.h>
 
 namespace apache::thrift::compiler {
 namespace {

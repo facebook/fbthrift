@@ -20,9 +20,9 @@
 
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
-#include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/diagnostic_context.h>
 #include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/diagnostic.h>
 
 namespace apache::thrift::compiler {
 namespace {
@@ -51,8 +51,8 @@ TEST_F(AstMutatorTest, Output) {
   mutator(ctx, mctx, program);
   EXPECT_THAT(
       results.diagnostics(),
-      UnorderedElementsAre(
-          diagnostic(diagnostic_level::info, "test", &program, &program)));
+      UnorderedElementsAre(diagnostic(
+          diagnostic_level::info, "test", program.path(), program.lineno())));
   ASSERT_EQ(program.services().size(), 1);
   EXPECT_EQ(program.services().front()->name(), "MagicService");
 }

@@ -16,15 +16,15 @@
 
 #pragma once
 
-#include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/visitor.h>
+#include <thrift/compiler/diagnostic.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-struct MutatorException : std::exception {
-  explicit MutatorException(diagnostic msg) : message(std::move(msg)) {}
+struct mutator_exception : std::exception {
+  explicit mutator_exception(diagnostic msg) : message(std::move(msg)) {}
 
   diagnostic message;
 };

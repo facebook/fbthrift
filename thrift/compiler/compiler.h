@@ -20,12 +20,13 @@
 #include <string>
 #include <vector>
 
-#include <thrift/compiler/ast/diagnostic.h>
-#include <thrift/compiler/ast/t_program_bundle.h>
+#include <thrift/compiler/diagnostic.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
+
+class t_program_bundle;
 
 enum class compile_retcode {
   success = 0,

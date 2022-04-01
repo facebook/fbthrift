@@ -29,7 +29,6 @@ BISON_TARGET(ThriftParser parse/thrifty.yy ${COMPILER_DIR}/thrifty.cc
 add_library(
   compiler_ast
 
-  ast/diagnostic.cc
   ast/t_base_type.cc
   ast/t_enum.cc
   ast/t_function.cc
@@ -52,6 +51,7 @@ add_library(
   compiler_base
 
   common.cc
+  diagnostic.cc
   filesystem.cc
   platform.cc
   util.cc

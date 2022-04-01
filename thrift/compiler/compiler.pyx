@@ -20,7 +20,7 @@ from libc.stdint cimport uint32_t
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-cdef extern from "thrift/compiler/ast/diagnostic.h" namespace "apache::thrift::compiler":
+cdef extern from "thrift/compiler/diagnostic.h" namespace "apache::thrift::compiler":
     cpdef enum class DiagnosticLevel "apache::thrift::compiler::diagnostic_level":
         failure
         parse_error

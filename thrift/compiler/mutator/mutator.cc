@@ -107,11 +107,11 @@ static void match_type_with_const_value(
       auto name = map_val.first->get_string();
       auto tfield = struct_type->get_field_by_name(name);
       if (!tfield) {
-        throw MutatorException(
+        throw mutator_exception(
             {diagnostic_level::failure,
              "field `" + name + "` does not exist.",
-             node,
-             program});
+             program->path(),
+             node->lineno()});
       }
       match_type_with_const_value(
           node, program, tfield->get_type(), map_val.second);

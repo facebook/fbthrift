@@ -18,8 +18,8 @@
 #include <thrift/compiler/sema/standard_mutator.h>
 
 #include <folly/portability/GTest.h>
-#include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/diagnostic_context.h>
+#include <thrift/compiler/diagnostic.h>
 
 namespace apache::thrift::compiler {
 namespace {

@@ -19,6 +19,7 @@
 #include <folly/portability/GTest.h>
 
 #include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/ast/t_program_bundle.h>
 #include <thrift/compiler/codemod/file_manager.h>
 #include <thrift/compiler/compiler.h>
 

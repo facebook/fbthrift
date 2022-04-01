@@ -22,14 +22,11 @@
 #include <utility>
 #include <vector>
 
-#include <thrift/compiler/ast/t_node.h>
-#include <thrift/compiler/ast/t_program.h>
-
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-// Diagnostic level.
+// A diagnostic level.
 enum class diagnostic_level {
   failure,
   // TODO(afuller): Merge parse_error into failure.
@@ -40,18 +37,18 @@ enum class diagnostic_level {
 };
 
 /**
- * A diagnostic message
+ * A diagnostic message.
  */
 class diagnostic {
  public:
   /**
-   * Constructor for diagnostic
+   * Creates a diagnostic.
    *
    * @param level      - diagnostic level
    * @param message    - detailed diagnostic message
    * @param file       - file path location of diagnostic
    * @param line       - line location of diagnostic in the file, if known
-   * @param token      - the last token, if applicable.
+   * @param token      - the last token, if applicable
    * @param name       - name given to this diagnostic, if any
    */
   diagnostic(
@@ -67,19 +64,6 @@ class diagnostic {
         line_(line),
         token_(std::move(token)),
         name_(std::move(name)) {}
-  diagnostic(
-      diagnostic_level level,
-      std::string message,
-      const t_node* node,
-      const t_program* program,
-      std::string name = "")
-      : diagnostic(
-            level,
-            std::move(message),
-            program->path(),
-            node->lineno(),
-            "",
-            std::move(name)) {}
 
   diagnostic_level level() const { return level_; }
   const std::string& message() const { return message_; }
@@ -123,7 +107,9 @@ class diagnostic_results {
 
   const std::vector<diagnostic>& diagnostics() const& { return diagnostics_; }
   std::vector<diagnostic>&& diagnostics() && { return std::move(diagnostics_); }
+
   void add(diagnostic diag);
+
   template <typename C>
   void add_all(C&& diags);
 

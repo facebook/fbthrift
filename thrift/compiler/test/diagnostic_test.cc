@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/ast/diagnostic.h>
+#include <thrift/compiler/diagnostic.h>
 
 #include <folly/portability/GTest.h>
 

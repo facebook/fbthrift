@@ -37,9 +37,10 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/filesystem.hpp>
 
-#include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/diagnostic_context.h>
+#include <thrift/compiler/ast/t_program_bundle.h>
 #include <thrift/compiler/common.h>
+#include <thrift/compiler/diagnostic.h>
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/mutator/mutator.h>
 #include <thrift/compiler/parse/parsing_driver.h>
@@ -454,7 +455,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
   // TODO(afuller): Migrate to ast_mutator.
   try {
     mutator::mutate(program->root_program());
-  } catch (MutatorException& e) {
+  } catch (mutator_exception& e) {
     ctx.report(std::move(e.message));
     return result;
   }
