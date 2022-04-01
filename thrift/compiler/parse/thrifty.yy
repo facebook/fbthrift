@@ -60,9 +60,11 @@ std::unique_ptr<T> own(T* ptr) {
   return std::unique_ptr<T>(ptr);
 }
 
+const yy::parser::symbol_type error = yy::parser::make_tok_error(yy::location());
+
 yy::parser::symbol_type parse_lex(parsing_driver& driver, YYSTYPE*, YYLTYPE*) {
   auto token = driver.get_lexer().get_next_token();
-  if (token.token() == yy::parser::token::tok_error) {
+  if (token.type_get() == error.type_get()) {
     driver.end_parsing();
   }
   return token;
