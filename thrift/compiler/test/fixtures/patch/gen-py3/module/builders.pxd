@@ -122,7 +122,6 @@ cdef class MyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
     cdef public dict assign
     cdef public pbool clear
     cdef public dict put
-    cdef public dict add
 
 
 cdef class OptionalMyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):

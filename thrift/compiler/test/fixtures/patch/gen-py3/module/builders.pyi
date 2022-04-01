@@ -143,7 +143,6 @@ class MyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
     assign: _typing.Optional[dict]
     clear: _typing.Optional[bool]
     put: _typing.Optional[dict]
-    add: _typing.Optional[dict]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

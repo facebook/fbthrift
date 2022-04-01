@@ -1777,7 +1777,6 @@ MyStructField23Patch::MyStructField23Patch(MyStructField23Patch&& other) noexcep
     __fbthrift_field_assign(std::move(other.__fbthrift_field_assign)),
     __fbthrift_field_clear(std::move(other.__fbthrift_field_clear)),
     __fbthrift_field_put(std::move(other.__fbthrift_field_put)),
-    __fbthrift_field_add(std::move(other.__fbthrift_field_add)),
     __isset(other.__isset) {
 }
 
@@ -1785,21 +1784,18 @@ MyStructField23Patch& MyStructField23Patch::operator=(FOLLY_MAYBE_UNUSED MyStruc
     this->__fbthrift_field_assign = std::move(other.__fbthrift_field_assign);
     this->__fbthrift_field_clear = std::move(other.__fbthrift_field_clear);
     this->__fbthrift_field_put = std::move(other.__fbthrift_field_put);
-    this->__fbthrift_field_add = std::move(other.__fbthrift_field_add);
     __isset = other.__isset;
     return *this;
 }
 
 
-MyStructField23Patch::MyStructField23Patch(apache::thrift::FragileConstructor, ::std::map<::std::string, ::std::string> assign__arg, bool clear__arg, ::std::map<::std::string, ::std::string> put__arg, ::std::map<::std::string, ::std::string> add__arg) :
+MyStructField23Patch::MyStructField23Patch(apache::thrift::FragileConstructor, ::std::map<::std::string, ::std::string> assign__arg, bool clear__arg, ::std::map<::std::string, ::std::string> put__arg) :
     __fbthrift_field_assign(std::move(assign__arg)),
     __fbthrift_field_clear(std::move(clear__arg)),
-    __fbthrift_field_put(std::move(put__arg)),
-    __fbthrift_field_add(std::move(add__arg)) {
+    __fbthrift_field_put(std::move(put__arg)) {
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
   __isset.set(folly::index_constant<2>(), true);
-  __isset.set(folly::index_constant<3>(), true);
 }
 
 
@@ -1808,7 +1804,6 @@ void MyStructField23Patch::__fbthrift_clear() {
   this->__fbthrift_field_assign.clear();
   this->__fbthrift_field_clear = bool();
   this->__fbthrift_field_put.clear();
-  this->__fbthrift_field_add.clear();
   __isset = {};
 }
 
@@ -1829,9 +1824,6 @@ bool MyStructField23Patch::operator==(const MyStructField23Patch& rhs) const {
   if (!(lhs.put_ref() == rhs.put_ref())) {
     return false;
   }
-  if (!(lhs.add_ref() == rhs.add_ref())) {
-    return false;
-  }
   return true;
 }
 
@@ -1847,9 +1839,6 @@ bool MyStructField23Patch::operator<(const MyStructField23Patch& rhs) const {
   }
   if (!(lhs.put_ref() == rhs.put_ref())) {
     return lhs.put_ref() < rhs.put_ref();
-  }
-  if (!(lhs.add_ref() == rhs.add_ref())) {
-    return lhs.add_ref() < rhs.add_ref();
   }
   return false;
 }
@@ -1870,21 +1859,12 @@ const ::std::map<::std::string, ::std::string>& MyStructField23Patch::get_put() 
   return std::move(__fbthrift_field_put);
 }
 
-const ::std::map<::std::string, ::std::string>& MyStructField23Patch::get_add() const& {
-  return __fbthrift_field_add;
-}
-
-::std::map<::std::string, ::std::string> MyStructField23Patch::get_add() && {
-  return std::move(__fbthrift_field_add);
-}
-
 
 void swap(MyStructField23Patch& a, MyStructField23Patch& b) {
   using ::std::swap;
   swap(a.assign_ref().value_unchecked(), b.assign_ref().value_unchecked());
   swap(a.clear_ref().value(), b.clear_ref().value());
   swap(a.put_ref().value(), b.put_ref().value());
-  swap(a.add_ref().value(), b.add_ref().value());
   swap(a.__isset, b.__isset);
 }
 

@@ -178,9 +178,9 @@ pub mod types {
         pub assign: ::std::option::Option<::std::collections::BTreeSet<::std::string::String>>,
         #[doc = "Clears a given value. Applies first."]
         pub clear: ::std::primitive::bool,
-        #[doc = "Removes entries, if present. Currently Ignored."]
+        #[doc = "Removes entries, if present. Applies thrid."]
         pub remove: ::std::collections::BTreeSet<::std::string::String>,
-        #[doc = "Adds entries, if not already present. Currently Ignored."]
+        #[doc = "Adds entries, if not already present. Applies fourth."]
         pub add: ::std::collections::BTreeSet<::std::string::String>,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
@@ -216,8 +216,6 @@ pub mod types {
         pub clear: ::std::primitive::bool,
         #[doc = "Adds or assigns the given key/value pairs. Currently Ignored."]
         pub put: ::std::collections::BTreeMap<::std::string::String, ::std::string::String>,
-        #[doc = "Adds entries, if not already present. Currently Ignored."]
-        pub add: ::std::collections::BTreeMap<::std::string::String, ::std::string::String>,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -1559,7 +1557,6 @@ pub mod types {
                 assign: ::std::option::Option::None,
                 clear: ::std::default::Default::default(),
                 put: ::std::default::Default::default(),
-                add: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -1572,7 +1569,6 @@ pub mod types {
                 .field("assign", &self.assign)
                 .field("clear", &self.clear)
                 .field("put", &self.put)
-                .field("add", &self.add)
                 .finish()
         }
     }
@@ -1601,9 +1597,6 @@ pub mod types {
             p.write_field_begin("put", ::fbthrift::TType::Map, 7);
             ::fbthrift::Serialize::write(&self.put, p);
             p.write_field_end();
-            p.write_field_begin("add", ::fbthrift::TType::Map, 5);
-            ::fbthrift::Serialize::write(&self.add, p);
-            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -1615,7 +1608,6 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("add", ::fbthrift::TType::Map, 5),
                 ::fbthrift::Field::new("assign", ::fbthrift::TType::Map, 1),
                 ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
                 ::fbthrift::Field::new("put", ::fbthrift::TType::Map, 7),
@@ -1623,7 +1615,6 @@ pub mod types {
             let mut field_assign = ::std::option::Option::None;
             let mut field_clear = ::std::option::Option::None;
             let mut field_put = ::std::option::Option::None;
-            let mut field_add = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -1632,7 +1623,6 @@ pub mod types {
                     (::fbthrift::TType::Map, 1) => field_assign = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Map, 7) => field_put = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Map, 5) => field_add = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1642,7 +1632,6 @@ pub mod types {
                 assign: field_assign,
                 clear: field_clear.unwrap_or_default(),
                 put: field_put.unwrap_or_default(),
-                add: field_add.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }

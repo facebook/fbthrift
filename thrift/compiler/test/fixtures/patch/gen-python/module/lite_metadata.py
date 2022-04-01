@@ -455,8 +455,6 @@ def _fbthrift_gen_metadata_struct_MyStructField23Patch(metadata_struct: _fbthrif
         ]),
         _fbthrift_metadata.ThriftField(id=7, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="put", is_optional=False, structured_annotations=[
         ]),
-        _fbthrift_metadata.ThriftField(id=5, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="add", is_optional=False, structured_annotations=[
-        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
@@ -470,8 +468,6 @@ def _fbthrift_gen_metadata_struct_MyStructField23Patch(metadata_struct: _fbthrif
      # clear
      # key
      # val  # put
-     # key
-     # val  # add
 
     return new_struct
 def gen_metadata_struct_MyStructField23Patch() -> _fbthrift_metadata.ThriftMetadata:

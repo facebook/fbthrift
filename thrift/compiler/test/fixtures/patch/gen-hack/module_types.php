@@ -3387,14 +3387,14 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
    */
   public bool $clear;
   /**
-   * Removes entries, if present. Currently Ignored.
+   * Removes entries, if present. Applies thrid.
    * 
    * Original thrift field:-
    * 4: set<string> remove
    */
   public Set<string> $remove;
   /**
-   * Adds entries, if not already present. Currently Ignored.
+   * Adds entries, if not already present. Applies fourth.
    * 
    * Original thrift field:-
    * 5: set<string> add
@@ -3862,42 +3862,26 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
       ),
       'format' => 'collection',
     ),
-    5 => shape(
-      'var' => 'add',
-      'type' => \TType::MAP,
-      'ktype' => \TType::STRING,
-      'vtype' => \TType::STRING,
-      'key' => shape(
-        'type' => \TType::STRING,
-      ),
-      'val' => shape(
-        'type' => \TType::STRING,
-      ),
-      'format' => 'collection',
-    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'assign' => 1,
     'clear' => 2,
     'put' => 7,
-    'add' => 5,
   ];
 
   const type TConstructorShape = shape(
     ?'assign' => ?Map<string, string>,
     ?'clear' => ?bool,
     ?'put' => ?Map<string, string>,
-    ?'add' => ?Map<string, string>,
   );
 
   const type TShape = shape(
     ?'assign' => ?dict<string, string>,
     'clear' => bool,
     'put' => dict<string, string>,
-    'add' => dict<string, string>,
     ...
   );
-  const int STRUCTURAL_ID = 8864054362440719758;
+  const int STRUCTURAL_ID = 703634612098794818;
   /**
    * Assigns to a given struct. If set, all other operations are ignored.
    * 
@@ -3919,19 +3903,11 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
    * 7: map<string, string> put
    */
   public Map<string, string> $put;
-  /**
-   * Adds entries, if not already present. Currently Ignored.
-   * 
-   * Original thrift field:-
-   * 5: map<string, string> add
-   */
-  public Map<string, string> $add;
 
-  public function __construct(?Map<string, string> $assign = null, ?bool $clear = null, ?Map<string, string> $put = null, ?Map<string, string> $add = null  )[] {
+  public function __construct(?Map<string, string> $assign = null, ?bool $clear = null, ?Map<string, string> $put = null  )[] {
     $this->assign = $assign;
     $this->clear = $clear ?? false;
     $this->put = $put ?? Map {};
-    $this->add = $add ?? Map {};
   }
 
   public static function withDefaultValues()[]: this {
@@ -3943,7 +3919,6 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
       Shapes::idx($shape, 'assign'),
       Shapes::idx($shape, 'clear'),
       Shapes::idx($shape, 'put'),
-      Shapes::idx($shape, 'add'),
     );
   }
 
@@ -4016,30 +3991,6 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
               "name" => "put",
             )
           ),
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 5,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_map" => tmeta_ThriftMapType::fromShape(
-                    shape(
-                      "keyType" => tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                        )
-                      ),
-                      "valueType" => tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                        )
-                      ),
-                    )
-                  ),
-                )
-              ),
-              "name" => "add",
-            )
-          ),
         ],
         "is_union" => false,
       )
@@ -4059,7 +4010,6 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
       Shapes::idx($shape, 'assign') === null ? null : ((new Map($shape['assign']))),
       $shape['clear'],
       (new Map($shape['put'])),
-      (new Map($shape['add'])),
     );
   }
 
@@ -4069,7 +4019,6 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
         |> $$ === null ? null : dict($$),
       'clear' => $this->clear,
       'put' => dict($this->put),
-      'add' => dict($this->add),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -4105,16 +4054,6 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
         $_container10[$_key7] = $_value11;
       }
       $this->put = $_container10;
-    }    
-    if (idx($parsed, 'add') !== null) {
-      $_json15 = /* HH_FIXME[4110] */ $parsed['add'];
-      $_container16 = Map {};
-      foreach(/* HH_FIXME[4110] */ $_json15 as $_key13 => $_value14) {
-        $_value17 = '';
-        $_value17 = $_value14;
-        $_container16[$_key13] = $_value17;
-      }
-      $this->add = $_container16;
     }    
   }
 

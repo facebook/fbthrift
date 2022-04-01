@@ -915,7 +915,6 @@ cdef class __MyStructField23Patch_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"assign")] = __MyStructField23Patch_FieldsSetter._set_field_0
         __fbthrift_inst._setters[__cstring_view(<const char*>"clear")] = __MyStructField23Patch_FieldsSetter._set_field_1
         __fbthrift_inst._setters[__cstring_view(<const char*>"put")] = __MyStructField23Patch_FieldsSetter._set_field_2
-        __fbthrift_inst._setters[__cstring_view(<const char*>"add")] = __MyStructField23Patch_FieldsSetter._set_field_3
         return __fbthrift_inst
 
     cdef void set_field(__MyStructField23Patch_FieldsSetter self, const char* name, object value) except *:
@@ -947,13 +946,6 @@ cdef class __MyStructField23Patch_FieldsSetter(__StructFieldsSetter):
             __reset_field[_module_types.cMyStructField23Patch](deref(self._struct_cpp_obj), 2)
             return
         deref(self._struct_cpp_obj).put_ref().assign(deref(_module_types.Map__string_string(_fbthrift_value)._cpp_obj))
-
-    cdef void _set_field_3(self, _fbthrift_value) except *:
-        # for field add
-        if _fbthrift_value is None:
-            __reset_field[_module_types.cMyStructField23Patch](deref(self._struct_cpp_obj), 3)
-            return
-        deref(self._struct_cpp_obj).add_ref().assign(deref(_module_types.Map__string_string(_fbthrift_value)._cpp_obj))
 
 
 @__cython.auto_pickle(False)

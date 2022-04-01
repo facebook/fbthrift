@@ -2874,23 +2874,6 @@ _readField_put:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           7,
-          5,
-          apache::thrift::protocol::T_MAP))) {
-    goto _loop;
-  }
-_readField_add:
-  {
-    _readState.beforeSubobject(iprot);
-    this->__fbthrift_field_add = ::std::map<::std::string, ::std::string>();
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::string>, ::std::map<::std::string, ::std::string>>::readWithContext(*iprot, this->__fbthrift_field_add, _readState);
-    _readState.afterSubobject(iprot);
-    
-  }
- this->__isset.set(3, true);
-
-  if (UNLIKELY(!_readState.advanceToNextField(
-          iprot,
-          5,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -2935,14 +2918,6 @@ _loop:
         goto _skip;
       }
     }
-    case 5:
-    {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_MAP))) {
-        goto _readField_add;
-      } else {
-        goto _skip;
-      }
-    }
     default:
     {
 _skip:
@@ -2970,10 +2945,6 @@ uint32_t MyStructField23Patch::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("put", apache::thrift::protocol::T_MAP, 7);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::string>, ::std::map<::std::string, ::std::string>>::serializedSize<false>(*prot_, this->__fbthrift_field_put);
   }
-  {
-    xfer += prot_->serializedFieldSize("add", apache::thrift::protocol::T_MAP, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::string>, ::std::map<::std::string, ::std::string>>::serializedSize<false>(*prot_, this->__fbthrift_field_add);
-  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -2993,10 +2964,6 @@ uint32_t MyStructField23Patch::serializedSizeZC(Protocol_ const* prot_) const {
   {
     xfer += prot_->serializedFieldSize("put", apache::thrift::protocol::T_MAP, 7);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::string>, ::std::map<::std::string, ::std::string>>::serializedSize<false>(*prot_, this->__fbthrift_field_put);
-  }
-  {
-    xfer += prot_->serializedFieldSize("add", apache::thrift::protocol::T_MAP, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::string>, ::std::map<::std::string, ::std::string>>::serializedSize<false>(*prot_, this->__fbthrift_field_add);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -3028,13 +2995,6 @@ uint32_t MyStructField23Patch::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_MAP, 7, kPrevFieldId>(*prot_, "put", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::string>, ::std::map<::std::string, ::std::string>>::write(*prot_, this->__fbthrift_field_put);
-    xfer += prot_->writeFieldEnd();
-  }
-  {
-    constexpr int16_t kPrevFieldId = 7;
-    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_MAP, 5, kPrevFieldId>(*prot_, "add", previousFieldHasValue);
-    previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::string>, ::std::map<::std::string, ::std::string>>::write(*prot_, this->__fbthrift_field_add);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

@@ -1316,21 +1316,6 @@
               "column" : 0
             }
           }
-        },
-        "add" : {
-          "type_enum" : "MAP",
-          "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } ,
-          "required" : true,
-          "source_range" : {
-            "begin" : {
-              "line" : 0,
-              "column" : 0
-            },
-            "end" : {
-              "line" : 0,
-              "column" : 0
-            }
-          }
         }
       },
       "source_range" : {

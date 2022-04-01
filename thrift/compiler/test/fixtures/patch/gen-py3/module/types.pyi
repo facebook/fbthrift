@@ -610,7 +610,6 @@ class MyStructField23Patch(thrift.py3.types.Struct, _typing.Hashable):
         assign: bool
         clear: bool
         put: bool
-        add: bool
         pass
 
     assign: Final[_typing.Optional[_typing.Mapping[str, str]]] = ...
@@ -619,22 +618,18 @@ class MyStructField23Patch(thrift.py3.types.Struct, _typing.Hashable):
 
     put: Final[_typing.Mapping[str, str]] = ...
 
-    add: Final[_typing.Mapping[str, str]] = ...
-
     def __init__(
         self, *,
         assign: _typing.Optional[_typing.Mapping[str, str]]=None,
         clear: _typing.Optional[bool]=None,
-        put: _typing.Optional[_typing.Mapping[str, str]]=None,
-        add: _typing.Optional[_typing.Mapping[str, str]]=None
+        put: _typing.Optional[_typing.Mapping[str, str]]=None
     ) -> None: ...
 
     def __call__(
         self, *,
         assign: _typing.Union[_typing.Mapping[str, str], __NotSet, None]=NOTSET,
         clear: _typing.Union[bool, __NotSet, None]=NOTSET,
-        put: _typing.Union[_typing.Mapping[str, str], __NotSet, None]=NOTSET,
-        add: _typing.Union[_typing.Mapping[str, str], __NotSet, None]=NOTSET
+        put: _typing.Union[_typing.Mapping[str, str], __NotSet, None]=NOTSET
     ) -> MyStructField23Patch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStructField23Patch'], bytes]]: ...

@@ -34,6 +34,8 @@ using test::patch::MyStructValuePatch;
 using TestStructPatch = op::detail::StructPatch<MyStructValuePatch>;
 using ListPatch = std::decay_t<
     decltype(std::declval<TestStructPatch>()->optListVal()->ensure())>;
+using SetPatch = std::decay_t<
+    decltype(std::declval<TestStructPatch>()->optSetVal()->ensure())>;
 
 MyStruct testValue() {
   MyStruct val;
@@ -325,6 +327,27 @@ TEST(StructPatchTest, ListPatch) {
       actual,
       {1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
       {1, 2, 3, 4, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 7, 8, 9, 10});
+}
+
+TEST(StructPatchTest, SetPatch) {
+  SetPatch patch;
+  patch.erase("a");
+  patch.emplace("a");
+  patch.insert("b");
+  patch.add({"c"});
+  patch.remove({"c", "d"});
+
+  test::expectPatch(patch, {}, {"a", "b"});
+  test::expectPatch(patch, {"a", "d", "e"}, {"a", "b", "e"});
+
+  auto assignPatch = SetPatch::createAssign({"a", "d", "e"});
+  assignPatch.erase("a");
+  assignPatch.emplace("a");
+  assignPatch.insert("b");
+  assignPatch.add({"c"});
+  assignPatch.remove({"c", "d"});
+  EXPECT_THAT(
+      *assignPatch.get().assign(), ::testing::ElementsAre("a", "b", "e"));
 }
 
 } // namespace

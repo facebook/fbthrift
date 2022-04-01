@@ -256,7 +256,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cmap[string,string]] assign_ref()
         __field_ref[cbool] clear_ref()
         __field_ref[cmap[string,string]] put_ref()
-        __field_ref[cmap[string,string]] add_ref()
 
 
     cdef cppclass cOptionalMyStructField23Patch "::cpp2::OptionalMyStructField23Patch":
@@ -521,10 +520,8 @@ cdef class MyStructField23Patch(thrift.py3.types.Struct):
     cdef inline object assign_impl(self)
     cdef inline object clear_impl(self)
     cdef inline object put_impl(self)
-    cdef inline object add_impl(self)
     cdef Map__string_string __fbthrift_cached_assign
     cdef Map__string_string __fbthrift_cached_put
-    cdef Map__string_string __fbthrift_cached_add
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStructField23Patch])

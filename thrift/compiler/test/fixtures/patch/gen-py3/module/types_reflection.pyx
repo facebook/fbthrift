@@ -1078,18 +1078,6 @@ cdef __StructSpec get_reflection__MyStructField23Patch():
             },
         ),
     )
-    spec.add_field(
-        __FieldSpec._fbthrift_create(
-            id=5,
-            name="add",
-            type=_module_types.Map__string_string,
-            kind=__NumberType.NOT_A_NUMBER,
-            qualifier=__Qualifier.UNQUALIFIED,
-            default=None,
-            annotations={
-            },
-        ),
-    )
     return spec
 cdef __StructSpec get_reflection__OptionalMyStructField23Patch():
     cdef _module_types.OptionalMyStructField23Patch defaults = _module_types.OptionalMyStructField23Patch._fbthrift_create(

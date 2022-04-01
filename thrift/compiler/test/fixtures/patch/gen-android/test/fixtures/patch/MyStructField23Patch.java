@@ -29,7 +29,6 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
   private static final TField ASSIGN_FIELD_DESC = new TField("assign", TType.MAP, (short)1);
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PUT_FIELD_DESC = new TField("put", TType.MAP, (short)7);
-  private static final TField ADD_FIELD_DESC = new TField("add", TType.MAP, (short)5);
 
   /**
    * Assigns to a given struct. If set, all other operations are ignored.
@@ -43,24 +42,17 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
    * Adds or assigns the given key/value pairs. Currently Ignored.
    */
   public final Map<String,String> put;
-  /**
-   * Adds entries, if not already present. Currently Ignored.
-   */
-  public final Map<String,String> add;
   public static final int ASSIGN = 1;
   public static final int CLEAR = 2;
   public static final int PUT = 7;
-  public static final int ADD = 5;
 
   public MyStructField23Patch(
       Map<String,String> assign,
       Boolean clear,
-      Map<String,String> put,
-      Map<String,String> add) {
+      Map<String,String> put) {
     this.assign = assign;
     this.clear = clear;
     this.put = put;
-    this.add = add;
   }
 
   /**
@@ -81,11 +73,6 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
       this.put = TBaseHelper.deepCopy(other.put);
     } else {
       this.put = null;
-    }
-    if (other.isSetAdd()) {
-      this.add = TBaseHelper.deepCopy(other.add);
-    } else {
-      this.add = null;
     }
   }
 
@@ -129,18 +116,6 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
     return this.put != null;
   }
 
-  /**
-   * Adds entries, if not already present. Currently Ignored.
-   */
-  public Map<String,String> getAdd() {
-    return this.add;
-  }
-
-  // Returns true if field add is set (has been assigned a value) and false otherwise
-  public boolean isSetAdd() {
-    return this.add != null;
-  }
-
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -157,14 +132,12 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
 
     if (!TBaseHelper.equalsNobinary(this.isSetPut(), that.isSetPut(), this.put, that.put)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetAdd(), that.isSetAdd(), this.add, that.add)) { return false; }
-
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {assign, clear, put, add});
+    return Arrays.deepHashCode(new Object[] {assign, clear, put});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -176,7 +149,6 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
     Map<String,String> tmp_assign = null;
     Boolean tmp_clear = null;
     Map<String,String> tmp_put = null;
-    Map<String,String> tmp_add = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -236,27 +208,6 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case ADD:
-          if (__field.type == TType.MAP) {
-            {
-              TMap _map53 = iprot.readMapBegin();
-              tmp_add = new HashMap<String,String>(Math.max(0, 2*_map53.size));
-              for (int _i54 = 0; 
-                   (_map53.size < 0) ? iprot.peekMap() : (_i54 < _map53.size); 
-                   ++_i54)
-              {
-                String _key55;
-                String _val56;
-                _key55 = iprot.readString();
-                _val56 = iprot.readString();
-                tmp_add.put(_key55, _val56);
-              }
-              iprot.readMapEnd();
-            }
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -270,7 +221,6 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
       tmp_assign
       ,tmp_clear
       ,tmp_put
-      ,tmp_add
     );
     _that.validate();
     return _that;
@@ -285,9 +235,9 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
         oprot.writeFieldBegin(ASSIGN_FIELD_DESC);
         {
           oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, this.assign.size()));
-          for (Map.Entry<String, String> _iter57 : this.assign.entrySet())          {
-            oprot.writeString(_iter57.getKey());
-            oprot.writeString(_iter57.getValue());
+          for (Map.Entry<String, String> _iter53 : this.assign.entrySet())          {
+            oprot.writeString(_iter53.getKey());
+            oprot.writeString(_iter53.getValue());
           }
           oprot.writeMapEnd();
         }
@@ -299,25 +249,13 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
       oprot.writeBool(this.clear);
       oprot.writeFieldEnd();
     }
-    if (this.add != null) {
-      oprot.writeFieldBegin(ADD_FIELD_DESC);
-      {
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, this.add.size()));
-        for (Map.Entry<String, String> _iter58 : this.add.entrySet())        {
-          oprot.writeString(_iter58.getKey());
-          oprot.writeString(_iter58.getValue());
-        }
-        oprot.writeMapEnd();
-      }
-      oprot.writeFieldEnd();
-    }
     if (this.put != null) {
       oprot.writeFieldBegin(PUT_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, this.put.size()));
-        for (Map.Entry<String, String> _iter59 : this.put.entrySet())        {
-          oprot.writeString(_iter59.getKey());
-          oprot.writeString(_iter59.getValue());
+        for (Map.Entry<String, String> _iter54 : this.put.entrySet())        {
+          oprot.writeString(_iter54.getKey());
+          oprot.writeString(_iter54.getValue());
         }
         oprot.writeMapEnd();
       }

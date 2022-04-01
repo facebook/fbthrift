@@ -40,11 +40,11 @@ public class MyStructField22Patch implements TBase, java.io.Serializable, Clonea
    */
   public final Boolean clear;
   /**
-   * Removes entries, if present. Currently Ignored.
+   * Removes entries, if present. Applies thrid.
    */
   public final Set<String> remove;
   /**
-   * Adds entries, if not already present. Currently Ignored.
+   * Adds entries, if not already present. Applies fourth.
    */
   public final Set<String> add;
   public static final int ASSIGN = 1;
@@ -118,7 +118,7 @@ public class MyStructField22Patch implements TBase, java.io.Serializable, Clonea
   }
 
   /**
-   * Removes entries, if present. Currently Ignored.
+   * Removes entries, if present. Applies thrid.
    */
   public Set<String> getRemove() {
     return this.remove;
@@ -130,7 +130,7 @@ public class MyStructField22Patch implements TBase, java.io.Serializable, Clonea
   }
 
   /**
-   * Adds entries, if not already present. Currently Ignored.
+   * Adds entries, if not already present. Applies fourth.
    */
   public Set<String> getAdd() {
     return this.add;

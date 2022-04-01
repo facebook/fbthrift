@@ -228,7 +228,6 @@ cdef class __MyStructField23Patch_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
     cdef void _set_field_2(self, _fbthrift_value) except *
-    cdef void _set_field_3(self, _fbthrift_value) except *
 
 
 ctypedef void (*__OptionalMyStructField23Patch_FieldsSetterFunc)(__OptionalMyStructField23Patch_FieldsSetter, object) except *

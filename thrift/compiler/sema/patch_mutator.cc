@@ -191,13 +191,13 @@ struct PatchGen : StructGen {
   // {kRemoveId}: {type} remove;
   t_field& remove(t_type_ref type) {
     return doc(
-        "Removes entries, if present. Currently Ignored.",
+        "Removes entries, if present. Applies thrid.",
         field(kRemoveId, type, "remove"));
   }
   // {kAddId}: {type} add;
   t_field& add(t_type_ref type) {
     return doc(
-        "Adds entries, if not already present. Currently Ignored.",
+        "Adds entries, if not already present. Applies fourth.",
         field(kAddId, type, "add"));
   }
 
@@ -378,7 +378,7 @@ t_type_ref patch_generator::find_patch_type(
         // TODO(afuller): support 'replace' op.
         // TODO(afuller): support 'removeIf' op.
         gen.put(field.type());
-        gen.add(field.type());
+        // TODO(afuller): support 'add' op.
         gen.set_adapter("MapPatchAdapter");
         break;
     }

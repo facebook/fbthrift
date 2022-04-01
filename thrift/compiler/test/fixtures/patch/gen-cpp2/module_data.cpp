@@ -225,22 +225,19 @@ const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::OptionalMyStruct
   TType::T_STRUCT,
 }};
 
-const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::MyStructField23Patch>::fields_names = {{
+const std::array<folly::StringPiece, 3> TStructDataStorage<::cpp2::MyStructField23Patch>::fields_names = {{
   "assign",
   "clear",
   "put",
-  "add",
 }};
-const std::array<int16_t, 4> TStructDataStorage<::cpp2::MyStructField23Patch>::fields_ids = {{
+const std::array<int16_t, 3> TStructDataStorage<::cpp2::MyStructField23Patch>::fields_ids = {{
   1,
   2,
   7,
-  5,
 }};
-const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::MyStructField23Patch>::fields_types = {{
+const std::array<protocol::TType, 3> TStructDataStorage<::cpp2::MyStructField23Patch>::fields_types = {{
   TType::T_MAP,
   TType::T_BOOL,
-  TType::T_MAP,
   TType::T_MAP,
 }};
 

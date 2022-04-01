@@ -726,13 +726,6 @@ class MyStructField23Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
         ),
-        (
-            5,  # id
-            True,  # isUnqualified
-            "add",  # name
-            lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
-            None,  # default value
-        ),
     )
 
     @staticmethod

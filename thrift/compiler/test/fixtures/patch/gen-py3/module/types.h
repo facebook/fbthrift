@@ -321,9 +321,6 @@ void reset_field<::cpp2::MyStructField23Patch>(
     case 2:
       obj.put_ref().copy_from(default_inst<::cpp2::MyStructField23Patch>().put_ref());
       return;
-    case 3:
-      obj.add_ref().copy_from(default_inst<::cpp2::MyStructField23Patch>().add_ref());
-      return;
   }
 }
 

@@ -25,6 +25,14 @@ namespace thrift {
 namespace op {
 namespace detail {
 
+template <typename C1, typename C2>
+void erase_all(C1& container, const C2& values) {
+  for (auto itr = values.begin(); itr != values.end() && !container.empty();
+       ++itr) {
+    container.erase(*itr);
+  }
+}
+
 // Patch must have the following fields:
 //   optional list<T> assign;
 //   bool clear;
@@ -112,6 +120,102 @@ class ListPatch : public BaseClearablePatch<Patch, ListPatch<Patch>> {
         auto inserter = std::back_inserter(*patch_.append());
         std::copy_n(rhs.begin(), rhs.size(), inserter);
       }
+    }
+  }
+
+ private:
+  using Base::applyAssign;
+  using Base::assignOr;
+  using Base::mergeAssignAndClear;
+  using Base::patch_;
+};
+
+// Patch must have the following fields:
+//   optional set<T> assign;
+//   bool clear;
+//   set<T> add;
+//   set<T> remove;
+template <typename Patch>
+class SetPatch : public BaseClearablePatch<Patch, SetPatch<Patch>> {
+  using Base = BaseClearablePatch<Patch, SetPatch>;
+  using T = typename Base::value_type;
+
+ public:
+  using Base::apply;
+  using Base::Base;
+  using Base::operator=;
+
+  template <typename C = T>
+  static SetPatch createAdd(C&& keys) {
+    SetPatch result;
+    *result.patch_.add() = std::forward<C>(keys);
+    return result;
+  }
+
+  template <typename C = T>
+  static SetPatch createRemove(C&& keys) {
+    SetPatch result;
+    *result.patch_.remove() = std::forward<C>(keys);
+    return result;
+  }
+
+  template <typename C = T>
+  void add(C&& keys) {
+    erase_all(*patch_.remove(), keys);
+    assignOr(*patch_.add()).insert(keys.begin(), keys.end());
+  }
+  template <typename... Args>
+  void emplace(Args&&... args) {
+    if (patch_.assign().has_value()) {
+      patch_.assign()->emplace(std::forward<Args>(args)...);
+      return;
+    }
+    auto result = patch_.add()->emplace(std::forward<Args>(args)...);
+    if (result.second) {
+      patch_.remove()->erase(*result.first);
+    }
+  }
+  template <typename U = typename T::value_type>
+  void insert(U&& val) {
+    if (patch_.assign().has_value()) {
+      patch_.assign()->insert(std::forward<U>(val));
+      return;
+    }
+    patch_.remove()->erase(val);
+    patch_.add()->insert(std::forward<U>(val));
+  }
+
+  template <typename C = T>
+  void remove(C&& keys) {
+    if (patch_.assign().has_value()) {
+      erase_all(*patch_.assign(), keys);
+      return;
+    }
+    erase_all(*patch_.add(), keys);
+    patch_.remove()->insert(keys.begin(), keys.end());
+  }
+  template <typename U = typename T::value_type>
+  void erase(U&& val) {
+    assignOr(*patch_.add()).erase(val);
+    assignOr(*patch_.remove()).insert(std::forward<U>(val));
+  }
+
+  void apply(T& val) const {
+    if (!applyAssign(val)) {
+      if (patch_.clear() == true) {
+        val.clear();
+      } else {
+        erase_all(val, *patch_.remove());
+      }
+      val.insert(patch_.add()->begin(), patch_.add()->end());
+    }
+  }
+
+  template <typename U>
+  void merge(U&& next) {
+    if (!mergeAssignAndClear(std::forward<U>(next))) {
+      remove(*std::forward<U>(next).get().remove());
+      add(*std::forward<U>(next).get().add());
     }
   }
 

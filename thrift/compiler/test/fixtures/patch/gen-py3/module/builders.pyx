@@ -134,7 +134,6 @@ cdef class MyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
         yield "assign", self.assign
         yield "clear", self.clear
         yield "put", self.put
-        yield "add", self.add
 
 cdef class OptionalMyStructField23Patch_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.OptionalMyStructField23Patch

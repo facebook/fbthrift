@@ -1764,7 +1764,6 @@ cdef class MyStructField23Patch(thrift.py3.types.Struct):
           "assign": deref(self._cpp_obj).assign_ref().has_value(),
           "clear": deref(self._cpp_obj).clear_ref().has_value(),
           "put": deref(self._cpp_obj).put_ref().has_value(),
-          "add": deref(self._cpp_obj).add_ref().has_value(),
         })
 
     @staticmethod
@@ -1802,16 +1801,6 @@ cdef class MyStructField23Patch(thrift.py3.types.Struct):
     @property
     def put(self):
         return self.put_impl()
-
-    cdef inline add_impl(self):
-
-        if self.__fbthrift_cached_add is None:
-            self.__fbthrift_cached_add = Map__string_string._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).add_ref().ref(), self._cpp_obj))
-        return self.__fbthrift_cached_add
-
-    @property
-    def add(self):
-        return self.add_impl()
 
 
     def __hash__(MyStructField23Patch self):
@@ -1856,7 +1845,7 @@ cdef class MyStructField23Patch(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyStructField23Patch](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 4
+        self._fbthrift_struct_size = 3
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStructField23Patch self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

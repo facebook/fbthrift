@@ -690,7 +690,7 @@
           },
           "remove" : {
             "name" : "remove",
-            "docstring" : "Removes entries, if present. Currently Ignored.\n",
+            "docstring" : "Removes entries, if present. Applies thrid.\n",
             "key" : 4,
             "lineno" : 33,
             "required" : "opt-in-req-out",
@@ -701,7 +701,7 @@
           },
           "add" : {
             "name" : "add",
-            "docstring" : "Adds entries, if not already present. Currently Ignored.\n",
+            "docstring" : "Adds entries, if not already present. Applies fourth.\n",
             "key" : 5,
             "lineno" : 33,
             "required" : "opt-in-req-out",
@@ -791,18 +791,6 @@
             "name" : "put",
             "docstring" : "Adds or assigns the given key/value pairs. Currently Ignored.\n",
             "key" : 7,
-            "lineno" : 33,
-            "required" : "opt-in-req-out",
-            "type" : {
-  "type" : "map",
-  "key_type" : "string",
-  "value_type" : "string"
-}
-          },
-          "add" : {
-            "name" : "add",
-            "docstring" : "Adds entries, if not already present. Currently Ignored.\n",
-            "key" : 5,
             "lineno" : 33,
             "required" : "opt-in-req-out",
             "type" : {
