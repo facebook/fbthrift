@@ -30,7 +30,7 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-class diagnostic_context;
+class diagnostics_engine;
 
 // An interface that receives notifications of lexical elements.
 class lex_handler {
@@ -45,7 +45,7 @@ class lex_handler {
 class lexer {
  private:
   lex_handler* handler_;
-  diagnostic_context* diag_ctx_;
+  diagnostics_engine* diags_;
   std::string filename_;
   std::vector<char> source_; // Source being lexed with a terminating '\0'.
   const char* ptr_; // Current position in the source.
@@ -56,7 +56,7 @@ class lexer {
 
   lexer(
       lex_handler& handler,
-      diagnostic_context& diag_ctx,
+      diagnostics_engine& diags,
       std::string filename,
       std::vector<char> source);
 
@@ -96,18 +96,18 @@ class lexer {
 
   // Creates a lexer from a file.
   static lexer from_file(
-      lex_handler& handler, diagnostic_context& diag_ctx, std::string filename);
+      lex_handler& handler, diagnostics_engine& diags, std::string filename);
 
   // Creates a lexer from a string; filename is used for source locations.
   static lexer from_string(
       lex_handler& handler,
-      diagnostic_context& diag_ctx,
+      diagnostics_engine& diags,
       std::string filename,
       std::string source) {
     const char* start = source.c_str();
     return {
         handler,
-        diag_ctx,
+        diags,
         std::move(filename),
         {start, start + source.size() + 1}};
   }

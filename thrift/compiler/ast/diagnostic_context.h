@@ -35,35 +35,6 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-struct diagnostic_params {
-  bool debug = false;
-  bool info = false;
-  int warn_level = 1;
-
-  /**
-   * Whether or not negative enum values.
-   */
-  bool allow_neg_enum_vals = false;
-
-  bool should_report(diagnostic_level level) const {
-    switch (level) {
-      case diagnostic_level::warning:
-        return warn_level > 0;
-      case diagnostic_level::debug:
-        return debug;
-      case diagnostic_level::info:
-        return info;
-      default:
-        return true;
-    }
-  }
-
-  // Params that only collect failures.
-  static diagnostic_params only_failures() { return {false, false, 0}; }
-  static diagnostic_params strict() { return {false, false, 2}; }
-  static diagnostic_params keep_all() { return {true, true, 2}; }
-};
-
 // A cache for metadata associated with an AST node.
 //
 // Useful for avoiding re-computation during a traversal of an AST.
@@ -125,28 +96,20 @@ class node_metadata_cache {
 };
 
 // A context aware reporter for diagnostic results.
-class diagnostic_context : public const_visitor_context {
-  template <typename With>
-  using if_with =
-      decltype(std::declval<With&>()(std::declval<std::ostream&>()));
-
+class diagnostic_context : public diagnostics_engine,
+                           public const_visitor_context {
  public:
   explicit diagnostic_context(
       std::function<void(diagnostic)> report_cb, diagnostic_params params = {})
-      : report_cb_(std::move(report_cb)), params_(std::move(params)) {}
+      : diagnostics_engine(std::move(report_cb), std::move(params)) {}
   explicit diagnostic_context(
       diagnostic_results& results, diagnostic_params params = {})
-      : diagnostic_context(
-            [&results](diagnostic diag) { results.add(std::move(diag)); },
-            std::move(params)) {}
+      : diagnostics_engine(results, std::move(params)) {}
 
   static diagnostic_context ignore_all() {
-    return diagnostic_context{
-        [](const diagnostic&) {}, diagnostic_params::only_failures()};
+    return diagnostic_context(
+        [](const diagnostic&) {}, diagnostic_params::only_failures());
   }
-
-  diagnostic_params& params() { return params_; }
-  const diagnostic_params& params() const { return params_; }
 
   // The program currently being analyzed.
   // TODO(afuller): Consider having every t_node know what program it was
@@ -161,21 +124,10 @@ class diagnostic_context : public const_visitor_context {
   }
   void end_program(const t_program*) { programs_.pop(); }
 
-  void report(diagnostic diag) {
-    if (params_.should_report(diag.level())) {
-      report_cb_(std::move(diag));
-    }
-  }
-
-  template <typename C>
-  void report_all(C&& diags) {
-    for (auto&& diag : std::forward<C>(diags)) {
-      report(std::forward<decltype(diag)>(diag));
-    }
-  }
-
   // A cache for traversal-specific metadata.
   node_metadata_cache& cache() { return cache_; }
+
+  using diagnostics_engine::report;
 
   // Helpers for adding diagnostic results.
   void report(
@@ -184,62 +136,13 @@ class diagnostic_context : public const_visitor_context {
       std::string token,
       std::string text,
       std::string name = "") {
-    if (!params_.should_report(level)) {
-      return;
-    }
-
-    report_cb_(
+    report(
         {level,
          std::move(text),
          program()->path(),
          lineno,
          std::move(token),
          std::move(name)});
-  }
-
-  template <typename With, typename = if_with<With>>
-  void report(
-      diagnostic_level level,
-      std::string path,
-      int lineno,
-      std::string token,
-      std::string name,
-      With&& with) {
-    if (!params_.should_report(level)) {
-      return;
-    }
-
-    std::ostringstream o;
-    with(static_cast<std::ostream&>(o));
-    report_cb_(
-        {level,
-         o.str(),
-         std::move(path),
-         lineno,
-         std::move(token),
-         std::move(name)});
-  }
-
-  template <typename With, typename = if_with<With>>
-  void report(
-      diagnostic_level level,
-      std::string path,
-      int lineno,
-      std::string token,
-      With&& with) {
-    if (!params_.should_report(level)) {
-      return;
-    }
-
-    std::ostringstream o;
-    with(static_cast<std::ostream&>(o));
-    report_cb_({
-        level,
-        o.str(),
-        std::move(path),
-        lineno,
-        std::move(token),
-    });
   }
 
   template <typename With, typename = if_with<With>>
@@ -365,7 +268,7 @@ class diagnostic_context : public const_visitor_context {
 
   template <typename... Args>
   void warning_strict(Args&&... args) {
-    if (params_.warn_level < 2) {
+    if (params().warn_level < 2) {
       return;
     }
     warning(std::forward<Args>(args)...);
@@ -389,11 +292,8 @@ class diagnostic_context : public const_visitor_context {
   }
 
  private:
-  std::function<void(diagnostic)> report_cb_;
   node_metadata_cache cache_;
-
   std::stack<const t_program*> programs_;
-  diagnostic_params params_;
 
   template <typename E, typename F, typename... Args>
   void try_or_report_impl(F&& func, Args&&... args) {

@@ -27,7 +27,7 @@
 #include <unordered_map>
 #include <utility>
 
-#include <thrift/compiler/ast/diagnostic_context.h>
+#include <thrift/compiler/diagnostic.h>
 
 using apache::thrift::compiler::yy::parser;
 
@@ -190,11 +190,11 @@ const std::unordered_map<std::string, make_token_fun> keywords = {
 
 lexer::lexer(
     lex_handler& handler,
-    diagnostic_context& diag_ctx,
+    diagnostics_engine& diags,
     std::string filename,
     std::vector<char> source)
     : handler_(&handler),
-      diag_ctx_(&diag_ctx),
+      diags_(&diags),
       filename_(std::move(filename)),
       source_(std::move(source)) {
   ptr_ = source_.data();
@@ -203,7 +203,7 @@ lexer::lexer(
 }
 
 lexer lexer::from_file(
-    lex_handler& handler, diagnostic_context& diag_ctx, std::string filename) {
+    lex_handler& handler, diagnostics_engine& diags, std::string filename) {
   auto f = file(filename.c_str(), "rb");
   char buffer[4096];
   auto source = std::vector<char>();
@@ -211,7 +211,7 @@ lexer lexer::from_file(
     source.insert(source.end(), buffer, buffer + count);
   }
   source.push_back('\0');
-  return {handler, diag_ctx, std::move(filename), std::move(source)};
+  return {handler, diags, std::move(filename), std::move(source)};
 }
 
 parser::symbol_type lexer::make_int_constant(int offset, int base) {
@@ -248,7 +248,12 @@ parser::symbol_type lexer::make_float_constant() {
 
 template <typename... T>
 parser::symbol_type lexer::report_error(T&&... args) {
-  diag_ctx_->failure(lineno_, token_text(), std::forward<T>(args)...);
+  diags_->report(
+      diagnostic_level::failure,
+      filename_,
+      lineno_,
+      token_text(),
+      std::forward<T>(args)...);
   return parser::make_tok_error(make_location());
 }
 

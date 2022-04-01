@@ -17,7 +17,8 @@
 #pragma once
 
 #include <array>
-#include <iosfwd>
+#include <functional>
+#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -133,6 +134,111 @@ void diagnostic_results::add_all(C&& diags) {
     add(std::forward<decltype(diag)>(diag));
   }
 }
+
+struct diagnostic_params {
+  bool debug = false;
+  bool info = false;
+  int warn_level = 1;
+
+  /**
+   * Whether or not negative enum values.
+   */
+  bool allow_neg_enum_vals = false;
+
+  bool should_report(diagnostic_level level) const {
+    switch (level) {
+      case diagnostic_level::warning:
+        return warn_level > 0;
+      case diagnostic_level::debug:
+        return debug;
+      case diagnostic_level::info:
+        return info;
+      default:
+        return true;
+    }
+  }
+
+  // Params that only collect failures.
+  static diagnostic_params only_failures() { return {false, false, 0}; }
+  static diagnostic_params strict() { return {false, false, 2}; }
+  static diagnostic_params keep_all() { return {true, true, 2}; }
+};
+
+// A class used by the Thrift compiler to report diagnostics.
+class diagnostics_engine {
+ protected:
+  template <typename With>
+  using if_with =
+      decltype(std::declval<With&>()(std::declval<std::ostream&>()));
+
+ public:
+  explicit diagnostics_engine(
+      std::function<void(diagnostic)> report_cb, diagnostic_params params = {})
+      : report_cb_(std::move(report_cb)), params_(std::move(params)) {}
+  explicit diagnostics_engine(
+      diagnostic_results& results, diagnostic_params params = {})
+      : diagnostics_engine(
+            [&results](diagnostic diag) { results.add(std::move(diag)); },
+            std::move(params)) {}
+
+  diagnostic_params& params() { return params_; }
+  const diagnostic_params& params() const { return params_; }
+
+  void report(diagnostic diag) {
+    if (params_.should_report(diag.level())) {
+      report_cb_(std::move(diag));
+    }
+  }
+
+  template <typename With, typename = if_with<With>>
+  void report(
+      diagnostic_level level,
+      std::string filename,
+      int lineno,
+      std::string token,
+      std::string name,
+      With&& with) {
+    if (!params_.should_report(level)) {
+      return;
+    }
+
+    std::ostringstream o;
+    with(static_cast<std::ostream&>(o));
+    report_cb_(
+        {level,
+         o.str(),
+         std::move(filename),
+         lineno,
+         std::move(token),
+         std::move(name)});
+  }
+
+  template <typename With, typename = if_with<With>>
+  void report(
+      diagnostic_level level,
+      std::string filename,
+      int lineno,
+      std::string token,
+      With&& with) {
+    if (!params_.should_report(level)) {
+      return;
+    }
+
+    std::ostringstream o;
+    with(static_cast<std::ostream&>(o));
+    report_cb_({
+        level,
+        o.str(),
+        std::move(filename),
+        lineno,
+        std::move(token),
+    });
+  }
+
+ private:
+  std::function<void(diagnostic)> report_cb_;
+  diagnostic_params params_;
+};
 
 } // namespace compiler
 } // namespace thrift

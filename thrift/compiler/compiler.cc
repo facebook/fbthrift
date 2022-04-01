@@ -464,7 +464,9 @@ compile_result compile(const std::vector<std::string>& arguments) {
       get_include_path(gparams.targets, input_filename));
 
   // Validate it!
-  ctx.report_all(validator::validate(program->root_program()));
+  for (auto&& diag : validator::validate(program->root_program())) {
+    ctx.report(std::forward<decltype(diag)>(diag));
+  }
   standard_validator()(ctx, *program->root_program());
   if (result.detail.has_failure()) {
     return result;

@@ -15,7 +15,7 @@
  */
 
 #include <folly/portability/GTest.h>
-#include <thrift/compiler/ast/diagnostic_context.h>
+#include <thrift/compiler/diagnostic.h>
 #include <thrift/compiler/parse/lexer.h>
 
 using namespace apache::thrift::compiler;
@@ -29,13 +29,13 @@ struct test_lex_handler : lex_handler {
 class LexerTest : public testing::Test {
  public:
   test_lex_handler handler;
-  diagnostic_context diag_ctx;
+  diagnostics_engine diags;
 
   lexer make_lexer(const std::string& source) {
-    return lexer::from_string(handler, diag_ctx, "", source);
+    return lexer::from_string(handler, diags, "", source);
   }
 
-  LexerTest() : diag_ctx([](diagnostic) {}) {}
+  LexerTest() : diags([](diagnostic) {}) {}
 };
 
 TEST_F(LexerTest, move) {
