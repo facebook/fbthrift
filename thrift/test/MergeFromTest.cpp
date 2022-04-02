@@ -79,16 +79,30 @@ void test_serialize_and_deserialize() {
 
 TEST(MergeFrom, SameProgram) {
   test_serialize_and_deserialize<
-      merge_from::ExtendedEmptyStruct1,
+      merge_from::MergedEmptyStruct1,
       merge_from::MyEnum,
       merge_from::MyStruct>();
 }
 
 TEST(MergeFrom, DifferentProgram) {
   test_serialize_and_deserialize<
-      merge_from::ExtendedEmptyStruct2,
+      merge_from::MergedEmptyStruct2,
       MyEnum,
       MyStruct>();
+}
+
+TEST(MergeFrom, FieldsWithAnnotation) {
+  merge_from::MergedEmptyStruct3 obj;
+
+  obj.structured_boxed_field() = 1;
+  obj.unstructured_boxed_field() = 2;
+
+  auto objs = CompactSerializer::serialize<std::string>(obj);
+  merge_from::MergedEmptyStruct3 objd;
+  CompactSerializer::deserialize(objs, objd);
+
+  objd.structured_boxed_field() = 1;
+  objd.unstructured_boxed_field() = 2;
 }
 
 } // namespace apache::thrift::test

@@ -346,15 +346,13 @@ FieldsInjectedWithIncludedStruct& FieldsInjectedWithIncludedStruct::operator=(FO
 }
 
 
-FieldsInjectedWithIncludedStruct::FieldsInjectedWithIncludedStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg, ::std::string injected_field__arg, ::std::string injected_structured_annotation_field__arg, ::std::string injected_unstructured_annotation_field__arg) :
+FieldsInjectedWithIncludedStruct::FieldsInjectedWithIncludedStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg, ::std::string injected_field__arg, ::apache::thrift::detail::boxed_value_ptr<::std::string> injected_structured_annotation_field__arg, ::apache::thrift::detail::boxed_value_ptr<::std::string> injected_unstructured_annotation_field__arg) :
     __fbthrift_field_string_field(std::move(string_field__arg)),
     __fbthrift_field_injected_field(std::move(injected_field__arg)),
     __fbthrift_field_injected_structured_annotation_field(std::move(injected_structured_annotation_field__arg)),
     __fbthrift_field_injected_unstructured_annotation_field(std::move(injected_unstructured_annotation_field__arg)) {
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
-  __isset.set(folly::index_constant<2>(), true);
-  __isset.set(folly::index_constant<3>(), true);
 }
 
 
@@ -362,8 +360,8 @@ void FieldsInjectedWithIncludedStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_string_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_injected_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_injected_structured_annotation_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_injected_unstructured_annotation_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->__fbthrift_field_injected_structured_annotation_field.reset();
+  this->__fbthrift_field_injected_unstructured_annotation_field.reset();
   __isset = {};
 }
 
@@ -381,10 +379,10 @@ bool FieldsInjectedWithIncludedStruct::operator==(const FieldsInjectedWithInclud
   if (!(lhs.injected_field_ref() == rhs.injected_field_ref())) {
     return false;
   }
-  if (!(lhs.injected_structured_annotation_field_ref() == rhs.injected_structured_annotation_field_ref())) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.injected_structured_annotation_field_ref(), rhs.injected_structured_annotation_field_ref()))) {
     return false;
   }
-  if (!(lhs.injected_unstructured_annotation_field_ref() == rhs.injected_unstructured_annotation_field_ref())) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.injected_unstructured_annotation_field_ref(), rhs.injected_unstructured_annotation_field_ref()))) {
     return false;
   }
   return true;
@@ -400,11 +398,11 @@ bool FieldsInjectedWithIncludedStruct::operator<(const FieldsInjectedWithInclude
   if (!(lhs.injected_field_ref() == rhs.injected_field_ref())) {
     return lhs.injected_field_ref() < rhs.injected_field_ref();
   }
-  if (!(lhs.injected_structured_annotation_field_ref() == rhs.injected_structured_annotation_field_ref())) {
-    return lhs.injected_structured_annotation_field_ref() < rhs.injected_structured_annotation_field_ref();
+  if ((!::apache::thrift::detail::pointer_equal(lhs.injected_structured_annotation_field_ref(), rhs.injected_structured_annotation_field_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.injected_structured_annotation_field_ref(), rhs.injected_structured_annotation_field_ref());
   }
-  if (!(lhs.injected_unstructured_annotation_field_ref() == rhs.injected_unstructured_annotation_field_ref())) {
-    return lhs.injected_unstructured_annotation_field_ref() < rhs.injected_unstructured_annotation_field_ref();
+  if ((!::apache::thrift::detail::pointer_equal(lhs.injected_unstructured_annotation_field_ref(), rhs.injected_unstructured_annotation_field_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.injected_unstructured_annotation_field_ref(), rhs.injected_unstructured_annotation_field_ref());
   }
   return false;
 }
@@ -414,8 +412,8 @@ void swap(FieldsInjectedWithIncludedStruct& a, FieldsInjectedWithIncludedStruct&
   using ::std::swap;
   swap(a.string_field_ref().value(), b.string_field_ref().value());
   swap(a.injected_field_ref().value(), b.injected_field_ref().value());
-  swap(a.injected_structured_annotation_field_ref().value_unchecked(), b.injected_structured_annotation_field_ref().value_unchecked());
-  swap(a.injected_unstructured_annotation_field_ref().value_unchecked(), b.injected_unstructured_annotation_field_ref().value_unchecked());
+  swap(a.__fbthrift_field_injected_structured_annotation_field, b.__fbthrift_field_injected_structured_annotation_field);
+  swap(a.__fbthrift_field_injected_unstructured_annotation_field, b.__fbthrift_field_injected_unstructured_annotation_field);
   swap(a.__isset, b.__isset);
 }
 

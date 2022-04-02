@@ -419,7 +419,7 @@ cdef class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).injected_structured_annotation_field_ref().has_value():
             return None
 
-        return (<bytes>deref(self._cpp_obj).injected_structured_annotation_field_ref().value_unchecked()).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).injected_structured_annotation_field_ref().value()).decode('UTF-8')
 
     @property
     def injected_structured_annotation_field(self):
@@ -429,7 +429,7 @@ cdef class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).injected_unstructured_annotation_field_ref().has_value():
             return None
 
-        return (<bytes>deref(self._cpp_obj).injected_unstructured_annotation_field_ref().value_unchecked()).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).injected_unstructured_annotation_field_ref().value()).decode('UTF-8')
 
     @property
     def injected_unstructured_annotation_field(self):

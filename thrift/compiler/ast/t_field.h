@@ -21,6 +21,7 @@
 #include <string>
 
 #include <thrift/compiler/ast/node_list.h>
+#include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_const_value.h>
 #include <thrift/compiler/ast/t_named.h>
 #include <thrift/compiler/ast/t_type.h>
@@ -97,6 +98,14 @@ class t_field final : public t_named {
 
     if (value_) {
       clone->value_ = value_->clone();
+    }
+
+    // unstructured annotations
+    clone->reset_annotations(annotations());
+
+    // structued annotations
+    for (auto annot : structured_annotations()) {
+      clone->add_structured_annotation(annot->clone());
     }
 
     clone->qual_ = qual_;

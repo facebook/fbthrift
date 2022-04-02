@@ -38,9 +38,9 @@ struct Struct {
   14: MyStruct struct_field;
 }
 
-// A struct that extends with another struct in the same program.
+// A struct that merges fields from another struct in the same program.
 @meta.MergeFrom{type = "Struct"}
-struct ExtendedEmptyStruct1 {
+struct MergedEmptyStruct1 {
   1: bool bool_field;
   2: byte byte_field;
   3: i16 short_field;
@@ -50,6 +50,15 @@ struct ExtendedEmptyStruct1 {
   7: double double_field;
 }
 
-// A struct that extends with another struct in a different program.
+// A struct that merges fields from another struct in a different program.
 @meta.MergeFrom{type = "clear.StructWithNoDefaultStruct"}
-struct ExtendedEmptyStruct2 {}
+struct MergedEmptyStruct2 {}
+
+struct FieldsWithAnnotation {
+  @thrift.Box
+  1: optional i64 structured_boxed_field;
+  2: optional i64 unstructured_boxed_field (thrift.box);
+}
+
+@meta.MergeFrom{type = "FieldsWithAnnotation"}
+struct MergedEmptyStruct3 {}

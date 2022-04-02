@@ -86,6 +86,11 @@ class t_const final : public t_named {
             std::move(name),
             std::move(value)) {}
 
+  std::unique_ptr<t_const> clone() const {
+    return std::make_unique<t_const>(
+        get_program(), get_type(), name(), value_->clone());
+  }
+
   t_program* get_program() const { return program_; }
   const t_type* get_type() const { return type_.get_type(); }
   t_const_value* get_value() const { return value_.get(); }
