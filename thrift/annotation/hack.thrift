@@ -25,6 +25,7 @@ namespace java.swift com.facebook.thrift.annotation.java_swift
 namespace java com.facebook.thrift.annotation.java_deprecated
 namespace py.asyncio facebook_thrift_asyncio.annotation.hack
 namespace go thrift.annotation.hack
+namespace hs2 facebook.thrift.annotation.hack
 
 // An experimental annotation that applies a Hack wrapper to fields.
 // For example:
