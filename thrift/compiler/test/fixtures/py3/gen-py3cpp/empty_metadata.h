@@ -13,7 +13,6 @@
 
 namespace cpp2 {
 class NullService;
-class NullServiceSvIf;
 } // namespace cpp2
 
 namespace apache {
@@ -32,9 +31,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NullService>> {
   friend class ServiceMetadata;
 
 };
-template <>
-class ServiceMetadata<::cpp2::NullServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::NullService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

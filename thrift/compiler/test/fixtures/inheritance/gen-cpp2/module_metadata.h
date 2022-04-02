@@ -13,15 +13,12 @@
 
 namespace cpp2 {
 class MyRoot;
-class MyRootSvIf;
 } // namespace cpp2
 namespace cpp2 {
 class MyNode;
-class MyNodeSvIf;
 } // namespace cpp2
 namespace cpp2 {
 class MyLeaf;
-class MyLeafSvIf;
 } // namespace cpp2
 
 namespace apache {
@@ -42,9 +39,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyRoot>> {
   static void gen_do_root(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
-class ServiceMetadata<::cpp2::MyRootSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyRoot>> {};
-template <>
 class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyNode>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
@@ -57,9 +51,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyNode>> {
   static void gen_do_mid(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
-class ServiceMetadata<::cpp2::MyNodeSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyNode>> {};
-template <>
 class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyLeaf>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
@@ -71,9 +62,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyLeaf>> {
 
   static void gen_do_leaf(ThriftMetadata& metadata, ThriftService& context);
 };
-template <>
-class ServiceMetadata<::cpp2::MyLeafSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyLeaf>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

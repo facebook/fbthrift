@@ -83,7 +83,7 @@ class ServiceHandler<::cpp2::SinkService> : public apache::thrift::ServerInterfa
 } // namespace apache::thrift
 
 namespace cpp2 {
-class SinkServiceSvIf : public ::apache::thrift::ServiceHandler<SinkService> {};
+using SinkServiceSvIf = ::apache::thrift::ServiceHandler<SinkService>;
 } // cpp2
 namespace cpp2 {
 class SinkServiceSvNull : public SinkServiceSvIf {

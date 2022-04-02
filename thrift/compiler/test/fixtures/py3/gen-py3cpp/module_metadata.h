@@ -14,17 +14,14 @@
 namespace py3 {
 namespace simple {
 class SimpleService;
-class SimpleServiceSvIf;
 }} // namespace py3::simple
 namespace py3 {
 namespace simple {
 class DerivedService;
-class DerivedServiceSvIf;
 }} // namespace py3::simple
 namespace py3 {
 namespace simple {
 class RederivedService;
-class RederivedServiceSvIf;
 }} // namespace py3::simple
 
 namespace apache {
@@ -130,9 +127,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleServ
   static void gen_get_binary_union_struct(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
-class ServiceMetadata<::py3::simple::SimpleServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::SimpleService>> {};
-template <>
 class ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::DerivedService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
@@ -145,9 +139,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::DerivedSer
   static void gen_get_six(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
-class ServiceMetadata<::py3::simple::DerivedServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::DerivedService>> {};
-template <>
 class ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::RederivedService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
@@ -159,9 +150,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::RederivedS
 
   static void gen_get_seven(ThriftMetadata& metadata, ThriftService& context);
 };
-template <>
-class ServiceMetadata<::py3::simple::RederivedServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::py3::simple::RederivedService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

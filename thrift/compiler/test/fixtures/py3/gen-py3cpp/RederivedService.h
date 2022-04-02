@@ -57,7 +57,7 @@ class ServiceHandler<::py3::simple::RederivedService> : virtual public ::py3::si
 } // namespace apache::thrift
 
 namespace py3 { namespace simple {
-class RederivedServiceSvIf : public ::apache::thrift::ServiceHandler<RederivedService> {};
+using RederivedServiceSvIf = ::apache::thrift::ServiceHandler<RederivedService>;
 }} // py3::simple
 namespace py3 { namespace simple {
 class RederivedServiceSvNull : public RederivedServiceSvIf, virtual public ::py3::simple::DerivedServiceSvIf {

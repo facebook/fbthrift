@@ -13,7 +13,6 @@
 
 namespace cpp2 {
 class PubSubStreamingService;
-class PubSubStreamingServiceSvIf;
 } // namespace cpp2
 
 namespace apache {
@@ -47,9 +46,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingSe
   static void gen_responseandstreamthrows(ThriftMetadata& metadata, ThriftService& context);
   static void gen_returnstreamFast(ThriftMetadata& metadata, ThriftService& context);
 };
-template <>
-class ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

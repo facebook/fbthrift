@@ -16,19 +16,16 @@ namespace some {
 namespace valid {
 namespace ns {
 class EmptyService;
-class EmptyServiceSvIf;
 }}} // namespace some::valid::ns
 namespace some {
 namespace valid {
 namespace ns {
 class ReturnService;
-class ReturnServiceSvIf;
 }}} // namespace some::valid::ns
 namespace some {
 namespace valid {
 namespace ns {
 class ParamService;
-class ParamServiceSvIf;
 }}} // namespace some::valid::ns
 
 namespace apache {
@@ -153,9 +150,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::EmptyS
 
 };
 template <>
-class ServiceMetadata<::some::valid::ns::EmptyServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>> {};
-template <>
 class ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
@@ -187,9 +181,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::Return
   static void gen_readDataEb(ThriftMetadata& metadata, ThriftService& context);
   static void gen_readData(ThriftMetadata& metadata, ThriftService& context);
 };
-template <>
-class ServiceMetadata<::some::valid::ns::ReturnServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ReturnService>> {};
 template <>
 class ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>> {
  public:
@@ -230,9 +221,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamS
   static void gen_union_ret_i32_i32_param(ThriftMetadata& metadata, ThriftService& context);
   static void gen_listunion_string_param(ThriftMetadata& metadata, ThriftService& context);
 };
-template <>
-class ServiceMetadata<::some::valid::ns::ParamServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::some::valid::ns::ParamService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

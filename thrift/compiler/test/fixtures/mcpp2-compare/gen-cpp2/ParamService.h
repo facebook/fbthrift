@@ -182,7 +182,7 @@ class ServiceHandler<::some::valid::ns::ParamService> : public apache::thrift::S
 } // namespace apache::thrift
 
 namespace some { namespace valid { namespace ns {
-class ParamServiceSvIf : public ::apache::thrift::ServiceHandler<ParamService> {};
+using ParamServiceSvIf = ::apache::thrift::ServiceHandler<ParamService>;
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class ParamServiceSvNull : public ParamServiceSvIf {

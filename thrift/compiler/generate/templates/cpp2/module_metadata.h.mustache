@@ -28,7 +28,6 @@
 <%#program:services%>
 <% > common/service_namespace_cpp2_begin %>
 class <%service:cpp_name%>;
-class <%service:cpp_name%>SvIf;
 <% > common/service_namespace_cpp2_end %>
 <%/program:services%>
 
@@ -125,9 +124,6 @@ class ServiceMetadata<::<% > service_common/service_class_name%>>
   friend class ServiceMetadata;
 };
 <%/program:no_metadata?%>
-template <>
-class ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:cpp_name%>SvIf> final
-    : public ServiceMetadata<::<% > service_common/service_class_name%>> {};
 <%/program:services%>
 } // namespace md
 } // namespace detail

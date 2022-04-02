@@ -57,7 +57,7 @@ class ServiceHandler<::cpp2::MyServicePrioChild> : virtual public ::cpp2::MyServ
 } // namespace apache::thrift
 
 namespace cpp2 {
-class MyServicePrioChildSvIf : public ::apache::thrift::ServiceHandler<MyServicePrioChild> {};
+using MyServicePrioChildSvIf = ::apache::thrift::ServiceHandler<MyServicePrioChild>;
 } // cpp2
 namespace cpp2 {
 class MyServicePrioChildSvNull : public MyServicePrioChildSvIf, virtual public ::cpp2::MyServicePrioParentSvIf {

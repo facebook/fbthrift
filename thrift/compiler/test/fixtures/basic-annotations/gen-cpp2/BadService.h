@@ -90,7 +90,7 @@ class BadInteractionIf : public apache::thrift::Tile, public apache::thrift::Ser
 } // namespace apache::thrift
 
 namespace cpp2 {
-class GoodServiceSvIf : public ::apache::thrift::ServiceHandler<GoodService> {};
+using GoodServiceSvIf = ::apache::thrift::ServiceHandler<GoodService>;
 } // cpp2
 namespace cpp2 {
 class GoodServiceSvNull : public GoodServiceSvIf {

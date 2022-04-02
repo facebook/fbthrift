@@ -13,7 +13,6 @@
 
 namespace cpp2 {
 class Raiser;
-class RaiserSvIf;
 } // namespace cpp2
 
 namespace apache {
@@ -96,9 +95,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Raiser>> {
   static void gen_get200(ThriftMetadata& metadata, ThriftService& context);
   static void gen_get500(ThriftMetadata& metadata, ThriftService& context);
 };
-template <>
-class ServiceMetadata<::cpp2::RaiserSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Raiser>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

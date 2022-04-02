@@ -17,7 +17,6 @@ namespace thrift {
 namespace fixtures {
 namespace types {
 class SomeService;
-class SomeServiceSvIf;
 }}}} // namespace apache::thrift::fixtures::types
 
 namespace apache {
@@ -183,9 +182,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::apache::thrift::fixture
   static void gen_bounce_map(ThriftMetadata& metadata, ThriftService& context);
   static void gen_binary_keyed_map(ThriftMetadata& metadata, ThriftService& context);
 };
-template <>
-class ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::apache::thrift::fixtures::types::SomeService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

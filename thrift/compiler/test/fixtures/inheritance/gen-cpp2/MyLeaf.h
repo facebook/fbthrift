@@ -57,7 +57,7 @@ class ServiceHandler<::cpp2::MyLeaf> : virtual public ::cpp2::MyNodeSvIf {
 } // namespace apache::thrift
 
 namespace cpp2 {
-class MyLeafSvIf : public ::apache::thrift::ServiceHandler<MyLeaf> {};
+using MyLeafSvIf = ::apache::thrift::ServiceHandler<MyLeaf>;
 } // cpp2
 namespace cpp2 {
 class MyLeafSvNull : public MyLeafSvIf, virtual public ::cpp2::MyNodeSvIf {

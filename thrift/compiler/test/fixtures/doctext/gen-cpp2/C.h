@@ -67,7 +67,7 @@ class ServiceHandler<::cpp2::C> : public apache::thrift::ServerInterface {
 } // namespace apache::thrift
 
 namespace cpp2 {
-class CSvIf : public ::apache::thrift::ServiceHandler<C> {};
+using CSvIf = ::apache::thrift::ServiceHandler<C>;
 } // cpp2
 namespace cpp2 {
 class CSvNull : public CSvIf {

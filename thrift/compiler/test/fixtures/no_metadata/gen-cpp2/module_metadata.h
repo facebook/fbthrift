@@ -13,7 +13,6 @@
 
 namespace cpp2 {
 class MyService;
-class MyServiceSvIf;
 } // namespace cpp2
 
 namespace apache {
@@ -57,9 +56,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>
   template <typename T>
   friend class ServiceMetadata;
 };
-template <>
-class ServiceMetadata<::cpp2::MyServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

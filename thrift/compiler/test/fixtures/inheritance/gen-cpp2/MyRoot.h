@@ -56,7 +56,7 @@ class ServiceHandler<::cpp2::MyRoot> : public apache::thrift::ServerInterface {
 } // namespace apache::thrift
 
 namespace cpp2 {
-class MyRootSvIf : public ::apache::thrift::ServiceHandler<MyRoot> {};
+using MyRootSvIf = ::apache::thrift::ServiceHandler<MyRoot>;
 } // cpp2
 namespace cpp2 {
 class MyRootSvNull : public MyRootSvIf {

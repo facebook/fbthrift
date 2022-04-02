@@ -61,7 +61,7 @@ class ServiceHandler<::cpp2::DbMixedStackArguments> : public apache::thrift::Ser
 } // namespace apache::thrift
 
 namespace cpp2 {
-class DbMixedStackArgumentsSvIf : public ::apache::thrift::ServiceHandler<DbMixedStackArguments> {};
+using DbMixedStackArgumentsSvIf = ::apache::thrift::ServiceHandler<DbMixedStackArguments>;
 } // cpp2
 namespace cpp2 {
 class DbMixedStackArgumentsSvNull : public DbMixedStackArgumentsSvIf {

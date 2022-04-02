@@ -13,7 +13,6 @@
 
 namespace cpp2 {
 class C;
-class CSvIf;
 } // namespace cpp2
 
 namespace apache {
@@ -60,9 +59,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::C>> {
   static void gen_numbers(ThriftMetadata& metadata, ThriftService& context);
   static void gen_thing(ThriftMetadata& metadata, ThriftService& context);
 };
-template <>
-class ServiceMetadata<::cpp2::CSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::C>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

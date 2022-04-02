@@ -53,7 +53,7 @@ class ServiceHandler<::some::valid::ns::EmptyService> : public apache::thrift::S
 } // namespace apache::thrift
 
 namespace some { namespace valid { namespace ns {
-class EmptyServiceSvIf : public ::apache::thrift::ServiceHandler<EmptyService> {};
+using EmptyServiceSvIf = ::apache::thrift::ServiceHandler<EmptyService>;
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 class EmptyServiceSvNull : public EmptyServiceSvIf {

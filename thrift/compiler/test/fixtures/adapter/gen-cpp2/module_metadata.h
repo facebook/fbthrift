@@ -15,7 +15,6 @@
 
 namespace cpp2 {
 class Service;
-class ServiceSvIf;
 } // namespace cpp2
 
 namespace apache {
@@ -55,9 +54,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>> {
 
   static void gen_func(ThriftMetadata& metadata, ThriftService& context);
 };
-template <>
-class ServiceMetadata<::cpp2::ServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::Service>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

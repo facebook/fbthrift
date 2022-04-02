@@ -15,7 +15,6 @@
 namespace extra {
 namespace svc {
 class ExtraService;
-class ExtraServiceSvIf;
 }} // namespace extra::svc
 
 namespace apache {
@@ -48,9 +47,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::extra::svc::ExtraServic
   static void gen_oneway_void_ret_struct_param(ThriftMetadata& metadata, ThriftService& context);
   static void gen_oneway_void_ret_listunion_param(ThriftMetadata& metadata, ThriftService& context);
 };
-template <>
-class ServiceMetadata<::extra::svc::ExtraServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::extra::svc::ExtraService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

@@ -76,7 +76,7 @@ class ServiceHandler<::cpp2::NestedContainers> : public apache::thrift::ServerIn
 } // namespace apache::thrift
 
 namespace cpp2 {
-class NestedContainersSvIf : public ::apache::thrift::ServiceHandler<NestedContainers> {};
+using NestedContainersSvIf = ::apache::thrift::ServiceHandler<NestedContainers>;
 } // cpp2
 namespace cpp2 {
 class NestedContainersSvNull : public NestedContainersSvIf {

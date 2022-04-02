@@ -195,7 +195,7 @@ class ServiceHandler<::test_cpp2::cpp_reflection::service_with_special_names> : 
 } // namespace apache::thrift
 
 namespace test_cpp2 { namespace cpp_reflection {
-class service_with_special_namesSvIf : public ::apache::thrift::ServiceHandler<service_with_special_names> {};
+using service_with_special_namesSvIf = ::apache::thrift::ServiceHandler<service_with_special_names>;
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class service_with_special_namesSvNull : public service_with_special_namesSvIf {

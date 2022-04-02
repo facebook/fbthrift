@@ -85,7 +85,7 @@ class ServiceHandler<::test_cpp2::cpp_reflection::service2> : public apache::thr
 } // namespace apache::thrift
 
 namespace test_cpp2 { namespace cpp_reflection {
-class service2SvIf : public ::apache::thrift::ServiceHandler<service2> {};
+using service2SvIf = ::apache::thrift::ServiceHandler<service2>;
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 class service2SvNull : public service2SvIf {

@@ -13,7 +13,6 @@
 
 namespace cpp2 {
 class SinkService;
-class SinkServiceSvIf;
 } // namespace cpp2
 
 namespace apache {
@@ -89,9 +88,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>> {
   static void gen_methodBothThrow(ThriftMetadata& metadata, ThriftService& context);
   static void gen_methodFast(ThriftMetadata& metadata, ThriftService& context);
 };
-template <>
-class ServiceMetadata<::cpp2::SinkServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::SinkService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

@@ -256,7 +256,7 @@ class ServiceHandler<::py3::simple::SimpleService> : public apache::thrift::Serv
 } // namespace apache::thrift
 
 namespace py3 { namespace simple {
-class SimpleServiceSvIf : public ::apache::thrift::ServiceHandler<SimpleService> {};
+using SimpleServiceSvIf = ::apache::thrift::ServiceHandler<SimpleService>;
 }} // py3::simple
 namespace py3 { namespace simple {
 class SimpleServiceSvNull : public SimpleServiceSvIf {

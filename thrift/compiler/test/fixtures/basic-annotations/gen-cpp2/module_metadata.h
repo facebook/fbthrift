@@ -13,19 +13,15 @@
 
 namespace cpp2 {
 class MyService;
-class MyServiceSvIf;
 } // namespace cpp2
 namespace cpp2 {
 class MyServicePrioParent;
-class MyServicePrioParentSvIf;
 } // namespace cpp2
 namespace cpp2 {
 class MyServicePrioChild;
-class MyServicePrioChildSvIf;
 } // namespace cpp2
 namespace cpp2 {
 class GoodService;
-class GoodServiceSvIf;
 } // namespace cpp2
 
 namespace apache {
@@ -97,9 +93,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>> {
   static void gen_cppDoNothing(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
-class ServiceMetadata<::cpp2::MyServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>> {};
-template <>
 class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
@@ -113,9 +106,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyServicePrioPare
   static void gen_pong(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
-class ServiceMetadata<::cpp2::MyServicePrioParentSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyServicePrioParent>> {};
-template <>
 class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyServicePrioChild>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
@@ -128,9 +118,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyServicePrioChil
   static void gen_pang(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
-class ServiceMetadata<::cpp2::MyServicePrioChildSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyServicePrioChild>> {};
-template <>
 class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::GoodService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
@@ -142,9 +129,6 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::GoodService>> {
 
   static void gen_bar(ThriftMetadata& metadata, ThriftService& context);
 };
-template <>
-class ServiceMetadata<::cpp2::GoodServiceSvIf> final
-    : public ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::GoodService>> {};
 } // namespace md
 } // namespace detail
 } // namespace thrift

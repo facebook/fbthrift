@@ -73,7 +73,7 @@ class ServiceHandler<::cpp2::PubSubStreamingService> : public apache::thrift::Se
 } // namespace apache::thrift
 
 namespace cpp2 {
-class PubSubStreamingServiceSvIf : public ::apache::thrift::ServiceHandler<PubSubStreamingService> {};
+using PubSubStreamingServiceSvIf = ::apache::thrift::ServiceHandler<PubSubStreamingService>;
 } // cpp2
 namespace cpp2 {
 class PubSubStreamingServiceSvNull : public PubSubStreamingServiceSvIf {
