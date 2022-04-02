@@ -44,6 +44,8 @@ struct ForEachField<::cpp2::FieldsInjectedWithIncludedStruct> {
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).string_field_ref()...);
     f(1, static_cast<T&&>(t).injected_field_ref()...);
+    f(2, static_cast<T&&>(t).injected_structured_annotation_field_ref()...);
+    f(3, static_cast<T&&>(t).injected_unstructured_annotation_field_ref()...);
   }
 };
 } // namespace detail

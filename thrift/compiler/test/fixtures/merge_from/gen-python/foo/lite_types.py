@@ -9,6 +9,8 @@ import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
 
+import facebook.thrift.annotation.thrift.thrift.lite_types
+
 
 class Fields(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -16,6 +18,20 @@ class Fields(metaclass=_fbthrift_py3lite_types.StructMeta):
             100,  # id
             True,  # isUnqualified
             "injected_field",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+        ),
+        (
+            101,  # id
+            False,  # isUnqualified
+            "injected_structured_annotation_field",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+        ),
+        (
+            102,  # id
+            False,  # isUnqualified
+            "injected_unstructured_annotation_field",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
         ),

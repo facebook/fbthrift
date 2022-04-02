@@ -38,6 +38,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 from folly.optional cimport cOptional as __cOptional
+cimport facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
 
 cimport foo.types_fields as _fbthrift_types_fields
 
@@ -68,6 +69,8 @@ cdef extern from "gen-cpp2/foo_types_custom_protocol.h" namespace "::cpp2":
         bint operator<=(cFields&)
         bint operator>=(cFields&)
         __field_ref[string] injected_field_ref()
+        __optional_field_ref[string] injected_structured_annotation_field_ref()
+        __optional_field_ref[string] injected_unstructured_annotation_field_ref()
 
 
 
@@ -76,6 +79,8 @@ cdef class Fields(thrift.py3.types.Struct):
     cdef shared_ptr[cFields] _cpp_obj
     cdef _fbthrift_types_fields.__Fields_FieldsSetter _fields_setter
     cdef inline object injected_field_impl(self)
+    cdef inline object injected_structured_annotation_field_impl(self)
+    cdef inline object injected_unstructured_annotation_field_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cFields])

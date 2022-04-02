@@ -10,12 +10,16 @@ import typing as _typing
 import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.builder
 
+import facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
+import facebook.thrift.annotation.thrift.thrift.builders as _facebook_thrift_annotation_thrift_thrift_builders
 
 import foo.types as _foo_types
 
 
 class Fields_Builder(thrift.py3.builder.StructBuilder):
     injected_field: _typing.Optional[str]
+    injected_structured_annotation_field: _typing.Optional[str]
+    injected_unstructured_annotation_field: _typing.Optional[str]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

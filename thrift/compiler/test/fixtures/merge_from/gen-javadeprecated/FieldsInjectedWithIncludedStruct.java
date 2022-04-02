@@ -26,11 +26,17 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
   private static final TStruct STRUCT_DESC = new TStruct("FieldsInjectedWithIncludedStruct");
   private static final TField STRING_FIELD_FIELD_DESC = new TField("string_field", TType.STRING, (short)1);
   private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)100);
+  private static final TField INJECTED_STRUCTURED_ANNOTATION_FIELD_FIELD_DESC = new TField("injected_structured_annotation_field", TType.STRING, (short)101);
+  private static final TField INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC = new TField("injected_unstructured_annotation_field", TType.STRING, (short)102);
 
   public String string_field;
   public String injected_field;
+  public String injected_structured_annotation_field;
+  public String injected_unstructured_annotation_field;
   public static final int STRING_FIELD = 1;
   public static final int INJECTED_FIELD = 100;
+  public static final int INJECTED_STRUCTURED_ANNOTATION_FIELD = 101;
+  public static final int INJECTED_UNSTRUCTURED_ANNOTATION_FIELD = 102;
 
   // isset id assignments
 
@@ -41,6 +47,10 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
     tmpMetaDataMap.put(STRING_FIELD, new FieldMetaData("string_field", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.STRING)));
     tmpMetaDataMap.put(INJECTED_FIELD, new FieldMetaData("injected_field", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(INJECTED_STRUCTURED_ANNOTATION_FIELD, new FieldMetaData("injected_structured_annotation_field", TFieldRequirementType.OPTIONAL, 
+        new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(INJECTED_UNSTRUCTURED_ANNOTATION_FIELD, new FieldMetaData("injected_unstructured_annotation_field", TFieldRequirementType.OPTIONAL, 
         new FieldValueMetaData(TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
@@ -60,9 +70,23 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
     this.injected_field = injected_field;
   }
 
+  public FieldsInjectedWithIncludedStruct(
+      String string_field,
+      String injected_field,
+      String injected_structured_annotation_field,
+      String injected_unstructured_annotation_field) {
+    this();
+    this.string_field = string_field;
+    this.injected_field = injected_field;
+    this.injected_structured_annotation_field = injected_structured_annotation_field;
+    this.injected_unstructured_annotation_field = injected_unstructured_annotation_field;
+  }
+
   public static class Builder {
     private String string_field;
     private String injected_field;
+    private String injected_structured_annotation_field;
+    private String injected_unstructured_annotation_field;
 
     public Builder() {
     }
@@ -77,10 +101,22 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
       return this;
     }
 
+    public Builder setInjected_structured_annotation_field(final String injected_structured_annotation_field) {
+      this.injected_structured_annotation_field = injected_structured_annotation_field;
+      return this;
+    }
+
+    public Builder setInjected_unstructured_annotation_field(final String injected_unstructured_annotation_field) {
+      this.injected_unstructured_annotation_field = injected_unstructured_annotation_field;
+      return this;
+    }
+
     public FieldsInjectedWithIncludedStruct build() {
       FieldsInjectedWithIncludedStruct result = new FieldsInjectedWithIncludedStruct();
       result.setString_field(this.string_field);
       result.setInjected_field(this.injected_field);
+      result.setInjected_structured_annotation_field(this.injected_structured_annotation_field);
+      result.setInjected_unstructured_annotation_field(this.injected_unstructured_annotation_field);
       return result;
     }
   }
@@ -98,6 +134,12 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
     }
     if (other.isSetInjected_field()) {
       this.injected_field = TBaseHelper.deepCopy(other.injected_field);
+    }
+    if (other.isSetInjected_structured_annotation_field()) {
+      this.injected_structured_annotation_field = TBaseHelper.deepCopy(other.injected_structured_annotation_field);
+    }
+    if (other.isSetInjected_unstructured_annotation_field()) {
+      this.injected_unstructured_annotation_field = TBaseHelper.deepCopy(other.injected_unstructured_annotation_field);
     }
   }
 
@@ -153,6 +195,54 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
     }
   }
 
+  public String getInjected_structured_annotation_field() {
+    return this.injected_structured_annotation_field;
+  }
+
+  public FieldsInjectedWithIncludedStruct setInjected_structured_annotation_field(String injected_structured_annotation_field) {
+    this.injected_structured_annotation_field = injected_structured_annotation_field;
+    return this;
+  }
+
+  public void unsetInjected_structured_annotation_field() {
+    this.injected_structured_annotation_field = null;
+  }
+
+  // Returns true if field injected_structured_annotation_field is set (has been assigned a value) and false otherwise
+  public boolean isSetInjected_structured_annotation_field() {
+    return this.injected_structured_annotation_field != null;
+  }
+
+  public void setInjected_structured_annotation_fieldIsSet(boolean __value) {
+    if (!__value) {
+      this.injected_structured_annotation_field = null;
+    }
+  }
+
+  public String getInjected_unstructured_annotation_field() {
+    return this.injected_unstructured_annotation_field;
+  }
+
+  public FieldsInjectedWithIncludedStruct setInjected_unstructured_annotation_field(String injected_unstructured_annotation_field) {
+    this.injected_unstructured_annotation_field = injected_unstructured_annotation_field;
+    return this;
+  }
+
+  public void unsetInjected_unstructured_annotation_field() {
+    this.injected_unstructured_annotation_field = null;
+  }
+
+  // Returns true if field injected_unstructured_annotation_field is set (has been assigned a value) and false otherwise
+  public boolean isSetInjected_unstructured_annotation_field() {
+    return this.injected_unstructured_annotation_field != null;
+  }
+
+  public void setInjected_unstructured_annotation_fieldIsSet(boolean __value) {
+    if (!__value) {
+      this.injected_unstructured_annotation_field = null;
+    }
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case STRING_FIELD:
@@ -171,6 +261,22 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
       }
       break;
 
+    case INJECTED_STRUCTURED_ANNOTATION_FIELD:
+      if (__value == null) {
+        unsetInjected_structured_annotation_field();
+      } else {
+        setInjected_structured_annotation_field((String)__value);
+      }
+      break;
+
+    case INJECTED_UNSTRUCTURED_ANNOTATION_FIELD:
+      if (__value == null) {
+        unsetInjected_unstructured_annotation_field();
+      } else {
+        setInjected_unstructured_annotation_field((String)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -183,6 +289,12 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
 
     case INJECTED_FIELD:
       return getInjected_field();
+
+    case INJECTED_STRUCTURED_ANNOTATION_FIELD:
+      return getInjected_structured_annotation_field();
+
+    case INJECTED_UNSTRUCTURED_ANNOTATION_FIELD:
+      return getInjected_unstructured_annotation_field();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -203,12 +315,16 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
 
     if (!TBaseHelper.equalsNobinary(this.isSetInjected_field(), that.isSetInjected_field(), this.injected_field, that.injected_field)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetInjected_structured_annotation_field(), that.isSetInjected_structured_annotation_field(), this.injected_structured_annotation_field, that.injected_structured_annotation_field)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetInjected_unstructured_annotation_field(), that.isSetInjected_unstructured_annotation_field(), this.injected_unstructured_annotation_field, that.injected_unstructured_annotation_field)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {string_field, injected_field});
+    return Arrays.deepHashCode(new Object[] {string_field, injected_field, injected_structured_annotation_field, injected_unstructured_annotation_field});
   }
 
   @Override
@@ -236,6 +352,22 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(injected_field, other.injected_field);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetInjected_structured_annotation_field()).compareTo(other.isSetInjected_structured_annotation_field());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(injected_structured_annotation_field, other.injected_structured_annotation_field);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetInjected_unstructured_annotation_field()).compareTo(other.isSetInjected_unstructured_annotation_field());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(injected_unstructured_annotation_field, other.injected_unstructured_annotation_field);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -267,6 +399,20 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case INJECTED_STRUCTURED_ANNOTATION_FIELD:
+          if (__field.type == TType.STRING) {
+            this.injected_structured_annotation_field = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case INJECTED_UNSTRUCTURED_ANNOTATION_FIELD:
+          if (__field.type == TType.STRING) {
+            this.injected_unstructured_annotation_field = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -293,6 +439,20 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
       oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
       oprot.writeString(this.injected_field);
       oprot.writeFieldEnd();
+    }
+    if (this.injected_structured_annotation_field != null) {
+      if (isSetInjected_structured_annotation_field()) {
+        oprot.writeFieldBegin(INJECTED_STRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
+        oprot.writeString(this.injected_structured_annotation_field);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.injected_unstructured_annotation_field != null) {
+      if (isSetInjected_unstructured_annotation_field()) {
+        oprot.writeFieldBegin(INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
+        oprot.writeString(this.injected_unstructured_annotation_field);
+        oprot.writeFieldEnd();
+      }
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -335,6 +495,34 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
       sb.append(TBaseHelper.toString(this.getInjected_field(), indent + 1, prettyPrint));
     }
     first = false;
+    if (isSetInjected_structured_annotation_field())
+    {
+      if (!first) sb.append("," + newLine);
+      sb.append(indentStr);
+      sb.append("injected_structured_annotation_field");
+      sb.append(space);
+      sb.append(":").append(space);
+      if (this.getInjected_structured_annotation_field() == null) {
+        sb.append("null");
+      } else {
+        sb.append(TBaseHelper.toString(this.getInjected_structured_annotation_field(), indent + 1, prettyPrint));
+      }
+      first = false;
+    }
+    if (isSetInjected_unstructured_annotation_field())
+    {
+      if (!first) sb.append("," + newLine);
+      sb.append(indentStr);
+      sb.append("injected_unstructured_annotation_field");
+      sb.append(space);
+      sb.append(":").append(space);
+      if (this.getInjected_unstructured_annotation_field() == null) {
+        sb.append("null");
+      } else {
+        sb.append(TBaseHelper.toString(this.getInjected_unstructured_annotation_field(), indent + 1, prettyPrint));
+      }
+      first = false;
+    }
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");
     return sb.toString();

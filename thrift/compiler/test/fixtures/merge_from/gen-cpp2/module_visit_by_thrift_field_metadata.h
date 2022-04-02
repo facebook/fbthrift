@@ -63,6 +63,10 @@ struct VisitByFieldId<::cpp2::FieldsInjectedWithIncludedStruct> {
       return f(0, static_cast<T&&>(t).string_field_ref());
     case 100:
       return f(1, static_cast<T&&>(t).injected_field_ref());
+    case 101:
+      return f(2, static_cast<T&&>(t).injected_structured_annotation_field_ref());
+    case 102:
+      return f(3, static_cast<T&&>(t).injected_unstructured_annotation_field_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::FieldsInjectedWithIncludedStruct");
     }

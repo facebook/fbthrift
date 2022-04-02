@@ -108,6 +108,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cFieldsInjectedWithIncludedStruct&)
         __field_ref[string] string_field_ref()
         __field_ref[string] injected_field_ref()
+        __optional_field_ref[string] injected_structured_annotation_field_ref()
+        __optional_field_ref[string] injected_unstructured_annotation_field_ref()
 
 
 
@@ -148,6 +150,8 @@ cdef class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__FieldsInjectedWithIncludedStruct_FieldsSetter _fields_setter
     cdef inline object string_field_impl(self)
     cdef inline object injected_field_impl(self)
+    cdef inline object injected_structured_annotation_field_impl(self)
+    cdef inline object injected_unstructured_annotation_field_impl(self)
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cFieldsInjectedWithIncludedStruct])

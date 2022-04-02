@@ -389,6 +389,8 @@ cdef class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct):
         return thrift.py3.types._IsSet("FieldsInjectedWithIncludedStruct", {
           "string_field": deref(self._cpp_obj).string_field_ref().has_value(),
           "injected_field": deref(self._cpp_obj).injected_field_ref().has_value(),
+          "injected_structured_annotation_field": deref(self._cpp_obj).injected_structured_annotation_field_ref().has_value(),
+          "injected_unstructured_annotation_field": deref(self._cpp_obj).injected_unstructured_annotation_field_ref().has_value(),
         })
 
     @staticmethod
@@ -412,6 +414,26 @@ cdef class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct):
     @property
     def injected_field(self):
         return self.injected_field_impl()
+
+    cdef inline injected_structured_annotation_field_impl(self):
+        if not deref(self._cpp_obj).injected_structured_annotation_field_ref().has_value():
+            return None
+
+        return (<bytes>deref(self._cpp_obj).injected_structured_annotation_field_ref().value_unchecked()).decode('UTF-8')
+
+    @property
+    def injected_structured_annotation_field(self):
+        return self.injected_structured_annotation_field_impl()
+
+    cdef inline injected_unstructured_annotation_field_impl(self):
+        if not deref(self._cpp_obj).injected_unstructured_annotation_field_ref().has_value():
+            return None
+
+        return (<bytes>deref(self._cpp_obj).injected_unstructured_annotation_field_ref().value_unchecked()).decode('UTF-8')
+
+    @property
+    def injected_unstructured_annotation_field(self):
+        return self.injected_unstructured_annotation_field_impl()
 
 
     def __hash__(FieldsInjectedWithIncludedStruct self):
@@ -456,7 +478,7 @@ cdef class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct):
         return __get_field_name_by_index[cFieldsInjectedWithIncludedStruct](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 2
+        self._fbthrift_struct_size = 4
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(FieldsInjectedWithIncludedStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

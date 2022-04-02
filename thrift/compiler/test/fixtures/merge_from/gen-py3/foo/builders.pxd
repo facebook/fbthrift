@@ -10,10 +10,14 @@ cimport folly.iobuf as _fbthrift_iobuf
 
 cimport thrift.py3.builder
 
+cimport facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
+cimport facebook.thrift.annotation.thrift.thrift.builders as _facebook_thrift_annotation_thrift_thrift_builders
 
 cimport foo.types as _foo_types
 
 cdef class Fields_Builder(thrift.py3.builder.StructBuilder):
     cdef public str injected_field
+    cdef public str injected_structured_annotation_field
+    cdef public str injected_unstructured_annotation_field
 
 

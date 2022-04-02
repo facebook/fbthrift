@@ -22,6 +22,8 @@ struct string_field;
 struct injected_field;
 struct string_field;
 struct injected_field;
+struct injected_structured_annotation_field;
+struct injected_unstructured_annotation_field;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_injected_field
@@ -47,6 +49,14 @@ APACHE_THRIFT_DEFINE_ACCESSOR(string_field);
 #ifndef APACHE_THRIFT_ACCESSOR_injected_field
 #define APACHE_THRIFT_ACCESSOR_injected_field
 APACHE_THRIFT_DEFINE_ACCESSOR(injected_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_injected_structured_annotation_field
+#define APACHE_THRIFT_ACCESSOR_injected_structured_annotation_field
+APACHE_THRIFT_DEFINE_ACCESSOR(injected_structured_annotation_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_injected_unstructured_annotation_field
+#define APACHE_THRIFT_ACCESSOR_injected_unstructured_annotation_field
+APACHE_THRIFT_DEFINE_ACCESSOR(injected_unstructured_annotation_field);
 #endif
 } // namespace detail
 } // namespace thrift
@@ -528,7 +538,7 @@ class FieldsInjectedWithIncludedStruct final  {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  FieldsInjectedWithIncludedStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg, ::std::string injected_field__arg);
+  FieldsInjectedWithIncludedStruct(apache::thrift::FragileConstructor, ::std::string string_field__arg, ::std::string injected_field__arg, ::std::string injected_structured_annotation_field__arg, ::std::string injected_unstructured_annotation_field__arg);
 
   FieldsInjectedWithIncludedStruct(FieldsInjectedWithIncludedStruct&&) noexcept;
 
@@ -542,7 +552,11 @@ class FieldsInjectedWithIncludedStruct final  {
  private:
   ::std::string __fbthrift_field_injected_field;
  private:
-  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+  ::std::string __fbthrift_field_injected_structured_annotation_field;
+ private:
+  ::std::string __fbthrift_field_injected_unstructured_annotation_field;
+ private:
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -629,6 +643,86 @@ class FieldsInjectedWithIncludedStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_injected_field), __isset.at(1), __isset.bit(1)};
   }
 
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> injected_structured_annotation_field_ref() const& {
+    return {this->__fbthrift_field_injected_structured_annotation_field, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> injected_structured_annotation_field_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_injected_structured_annotation_field), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> injected_structured_annotation_field_ref() & {
+    return {this->__fbthrift_field_injected_structured_annotation_field, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> injected_structured_annotation_field_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_injected_structured_annotation_field), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> injected_structured_annotation_field() const& {
+    return {this->__fbthrift_field_injected_structured_annotation_field, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> injected_structured_annotation_field() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_injected_structured_annotation_field), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> injected_structured_annotation_field() & {
+    return {this->__fbthrift_field_injected_structured_annotation_field, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> injected_structured_annotation_field() && {
+    return {static_cast<T&&>(this->__fbthrift_field_injected_structured_annotation_field), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> injected_unstructured_annotation_field_ref() const& {
+    return {this->__fbthrift_field_injected_unstructured_annotation_field, __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> injected_unstructured_annotation_field_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_injected_unstructured_annotation_field), __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> injected_unstructured_annotation_field_ref() & {
+    return {this->__fbthrift_field_injected_unstructured_annotation_field, __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> injected_unstructured_annotation_field_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_injected_unstructured_annotation_field), __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> injected_unstructured_annotation_field() const& {
+    return {this->__fbthrift_field_injected_unstructured_annotation_field, __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> injected_unstructured_annotation_field() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_injected_unstructured_annotation_field), __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> injected_unstructured_annotation_field() & {
+    return {this->__fbthrift_field_injected_unstructured_annotation_field, __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> injected_unstructured_annotation_field() && {
+    return {static_cast<T&&>(this->__fbthrift_field_injected_unstructured_annotation_field), __isset.at(3), __isset.bit(3)};
+  }
+
   const ::std::string& get_string_field() const& {
     return __fbthrift_field_string_field;
   }
@@ -657,6 +751,38 @@ class FieldsInjectedWithIncludedStruct final  {
   ::std::string& set_injected_field(T_FieldsInjectedWithIncludedStruct_injected_field_struct_setter&& injected_field_) {
     injected_field_ref() = std::forward<T_FieldsInjectedWithIncludedStruct_injected_field_struct_setter>(injected_field_);
     return __fbthrift_field_injected_field;
+  }
+
+  const ::std::string* get_injected_structured_annotation_field() const& {
+    return injected_structured_annotation_field_ref() ? std::addressof(__fbthrift_field_injected_structured_annotation_field) : nullptr;
+  }
+
+  ::std::string* get_injected_structured_annotation_field() & {
+    return injected_structured_annotation_field_ref() ? std::addressof(__fbthrift_field_injected_structured_annotation_field) : nullptr;
+  }
+  ::std::string* get_injected_structured_annotation_field() && = delete;
+
+  template <typename T_FieldsInjectedWithIncludedStruct_injected_structured_annotation_field_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.injected_structured_annotation_field_ref() = BAR;` instead of `FOO.set_injected_structured_annotation_field(BAR);`")]]
+  ::std::string& set_injected_structured_annotation_field(T_FieldsInjectedWithIncludedStruct_injected_structured_annotation_field_struct_setter&& injected_structured_annotation_field_) {
+    injected_structured_annotation_field_ref() = std::forward<T_FieldsInjectedWithIncludedStruct_injected_structured_annotation_field_struct_setter>(injected_structured_annotation_field_);
+    return __fbthrift_field_injected_structured_annotation_field;
+  }
+
+  const ::std::string* get_injected_unstructured_annotation_field() const& {
+    return injected_unstructured_annotation_field_ref() ? std::addressof(__fbthrift_field_injected_unstructured_annotation_field) : nullptr;
+  }
+
+  ::std::string* get_injected_unstructured_annotation_field() & {
+    return injected_unstructured_annotation_field_ref() ? std::addressof(__fbthrift_field_injected_unstructured_annotation_field) : nullptr;
+  }
+  ::std::string* get_injected_unstructured_annotation_field() && = delete;
+
+  template <typename T_FieldsInjectedWithIncludedStruct_injected_unstructured_annotation_field_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.injected_unstructured_annotation_field_ref() = BAR;` instead of `FOO.set_injected_unstructured_annotation_field(BAR);`")]]
+  ::std::string& set_injected_unstructured_annotation_field(T_FieldsInjectedWithIncludedStruct_injected_unstructured_annotation_field_struct_setter&& injected_unstructured_annotation_field_) {
+    injected_unstructured_annotation_field_ref() = std::forward<T_FieldsInjectedWithIncludedStruct_injected_unstructured_annotation_field_struct_setter>(injected_unstructured_annotation_field_);
+    return __fbthrift_field_injected_unstructured_annotation_field;
   }
 
   template <class Protocol_>

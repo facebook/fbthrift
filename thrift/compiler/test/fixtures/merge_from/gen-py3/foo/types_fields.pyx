@@ -26,6 +26,8 @@ cdef class __Fields_FieldsSetter(__StructFieldsSetter):
         cdef __Fields_FieldsSetter __fbthrift_inst = __Fields_FieldsSetter.__new__(__Fields_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
         __fbthrift_inst._setters[__cstring_view(<const char*>"injected_field")] = __Fields_FieldsSetter._set_field_0
+        __fbthrift_inst._setters[__cstring_view(<const char*>"injected_structured_annotation_field")] = __Fields_FieldsSetter._set_field_1
+        __fbthrift_inst._setters[__cstring_view(<const char*>"injected_unstructured_annotation_field")] = __Fields_FieldsSetter._set_field_2
         return __fbthrift_inst
 
     cdef void set_field(__Fields_FieldsSetter self, const char* name, object value) except *:
@@ -43,4 +45,22 @@ cdef class __Fields_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, str):
             raise TypeError(f'injected_field is not a { str !r}.')
         deref(self._struct_cpp_obj).injected_field_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
+
+    cdef void _set_field_1(self, _fbthrift_value) except *:
+        # for field injected_structured_annotation_field
+        if _fbthrift_value is None:
+            __reset_field[_foo_types.cFields](deref(self._struct_cpp_obj), 1)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'injected_structured_annotation_field is not a { str !r}.')
+        deref(self._struct_cpp_obj).injected_structured_annotation_field_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
+
+    cdef void _set_field_2(self, _fbthrift_value) except *:
+        # for field injected_unstructured_annotation_field
+        if _fbthrift_value is None:
+            __reset_field[_foo_types.cFields](deref(self._struct_cpp_obj), 2)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'injected_unstructured_annotation_field is not a { str !r}.')
+        deref(self._struct_cpp_obj).injected_unstructured_annotation_field_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
 

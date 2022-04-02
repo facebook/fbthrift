@@ -148,4 +148,28 @@ cdef __StructSpec get_reflection__FieldsInjectedWithIncludedStruct():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=101,
+            name="injected_structured_annotation_field",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=102,
+            name="injected_unstructured_annotation_field",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec

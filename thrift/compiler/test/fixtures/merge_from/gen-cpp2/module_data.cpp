@@ -45,15 +45,21 @@ const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::FieldsInjectedTo
   TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::FieldsInjectedWithIncludedStruct>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::FieldsInjectedWithIncludedStruct>::fields_names = {{
   "string_field",
   "injected_field",
+  "injected_structured_annotation_field",
+  "injected_unstructured_annotation_field",
 }};
-const std::array<int16_t, 2> TStructDataStorage<::cpp2::FieldsInjectedWithIncludedStruct>::fields_ids = {{
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::FieldsInjectedWithIncludedStruct>::fields_ids = {{
   1,
   100,
+  101,
+  102,
 }};
-const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::FieldsInjectedWithIncludedStruct>::fields_types = {{
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::FieldsInjectedWithIncludedStruct>::fields_types = {{
+  TType::T_STRING,
+  TType::T_STRING,
   TType::T_STRING,
   TType::T_STRING,
 }};

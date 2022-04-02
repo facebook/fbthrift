@@ -62,6 +62,12 @@ void reset_field<::cpp2::FieldsInjectedWithIncludedStruct>(
     case 1:
       obj.injected_field_ref().copy_from(default_inst<::cpp2::FieldsInjectedWithIncludedStruct>().injected_field_ref());
       return;
+    case 2:
+      obj.injected_structured_annotation_field_ref().copy_from(default_inst<::cpp2::FieldsInjectedWithIncludedStruct>().injected_structured_annotation_field_ref());
+      return;
+    case 3:
+      obj.injected_unstructured_annotation_field_ref().copy_from(default_inst<::cpp2::FieldsInjectedWithIncludedStruct>().injected_unstructured_annotation_field_ref());
+      return;
   }
 }
 

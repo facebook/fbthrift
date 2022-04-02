@@ -53,6 +53,8 @@ import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
 import weakref as __weakref
 import builtins as _builtins
+cimport facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
+import facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
 
 cimport foo.types_reflection as _types_reflection
 
@@ -81,6 +83,8 @@ cdef class Fields(thrift.py3.types.Struct):
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("Fields", {
           "injected_field": deref(self._cpp_obj).injected_field_ref().has_value(),
+          "injected_structured_annotation_field": deref(self._cpp_obj).injected_structured_annotation_field_ref().has_value(),
+          "injected_unstructured_annotation_field": deref(self._cpp_obj).injected_unstructured_annotation_field_ref().has_value(),
         })
 
     @staticmethod
@@ -96,6 +100,26 @@ cdef class Fields(thrift.py3.types.Struct):
     @property
     def injected_field(self):
         return self.injected_field_impl()
+
+    cdef inline injected_structured_annotation_field_impl(self):
+        if not deref(self._cpp_obj).injected_structured_annotation_field_ref().has_value():
+            return None
+
+        return (<bytes>deref(self._cpp_obj).injected_structured_annotation_field_ref().value()).decode('UTF-8')
+
+    @property
+    def injected_structured_annotation_field(self):
+        return self.injected_structured_annotation_field_impl()
+
+    cdef inline injected_unstructured_annotation_field_impl(self):
+        if not deref(self._cpp_obj).injected_unstructured_annotation_field_ref().has_value():
+            return None
+
+        return (<bytes>deref(self._cpp_obj).injected_unstructured_annotation_field_ref().value()).decode('UTF-8')
+
+    @property
+    def injected_unstructured_annotation_field(self):
+        return self.injected_unstructured_annotation_field_impl()
 
 
     def __hash__(Fields self):
@@ -140,7 +164,7 @@ cdef class Fields(thrift.py3.types.Struct):
         return __get_field_name_by_index[cFields](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 3
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Fields self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

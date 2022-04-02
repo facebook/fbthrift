@@ -407,10 +407,14 @@ func (p *FieldsInjectedToStruct) String() string {
 // Attributes:
 //  - StringField
 //  - InjectedField
+//  - InjectedStructuredAnnotationField
+//  - InjectedUnstructuredAnnotationField
 type FieldsInjectedWithIncludedStruct struct {
   StringField string `thrift:"string_field,1" db:"string_field" json:"string_field"`
   // unused fields # 2 to 99
   InjectedField string `thrift:"injected_field,100" db:"injected_field" json:"injected_field"`
+  InjectedStructuredAnnotationField *string `thrift:"injected_structured_annotation_field,101,optional" db:"injected_structured_annotation_field" json:"injected_structured_annotation_field,omitempty"`
+  InjectedUnstructuredAnnotationField *string `thrift:"injected_unstructured_annotation_field,102,optional" db:"injected_unstructured_annotation_field" json:"injected_unstructured_annotation_field,omitempty"`
 }
 
 func NewFieldsInjectedWithIncludedStruct() *FieldsInjectedWithIncludedStruct {
@@ -425,6 +429,28 @@ func (p *FieldsInjectedWithIncludedStruct) GetStringField() string {
 func (p *FieldsInjectedWithIncludedStruct) GetInjectedField() string {
   return p.InjectedField
 }
+var FieldsInjectedWithIncludedStruct_InjectedStructuredAnnotationField_DEFAULT string
+func (p *FieldsInjectedWithIncludedStruct) GetInjectedStructuredAnnotationField() string {
+  if !p.IsSetInjectedStructuredAnnotationField() {
+    return FieldsInjectedWithIncludedStruct_InjectedStructuredAnnotationField_DEFAULT
+  }
+return *p.InjectedStructuredAnnotationField
+}
+var FieldsInjectedWithIncludedStruct_InjectedUnstructuredAnnotationField_DEFAULT string
+func (p *FieldsInjectedWithIncludedStruct) GetInjectedUnstructuredAnnotationField() string {
+  if !p.IsSetInjectedUnstructuredAnnotationField() {
+    return FieldsInjectedWithIncludedStruct_InjectedUnstructuredAnnotationField_DEFAULT
+  }
+return *p.InjectedUnstructuredAnnotationField
+}
+func (p *FieldsInjectedWithIncludedStruct) IsSetInjectedStructuredAnnotationField() bool {
+  return p != nil && p.InjectedStructuredAnnotationField != nil
+}
+
+func (p *FieldsInjectedWithIncludedStruct) IsSetInjectedUnstructuredAnnotationField() bool {
+  return p != nil && p.InjectedUnstructuredAnnotationField != nil
+}
+
 type FieldsInjectedWithIncludedStructBuilder struct {
   obj *FieldsInjectedWithIncludedStruct
 }
@@ -439,6 +465,8 @@ func (p FieldsInjectedWithIncludedStructBuilder) Emit() *FieldsInjectedWithInclu
   return &FieldsInjectedWithIncludedStruct{
     StringField: p.obj.StringField,
     InjectedField: p.obj.InjectedField,
+    InjectedStructuredAnnotationField: p.obj.InjectedStructuredAnnotationField,
+    InjectedUnstructuredAnnotationField: p.obj.InjectedUnstructuredAnnotationField,
   }
 }
 
@@ -452,6 +480,16 @@ func (f *FieldsInjectedWithIncludedStructBuilder) InjectedField(injectedField st
   return f
 }
 
+func (f *FieldsInjectedWithIncludedStructBuilder) InjectedStructuredAnnotationField(injectedStructuredAnnotationField *string) *FieldsInjectedWithIncludedStructBuilder {
+  f.obj.InjectedStructuredAnnotationField = injectedStructuredAnnotationField
+  return f
+}
+
+func (f *FieldsInjectedWithIncludedStructBuilder) InjectedUnstructuredAnnotationField(injectedUnstructuredAnnotationField *string) *FieldsInjectedWithIncludedStructBuilder {
+  f.obj.InjectedUnstructuredAnnotationField = injectedUnstructuredAnnotationField
+  return f
+}
+
 func (f *FieldsInjectedWithIncludedStruct) SetStringField(stringField string) *FieldsInjectedWithIncludedStruct {
   f.StringField = stringField
   return f
@@ -459,6 +497,16 @@ func (f *FieldsInjectedWithIncludedStruct) SetStringField(stringField string) *F
 
 func (f *FieldsInjectedWithIncludedStruct) SetInjectedField(injectedField string) *FieldsInjectedWithIncludedStruct {
   f.InjectedField = injectedField
+  return f
+}
+
+func (f *FieldsInjectedWithIncludedStruct) SetInjectedStructuredAnnotationField(injectedStructuredAnnotationField *string) *FieldsInjectedWithIncludedStruct {
+  f.InjectedStructuredAnnotationField = injectedStructuredAnnotationField
+  return f
+}
+
+func (f *FieldsInjectedWithIncludedStruct) SetInjectedUnstructuredAnnotationField(injectedUnstructuredAnnotationField *string) *FieldsInjectedWithIncludedStruct {
+  f.InjectedUnstructuredAnnotationField = injectedUnstructuredAnnotationField
   return f
 }
 
@@ -481,6 +529,14 @@ func (p *FieldsInjectedWithIncludedStruct) Read(iprot thrift.Protocol) error {
       }
     case 100:
       if err := p.ReadField100(iprot); err != nil {
+        return err
+      }
+    case 101:
+      if err := p.ReadField101(iprot); err != nil {
+        return err
+      }
+    case 102:
+      if err := p.ReadField102(iprot); err != nil {
         return err
       }
     default:
@@ -516,11 +572,31 @@ func (p *FieldsInjectedWithIncludedStruct)  ReadField100(iprot thrift.Protocol) 
   return nil
 }
 
+func (p *FieldsInjectedWithIncludedStruct)  ReadField101(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 101: ", err)
+  } else {
+    p.InjectedStructuredAnnotationField = &v
+  }
+  return nil
+}
+
+func (p *FieldsInjectedWithIncludedStruct)  ReadField102(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 102: ", err)
+  } else {
+    p.InjectedUnstructuredAnnotationField = &v
+  }
+  return nil
+}
+
 func (p *FieldsInjectedWithIncludedStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("FieldsInjectedWithIncludedStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
   if err := p.writeField100(oprot); err != nil { return err }
+  if err := p.writeField101(oprot); err != nil { return err }
+  if err := p.writeField102(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -548,6 +624,30 @@ func (p *FieldsInjectedWithIncludedStruct) writeField100(oprot thrift.Protocol) 
   return err
 }
 
+func (p *FieldsInjectedWithIncludedStruct) writeField101(oprot thrift.Protocol) (err error) {
+  if p.IsSetInjectedStructuredAnnotationField() {
+    if err := oprot.WriteFieldBegin("injected_structured_annotation_field", thrift.STRING, 101); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 101:injected_structured_annotation_field: ", p), err) }
+    if err := oprot.WriteString(string(*p.InjectedStructuredAnnotationField)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.injected_structured_annotation_field (101) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 101:injected_structured_annotation_field: ", p), err) }
+  }
+  return err
+}
+
+func (p *FieldsInjectedWithIncludedStruct) writeField102(oprot thrift.Protocol) (err error) {
+  if p.IsSetInjectedUnstructuredAnnotationField() {
+    if err := oprot.WriteFieldBegin("injected_unstructured_annotation_field", thrift.STRING, 102); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 102:injected_unstructured_annotation_field: ", p), err) }
+    if err := oprot.WriteString(string(*p.InjectedUnstructuredAnnotationField)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.injected_unstructured_annotation_field (102) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 102:injected_unstructured_annotation_field: ", p), err) }
+  }
+  return err
+}
+
 func (p *FieldsInjectedWithIncludedStruct) String() string {
   if p == nil {
     return "<nil>"
@@ -555,6 +655,18 @@ func (p *FieldsInjectedWithIncludedStruct) String() string {
 
   stringFieldVal := fmt.Sprintf("%v", p.StringField)
   injectedFieldVal := fmt.Sprintf("%v", p.InjectedField)
-  return fmt.Sprintf("FieldsInjectedWithIncludedStruct({StringField:%s InjectedField:%s})", stringFieldVal, injectedFieldVal)
+  var injectedStructuredAnnotationFieldVal string
+  if p.InjectedStructuredAnnotationField == nil {
+    injectedStructuredAnnotationFieldVal = "<nil>"
+  } else {
+    injectedStructuredAnnotationFieldVal = fmt.Sprintf("%v", *p.InjectedStructuredAnnotationField)
+  }
+  var injectedUnstructuredAnnotationFieldVal string
+  if p.InjectedUnstructuredAnnotationField == nil {
+    injectedUnstructuredAnnotationFieldVal = "<nil>"
+  } else {
+    injectedUnstructuredAnnotationFieldVal = fmt.Sprintf("%v", *p.InjectedUnstructuredAnnotationField)
+  }
+  return fmt.Sprintf("FieldsInjectedWithIncludedStruct({StringField:%s InjectedField:%s InjectedStructuredAnnotationField:%s InjectedUnstructuredAnnotationField:%s})", stringFieldVal, injectedFieldVal, injectedStructuredAnnotationFieldVal, injectedUnstructuredAnnotationFieldVal)
 }
 

@@ -14,6 +14,7 @@ from typing_extensions import Final
 
 import sys
 import itertools
+import facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
 
 
 __property__ = property
@@ -22,18 +23,28 @@ __property__ = property
 class Fields(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         injected_field: bool
+        injected_structured_annotation_field: bool
+        injected_unstructured_annotation_field: bool
         pass
 
     injected_field: Final[str] = ...
 
+    injected_structured_annotation_field: Final[_typing.Optional[str]] = ...
+
+    injected_unstructured_annotation_field: Final[_typing.Optional[str]] = ...
+
     def __init__(
         self, *,
-        injected_field: _typing.Optional[str]=None
+        injected_field: _typing.Optional[str]=None,
+        injected_structured_annotation_field: _typing.Optional[str]=None,
+        injected_unstructured_annotation_field: _typing.Optional[str]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        injected_field: _typing.Union[str, __NotSet, None]=NOTSET
+        injected_field: _typing.Union[str, __NotSet, None]=NOTSET,
+        injected_structured_annotation_field: _typing.Union[str, __NotSet, None]=NOTSET,
+        injected_unstructured_annotation_field: _typing.Union[str, __NotSet, None]=NOTSET
     ) -> Fields: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Fields'], bytes]]: ...

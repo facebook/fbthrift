@@ -9,4 +9,6 @@ cdef class Fields_Builder(thrift.py3.builder.StructBuilder):
 
     def __iter__(self):
         yield "injected_field", self.injected_field
+        yield "injected_structured_annotation_field", self.injected_structured_annotation_field
+        yield "injected_unstructured_annotation_field", self.injected_unstructured_annotation_field
 

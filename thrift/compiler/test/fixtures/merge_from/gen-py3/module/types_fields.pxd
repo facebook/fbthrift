@@ -89,4 +89,6 @@ cdef class __FieldsInjectedWithIncludedStruct_FieldsSetter(__StructFieldsSetter)
     cdef __FieldsInjectedWithIncludedStruct_FieldsSetter _fbthrift_create(_module_types.cFieldsInjectedWithIncludedStruct* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
 

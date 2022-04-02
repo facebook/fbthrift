@@ -14,6 +14,7 @@ from thrift.py3.reflection cimport (
     Qualifier as __Qualifier,
 )
 
+cimport facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
 
 cimport foo.types as _foo_types
 
@@ -45,6 +46,30 @@ cdef __StructSpec get_reflection__Fields():
             default=None,
             annotations={
             },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=101,
+            name="injected_structured_annotation_field",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=102,
+            name="injected_unstructured_annotation_field",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """thrift.box""": """1""",            },
         ),
     )
     return spec

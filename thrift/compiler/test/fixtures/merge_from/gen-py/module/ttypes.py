@@ -268,6 +268,8 @@ class FieldsInjectedWithIncludedStruct:
   Attributes:
    - string_field
    - injected_field
+   - injected_structured_annotation_field
+   - injected_unstructured_annotation_field
   """
 
   thrift_spec = None
@@ -300,6 +302,16 @@ class FieldsInjectedWithIncludedStruct:
           self.injected_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 101:
+        if ftype == TType.STRING:
+          self.injected_structured_annotation_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 102:
+        if ftype == TType.STRING:
+          self.injected_unstructured_annotation_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -321,6 +333,14 @@ class FieldsInjectedWithIncludedStruct:
       oprot.writeFieldBegin('injected_field', TType.STRING, 100)
       oprot.writeString(self.injected_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.injected_field, bytes) else oprot.writeString(self.injected_field)
       oprot.writeFieldEnd()
+    if self.injected_structured_annotation_field != None:
+      oprot.writeFieldBegin('injected_structured_annotation_field', TType.STRING, 101)
+      oprot.writeString(self.injected_structured_annotation_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.injected_structured_annotation_field, bytes) else oprot.writeString(self.injected_structured_annotation_field)
+      oprot.writeFieldEnd()
+    if self.injected_unstructured_annotation_field != None:
+      oprot.writeFieldBegin('injected_unstructured_annotation_field', TType.STRING, 102)
+      oprot.writeString(self.injected_unstructured_annotation_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.injected_unstructured_annotation_field, bytes) else oprot.writeString(self.injected_unstructured_annotation_field)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -335,6 +355,14 @@ class FieldsInjectedWithIncludedStruct:
       value = pprint.pformat(self.injected_field, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    injected_field=%s' % (value))
+    if self.injected_structured_annotation_field is not None:
+      value = pprint.pformat(self.injected_structured_annotation_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    injected_structured_annotation_field=%s' % (value))
+    if self.injected_unstructured_annotation_field is not None:
+      value = pprint.pformat(self.injected_unstructured_annotation_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    injected_unstructured_annotation_field=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -820,6 +848,8 @@ FieldsInjectedWithIncludedStruct.thrift_spec = (
   None, # 98
   None, # 99
   (100, TType.STRING, 'injected_field', True, None, 2, ), # 100
+  (101, TType.STRING, 'injected_structured_annotation_field', True, None, 1, ), # 101
+  (102, TType.STRING, 'injected_unstructured_annotation_field', True, None, 1, ), # 102
 )
 
 FieldsInjectedWithIncludedStruct.thrift_struct_annotations = {
@@ -827,15 +857,19 @@ FieldsInjectedWithIncludedStruct.thrift_struct_annotations = {
 FieldsInjectedWithIncludedStruct.thrift_field_annotations = {
 }
 
-def FieldsInjectedWithIncludedStruct__init__(self, string_field=None, injected_field=None,):
+def FieldsInjectedWithIncludedStruct__init__(self, string_field=None, injected_field=None, injected_structured_annotation_field=None, injected_unstructured_annotation_field=None,):
   self.string_field = string_field
   self.injected_field = injected_field
+  self.injected_structured_annotation_field = injected_structured_annotation_field
+  self.injected_unstructured_annotation_field = injected_unstructured_annotation_field
 
 FieldsInjectedWithIncludedStruct.__init__ = FieldsInjectedWithIncludedStruct__init__
 
 def FieldsInjectedWithIncludedStruct__setstate__(self, state):
   state.setdefault('string_field', None)
   state.setdefault('injected_field', None)
+  state.setdefault('injected_structured_annotation_field', None)
+  state.setdefault('injected_unstructured_annotation_field', None)
   self.__dict__ = state
 
 FieldsInjectedWithIncludedStruct.__getstate__ = lambda self: self.__dict__.copy()

@@ -12,6 +12,8 @@ from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProc
 from thrift.protocol.TProtocol import TProtocolException
 
 
+import thrift.annotation.thrift.ttypes
+
 
 import pprint
 import warnings
@@ -34,6 +36,8 @@ class Fields:
   """
   Attributes:
    - injected_field
+   - injected_structured_annotation_field
+   - injected_unstructured_annotation_field
   """
 
   thrift_spec = None
@@ -61,6 +65,16 @@ class Fields:
           self.injected_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 101:
+        if ftype == TType.STRING:
+          self.injected_structured_annotation_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 102:
+        if ftype == TType.STRING:
+          self.injected_unstructured_annotation_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -78,6 +92,14 @@ class Fields:
       oprot.writeFieldBegin('injected_field', TType.STRING, 100)
       oprot.writeString(self.injected_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.injected_field, bytes) else oprot.writeString(self.injected_field)
       oprot.writeFieldEnd()
+    if self.injected_structured_annotation_field != None:
+      oprot.writeFieldBegin('injected_structured_annotation_field', TType.STRING, 101)
+      oprot.writeString(self.injected_structured_annotation_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.injected_structured_annotation_field, bytes) else oprot.writeString(self.injected_structured_annotation_field)
+      oprot.writeFieldEnd()
+    if self.injected_unstructured_annotation_field != None:
+      oprot.writeFieldBegin('injected_unstructured_annotation_field', TType.STRING, 102)
+      oprot.writeString(self.injected_unstructured_annotation_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.injected_unstructured_annotation_field, bytes) else oprot.writeString(self.injected_unstructured_annotation_field)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -88,6 +110,14 @@ class Fields:
       value = pprint.pformat(self.injected_field, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    injected_field=%s' % (value))
+    if self.injected_structured_annotation_field is not None:
+      value = pprint.pformat(self.injected_structured_annotation_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    injected_structured_annotation_field=%s' % (value))
+    if self.injected_unstructured_annotation_field is not None:
+      value = pprint.pformat(self.injected_unstructured_annotation_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    injected_unstructured_annotation_field=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -205,20 +235,29 @@ Fields.thrift_spec = (
   None, # 98
   None, # 99
   (100, TType.STRING, 'injected_field', True, None, 2, ), # 100
+  (101, TType.STRING, 'injected_structured_annotation_field', True, None, 1, ), # 101
+  (102, TType.STRING, 'injected_unstructured_annotation_field', True, None, 1, ), # 102
 )
 
 Fields.thrift_struct_annotations = {
 }
 Fields.thrift_field_annotations = {
+  102: {
+    "thrift.box": "1",
+  },
 }
 
-def Fields__init__(self, injected_field=None,):
+def Fields__init__(self, injected_field=None, injected_structured_annotation_field=None, injected_unstructured_annotation_field=None,):
   self.injected_field = injected_field
+  self.injected_structured_annotation_field = injected_structured_annotation_field
+  self.injected_unstructured_annotation_field = injected_unstructured_annotation_field
 
 Fields.__init__ = Fields__init__
 
 def Fields__setstate__(self, state):
   state.setdefault('injected_field', None)
+  state.setdefault('injected_structured_annotation_field', None)
+  state.setdefault('injected_unstructured_annotation_field', None)
   self.__dict__ = state
 
 Fields.__getstate__ = lambda self: self.__dict__.copy()

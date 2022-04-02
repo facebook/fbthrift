@@ -38,6 +38,7 @@ from thrift.py3.types cimport (
 )
 from folly.optional cimport cOptional as __cOptional
 
+cimport facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
 
 cimport foo.types as _foo_types
 
@@ -52,4 +53,6 @@ cdef class __Fields_FieldsSetter(__StructFieldsSetter):
     @staticmethod
     cdef __Fields_FieldsSetter _fbthrift_create(_foo_types.cFields* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
 

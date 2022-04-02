@@ -481,6 +481,34 @@ _readField_injected_field:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           100,
+          101,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_injected_structured_annotation_field:
+  {
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->__fbthrift_field_injected_structured_annotation_field, _readState);
+    
+  }
+ this->__isset.set(2, true);
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          101,
+          102,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_injected_unstructured_annotation_field:
+  {
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->__fbthrift_field_injected_unstructured_annotation_field, _readState);
+    
+  }
+ this->__isset.set(3, true);
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          102,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -517,6 +545,22 @@ _loop:
         goto _skip;
       }
     }
+    case 101:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_injected_structured_annotation_field;
+      } else {
+        goto _skip;
+      }
+    }
+    case 102:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_injected_unstructured_annotation_field;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -540,6 +584,14 @@ uint32_t FieldsInjectedWithIncludedStruct::serializedSize(Protocol_ const* prot_
     xfer += prot_->serializedFieldSize("injected_field", apache::thrift::protocol::T_STRING, 100);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_injected_field);
   }
+  if (this->__isset.get(2)) {
+    xfer += prot_->serializedFieldSize("injected_structured_annotation_field", apache::thrift::protocol::T_STRING, 101);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_injected_structured_annotation_field);
+  }
+  if (this->__isset.get(3)) {
+    xfer += prot_->serializedFieldSize("injected_unstructured_annotation_field", apache::thrift::protocol::T_STRING, 102);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_injected_unstructured_annotation_field);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -555,6 +607,14 @@ uint32_t FieldsInjectedWithIncludedStruct::serializedSizeZC(Protocol_ const* pro
   {
     xfer += prot_->serializedFieldSize("injected_field", apache::thrift::protocol::T_STRING, 100);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_injected_field);
+  }
+  if (this->__isset.get(2)) {
+    xfer += prot_->serializedFieldSize("injected_structured_annotation_field", apache::thrift::protocol::T_STRING, 101);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_injected_structured_annotation_field);
+  }
+  if (this->__isset.get(3)) {
+    xfer += prot_->serializedFieldSize("injected_unstructured_annotation_field", apache::thrift::protocol::T_STRING, 102);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_injected_unstructured_annotation_field);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -578,6 +638,24 @@ uint32_t FieldsInjectedWithIncludedStruct::write(Protocol_* prot_) const {
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_injected_field);
     xfer += prot_->writeFieldEnd();
+  }
+  if (this->__isset.get(2)) {
+    constexpr int16_t kPrevFieldId = 100;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 101, kPrevFieldId>(*prot_, "injected_structured_annotation_field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_injected_structured_annotation_field);
+    xfer += prot_->writeFieldEnd();
+  } else {
+    previousFieldHasValue = false;
+  }
+  if (this->__isset.get(3)) {
+    constexpr int16_t kPrevFieldId = 101;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 102, kPrevFieldId>(*prot_, "injected_unstructured_annotation_field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_injected_unstructured_annotation_field);
+    xfer += prot_->writeFieldEnd();
+  } else {
+    previousFieldHasValue = false;
   }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

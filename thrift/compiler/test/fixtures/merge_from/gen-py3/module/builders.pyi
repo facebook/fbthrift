@@ -40,6 +40,8 @@ class FieldsInjectedToStruct_Builder(thrift.py3.builder.StructBuilder):
 class FieldsInjectedWithIncludedStruct_Builder(thrift.py3.builder.StructBuilder):
     string_field: _typing.Optional[str]
     injected_field: _typing.Optional[str]
+    injected_structured_annotation_field: _typing.Optional[str]
+    injected_unstructured_annotation_field: _typing.Optional[str]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

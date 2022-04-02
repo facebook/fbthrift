@@ -29,4 +29,6 @@ cdef class FieldsInjectedWithIncludedStruct_Builder(thrift.py3.builder.StructBui
     def __iter__(self):
         yield "string_field", self.string_field
         yield "injected_field", self.injected_field
+        yield "injected_structured_annotation_field", self.injected_structured_annotation_field
+        yield "injected_unstructured_annotation_field", self.injected_unstructured_annotation_field
 

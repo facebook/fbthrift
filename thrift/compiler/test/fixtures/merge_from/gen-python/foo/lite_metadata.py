@@ -7,6 +7,8 @@
 import apache.thrift.metadata.lite_types as _fbthrift_metadata
 
 
+import facebook.thrift.annotation.thrift.thrift.lite_metadata
+
 # TODO (ffrancet): This general pattern can be optimized by using tuples and dicts
 # instead of re-generating thrift structs
 def _fbthrift_gen_metadata_struct_Fields(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
@@ -17,6 +19,11 @@ def _fbthrift_gen_metadata_struct_Fields(metadata_struct: _fbthrift_metadata.Thr
     fields = [
         _fbthrift_metadata.ThriftField(id=100, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="injected_field", is_optional=False, structured_annotations=[
         ]),
+        _fbthrift_metadata.ThriftField(id=101, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="injected_structured_annotation_field", is_optional=False, structured_annotations=[
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.Box"), fields= {  }),
+        ]),
+        _fbthrift_metadata.ThriftField(id=102, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE), name="injected_unstructured_annotation_field", is_optional=False, structured_annotations=[
+        ]),
     ]
     struct_dict = dict(metadata_struct.structs)
     struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
@@ -26,6 +33,8 @@ def _fbthrift_gen_metadata_struct_Fields(metadata_struct: _fbthrift_metadata.Thr
     new_struct = metadata_struct(structs=struct_dict)
 
      # injected_field
+     # injected_structured_annotation_field
+     # injected_unstructured_annotation_field
 
     return new_struct
 def gen_metadata_struct_Fields() -> _fbthrift_metadata.ThriftMetadata:

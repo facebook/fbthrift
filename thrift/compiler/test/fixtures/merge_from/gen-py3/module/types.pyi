@@ -111,22 +111,32 @@ class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct, _typing.Hashable
     class __fbthrift_IsSet:
         string_field: bool
         injected_field: bool
+        injected_structured_annotation_field: bool
+        injected_unstructured_annotation_field: bool
         pass
 
     string_field: Final[str] = ...
 
     injected_field: Final[str] = ...
 
+    injected_structured_annotation_field: Final[_typing.Optional[str]] = ...
+
+    injected_unstructured_annotation_field: Final[_typing.Optional[str]] = ...
+
     def __init__(
         self, *,
         string_field: _typing.Optional[str]=None,
-        injected_field: _typing.Optional[str]=None
+        injected_field: _typing.Optional[str]=None,
+        injected_structured_annotation_field: _typing.Optional[str]=None,
+        injected_unstructured_annotation_field: _typing.Optional[str]=None
     ) -> None: ...
 
     def __call__(
         self, *,
         string_field: _typing.Union[str, __NotSet, None]=NOTSET,
-        injected_field: _typing.Union[str, __NotSet, None]=NOTSET
+        injected_field: _typing.Union[str, __NotSet, None]=NOTSET,
+        injected_structured_annotation_field: _typing.Union[str, __NotSet, None]=NOTSET,
+        injected_unstructured_annotation_field: _typing.Union[str, __NotSet, None]=NOTSET
     ) -> FieldsInjectedWithIncludedStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['FieldsInjectedWithIncludedStruct'], bytes]]: ...

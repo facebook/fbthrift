@@ -10,6 +10,8 @@ import (
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	thrift0 "thrift/annotation/thrift"
+
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -19,6 +21,7 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
+var _ = thrift0.GoUnusedProtection__
 
 func init() {
 }

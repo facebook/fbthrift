@@ -33,5 +33,7 @@ cdef class FieldsInjectedToStruct_Builder(thrift.py3.builder.StructBuilder):
 cdef class FieldsInjectedWithIncludedStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public str string_field
     cdef public str injected_field
+    cdef public str injected_structured_annotation_field
+    cdef public str injected_unstructured_annotation_field
 
 
