@@ -17,7 +17,7 @@
 }}
 public void write0(TProtocol oprot) throws TException {
   oprot.writeStructBegin(STRUCT_DESC);
-  {{#struct:fields}}
+  {{#struct:fields_in_serialization_order}}
   {{#field:isNullableOrOptionalNotEnum?}}
   if (this.{{field:javaName}} != null) {
     oprot.writeFieldBegin({{field:javaTFieldName}});
@@ -43,7 +43,7 @@ public void write0(TProtocol oprot) throws TException {
   {{/field:type}}{{!
   }}oprot.writeFieldEnd();
   {{/field:isNullableOrOptionalNotEnum?}}
-  {{/struct:fields}}
+  {{/struct:fields_in_serialization_order}}
   oprot.writeFieldStop();
   oprot.writeStructEnd();
 }
