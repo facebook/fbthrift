@@ -26,6 +26,7 @@
 #include <folly/Portability.h>
 #include <folly/Range.h>
 #include <folly/Traits.h>
+#include <folly/container/F14Map.h>
 #include <folly/lang/Align.h>
 #include <folly/lang/Exception.h>
 #include <folly/synchronization/AtomicUtil.h>
@@ -49,8 +50,8 @@ struct alignas(folly::cacheline_align_v) enum_find {
   };
 
   // the fast path cache types
-  using find_name_map_t = std::map<Int, char const*>;
-  using find_value_map_t = std::map<char const*, Int, ltstr>;
+  using find_name_map_t = folly::F14FastMap<Int, folly::StringPiece>;
+  using find_value_map_t = folly::F14FastMap<folly::StringPiece, Int>;
 
   // an approximate state of the fast-path caches; approximately mutex-like
   struct cache_state {
@@ -72,6 +73,8 @@ struct alignas(folly::cacheline_align_v) enum_find {
     find_value_map_t find_value_index;
 
     FOLLY_NOINLINE explicit bidi_cache(metadata const& meta_) {
+      find_name_index.reserve(meta_.size);
+      find_value_index.reserve(meta_.size);
       for (std::size_t i = 0; i < meta_.size; ++i) {
         find_name_index.emplace(meta_.values[i], meta_.names[i].data());
         find_value_index.emplace(meta_.names[i].data(), meta_.values[i]);
@@ -100,7 +103,7 @@ struct alignas(folly::cacheline_align_v) enum_find {
   FOLLY_ERASE char const* find_name_fast(Int const value) noexcept {
     auto const& map = reinterpret_cast<bidi_cache&>(cache).find_name_index;
     auto const found = map.find(value);
-    return found == map.end() ? nullptr : found->second;
+    return found == map.end() ? nullptr : found->second.data();
   }
   FOLLY_NOINLINE char const* find_name_scan(Int const value) noexcept {
     // reverse order to simulate loop-map-insert then map-find

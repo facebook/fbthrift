@@ -24,6 +24,21 @@ namespace st {
 
 template struct enum_find<int>;
 
+static_assert(
+    folly::detail::is_instantiation_of_v<
+        folly::F14FastMap,
+        enum_find<int>::find_name_map_t>,
+    "mismatch");
+static_assert(
+    folly::detail::is_instantiation_of_v<
+        folly::F14FastMap,
+        enum_find<int>::find_value_map_t>,
+    "mismatch");
+static_assert(
+    !FOLLY_F14_VECTOR_INTRINSICS_AVAILABLE || !folly::has_extended_alignment ||
+        sizeof(enum_find<int>) <= folly::cacheline_align_v,
+    "oversized");
+
 FOLLY_NOINLINE void translate_field_name(
     folly::StringPiece fname,
     int16_t& fid,
