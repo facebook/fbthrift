@@ -1825,7 +1825,7 @@ class mstch_cpp2_program : public mstch_program {
     const auto& prog_enums = program_->enums();
 
     const bool sort_objects_with_map_dependency =
-        has_option("sort_objects_with_map_dependency");
+        !has_option("sort_objects_without_map_dependency");
 
     if (!split_id_) {
       auto edges = cpp2::gen_dependency_graph(
