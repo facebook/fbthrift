@@ -28,6 +28,7 @@ import io.netty.util.HashedWheelTimer;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.FastThreadLocalThread;
+import io.rsocket.Closeable;
 import java.util.Map;
 import java.util.concurrent.ThreadFactory;
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoProcessor;
 import reactor.core.scheduler.NonBlocking;
 
-class ResourcesHolder {
+class ResourcesHolder implements Closeable {
   private static final Logger LOGGER = LoggerFactory.getLogger(ResourcesHolder.class);
 
   private final boolean forceExecutionOffEventLoop =
@@ -189,10 +190,12 @@ class ResourcesHolder {
         .build();
   }
 
+  @Override
   public Mono<Void> onClose() {
     return onClose;
   }
 
+  @Override
   public void dispose() {
     try {
       shutdownHashedWheelTimer();

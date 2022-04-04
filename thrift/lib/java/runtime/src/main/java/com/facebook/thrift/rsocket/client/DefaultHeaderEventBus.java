@@ -29,7 +29,7 @@ import reactor.core.publisher.UnicastProcessor;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class DefaultHeaderEventBus implements HeaderEventBus {
-  private static final Logger LOGGER = LoggerFactory.getLogger(DefaultHeaderEventBus.class);
+  private final Logger LOGGER = LoggerFactory.getLogger(DefaultHeaderEventBus.class);
   private final FluxProcessor<HeaderEvent, HeaderEvent> processor;
   private final Disposable disposable;
   private final Map<Long, Subscriber> subscribers;
@@ -56,7 +56,7 @@ public class DefaultHeaderEventBus implements HeaderEventBus {
     return processor.isDisposed();
   }
 
-  private synchronized void dispatchHeaderEvent(HeaderEvent headerEvent) {
+  private void dispatchHeaderEvent(HeaderEvent headerEvent) {
     switch (headerEvent.getType()) {
       case EMIT:
         emit((Emit) headerEvent);
@@ -70,11 +70,11 @@ public class DefaultHeaderEventBus implements HeaderEventBus {
     }
   }
 
-  private synchronized void addToMap(AddToMap addToMap) {
+  private void addToMap(AddToMap addToMap) {
     subscribers.put(addToMap.getStreamId(), addToMap.getSubscriber());
   }
 
-  private synchronized void emit(Emit emit) {
+  private void emit(Emit emit) {
     try {
       Subscriber subscriber = subscribers.get(emit.getStreamId());
       if (subscriber != null) {
@@ -85,12 +85,12 @@ public class DefaultHeaderEventBus implements HeaderEventBus {
     }
   }
 
-  private synchronized void removeFromMap(RemoveFromMap removeFromMap) {
+  private void removeFromMap(RemoveFromMap removeFromMap) {
     subscribers.remove(removeFromMap.getStreamId());
   }
 
   @Override
-  public synchronized void send(HeaderEvent headerEvent) {
+  public void send(HeaderEvent headerEvent) {
     try {
       processor.onNext(headerEvent);
     } catch (Throwable t) {

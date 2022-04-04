@@ -47,7 +47,7 @@ public final class HeaderAwareRpcClientFactory implements RpcClientFactory {
   private final RSocketRpcClientFactory delegate;
 
   public HeaderAwareRpcClientFactory(ThriftClientConfig config) {
-    this.headerEventBus = new DrainLoopHeaderEventBus();
+    this.headerEventBus = new DefaultHeaderEventBus();
     this.delegate =
         new RSocketRpcClientFactory(
             config,
