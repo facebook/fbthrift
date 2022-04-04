@@ -123,6 +123,16 @@ class ResourcePoolSet {
   // infrastructure will call this at the correct time during setup.
   void lock() const;
 
+  // Number of requests that are currently sitting in the RequestPile
+  // This will acquire lock so should never be called often
+  // This is an estimate
+  size_t numQueued() const;
+
+  // Number of requests that are being executed in the executor
+  // This will acquire lock so should never be called often
+  // This is an estimate
+  size_t numInExecution() const;
+
   // Returns the handle of the ResourcePool with the supplied name if it
   // exists.
   std::optional<ResourcePoolHandle> findResourcePool(

@@ -120,6 +120,28 @@ void ResourcePoolSet::lock() const {
   resourcePoolsLock_ = std::move(lock);
 }
 
+size_t ResourcePoolSet::numQueued() const {
+  size_t sum = 0;
+
+  auto lResourcePool = resourcePools_.rlock();
+
+  for (auto& pool : *lResourcePool) {
+    sum += pool->requestPile_->requestCount();
+  }
+  return sum;
+}
+
+size_t ResourcePoolSet::numInExecution() const {
+  size_t sum = 0;
+
+  auto lResourcePool = resourcePools_.rlock();
+
+  for (auto& pool : *lResourcePool) {
+    sum += pool->concurrencyController_->requestCount();
+  }
+  return sum;
+}
+
 std::optional<ResourcePoolHandle> ResourcePoolSet::findResourcePool(
     std::string_view poolName) const {
   ResourcePools::ConstLockedPtr localLock;
