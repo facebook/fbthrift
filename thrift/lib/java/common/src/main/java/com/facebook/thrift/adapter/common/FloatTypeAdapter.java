@@ -16,19 +16,21 @@
 
 package com.facebook.thrift.adapter.common;
 
-import com.facebook.thrift.protocol.ByteBufTProtocol;
-import io.netty.buffer.ByteBuf;
-import io.netty.util.ReferenceCountUtil;
+import com.facebook.thrift.adapter.TypeAdapter;
+import org.apache.thrift.protocol.TProtocol;
 
-public abstract class AbstractByteBufTypeAdapter implements ByteBufTProtocolTypeAdapter<ByteBuf> {
+public interface FloatTypeAdapter<T> extends TypeAdapter<T> {
   @Override
-  public void toThrift(ByteBuf byteBuf, ByteBufTProtocol protocol) {
-    try {
-      ByteBuf writableBinaryAsByteBuf =
-          protocol.getWritableBinaryAsByteBuf(byteBuf.readableBytes());
-      writableBinaryAsByteBuf.writeBytes(byteBuf);
-    } finally {
-      ReferenceCountUtil.safeRelease(byteBuf);
-    }
+  default void toThrift(T t, TProtocol protocol) {
+    protocol.writeFloat(toThrift(t));
   }
+
+  @Override
+  default T fromThrift(TProtocol protocol) {
+    return fromThrift(protocol.readFloat());
+  }
+
+  float toThrift(T t);
+
+  T fromThrift(float b);
 }

@@ -14,28 +14,23 @@
  * limitations under the License.
  */
 
-package com.facebook.thrift.adapter;
+package com.facebook.thrift.adapter.common;
 
-import com.facebook.thrift.protocol.ByteBufTProtocol;
+import com.facebook.thrift.adapter.TypeAdapter;
 import org.apache.thrift.protocol.TProtocol;
 
-/**
- * A Thrift Type Adapter exposes {@link ByteBufTProtocol protocol} directly
- *
- * @param <T>
- */
-public interface ByteBufTProtocolTypeAdapter<T> extends TypeAdapter<T> {
+public interface ShortTypeAdapter<T> extends TypeAdapter<T> {
   @Override
   default void toThrift(T t, TProtocol protocol) {
-    toThrift(t, (ByteBufTProtocol) protocol);
+    protocol.writeI16(toThrift(t));
   }
-
-  void toThrift(T t, ByteBufTProtocol protocol);
 
   @Override
   default T fromThrift(TProtocol protocol) {
-    return fromThrift((ByteBufTProtocol) protocol);
+    return fromThrift(protocol.readI16());
   }
 
-  T fromThrift(ByteBufTProtocol protocol);
+  short toThrift(T t);
+
+  T fromThrift(short b);
 }
