@@ -20,6 +20,8 @@ import java.util.Objects;
 
 public final class StreamResponse<T, K> {
 
+  private static final StreamResponse EMPTY = new StreamResponse();
+
   private final T firstResponse;
   private final K data;
   private final boolean isFirstResponse;
@@ -28,6 +30,16 @@ public final class StreamResponse<T, K> {
     this.firstResponse = firstResponse;
     this.data = data;
     this.isFirstResponse = firstResponse != null;
+  }
+
+  private StreamResponse() {
+    this.isFirstResponse = false;
+    this.firstResponse = null;
+    this.data = null;
+  }
+
+  public static StreamResponse emptyResponse() {
+    return EMPTY;
   }
 
   public static <T, K> StreamResponse<T, K> fromFirstResponse(T firstResponse) {

@@ -17,6 +17,7 @@
 package com.facebook.thrift.payload;
 
 import com.facebook.thrift.client.ResponseWrapper;
+import com.facebook.thrift.model.StreamResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,6 +36,18 @@ public interface ClientResponsePayload<T> extends ResponseWrapper<T> {
   boolean isStreamingResponse();
 
   Integer getStreamId();
+
+  static ClientResponsePayload createEmptyStreamingResult(
+      ResponseRpcMetadata responseRpcMetadata, StreamPayloadMetadata streamPayloadMetadata) {
+    return new DefaultClientResponsePayload(
+        StreamResponse.emptyResponse(),
+        null,
+        responseRpcMetadata,
+        streamPayloadMetadata,
+        null,
+        true,
+        null);
+  }
 
   static <T> ClientResponsePayload<T> createResult(
       T data,

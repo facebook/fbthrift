@@ -209,9 +209,16 @@ public final class RpcClientUtils {
       final boolean isFirstResponse) {
 
     ClientResponsePayload<K> response;
+    ByteBuf data = payload.sliceData();
+
+    if (!data.isReadable()) {
+      return ClientResponsePayload.createEmptyStreamingResult(
+          responseRpcMetadata, streamPayloadMetadata);
+    }
+
     TProtocolType tProtocolType =
         TProtocolType.fromProtocolId(requestPayload.getRequestRpcMetadata().getProtocol());
-    final ByteBufTProtocol protocol = tProtocolType.apply(payload.sliceData());
+    final ByteBufTProtocol protocol = tProtocolType.apply(data);
     protocol.readStructBegin();
     TField field = protocol.readFieldBegin();
 
