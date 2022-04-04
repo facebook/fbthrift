@@ -5,6 +5,7 @@
     "cpp2": "facebook.thrift.annotation.hack",
     "go": "thrift.annotation.hack",
     "hack": "facebook.thrift.annotation",
+    "hs2": "facebook.thrift.annotation.hack",
     "java": "com.facebook.thrift.annotation.java_deprecated",
     "java.swift": "com.facebook.thrift.annotation.java_swift",
     "java2": "com.facebook.thrift.annotation.java",
@@ -19,14 +20,14 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 40,
+            "lineno" : 41,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 38
+        "lineno" : 39
       },
       "SkipCodegen" : {
         "name" : "SkipCodegen",
@@ -34,14 +35,14 @@
           "reason" : {
             "name" : "reason",
             "key" : 1,
-            "lineno" : 46,
+            "lineno" : 47,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 45
+        "lineno" : 46
       }
       },
   "source_path" : "thrift/annotation/hack",
