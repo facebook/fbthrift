@@ -73,7 +73,9 @@ class t_program : public t_named {
    *
    * @param path - A *.thrift file path.
    */
-  explicit t_program(std::string path) : path_(std::move(path)) {}
+  explicit t_program(std::string path) : path_(std::move(path)) {
+    set_name(compute_name_from_file_path(path_));
+  }
 
   void set_package(t_package package) { package_ = std::move(package); }
   const t_package package() const { return package_; }
@@ -150,8 +152,6 @@ class t_program : public t_named {
    * t_program getters
    */
   const std::string& path() const { return path_; }
-
-  const std::string& name() const { return name_; }
 
   const std::string& include_prefix() const { return include_prefix_; }
 
@@ -265,7 +265,6 @@ class t_program : public t_named {
   std::vector<t_struct*> objects_; // structs_ + exceptions_
 
   std::string path_; // initialized in ctor init-list
-  std::string name_{compute_name_from_file_path(path_)};
   std::string include_prefix_;
   std::map<std::string, std::string> namespaces_;
   std::vector<std::string> cpp_includes_;
