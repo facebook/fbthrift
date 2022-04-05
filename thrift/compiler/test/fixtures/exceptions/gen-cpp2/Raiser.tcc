@@ -37,8 +37,9 @@ void RaiserAsyncProcessor::executeRequest_doBland(apache::thrift::ServerRequest&
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   Raiser_doBland_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.doBland", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "doBland", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -54,7 +55,7 @@ void RaiserAsyncProcessor::executeRequest_doBland(apache::thrift::ServerRequest&
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_doBland<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_doBland<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -130,8 +131,9 @@ void RaiserAsyncProcessor::executeRequest_doRaise(apache::thrift::ServerRequest&
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   Raiser_doRaise_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.doRaise", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "doRaise", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -147,7 +149,7 @@ void RaiserAsyncProcessor::executeRequest_doRaise(apache::thrift::ServerRequest&
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_doRaise<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_doRaise<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -260,8 +262,9 @@ void RaiserAsyncProcessor::executeRequest_get200(apache::thrift::ServerRequest&&
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   Raiser_get200_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.get200", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "get200", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -277,7 +280,7 @@ void RaiserAsyncProcessor::executeRequest_get200(apache::thrift::ServerRequest&&
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_get200<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_get200<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -355,8 +358,9 @@ void RaiserAsyncProcessor::executeRequest_get500(apache::thrift::ServerRequest&&
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   Raiser_get500_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.get500", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "get500", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -372,7 +376,7 @@ void RaiserAsyncProcessor::executeRequest_get500(apache::thrift::ServerRequest&&
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_get500<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_get500<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()

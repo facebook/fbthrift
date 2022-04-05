@@ -33,8 +33,9 @@ void MyServicePrioParentAsyncProcessor::executeRequest_ping(apache::thrift::Serv
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyServicePrioParent_ping_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServicePrioParent.ping", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "ping", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -50,7 +51,7 @@ void MyServicePrioParentAsyncProcessor::executeRequest_ping(apache::thrift::Serv
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_ping<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_ping<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -126,8 +127,9 @@ void MyServicePrioParentAsyncProcessor::executeRequest_pong(apache::thrift::Serv
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyServicePrioParent_pong_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServicePrioParent.pong", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "pong", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -143,7 +145,7 @@ void MyServicePrioParentAsyncProcessor::executeRequest_pong(apache::thrift::Serv
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_pong<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_pong<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()

@@ -42,8 +42,9 @@ void ExtraServiceAsyncProcessor::executeRequest_simple_function(apache::thrift::
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ExtraService_simple_function_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.simple_function", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "simple_function", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -59,7 +60,7 @@ void ExtraServiceAsyncProcessor::executeRequest_simple_function(apache::thrift::
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_simple_function<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_simple_function<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -133,8 +134,9 @@ void ExtraServiceAsyncProcessor::executeRequest_throws_function(apache::thrift::
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ExtraService_throws_function_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "throws_function", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -150,7 +152,7 @@ void ExtraServiceAsyncProcessor::executeRequest_throws_function(apache::thrift::
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_throws_function<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_throws_function<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -255,8 +257,9 @@ void ExtraServiceAsyncProcessor::executeRequest_throws_function2(apache::thrift:
   ExtraService_throws_function2_pargs args;
   bool uarg_param1{0};
   args.get<0>().value = &uarg_param1;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function2", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "throws_function2", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -272,7 +275,7 @@ void ExtraServiceAsyncProcessor::executeRequest_throws_function2(apache::thrift:
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_throws_function2<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_throws_function2<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -383,8 +386,9 @@ void ExtraServiceAsyncProcessor::executeRequest_throws_function3(apache::thrift:
   args.get<0>().value = &uarg_param1;
   ::std::string uarg_param2;
   args.get<1>().value = &uarg_param2;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function3", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "throws_function3", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -400,7 +404,7 @@ void ExtraServiceAsyncProcessor::executeRequest_throws_function3(apache::thrift:
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::map<::std::int32_t, ::std::string>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_throws_function3<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_throws_function3<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -509,8 +513,9 @@ void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret(apache::thrift::
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   ExtraService_oneway_void_ret_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "oneway_void_ret", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret";
@@ -579,8 +584,9 @@ void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret_i32_i32_i32_i32_
   args.get<3>().value = &uarg_param4;
   ::std::int32_t uarg_param5{0};
   args.get<4>().value = &uarg_param5;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_i32_i32_i32_i32_i32_param", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "oneway_void_ret_i32_i32_i32_i32_i32_param", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret_i32_i32_i32_i32_i32_param";
@@ -649,8 +655,9 @@ void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret_map_setlist_para
   args.get<0>().value = &uarg_param1;
   ::std::set<::std::vector<::std::string>> uarg_param2;
   args.get<1>().value = &uarg_param2;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_map_setlist_param", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "oneway_void_ret_map_setlist_param", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret_map_setlist_param";
@@ -715,8 +722,9 @@ void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret_struct_param(apa
   ExtraService_oneway_void_ret_struct_param_pargs args;
   ::some::valid::ns::MyStruct uarg_param1;
   args.get<0>().value = &uarg_param1;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_struct_param", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "oneway_void_ret_struct_param", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret_struct_param";
@@ -779,8 +787,9 @@ void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret_listunion_param(
   ExtraService_oneway_void_ret_listunion_param_pargs args;
   ::std::vector<::some::valid::ns::ComplexUnion> uarg_param1;
   args.get<0>().value = &uarg_param1;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_listunion_param", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "oneway_void_ret_listunion_param", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function oneway_void_ret_listunion_param";

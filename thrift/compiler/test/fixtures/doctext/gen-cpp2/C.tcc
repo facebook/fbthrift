@@ -38,8 +38,9 @@ void CAsyncProcessor::executeRequest_f(apache::thrift::ServerRequest&& serverReq
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   C_f_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "C.f", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "f", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -55,7 +56,7 @@ void CAsyncProcessor::executeRequest_f(apache::thrift::ServerRequest&& serverReq
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_f<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_f<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -131,8 +132,9 @@ void CAsyncProcessor::executeRequest_numbers(apache::thrift::ServerRequest&& ser
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   C_numbers_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "C.numbers", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "numbers", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -148,7 +150,7 @@ void CAsyncProcessor::executeRequest_numbers(apache::thrift::ServerRequest&& ser
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::cpp2::number>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_numbers<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_numbers<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -235,8 +237,9 @@ void CAsyncProcessor::executeRequest_thing(apache::thrift::ServerRequest&& serve
   args.get<1>().value = uarg_b.get();
   auto uarg_c = std::make_unique<::std::set<::std::int32_t>>();
   args.get<2>().value = uarg_c.get();
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "C.thing", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "thing", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -252,7 +255,7 @@ void CAsyncProcessor::executeRequest_thing(apache::thrift::ServerRequest&& serve
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_thing<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_thing<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()

@@ -40,8 +40,9 @@ void MyServiceAsyncProcessor::executeRequest_foo(apache::thrift::ServerRequest&&
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_foo_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.foo", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "foo", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -57,7 +58,7 @@ void MyServiceAsyncProcessor::executeRequest_foo(apache::thrift::ServerRequest&&
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_foo<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_foo<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -137,8 +138,9 @@ void MyServiceAsyncProcessor::executeRequest_interact(apache::thrift::ServerRequ
   MyService_interact_pargs args;
   ::std::int32_t uarg_arg{0};
   args.get<0>().value = &uarg_arg;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.interact", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "interact", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -154,7 +156,7 @@ void MyServiceAsyncProcessor::executeRequest_interact(apache::thrift::ServerRequ
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionIf, void>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_interact<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_interact<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -235,8 +237,9 @@ void MyServiceAsyncProcessor::executeRequest_interactFast(apache::thrift::Server
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_interactFast_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.interactFast", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "interactFast", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -252,7 +255,7 @@ void MyServiceAsyncProcessor::executeRequest_interactFast(apache::thrift::Server
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::MyInteractionFastIf, ::std::int32_t>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_interactFast<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_interactFast<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -333,8 +336,9 @@ void MyServiceAsyncProcessor::executeRequest_serialize(apache::thrift::ServerReq
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_serialize_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.serialize", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "serialize", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -350,7 +354,7 @@ void MyServiceAsyncProcessor::executeRequest_serialize(apache::thrift::ServerReq
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::TileAndResponse<apache::thrift::ServiceHandler<::cpp2::MyService>::SerialInteractionIf, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_serialize<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_serialize<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -451,9 +455,10 @@ void MyServiceAsyncProcessor::executeRequest_MyInteraction_frobnicate(apache::th
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_MyInteraction_frobnicate_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.frobnicate", serverRequest.requestContext()));
   auto& iface = static_cast<MyServiceSvIf::MyInteractionIf&>(*tile);
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "frobnicate", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -469,7 +474,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteraction_frobnicate(apache::th
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_MyInteraction_frobnicate<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_MyInteraction_frobnicate<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -569,9 +574,10 @@ void MyServiceAsyncProcessor::executeRequest_MyInteraction_ping(apache::thrift::
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_MyInteraction_ping_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.ping", serverRequest.requestContext()));
   auto& iface = static_cast<MyServiceSvIf::MyInteractionIf&>(*tile);
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "ping", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function ping";
@@ -634,9 +640,10 @@ void MyServiceAsyncProcessor::executeRequest_MyInteraction_truthify(apache::thri
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_MyInteraction_truthify_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.truthify", serverRequest.requestContext()));
   auto& iface = static_cast<MyServiceSvIf::MyInteractionIf&>(*tile);
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "truthify", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -652,7 +659,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteraction_truthify(apache::thri
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_MyInteraction_truthify<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_MyInteraction_truthify<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -738,9 +745,10 @@ void MyServiceAsyncProcessor::executeRequest_MyInteraction_encode(apache::thrift
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_MyInteraction_encode_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteraction.encode", serverRequest.requestContext()));
   auto& iface = static_cast<MyServiceSvIf::MyInteractionIf&>(*tile);
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "encode", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -756,7 +764,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteraction_encode(apache::thrift
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_MyInteraction_encode<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_MyInteraction_encode<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -864,9 +872,10 @@ void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_frobnicate(apache
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_MyInteractionFast_frobnicate_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteractionFast.frobnicate", serverRequest.requestContext()));
   auto& iface = static_cast<MyServiceSvIf::MyInteractionFastIf&>(*tile);
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "frobnicate", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -882,7 +891,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_frobnicate(apache
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_MyInteractionFast_frobnicate<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_MyInteractionFast_frobnicate<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -962,9 +971,10 @@ void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_ping(apache::thri
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_MyInteractionFast_ping_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteractionFast.ping", serverRequest.requestContext()));
   auto& iface = static_cast<MyServiceSvIf::MyInteractionFastIf&>(*tile);
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "ping", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     LOG(ERROR) << ex.what() << " in function ping";
@@ -1024,9 +1034,10 @@ void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_truthify(apache::
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_MyInteractionFast_truthify_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteractionFast.truthify", serverRequest.requestContext()));
   auto& iface = static_cast<MyServiceSvIf::MyInteractionFastIf&>(*tile);
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "truthify", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -1042,7 +1053,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_truthify(apache::
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_MyInteractionFast_truthify<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_MyInteractionFast_truthify<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -1125,9 +1136,10 @@ void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_encode(apache::th
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_MyInteractionFast_encode_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.MyInteractionFast.encode", serverRequest.requestContext()));
   auto& iface = static_cast<MyServiceSvIf::MyInteractionFastIf&>(*tile);
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "encode", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -1143,7 +1155,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_encode(apache::th
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::std::set<::std::int32_t>, ::std::string, ::std::string>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_MyInteractionFast_encode<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_MyInteractionFast_encode<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -1242,9 +1254,10 @@ void MyServiceAsyncProcessor::executeRequest_SerialInteraction_frobnicate(apache
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_SerialInteraction_frobnicate_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.SerialInteraction.frobnicate", serverRequest.requestContext()));
   auto& iface = static_cast<MyServiceSvIf::SerialInteractionIf&>(*tile);
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "frobnicate", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -1260,7 +1273,7 @@ void MyServiceAsyncProcessor::executeRequest_SerialInteraction_frobnicate(apache
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_SerialInteraction_frobnicate<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_SerialInteraction_frobnicate<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()

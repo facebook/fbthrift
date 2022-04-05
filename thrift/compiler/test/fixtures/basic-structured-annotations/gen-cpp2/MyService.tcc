@@ -33,8 +33,9 @@ void MyServiceAsyncProcessor::executeRequest_first(apache::thrift::ServerRequest
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyService_first_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.first", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "first", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -50,7 +51,7 @@ void MyServiceAsyncProcessor::executeRequest_first(apache::thrift::ServerRequest
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::cpp2::annotated_inline_string>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_first<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_first<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -130,8 +131,9 @@ void MyServiceAsyncProcessor::executeRequest_second(apache::thrift::ServerReques
   MyService_second_pargs args;
   ::std::int64_t uarg_count{0};
   args.get<0>().value = &uarg_count;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.second", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "second", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -147,7 +149,7 @@ void MyServiceAsyncProcessor::executeRequest_second(apache::thrift::ServerReques
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_second<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_second<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()

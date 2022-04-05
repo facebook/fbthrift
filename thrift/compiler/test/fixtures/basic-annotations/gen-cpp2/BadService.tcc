@@ -31,8 +31,9 @@ void GoodServiceAsyncProcessor::executeRequest_bar(apache::thrift::ServerRequest
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   GoodService_bar_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "BadService.bar", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "bar", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -48,7 +49,7 @@ void GoodServiceAsyncProcessor::executeRequest_bar(apache::thrift::ServerRequest
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_bar<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_bar<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -131,9 +132,10 @@ void GoodServiceAsyncProcessor::executeRequest_BadInteraction_foo(apache::thrift
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   GoodService_BadInteraction_foo_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "BadService.BadInteraction.foo", serverRequest.requestContext()));
   auto& iface = static_cast<GoodServiceSvIf::BadInteractionIf&>(*tile);
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "foo", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -149,7 +151,7 @@ void GoodServiceAsyncProcessor::executeRequest_BadInteraction_foo(apache::thrift
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_BadInteraction_foo<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_BadInteraction_foo<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()

@@ -41,8 +41,9 @@ void NestedContainersAsyncProcessor::executeRequest_mapList(apache::thrift::Serv
   NestedContainers_mapList_pargs args;
   auto uarg_foo = std::make_unique<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapList", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "mapList", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -58,7 +59,7 @@ void NestedContainersAsyncProcessor::executeRequest_mapList(apache::thrift::Serv
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_mapList<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_mapList<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -138,8 +139,9 @@ void NestedContainersAsyncProcessor::executeRequest_mapSet(apache::thrift::Serve
   NestedContainers_mapSet_pargs args;
   auto uarg_foo = std::make_unique<::std::map<::std::int32_t, ::std::set<::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapSet", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "mapSet", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -155,7 +157,7 @@ void NestedContainersAsyncProcessor::executeRequest_mapSet(apache::thrift::Serve
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_mapSet<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_mapSet<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -235,8 +237,9 @@ void NestedContainersAsyncProcessor::executeRequest_listMap(apache::thrift::Serv
   NestedContainers_listMap_pargs args;
   auto uarg_foo = std::make_unique<::std::vector<::std::map<::std::int32_t, ::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listMap", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "listMap", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -252,7 +255,7 @@ void NestedContainersAsyncProcessor::executeRequest_listMap(apache::thrift::Serv
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_listMap<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_listMap<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -332,8 +335,9 @@ void NestedContainersAsyncProcessor::executeRequest_listSet(apache::thrift::Serv
   NestedContainers_listSet_pargs args;
   auto uarg_foo = std::make_unique<::std::vector<::std::set<::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listSet", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "listSet", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -349,7 +353,7 @@ void NestedContainersAsyncProcessor::executeRequest_listSet(apache::thrift::Serv
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_listSet<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_listSet<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -429,8 +433,9 @@ void NestedContainersAsyncProcessor::executeRequest_turtles(apache::thrift::Serv
   NestedContainers_turtles_pargs args;
   auto uarg_foo = std::make_unique<::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>>();
   args.get<0>().value = uarg_foo.get();
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.turtles", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "turtles", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -446,7 +451,7 @@ void NestedContainersAsyncProcessor::executeRequest_turtles(apache::thrift::Serv
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_turtles<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_turtles<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()

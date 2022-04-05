@@ -31,8 +31,9 @@ void MyRootAsyncProcessor::executeRequest_do_root(apache::thrift::ServerRequest&
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyRoot_do_root_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyRoot.do_root", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "do_root", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -48,7 +49,7 @@ void MyRootAsyncProcessor::executeRequest_do_root(apache::thrift::ServerRequest&
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_do_root<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_do_root<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()

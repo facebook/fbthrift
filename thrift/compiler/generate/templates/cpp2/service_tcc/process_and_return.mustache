@@ -70,11 +70,12 @@ void <%service:parent_service_cpp_name%>AsyncProcessor::executeRequest_<%#servic
   <%/function:stack_arguments?%>
 <%/type:resolves_to_complex_return?%>
 <%/field:type%><%/function:args%>
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "<%service:parent_service_name%>.<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", serverRequest.requestContext()));
 <%#service:interaction?%>
   auto& iface = static_cast<<%service:parent_service_cpp_name%>SvIf::<%service:name%>If&>(*tile);
 <%/service:interaction?%>
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "<%function:name%>", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
 <%#function:oneway?%>
@@ -109,7 +110,7 @@ void <%service:parent_service_cpp_name%>AsyncProcessor::executeRequest_<%#servic
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/return_type_server%>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_,ProtocolOut_>
     , throw_wrapped_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()

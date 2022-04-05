@@ -31,8 +31,9 @@ void RederivedServiceAsyncProcessor::executeRequest_get_seven(apache::thrift::Se
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   RederivedService_get_seven_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "RederivedService.get_seven", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "get_seven", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -48,7 +49,7 @@ void RederivedServiceAsyncProcessor::executeRequest_get_seven(apache::thrift::Se
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int32_t>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_get_seven<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_get_seven<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()

@@ -58,8 +58,9 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstream(apache::t
   args.get<0>().value = &uarg_i32_from;
   ::std::int32_t uarg_i32_to{0};
   args.get<1>().value = &uarg_i32_to;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.returnstream", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "returnstream", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -75,7 +76,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstream(apache::t
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_returnstream<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_returnstream<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -162,8 +163,9 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_streamthrows(apache::t
   PubSubStreamingService_streamthrows_pargs args;
   ::std::int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.streamthrows", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "streamthrows", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -179,7 +181,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_streamthrows(apache::t
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_streamthrows<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_streamthrows<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -274,8 +276,9 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_boththrows(apache::thr
   PubSubStreamingService_boththrows_pargs args;
   ::std::int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.boththrows", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "boththrows", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -291,7 +294,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_boththrows(apache::thr
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_boththrows<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_boththrows<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -403,8 +406,9 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamthrow
   PubSubStreamingService_responseandstreamthrows_pargs args;
   ::std::int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.responseandstreamthrows", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "responseandstreamthrows", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -420,7 +424,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamthrow
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_responseandstreamthrows<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_responseandstreamthrows<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -532,8 +536,9 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstreamFast(apach
   args.get<0>().value = &uarg_i32_from;
   ::std::int32_t uarg_i32_to{0};
   args.get<1>().value = &uarg_i32_to;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.returnstreamFast", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "returnstreamFast", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -549,7 +554,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstreamFast(apach
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_returnstreamFast<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_returnstreamFast<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()

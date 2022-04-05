@@ -533,19 +533,6 @@ class ServerRequest {
     return sr.protocol_;
   }
 
-  // The ServerRequest stores the context stack for modules that
-  // is created on.
-  static void setContextStack(
-      ServerRequest& sr,
-      std::unique_ptr<apache::thrift::ContextStack>&& ctxStack) {
-    sr.ctxStack_ = std::move(ctxStack);
-  }
-
-  static std::unique_ptr<apache::thrift::ContextStack> contextStack(
-      ServerRequest&& sr) {
-    return std::move(sr.ctxStack_);
-  }
-
   static std::pair<RequestPileInterface*, RequestPileInterface::UserData>
   requestPileNotification(ServerRequest& sr) {
     return {sr.notifyRequestPile_, sr.notifyRequestPileUserData_};
@@ -577,7 +564,6 @@ class ServerRequest {
   AsyncProcessor* asyncProcessor_;
   AsyncProcessor::MethodMetadata const* methodMetadata_;
   ServiceRequestInfo const* serviceRequestInfo_;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack_;
   RequestPileInterface* notifyRequestPile_{nullptr};
   RequestPileInterface::UserData notifyRequestPileUserData_;
   ConcurrencyControllerInterface* notifyConcurrencyController_{nullptr};
@@ -593,7 +579,6 @@ class ServerRequestHelper : public ServerRequest {
   using ServerRequest::asyncProcessor;
   using ServerRequest::compressedRequest;
   using ServerRequest::concurrencyControllerNotification;
-  using ServerRequest::contextStack;
   using ServerRequest::eventBase;
   using ServerRequest::executor;
   using ServerRequest::processInfo;
@@ -602,7 +587,6 @@ class ServerRequestHelper : public ServerRequest {
   using ServerRequest::request;
   using ServerRequest::requestContext;
   using ServerRequest::requestPileNotification;
-  using ServerRequest::setContextStack;
   using ServerRequest::setExecutor;
 };
 

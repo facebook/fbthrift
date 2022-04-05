@@ -37,8 +37,9 @@ void MyServiceAsyncProcessor::executeRequest_query(apache::thrift::ServerRequest
   args.get<0>().value = uarg_s.get();
   auto uarg_i = std::make_unique<::cpp2::Included>();
   args.get<1>().value = uarg_i.get();
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.query", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "query", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -54,7 +55,7 @@ void MyServiceAsyncProcessor::executeRequest_query(apache::thrift::ServerRequest
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_query<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_query<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -138,8 +139,9 @@ void MyServiceAsyncProcessor::executeRequest_has_arg_docs(apache::thrift::Server
   args.get<0>().value = uarg_s.get();
   auto uarg_i = std::make_unique<::cpp2::Included>();
   args.get<1>().value = uarg_i.get();
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.has_arg_docs", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "has_arg_docs", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -155,7 +157,7 @@ void MyServiceAsyncProcessor::executeRequest_has_arg_docs(apache::thrift::Server
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_has_arg_docs<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_has_arg_docs<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()

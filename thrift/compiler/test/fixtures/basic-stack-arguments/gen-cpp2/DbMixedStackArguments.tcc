@@ -35,8 +35,9 @@ void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey0(apache::t
   DbMixedStackArguments_getDataByKey0_pargs args;
   auto uarg_key = std::make_unique<::std::string>();
   args.get<0>().value = uarg_key.get();
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "DbMixedStackArguments.getDataByKey0", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "getDataByKey0", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -52,7 +53,7 @@ void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey0(apache::t
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_getDataByKey0<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_getDataByKey0<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
@@ -134,8 +135,9 @@ void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey1(apache::t
   DbMixedStackArguments_getDataByKey1_pargs args;
   ::std::string uarg_key;
   args.get<0>().value = &uarg_key;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "DbMixedStackArguments.getDataByKey1", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "getDataByKey1", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -151,7 +153,7 @@ void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey1(apache::t
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::string>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_getDataByKey1<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_getDataByKey1<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()

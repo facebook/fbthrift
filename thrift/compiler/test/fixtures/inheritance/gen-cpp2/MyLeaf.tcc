@@ -31,8 +31,9 @@ void MyLeafAsyncProcessor::executeRequest_do_leaf(apache::thrift::ServerRequest&
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
   MyLeaf_do_leaf_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyLeaf.do_leaf", serverRequest.requestContext()));
   try {
-    simpleDeserializeRequest<ProtocolIn_>(args, apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress());
+    deserializeRequest<ProtocolIn_>(args, "do_leaf", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
   }
   catch (const std::exception& ex) {
     folly::exception_wrapper ew(std::current_exception(), ex);
@@ -48,7 +49,7 @@ void MyLeafAsyncProcessor::executeRequest_do_leaf(apache::thrift::ServerRequest&
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-    , apache::thrift::detail::ServerRequestHelper::contextStack(std::move(serverRequest))
+    , std::move(ctxStack)
     , return_do_leaf<ProtocolIn_,ProtocolOut_>
     , throw_wrapped_do_leaf<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
