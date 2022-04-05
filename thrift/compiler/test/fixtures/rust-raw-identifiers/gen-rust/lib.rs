@@ -383,7 +383,7 @@ pub mod client {
         }
 
 
-        fn _r#return_impl(
+        fn _return_impl(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
             rpc_options: T::RpcOptions,
@@ -428,7 +428,7 @@ pub mod client {
             .boxed()
         }
 
-        fn _super__impl(
+        fn _super_impl(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
             rpc_options: T::RpcOptions,
@@ -552,7 +552,7 @@ pub mod client {
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
             let rpc_options = T::RpcOptions::default();
-            self._r#return_impl(
+            self._return_impl(
                 arg_bar,
                 rpc_options,
             )
@@ -562,7 +562,7 @@ pub mod client {
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
             let rpc_options = T::RpcOptions::default();
-            self._super__impl(
+            self._super_impl(
                 arg_bar,
                 rpc_options,
             )
@@ -583,7 +583,7 @@ pub mod client {
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
             rpc_options: T::RpcOptions,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
-            self._r#return_impl(
+            self._return_impl(
                 arg_bar,
                 rpc_options,
             )
@@ -593,7 +593,7 @@ pub mod client {
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
             rpc_options: T::RpcOptions,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
-            self._super__impl(
+            self._super_impl(
                 arg_bar,
                 rpc_options,
             )

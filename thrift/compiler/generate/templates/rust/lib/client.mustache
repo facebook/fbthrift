@@ -65,7 +65,7 @@
         {{#service:rustFunctions}}
         {{^function:starts_interaction?}}{{^function:returns_streams?}}
 
-        fn _{{function:rust_name}}_impl(
+        fn _{{function:name}}_impl(
             &self,{{!
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
@@ -118,7 +118,7 @@
         }
         {{/function:returns_streams?}}{{#function:returns_streams?}}
 
-        fn _{{function:rust_name}}_impl(
+        fn _{{function:name}}_impl(
             &self,{{!
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
@@ -330,7 +330,7 @@
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + ::std::marker::Send + 'static>> {
             let rpc_options = T::RpcOptions::default();
-            self._{{function:rust_name}}_impl(
+            self._{{function:name}}_impl(
                 {{#function:args}}
                 arg_{{field:name}},
                 {{/function:args}}
@@ -382,7 +382,7 @@
             }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + ::std::marker::Send + 'static>> {
-            self._{{function:rust_name}}_impl(
+            self._{{function:name}}_impl(
                 {{#function:args}}
                 arg_{{field:name}},
                 {{/function:args}}
