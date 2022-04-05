@@ -26,8 +26,8 @@ namespace apache {
 namespace thrift {
 
 /**
- * IOWorkerContext used for maintaining a dedicated EventBase queue for
- * server replies.
+ * IOWorkerContext provides access to worker functionality that should be
+ * usable from generated/handler code.
  */
 class IOWorkerContext {
  public:
@@ -39,10 +39,12 @@ class IOWorkerContext {
    *
    * @returns reference to the queue.
    */
-  virtual ReplyQueue& getReplyQueue() {
+  ReplyQueue& getReplyQueue() const {
     DCHECK(replyQueue_ != nullptr);
     return *replyQueue_.get();
   }
+
+  folly::EventBase* getWorkerEventBase() const { return eventBase_; }
 
  protected:
   /**

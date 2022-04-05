@@ -25,6 +25,7 @@
 #include <proxygen/lib/http/session/HTTPDownstreamSession.h>
 #include <proxygen/lib/http/session/HTTPSession.h>
 #include <proxygen/lib/http/session/SimpleController.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEventHelper.h>
 #include <thrift/lib/cpp2/transport/http2/server/ThriftRequestHandler.h>
 #include <wangle/acceptor/ManagedConnection.h>

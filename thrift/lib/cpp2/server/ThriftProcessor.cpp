@@ -128,7 +128,6 @@ void ThriftProcessor::onThriftRequest(
           ServerRequest serverRequest(
               std::move(request),
               SerializedCompressedRequest(std::move(payload)),
-              evb,
               reqContext,
               protoId,
               folly::RequestContext::saveContext(),

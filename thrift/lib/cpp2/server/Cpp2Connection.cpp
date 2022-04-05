@@ -656,7 +656,6 @@ void Cpp2Connection::requestReceived(
             ServerRequest serverRequest(
                 std::move(req),
                 SerializedCompressedRequest(std::move(serializedRequest)),
-                worker_->getEventBase(),
                 reqContext,
                 protoId,
                 folly::RequestContext::saveContext(),

@@ -635,7 +635,6 @@ void ThriftRocketServerHandler::handleRequestCommon(
         ServerRequest serverRequest(
             std::move(request),
             std::move(serializedCompressedRequest),
-            eventBase_,
             cpp2ReqCtx,
             protocolId,
             folly::RequestContext::saveContext(),

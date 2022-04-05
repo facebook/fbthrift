@@ -52,6 +52,7 @@ using ClientIdentityHook = std::function<std::unique_ptr<void, void (*)(void*)>(
 class RequestChannel;
 class TClientBase;
 class Cpp2Worker;
+class IOWorkerContext;
 
 class ClientMetadataRef {
  public:
@@ -65,25 +66,20 @@ class ClientMetadataRef {
 };
 
 class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
- public:
-  enum class TransportType {
-    HEADER,
-    ROCKET,
-    HTTP2,
-  };
-
-  explicit Cpp2ConnContext(
-      const folly::SocketAddress* address = nullptr,
-      const folly::AsyncTransport* transport = nullptr,
-      folly::EventBaseManager* manager = nullptr,
-      const std::shared_ptr<RequestChannel>& duplexChannel = nullptr,
-      const std::shared_ptr<X509> peerCert = nullptr /*overridden from socket*/,
-      apache::thrift::ClientIdentityHook clientIdentityHook = nullptr,
-      const Cpp2Worker* worker = nullptr)
+  Cpp2ConnContext(
+      const folly::SocketAddress* address,
+      const folly::AsyncTransport* transport,
+      folly::EventBaseManager* manager,
+      const std::shared_ptr<RequestChannel>& duplexChannel,
+      const std::shared_ptr<X509> peerCert,
+      apache::thrift::ClientIdentityHook clientIdentityHook,
+      const Cpp2Worker* worker,
+      const IOWorkerContext* workerContext)
       : manager_(manager),
         duplexChannel_(duplexChannel),
         transport_(transport),
-        worker_(worker) {
+        worker_(worker),
+        workerContext_(workerContext) {
     if (address) {
       peerAddress_ = *address;
     }
@@ -91,6 +87,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     if (transport) {
       // require worker to be passed when wrapping a real connection
       DCHECK(worker != nullptr);
+      DCHECK(workerContext != nullptr);
       transport->getLocalAddress(&localAddress_);
       auto cert = transport->getPeerCertificate();
       if (cert) {
@@ -112,6 +109,49 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
       peerIdentities_ = clientIdentityHook(transport, x509, peerAddress_);
     }
   }
+
+ public:
+  enum class TransportType {
+    HEADER,
+    ROCKET,
+    HTTP2,
+  };
+
+  explicit Cpp2ConnContext(
+      const folly::SocketAddress* address = nullptr,
+      const folly::AsyncTransport* transport = nullptr,
+      folly::EventBaseManager* manager = nullptr,
+      const std::shared_ptr<RequestChannel>& duplexChannel = nullptr,
+      std::shared_ptr<X509> peerCert = nullptr /*overridden from socket*/,
+      apache::thrift::ClientIdentityHook clientIdentityHook = nullptr)
+      : Cpp2ConnContext(
+            address,
+            transport,
+            manager,
+            duplexChannel,
+            std::move(peerCert),
+            std::move(clientIdentityHook),
+            nullptr,
+            nullptr) {}
+
+  template <typename WorkerT>
+  explicit Cpp2ConnContext(
+      const folly::SocketAddress* address,
+      const folly::AsyncTransport* transport,
+      folly::EventBaseManager* manager,
+      const std::shared_ptr<RequestChannel>& duplexChannel,
+      std::shared_ptr<X509> peerCert /*overridden from socket*/,
+      apache::thrift::ClientIdentityHook clientIdentityHook,
+      const WorkerT* worker)
+      : Cpp2ConnContext(
+            address,
+            transport,
+            manager,
+            duplexChannel,
+            std::move(peerCert),
+            std::move(clientIdentityHook),
+            worker,
+            worker) {}
 
   ~Cpp2ConnContext() override { DCHECK(tiles_.empty()); }
   Cpp2ConnContext(Cpp2ConnContext&&) = default;
@@ -243,6 +283,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   void connectionClosed() { cancellationSource_.requestCancellation(); }
 
   const Cpp2Worker* getWorker() const { return worker_; }
+
+  const IOWorkerContext* getWorkerContext() const { return workerContext_; }
 
   std::optional<TransportType> getTransportType() const {
     return transportType_;
@@ -405,6 +447,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   folly::CancellationSource cancellationSource_;
   folly::F14FastMap<int64_t, TilePtr> tiles_;
   const Cpp2Worker* worker_;
+  const IOWorkerContext* workerContext_;
   InterfaceKind interfaceKind_{InterfaceKind::USER};
   std::optional<TransportType> transportType_;
   std::optional<CLIENT_TYPE> clientType_;

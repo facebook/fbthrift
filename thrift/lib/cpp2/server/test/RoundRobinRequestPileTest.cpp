@@ -35,7 +35,6 @@ TEST(RoundRobinRequestPileTest, NormalCases) {
     ServerRequest req(
         nullptr /* ResponseChannelRequest::UniquePtr  */,
         SerializedCompressedRequest(std::unique_ptr<folly::IOBuf>{}),
-        nullptr /* eb  */,
         ctx,
         static_cast<protocol::PROTOCOL_TYPES>(0),
         nullptr, /* requestContext  */
@@ -178,7 +177,6 @@ TEST(RoundRobinRequestPileTest, SingleBucket) {
     ServerRequest req(
         nullptr /* ResponseChannelRequest::UniquePtr  */,
         SerializedCompressedRequest(std::unique_ptr<folly::IOBuf>{}),
-        nullptr /* eb  */,
         ctx,
         static_cast<protocol::PROTOCOL_TYPES>(0),
         nullptr, /* requestContext  */

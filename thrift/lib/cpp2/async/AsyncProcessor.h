@@ -433,7 +433,6 @@ class ServerRequest {
   ServerRequest(
       ResponseChannelRequest::UniquePtr&& request,
       SerializedCompressedRequest&& serializedRequest,
-      folly::EventBase* eb,
       Cpp2RequestContext* ctx,
       protocol::PROTOCOL_TYPES protocol,
       std::shared_ptr<folly::RequestContext> follyRequestContext,
@@ -442,7 +441,6 @@ class ServerRequest {
       ServiceRequestInfo const* serviceRequestInfo)
       : request_(std::move(request)),
         serializedRequest_(std::move(serializedRequest)),
-        eb_(eb),
         ctx_(ctx),
         protocol_(protocol),
         follyRequestContext_(follyRequestContext),
@@ -517,12 +515,16 @@ class ServerRequest {
     return std::move(sr.request_);
   }
 
-  static folly::EventBase* eventBase(ServerRequest& sr) { return sr.eb_; }
+  static folly::EventBase* eventBase(ServerRequest& sr) {
+    return sr.ctx_->getConnectionContext()
+        ->getWorkerContext()
+        ->getWorkerEventBase();
+  }
 
   // The executor is only available once the request has been assigned to
   // a resource pool.
   static folly::Executor* executor(ServerRequest& sr) {
-    return sr.executor_ ? sr.executor_ : sr.eb_;
+    return sr.executor_ ? sr.executor_ : eventBase(sr);
   }
 
   static void setExecutor(ServerRequest& sr, folly::Executor* executor) {
@@ -556,7 +558,6 @@ class ServerRequest {
  private:
   ResponseChannelRequest::UniquePtr request_;
   SerializedCompressedRequest serializedRequest_;
-  folly::EventBase* eb_;
   folly::Executor* executor_{nullptr};
   Cpp2RequestContext* ctx_;
   protocol::PROTOCOL_TYPES protocol_;
@@ -1075,10 +1076,9 @@ class ServerInterface : public virtual AsyncProcessorFactory,
 class HandlerCallbackBase {
  private:
   IOWorkerContext::ReplyQueue& getReplyQueue() {
-    auto worker = reinterpret_cast<IOWorkerContext*>(
-        const_cast<Cpp2Worker*>(reqCtx_->getConnectionContext()->getWorker()));
-    DCHECK(worker != nullptr);
-    return worker->getReplyQueue();
+    auto workerContext = reqCtx_->getConnectionContext()->getWorkerContext();
+    DCHECK(workerContext != nullptr);
+    return workerContext->getReplyQueue();
   }
 
  protected:
