@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@
 #include <folly/lang/Exception.h>
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 #include <thrift/conformance/cpp2/Object.h>
+#include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/op/Compare.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
@@ -77,11 +78,21 @@ testing::AssertionResult RunRoundTripTest(
       ? *roundTrip.expectedResponse_ref().value_unchecked().value_ref()
       : *roundTrip.request_ref()->value_ref();
 
-  // TODO(afuller): Make add asValueStruct support to AnyRegistry and use that
-  // instead of hard coding type.
-  auto actual = AnyRegistry::generated().load<Value>(*res.value_ref());
-  auto expected = AnyRegistry::generated().load<Value>(expectedAny);
-  if (!op::identical<type::struct_t<Value>>(actual, expected)) {
+  auto parseAny = [](const Any& a) {
+    switch (auto protocol = a.protocol().value_or(StandardProtocol::Compact)) {
+      case StandardProtocol::Compact:
+        return parseObject<apache::thrift::CompactProtocolReader>(*a.data());
+      case StandardProtocol::Binary:
+        return parseObject<apache::thrift::BinaryProtocolReader>(*a.data());
+      default:
+        throw std::invalid_argument(
+            "Unsupported protocol: " + util::enumNameSafe(protocol));
+    }
+  };
+
+  Object actual = parseAny(*res.value());
+  Object expected = parseAny(expectedAny);
+  if (!op::identical<type::struct_t<Object>>(actual, expected)) {
     // TODO(afuller): Report out the delta
     return testing::AssertionFailure();
   }
