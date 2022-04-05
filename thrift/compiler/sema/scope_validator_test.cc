@@ -39,6 +39,8 @@ namespace {
 class ScopeValidatorTest : public ::testing::Test {
  public:
   ScopeValidatorTest() : program{"path/to/file.thrift"} {
+    program.set_name("MyProgram");
+    scopeProgram.set_uri("facebook.com/thrift/annotation/Program");
     scopeStruct.set_uri("facebook.com/thrift/annotation/Struct");
     scopeUnion.set_uri("facebook.com/thrift/annotation/Union");
     scopeException.set_uri("facebook.com/thrift/annotation/Exception");
@@ -54,6 +56,7 @@ class ScopeValidatorTest : public ::testing::Test {
   }
 
   void SetUp() override {
+    annotProgram.add_structured_annotation(inst(&scopeProgram));
     annotStruct.add_structured_annotation(inst(&scopeStruct));
     annotUnion.add_structured_annotation(inst(&scopeUnion));
     annotException.add_structured_annotation(inst(&scopeException));
@@ -65,28 +68,6 @@ class ScopeValidatorTest : public ::testing::Test {
     annotEnum.add_structured_annotation(inst(&scopeEnum));
     annotEnumValue.add_structured_annotation(inst(&scopeEnumValue));
     annotConst.add_structured_annotation(inst(&scopeConst));
-
-    // Equivalent to the following:
-    // @scope.Struct
-    // @scope.Union
-    // @scope.Exception
-    // @meta.Transitive
-    // struct MyStructuredAnnot{}
-
-    // @scope.Struct
-    // @scope.Union
-    // @scope.Exception
-    // struct MyNonTransitiveStructuredAnnot{}
-
-    // @MyStructuredAnnot
-    // @meta.Transitive
-    // struct MyStructuredAnnot{}
-
-    // @MyNonTransitiveStructuredAnnot
-    // struct MyNonTransitiveStructuredAnnot{}
-
-    // @MyStructuredAnnot
-    // struct MyNestedStructuredAnnot{}
 
     metaTransitive.add_structured_annotation(inst(&scopeStruct));
     annotStructured.add_structured_annotation(inst(&scopeStruct));
@@ -103,6 +84,7 @@ class ScopeValidatorTest : public ::testing::Test {
         inst(&annotNonTransitiveStructured));
     annotMyNestedStructured.add_structured_annotation(inst(&annotMyStructured));
 
+    all_annots.emplace_back(&annotProgram);
     all_annots.emplace_back(&annotStruct);
     all_annots.emplace_back(&annotUnion);
     all_annots.emplace_back(&annotException);
@@ -124,6 +106,7 @@ class ScopeValidatorTest : public ::testing::Test {
   }
 
  protected:
+  t_struct scopeProgram{nullptr, "Program"};
   t_struct scopeStruct{nullptr, "Struct"};
   t_struct scopeUnion{nullptr, "Union"};
   t_struct scopeException{nullptr, "Exception"};
@@ -137,6 +120,7 @@ class ScopeValidatorTest : public ::testing::Test {
   t_struct scopeConst{nullptr, "Const"};
   t_struct metaTransitive{nullptr, "Transitive"};
 
+  t_struct annotProgram{nullptr, "ProgramAnnot"};
   t_struct annotStruct{nullptr, "StructAnnot"};
   t_struct annotUnion{nullptr, "UnionAnnot"};
   t_struct annotException{nullptr, "ExceptionAnnot"};
@@ -199,6 +183,10 @@ class ScopeValidatorTest : public ::testing::Test {
     EXPECT_THAT(result.diagnostics(), ::testing::ContainerEq(expected));
   }
 };
+
+TEST_F(ScopeValidatorTest, Program) {
+  runTest(std::move(program), "Program");
+}
 
 TEST_F(ScopeValidatorTest, Struct) {
   runTest(t_struct{&program, "MyStruct"}, "Struct");

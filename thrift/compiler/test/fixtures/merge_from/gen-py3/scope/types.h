@@ -20,6 +20,13 @@ namespace py3 {
 
 
 template<>
+void reset_field<::facebook::thrift::annotation::Program>(
+    ::facebook::thrift::annotation::Program& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
 void reset_field<::facebook::thrift::annotation::Struct>(
     ::facebook::thrift::annotation::Struct& obj, uint16_t index) {
   switch (index) {
@@ -129,6 +136,16 @@ void reset_field<::facebook::thrift::annotation::Definition>(
     ::facebook::thrift::annotation::Definition& obj, uint16_t index) {
   switch (index) {
   }
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::Program>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
 }
 
 template<>

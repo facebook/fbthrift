@@ -13,5 +13,5 @@ from thrift.protocol.TProtocol import TProtocolException
 
 
 
-from .ttypes import UTF8STRINGS, Struct, Union, Exception, Field, Typedef, Service, Interaction, Function, EnumValue, Const, FbthriftInternalEnum, FbthriftInternalScopeTransitive, Structured, Interface, RootDefinition, Definition, Enum
+from .ttypes import UTF8STRINGS, Program, Struct, Union, Exception, Field, Typedef, Service, Interaction, Function, EnumValue, Const, FbthriftInternalEnum, FbthriftInternalScopeTransitive, Structured, Interface, RootDefinition, Definition, Enum
 

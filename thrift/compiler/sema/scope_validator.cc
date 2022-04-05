@@ -35,6 +35,7 @@ namespace {
 
 const std::unordered_map<std::string, std::type_index>& uri_map() {
   static const std::unordered_map<std::string, std::type_index> kUriMap = {
+      {"facebook.com/thrift/annotation/Program", typeid(t_program)},
       {"facebook.com/thrift/annotation/Struct", typeid(t_struct)},
       {"facebook.com/thrift/annotation/Union", typeid(t_union)},
       {"facebook.com/thrift/annotation/Exception", typeid(t_exception)},

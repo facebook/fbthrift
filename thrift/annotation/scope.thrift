@@ -39,6 +39,7 @@ namespace py thrift.annotation.scope
 //                           // allowed on fields.
 //       1: i32 my_field;
 //     }
+struct Program {} (thrift.uri = "facebook.com/thrift/annotation/Program")
 struct Struct {} (thrift.uri = "facebook.com/thrift/annotation/Struct")
 struct Union {} (thrift.uri = "facebook.com/thrift/annotation/Union")
 struct Exception {} (thrift.uri = "facebook.com/thrift/annotation/Exception")

@@ -3,23 +3,23 @@
   "thrift_module" : "scope",
   "typedefs" : {
     "Enum" : {
-      "lineno" : 58,
+      "lineno" : 59,
       "type_enum" : "STRUCT",
       "spec_args" : "FbthriftInternalEnum",
       "source_range" : {
         "begin" : {
-          "line" : 58,
+          "line" : 59,
           "column" : 1
         },
         "end" : {
-          "line" : 60,
+          "line" : 61,
           "column" : 2
         }
       }
     }
   },
   "structs" : {
-    "Struct" : {
+    "Program" : {
       "lineno" : 42,
       "is_exception" : false,
       "is_union" : false,
@@ -33,11 +33,11 @@
         },
         "end" : {
           "line" : 42,
-          "column" : 72
+          "column" : 74
         }
       }
     },
-    "Union" : {
+    "Struct" : {
       "lineno" : 43,
       "is_exception" : false,
       "is_union" : false,
@@ -51,11 +51,11 @@
         },
         "end" : {
           "line" : 43,
-          "column" : 70
+          "column" : 72
         }
       }
     },
-    "Exception" : {
+    "Union" : {
       "lineno" : 44,
       "is_exception" : false,
       "is_union" : false,
@@ -69,11 +69,11 @@
         },
         "end" : {
           "line" : 44,
-          "column" : 78
+          "column" : 70
         }
       }
     },
-    "Field" : {
+    "Exception" : {
       "lineno" : 45,
       "is_exception" : false,
       "is_union" : false,
@@ -87,11 +87,11 @@
         },
         "end" : {
           "line" : 45,
-          "column" : 70
+          "column" : 78
         }
       }
     },
-    "Typedef" : {
+    "Field" : {
       "lineno" : 46,
       "is_exception" : false,
       "is_union" : false,
@@ -105,11 +105,11 @@
         },
         "end" : {
           "line" : 46,
-          "column" : 74
+          "column" : 70
         }
       }
     },
-    "Service" : {
+    "Typedef" : {
       "lineno" : 47,
       "is_exception" : false,
       "is_union" : false,
@@ -127,7 +127,7 @@
         }
       }
     },
-    "Interaction" : {
+    "Service" : {
       "lineno" : 48,
       "is_exception" : false,
       "is_union" : false,
@@ -140,13 +140,13 @@
           "column" : 1
         },
         "end" : {
-          "line" : 50,
-          "column" : 2
+          "line" : 48,
+          "column" : 74
         }
       }
     },
-    "Function" : {
-      "lineno" : 51,
+    "Interaction" : {
+      "lineno" : 49,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -154,16 +154,16 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 51,
+          "line" : 49,
           "column" : 1
         },
         "end" : {
           "line" : 51,
-          "column" : 76
+          "column" : 2
         }
       }
     },
-    "EnumValue" : {
+    "Function" : {
       "lineno" : 52,
       "is_exception" : false,
       "is_union" : false,
@@ -177,11 +177,11 @@
         },
         "end" : {
           "line" : 52,
-          "column" : 78
+          "column" : 76
         }
       }
     },
-    "Const" : {
+    "EnumValue" : {
       "lineno" : 53,
       "is_exception" : false,
       "is_union" : false,
@@ -195,12 +195,30 @@
         },
         "end" : {
           "line" : 53,
+          "column" : 78
+        }
+      }
+    },
+    "Const" : {
+      "lineno" : 54,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 54,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 54,
           "column" : 70
         }
       }
     },
     "FbthriftInternalEnum" : {
-      "lineno" : 57,
+      "lineno" : 58,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -208,17 +226,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 57,
+          "line" : 58,
           "column" : 1
         },
         "end" : {
-          "line" : 57,
+          "line" : 58,
           "column" : 31
         }
       }
     },
     "FbthriftInternalScopeTransitive" : {
-      "lineno" : 62,
+      "lineno" : 63,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -226,17 +244,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 62,
+          "line" : 63,
           "column" : 1
         },
         "end" : {
-          "line" : 64,
+          "line" : 65,
           "column" : 2
         }
       }
     },
     "Structured" : {
-      "lineno" : 70,
+      "lineno" : 71,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -244,17 +262,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 66,
+          "line" : 67,
           "column" : 1
         },
         "end" : {
-          "line" : 70,
+          "line" : 71,
           "column" : 21
         }
       }
     },
     "Interface" : {
-      "lineno" : 75,
+      "lineno" : 76,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -262,17 +280,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 72,
+          "line" : 73,
           "column" : 1
         },
         "end" : {
-          "line" : 75,
+          "line" : 76,
           "column" : 20
         }
       }
     },
     "RootDefinition" : {
-      "lineno" : 83,
+      "lineno" : 84,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -280,17 +298,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 77,
+          "line" : 78,
           "column" : 1
         },
         "end" : {
-          "line" : 83,
+          "line" : 84,
           "column" : 25
         }
       }
     },
     "Definition" : {
-      "lineno" : 90,
+      "lineno" : 91,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -298,11 +316,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 85,
+          "line" : 86,
           "column" : 1
         },
         "end" : {
-          "line" : 90,
+          "line" : 91,
           "column" : 21
         }
       }

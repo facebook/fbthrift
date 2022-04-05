@@ -13,6 +13,7 @@ namespace annotation {
 ::apache::thrift::metadata::ThriftMetadata scope_getThriftModuleMetadata() {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
+  ::apache::thrift::detail::md::StructMetadata<Program>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Struct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Union>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Exception>::gen(metadata);
