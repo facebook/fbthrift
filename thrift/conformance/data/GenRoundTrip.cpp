@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,10 +32,7 @@ int main(int argc, char** argv) {
   folly::Init(&argc, &argv);
   std::vector<folly::StringPiece> protocolNames;
 
-  auto testSuite = apache::thrift::conformance::data::createRoundTripSuite(
-      {getStandardProtocol<StandardProtocol::Compact>(),
-       getStandardProtocol<StandardProtocol::Binary>(),
-       getStandardProtocol<StandardProtocol::SimpleJson>()});
+  auto testSuite = apache::thrift::conformance::data::createRoundTripSuite();
 
   apache::thrift::BinaryProtocolWriter writer;
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
