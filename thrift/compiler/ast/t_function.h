@@ -83,10 +83,10 @@ class t_function final : public t_named {
   void set_is_interaction_member() { isInteractionMember_ = true; }
 
   // new syntax only
-  const boost::optional<t_type_ref>& returned_interaction() const {
+  const t_type_ref& returned_interaction() const {
     return returned_interaction_;
   }
-  void set_returned_interaction(boost::optional<t_type_ref> interaction) {
+  void set_returned_interaction(t_type_ref interaction) {
     returned_interaction_ = std::move(interaction);
   }
 
@@ -95,7 +95,7 @@ class t_function final : public t_named {
   std::unique_ptr<t_paramlist> paramlist_;
   std::unique_ptr<t_throws> exceptions_;
   t_function_qualifier qualifier_;
-  boost::optional<t_type_ref> returned_interaction_;
+  t_type_ref returned_interaction_;
   bool isInteractionConstructor_{false};
   bool isInteractionMember_{false};
 

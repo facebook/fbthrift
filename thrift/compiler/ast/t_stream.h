@@ -42,19 +42,16 @@ class t_stream_response : public t_templated_type {
     exceptions_ = std::move(exceptions);
   }
 
-  void set_first_response_type(
-      boost::optional<t_type_ref> first_response_type) {
+  void set_first_response_type(t_type_ref first_response_type) {
     first_response_type_ = std::move(first_response_type);
   }
 
-  const boost::optional<t_type_ref>& first_response_type() const {
-    return first_response_type_;
-  }
+  const t_type_ref& first_response_type() const { return first_response_type_; }
 
   std::string get_full_name() const override {
     std::string result = "stream<" + elem_type_->get_full_name() + ">";
-    if (first_response_type_ != boost::none) {
-      result = first_response_type_->deref().get_full_name() + ", " + result;
+    if (!first_response_type_.empty()) {
+      result = first_response_type_->get_full_name() + ", " + result;
     }
     return result;
   }
@@ -62,7 +59,7 @@ class t_stream_response : public t_templated_type {
  private:
   t_type_ref elem_type_;
   std::unique_ptr<t_throws> exceptions_;
-  boost::optional<t_type_ref> first_response_type_;
+  t_type_ref first_response_type_;
 
   // TODO(afuller): Remove everything below here. It is provided only for
   // backwards compatibility.
@@ -78,13 +75,9 @@ class t_stream_response : public t_templated_type {
   }
   const t_type* get_elem_type() const { return elem_type().get_type(); }
   const t_type* get_first_response_type() const {
-    return first_response_type() == boost::none
-        ? nullptr
-        : first_response_type()->get_type();
+    return first_response_type().get_type();
   }
-  bool has_first_response() const {
-    return first_response_type_ != boost::none;
-  }
+  bool has_first_response() const { return !first_response_type_.empty(); }
   t_throws* get_throws_struct() const { return exceptions_.get(); }
   bool has_throws_struct() const { return exceptions_ == nullptr; }
 

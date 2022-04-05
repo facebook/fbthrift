@@ -24,7 +24,7 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-// NOTE: Must be defined here for t_const's destructor's defintion.
+// NOTE: Must be defined here for t_const's destructor defintion.
 t_named::~t_named() = default;
 
 void t_named::add_structured_annotation(std::unique_ptr<t_const> annot) {
@@ -35,7 +35,7 @@ void t_named::add_structured_annotation(std::unique_ptr<t_const> annot) {
 const t_const* t_named::find_structured_annotation_or_null(
     const char* uri) const {
   for (const auto* annotation : structured_annotations_raw_) {
-    const t_type& annotation_type = *annotation->get_type();
+    const t_type& annotation_type = *annotation->type();
     if (annotation_type.uri() == uri) {
       return annotation;
     }

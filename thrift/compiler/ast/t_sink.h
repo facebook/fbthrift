@@ -65,18 +65,16 @@ class t_sink : public t_templated_type {
     final_response_exceptions_ = std::move(final_response_exceptions);
   }
 
-  void set_first_response_type(boost::optional<t_type_ref> first_response) {
+  void set_first_response_type(t_type_ref first_response) {
     first_response_type_ = std::move(first_response);
   }
-  const boost::optional<t_type_ref>& first_response_type() const {
-    return first_response_type_;
-  }
+  const t_type_ref& first_response_type() const { return first_response_type_; }
 
   std::string get_full_name() const override {
     std::string result = "sink<" + sink_type_->get_full_name() + ", " +
         final_response_type_->get_full_name() + ">";
-    if (first_response_type_ != boost::none) {
-      result += ", " + first_response_type_->deref().get_full_name();
+    if (!first_response_type_.empty()) {
+      result += ", " + first_response_type_->get_full_name();
     }
     return result;
   }
@@ -86,7 +84,7 @@ class t_sink : public t_templated_type {
   std::unique_ptr<t_throws> sink_exceptions_;
   t_type_ref final_response_type_;
   std::unique_ptr<t_throws> final_response_exceptions_;
-  boost::optional<t_type_ref> first_response_type_;
+  t_type_ref first_response_type_;
 
  public:
   // TODO(afuller): Delete everything below here. It is only provided for
@@ -108,18 +106,14 @@ class t_sink : public t_templated_type {
     set_first_response_type(t_type_ref::from_ptr(first_response));
   }
 
-  bool sink_has_first_response() const {
-    return first_response_type_ != boost::none;
-  }
+  bool sink_has_first_response() const { return !first_response_type_.empty(); }
   t_throws* get_final_response_xceptions() const {
     return final_response_exceptions_.get();
   }
   t_throws* get_sink_xceptions() const { return sink_exceptions_.get(); }
   const t_type* get_sink_type() const { return sink_type().get_type(); }
   const t_type* get_first_response_type() const {
-    return first_response_type_ == boost::none
-        ? nullptr
-        : first_response_type_->get_type();
+    return first_response_type_.get_type();
   }
   const t_type* get_final_response_type() const {
     return final_response_type().get_type();

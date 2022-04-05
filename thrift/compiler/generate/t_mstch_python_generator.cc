@@ -183,13 +183,13 @@ class mstch_python_const_value : public mstch_const_value {
   mstch::node is_string() {
     auto& ttype = const_value_->ttype();
     return type_ == cv::CV_STRING && ttype &&
-        ttype->deref().get_true_type()->is_string();
+        ttype->get_true_type()->is_string();
   }
 
   mstch::node is_binary() {
     auto& ttype = const_value_->ttype();
     return type_ == cv::CV_STRING && ttype &&
-        ttype->deref().get_true_type()->is_binary();
+        ttype->get_true_type()->is_binary();
   }
 
   mstch::node const_enum_type() {
@@ -197,7 +197,7 @@ class mstch_python_const_value : public mstch_const_value {
         !const_value_->is_enum()) {
       return {};
     }
-    const auto* type = const_value_->ttype()->deref().get_true_type();
+    const auto* type = const_value_->ttype()->get_true_type();
     if (type->is_enum()) {
       return generators_->type_generator_->generate(type, generators_, cache_);
     }
@@ -206,14 +206,14 @@ class mstch_python_const_value : public mstch_const_value {
 
   mstch::node value_for_bool() {
     if (auto ttype = const_value_->ttype()) {
-      return ttype->deref().get_true_type()->is_bool();
+      return ttype->get_true_type()->is_bool();
     }
     return false;
   }
 
   mstch::node value_for_floating_point() {
     if (auto ttype = const_value_->ttype()) {
-      return ttype->deref().get_true_type()->is_floating_point();
+      return ttype->get_true_type()->is_floating_point();
     }
     return false;
   }
@@ -251,7 +251,7 @@ class mstch_python_const_value : public mstch_const_value {
 
   mstch::node list_elem_type() {
     if (auto ttype = const_value_->ttype()) {
-      const auto* type = ttype->deref().get_true_type();
+      const auto* type = ttype->get_true_type();
       const t_type* elem_type = nullptr;
       if (type->is_list()) {
         elem_type = dynamic_cast<const t_list*>(type)->get_elem_type();
@@ -268,14 +268,14 @@ class mstch_python_const_value : public mstch_const_value {
 
   mstch::node value_for_set() {
     if (auto ttype = const_value_->ttype()) {
-      return ttype->deref().get_true_type()->is_set();
+      return ttype->get_true_type()->is_set();
     }
     return false;
   }
 
   mstch::node map_key_type() {
     if (auto ttype = const_value_->ttype()) {
-      const auto* type = ttype->deref().get_true_type();
+      const auto* type = ttype->get_true_type();
       if (type->is_map()) {
         return generators_->type_generator_->generate(
             dynamic_cast<const t_map*>(type)->get_key_type(),
@@ -289,7 +289,7 @@ class mstch_python_const_value : public mstch_const_value {
 
   mstch::node map_val_type() {
     if (auto ttype = const_value_->ttype()) {
-      const auto* type = ttype->deref().get_true_type();
+      const auto* type = ttype->get_true_type();
       if (type->is_map()) {
         return generators_->type_generator_->generate(
             dynamic_cast<const t_map*>(type)->get_val_type(),

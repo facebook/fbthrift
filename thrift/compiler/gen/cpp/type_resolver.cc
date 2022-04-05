@@ -262,7 +262,7 @@ std::string type_resolver::gen_container_type(
 
 std::string type_resolver::gen_stream_resp_type(
     const t_stream_response& node, type_resolve_fn resolve_fn) {
-  if (node.first_response_type() != boost::none) {
+  if (!node.first_response_type().empty()) {
     return detail::gen_template_type(
         "::apache::thrift::ResponseAndServerStream",
         {resolve(resolve_fn, *node.get_first_response_type()),
@@ -275,7 +275,7 @@ std::string type_resolver::gen_stream_resp_type(
 
 std::string type_resolver::gen_sink_type(
     const t_sink& node, type_resolve_fn resolve_fn) {
-  if (node.first_response_type() != boost::none) {
+  if (!node.first_response_type().empty()) {
     return detail::gen_template_type(
         "::apache::thrift::ResponseAndSinkConsumer",
         {resolve(resolve_fn, *node.get_first_response_type()),

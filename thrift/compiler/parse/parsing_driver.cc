@@ -493,7 +493,7 @@ void parsing_driver::reset_locations() {
 
 std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
     std::unique_ptr<t_const_value> const_struct) {
-  auto ttype = const_struct->ttype().value(); // Copy the t_type_ref.
+  auto ttype = const_struct->ttype(); // Copy the t_type_ref.
   auto result = std::make_unique<t_const>(
       program, std::move(ttype), "", std::move(const_struct));
   result->set_lineno(lexer_->lineno());
@@ -871,7 +871,7 @@ std::unique_ptr<t_const_value> parsing_driver::copy_const_value(
     auto result = constant->get_value()->clone();
     // We only want to clone the value, while discarding all real type
     // information.
-    result->set_ttype(boost::none);
+    result->set_ttype({});
     result->set_is_enum(false);
     result->set_enum(nullptr);
     result->set_enum_value(nullptr);

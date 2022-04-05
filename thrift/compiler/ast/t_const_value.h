@@ -189,8 +189,8 @@ class t_const_value {
 
   t_const* get_owner() const { return owner_; }
 
-  const boost::optional<t_type_ref>& ttype() const { return ttype_; }
-  void set_ttype(boost::optional<t_type_ref> type) { ttype_ = std::move(type); }
+  const t_type_ref& ttype() const { return ttype_; }
+  void set_ttype(t_type_ref type) { ttype_ = std::move(type); }
 
   void set_is_enum(bool value = true) { is_enum_ = value; }
 
@@ -221,7 +221,7 @@ class t_const_value {
 
   t_const_value_type valType_ = CV_BOOL;
   t_const* owner_ = nullptr;
-  boost::optional<t_type_ref> ttype_;
+  t_type_ref ttype_;
 
   bool is_enum_ = false;
   t_enum const* tenum_ = nullptr;
@@ -232,9 +232,7 @@ class t_const_value {
  public:
   // TODO(afuller): Delete everything below here. It is only provided for
   // backwards compatibility.
-  const t_type* get_ttype() const {
-    return ttype() == boost::none ? nullptr : ttype()->get_type();
-  }
+  const t_type* get_ttype() const { return ttype_.get_type(); }
 };
 
 } // namespace compiler

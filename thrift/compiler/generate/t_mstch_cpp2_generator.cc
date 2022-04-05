@@ -1324,7 +1324,7 @@ class mstch_cpp2_function : public mstch_function {
   }
   mstch::node coroutine() {
     return function_->has_annotation("cpp.coroutine") ||
-        function_->returned_interaction().is_initialized() ||
+        !function_->returned_interaction().empty() ||
         function_->is_interaction_member();
   }
   mstch::node event_based() {
@@ -1335,13 +1335,13 @@ class mstch_cpp2_function : public mstch_function {
     return cpp2::is_stack_arguments(cache_->parsed_options_, *function_);
   }
   mstch::node creates_interaction() {
-    return function_->returned_interaction().is_initialized();
+    return !function_->returned_interaction().empty();
   }
   mstch::node created_interaction() {
-    return cpp2::get_name(function_->returned_interaction()->get_type());
+    return cpp2::get_name(function_->returned_interaction().get_type());
   }
   mstch::node in_or_creates_interaction() {
-    return function_->returned_interaction().is_initialized() ||
+    return !function_->returned_interaction().empty() ||
         function_->is_interaction_member();
   }
   mstch::node is_void() {

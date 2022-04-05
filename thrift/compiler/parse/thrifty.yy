@@ -323,7 +323,7 @@ using t_typethrowspair = std::pair<t_type_ref, t_throws*>;
 %type<t_function*>                 Function
 %type<t_function*>                 FunctionAnnotated
 %type<t_function*>                 Performs
-%type<std::pair<t_type_ref, boost::optional<t_type_ref>>> FunctionType
+%type<std::pair<t_type_ref, t_type_ref>> FunctionType
 %type<t_function_list*>            FunctionList
 
 %type<t_throws*>                   MaybeThrows
@@ -965,14 +965,14 @@ FunctionType:
   StreamReturnType
     {
       driver.debug("FunctionType -> StreamReturnType");
-      $$ = {driver.new_type_ref(own($1), nullptr), boost::none};
+      $$.first = driver.new_type_ref(own($1), nullptr);
     }
 | FieldType "," StreamReturnType
     {
       driver.debug("FunctionType -> FieldType, StreamReturnType");
       // This might actually be an interaction, corrected in standard mutator.
       $3->set_first_response_type(std::move($1));
-      $$ = {driver.new_type_ref(own($3), nullptr), boost::none};
+      $$.first = driver.new_type_ref(own($3), nullptr);
     }
 |  FieldType "," FieldType "," StreamReturnType
     {
@@ -983,14 +983,14 @@ FunctionType:
 | SinkReturnType
     {
       driver.debug("FunctionType -> SinkReturnType");
-      $$ = {driver.new_type_ref(own($1), nullptr), boost::none};
+      $$.first = driver.new_type_ref(own($1), nullptr);
     }
 | FieldType "," SinkReturnType
     {
       driver.debug("FunctionType -> FieldType, SinkReturnType");
       // This might actually be an interaction, corrected in standard mutator.
       $3->set_first_response_type(std::move($1));
-      $$ = {driver.new_type_ref(own($3), nullptr), boost::none};
+      $$.first = driver.new_type_ref(own($3), nullptr);
     }
 |  FieldType "," FieldType "," SinkReturnType
     {
@@ -1002,7 +1002,7 @@ FunctionType:
     {
       driver.debug("FunctionType -> FieldType");
       // This might actually be an interaction, corrected in standard mutator.
-      $$ = {$1, boost::none};
+      $$.first = $1;
     }
 |  FieldType "," FieldType
     {
@@ -1012,7 +1012,7 @@ FunctionType:
 | tok_void
     {
       driver.debug("FunctionType -> tok_void");
-      $$ = {t_base_type::t_void(), boost::none};
+      $$.first = t_base_type::t_void();
     }
 
 StreamReturnType:

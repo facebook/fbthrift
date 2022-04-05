@@ -654,7 +654,7 @@ void validate_interaction_factories(
     return;
   }
 
-  boost::optional<t_type_ref> ret;
+  t_type_ref ret;
   if (node.return_type()->is_streamresponse()) {
     auto& stream =
         static_cast<const t_stream_response&>(node.return_type().deref());
@@ -666,7 +666,7 @@ void validate_interaction_factories(
     ret = node.return_type();
   }
 
-  if (ret && ret->deref().is_service()) {
+  if (!ret.empty() && ret->is_service()) {
     ctx.failure("Interactions are not allowed in this position");
   }
 }

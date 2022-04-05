@@ -174,8 +174,8 @@ void assign_uri(diagnostic_context& ctx, mutator_context&, t_named& node) {
 
 void rectify_returned_interactions(
     diagnostic_context& ctx, mutator_context&, t_function& node) {
-  auto check_is_interaction = [&](auto node) {
-    const auto* type = node->get_true_type();
+  auto check_is_interaction = [&](const t_type& node) {
+    const auto* type = node.get_true_type();
     ctx.check(
         type->is_service() &&
             static_cast<const t_service*>(type)->is_interaction(),
@@ -190,26 +190,25 @@ void rectify_returned_interactions(
   if (const auto& ret = node.returned_interaction()) {
     check_is_interaction(*ret);
   } else if (node.return_type()->is_service()) {
-    check_is_interaction(node.return_type());
+    check_is_interaction(*node.return_type());
     node.set_returned_interaction(node.return_type());
     node.set_return_type(t_base_type::t_void());
   } else if (node.return_type()->is_streamresponse()) {
     auto& stream =
         static_cast<const t_stream_response&>(node.return_type().deref());
     if (stream.first_response_type() &&
-        stream.first_response_type()->deref().is_service()) {
-      check_is_interaction(&stream.first_response_type()->deref());
+        stream.first_response_type()->is_service()) {
+      check_is_interaction(*stream.first_response_type());
       node.set_returned_interaction(stream.first_response_type());
-      const_cast<t_stream_response&>(stream).set_first_response_type(
-          boost::none);
+      const_cast<t_stream_response&>(stream).set_first_response_type({});
     }
   } else if (node.return_type()->is_sink()) {
     auto& sink = static_cast<const t_sink&>(node.return_type().deref());
     if (sink.first_response_type() &&
-        sink.first_response_type()->deref().is_service()) {
-      check_is_interaction(&sink.first_response_type()->deref());
+        sink.first_response_type()->is_service()) {
+      check_is_interaction(*sink.first_response_type());
       node.set_returned_interaction(sink.first_response_type());
-      const_cast<t_sink&>(sink).set_first_response_type(boost::none);
+      const_cast<t_sink&>(sink).set_first_response_type({});
     }
   }
 }
