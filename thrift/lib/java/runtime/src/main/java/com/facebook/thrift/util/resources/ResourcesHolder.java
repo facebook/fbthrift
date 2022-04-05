@@ -75,7 +75,7 @@ class ResourcesHolder implements Closeable {
         separateOffLoopScheduler ? createClientOffLoopScheduler() : offLoopScheduler;
 
     // If system properties does not contain leak detection, disable it
-    if (!System.getProperties().contains("io.netty.leakDetectionLevel")) {
+    if (!System.getProperties().containsKey("io.netty.leakDetectionLevel")) {
       ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.DISABLED);
     }
   }
