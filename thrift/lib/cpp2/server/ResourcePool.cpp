@@ -126,7 +126,9 @@ size_t ResourcePoolSet::numQueued() const {
   auto lResourcePool = resourcePools_.rlock();
 
   for (auto& pool : *lResourcePool) {
-    sum += pool->requestPile_->requestCount();
+    if (pool->requestPile_) {
+      sum += pool->requestPile_->requestCount();
+    }
   }
   return sum;
 }
@@ -137,7 +139,9 @@ size_t ResourcePoolSet::numInExecution() const {
   auto lResourcePool = resourcePools_.rlock();
 
   for (auto& pool : *lResourcePool) {
-    sum += pool->concurrencyController_->requestCount();
+    if (pool->concurrencyController_) {
+      sum += pool->concurrencyController_->requestCount();
+    }
   }
   return sum;
 }
