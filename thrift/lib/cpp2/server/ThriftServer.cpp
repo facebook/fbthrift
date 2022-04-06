@@ -647,7 +647,6 @@ void ThriftServer::setupThreadManager() {
 void ThriftServer::ensureResourcePools() {
   // If the user has supplied resource pools we will believe them.
   if (!resourcePoolSet().empty()) {
-    LOG(INFO) << "Using non default ResourcePoolSet";
     return;
   }
 
@@ -658,9 +657,6 @@ void ThriftServer::ensureResourcePools() {
       /*executor=*/nullptr,
       /*concurrencyController=*/nullptr);
 
-  // Now create the HIGH_IMPORTANT, HIGH, IMPORTANT, NORMAL and BEST_EFFORT
-  // pools. NORMAL gets NumCPUWorkerThreads, the rest get two each.
-
   struct Pool {
     std::string_view name;
     std::string_view suffix;
@@ -669,21 +665,49 @@ void ThriftServer::ensureResourcePools() {
     std::optional<ResourcePoolHandle> handle;
   };
 
-  // TODO: T111371879 [thrift][resourcepools] Figure out priorities for default
-  // setup in ensureResourcePool including non-linux
-  // These priority numbers are what thrift currently derives for a nice range
-  // of 19 to -20.
-  Pool pools[] = {
-      {"HIGH_IMPORTANT", "HI", -13, 2, std::nullopt},
-      {"HIGH", "H", -7, 2, std::nullopt},
-      {"IMPORTANT", "I", -7, 2, std::nullopt},
-      {"NORMAL",
-       "",
-       0,
-       getNumCPUWorkerThreads(),
-       ResourcePoolHandle::defaultAsync()},
-      {"BEST_EFFORT", "BE", 6, 2, std::nullopt}};
+  std::vector<Pool> pools;
 
+  switch (threadManagerType_) {
+    case ThreadManagerType::PRIORITY: {
+      // TODO: T111371879 [thrift][resourcepools] Figure out priorities for
+      // default setup in ensureResourcePool including non-linux These priority
+      // numbers are what thrift currently derives for a nice range of 19 to
+      // -20.
+      Pool priorityPools[] = {
+          {"HIGH_IMPORTANT", "HI", -13, 2, std::nullopt},
+          {"HIGH", "H", -7, 2, std::nullopt},
+          {"IMPORTANT", "I", -7, 2, std::nullopt},
+          {"NORMAL",
+           "",
+           0,
+           getNumCPUWorkerThreads(),
+           ResourcePoolHandle::defaultAsync()},
+          {"BEST_EFFORT", "BE", 6, 2, std::nullopt}};
+      if (std::any_of(
+              std::begin(threadManagerPoolSizes_),
+              std::end(threadManagerPoolSizes_),
+              [](std::size_t c) { return c != 0; })) {
+        // The priorities were specified using setThreadManagerPoolSizes
+        for (std::size_t i = 0; i < std::size(priorityPools); ++i) {
+          priorityPools[i].numThreads = threadManagerPoolSizes_.at(i);
+        }
+      }
+      std::copy(
+          std::begin(priorityPools),
+          std::end(priorityPools),
+          std::back_inserter(pools));
+      break;
+    }
+    case ThreadManagerType::SIMPLE: {
+      pools.push_back(Pool{
+          "NORMAL",
+          "",
+          0,
+          getNumCPUWorkerThreads(),
+          ResourcePoolHandle::defaultAsync()});
+      break;
+    }
+  }
   for (auto const& pool : pools) {
     std::string name =
         fmt::format("{}.{}", getCPUWorkerThreadName(), pool.suffix);
