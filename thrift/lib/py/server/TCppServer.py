@@ -192,7 +192,7 @@ class TSSLConfig(object):
         self.client_ca_path = ""
         self.ecc_curve_name = ""
         self.verify = VerifyClientCertificate.IF_PRESENTED
-        self.ssl_policy = SSLPolicy.PERMITTED
+        self.ssl_policy = SSLPolicy.REQUIRED
         self.ticket_file_path = ""
         self.session_context = None
         self.ssl_version = None
