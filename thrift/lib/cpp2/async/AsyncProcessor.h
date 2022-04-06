@@ -863,10 +863,6 @@ class ServiceHandlerBase {
     return folly::makeSemiFuture();
   }
 
-  virtual SelectPoolResult selectResourcePool(ServerRequest const&) const {
-    return SelectPoolResult{};
-  }
-
   ThriftServer* getServer() { return server_; }
   const ThriftServer* getServer() const { return server_; }
   void attachServer(ThriftServer& server);
