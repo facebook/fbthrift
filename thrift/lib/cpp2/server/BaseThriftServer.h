@@ -181,6 +181,17 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     SIMPLE = 1 //! Use a SimpleThreadManager
   };
 
+  struct RuntimeServerActions {
+    bool userSuppliedThreadManager{false};
+  };
+
+  /**
+   * Get the flags used to support migrations and rollouts.
+   */
+  const RuntimeServerActions& getRuntimeServerActions() const {
+    return runtimeServerActions_;
+  }
+
  private:
   //! Default number of worker threads (should be # of processor cores).
   static const size_t T_ASYNC_DEFAULT_WORKER_THREADS;
@@ -422,8 +433,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::vector<std::shared_ptr<server::TServerEventHandler>> eventHandlers_;
   AdaptiveConcurrencyController adaptiveConcurrencyController_;
 
-  bool usingCustomThreadManager_{false};
-
  protected:
   //! The server's listening addresses
   std::vector<folly::SocketAddress> addresses_;
@@ -441,6 +450,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   //! The ResourcePoolsSet used by this ThriftServer (if in ResourcePools
   //! are enabled).
   ResourcePoolSet resourcePoolSet_;
+
+  //! Flags used to track certain actions of thrift servers to help support
+  //! migrations and rollouts.
+  RuntimeServerActions runtimeServerActions_;
 
   /**
    * The thread manager used for sync calls.
@@ -647,7 +660,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
           threadManager) {
     setThreadManagerInternal(threadManager);
     runtimeDisableResourcePools();
-    usingCustomThreadManager_ = true;
+    runtimeServerActions_.userSuppliedThreadManager = true;
   }
 
   /**
@@ -662,7 +675,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
         std::make_shared<concurrency::ThreadManagerExecutorAdapter>(
             folly::getKeepAliveToken(executor), std::move(opts)));
     runtimeDisableResourcePools();
-    usingCustomThreadManager_ = true;
+    runtimeServerActions_.userSuppliedThreadManager = true;
   }
 
   /**
@@ -1520,8 +1533,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * it may be empty if ResourcePools are not in use.
    */
   ResourcePoolSet& resourcePoolSet() override { return resourcePoolSet_; }
-
-  bool getUsingCustomThreadManager() const { return usingCustomThreadManager_; }
 };
 } // namespace thrift
 } // namespace apache
