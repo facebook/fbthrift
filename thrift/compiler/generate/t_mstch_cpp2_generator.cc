@@ -372,6 +372,30 @@ class mstch_cpp2_const_value : public mstch_const_value {
   }
 };
 
+class mstch_cpp2_typedef : public mstch_typedef {
+ public:
+  mstch_cpp2_typedef(
+      t_typedef const* typedf,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      std::shared_ptr<cpp2_generator_context> context)
+      : mstch_typedef(typedf, std::move(generators), std::move(cache), pos),
+        context_(std::move(context)) {
+    register_methods(
+        this,
+        {
+            {"typedef:cpp_type", &mstch_cpp2_typedef::cpp_type},
+        });
+  }
+  mstch::node cpp_type() {
+    return context_->resolver().get_type_name(*typedf_);
+  }
+
+ private:
+  std::shared_ptr<cpp2_generator_context> context_;
+};
+
 class mstch_cpp2_type : public mstch_type {
  public:
   mstch_cpp2_type(
@@ -1881,6 +1905,26 @@ class enum_value_cpp2_generator : public enum_value_generator {
   }
 };
 
+class typedef_cpp2_generator : public typedef_generator {
+ public:
+  explicit typedef_cpp2_generator(
+      std::shared_ptr<cpp2_generator_context> context) noexcept
+      : context_(std::move(context)) {}
+
+  std::shared_ptr<mstch_base> generate(
+      t_typedef const* typedf,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
+    return std::make_shared<mstch_cpp2_typedef>(
+        typedf, std::move(generators), std::move(cache), pos, context_);
+  }
+
+ private:
+  std::shared_ptr<cpp2_generator_context> context_;
+};
+
 class type_cpp2_generator : public type_generator {
  public:
   explicit type_cpp2_generator(
@@ -2126,6 +2170,8 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
       std::make_unique<enum_value_cpp2_generator>());
   generators_->set_type_generator(
       std::make_unique<type_cpp2_generator>(context_));
+  generators_->set_typedef_generator(
+      std::make_unique<typedef_cpp2_generator>(context_));
   generators_->set_field_generator(
       std::make_unique<field_cpp2_generator>(context_));
   generators_->set_function_generator(

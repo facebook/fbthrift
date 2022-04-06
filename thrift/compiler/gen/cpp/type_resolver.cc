@@ -54,8 +54,16 @@ const std::string& type_resolver::get_type_name(
       return gen_field_type(field.id(), type, parent, adapter);
     });
   }
-  return detail::get_or_gen(
-      type_cache_, &type, [&] { return gen_type(type, find_adapter(type)); });
+  return get_type_name(type);
+}
+
+const std::string& type_resolver::get_type_name(const t_typedef& node) {
+  const t_type& type = *node.type();
+  if (const std::string* adapter = find_structured_adapter_annotation(node)) {
+    return detail::get_or_gen(
+        type_cache_, &node, [&]() { return gen_type(type, adapter); });
+  }
+  return get_type_name(type);
 }
 
 const std::string& type_resolver::get_storage_type_name(

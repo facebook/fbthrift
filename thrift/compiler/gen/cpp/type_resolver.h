@@ -53,6 +53,8 @@ class type_resolver {
     });
   }
 
+  const std::string& get_type_name(const t_typedef& node);
+
   // Returns c++ type name for the given thrift field.
   const std::string& get_type_name(
       const t_field& field, const t_structured& parent);
