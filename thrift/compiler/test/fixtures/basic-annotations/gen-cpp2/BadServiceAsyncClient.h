@@ -20,8 +20,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class GoodService;
+} // cpp2
+namespace apache::thrift {
 
-class GoodServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
+template <>
+class Client<::cpp2::GoodService> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -31,7 +35,7 @@ class GoodServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
 
 class BadInteraction final : public apache::thrift::InteractionHandle {
   using apache::thrift::InteractionHandle::InteractionHandle;
-  friend class GoodServiceAsyncClient;
+  friend class ::apache::thrift::Client<::cpp2::GoodService>;
  public:
 
 
@@ -222,4 +226,11 @@ class BadInteraction final : public apache::thrift::InteractionHandle {
  public:
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class GoodServiceAsyncClient : public ::apache::thrift::Client<GoodService> {
+ public:
+  using ::apache::thrift::Client<::cpp2::GoodService>::Client;
+};
 } // cpp2

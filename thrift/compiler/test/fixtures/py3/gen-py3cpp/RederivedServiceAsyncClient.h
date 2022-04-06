@@ -18,8 +18,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace py3 { namespace simple {
+class RederivedService;
+}} // py3::simple
+namespace apache::thrift {
 
-class RederivedServiceAsyncClient : public ::py3::simple::DerivedServiceAsyncClient {
+template <>
+class Client<::py3::simple::RederivedService> : public ::py3::simple::DerivedServiceAsyncClient {
  public:
   using ::py3::simple::DerivedServiceAsyncClient::DerivedServiceAsyncClient;
 
@@ -125,4 +129,11 @@ class RederivedServiceAsyncClient : public ::py3::simple::DerivedServiceAsyncCli
  public:
 };
 
+} // namespace apache::thrift
+
+namespace py3 { namespace simple {
+class RederivedServiceAsyncClient : public ::apache::thrift::Client<RederivedService> {
+ public:
+  using ::apache::thrift::Client<::py3::simple::RederivedService>::Client;
+};
 }} // py3::simple

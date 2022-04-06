@@ -92,11 +92,11 @@ typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apac
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, ::std::vector<::py3::simple::AnEnum>*>> SimpleService_contain_enum_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::variant, ::py3::simple::BinaryUnion*>> SimpleService_get_binary_union_struct_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::structure, ::py3::simple::BinaryUnionStruct*>> SimpleService_get_binary_union_struct_presult;
-
+}} // py3::simple
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::get_fiveT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_fiveT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
 
-  SimpleService_get_five_pargs args;
+  ::py3::simple::SimpleService_get_five_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
 
@@ -108,9 +108,9 @@ void SimpleServiceAsyncClient::get_fiveT(Protocol_* prot, RpcOptions&& rpcOption
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::add_fiveT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_num) {
+void apache::thrift::Client<::py3::simple::SimpleService>::add_fiveT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_num) {
 
-  SimpleService_add_five_pargs args;
+  ::py3::simple::SimpleService_add_five_pargs args;
   args.get<0>().value = &p_num;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -123,9 +123,9 @@ void SimpleServiceAsyncClient::add_fiveT(Protocol_* prot, RpcOptions&& rpcOption
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::do_nothingT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::do_nothingT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
 
-  SimpleService_do_nothing_pargs args;
+  ::py3::simple::SimpleService_do_nothing_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
 
@@ -137,9 +137,9 @@ void SimpleServiceAsyncClient::do_nothingT(Protocol_* prot, RpcOptions&& rpcOpti
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::concatT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_first, const ::std::string& p_second) {
+void apache::thrift::Client<::py3::simple::SimpleService>::concatT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_first, const ::std::string& p_second) {
 
-  SimpleService_concat_pargs args;
+  ::py3::simple::SimpleService_concat_pargs args;
   args.get<0>().value = const_cast<::std::string*>(&p_first);
   args.get<1>().value = const_cast<::std::string*>(&p_second);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -153,9 +153,9 @@ void SimpleServiceAsyncClient::concatT(Protocol_* prot, RpcOptions&& rpcOptions,
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::get_valueT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::SimpleStruct& p_simple_struct) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_valueT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::SimpleStruct& p_simple_struct) {
 
-  SimpleService_get_value_pargs args;
+  ::py3::simple::SimpleService_get_value_pargs args;
   args.get<0>().value = const_cast<::py3::simple::SimpleStruct*>(&p_simple_struct);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -168,9 +168,9 @@ void SimpleServiceAsyncClient::get_valueT(Protocol_* prot, RpcOptions&& rpcOptio
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::negateT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::negateT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool p_input) {
 
-  SimpleService_negate_pargs args;
+  ::py3::simple::SimpleService_negate_pargs args;
   args.get<0>().value = &p_input;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -183,9 +183,9 @@ void SimpleServiceAsyncClient::negateT(Protocol_* prot, RpcOptions&& rpcOptions,
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::tinyT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int8_t p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::tinyT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int8_t p_input) {
 
-  SimpleService_tiny_pargs args;
+  ::py3::simple::SimpleService_tiny_pargs args;
   args.get<0>().value = &p_input;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -198,9 +198,9 @@ void SimpleServiceAsyncClient::tinyT(Protocol_* prot, RpcOptions&& rpcOptions, s
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::smallT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::smallT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_input) {
 
-  SimpleService_small_pargs args;
+  ::py3::simple::SimpleService_small_pargs args;
   args.get<0>().value = &p_input;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -213,9 +213,9 @@ void SimpleServiceAsyncClient::smallT(Protocol_* prot, RpcOptions&& rpcOptions, 
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::bigT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int64_t p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::bigT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int64_t p_input) {
 
-  SimpleService_big_pargs args;
+  ::py3::simple::SimpleService_big_pargs args;
   args.get<0>().value = &p_input;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -228,9 +228,9 @@ void SimpleServiceAsyncClient::bigT(Protocol_* prot, RpcOptions&& rpcOptions, st
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::twoT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, double p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::twoT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, double p_input) {
 
-  SimpleService_two_pargs args;
+  ::py3::simple::SimpleService_two_pargs args;
   args.get<0>().value = &p_input;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -243,9 +243,9 @@ void SimpleServiceAsyncClient::twoT(Protocol_* prot, RpcOptions&& rpcOptions, st
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::expected_exceptionT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::expected_exceptionT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
 
-  SimpleService_expected_exception_pargs args;
+  ::py3::simple::SimpleService_expected_exception_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
 
@@ -257,9 +257,9 @@ void SimpleServiceAsyncClient::expected_exceptionT(Protocol_* prot, RpcOptions&&
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::unexpected_exceptionT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::unexpected_exceptionT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
 
-  SimpleService_unexpected_exception_pargs args;
+  ::py3::simple::SimpleService_unexpected_exception_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
 
@@ -271,9 +271,9 @@ void SimpleServiceAsyncClient::unexpected_exceptionT(Protocol_* prot, RpcOptions
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::sum_i16_listT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::int16_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i16_listT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::int16_t>& p_numbers) {
 
-  SimpleService_sum_i16_list_pargs args;
+  ::py3::simple::SimpleService_sum_i16_list_pargs args;
   args.get<0>().value = const_cast<::std::vector<::std::int16_t>*>(&p_numbers);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -286,9 +286,9 @@ void SimpleServiceAsyncClient::sum_i16_listT(Protocol_* prot, RpcOptions&& rpcOp
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::sum_i32_listT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::int32_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i32_listT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::int32_t>& p_numbers) {
 
-  SimpleService_sum_i32_list_pargs args;
+  ::py3::simple::SimpleService_sum_i32_list_pargs args;
   args.get<0>().value = const_cast<::std::vector<::std::int32_t>*>(&p_numbers);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -301,9 +301,9 @@ void SimpleServiceAsyncClient::sum_i32_listT(Protocol_* prot, RpcOptions&& rpcOp
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::sum_i64_listT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::int64_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i64_listT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::int64_t>& p_numbers) {
 
-  SimpleService_sum_i64_list_pargs args;
+  ::py3::simple::SimpleService_sum_i64_list_pargs args;
   args.get<0>().value = const_cast<::std::vector<::std::int64_t>*>(&p_numbers);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -316,9 +316,9 @@ void SimpleServiceAsyncClient::sum_i64_listT(Protocol_* prot, RpcOptions&& rpcOp
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::concat_manyT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::concat_manyT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_words) {
 
-  SimpleService_concat_many_pargs args;
+  ::py3::simple::SimpleService_concat_many_pargs args;
   args.get<0>().value = const_cast<::std::vector<::std::string>*>(&p_words);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -331,9 +331,9 @@ void SimpleServiceAsyncClient::concat_manyT(Protocol_* prot, RpcOptions&& rpcOpt
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::count_structsT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::count_structsT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
 
-  SimpleService_count_structs_pargs args;
+  ::py3::simple::SimpleService_count_structs_pargs args;
   args.get<0>().value = const_cast<::std::vector<::py3::simple::SimpleStruct>*>(&p_items);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -346,9 +346,9 @@ void SimpleServiceAsyncClient::count_structsT(Protocol_* prot, RpcOptions&& rpcO
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::sum_setT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::set<::std::int32_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_setT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::set<::std::int32_t>& p_numbers) {
 
-  SimpleService_sum_set_pargs args;
+  ::py3::simple::SimpleService_sum_set_pargs args;
   args.get<0>().value = const_cast<::std::set<::std::int32_t>*>(&p_numbers);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -361,9 +361,9 @@ void SimpleServiceAsyncClient::sum_setT(Protocol_* prot, RpcOptions&& rpcOptions
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::contains_wordT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contains_wordT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
 
-  SimpleService_contains_word_pargs args;
+  ::py3::simple::SimpleService_contains_word_pargs args;
   args.get<0>().value = const_cast<::std::set<::std::string>*>(&p_words);
   args.get<1>().value = const_cast<::std::string*>(&p_word);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -377,9 +377,9 @@ void SimpleServiceAsyncClient::contains_wordT(Protocol_* prot, RpcOptions&& rpcO
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::get_map_valueT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_map_valueT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
 
-  SimpleService_get_map_value_pargs args;
+  ::py3::simple::SimpleService_get_map_value_pargs args;
   args.get<0>().value = const_cast<::std::map<::std::string, ::std::string>*>(&p_words);
   args.get<1>().value = const_cast<::std::string*>(&p_key);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -393,9 +393,9 @@ void SimpleServiceAsyncClient::get_map_valueT(Protocol_* prot, RpcOptions&& rpcO
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::map_lengthT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::map_lengthT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
 
-  SimpleService_map_length_pargs args;
+  ::py3::simple::SimpleService_map_length_pargs args;
   args.get<0>().value = const_cast<::std::map<::std::string, ::py3::simple::SimpleStruct>*>(&p_items);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -408,9 +408,9 @@ void SimpleServiceAsyncClient::map_lengthT(Protocol_* prot, RpcOptions&& rpcOpti
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::sum_map_valuesT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::int16_t>& p_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_map_valuesT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::int16_t>& p_items) {
 
-  SimpleService_sum_map_values_pargs args;
+  ::py3::simple::SimpleService_sum_map_values_pargs args;
   args.get<0>().value = const_cast<::std::map<::std::string, ::std::int16_t>*>(&p_items);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -423,9 +423,9 @@ void SimpleServiceAsyncClient::sum_map_valuesT(Protocol_* prot, RpcOptions&& rpc
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::complex_sum_i32T(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::ComplexStruct& p_counter) {
+void apache::thrift::Client<::py3::simple::SimpleService>::complex_sum_i32T(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::ComplexStruct& p_counter) {
 
-  SimpleService_complex_sum_i32_pargs args;
+  ::py3::simple::SimpleService_complex_sum_i32_pargs args;
   args.get<0>().value = const_cast<::py3::simple::ComplexStruct*>(&p_counter);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -438,9 +438,9 @@ void SimpleServiceAsyncClient::complex_sum_i32T(Protocol_* prot, RpcOptions&& rp
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::repeat_nameT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::ComplexStruct& p_counter) {
+void apache::thrift::Client<::py3::simple::SimpleService>::repeat_nameT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::ComplexStruct& p_counter) {
 
-  SimpleService_repeat_name_pargs args;
+  ::py3::simple::SimpleService_repeat_name_pargs args;
   args.get<0>().value = const_cast<::py3::simple::ComplexStruct*>(&p_counter);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -453,9 +453,9 @@ void SimpleServiceAsyncClient::repeat_nameT(Protocol_* prot, RpcOptions&& rpcOpt
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::get_structT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_structT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
 
-  SimpleService_get_struct_pargs args;
+  ::py3::simple::SimpleService_get_struct_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
 
@@ -467,9 +467,9 @@ void SimpleServiceAsyncClient::get_structT(Protocol_* prot, RpcOptions&& rpcOpti
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::fibT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_n) {
+void apache::thrift::Client<::py3::simple::SimpleService>::fibT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_n) {
 
-  SimpleService_fib_pargs args;
+  ::py3::simple::SimpleService_fib_pargs args;
   args.get<0>().value = &p_n;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -482,9 +482,9 @@ void SimpleServiceAsyncClient::fibT(Protocol_* prot, RpcOptions&& rpcOptions, st
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::unique_wordsT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::unique_wordsT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_words) {
 
-  SimpleService_unique_words_pargs args;
+  ::py3::simple::SimpleService_unique_words_pargs args;
   args.get<0>().value = const_cast<::std::vector<::std::string>*>(&p_words);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -497,9 +497,9 @@ void SimpleServiceAsyncClient::unique_wordsT(Protocol_* prot, RpcOptions&& rpcOp
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::words_countT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::words_countT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_words) {
 
-  SimpleService_words_count_pargs args;
+  ::py3::simple::SimpleService_words_count_pargs args;
   args.get<0>().value = const_cast<::std::vector<::std::string>*>(&p_words);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -512,9 +512,9 @@ void SimpleServiceAsyncClient::words_countT(Protocol_* prot, RpcOptions&& rpcOpt
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::set_enumT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::py3::simple::AnEnum p_in_enum) {
+void apache::thrift::Client<::py3::simple::SimpleService>::set_enumT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::py3::simple::AnEnum p_in_enum) {
 
-  SimpleService_set_enum_pargs args;
+  ::py3::simple::SimpleService_set_enum_pargs args;
   args.get<0>().value = &p_in_enum;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -527,9 +527,9 @@ void SimpleServiceAsyncClient::set_enumT(Protocol_* prot, RpcOptions&& rpcOption
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::list_of_listsT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::list_of_listsT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
 
-  SimpleService_list_of_lists_pargs args;
+  ::py3::simple::SimpleService_list_of_lists_pargs args;
   args.get<0>().value = &p_num_lists;
   args.get<1>().value = &p_num_items;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -543,9 +543,9 @@ void SimpleServiceAsyncClient::list_of_listsT(Protocol_* prot, RpcOptions&& rpcO
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::word_character_frequencyT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_sentence) {
+void apache::thrift::Client<::py3::simple::SimpleService>::word_character_frequencyT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_sentence) {
 
-  SimpleService_word_character_frequency_pargs args;
+  ::py3::simple::SimpleService_word_character_frequency_pargs args;
   args.get<0>().value = const_cast<::std::string*>(&p_sentence);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -558,9 +558,9 @@ void SimpleServiceAsyncClient::word_character_frequencyT(Protocol_* prot, RpcOpt
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::list_of_setsT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_some_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::list_of_setsT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_some_words) {
 
-  SimpleService_list_of_sets_pargs args;
+  ::py3::simple::SimpleService_list_of_sets_pargs args;
   args.get<0>().value = const_cast<::std::string*>(&p_some_words);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -573,9 +573,9 @@ void SimpleServiceAsyncClient::list_of_setsT(Protocol_* prot, RpcOptions&& rpcOp
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::nested_map_argumentT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
+void apache::thrift::Client<::py3::simple::SimpleService>::nested_map_argumentT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
 
-  SimpleService_nested_map_argument_pargs args;
+  ::py3::simple::SimpleService_nested_map_argument_pargs args;
   args.get<0>().value = const_cast<::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>*>(&p_struct_map);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -588,9 +588,9 @@ void SimpleServiceAsyncClient::nested_map_argumentT(Protocol_* prot, RpcOptions&
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::make_sentenceT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
+void apache::thrift::Client<::py3::simple::SimpleService>::make_sentenceT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
 
-  SimpleService_make_sentence_pargs args;
+  ::py3::simple::SimpleService_make_sentence_pargs args;
   args.get<0>().value = const_cast<::std::vector<::std::vector<::std::string>>*>(&p_word_chars);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -603,9 +603,9 @@ void SimpleServiceAsyncClient::make_sentenceT(Protocol_* prot, RpcOptions&& rpcO
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::get_unionT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_unionT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
 
-  SimpleService_get_union_pargs args;
+  ::py3::simple::SimpleService_get_union_pargs args;
   args.get<0>().value = const_cast<::std::vector<::std::set<::std::int32_t>>*>(&p_sets);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -618,9 +618,9 @@ void SimpleServiceAsyncClient::get_unionT(Protocol_* prot, RpcOptions&& rpcOptio
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::get_keysT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_keysT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
 
-  SimpleService_get_keys_pargs args;
+  ::py3::simple::SimpleService_get_keys_pargs args;
   args.get<0>().value = const_cast<::std::vector<::std::map<::std::string, ::std::string>>*>(&p_string_map);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -633,9 +633,9 @@ void SimpleServiceAsyncClient::get_keysT(Protocol_* prot, RpcOptions&& rpcOption
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::lookup_doubleT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_key) {
+void apache::thrift::Client<::py3::simple::SimpleService>::lookup_doubleT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_key) {
 
-  SimpleService_lookup_double_pargs args;
+  ::py3::simple::SimpleService_lookup_double_pargs args;
   args.get<0>().value = &p_key;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -648,9 +648,9 @@ void SimpleServiceAsyncClient::lookup_doubleT(Protocol_* prot, RpcOptions&& rpcO
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::retrieve_binaryT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_something) {
+void apache::thrift::Client<::py3::simple::SimpleService>::retrieve_binaryT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_something) {
 
-  SimpleService_retrieve_binary_pargs args;
+  ::py3::simple::SimpleService_retrieve_binary_pargs args;
   args.get<0>().value = const_cast<::std::string*>(&p_something);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -663,9 +663,9 @@ void SimpleServiceAsyncClient::retrieve_binaryT(Protocol_* prot, RpcOptions&& rp
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::contain_binaryT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_binaries) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contain_binaryT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_binaries) {
 
-  SimpleService_contain_binary_pargs args;
+  ::py3::simple::SimpleService_contain_binary_pargs args;
   args.get<0>().value = const_cast<::std::vector<::std::string>*>(&p_binaries);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -678,9 +678,9 @@ void SimpleServiceAsyncClient::contain_binaryT(Protocol_* prot, RpcOptions&& rpc
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::contain_enumT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contain_enumT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
 
-  SimpleService_contain_enum_pargs args;
+  ::py3::simple::SimpleService_contain_enum_pargs args;
   args.get<0>().value = const_cast<::std::vector<::py3::simple::AnEnum>*>(&p_the_enum);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -693,9 +693,9 @@ void SimpleServiceAsyncClient::contain_enumT(Protocol_* prot, RpcOptions&& rpcOp
 }
 
 template <typename Protocol_, typename RpcOptions>
-void SimpleServiceAsyncClient::get_binary_union_structT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::BinaryUnion& p_u) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_binary_union_structT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::BinaryUnion& p_u) {
 
-  SimpleService_get_binary_union_struct_pargs args;
+  ::py3::simple::SimpleService_get_binary_union_struct_pargs args;
   args.get<0>().value = const_cast<::py3::simple::BinaryUnion*>(&p_u);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -709,12 +709,12 @@ void SimpleServiceAsyncClient::get_binary_union_structT(Protocol_* prot, RpcOpti
 
 
 
-void SimpleServiceAsyncClient::get_five(std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_five(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   get_five(rpcOptions, std::move(callback));
 }
 
-void SimpleServiceAsyncClient::get_five(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_five(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto [ctx, header] = get_fiveCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -727,7 +727,7 @@ void SimpleServiceAsyncClient::get_five(apache::thrift::RpcOptions& rpcOptions, 
   get_fiveImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback));
 }
 
-void SimpleServiceAsyncClient::get_fiveImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_fiveImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -756,7 +756,7 @@ void SimpleServiceAsyncClient::get_fiveImpl(apache::thrift::RpcOptions& rpcOptio
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::get_fiveCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::get_fiveCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -773,12 +773,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_get_five() {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_get_five() {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_get_five(rpcOptions);
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_get_five(apache::thrift::RpcOptions& rpcOptions) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_get_five(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -807,17 +807,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_get_five() {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_get_five() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_get_five(rpcOptions);
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_get_five() {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_get_five() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_get_five(rpcOptions);
 }
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_get_five(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_get_five(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<::std::int32_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_get_five, channel_);
@@ -825,14 +825,14 @@ folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_get_five(apache::
   return future;
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_get_five(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_get_five(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_get_five, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_five(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_get_five(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_get_five(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_get_five, channel_);
@@ -840,20 +840,20 @@ folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_get_five(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_get_five(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_get_five, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_five(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::get_five(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_five(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   get_five(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_five(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_get_five(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -861,7 +861,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_five(::std::
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_get_five_presult;
+  using result = ::py3::simple::SimpleService_get_five_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -882,7 +882,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_five(::std::
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_get_five(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_get_five(::apache::thrift::ClientReceiveState& state) {
   ::std::int32_t _return;
   auto ew = recv_wrapped_get_five(_return, state);
   if (ew) {
@@ -891,20 +891,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_five(::std::
   return _return;
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_instance_get_five(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_get_five(::apache::thrift::ClientReceiveState& state) {
   return recv_get_five(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_get_five(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_get_five(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_get_five(_return, state);
 }
 
-void SimpleServiceAsyncClient::add_five(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_num) {
+void apache::thrift::Client<::py3::simple::SimpleService>::add_five(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_num) {
   ::apache::thrift::RpcOptions rpcOptions;
   add_five(rpcOptions, std::move(callback), p_num);
 }
 
-void SimpleServiceAsyncClient::add_five(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_num) {
+void apache::thrift::Client<::py3::simple::SimpleService>::add_five(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_num) {
   auto [ctx, header] = add_fiveCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -917,7 +917,7 @@ void SimpleServiceAsyncClient::add_five(apache::thrift::RpcOptions& rpcOptions, 
   add_fiveImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_num);
 }
 
-void SimpleServiceAsyncClient::add_fiveImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_num, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::add_fiveImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_num, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -946,7 +946,7 @@ void SimpleServiceAsyncClient::add_fiveImpl(apache::thrift::RpcOptions& rpcOptio
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::add_fiveCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::add_fiveCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -963,12 +963,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_add_five(::std::int32_t p_num) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_add_five(::std::int32_t p_num) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_add_five(rpcOptions, p_num);
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_add_five(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_num) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_add_five(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_num) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -997,17 +997,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_add_five(::std::int32_t p_num) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_add_five(::std::int32_t p_num) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_add_five(rpcOptions, p_num);
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_add_five(::std::int32_t p_num) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_add_five(::std::int32_t p_num) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_add_five(rpcOptions, p_num);
 }
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_add_five(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_num) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_add_five(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_num) {
   folly::Promise<::std::int32_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_add_five, channel_);
@@ -1015,14 +1015,14 @@ folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_add_five(apache::
   return future;
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_add_five(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_num) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_add_five(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_num) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_add_five, channel_);
   auto callback = std::move(callbackAndFuture.first);
   add_five(rpcOptions, std::move(callback), p_num);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_add_five(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_num) {
+folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_add_five(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_num) {
   folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_add_five, channel_);
@@ -1030,20 +1030,20 @@ folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_add_five(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_num) {
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_add_five(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_num) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_add_five, channel_);
   auto callback = std::move(callbackAndFuture.first);
   add_five(rpcOptions, std::move(callback), p_num);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::add_five(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_num) {
+void apache::thrift::Client<::py3::simple::SimpleService>::add_five(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_num) {
   add_five(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_num);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_add_five(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_add_five(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -1051,7 +1051,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_add_five(::std::
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_add_five_presult;
+  using result = ::py3::simple::SimpleService_add_five_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1072,7 +1072,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_add_five(::std::
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_add_five(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_add_five(::apache::thrift::ClientReceiveState& state) {
   ::std::int32_t _return;
   auto ew = recv_wrapped_add_five(_return, state);
   if (ew) {
@@ -1081,20 +1081,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_add_five(::std::
   return _return;
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_instance_add_five(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_add_five(::apache::thrift::ClientReceiveState& state) {
   return recv_add_five(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_add_five(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_add_five(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_add_five(_return, state);
 }
 
-void SimpleServiceAsyncClient::do_nothing(std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::do_nothing(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   do_nothing(rpcOptions, std::move(callback));
 }
 
-void SimpleServiceAsyncClient::do_nothing(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::do_nothing(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto [ctx, header] = do_nothingCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -1107,7 +1107,7 @@ void SimpleServiceAsyncClient::do_nothing(apache::thrift::RpcOptions& rpcOptions
   do_nothingImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback));
 }
 
-void SimpleServiceAsyncClient::do_nothingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::do_nothingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1136,7 +1136,7 @@ void SimpleServiceAsyncClient::do_nothingImpl(apache::thrift::RpcOptions& rpcOpt
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::do_nothingCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::do_nothingCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -1153,12 +1153,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_do_nothing() {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_do_nothing() {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_do_nothing(rpcOptions);
 }
 
-void SimpleServiceAsyncClient::sync_do_nothing(apache::thrift::RpcOptions& rpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_do_nothing(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -1187,17 +1187,17 @@ void SimpleServiceAsyncClient::sync_do_nothing(apache::thrift::RpcOptions& rpcOp
 }
 
 
-folly::Future<folly::Unit> SimpleServiceAsyncClient::future_do_nothing() {
+folly::Future<folly::Unit> apache::thrift::Client<::py3::simple::SimpleService>::future_do_nothing() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_do_nothing(rpcOptions);
 }
 
-folly::SemiFuture<folly::Unit> SimpleServiceAsyncClient::semifuture_do_nothing() {
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_do_nothing() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_do_nothing(rpcOptions);
 }
 
-folly::Future<folly::Unit> SimpleServiceAsyncClient::future_do_nothing(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<folly::Unit> apache::thrift::Client<::py3::simple::SimpleService>::future_do_nothing(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_do_nothing, channel_);
@@ -1205,14 +1205,14 @@ folly::Future<folly::Unit> SimpleServiceAsyncClient::future_do_nothing(apache::t
   return future;
 }
 
-folly::SemiFuture<folly::Unit> SimpleServiceAsyncClient::semifuture_do_nothing(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_do_nothing(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_do_nothing, channel_);
   auto callback = std::move(callbackAndFuture.first);
   do_nothing(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_do_nothing(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_do_nothing(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_do_nothing, channel_);
@@ -1220,20 +1220,20 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return future;
 }
 
-folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_do_nothing(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_do_nothing(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_do_nothing, channel_);
   auto callback = std::move(callbackAndFuture.first);
   do_nothing(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::do_nothing(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::do_nothing(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   do_nothing(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_do_nothing(::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_do_nothing(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -1241,7 +1241,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_do_nothing(::apa
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_do_nothing_presult;
+  using result = ::py3::simple::SimpleService_do_nothing_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1262,27 +1262,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_do_nothing(::apa
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_do_nothing(::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_do_nothing(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_do_nothing(state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_do_nothing(::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_do_nothing(::apache::thrift::ClientReceiveState& state) {
   recv_do_nothing(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_do_nothing(::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_do_nothing(::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_do_nothing(state);
 }
 
-void SimpleServiceAsyncClient::concat(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_first, const ::std::string& p_second) {
+void apache::thrift::Client<::py3::simple::SimpleService>::concat(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_first, const ::std::string& p_second) {
   ::apache::thrift::RpcOptions rpcOptions;
   concat(rpcOptions, std::move(callback), p_first, p_second);
 }
 
-void SimpleServiceAsyncClient::concat(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_first, const ::std::string& p_second) {
+void apache::thrift::Client<::py3::simple::SimpleService>::concat(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_first, const ::std::string& p_second) {
   auto [ctx, header] = concatCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -1295,7 +1295,7 @@ void SimpleServiceAsyncClient::concat(apache::thrift::RpcOptions& rpcOptions, st
   concatImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_first, p_second);
 }
 
-void SimpleServiceAsyncClient::concatImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_first, const ::std::string& p_second, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::concatImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_first, const ::std::string& p_second, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1324,7 +1324,7 @@ void SimpleServiceAsyncClient::concatImpl(apache::thrift::RpcOptions& rpcOptions
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::concatCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::concatCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -1341,12 +1341,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_concat(::std::string& _return, const ::std::string& p_first, const ::std::string& p_second) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_concat(::std::string& _return, const ::std::string& p_first, const ::std::string& p_second) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_concat(rpcOptions, _return, p_first, p_second);
 }
 
-void SimpleServiceAsyncClient::sync_concat(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::string& p_first, const ::std::string& p_second) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_concat(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::string& p_first, const ::std::string& p_second) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -1375,17 +1375,17 @@ void SimpleServiceAsyncClient::sync_concat(apache::thrift::RpcOptions& rpcOption
 }
 
 
-folly::Future<::std::string> SimpleServiceAsyncClient::future_concat(const ::std::string& p_first, const ::std::string& p_second) {
+folly::Future<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::future_concat(const ::std::string& p_first, const ::std::string& p_second) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_concat(rpcOptions, p_first, p_second);
 }
 
-folly::SemiFuture<::std::string> SimpleServiceAsyncClient::semifuture_concat(const ::std::string& p_first, const ::std::string& p_second) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_concat(const ::std::string& p_first, const ::std::string& p_second) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_concat(rpcOptions, p_first, p_second);
 }
 
-folly::Future<::std::string> SimpleServiceAsyncClient::future_concat(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_first, const ::std::string& p_second) {
+folly::Future<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::future_concat(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_first, const ::std::string& p_second) {
   folly::Promise<::std::string> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::string>>(std::move(promise), recv_wrapped_concat, channel_);
@@ -1393,14 +1393,14 @@ folly::Future<::std::string> SimpleServiceAsyncClient::future_concat(apache::thr
   return future;
 }
 
-folly::SemiFuture<::std::string> SimpleServiceAsyncClient::semifuture_concat(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_first, const ::std::string& p_second) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_concat(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_first, const ::std::string& p_second) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_concat, channel_);
   auto callback = std::move(callbackAndFuture.first);
   concat(rpcOptions, std::move(callback), p_first, p_second);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_concat(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_first, const ::std::string& p_second) {
+folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_concat(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_first, const ::std::string& p_second) {
   folly::Promise<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::string>>(std::move(promise), recv_wrapped_concat, channel_);
@@ -1408,20 +1408,20 @@ folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_concat(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_first, const ::std::string& p_second) {
+folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_concat(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_first, const ::std::string& p_second) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_concat, channel_);
   auto callback = std::move(callbackAndFuture.first);
   concat(rpcOptions, std::move(callback), p_first, p_second);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::concat(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_first, const ::std::string& p_second) {
+void apache::thrift::Client<::py3::simple::SimpleService>::concat(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_first, const ::std::string& p_second) {
   concat(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_first, p_second);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_concat(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_concat(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -1429,7 +1429,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_concat(::std::st
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_concat_presult;
+  using result = ::py3::simple::SimpleService_concat_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1450,27 +1450,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_concat(::std::st
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_concat(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_concat(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_concat(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_concat(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_concat(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_concat(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_concat(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_concat(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_concat(_return, state);
 }
 
-void SimpleServiceAsyncClient::get_value(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::SimpleStruct& p_simple_struct) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_value(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::SimpleStruct& p_simple_struct) {
   ::apache::thrift::RpcOptions rpcOptions;
   get_value(rpcOptions, std::move(callback), p_simple_struct);
 }
 
-void SimpleServiceAsyncClient::get_value(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::SimpleStruct& p_simple_struct) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_value(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::SimpleStruct& p_simple_struct) {
   auto [ctx, header] = get_valueCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -1483,7 +1483,7 @@ void SimpleServiceAsyncClient::get_value(apache::thrift::RpcOptions& rpcOptions,
   get_valueImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_simple_struct);
 }
 
-void SimpleServiceAsyncClient::get_valueImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::SimpleStruct& p_simple_struct, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_valueImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::SimpleStruct& p_simple_struct, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1512,7 +1512,7 @@ void SimpleServiceAsyncClient::get_valueImpl(apache::thrift::RpcOptions& rpcOpti
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::get_valueCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::get_valueCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -1529,12 +1529,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_get_value(const ::py3::simple::SimpleStruct& p_simple_struct) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_get_value(const ::py3::simple::SimpleStruct& p_simple_struct) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_get_value(rpcOptions, p_simple_struct);
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_get_value(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::SimpleStruct& p_simple_struct) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_get_value(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::SimpleStruct& p_simple_struct) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -1563,17 +1563,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_get_value(const ::py3::simple::SimpleStruct& p_simple_struct) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_get_value(const ::py3::simple::SimpleStruct& p_simple_struct) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_get_value(rpcOptions, p_simple_struct);
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_get_value(const ::py3::simple::SimpleStruct& p_simple_struct) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_get_value(const ::py3::simple::SimpleStruct& p_simple_struct) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_get_value(rpcOptions, p_simple_struct);
 }
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_get_value(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::SimpleStruct& p_simple_struct) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_get_value(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::SimpleStruct& p_simple_struct) {
   folly::Promise<::std::int32_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_get_value, channel_);
@@ -1581,14 +1581,14 @@ folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_get_value(apache:
   return future;
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_get_value(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::SimpleStruct& p_simple_struct) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_get_value(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::SimpleStruct& p_simple_struct) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_get_value, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_value(rpcOptions, std::move(callback), p_simple_struct);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_get_value(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::SimpleStruct& p_simple_struct) {
+folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_get_value(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::SimpleStruct& p_simple_struct) {
   folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_get_value, channel_);
@@ -1596,20 +1596,20 @@ folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_get_value(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::SimpleStruct& p_simple_struct) {
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_get_value(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::SimpleStruct& p_simple_struct) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_get_value, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_value(rpcOptions, std::move(callback), p_simple_struct);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::get_value(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::py3::simple::SimpleStruct& p_simple_struct) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_value(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::py3::simple::SimpleStruct& p_simple_struct) {
   get_value(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_simple_struct);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_value(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_get_value(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -1617,7 +1617,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_value(::std:
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_get_value_presult;
+  using result = ::py3::simple::SimpleService_get_value_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1638,7 +1638,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_value(::std:
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_get_value(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_get_value(::apache::thrift::ClientReceiveState& state) {
   ::std::int32_t _return;
   auto ew = recv_wrapped_get_value(_return, state);
   if (ew) {
@@ -1647,20 +1647,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_value(::std:
   return _return;
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_instance_get_value(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_get_value(::apache::thrift::ClientReceiveState& state) {
   return recv_get_value(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_get_value(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_get_value(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_get_value(_return, state);
 }
 
-void SimpleServiceAsyncClient::negate(std::unique_ptr<apache::thrift::RequestCallback> callback, bool p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::negate(std::unique_ptr<apache::thrift::RequestCallback> callback, bool p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   negate(rpcOptions, std::move(callback), p_input);
 }
 
-void SimpleServiceAsyncClient::negate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::negate(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool p_input) {
   auto [ctx, header] = negateCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -1673,7 +1673,7 @@ void SimpleServiceAsyncClient::negate(apache::thrift::RpcOptions& rpcOptions, st
   negateImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_input);
 }
 
-void SimpleServiceAsyncClient::negateImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool p_input, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::negateImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool p_input, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1702,7 +1702,7 @@ void SimpleServiceAsyncClient::negateImpl(apache::thrift::RpcOptions& rpcOptions
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::negateCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::negateCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -1719,12 +1719,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-bool SimpleServiceAsyncClient::sync_negate(bool p_input) {
+bool apache::thrift::Client<::py3::simple::SimpleService>::sync_negate(bool p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_negate(rpcOptions, p_input);
 }
 
-bool SimpleServiceAsyncClient::sync_negate(apache::thrift::RpcOptions& rpcOptions, bool p_input) {
+bool apache::thrift::Client<::py3::simple::SimpleService>::sync_negate(apache::thrift::RpcOptions& rpcOptions, bool p_input) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -1753,17 +1753,17 @@ bool SimpleServiceAsyncClient::sync_negate(apache::thrift::RpcOptions& rpcOption
 }
 
 
-folly::Future<bool> SimpleServiceAsyncClient::future_negate(bool p_input) {
+folly::Future<bool> apache::thrift::Client<::py3::simple::SimpleService>::future_negate(bool p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_negate(rpcOptions, p_input);
 }
 
-folly::SemiFuture<bool> SimpleServiceAsyncClient::semifuture_negate(bool p_input) {
+folly::SemiFuture<bool> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_negate(bool p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_negate(rpcOptions, p_input);
 }
 
-folly::Future<bool> SimpleServiceAsyncClient::future_negate(apache::thrift::RpcOptions& rpcOptions, bool p_input) {
+folly::Future<bool> apache::thrift::Client<::py3::simple::SimpleService>::future_negate(apache::thrift::RpcOptions& rpcOptions, bool p_input) {
   folly::Promise<bool> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<bool>>(std::move(promise), recv_wrapped_negate, channel_);
@@ -1771,14 +1771,14 @@ folly::Future<bool> SimpleServiceAsyncClient::future_negate(apache::thrift::RpcO
   return future;
 }
 
-folly::SemiFuture<bool> SimpleServiceAsyncClient::semifuture_negate(apache::thrift::RpcOptions& rpcOptions, bool p_input) {
+folly::SemiFuture<bool> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_negate(apache::thrift::RpcOptions& rpcOptions, bool p_input) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_negate, channel_);
   auto callback = std::move(callbackAndFuture.first);
   negate(rpcOptions, std::move(callback), p_input);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_negate(apache::thrift::RpcOptions& rpcOptions, bool p_input) {
+folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_negate(apache::thrift::RpcOptions& rpcOptions, bool p_input) {
   folly::Promise<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<bool>>(std::move(promise), recv_wrapped_negate, channel_);
@@ -1786,20 +1786,20 @@ folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader
   return future;
 }
 
-folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_negate(apache::thrift::RpcOptions& rpcOptions, bool p_input) {
+folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_negate(apache::thrift::RpcOptions& rpcOptions, bool p_input) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_negate, channel_);
   auto callback = std::move(callbackAndFuture.first);
   negate(rpcOptions, std::move(callback), p_input);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::negate(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, bool p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::negate(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, bool p_input) {
   negate(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_input);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_negate(bool& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_negate(bool& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -1807,7 +1807,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_negate(bool& _re
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_negate_presult;
+  using result = ::py3::simple::SimpleService_negate_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1828,7 +1828,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_negate(bool& _re
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-bool SimpleServiceAsyncClient::recv_negate(::apache::thrift::ClientReceiveState& state) {
+bool apache::thrift::Client<::py3::simple::SimpleService>::recv_negate(::apache::thrift::ClientReceiveState& state) {
   bool _return;
   auto ew = recv_wrapped_negate(_return, state);
   if (ew) {
@@ -1837,20 +1837,20 @@ bool SimpleServiceAsyncClient::recv_negate(::apache::thrift::ClientReceiveState&
   return _return;
 }
 
-bool SimpleServiceAsyncClient::recv_instance_negate(::apache::thrift::ClientReceiveState& state) {
+bool apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_negate(::apache::thrift::ClientReceiveState& state) {
   return recv_negate(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_negate(bool& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_negate(bool& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_negate(_return, state);
 }
 
-void SimpleServiceAsyncClient::tiny(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int8_t p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::tiny(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int8_t p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   tiny(rpcOptions, std::move(callback), p_input);
 }
 
-void SimpleServiceAsyncClient::tiny(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int8_t p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::tiny(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int8_t p_input) {
   auto [ctx, header] = tinyCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -1863,7 +1863,7 @@ void SimpleServiceAsyncClient::tiny(apache::thrift::RpcOptions& rpcOptions, std:
   tinyImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_input);
 }
 
-void SimpleServiceAsyncClient::tinyImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int8_t p_input, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::tinyImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int8_t p_input, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1892,7 +1892,7 @@ void SimpleServiceAsyncClient::tinyImpl(apache::thrift::RpcOptions& rpcOptions, 
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::tinyCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::tinyCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -1909,12 +1909,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int8_t SimpleServiceAsyncClient::sync_tiny(::std::int8_t p_input) {
+::std::int8_t apache::thrift::Client<::py3::simple::SimpleService>::sync_tiny(::std::int8_t p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_tiny(rpcOptions, p_input);
 }
 
-::std::int8_t SimpleServiceAsyncClient::sync_tiny(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_input) {
+::std::int8_t apache::thrift::Client<::py3::simple::SimpleService>::sync_tiny(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_input) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -1943,17 +1943,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int8_t> SimpleServiceAsyncClient::future_tiny(::std::int8_t p_input) {
+folly::Future<::std::int8_t> apache::thrift::Client<::py3::simple::SimpleService>::future_tiny(::std::int8_t p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_tiny(rpcOptions, p_input);
 }
 
-folly::SemiFuture<::std::int8_t> SimpleServiceAsyncClient::semifuture_tiny(::std::int8_t p_input) {
+folly::SemiFuture<::std::int8_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_tiny(::std::int8_t p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_tiny(rpcOptions, p_input);
 }
 
-folly::Future<::std::int8_t> SimpleServiceAsyncClient::future_tiny(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_input) {
+folly::Future<::std::int8_t> apache::thrift::Client<::py3::simple::SimpleService>::future_tiny(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_input) {
   folly::Promise<::std::int8_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int8_t>>(std::move(promise), recv_wrapped_tiny, channel_);
@@ -1961,14 +1961,14 @@ folly::Future<::std::int8_t> SimpleServiceAsyncClient::future_tiny(apache::thrif
   return future;
 }
 
-folly::SemiFuture<::std::int8_t> SimpleServiceAsyncClient::semifuture_tiny(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_input) {
+folly::SemiFuture<::std::int8_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_tiny(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_input) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_tiny, channel_);
   auto callback = std::move(callbackAndFuture.first);
   tiny(rpcOptions, std::move(callback), p_input);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int8_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_tiny(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_input) {
+folly::Future<std::pair<::std::int8_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_tiny(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_input) {
   folly::Promise<std::pair<::std::int8_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int8_t>>(std::move(promise), recv_wrapped_tiny, channel_);
@@ -1976,20 +1976,20 @@ folly::Future<std::pair<::std::int8_t, std::unique_ptr<apache::thrift::transport
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int8_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_tiny(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_input) {
+folly::SemiFuture<std::pair<::std::int8_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_tiny(apache::thrift::RpcOptions& rpcOptions, ::std::int8_t p_input) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_tiny, channel_);
   auto callback = std::move(callbackAndFuture.first);
   tiny(rpcOptions, std::move(callback), p_input);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::tiny(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int8_t p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::tiny(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int8_t p_input) {
   tiny(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_input);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_tiny(::std::int8_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_tiny(::std::int8_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -1997,7 +1997,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_tiny(::std::int8
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_tiny_presult;
+  using result = ::py3::simple::SimpleService_tiny_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2018,7 +2018,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_tiny(::std::int8
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int8_t SimpleServiceAsyncClient::recv_tiny(::apache::thrift::ClientReceiveState& state) {
+::std::int8_t apache::thrift::Client<::py3::simple::SimpleService>::recv_tiny(::apache::thrift::ClientReceiveState& state) {
   ::std::int8_t _return;
   auto ew = recv_wrapped_tiny(_return, state);
   if (ew) {
@@ -2027,20 +2027,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_tiny(::std::int8
   return _return;
 }
 
-::std::int8_t SimpleServiceAsyncClient::recv_instance_tiny(::apache::thrift::ClientReceiveState& state) {
+::std::int8_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_tiny(::apache::thrift::ClientReceiveState& state) {
   return recv_tiny(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_tiny(::std::int8_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_tiny(::std::int8_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_tiny(_return, state);
 }
 
-void SimpleServiceAsyncClient::small(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::small(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   small(rpcOptions, std::move(callback), p_input);
 }
 
-void SimpleServiceAsyncClient::small(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::small(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_input) {
   auto [ctx, header] = smallCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -2053,7 +2053,7 @@ void SimpleServiceAsyncClient::small(apache::thrift::RpcOptions& rpcOptions, std
   smallImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_input);
 }
 
-void SimpleServiceAsyncClient::smallImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_input, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::smallImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_input, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2082,7 +2082,7 @@ void SimpleServiceAsyncClient::smallImpl(apache::thrift::RpcOptions& rpcOptions,
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::smallCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::smallCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -2099,12 +2099,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int16_t SimpleServiceAsyncClient::sync_small(::std::int16_t p_input) {
+::std::int16_t apache::thrift::Client<::py3::simple::SimpleService>::sync_small(::std::int16_t p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_small(rpcOptions, p_input);
 }
 
-::std::int16_t SimpleServiceAsyncClient::sync_small(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_input) {
+::std::int16_t apache::thrift::Client<::py3::simple::SimpleService>::sync_small(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_input) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -2133,17 +2133,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int16_t> SimpleServiceAsyncClient::future_small(::std::int16_t p_input) {
+folly::Future<::std::int16_t> apache::thrift::Client<::py3::simple::SimpleService>::future_small(::std::int16_t p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_small(rpcOptions, p_input);
 }
 
-folly::SemiFuture<::std::int16_t> SimpleServiceAsyncClient::semifuture_small(::std::int16_t p_input) {
+folly::SemiFuture<::std::int16_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_small(::std::int16_t p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_small(rpcOptions, p_input);
 }
 
-folly::Future<::std::int16_t> SimpleServiceAsyncClient::future_small(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_input) {
+folly::Future<::std::int16_t> apache::thrift::Client<::py3::simple::SimpleService>::future_small(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_input) {
   folly::Promise<::std::int16_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int16_t>>(std::move(promise), recv_wrapped_small, channel_);
@@ -2151,14 +2151,14 @@ folly::Future<::std::int16_t> SimpleServiceAsyncClient::future_small(apache::thr
   return future;
 }
 
-folly::SemiFuture<::std::int16_t> SimpleServiceAsyncClient::semifuture_small(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_input) {
+folly::SemiFuture<::std::int16_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_small(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_input) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_small, channel_);
   auto callback = std::move(callbackAndFuture.first);
   small(rpcOptions, std::move(callback), p_input);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_small(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_input) {
+folly::Future<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_small(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_input) {
   folly::Promise<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int16_t>>(std::move(promise), recv_wrapped_small, channel_);
@@ -2166,20 +2166,20 @@ folly::Future<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_small(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_input) {
+folly::SemiFuture<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_small(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_input) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_small, channel_);
   auto callback = std::move(callbackAndFuture.first);
   small(rpcOptions, std::move(callback), p_input);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::small(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int16_t p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::small(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int16_t p_input) {
   small(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_input);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_small(::std::int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_small(::std::int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -2187,7 +2187,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_small(::std::int
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_small_presult;
+  using result = ::py3::simple::SimpleService_small_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2208,7 +2208,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_small(::std::int
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int16_t SimpleServiceAsyncClient::recv_small(::apache::thrift::ClientReceiveState& state) {
+::std::int16_t apache::thrift::Client<::py3::simple::SimpleService>::recv_small(::apache::thrift::ClientReceiveState& state) {
   ::std::int16_t _return;
   auto ew = recv_wrapped_small(_return, state);
   if (ew) {
@@ -2217,20 +2217,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_small(::std::int
   return _return;
 }
 
-::std::int16_t SimpleServiceAsyncClient::recv_instance_small(::apache::thrift::ClientReceiveState& state) {
+::std::int16_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_small(::apache::thrift::ClientReceiveState& state) {
   return recv_small(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_small(::std::int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_small(::std::int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_small(_return, state);
 }
 
-void SimpleServiceAsyncClient::big(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int64_t p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::big(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int64_t p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   big(rpcOptions, std::move(callback), p_input);
 }
 
-void SimpleServiceAsyncClient::big(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int64_t p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::big(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int64_t p_input) {
   auto [ctx, header] = bigCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -2243,7 +2243,7 @@ void SimpleServiceAsyncClient::big(apache::thrift::RpcOptions& rpcOptions, std::
   bigImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_input);
 }
 
-void SimpleServiceAsyncClient::bigImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int64_t p_input, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::bigImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int64_t p_input, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2272,7 +2272,7 @@ void SimpleServiceAsyncClient::bigImpl(apache::thrift::RpcOptions& rpcOptions, s
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::bigCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::bigCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -2289,12 +2289,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int64_t SimpleServiceAsyncClient::sync_big(::std::int64_t p_input) {
+::std::int64_t apache::thrift::Client<::py3::simple::SimpleService>::sync_big(::std::int64_t p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_big(rpcOptions, p_input);
 }
 
-::std::int64_t SimpleServiceAsyncClient::sync_big(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_input) {
+::std::int64_t apache::thrift::Client<::py3::simple::SimpleService>::sync_big(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_input) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -2323,17 +2323,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int64_t> SimpleServiceAsyncClient::future_big(::std::int64_t p_input) {
+folly::Future<::std::int64_t> apache::thrift::Client<::py3::simple::SimpleService>::future_big(::std::int64_t p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_big(rpcOptions, p_input);
 }
 
-folly::SemiFuture<::std::int64_t> SimpleServiceAsyncClient::semifuture_big(::std::int64_t p_input) {
+folly::SemiFuture<::std::int64_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_big(::std::int64_t p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_big(rpcOptions, p_input);
 }
 
-folly::Future<::std::int64_t> SimpleServiceAsyncClient::future_big(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_input) {
+folly::Future<::std::int64_t> apache::thrift::Client<::py3::simple::SimpleService>::future_big(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_input) {
   folly::Promise<::std::int64_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int64_t>>(std::move(promise), recv_wrapped_big, channel_);
@@ -2341,14 +2341,14 @@ folly::Future<::std::int64_t> SimpleServiceAsyncClient::future_big(apache::thrif
   return future;
 }
 
-folly::SemiFuture<::std::int64_t> SimpleServiceAsyncClient::semifuture_big(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_input) {
+folly::SemiFuture<::std::int64_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_big(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_input) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_big, channel_);
   auto callback = std::move(callbackAndFuture.first);
   big(rpcOptions, std::move(callback), p_input);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_big(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_input) {
+folly::Future<std::pair<::std::int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_big(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_input) {
   folly::Promise<std::pair<::std::int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int64_t>>(std::move(promise), recv_wrapped_big, channel_);
@@ -2356,20 +2356,20 @@ folly::Future<std::pair<::std::int64_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_big(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_input) {
+folly::SemiFuture<std::pair<::std::int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_big(apache::thrift::RpcOptions& rpcOptions, ::std::int64_t p_input) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_big, channel_);
   auto callback = std::move(callbackAndFuture.first);
   big(rpcOptions, std::move(callback), p_input);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::big(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int64_t p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::big(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int64_t p_input) {
   big(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_input);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_big(::std::int64_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_big(::std::int64_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -2377,7 +2377,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_big(::std::int64
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_big_presult;
+  using result = ::py3::simple::SimpleService_big_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2398,7 +2398,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_big(::std::int64
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int64_t SimpleServiceAsyncClient::recv_big(::apache::thrift::ClientReceiveState& state) {
+::std::int64_t apache::thrift::Client<::py3::simple::SimpleService>::recv_big(::apache::thrift::ClientReceiveState& state) {
   ::std::int64_t _return;
   auto ew = recv_wrapped_big(_return, state);
   if (ew) {
@@ -2407,20 +2407,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_big(::std::int64
   return _return;
 }
 
-::std::int64_t SimpleServiceAsyncClient::recv_instance_big(::apache::thrift::ClientReceiveState& state) {
+::std::int64_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_big(::apache::thrift::ClientReceiveState& state) {
   return recv_big(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_big(::std::int64_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_big(::std::int64_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_big(_return, state);
 }
 
-void SimpleServiceAsyncClient::two(std::unique_ptr<apache::thrift::RequestCallback> callback, double p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::two(std::unique_ptr<apache::thrift::RequestCallback> callback, double p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   two(rpcOptions, std::move(callback), p_input);
 }
 
-void SimpleServiceAsyncClient::two(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, double p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::two(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, double p_input) {
   auto [ctx, header] = twoCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -2433,7 +2433,7 @@ void SimpleServiceAsyncClient::two(apache::thrift::RpcOptions& rpcOptions, std::
   twoImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_input);
 }
 
-void SimpleServiceAsyncClient::twoImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, double p_input, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::twoImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, double p_input, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2462,7 +2462,7 @@ void SimpleServiceAsyncClient::twoImpl(apache::thrift::RpcOptions& rpcOptions, s
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::twoCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::twoCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -2479,12 +2479,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-double SimpleServiceAsyncClient::sync_two(double p_input) {
+double apache::thrift::Client<::py3::simple::SimpleService>::sync_two(double p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_two(rpcOptions, p_input);
 }
 
-double SimpleServiceAsyncClient::sync_two(apache::thrift::RpcOptions& rpcOptions, double p_input) {
+double apache::thrift::Client<::py3::simple::SimpleService>::sync_two(apache::thrift::RpcOptions& rpcOptions, double p_input) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -2513,17 +2513,17 @@ double SimpleServiceAsyncClient::sync_two(apache::thrift::RpcOptions& rpcOptions
 }
 
 
-folly::Future<double> SimpleServiceAsyncClient::future_two(double p_input) {
+folly::Future<double> apache::thrift::Client<::py3::simple::SimpleService>::future_two(double p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_two(rpcOptions, p_input);
 }
 
-folly::SemiFuture<double> SimpleServiceAsyncClient::semifuture_two(double p_input) {
+folly::SemiFuture<double> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_two(double p_input) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_two(rpcOptions, p_input);
 }
 
-folly::Future<double> SimpleServiceAsyncClient::future_two(apache::thrift::RpcOptions& rpcOptions, double p_input) {
+folly::Future<double> apache::thrift::Client<::py3::simple::SimpleService>::future_two(apache::thrift::RpcOptions& rpcOptions, double p_input) {
   folly::Promise<double> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<double>>(std::move(promise), recv_wrapped_two, channel_);
@@ -2531,14 +2531,14 @@ folly::Future<double> SimpleServiceAsyncClient::future_two(apache::thrift::RpcOp
   return future;
 }
 
-folly::SemiFuture<double> SimpleServiceAsyncClient::semifuture_two(apache::thrift::RpcOptions& rpcOptions, double p_input) {
+folly::SemiFuture<double> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_two(apache::thrift::RpcOptions& rpcOptions, double p_input) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_two, channel_);
   auto callback = std::move(callbackAndFuture.first);
   two(rpcOptions, std::move(callback), p_input);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_two(apache::thrift::RpcOptions& rpcOptions, double p_input) {
+folly::Future<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_two(apache::thrift::RpcOptions& rpcOptions, double p_input) {
   folly::Promise<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<double>>(std::move(promise), recv_wrapped_two, channel_);
@@ -2546,20 +2546,20 @@ folly::Future<std::pair<double, std::unique_ptr<apache::thrift::transport::THead
   return future;
 }
 
-folly::SemiFuture<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_two(apache::thrift::RpcOptions& rpcOptions, double p_input) {
+folly::SemiFuture<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_two(apache::thrift::RpcOptions& rpcOptions, double p_input) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_two, channel_);
   auto callback = std::move(callbackAndFuture.first);
   two(rpcOptions, std::move(callback), p_input);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::two(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, double p_input) {
+void apache::thrift::Client<::py3::simple::SimpleService>::two(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, double p_input) {
   two(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_input);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_two(double& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_two(double& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -2567,7 +2567,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_two(double& _ret
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_two_presult;
+  using result = ::py3::simple::SimpleService_two_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2588,7 +2588,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_two(double& _ret
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-double SimpleServiceAsyncClient::recv_two(::apache::thrift::ClientReceiveState& state) {
+double apache::thrift::Client<::py3::simple::SimpleService>::recv_two(::apache::thrift::ClientReceiveState& state) {
   double _return;
   auto ew = recv_wrapped_two(_return, state);
   if (ew) {
@@ -2597,20 +2597,20 @@ double SimpleServiceAsyncClient::recv_two(::apache::thrift::ClientReceiveState& 
   return _return;
 }
 
-double SimpleServiceAsyncClient::recv_instance_two(::apache::thrift::ClientReceiveState& state) {
+double apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_two(::apache::thrift::ClientReceiveState& state) {
   return recv_two(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_two(double& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_two(double& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_two(_return, state);
 }
 
-void SimpleServiceAsyncClient::expected_exception(std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::expected_exception(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   expected_exception(rpcOptions, std::move(callback));
 }
 
-void SimpleServiceAsyncClient::expected_exception(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::expected_exception(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto [ctx, header] = expected_exceptionCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -2623,7 +2623,7 @@ void SimpleServiceAsyncClient::expected_exception(apache::thrift::RpcOptions& rp
   expected_exceptionImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback));
 }
 
-void SimpleServiceAsyncClient::expected_exceptionImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::expected_exceptionImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2652,7 +2652,7 @@ void SimpleServiceAsyncClient::expected_exceptionImpl(apache::thrift::RpcOptions
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::expected_exceptionCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::expected_exceptionCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -2669,12 +2669,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_expected_exception() {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_expected_exception() {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_expected_exception(rpcOptions);
 }
 
-void SimpleServiceAsyncClient::sync_expected_exception(apache::thrift::RpcOptions& rpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_expected_exception(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -2703,17 +2703,17 @@ void SimpleServiceAsyncClient::sync_expected_exception(apache::thrift::RpcOption
 }
 
 
-folly::Future<folly::Unit> SimpleServiceAsyncClient::future_expected_exception() {
+folly::Future<folly::Unit> apache::thrift::Client<::py3::simple::SimpleService>::future_expected_exception() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_expected_exception(rpcOptions);
 }
 
-folly::SemiFuture<folly::Unit> SimpleServiceAsyncClient::semifuture_expected_exception() {
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_expected_exception() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_expected_exception(rpcOptions);
 }
 
-folly::Future<folly::Unit> SimpleServiceAsyncClient::future_expected_exception(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<folly::Unit> apache::thrift::Client<::py3::simple::SimpleService>::future_expected_exception(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_expected_exception, channel_);
@@ -2721,14 +2721,14 @@ folly::Future<folly::Unit> SimpleServiceAsyncClient::future_expected_exception(a
   return future;
 }
 
-folly::SemiFuture<folly::Unit> SimpleServiceAsyncClient::semifuture_expected_exception(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_expected_exception(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_expected_exception, channel_);
   auto callback = std::move(callbackAndFuture.first);
   expected_exception(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_expected_exception(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_expected_exception(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_expected_exception, channel_);
@@ -2736,20 +2736,20 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return future;
 }
 
-folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_expected_exception(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_expected_exception(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_expected_exception, channel_);
   auto callback = std::move(callbackAndFuture.first);
   expected_exception(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::expected_exception(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::expected_exception(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   expected_exception(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_expected_exception(::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_expected_exception(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -2757,7 +2757,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_expected_excepti
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_expected_exception_presult;
+  using result = ::py3::simple::SimpleService_expected_exception_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2778,27 +2778,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_expected_excepti
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_expected_exception(::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_expected_exception(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_expected_exception(state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_expected_exception(::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_expected_exception(::apache::thrift::ClientReceiveState& state) {
   recv_expected_exception(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_expected_exception(::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_expected_exception(::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_expected_exception(state);
 }
 
-void SimpleServiceAsyncClient::unexpected_exception(std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::unexpected_exception(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   unexpected_exception(rpcOptions, std::move(callback));
 }
 
-void SimpleServiceAsyncClient::unexpected_exception(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::unexpected_exception(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto [ctx, header] = unexpected_exceptionCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -2811,7 +2811,7 @@ void SimpleServiceAsyncClient::unexpected_exception(apache::thrift::RpcOptions& 
   unexpected_exceptionImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback));
 }
 
-void SimpleServiceAsyncClient::unexpected_exceptionImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::unexpected_exceptionImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2840,7 +2840,7 @@ void SimpleServiceAsyncClient::unexpected_exceptionImpl(apache::thrift::RpcOptio
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::unexpected_exceptionCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::unexpected_exceptionCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -2857,12 +2857,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_unexpected_exception() {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_unexpected_exception() {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_unexpected_exception(rpcOptions);
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_unexpected_exception(apache::thrift::RpcOptions& rpcOptions) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_unexpected_exception(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -2891,17 +2891,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_unexpected_exception() {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_unexpected_exception() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_unexpected_exception(rpcOptions);
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_unexpected_exception() {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_unexpected_exception() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_unexpected_exception(rpcOptions);
 }
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_unexpected_exception(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_unexpected_exception(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<::std::int32_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_unexpected_exception, channel_);
@@ -2909,14 +2909,14 @@ folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_unexpected_except
   return future;
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_unexpected_exception(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_unexpected_exception(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_unexpected_exception, channel_);
   auto callback = std::move(callbackAndFuture.first);
   unexpected_exception(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_unexpected_exception(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_unexpected_exception(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_unexpected_exception, channel_);
@@ -2924,20 +2924,20 @@ folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_unexpected_exception(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_unexpected_exception(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_unexpected_exception, channel_);
   auto callback = std::move(callbackAndFuture.first);
   unexpected_exception(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::unexpected_exception(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::unexpected_exception(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   unexpected_exception(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_unexpected_exception(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_unexpected_exception(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -2945,7 +2945,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_unexpected_excep
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_unexpected_exception_presult;
+  using result = ::py3::simple::SimpleService_unexpected_exception_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -2966,7 +2966,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_unexpected_excep
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_unexpected_exception(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_unexpected_exception(::apache::thrift::ClientReceiveState& state) {
   ::std::int32_t _return;
   auto ew = recv_wrapped_unexpected_exception(_return, state);
   if (ew) {
@@ -2975,20 +2975,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_unexpected_excep
   return _return;
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_instance_unexpected_exception(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_unexpected_exception(::apache::thrift::ClientReceiveState& state) {
   return recv_unexpected_exception(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_unexpected_exception(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_unexpected_exception(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_unexpected_exception(_return, state);
 }
 
-void SimpleServiceAsyncClient::sum_i16_list(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::int16_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i16_list(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::int16_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   sum_i16_list(rpcOptions, std::move(callback), p_numbers);
 }
 
-void SimpleServiceAsyncClient::sum_i16_list(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::int16_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i16_list(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::int16_t>& p_numbers) {
   auto [ctx, header] = sum_i16_listCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -3001,7 +3001,7 @@ void SimpleServiceAsyncClient::sum_i16_list(apache::thrift::RpcOptions& rpcOptio
   sum_i16_listImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_numbers);
 }
 
-void SimpleServiceAsyncClient::sum_i16_listImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::int16_t>& p_numbers, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i16_listImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::int16_t>& p_numbers, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3030,7 +3030,7 @@ void SimpleServiceAsyncClient::sum_i16_listImpl(apache::thrift::RpcOptions& rpcO
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::sum_i16_listCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::sum_i16_listCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -3047,12 +3047,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_sum_i16_list(const ::std::vector<::std::int16_t>& p_numbers) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_sum_i16_list(const ::std::vector<::std::int16_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_sum_i16_list(rpcOptions, p_numbers);
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_sum_i16_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int16_t>& p_numbers) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_sum_i16_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int16_t>& p_numbers) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -3081,17 +3081,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_sum_i16_list(const ::std::vector<::std::int16_t>& p_numbers) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_sum_i16_list(const ::std::vector<::std::int16_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_sum_i16_list(rpcOptions, p_numbers);
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_sum_i16_list(const ::std::vector<::std::int16_t>& p_numbers) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_sum_i16_list(const ::std::vector<::std::int16_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_sum_i16_list(rpcOptions, p_numbers);
 }
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_sum_i16_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int16_t>& p_numbers) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_sum_i16_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int16_t>& p_numbers) {
   folly::Promise<::std::int32_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_sum_i16_list, channel_);
@@ -3099,14 +3099,14 @@ folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_sum_i16_list(apac
   return future;
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_sum_i16_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int16_t>& p_numbers) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_sum_i16_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int16_t>& p_numbers) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_sum_i16_list, channel_);
   auto callback = std::move(callbackAndFuture.first);
   sum_i16_list(rpcOptions, std::move(callback), p_numbers);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_sum_i16_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int16_t>& p_numbers) {
+folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_sum_i16_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int16_t>& p_numbers) {
   folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_sum_i16_list, channel_);
@@ -3114,20 +3114,20 @@ folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_sum_i16_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int16_t>& p_numbers) {
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_sum_i16_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int16_t>& p_numbers) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_sum_i16_list, channel_);
   auto callback = std::move(callbackAndFuture.first);
   sum_i16_list(rpcOptions, std::move(callback), p_numbers);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::sum_i16_list(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::int16_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i16_list(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::int16_t>& p_numbers) {
   sum_i16_list(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_numbers);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_i16_list(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_sum_i16_list(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -3135,7 +3135,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_i16_list(::s
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_sum_i16_list_presult;
+  using result = ::py3::simple::SimpleService_sum_i16_list_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3156,7 +3156,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_i16_list(::s
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_sum_i16_list(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_sum_i16_list(::apache::thrift::ClientReceiveState& state) {
   ::std::int32_t _return;
   auto ew = recv_wrapped_sum_i16_list(_return, state);
   if (ew) {
@@ -3165,20 +3165,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_i16_list(::s
   return _return;
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_instance_sum_i16_list(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_sum_i16_list(::apache::thrift::ClientReceiveState& state) {
   return recv_sum_i16_list(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_sum_i16_list(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_sum_i16_list(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_sum_i16_list(_return, state);
 }
 
-void SimpleServiceAsyncClient::sum_i32_list(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::int32_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i32_list(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::int32_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   sum_i32_list(rpcOptions, std::move(callback), p_numbers);
 }
 
-void SimpleServiceAsyncClient::sum_i32_list(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::int32_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i32_list(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::int32_t>& p_numbers) {
   auto [ctx, header] = sum_i32_listCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -3191,7 +3191,7 @@ void SimpleServiceAsyncClient::sum_i32_list(apache::thrift::RpcOptions& rpcOptio
   sum_i32_listImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_numbers);
 }
 
-void SimpleServiceAsyncClient::sum_i32_listImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::int32_t>& p_numbers, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i32_listImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::int32_t>& p_numbers, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3220,7 +3220,7 @@ void SimpleServiceAsyncClient::sum_i32_listImpl(apache::thrift::RpcOptions& rpcO
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::sum_i32_listCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::sum_i32_listCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -3237,12 +3237,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_sum_i32_list(const ::std::vector<::std::int32_t>& p_numbers) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_sum_i32_list(const ::std::vector<::std::int32_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_sum_i32_list(rpcOptions, p_numbers);
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_sum_i32_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int32_t>& p_numbers) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_sum_i32_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int32_t>& p_numbers) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -3271,17 +3271,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_sum_i32_list(const ::std::vector<::std::int32_t>& p_numbers) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_sum_i32_list(const ::std::vector<::std::int32_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_sum_i32_list(rpcOptions, p_numbers);
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_sum_i32_list(const ::std::vector<::std::int32_t>& p_numbers) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_sum_i32_list(const ::std::vector<::std::int32_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_sum_i32_list(rpcOptions, p_numbers);
 }
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_sum_i32_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int32_t>& p_numbers) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_sum_i32_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int32_t>& p_numbers) {
   folly::Promise<::std::int32_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_sum_i32_list, channel_);
@@ -3289,14 +3289,14 @@ folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_sum_i32_list(apac
   return future;
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_sum_i32_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int32_t>& p_numbers) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_sum_i32_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int32_t>& p_numbers) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_sum_i32_list, channel_);
   auto callback = std::move(callbackAndFuture.first);
   sum_i32_list(rpcOptions, std::move(callback), p_numbers);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_sum_i32_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int32_t>& p_numbers) {
+folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_sum_i32_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int32_t>& p_numbers) {
   folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_sum_i32_list, channel_);
@@ -3304,20 +3304,20 @@ folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_sum_i32_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int32_t>& p_numbers) {
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_sum_i32_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int32_t>& p_numbers) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_sum_i32_list, channel_);
   auto callback = std::move(callbackAndFuture.first);
   sum_i32_list(rpcOptions, std::move(callback), p_numbers);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::sum_i32_list(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::int32_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i32_list(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::int32_t>& p_numbers) {
   sum_i32_list(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_numbers);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_i32_list(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_sum_i32_list(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -3325,7 +3325,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_i32_list(::s
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_sum_i32_list_presult;
+  using result = ::py3::simple::SimpleService_sum_i32_list_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3346,7 +3346,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_i32_list(::s
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_sum_i32_list(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_sum_i32_list(::apache::thrift::ClientReceiveState& state) {
   ::std::int32_t _return;
   auto ew = recv_wrapped_sum_i32_list(_return, state);
   if (ew) {
@@ -3355,20 +3355,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_i32_list(::s
   return _return;
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_instance_sum_i32_list(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_sum_i32_list(::apache::thrift::ClientReceiveState& state) {
   return recv_sum_i32_list(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_sum_i32_list(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_sum_i32_list(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_sum_i32_list(_return, state);
 }
 
-void SimpleServiceAsyncClient::sum_i64_list(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::int64_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i64_list(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::int64_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   sum_i64_list(rpcOptions, std::move(callback), p_numbers);
 }
 
-void SimpleServiceAsyncClient::sum_i64_list(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::int64_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i64_list(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::int64_t>& p_numbers) {
   auto [ctx, header] = sum_i64_listCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -3381,7 +3381,7 @@ void SimpleServiceAsyncClient::sum_i64_list(apache::thrift::RpcOptions& rpcOptio
   sum_i64_listImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_numbers);
 }
 
-void SimpleServiceAsyncClient::sum_i64_listImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::int64_t>& p_numbers, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i64_listImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::int64_t>& p_numbers, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3410,7 +3410,7 @@ void SimpleServiceAsyncClient::sum_i64_listImpl(apache::thrift::RpcOptions& rpcO
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::sum_i64_listCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::sum_i64_listCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -3427,12 +3427,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_sum_i64_list(const ::std::vector<::std::int64_t>& p_numbers) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_sum_i64_list(const ::std::vector<::std::int64_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_sum_i64_list(rpcOptions, p_numbers);
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_sum_i64_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_numbers) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_sum_i64_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_numbers) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -3461,17 +3461,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_sum_i64_list(const ::std::vector<::std::int64_t>& p_numbers) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_sum_i64_list(const ::std::vector<::std::int64_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_sum_i64_list(rpcOptions, p_numbers);
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_sum_i64_list(const ::std::vector<::std::int64_t>& p_numbers) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_sum_i64_list(const ::std::vector<::std::int64_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_sum_i64_list(rpcOptions, p_numbers);
 }
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_sum_i64_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_numbers) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_sum_i64_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_numbers) {
   folly::Promise<::std::int32_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_sum_i64_list, channel_);
@@ -3479,14 +3479,14 @@ folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_sum_i64_list(apac
   return future;
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_sum_i64_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_numbers) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_sum_i64_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_numbers) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_sum_i64_list, channel_);
   auto callback = std::move(callbackAndFuture.first);
   sum_i64_list(rpcOptions, std::move(callback), p_numbers);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_sum_i64_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_numbers) {
+folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_sum_i64_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_numbers) {
   folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_sum_i64_list, channel_);
@@ -3494,20 +3494,20 @@ folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_sum_i64_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_numbers) {
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_sum_i64_list(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::int64_t>& p_numbers) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_sum_i64_list, channel_);
   auto callback = std::move(callbackAndFuture.first);
   sum_i64_list(rpcOptions, std::move(callback), p_numbers);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::sum_i64_list(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::int64_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_i64_list(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::int64_t>& p_numbers) {
   sum_i64_list(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_numbers);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_i64_list(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_sum_i64_list(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -3515,7 +3515,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_i64_list(::s
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_sum_i64_list_presult;
+  using result = ::py3::simple::SimpleService_sum_i64_list_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3536,7 +3536,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_i64_list(::s
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_sum_i64_list(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_sum_i64_list(::apache::thrift::ClientReceiveState& state) {
   ::std::int32_t _return;
   auto ew = recv_wrapped_sum_i64_list(_return, state);
   if (ew) {
@@ -3545,20 +3545,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_i64_list(::s
   return _return;
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_instance_sum_i64_list(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_sum_i64_list(::apache::thrift::ClientReceiveState& state) {
   return recv_sum_i64_list(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_sum_i64_list(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_sum_i64_list(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_sum_i64_list(_return, state);
 }
 
-void SimpleServiceAsyncClient::concat_many(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::concat_many(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   concat_many(rpcOptions, std::move(callback), p_words);
 }
 
-void SimpleServiceAsyncClient::concat_many(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::concat_many(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_words) {
   auto [ctx, header] = concat_manyCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -3571,7 +3571,7 @@ void SimpleServiceAsyncClient::concat_many(apache::thrift::RpcOptions& rpcOption
   concat_manyImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_words);
 }
 
-void SimpleServiceAsyncClient::concat_manyImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_words, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::concat_manyImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_words, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3600,7 +3600,7 @@ void SimpleServiceAsyncClient::concat_manyImpl(apache::thrift::RpcOptions& rpcOp
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::concat_manyCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::concat_manyCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -3617,12 +3617,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_concat_many(::std::string& _return, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_concat_many(::std::string& _return, const ::std::vector<::std::string>& p_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_concat_many(rpcOptions, _return, p_words);
 }
 
-void SimpleServiceAsyncClient::sync_concat_many(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_concat_many(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::vector<::std::string>& p_words) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -3651,17 +3651,17 @@ void SimpleServiceAsyncClient::sync_concat_many(apache::thrift::RpcOptions& rpcO
 }
 
 
-folly::Future<::std::string> SimpleServiceAsyncClient::future_concat_many(const ::std::vector<::std::string>& p_words) {
+folly::Future<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::future_concat_many(const ::std::vector<::std::string>& p_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_concat_many(rpcOptions, p_words);
 }
 
-folly::SemiFuture<::std::string> SimpleServiceAsyncClient::semifuture_concat_many(const ::std::vector<::std::string>& p_words) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_concat_many(const ::std::vector<::std::string>& p_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_concat_many(rpcOptions, p_words);
 }
 
-folly::Future<::std::string> SimpleServiceAsyncClient::future_concat_many(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
+folly::Future<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::future_concat_many(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
   folly::Promise<::std::string> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::string>>(std::move(promise), recv_wrapped_concat_many, channel_);
@@ -3669,14 +3669,14 @@ folly::Future<::std::string> SimpleServiceAsyncClient::future_concat_many(apache
   return future;
 }
 
-folly::SemiFuture<::std::string> SimpleServiceAsyncClient::semifuture_concat_many(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_concat_many(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_concat_many, channel_);
   auto callback = std::move(callbackAndFuture.first);
   concat_many(rpcOptions, std::move(callback), p_words);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_concat_many(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
+folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_concat_many(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
   folly::Promise<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::string>>(std::move(promise), recv_wrapped_concat_many, channel_);
@@ -3684,20 +3684,20 @@ folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_concat_many(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
+folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_concat_many(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_concat_many, channel_);
   auto callback = std::move(callbackAndFuture.first);
   concat_many(rpcOptions, std::move(callback), p_words);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::concat_many(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::concat_many(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::string>& p_words) {
   concat_many(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_words);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_concat_many(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_concat_many(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -3705,7 +3705,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_concat_many(::st
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_concat_many_presult;
+  using result = ::py3::simple::SimpleService_concat_many_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3726,27 +3726,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_concat_many(::st
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_concat_many(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_concat_many(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_concat_many(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_concat_many(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_concat_many(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_concat_many(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_concat_many(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_concat_many(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_concat_many(_return, state);
 }
 
-void SimpleServiceAsyncClient::count_structs(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::count_structs(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   count_structs(rpcOptions, std::move(callback), p_items);
 }
 
-void SimpleServiceAsyncClient::count_structs(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::count_structs(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
   auto [ctx, header] = count_structsCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -3759,7 +3759,7 @@ void SimpleServiceAsyncClient::count_structs(apache::thrift::RpcOptions& rpcOpti
   count_structsImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_items);
 }
 
-void SimpleServiceAsyncClient::count_structsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::py3::simple::SimpleStruct>& p_items, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::count_structsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::py3::simple::SimpleStruct>& p_items, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3788,7 +3788,7 @@ void SimpleServiceAsyncClient::count_structsImpl(apache::thrift::RpcOptions& rpc
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::count_structsCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::count_structsCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -3805,12 +3805,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_count_structs(const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_count_structs(const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_count_structs(rpcOptions, p_items);
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_count_structs(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_count_structs(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -3839,17 +3839,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_count_structs(const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_count_structs(const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_count_structs(rpcOptions, p_items);
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_count_structs(const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_count_structs(const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_count_structs(rpcOptions, p_items);
 }
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_count_structs(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_count_structs(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
   folly::Promise<::std::int32_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_count_structs, channel_);
@@ -3857,14 +3857,14 @@ folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_count_structs(apa
   return future;
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_count_structs(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_count_structs(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_count_structs, channel_);
   auto callback = std::move(callbackAndFuture.first);
   count_structs(rpcOptions, std::move(callback), p_items);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_count_structs(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
+folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_count_structs(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
   folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_count_structs, channel_);
@@ -3872,20 +3872,20 @@ folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_count_structs(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_count_structs(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_count_structs, channel_);
   auto callback = std::move(callbackAndFuture.first);
   count_structs(rpcOptions, std::move(callback), p_items);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::count_structs(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::count_structs(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::py3::simple::SimpleStruct>& p_items) {
   count_structs(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_items);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_count_structs(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_count_structs(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -3893,7 +3893,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_count_structs(::
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_count_structs_presult;
+  using result = ::py3::simple::SimpleService_count_structs_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3914,7 +3914,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_count_structs(::
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_count_structs(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_count_structs(::apache::thrift::ClientReceiveState& state) {
   ::std::int32_t _return;
   auto ew = recv_wrapped_count_structs(_return, state);
   if (ew) {
@@ -3923,20 +3923,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_count_structs(::
   return _return;
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_instance_count_structs(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_count_structs(::apache::thrift::ClientReceiveState& state) {
   return recv_count_structs(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_count_structs(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_count_structs(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_count_structs(_return, state);
 }
 
-void SimpleServiceAsyncClient::sum_set(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::set<::std::int32_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_set(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::set<::std::int32_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   sum_set(rpcOptions, std::move(callback), p_numbers);
 }
 
-void SimpleServiceAsyncClient::sum_set(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::set<::std::int32_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_set(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::set<::std::int32_t>& p_numbers) {
   auto [ctx, header] = sum_setCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -3949,7 +3949,7 @@ void SimpleServiceAsyncClient::sum_set(apache::thrift::RpcOptions& rpcOptions, s
   sum_setImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_numbers);
 }
 
-void SimpleServiceAsyncClient::sum_setImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::set<::std::int32_t>& p_numbers, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_setImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::set<::std::int32_t>& p_numbers, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -3978,7 +3978,7 @@ void SimpleServiceAsyncClient::sum_setImpl(apache::thrift::RpcOptions& rpcOption
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::sum_setCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::sum_setCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -3995,12 +3995,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_sum_set(const ::std::set<::std::int32_t>& p_numbers) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_sum_set(const ::std::set<::std::int32_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_sum_set(rpcOptions, p_numbers);
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_sum_set(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::int32_t>& p_numbers) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_sum_set(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::int32_t>& p_numbers) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -4029,17 +4029,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_sum_set(const ::std::set<::std::int32_t>& p_numbers) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_sum_set(const ::std::set<::std::int32_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_sum_set(rpcOptions, p_numbers);
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_sum_set(const ::std::set<::std::int32_t>& p_numbers) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_sum_set(const ::std::set<::std::int32_t>& p_numbers) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_sum_set(rpcOptions, p_numbers);
 }
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_sum_set(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::int32_t>& p_numbers) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_sum_set(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::int32_t>& p_numbers) {
   folly::Promise<::std::int32_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_sum_set, channel_);
@@ -4047,14 +4047,14 @@ folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_sum_set(apache::t
   return future;
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_sum_set(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::int32_t>& p_numbers) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_sum_set(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::int32_t>& p_numbers) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_sum_set, channel_);
   auto callback = std::move(callbackAndFuture.first);
   sum_set(rpcOptions, std::move(callback), p_numbers);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_sum_set(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::int32_t>& p_numbers) {
+folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_sum_set(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::int32_t>& p_numbers) {
   folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_sum_set, channel_);
@@ -4062,20 +4062,20 @@ folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_sum_set(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::int32_t>& p_numbers) {
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_sum_set(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::int32_t>& p_numbers) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_sum_set, channel_);
   auto callback = std::move(callbackAndFuture.first);
   sum_set(rpcOptions, std::move(callback), p_numbers);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::sum_set(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::set<::std::int32_t>& p_numbers) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_set(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::set<::std::int32_t>& p_numbers) {
   sum_set(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_numbers);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_set(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_sum_set(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -4083,7 +4083,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_set(::std::i
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_sum_set_presult;
+  using result = ::py3::simple::SimpleService_sum_set_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -4104,7 +4104,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_set(::std::i
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_sum_set(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_sum_set(::apache::thrift::ClientReceiveState& state) {
   ::std::int32_t _return;
   auto ew = recv_wrapped_sum_set(_return, state);
   if (ew) {
@@ -4113,20 +4113,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_set(::std::i
   return _return;
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_instance_sum_set(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_sum_set(::apache::thrift::ClientReceiveState& state) {
   return recv_sum_set(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_sum_set(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_sum_set(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_sum_set(_return, state);
 }
 
-void SimpleServiceAsyncClient::contains_word(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contains_word(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
   ::apache::thrift::RpcOptions rpcOptions;
   contains_word(rpcOptions, std::move(callback), p_words, p_word);
 }
 
-void SimpleServiceAsyncClient::contains_word(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contains_word(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
   auto [ctx, header] = contains_wordCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -4139,7 +4139,7 @@ void SimpleServiceAsyncClient::contains_word(apache::thrift::RpcOptions& rpcOpti
   contains_wordImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_words, p_word);
 }
 
-void SimpleServiceAsyncClient::contains_wordImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::set<::std::string>& p_words, const ::std::string& p_word, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contains_wordImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::set<::std::string>& p_words, const ::std::string& p_word, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -4168,7 +4168,7 @@ void SimpleServiceAsyncClient::contains_wordImpl(apache::thrift::RpcOptions& rpc
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::contains_wordCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::contains_wordCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -4185,12 +4185,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-bool SimpleServiceAsyncClient::sync_contains_word(const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
+bool apache::thrift::Client<::py3::simple::SimpleService>::sync_contains_word(const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_contains_word(rpcOptions, p_words, p_word);
 }
 
-bool SimpleServiceAsyncClient::sync_contains_word(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
+bool apache::thrift::Client<::py3::simple::SimpleService>::sync_contains_word(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -4219,17 +4219,17 @@ bool SimpleServiceAsyncClient::sync_contains_word(apache::thrift::RpcOptions& rp
 }
 
 
-folly::Future<bool> SimpleServiceAsyncClient::future_contains_word(const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
+folly::Future<bool> apache::thrift::Client<::py3::simple::SimpleService>::future_contains_word(const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_contains_word(rpcOptions, p_words, p_word);
 }
 
-folly::SemiFuture<bool> SimpleServiceAsyncClient::semifuture_contains_word(const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
+folly::SemiFuture<bool> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_contains_word(const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_contains_word(rpcOptions, p_words, p_word);
 }
 
-folly::Future<bool> SimpleServiceAsyncClient::future_contains_word(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
+folly::Future<bool> apache::thrift::Client<::py3::simple::SimpleService>::future_contains_word(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
   folly::Promise<bool> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<bool>>(std::move(promise), recv_wrapped_contains_word, channel_);
@@ -4237,14 +4237,14 @@ folly::Future<bool> SimpleServiceAsyncClient::future_contains_word(apache::thrif
   return future;
 }
 
-folly::SemiFuture<bool> SimpleServiceAsyncClient::semifuture_contains_word(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
+folly::SemiFuture<bool> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_contains_word(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_contains_word, channel_);
   auto callback = std::move(callbackAndFuture.first);
   contains_word(rpcOptions, std::move(callback), p_words, p_word);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_contains_word(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
+folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_contains_word(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
   folly::Promise<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<bool>>(std::move(promise), recv_wrapped_contains_word, channel_);
@@ -4252,20 +4252,20 @@ folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader
   return future;
 }
 
-folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_contains_word(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
+folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_contains_word(apache::thrift::RpcOptions& rpcOptions, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_contains_word, channel_);
   auto callback = std::move(callbackAndFuture.first);
   contains_word(rpcOptions, std::move(callback), p_words, p_word);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::contains_word(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contains_word(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::set<::std::string>& p_words, const ::std::string& p_word) {
   contains_word(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_words, p_word);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_contains_word(bool& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_contains_word(bool& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -4273,7 +4273,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_contains_word(bo
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_contains_word_presult;
+  using result = ::py3::simple::SimpleService_contains_word_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -4294,7 +4294,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_contains_word(bo
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-bool SimpleServiceAsyncClient::recv_contains_word(::apache::thrift::ClientReceiveState& state) {
+bool apache::thrift::Client<::py3::simple::SimpleService>::recv_contains_word(::apache::thrift::ClientReceiveState& state) {
   bool _return;
   auto ew = recv_wrapped_contains_word(_return, state);
   if (ew) {
@@ -4303,20 +4303,20 @@ bool SimpleServiceAsyncClient::recv_contains_word(::apache::thrift::ClientReceiv
   return _return;
 }
 
-bool SimpleServiceAsyncClient::recv_instance_contains_word(::apache::thrift::ClientReceiveState& state) {
+bool apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_contains_word(::apache::thrift::ClientReceiveState& state) {
   return recv_contains_word(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_contains_word(bool& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_contains_word(bool& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_contains_word(_return, state);
 }
 
-void SimpleServiceAsyncClient::get_map_value(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_map_value(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   get_map_value(rpcOptions, std::move(callback), p_words, p_key);
 }
 
-void SimpleServiceAsyncClient::get_map_value(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_map_value(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
   auto [ctx, header] = get_map_valueCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -4329,7 +4329,7 @@ void SimpleServiceAsyncClient::get_map_value(apache::thrift::RpcOptions& rpcOpti
   get_map_valueImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_words, p_key);
 }
 
-void SimpleServiceAsyncClient::get_map_valueImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_map_valueImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -4358,7 +4358,7 @@ void SimpleServiceAsyncClient::get_map_valueImpl(apache::thrift::RpcOptions& rpc
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::get_map_valueCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::get_map_valueCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -4375,12 +4375,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_get_map_value(::std::string& _return, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_get_map_value(::std::string& _return, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_get_map_value(rpcOptions, _return, p_words, p_key);
 }
 
-void SimpleServiceAsyncClient::sync_get_map_value(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_get_map_value(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -4409,17 +4409,17 @@ void SimpleServiceAsyncClient::sync_get_map_value(apache::thrift::RpcOptions& rp
 }
 
 
-folly::Future<::std::string> SimpleServiceAsyncClient::future_get_map_value(const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
+folly::Future<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::future_get_map_value(const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_get_map_value(rpcOptions, p_words, p_key);
 }
 
-folly::SemiFuture<::std::string> SimpleServiceAsyncClient::semifuture_get_map_value(const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_get_map_value(const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_get_map_value(rpcOptions, p_words, p_key);
 }
 
-folly::Future<::std::string> SimpleServiceAsyncClient::future_get_map_value(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
+folly::Future<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::future_get_map_value(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
   folly::Promise<::std::string> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::string>>(std::move(promise), recv_wrapped_get_map_value, channel_);
@@ -4427,14 +4427,14 @@ folly::Future<::std::string> SimpleServiceAsyncClient::future_get_map_value(apac
   return future;
 }
 
-folly::SemiFuture<::std::string> SimpleServiceAsyncClient::semifuture_get_map_value(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_get_map_value(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_get_map_value, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_map_value(rpcOptions, std::move(callback), p_words, p_key);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_get_map_value(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
+folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_get_map_value(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
   folly::Promise<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::string>>(std::move(promise), recv_wrapped_get_map_value, channel_);
@@ -4442,20 +4442,20 @@ folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_get_map_value(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
+folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_get_map_value(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_get_map_value, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_map_value(rpcOptions, std::move(callback), p_words, p_key);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::get_map_value(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_map_value(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, ::std::string>& p_words, const ::std::string& p_key) {
   get_map_value(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_words, p_key);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_map_value(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_get_map_value(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -4463,7 +4463,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_map_value(::
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_get_map_value_presult;
+  using result = ::py3::simple::SimpleService_get_map_value_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -4484,27 +4484,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_map_value(::
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_get_map_value(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_get_map_value(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_get_map_value(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_get_map_value(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_get_map_value(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_get_map_value(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_get_map_value(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_get_map_value(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_get_map_value(_return, state);
 }
 
-void SimpleServiceAsyncClient::map_length(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::map_length(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   map_length(rpcOptions, std::move(callback), p_items);
 }
 
-void SimpleServiceAsyncClient::map_length(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::map_length(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
   auto [ctx, header] = map_lengthCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -4517,7 +4517,7 @@ void SimpleServiceAsyncClient::map_length(apache::thrift::RpcOptions& rpcOptions
   map_lengthImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_items);
 }
 
-void SimpleServiceAsyncClient::map_lengthImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::map_lengthImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -4546,7 +4546,7 @@ void SimpleServiceAsyncClient::map_lengthImpl(apache::thrift::RpcOptions& rpcOpt
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::map_lengthCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::map_lengthCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -4563,12 +4563,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int16_t SimpleServiceAsyncClient::sync_map_length(const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
+::std::int16_t apache::thrift::Client<::py3::simple::SimpleService>::sync_map_length(const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_map_length(rpcOptions, p_items);
 }
 
-::std::int16_t SimpleServiceAsyncClient::sync_map_length(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
+::std::int16_t apache::thrift::Client<::py3::simple::SimpleService>::sync_map_length(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -4597,17 +4597,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int16_t> SimpleServiceAsyncClient::future_map_length(const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
+folly::Future<::std::int16_t> apache::thrift::Client<::py3::simple::SimpleService>::future_map_length(const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_map_length(rpcOptions, p_items);
 }
 
-folly::SemiFuture<::std::int16_t> SimpleServiceAsyncClient::semifuture_map_length(const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
+folly::SemiFuture<::std::int16_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_map_length(const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_map_length(rpcOptions, p_items);
 }
 
-folly::Future<::std::int16_t> SimpleServiceAsyncClient::future_map_length(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
+folly::Future<::std::int16_t> apache::thrift::Client<::py3::simple::SimpleService>::future_map_length(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
   folly::Promise<::std::int16_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int16_t>>(std::move(promise), recv_wrapped_map_length, channel_);
@@ -4615,14 +4615,14 @@ folly::Future<::std::int16_t> SimpleServiceAsyncClient::future_map_length(apache
   return future;
 }
 
-folly::SemiFuture<::std::int16_t> SimpleServiceAsyncClient::semifuture_map_length(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
+folly::SemiFuture<::std::int16_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_map_length(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_map_length, channel_);
   auto callback = std::move(callbackAndFuture.first);
   map_length(rpcOptions, std::move(callback), p_items);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_map_length(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
+folly::Future<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_map_length(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
   folly::Promise<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int16_t>>(std::move(promise), recv_wrapped_map_length, channel_);
@@ -4630,20 +4630,20 @@ folly::Future<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_map_length(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
+folly::SemiFuture<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_map_length(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_map_length, channel_);
   auto callback = std::move(callbackAndFuture.first);
   map_length(rpcOptions, std::move(callback), p_items);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::map_length(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::map_length(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, ::py3::simple::SimpleStruct>& p_items) {
   map_length(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_items);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_map_length(::std::int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_map_length(::std::int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -4651,7 +4651,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_map_length(::std
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_map_length_presult;
+  using result = ::py3::simple::SimpleService_map_length_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -4672,7 +4672,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_map_length(::std
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int16_t SimpleServiceAsyncClient::recv_map_length(::apache::thrift::ClientReceiveState& state) {
+::std::int16_t apache::thrift::Client<::py3::simple::SimpleService>::recv_map_length(::apache::thrift::ClientReceiveState& state) {
   ::std::int16_t _return;
   auto ew = recv_wrapped_map_length(_return, state);
   if (ew) {
@@ -4681,20 +4681,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_map_length(::std
   return _return;
 }
 
-::std::int16_t SimpleServiceAsyncClient::recv_instance_map_length(::apache::thrift::ClientReceiveState& state) {
+::std::int16_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_map_length(::apache::thrift::ClientReceiveState& state) {
   return recv_map_length(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_map_length(::std::int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_map_length(::std::int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_map_length(_return, state);
 }
 
-void SimpleServiceAsyncClient::sum_map_values(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::int16_t>& p_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_map_values(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::int16_t>& p_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   sum_map_values(rpcOptions, std::move(callback), p_items);
 }
 
-void SimpleServiceAsyncClient::sum_map_values(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::int16_t>& p_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_map_values(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::int16_t>& p_items) {
   auto [ctx, header] = sum_map_valuesCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -4707,7 +4707,7 @@ void SimpleServiceAsyncClient::sum_map_values(apache::thrift::RpcOptions& rpcOpt
   sum_map_valuesImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_items);
 }
 
-void SimpleServiceAsyncClient::sum_map_valuesImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::int16_t>& p_items, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_map_valuesImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::int16_t>& p_items, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -4736,7 +4736,7 @@ void SimpleServiceAsyncClient::sum_map_valuesImpl(apache::thrift::RpcOptions& rp
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::sum_map_valuesCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::sum_map_valuesCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -4753,12 +4753,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int16_t SimpleServiceAsyncClient::sync_sum_map_values(const ::std::map<::std::string, ::std::int16_t>& p_items) {
+::std::int16_t apache::thrift::Client<::py3::simple::SimpleService>::sync_sum_map_values(const ::std::map<::std::string, ::std::int16_t>& p_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_sum_map_values(rpcOptions, p_items);
 }
 
-::std::int16_t SimpleServiceAsyncClient::sync_sum_map_values(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int16_t>& p_items) {
+::std::int16_t apache::thrift::Client<::py3::simple::SimpleService>::sync_sum_map_values(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int16_t>& p_items) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -4787,17 +4787,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int16_t> SimpleServiceAsyncClient::future_sum_map_values(const ::std::map<::std::string, ::std::int16_t>& p_items) {
+folly::Future<::std::int16_t> apache::thrift::Client<::py3::simple::SimpleService>::future_sum_map_values(const ::std::map<::std::string, ::std::int16_t>& p_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_sum_map_values(rpcOptions, p_items);
 }
 
-folly::SemiFuture<::std::int16_t> SimpleServiceAsyncClient::semifuture_sum_map_values(const ::std::map<::std::string, ::std::int16_t>& p_items) {
+folly::SemiFuture<::std::int16_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_sum_map_values(const ::std::map<::std::string, ::std::int16_t>& p_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_sum_map_values(rpcOptions, p_items);
 }
 
-folly::Future<::std::int16_t> SimpleServiceAsyncClient::future_sum_map_values(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int16_t>& p_items) {
+folly::Future<::std::int16_t> apache::thrift::Client<::py3::simple::SimpleService>::future_sum_map_values(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int16_t>& p_items) {
   folly::Promise<::std::int16_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int16_t>>(std::move(promise), recv_wrapped_sum_map_values, channel_);
@@ -4805,14 +4805,14 @@ folly::Future<::std::int16_t> SimpleServiceAsyncClient::future_sum_map_values(ap
   return future;
 }
 
-folly::SemiFuture<::std::int16_t> SimpleServiceAsyncClient::semifuture_sum_map_values(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int16_t>& p_items) {
+folly::SemiFuture<::std::int16_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_sum_map_values(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int16_t>& p_items) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_sum_map_values, channel_);
   auto callback = std::move(callbackAndFuture.first);
   sum_map_values(rpcOptions, std::move(callback), p_items);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_sum_map_values(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int16_t>& p_items) {
+folly::Future<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_sum_map_values(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int16_t>& p_items) {
   folly::Promise<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int16_t>>(std::move(promise), recv_wrapped_sum_map_values, channel_);
@@ -4820,20 +4820,20 @@ folly::Future<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_sum_map_values(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int16_t>& p_items) {
+folly::SemiFuture<std::pair<::std::int16_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_sum_map_values(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::int16_t>& p_items) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_sum_map_values, channel_);
   auto callback = std::move(callbackAndFuture.first);
   sum_map_values(rpcOptions, std::move(callback), p_items);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::sum_map_values(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, ::std::int16_t>& p_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sum_map_values(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, ::std::int16_t>& p_items) {
   sum_map_values(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_items);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_map_values(::std::int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_sum_map_values(::std::int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -4841,7 +4841,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_map_values(:
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_sum_map_values_presult;
+  using result = ::py3::simple::SimpleService_sum_map_values_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -4862,7 +4862,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_map_values(:
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int16_t SimpleServiceAsyncClient::recv_sum_map_values(::apache::thrift::ClientReceiveState& state) {
+::std::int16_t apache::thrift::Client<::py3::simple::SimpleService>::recv_sum_map_values(::apache::thrift::ClientReceiveState& state) {
   ::std::int16_t _return;
   auto ew = recv_wrapped_sum_map_values(_return, state);
   if (ew) {
@@ -4871,20 +4871,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_sum_map_values(:
   return _return;
 }
 
-::std::int16_t SimpleServiceAsyncClient::recv_instance_sum_map_values(::apache::thrift::ClientReceiveState& state) {
+::std::int16_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_sum_map_values(::apache::thrift::ClientReceiveState& state) {
   return recv_sum_map_values(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_sum_map_values(::std::int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_sum_map_values(::std::int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_sum_map_values(_return, state);
 }
 
-void SimpleServiceAsyncClient::complex_sum_i32(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::ComplexStruct& p_counter) {
+void apache::thrift::Client<::py3::simple::SimpleService>::complex_sum_i32(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::ComplexStruct& p_counter) {
   ::apache::thrift::RpcOptions rpcOptions;
   complex_sum_i32(rpcOptions, std::move(callback), p_counter);
 }
 
-void SimpleServiceAsyncClient::complex_sum_i32(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::ComplexStruct& p_counter) {
+void apache::thrift::Client<::py3::simple::SimpleService>::complex_sum_i32(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::ComplexStruct& p_counter) {
   auto [ctx, header] = complex_sum_i32Ctx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -4897,7 +4897,7 @@ void SimpleServiceAsyncClient::complex_sum_i32(apache::thrift::RpcOptions& rpcOp
   complex_sum_i32Impl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_counter);
 }
 
-void SimpleServiceAsyncClient::complex_sum_i32Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::ComplexStruct& p_counter, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::complex_sum_i32Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::ComplexStruct& p_counter, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -4926,7 +4926,7 @@ void SimpleServiceAsyncClient::complex_sum_i32Impl(apache::thrift::RpcOptions& r
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::complex_sum_i32Ctx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::complex_sum_i32Ctx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -4943,12 +4943,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_complex_sum_i32(const ::py3::simple::ComplexStruct& p_counter) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_complex_sum_i32(const ::py3::simple::ComplexStruct& p_counter) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_complex_sum_i32(rpcOptions, p_counter);
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_complex_sum_i32(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_complex_sum_i32(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -4977,17 +4977,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_complex_sum_i32(const ::py3::simple::ComplexStruct& p_counter) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_complex_sum_i32(const ::py3::simple::ComplexStruct& p_counter) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_complex_sum_i32(rpcOptions, p_counter);
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_complex_sum_i32(const ::py3::simple::ComplexStruct& p_counter) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_complex_sum_i32(const ::py3::simple::ComplexStruct& p_counter) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_complex_sum_i32(rpcOptions, p_counter);
 }
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_complex_sum_i32(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_complex_sum_i32(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
   folly::Promise<::std::int32_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_complex_sum_i32, channel_);
@@ -4995,14 +4995,14 @@ folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_complex_sum_i32(a
   return future;
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_complex_sum_i32(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_complex_sum_i32(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_complex_sum_i32, channel_);
   auto callback = std::move(callbackAndFuture.first);
   complex_sum_i32(rpcOptions, std::move(callback), p_counter);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_complex_sum_i32(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
+folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_complex_sum_i32(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
   folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_complex_sum_i32, channel_);
@@ -5010,20 +5010,20 @@ folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_complex_sum_i32(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_complex_sum_i32(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_complex_sum_i32, channel_);
   auto callback = std::move(callbackAndFuture.first);
   complex_sum_i32(rpcOptions, std::move(callback), p_counter);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::complex_sum_i32(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::py3::simple::ComplexStruct& p_counter) {
+void apache::thrift::Client<::py3::simple::SimpleService>::complex_sum_i32(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::py3::simple::ComplexStruct& p_counter) {
   complex_sum_i32(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_counter);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_complex_sum_i32(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_complex_sum_i32(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -5031,7 +5031,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_complex_sum_i32(
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_complex_sum_i32_presult;
+  using result = ::py3::simple::SimpleService_complex_sum_i32_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -5052,7 +5052,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_complex_sum_i32(
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_complex_sum_i32(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_complex_sum_i32(::apache::thrift::ClientReceiveState& state) {
   ::std::int32_t _return;
   auto ew = recv_wrapped_complex_sum_i32(_return, state);
   if (ew) {
@@ -5061,20 +5061,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_complex_sum_i32(
   return _return;
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_instance_complex_sum_i32(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_complex_sum_i32(::apache::thrift::ClientReceiveState& state) {
   return recv_complex_sum_i32(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_complex_sum_i32(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_complex_sum_i32(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_complex_sum_i32(_return, state);
 }
 
-void SimpleServiceAsyncClient::repeat_name(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::ComplexStruct& p_counter) {
+void apache::thrift::Client<::py3::simple::SimpleService>::repeat_name(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::ComplexStruct& p_counter) {
   ::apache::thrift::RpcOptions rpcOptions;
   repeat_name(rpcOptions, std::move(callback), p_counter);
 }
 
-void SimpleServiceAsyncClient::repeat_name(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::ComplexStruct& p_counter) {
+void apache::thrift::Client<::py3::simple::SimpleService>::repeat_name(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::ComplexStruct& p_counter) {
   auto [ctx, header] = repeat_nameCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -5087,7 +5087,7 @@ void SimpleServiceAsyncClient::repeat_name(apache::thrift::RpcOptions& rpcOption
   repeat_nameImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_counter);
 }
 
-void SimpleServiceAsyncClient::repeat_nameImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::ComplexStruct& p_counter, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::repeat_nameImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::ComplexStruct& p_counter, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -5116,7 +5116,7 @@ void SimpleServiceAsyncClient::repeat_nameImpl(apache::thrift::RpcOptions& rpcOp
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::repeat_nameCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::repeat_nameCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -5133,12 +5133,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_repeat_name(::std::string& _return, const ::py3::simple::ComplexStruct& p_counter) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_repeat_name(::std::string& _return, const ::py3::simple::ComplexStruct& p_counter) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_repeat_name(rpcOptions, _return, p_counter);
 }
 
-void SimpleServiceAsyncClient::sync_repeat_name(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::py3::simple::ComplexStruct& p_counter) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_repeat_name(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::py3::simple::ComplexStruct& p_counter) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -5167,17 +5167,17 @@ void SimpleServiceAsyncClient::sync_repeat_name(apache::thrift::RpcOptions& rpcO
 }
 
 
-folly::Future<::std::string> SimpleServiceAsyncClient::future_repeat_name(const ::py3::simple::ComplexStruct& p_counter) {
+folly::Future<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::future_repeat_name(const ::py3::simple::ComplexStruct& p_counter) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_repeat_name(rpcOptions, p_counter);
 }
 
-folly::SemiFuture<::std::string> SimpleServiceAsyncClient::semifuture_repeat_name(const ::py3::simple::ComplexStruct& p_counter) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_repeat_name(const ::py3::simple::ComplexStruct& p_counter) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_repeat_name(rpcOptions, p_counter);
 }
 
-folly::Future<::std::string> SimpleServiceAsyncClient::future_repeat_name(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
+folly::Future<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::future_repeat_name(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
   folly::Promise<::std::string> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::string>>(std::move(promise), recv_wrapped_repeat_name, channel_);
@@ -5185,14 +5185,14 @@ folly::Future<::std::string> SimpleServiceAsyncClient::future_repeat_name(apache
   return future;
 }
 
-folly::SemiFuture<::std::string> SimpleServiceAsyncClient::semifuture_repeat_name(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_repeat_name(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_repeat_name, channel_);
   auto callback = std::move(callbackAndFuture.first);
   repeat_name(rpcOptions, std::move(callback), p_counter);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_repeat_name(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
+folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_repeat_name(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
   folly::Promise<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::string>>(std::move(promise), recv_wrapped_repeat_name, channel_);
@@ -5200,20 +5200,20 @@ folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_repeat_name(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
+folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_repeat_name(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::ComplexStruct& p_counter) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_repeat_name, channel_);
   auto callback = std::move(callbackAndFuture.first);
   repeat_name(rpcOptions, std::move(callback), p_counter);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::repeat_name(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::py3::simple::ComplexStruct& p_counter) {
+void apache::thrift::Client<::py3::simple::SimpleService>::repeat_name(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::py3::simple::ComplexStruct& p_counter) {
   repeat_name(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_counter);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_repeat_name(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_repeat_name(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -5221,7 +5221,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_repeat_name(::st
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_repeat_name_presult;
+  using result = ::py3::simple::SimpleService_repeat_name_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -5242,27 +5242,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_repeat_name(::st
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_repeat_name(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_repeat_name(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_repeat_name(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_repeat_name(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_repeat_name(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_repeat_name(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_repeat_name(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_repeat_name(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_repeat_name(_return, state);
 }
 
-void SimpleServiceAsyncClient::get_struct(std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_struct(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   get_struct(rpcOptions, std::move(callback));
 }
 
-void SimpleServiceAsyncClient::get_struct(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_struct(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto [ctx, header] = get_structCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -5275,7 +5275,7 @@ void SimpleServiceAsyncClient::get_struct(apache::thrift::RpcOptions& rpcOptions
   get_structImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback));
 }
 
-void SimpleServiceAsyncClient::get_structImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_structImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -5304,7 +5304,7 @@ void SimpleServiceAsyncClient::get_structImpl(apache::thrift::RpcOptions& rpcOpt
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::get_structCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::get_structCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -5321,12 +5321,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_get_struct(::py3::simple::SimpleStruct& _return) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_get_struct(::py3::simple::SimpleStruct& _return) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_get_struct(rpcOptions, _return);
 }
 
-void SimpleServiceAsyncClient::sync_get_struct(apache::thrift::RpcOptions& rpcOptions, ::py3::simple::SimpleStruct& _return) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_get_struct(apache::thrift::RpcOptions& rpcOptions, ::py3::simple::SimpleStruct& _return) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -5355,17 +5355,17 @@ void SimpleServiceAsyncClient::sync_get_struct(apache::thrift::RpcOptions& rpcOp
 }
 
 
-folly::Future<::py3::simple::SimpleStruct> SimpleServiceAsyncClient::future_get_struct() {
+folly::Future<::py3::simple::SimpleStruct> apache::thrift::Client<::py3::simple::SimpleService>::future_get_struct() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_get_struct(rpcOptions);
 }
 
-folly::SemiFuture<::py3::simple::SimpleStruct> SimpleServiceAsyncClient::semifuture_get_struct() {
+folly::SemiFuture<::py3::simple::SimpleStruct> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_get_struct() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_get_struct(rpcOptions);
 }
 
-folly::Future<::py3::simple::SimpleStruct> SimpleServiceAsyncClient::future_get_struct(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<::py3::simple::SimpleStruct> apache::thrift::Client<::py3::simple::SimpleService>::future_get_struct(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<::py3::simple::SimpleStruct> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::py3::simple::SimpleStruct>>(std::move(promise), recv_wrapped_get_struct, channel_);
@@ -5373,14 +5373,14 @@ folly::Future<::py3::simple::SimpleStruct> SimpleServiceAsyncClient::future_get_
   return future;
 }
 
-folly::SemiFuture<::py3::simple::SimpleStruct> SimpleServiceAsyncClient::semifuture_get_struct(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<::py3::simple::SimpleStruct> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_get_struct(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_get_struct, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_struct(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::py3::simple::SimpleStruct, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_get_struct(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<std::pair<::py3::simple::SimpleStruct, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_get_struct(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<::py3::simple::SimpleStruct, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::py3::simple::SimpleStruct>>(std::move(promise), recv_wrapped_get_struct, channel_);
@@ -5388,20 +5388,20 @@ folly::Future<std::pair<::py3::simple::SimpleStruct, std::unique_ptr<apache::thr
   return future;
 }
 
-folly::SemiFuture<std::pair<::py3::simple::SimpleStruct, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_get_struct(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::pair<::py3::simple::SimpleStruct, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_get_struct(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_get_struct, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_struct(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::get_struct(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_struct(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   get_struct(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_struct(::py3::simple::SimpleStruct& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_get_struct(::py3::simple::SimpleStruct& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -5409,7 +5409,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_struct(::py3
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_get_struct_presult;
+  using result = ::py3::simple::SimpleService_get_struct_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -5430,27 +5430,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_struct(::py3
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_get_struct(::py3::simple::SimpleStruct& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_get_struct(::py3::simple::SimpleStruct& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_get_struct(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_get_struct(::py3::simple::SimpleStruct& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_get_struct(::py3::simple::SimpleStruct& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_get_struct(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_get_struct(::py3::simple::SimpleStruct& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_get_struct(::py3::simple::SimpleStruct& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_get_struct(_return, state);
 }
 
-void SimpleServiceAsyncClient::fib(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_n) {
+void apache::thrift::Client<::py3::simple::SimpleService>::fib(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_n) {
   ::apache::thrift::RpcOptions rpcOptions;
   fib(rpcOptions, std::move(callback), p_n);
 }
 
-void SimpleServiceAsyncClient::fib(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_n) {
+void apache::thrift::Client<::py3::simple::SimpleService>::fib(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_n) {
   auto [ctx, header] = fibCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -5463,7 +5463,7 @@ void SimpleServiceAsyncClient::fib(apache::thrift::RpcOptions& rpcOptions, std::
   fibImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_n);
 }
 
-void SimpleServiceAsyncClient::fibImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_n, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::fibImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_n, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -5492,7 +5492,7 @@ void SimpleServiceAsyncClient::fibImpl(apache::thrift::RpcOptions& rpcOptions, s
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::fibCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::fibCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -5509,12 +5509,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_fib(::std::vector<::std::int32_t>& _return, ::std::int16_t p_n) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_fib(::std::vector<::std::int32_t>& _return, ::std::int16_t p_n) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_fib(rpcOptions, _return, p_n);
 }
 
-void SimpleServiceAsyncClient::sync_fib(apache::thrift::RpcOptions& rpcOptions, ::std::vector<::std::int32_t>& _return, ::std::int16_t p_n) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_fib(apache::thrift::RpcOptions& rpcOptions, ::std::vector<::std::int32_t>& _return, ::std::int16_t p_n) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -5543,17 +5543,17 @@ void SimpleServiceAsyncClient::sync_fib(apache::thrift::RpcOptions& rpcOptions, 
 }
 
 
-folly::Future<::std::vector<::std::int32_t>> SimpleServiceAsyncClient::future_fib(::std::int16_t p_n) {
+folly::Future<::std::vector<::std::int32_t>> apache::thrift::Client<::py3::simple::SimpleService>::future_fib(::std::int16_t p_n) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_fib(rpcOptions, p_n);
 }
 
-folly::SemiFuture<::std::vector<::std::int32_t>> SimpleServiceAsyncClient::semifuture_fib(::std::int16_t p_n) {
+folly::SemiFuture<::std::vector<::std::int32_t>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_fib(::std::int16_t p_n) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_fib(rpcOptions, p_n);
 }
 
-folly::Future<::std::vector<::std::int32_t>> SimpleServiceAsyncClient::future_fib(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_n) {
+folly::Future<::std::vector<::std::int32_t>> apache::thrift::Client<::py3::simple::SimpleService>::future_fib(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_n) {
   folly::Promise<::std::vector<::std::int32_t>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::vector<::std::int32_t>>>(std::move(promise), recv_wrapped_fib, channel_);
@@ -5561,14 +5561,14 @@ folly::Future<::std::vector<::std::int32_t>> SimpleServiceAsyncClient::future_fi
   return future;
 }
 
-folly::SemiFuture<::std::vector<::std::int32_t>> SimpleServiceAsyncClient::semifuture_fib(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_n) {
+folly::SemiFuture<::std::vector<::std::int32_t>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_fib(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_n) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_fib, channel_);
   auto callback = std::move(callbackAndFuture.first);
   fib(rpcOptions, std::move(callback), p_n);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::vector<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_fib(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_n) {
+folly::Future<std::pair<::std::vector<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_fib(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_n) {
   folly::Promise<std::pair<::std::vector<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::vector<::std::int32_t>>>(std::move(promise), recv_wrapped_fib, channel_);
@@ -5576,20 +5576,20 @@ folly::Future<std::pair<::std::vector<::std::int32_t>, std::unique_ptr<apache::t
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::vector<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_fib(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_n) {
+folly::SemiFuture<std::pair<::std::vector<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_fib(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_n) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_fib, channel_);
   auto callback = std::move(callbackAndFuture.first);
   fib(rpcOptions, std::move(callback), p_n);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::fib(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int16_t p_n) {
+void apache::thrift::Client<::py3::simple::SimpleService>::fib(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int16_t p_n) {
   fib(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_n);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_fib(::std::vector<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_fib(::std::vector<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -5597,7 +5597,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_fib(::std::vecto
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_fib_presult;
+  using result = ::py3::simple::SimpleService_fib_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -5618,27 +5618,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_fib(::std::vecto
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_fib(::std::vector<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_fib(::std::vector<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_fib(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_fib(::std::vector<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_fib(::std::vector<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_fib(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_fib(::std::vector<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_fib(::std::vector<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_fib(_return, state);
 }
 
-void SimpleServiceAsyncClient::unique_words(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::unique_words(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   unique_words(rpcOptions, std::move(callback), p_words);
 }
 
-void SimpleServiceAsyncClient::unique_words(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::unique_words(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_words) {
   auto [ctx, header] = unique_wordsCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -5651,7 +5651,7 @@ void SimpleServiceAsyncClient::unique_words(apache::thrift::RpcOptions& rpcOptio
   unique_wordsImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_words);
 }
 
-void SimpleServiceAsyncClient::unique_wordsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_words, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::unique_wordsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_words, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -5680,7 +5680,7 @@ void SimpleServiceAsyncClient::unique_wordsImpl(apache::thrift::RpcOptions& rpcO
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::unique_wordsCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::unique_wordsCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -5697,12 +5697,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_unique_words(::std::set<::std::string>& _return, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_unique_words(::std::set<::std::string>& _return, const ::std::vector<::std::string>& p_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_unique_words(rpcOptions, _return, p_words);
 }
 
-void SimpleServiceAsyncClient::sync_unique_words(apache::thrift::RpcOptions& rpcOptions, ::std::set<::std::string>& _return, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_unique_words(apache::thrift::RpcOptions& rpcOptions, ::std::set<::std::string>& _return, const ::std::vector<::std::string>& p_words) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -5731,17 +5731,17 @@ void SimpleServiceAsyncClient::sync_unique_words(apache::thrift::RpcOptions& rpc
 }
 
 
-folly::Future<::std::set<::std::string>> SimpleServiceAsyncClient::future_unique_words(const ::std::vector<::std::string>& p_words) {
+folly::Future<::std::set<::std::string>> apache::thrift::Client<::py3::simple::SimpleService>::future_unique_words(const ::std::vector<::std::string>& p_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_unique_words(rpcOptions, p_words);
 }
 
-folly::SemiFuture<::std::set<::std::string>> SimpleServiceAsyncClient::semifuture_unique_words(const ::std::vector<::std::string>& p_words) {
+folly::SemiFuture<::std::set<::std::string>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_unique_words(const ::std::vector<::std::string>& p_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_unique_words(rpcOptions, p_words);
 }
 
-folly::Future<::std::set<::std::string>> SimpleServiceAsyncClient::future_unique_words(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
+folly::Future<::std::set<::std::string>> apache::thrift::Client<::py3::simple::SimpleService>::future_unique_words(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
   folly::Promise<::std::set<::std::string>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::set<::std::string>>>(std::move(promise), recv_wrapped_unique_words, channel_);
@@ -5749,14 +5749,14 @@ folly::Future<::std::set<::std::string>> SimpleServiceAsyncClient::future_unique
   return future;
 }
 
-folly::SemiFuture<::std::set<::std::string>> SimpleServiceAsyncClient::semifuture_unique_words(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
+folly::SemiFuture<::std::set<::std::string>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_unique_words(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_unique_words, channel_);
   auto callback = std::move(callbackAndFuture.first);
   unique_words(rpcOptions, std::move(callback), p_words);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_unique_words(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
+folly::Future<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_unique_words(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
   folly::Promise<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::set<::std::string>>>(std::move(promise), recv_wrapped_unique_words, channel_);
@@ -5764,20 +5764,20 @@ folly::Future<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrif
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_unique_words(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
+folly::SemiFuture<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_unique_words(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_unique_words, channel_);
   auto callback = std::move(callbackAndFuture.first);
   unique_words(rpcOptions, std::move(callback), p_words);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::unique_words(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::unique_words(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::string>& p_words) {
   unique_words(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_words);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_unique_words(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_unique_words(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -5785,7 +5785,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_unique_words(::s
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_unique_words_presult;
+  using result = ::py3::simple::SimpleService_unique_words_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -5806,27 +5806,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_unique_words(::s
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_unique_words(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_unique_words(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_unique_words(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_unique_words(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_unique_words(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_unique_words(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_unique_words(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_unique_words(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_unique_words(_return, state);
 }
 
-void SimpleServiceAsyncClient::words_count(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::words_count(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   words_count(rpcOptions, std::move(callback), p_words);
 }
 
-void SimpleServiceAsyncClient::words_count(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::words_count(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_words) {
   auto [ctx, header] = words_countCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -5839,7 +5839,7 @@ void SimpleServiceAsyncClient::words_count(apache::thrift::RpcOptions& rpcOption
   words_countImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_words);
 }
 
-void SimpleServiceAsyncClient::words_countImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_words, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::words_countImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_words, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -5868,7 +5868,7 @@ void SimpleServiceAsyncClient::words_countImpl(apache::thrift::RpcOptions& rpcOp
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::words_countCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::words_countCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -5885,12 +5885,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_words_count(::std::map<::std::string, ::std::int16_t>& _return, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_words_count(::std::map<::std::string, ::std::int16_t>& _return, const ::std::vector<::std::string>& p_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_words_count(rpcOptions, _return, p_words);
 }
 
-void SimpleServiceAsyncClient::sync_words_count(apache::thrift::RpcOptions& rpcOptions, ::std::map<::std::string, ::std::int16_t>& _return, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_words_count(apache::thrift::RpcOptions& rpcOptions, ::std::map<::std::string, ::std::int16_t>& _return, const ::std::vector<::std::string>& p_words) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -5919,17 +5919,17 @@ void SimpleServiceAsyncClient::sync_words_count(apache::thrift::RpcOptions& rpcO
 }
 
 
-folly::Future<::std::map<::std::string, ::std::int16_t>> SimpleServiceAsyncClient::future_words_count(const ::std::vector<::std::string>& p_words) {
+folly::Future<::std::map<::std::string, ::std::int16_t>> apache::thrift::Client<::py3::simple::SimpleService>::future_words_count(const ::std::vector<::std::string>& p_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_words_count(rpcOptions, p_words);
 }
 
-folly::SemiFuture<::std::map<::std::string, ::std::int16_t>> SimpleServiceAsyncClient::semifuture_words_count(const ::std::vector<::std::string>& p_words) {
+folly::SemiFuture<::std::map<::std::string, ::std::int16_t>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_words_count(const ::std::vector<::std::string>& p_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_words_count(rpcOptions, p_words);
 }
 
-folly::Future<::std::map<::std::string, ::std::int16_t>> SimpleServiceAsyncClient::future_words_count(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
+folly::Future<::std::map<::std::string, ::std::int16_t>> apache::thrift::Client<::py3::simple::SimpleService>::future_words_count(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
   folly::Promise<::std::map<::std::string, ::std::int16_t>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::map<::std::string, ::std::int16_t>>>(std::move(promise), recv_wrapped_words_count, channel_);
@@ -5937,14 +5937,14 @@ folly::Future<::std::map<::std::string, ::std::int16_t>> SimpleServiceAsyncClien
   return future;
 }
 
-folly::SemiFuture<::std::map<::std::string, ::std::int16_t>> SimpleServiceAsyncClient::semifuture_words_count(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
+folly::SemiFuture<::std::map<::std::string, ::std::int16_t>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_words_count(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_words_count, channel_);
   auto callback = std::move(callbackAndFuture.first);
   words_count(rpcOptions, std::move(callback), p_words);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::map<::std::string, ::std::int16_t>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_words_count(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
+folly::Future<std::pair<::std::map<::std::string, ::std::int16_t>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_words_count(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
   folly::Promise<std::pair<::std::map<::std::string, ::std::int16_t>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::map<::std::string, ::std::int16_t>>>(std::move(promise), recv_wrapped_words_count, channel_);
@@ -5952,20 +5952,20 @@ folly::Future<std::pair<::std::map<::std::string, ::std::int16_t>, std::unique_p
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::map<::std::string, ::std::int16_t>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_words_count(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
+folly::SemiFuture<std::pair<::std::map<::std::string, ::std::int16_t>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_words_count(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_words) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_words_count, channel_);
   auto callback = std::move(callbackAndFuture.first);
   words_count(rpcOptions, std::move(callback), p_words);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::words_count(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::string>& p_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::words_count(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::string>& p_words) {
   words_count(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_words);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_words_count(::std::map<::std::string, ::std::int16_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_words_count(::std::map<::std::string, ::std::int16_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -5973,7 +5973,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_words_count(::st
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_words_count_presult;
+  using result = ::py3::simple::SimpleService_words_count_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -5994,27 +5994,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_words_count(::st
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_words_count(::std::map<::std::string, ::std::int16_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_words_count(::std::map<::std::string, ::std::int16_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_words_count(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_words_count(::std::map<::std::string, ::std::int16_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_words_count(::std::map<::std::string, ::std::int16_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_words_count(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_words_count(::std::map<::std::string, ::std::int16_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_words_count(::std::map<::std::string, ::std::int16_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_words_count(_return, state);
 }
 
-void SimpleServiceAsyncClient::set_enum(std::unique_ptr<apache::thrift::RequestCallback> callback, ::py3::simple::AnEnum p_in_enum) {
+void apache::thrift::Client<::py3::simple::SimpleService>::set_enum(std::unique_ptr<apache::thrift::RequestCallback> callback, ::py3::simple::AnEnum p_in_enum) {
   ::apache::thrift::RpcOptions rpcOptions;
   set_enum(rpcOptions, std::move(callback), p_in_enum);
 }
 
-void SimpleServiceAsyncClient::set_enum(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::py3::simple::AnEnum p_in_enum) {
+void apache::thrift::Client<::py3::simple::SimpleService>::set_enum(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::py3::simple::AnEnum p_in_enum) {
   auto [ctx, header] = set_enumCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -6027,7 +6027,7 @@ void SimpleServiceAsyncClient::set_enum(apache::thrift::RpcOptions& rpcOptions, 
   set_enumImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_in_enum);
 }
 
-void SimpleServiceAsyncClient::set_enumImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::py3::simple::AnEnum p_in_enum, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::set_enumImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::py3::simple::AnEnum p_in_enum, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -6056,7 +6056,7 @@ void SimpleServiceAsyncClient::set_enumImpl(apache::thrift::RpcOptions& rpcOptio
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::set_enumCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::set_enumCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -6073,12 +6073,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::py3::simple::AnEnum SimpleServiceAsyncClient::sync_set_enum(::py3::simple::AnEnum p_in_enum) {
+::py3::simple::AnEnum apache::thrift::Client<::py3::simple::SimpleService>::sync_set_enum(::py3::simple::AnEnum p_in_enum) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_set_enum(rpcOptions, p_in_enum);
 }
 
-::py3::simple::AnEnum SimpleServiceAsyncClient::sync_set_enum(apache::thrift::RpcOptions& rpcOptions, ::py3::simple::AnEnum p_in_enum) {
+::py3::simple::AnEnum apache::thrift::Client<::py3::simple::SimpleService>::sync_set_enum(apache::thrift::RpcOptions& rpcOptions, ::py3::simple::AnEnum p_in_enum) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -6107,17 +6107,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::py3::simple::AnEnum> SimpleServiceAsyncClient::future_set_enum(::py3::simple::AnEnum p_in_enum) {
+folly::Future<::py3::simple::AnEnum> apache::thrift::Client<::py3::simple::SimpleService>::future_set_enum(::py3::simple::AnEnum p_in_enum) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_set_enum(rpcOptions, p_in_enum);
 }
 
-folly::SemiFuture<::py3::simple::AnEnum> SimpleServiceAsyncClient::semifuture_set_enum(::py3::simple::AnEnum p_in_enum) {
+folly::SemiFuture<::py3::simple::AnEnum> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_set_enum(::py3::simple::AnEnum p_in_enum) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_set_enum(rpcOptions, p_in_enum);
 }
 
-folly::Future<::py3::simple::AnEnum> SimpleServiceAsyncClient::future_set_enum(apache::thrift::RpcOptions& rpcOptions, ::py3::simple::AnEnum p_in_enum) {
+folly::Future<::py3::simple::AnEnum> apache::thrift::Client<::py3::simple::SimpleService>::future_set_enum(apache::thrift::RpcOptions& rpcOptions, ::py3::simple::AnEnum p_in_enum) {
   folly::Promise<::py3::simple::AnEnum> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::py3::simple::AnEnum>>(std::move(promise), recv_wrapped_set_enum, channel_);
@@ -6125,14 +6125,14 @@ folly::Future<::py3::simple::AnEnum> SimpleServiceAsyncClient::future_set_enum(a
   return future;
 }
 
-folly::SemiFuture<::py3::simple::AnEnum> SimpleServiceAsyncClient::semifuture_set_enum(apache::thrift::RpcOptions& rpcOptions, ::py3::simple::AnEnum p_in_enum) {
+folly::SemiFuture<::py3::simple::AnEnum> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_set_enum(apache::thrift::RpcOptions& rpcOptions, ::py3::simple::AnEnum p_in_enum) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_set_enum, channel_);
   auto callback = std::move(callbackAndFuture.first);
   set_enum(rpcOptions, std::move(callback), p_in_enum);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::py3::simple::AnEnum, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_set_enum(apache::thrift::RpcOptions& rpcOptions, ::py3::simple::AnEnum p_in_enum) {
+folly::Future<std::pair<::py3::simple::AnEnum, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_set_enum(apache::thrift::RpcOptions& rpcOptions, ::py3::simple::AnEnum p_in_enum) {
   folly::Promise<std::pair<::py3::simple::AnEnum, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::py3::simple::AnEnum>>(std::move(promise), recv_wrapped_set_enum, channel_);
@@ -6140,20 +6140,20 @@ folly::Future<std::pair<::py3::simple::AnEnum, std::unique_ptr<apache::thrift::t
   return future;
 }
 
-folly::SemiFuture<std::pair<::py3::simple::AnEnum, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_set_enum(apache::thrift::RpcOptions& rpcOptions, ::py3::simple::AnEnum p_in_enum) {
+folly::SemiFuture<std::pair<::py3::simple::AnEnum, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_set_enum(apache::thrift::RpcOptions& rpcOptions, ::py3::simple::AnEnum p_in_enum) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_set_enum, channel_);
   auto callback = std::move(callbackAndFuture.first);
   set_enum(rpcOptions, std::move(callback), p_in_enum);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::set_enum(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::py3::simple::AnEnum p_in_enum) {
+void apache::thrift::Client<::py3::simple::SimpleService>::set_enum(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::py3::simple::AnEnum p_in_enum) {
   set_enum(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_in_enum);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_set_enum(::py3::simple::AnEnum& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_set_enum(::py3::simple::AnEnum& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -6161,7 +6161,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_set_enum(::py3::
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_set_enum_presult;
+  using result = ::py3::simple::SimpleService_set_enum_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -6182,7 +6182,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_set_enum(::py3::
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::py3::simple::AnEnum SimpleServiceAsyncClient::recv_set_enum(::apache::thrift::ClientReceiveState& state) {
+::py3::simple::AnEnum apache::thrift::Client<::py3::simple::SimpleService>::recv_set_enum(::apache::thrift::ClientReceiveState& state) {
   ::py3::simple::AnEnum _return;
   auto ew = recv_wrapped_set_enum(_return, state);
   if (ew) {
@@ -6191,20 +6191,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_set_enum(::py3::
   return _return;
 }
 
-::py3::simple::AnEnum SimpleServiceAsyncClient::recv_instance_set_enum(::apache::thrift::ClientReceiveState& state) {
+::py3::simple::AnEnum apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_set_enum(::apache::thrift::ClientReceiveState& state) {
   return recv_set_enum(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_set_enum(::py3::simple::AnEnum& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_set_enum(::py3::simple::AnEnum& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_set_enum(_return, state);
 }
 
-void SimpleServiceAsyncClient::list_of_lists(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::list_of_lists(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   list_of_lists(rpcOptions, std::move(callback), p_num_lists, p_num_items);
 }
 
-void SimpleServiceAsyncClient::list_of_lists(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::list_of_lists(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   auto [ctx, header] = list_of_listsCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -6217,7 +6217,7 @@ void SimpleServiceAsyncClient::list_of_lists(apache::thrift::RpcOptions& rpcOpti
   list_of_listsImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_num_lists, p_num_items);
 }
 
-void SimpleServiceAsyncClient::list_of_listsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_num_lists, ::std::int16_t p_num_items, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::list_of_listsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int16_t p_num_lists, ::std::int16_t p_num_items, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -6246,7 +6246,7 @@ void SimpleServiceAsyncClient::list_of_listsImpl(apache::thrift::RpcOptions& rpc
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::list_of_listsCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::list_of_listsCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -6263,12 +6263,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_list_of_lists(::std::vector<::std::vector<::std::int32_t>>& _return, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_list_of_lists(::std::vector<::std::vector<::std::int32_t>>& _return, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_list_of_lists(rpcOptions, _return, p_num_lists, p_num_items);
 }
 
-void SimpleServiceAsyncClient::sync_list_of_lists(apache::thrift::RpcOptions& rpcOptions, ::std::vector<::std::vector<::std::int32_t>>& _return, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_list_of_lists(apache::thrift::RpcOptions& rpcOptions, ::std::vector<::std::vector<::std::int32_t>>& _return, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -6297,17 +6297,17 @@ void SimpleServiceAsyncClient::sync_list_of_lists(apache::thrift::RpcOptions& rp
 }
 
 
-folly::Future<::std::vector<::std::vector<::std::int32_t>>> SimpleServiceAsyncClient::future_list_of_lists(::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+folly::Future<::std::vector<::std::vector<::std::int32_t>>> apache::thrift::Client<::py3::simple::SimpleService>::future_list_of_lists(::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_list_of_lists(rpcOptions, p_num_lists, p_num_items);
 }
 
-folly::SemiFuture<::std::vector<::std::vector<::std::int32_t>>> SimpleServiceAsyncClient::semifuture_list_of_lists(::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+folly::SemiFuture<::std::vector<::std::vector<::std::int32_t>>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_list_of_lists(::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_list_of_lists(rpcOptions, p_num_lists, p_num_items);
 }
 
-folly::Future<::std::vector<::std::vector<::std::int32_t>>> SimpleServiceAsyncClient::future_list_of_lists(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+folly::Future<::std::vector<::std::vector<::std::int32_t>>> apache::thrift::Client<::py3::simple::SimpleService>::future_list_of_lists(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   folly::Promise<::std::vector<::std::vector<::std::int32_t>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::vector<::std::vector<::std::int32_t>>>>(std::move(promise), recv_wrapped_list_of_lists, channel_);
@@ -6315,14 +6315,14 @@ folly::Future<::std::vector<::std::vector<::std::int32_t>>> SimpleServiceAsyncCl
   return future;
 }
 
-folly::SemiFuture<::std::vector<::std::vector<::std::int32_t>>> SimpleServiceAsyncClient::semifuture_list_of_lists(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+folly::SemiFuture<::std::vector<::std::vector<::std::int32_t>>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_list_of_lists(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_list_of_lists, channel_);
   auto callback = std::move(callbackAndFuture.first);
   list_of_lists(rpcOptions, std::move(callback), p_num_lists, p_num_items);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::vector<::std::vector<::std::int32_t>>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_list_of_lists(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+folly::Future<std::pair<::std::vector<::std::vector<::std::int32_t>>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_list_of_lists(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   folly::Promise<std::pair<::std::vector<::std::vector<::std::int32_t>>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::vector<::std::vector<::std::int32_t>>>>(std::move(promise), recv_wrapped_list_of_lists, channel_);
@@ -6330,20 +6330,20 @@ folly::Future<std::pair<::std::vector<::std::vector<::std::int32_t>>, std::uniqu
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::vector<::std::vector<::std::int32_t>>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_list_of_lists(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+folly::SemiFuture<std::pair<::std::vector<::std::vector<::std::int32_t>>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_list_of_lists(apache::thrift::RpcOptions& rpcOptions, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_list_of_lists, channel_);
   auto callback = std::move(callbackAndFuture.first);
   list_of_lists(rpcOptions, std::move(callback), p_num_lists, p_num_items);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::list_of_lists(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
+void apache::thrift::Client<::py3::simple::SimpleService>::list_of_lists(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   list_of_lists(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_num_lists, p_num_items);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_list_of_lists(::std::vector<::std::vector<::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_list_of_lists(::std::vector<::std::vector<::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -6351,7 +6351,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_list_of_lists(::
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_list_of_lists_presult;
+  using result = ::py3::simple::SimpleService_list_of_lists_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -6372,27 +6372,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_list_of_lists(::
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_list_of_lists(::std::vector<::std::vector<::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_list_of_lists(::std::vector<::std::vector<::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_list_of_lists(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_list_of_lists(::std::vector<::std::vector<::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_list_of_lists(::std::vector<::std::vector<::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_list_of_lists(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_list_of_lists(::std::vector<::std::vector<::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_list_of_lists(::std::vector<::std::vector<::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_list_of_lists(_return, state);
 }
 
-void SimpleServiceAsyncClient::word_character_frequency(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_sentence) {
+void apache::thrift::Client<::py3::simple::SimpleService>::word_character_frequency(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_sentence) {
   ::apache::thrift::RpcOptions rpcOptions;
   word_character_frequency(rpcOptions, std::move(callback), p_sentence);
 }
 
-void SimpleServiceAsyncClient::word_character_frequency(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_sentence) {
+void apache::thrift::Client<::py3::simple::SimpleService>::word_character_frequency(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_sentence) {
   auto [ctx, header] = word_character_frequencyCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -6405,7 +6405,7 @@ void SimpleServiceAsyncClient::word_character_frequency(apache::thrift::RpcOptio
   word_character_frequencyImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_sentence);
 }
 
-void SimpleServiceAsyncClient::word_character_frequencyImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_sentence, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::word_character_frequencyImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_sentence, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -6434,7 +6434,7 @@ void SimpleServiceAsyncClient::word_character_frequencyImpl(apache::thrift::RpcO
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::word_character_frequencyCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::word_character_frequencyCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -6451,12 +6451,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_word_character_frequency(::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>& _return, const ::std::string& p_sentence) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_word_character_frequency(::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>& _return, const ::std::string& p_sentence) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_word_character_frequency(rpcOptions, _return, p_sentence);
 }
 
-void SimpleServiceAsyncClient::sync_word_character_frequency(apache::thrift::RpcOptions& rpcOptions, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>& _return, const ::std::string& p_sentence) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_word_character_frequency(apache::thrift::RpcOptions& rpcOptions, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>& _return, const ::std::string& p_sentence) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -6485,17 +6485,17 @@ void SimpleServiceAsyncClient::sync_word_character_frequency(apache::thrift::Rpc
 }
 
 
-folly::Future<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> SimpleServiceAsyncClient::future_word_character_frequency(const ::std::string& p_sentence) {
+folly::Future<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> apache::thrift::Client<::py3::simple::SimpleService>::future_word_character_frequency(const ::std::string& p_sentence) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_word_character_frequency(rpcOptions, p_sentence);
 }
 
-folly::SemiFuture<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> SimpleServiceAsyncClient::semifuture_word_character_frequency(const ::std::string& p_sentence) {
+folly::SemiFuture<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_word_character_frequency(const ::std::string& p_sentence) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_word_character_frequency(rpcOptions, p_sentence);
 }
 
-folly::Future<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> SimpleServiceAsyncClient::future_word_character_frequency(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_sentence) {
+folly::Future<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> apache::thrift::Client<::py3::simple::SimpleService>::future_word_character_frequency(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_sentence) {
   folly::Promise<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>(std::move(promise), recv_wrapped_word_character_frequency, channel_);
@@ -6503,14 +6503,14 @@ folly::Future<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t
   return future;
 }
 
-folly::SemiFuture<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> SimpleServiceAsyncClient::semifuture_word_character_frequency(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_sentence) {
+folly::SemiFuture<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_word_character_frequency(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_sentence) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_word_character_frequency, channel_);
   auto callback = std::move(callbackAndFuture.first);
   word_character_frequency(rpcOptions, std::move(callback), p_sentence);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_word_character_frequency(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_sentence) {
+folly::Future<std::pair<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_word_character_frequency(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_sentence) {
   folly::Promise<std::pair<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>(std::move(promise), recv_wrapped_word_character_frequency, channel_);
@@ -6518,20 +6518,20 @@ folly::Future<std::pair<::std::map<::std::string, ::std::map<::std::string, ::st
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_word_character_frequency(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_sentence) {
+folly::SemiFuture<std::pair<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_word_character_frequency(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_sentence) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_word_character_frequency, channel_);
   auto callback = std::move(callbackAndFuture.first);
   word_character_frequency(rpcOptions, std::move(callback), p_sentence);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::word_character_frequency(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_sentence) {
+void apache::thrift::Client<::py3::simple::SimpleService>::word_character_frequency(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_sentence) {
   word_character_frequency(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_sentence);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_word_character_frequency(::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_word_character_frequency(::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -6539,7 +6539,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_word_character_f
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_word_character_frequency_presult;
+  using result = ::py3::simple::SimpleService_word_character_frequency_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -6560,27 +6560,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_word_character_f
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_word_character_frequency(::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_word_character_frequency(::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_word_character_frequency(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_word_character_frequency(::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_word_character_frequency(::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_word_character_frequency(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_word_character_frequency(::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_word_character_frequency(::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_word_character_frequency(_return, state);
 }
 
-void SimpleServiceAsyncClient::list_of_sets(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_some_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::list_of_sets(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_some_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   list_of_sets(rpcOptions, std::move(callback), p_some_words);
 }
 
-void SimpleServiceAsyncClient::list_of_sets(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_some_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::list_of_sets(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_some_words) {
   auto [ctx, header] = list_of_setsCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -6593,7 +6593,7 @@ void SimpleServiceAsyncClient::list_of_sets(apache::thrift::RpcOptions& rpcOptio
   list_of_setsImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_some_words);
 }
 
-void SimpleServiceAsyncClient::list_of_setsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_some_words, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::list_of_setsImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_some_words, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -6622,7 +6622,7 @@ void SimpleServiceAsyncClient::list_of_setsImpl(apache::thrift::RpcOptions& rpcO
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::list_of_setsCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::list_of_setsCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -6639,12 +6639,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_list_of_sets(::std::vector<::std::set<::std::string>>& _return, const ::std::string& p_some_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_list_of_sets(::std::vector<::std::set<::std::string>>& _return, const ::std::string& p_some_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_list_of_sets(rpcOptions, _return, p_some_words);
 }
 
-void SimpleServiceAsyncClient::sync_list_of_sets(apache::thrift::RpcOptions& rpcOptions, ::std::vector<::std::set<::std::string>>& _return, const ::std::string& p_some_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_list_of_sets(apache::thrift::RpcOptions& rpcOptions, ::std::vector<::std::set<::std::string>>& _return, const ::std::string& p_some_words) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -6673,17 +6673,17 @@ void SimpleServiceAsyncClient::sync_list_of_sets(apache::thrift::RpcOptions& rpc
 }
 
 
-folly::Future<::std::vector<::std::set<::std::string>>> SimpleServiceAsyncClient::future_list_of_sets(const ::std::string& p_some_words) {
+folly::Future<::std::vector<::std::set<::std::string>>> apache::thrift::Client<::py3::simple::SimpleService>::future_list_of_sets(const ::std::string& p_some_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_list_of_sets(rpcOptions, p_some_words);
 }
 
-folly::SemiFuture<::std::vector<::std::set<::std::string>>> SimpleServiceAsyncClient::semifuture_list_of_sets(const ::std::string& p_some_words) {
+folly::SemiFuture<::std::vector<::std::set<::std::string>>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_list_of_sets(const ::std::string& p_some_words) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_list_of_sets(rpcOptions, p_some_words);
 }
 
-folly::Future<::std::vector<::std::set<::std::string>>> SimpleServiceAsyncClient::future_list_of_sets(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_some_words) {
+folly::Future<::std::vector<::std::set<::std::string>>> apache::thrift::Client<::py3::simple::SimpleService>::future_list_of_sets(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_some_words) {
   folly::Promise<::std::vector<::std::set<::std::string>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::vector<::std::set<::std::string>>>>(std::move(promise), recv_wrapped_list_of_sets, channel_);
@@ -6691,14 +6691,14 @@ folly::Future<::std::vector<::std::set<::std::string>>> SimpleServiceAsyncClient
   return future;
 }
 
-folly::SemiFuture<::std::vector<::std::set<::std::string>>> SimpleServiceAsyncClient::semifuture_list_of_sets(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_some_words) {
+folly::SemiFuture<::std::vector<::std::set<::std::string>>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_list_of_sets(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_some_words) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_list_of_sets, channel_);
   auto callback = std::move(callbackAndFuture.first);
   list_of_sets(rpcOptions, std::move(callback), p_some_words);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::vector<::std::set<::std::string>>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_list_of_sets(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_some_words) {
+folly::Future<std::pair<::std::vector<::std::set<::std::string>>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_list_of_sets(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_some_words) {
   folly::Promise<std::pair<::std::vector<::std::set<::std::string>>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::vector<::std::set<::std::string>>>>(std::move(promise), recv_wrapped_list_of_sets, channel_);
@@ -6706,20 +6706,20 @@ folly::Future<std::pair<::std::vector<::std::set<::std::string>>, std::unique_pt
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::vector<::std::set<::std::string>>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_list_of_sets(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_some_words) {
+folly::SemiFuture<std::pair<::std::vector<::std::set<::std::string>>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_list_of_sets(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_some_words) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_list_of_sets, channel_);
   auto callback = std::move(callbackAndFuture.first);
   list_of_sets(rpcOptions, std::move(callback), p_some_words);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::list_of_sets(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_some_words) {
+void apache::thrift::Client<::py3::simple::SimpleService>::list_of_sets(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_some_words) {
   list_of_sets(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_some_words);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_list_of_sets(::std::vector<::std::set<::std::string>>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_list_of_sets(::std::vector<::std::set<::std::string>>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -6727,7 +6727,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_list_of_sets(::s
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_list_of_sets_presult;
+  using result = ::py3::simple::SimpleService_list_of_sets_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -6748,27 +6748,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_list_of_sets(::s
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_list_of_sets(::std::vector<::std::set<::std::string>>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_list_of_sets(::std::vector<::std::set<::std::string>>& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_list_of_sets(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_list_of_sets(::std::vector<::std::set<::std::string>>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_list_of_sets(::std::vector<::std::set<::std::string>>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_list_of_sets(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_list_of_sets(::std::vector<::std::set<::std::string>>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_list_of_sets(::std::vector<::std::set<::std::string>>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_list_of_sets(_return, state);
 }
 
-void SimpleServiceAsyncClient::nested_map_argument(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
+void apache::thrift::Client<::py3::simple::SimpleService>::nested_map_argument(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
   ::apache::thrift::RpcOptions rpcOptions;
   nested_map_argument(rpcOptions, std::move(callback), p_struct_map);
 }
 
-void SimpleServiceAsyncClient::nested_map_argument(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
+void apache::thrift::Client<::py3::simple::SimpleService>::nested_map_argument(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
   auto [ctx, header] = nested_map_argumentCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -6781,7 +6781,7 @@ void SimpleServiceAsyncClient::nested_map_argument(apache::thrift::RpcOptions& r
   nested_map_argumentImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_struct_map);
 }
 
-void SimpleServiceAsyncClient::nested_map_argumentImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::nested_map_argumentImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -6810,7 +6810,7 @@ void SimpleServiceAsyncClient::nested_map_argumentImpl(apache::thrift::RpcOption
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::nested_map_argumentCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::nested_map_argumentCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -6827,12 +6827,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_nested_map_argument(const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_nested_map_argument(const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_nested_map_argument(rpcOptions, p_struct_map);
 }
 
-::std::int32_t SimpleServiceAsyncClient::sync_nested_map_argument(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::sync_nested_map_argument(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -6861,17 +6861,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_nested_map_argument(const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_nested_map_argument(const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_nested_map_argument(rpcOptions, p_struct_map);
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_nested_map_argument(const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_nested_map_argument(const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_nested_map_argument(rpcOptions, p_struct_map);
 }
 
-folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_nested_map_argument(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::future_nested_map_argument(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
   folly::Promise<::std::int32_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_nested_map_argument, channel_);
@@ -6879,14 +6879,14 @@ folly::Future<::std::int32_t> SimpleServiceAsyncClient::future_nested_map_argume
   return future;
 }
 
-folly::SemiFuture<::std::int32_t> SimpleServiceAsyncClient::semifuture_nested_map_argument(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_nested_map_argument(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_nested_map_argument, channel_);
   auto callback = std::move(callbackAndFuture.first);
   nested_map_argument(rpcOptions, std::move(callback), p_struct_map);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_nested_map_argument(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
+folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_nested_map_argument(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
   folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_nested_map_argument, channel_);
@@ -6894,20 +6894,20 @@ folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_nested_map_argument(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_nested_map_argument(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_nested_map_argument, channel_);
   auto callback = std::move(callbackAndFuture.first);
   nested_map_argument(rpcOptions, std::move(callback), p_struct_map);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::nested_map_argument(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
+void apache::thrift::Client<::py3::simple::SimpleService>::nested_map_argument(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>& p_struct_map) {
   nested_map_argument(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_struct_map);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_nested_map_argument(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_nested_map_argument(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -6915,7 +6915,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_nested_map_argum
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_nested_map_argument_presult;
+  using result = ::py3::simple::SimpleService_nested_map_argument_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -6936,7 +6936,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_nested_map_argum
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_nested_map_argument(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_nested_map_argument(::apache::thrift::ClientReceiveState& state) {
   ::std::int32_t _return;
   auto ew = recv_wrapped_nested_map_argument(_return, state);
   if (ew) {
@@ -6945,20 +6945,20 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_nested_map_argum
   return _return;
 }
 
-::std::int32_t SimpleServiceAsyncClient::recv_instance_nested_map_argument(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_nested_map_argument(::apache::thrift::ClientReceiveState& state) {
   return recv_nested_map_argument(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_nested_map_argument(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_nested_map_argument(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_nested_map_argument(_return, state);
 }
 
-void SimpleServiceAsyncClient::make_sentence(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
+void apache::thrift::Client<::py3::simple::SimpleService>::make_sentence(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
   ::apache::thrift::RpcOptions rpcOptions;
   make_sentence(rpcOptions, std::move(callback), p_word_chars);
 }
 
-void SimpleServiceAsyncClient::make_sentence(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
+void apache::thrift::Client<::py3::simple::SimpleService>::make_sentence(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
   auto [ctx, header] = make_sentenceCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -6971,7 +6971,7 @@ void SimpleServiceAsyncClient::make_sentence(apache::thrift::RpcOptions& rpcOpti
   make_sentenceImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_word_chars);
 }
 
-void SimpleServiceAsyncClient::make_sentenceImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::string>>& p_word_chars, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::make_sentenceImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::vector<::std::string>>& p_word_chars, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -7000,7 +7000,7 @@ void SimpleServiceAsyncClient::make_sentenceImpl(apache::thrift::RpcOptions& rpc
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::make_sentenceCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::make_sentenceCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -7017,12 +7017,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_make_sentence(::std::string& _return, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_make_sentence(::std::string& _return, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_make_sentence(rpcOptions, _return, p_word_chars);
 }
 
-void SimpleServiceAsyncClient::sync_make_sentence(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_make_sentence(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -7051,17 +7051,17 @@ void SimpleServiceAsyncClient::sync_make_sentence(apache::thrift::RpcOptions& rp
 }
 
 
-folly::Future<::std::string> SimpleServiceAsyncClient::future_make_sentence(const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
+folly::Future<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::future_make_sentence(const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_make_sentence(rpcOptions, p_word_chars);
 }
 
-folly::SemiFuture<::std::string> SimpleServiceAsyncClient::semifuture_make_sentence(const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_make_sentence(const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_make_sentence(rpcOptions, p_word_chars);
 }
 
-folly::Future<::std::string> SimpleServiceAsyncClient::future_make_sentence(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
+folly::Future<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::future_make_sentence(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
   folly::Promise<::std::string> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::string>>(std::move(promise), recv_wrapped_make_sentence, channel_);
@@ -7069,14 +7069,14 @@ folly::Future<::std::string> SimpleServiceAsyncClient::future_make_sentence(apac
   return future;
 }
 
-folly::SemiFuture<::std::string> SimpleServiceAsyncClient::semifuture_make_sentence(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_make_sentence(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_make_sentence, channel_);
   auto callback = std::move(callbackAndFuture.first);
   make_sentence(rpcOptions, std::move(callback), p_word_chars);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_make_sentence(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
+folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_make_sentence(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
   folly::Promise<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::string>>(std::move(promise), recv_wrapped_make_sentence, channel_);
@@ -7084,20 +7084,20 @@ folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_make_sentence(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
+folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_make_sentence(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_make_sentence, channel_);
   auto callback = std::move(callbackAndFuture.first);
   make_sentence(rpcOptions, std::move(callback), p_word_chars);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::make_sentence(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
+void apache::thrift::Client<::py3::simple::SimpleService>::make_sentence(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::vector<::std::string>>& p_word_chars) {
   make_sentence(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_word_chars);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_make_sentence(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_make_sentence(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -7105,7 +7105,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_make_sentence(::
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_make_sentence_presult;
+  using result = ::py3::simple::SimpleService_make_sentence_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -7126,27 +7126,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_make_sentence(::
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_make_sentence(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_make_sentence(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_make_sentence(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_make_sentence(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_make_sentence(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_make_sentence(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_make_sentence(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_make_sentence(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_make_sentence(_return, state);
 }
 
-void SimpleServiceAsyncClient::get_union(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_union(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
   ::apache::thrift::RpcOptions rpcOptions;
   get_union(rpcOptions, std::move(callback), p_sets);
 }
 
-void SimpleServiceAsyncClient::get_union(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_union(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
   auto [ctx, header] = get_unionCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -7159,7 +7159,7 @@ void SimpleServiceAsyncClient::get_union(apache::thrift::RpcOptions& rpcOptions,
   get_unionImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_sets);
 }
 
-void SimpleServiceAsyncClient::get_unionImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::set<::std::int32_t>>& p_sets, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_unionImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::set<::std::int32_t>>& p_sets, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -7188,7 +7188,7 @@ void SimpleServiceAsyncClient::get_unionImpl(apache::thrift::RpcOptions& rpcOpti
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::get_unionCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::get_unionCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -7205,12 +7205,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_get_union(::std::set<::std::int32_t>& _return, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_get_union(::std::set<::std::int32_t>& _return, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_get_union(rpcOptions, _return, p_sets);
 }
 
-void SimpleServiceAsyncClient::sync_get_union(apache::thrift::RpcOptions& rpcOptions, ::std::set<::std::int32_t>& _return, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_get_union(apache::thrift::RpcOptions& rpcOptions, ::std::set<::std::int32_t>& _return, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -7239,17 +7239,17 @@ void SimpleServiceAsyncClient::sync_get_union(apache::thrift::RpcOptions& rpcOpt
 }
 
 
-folly::Future<::std::set<::std::int32_t>> SimpleServiceAsyncClient::future_get_union(const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
+folly::Future<::std::set<::std::int32_t>> apache::thrift::Client<::py3::simple::SimpleService>::future_get_union(const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_get_union(rpcOptions, p_sets);
 }
 
-folly::SemiFuture<::std::set<::std::int32_t>> SimpleServiceAsyncClient::semifuture_get_union(const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
+folly::SemiFuture<::std::set<::std::int32_t>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_get_union(const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_get_union(rpcOptions, p_sets);
 }
 
-folly::Future<::std::set<::std::int32_t>> SimpleServiceAsyncClient::future_get_union(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
+folly::Future<::std::set<::std::int32_t>> apache::thrift::Client<::py3::simple::SimpleService>::future_get_union(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
   folly::Promise<::std::set<::std::int32_t>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::set<::std::int32_t>>>(std::move(promise), recv_wrapped_get_union, channel_);
@@ -7257,14 +7257,14 @@ folly::Future<::std::set<::std::int32_t>> SimpleServiceAsyncClient::future_get_u
   return future;
 }
 
-folly::SemiFuture<::std::set<::std::int32_t>> SimpleServiceAsyncClient::semifuture_get_union(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
+folly::SemiFuture<::std::set<::std::int32_t>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_get_union(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_get_union, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_union(rpcOptions, std::move(callback), p_sets);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::set<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_get_union(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
+folly::Future<std::pair<::std::set<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_get_union(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
   folly::Promise<std::pair<::std::set<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::set<::std::int32_t>>>(std::move(promise), recv_wrapped_get_union, channel_);
@@ -7272,20 +7272,20 @@ folly::Future<std::pair<::std::set<::std::int32_t>, std::unique_ptr<apache::thri
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::set<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_get_union(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
+folly::SemiFuture<std::pair<::std::set<::std::int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_get_union(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_get_union, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_union(rpcOptions, std::move(callback), p_sets);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::get_union(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_union(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::set<::std::int32_t>>& p_sets) {
   get_union(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_sets);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_union(::std::set<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_get_union(::std::set<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -7293,7 +7293,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_union(::std:
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_get_union_presult;
+  using result = ::py3::simple::SimpleService_get_union_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -7314,27 +7314,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_union(::std:
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_get_union(::std::set<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_get_union(::std::set<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_get_union(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_get_union(::std::set<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_get_union(::std::set<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_get_union(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_get_union(::std::set<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_get_union(::std::set<::std::int32_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_get_union(_return, state);
 }
 
-void SimpleServiceAsyncClient::get_keys(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_keys(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
   ::apache::thrift::RpcOptions rpcOptions;
   get_keys(rpcOptions, std::move(callback), p_string_map);
 }
 
-void SimpleServiceAsyncClient::get_keys(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_keys(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
   auto [ctx, header] = get_keysCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -7347,7 +7347,7 @@ void SimpleServiceAsyncClient::get_keys(apache::thrift::RpcOptions& rpcOptions, 
   get_keysImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_string_map);
 }
 
-void SimpleServiceAsyncClient::get_keysImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_keysImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -7376,7 +7376,7 @@ void SimpleServiceAsyncClient::get_keysImpl(apache::thrift::RpcOptions& rpcOptio
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::get_keysCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::get_keysCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -7393,12 +7393,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_get_keys(::std::set<::std::string>& _return, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_get_keys(::std::set<::std::string>& _return, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_get_keys(rpcOptions, _return, p_string_map);
 }
 
-void SimpleServiceAsyncClient::sync_get_keys(apache::thrift::RpcOptions& rpcOptions, ::std::set<::std::string>& _return, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_get_keys(apache::thrift::RpcOptions& rpcOptions, ::std::set<::std::string>& _return, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -7427,17 +7427,17 @@ void SimpleServiceAsyncClient::sync_get_keys(apache::thrift::RpcOptions& rpcOpti
 }
 
 
-folly::Future<::std::set<::std::string>> SimpleServiceAsyncClient::future_get_keys(const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
+folly::Future<::std::set<::std::string>> apache::thrift::Client<::py3::simple::SimpleService>::future_get_keys(const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_get_keys(rpcOptions, p_string_map);
 }
 
-folly::SemiFuture<::std::set<::std::string>> SimpleServiceAsyncClient::semifuture_get_keys(const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
+folly::SemiFuture<::std::set<::std::string>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_get_keys(const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_get_keys(rpcOptions, p_string_map);
 }
 
-folly::Future<::std::set<::std::string>> SimpleServiceAsyncClient::future_get_keys(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
+folly::Future<::std::set<::std::string>> apache::thrift::Client<::py3::simple::SimpleService>::future_get_keys(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
   folly::Promise<::std::set<::std::string>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::set<::std::string>>>(std::move(promise), recv_wrapped_get_keys, channel_);
@@ -7445,14 +7445,14 @@ folly::Future<::std::set<::std::string>> SimpleServiceAsyncClient::future_get_ke
   return future;
 }
 
-folly::SemiFuture<::std::set<::std::string>> SimpleServiceAsyncClient::semifuture_get_keys(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
+folly::SemiFuture<::std::set<::std::string>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_get_keys(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_get_keys, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_keys(rpcOptions, std::move(callback), p_string_map);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_get_keys(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
+folly::Future<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_get_keys(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
   folly::Promise<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::set<::std::string>>>(std::move(promise), recv_wrapped_get_keys, channel_);
@@ -7460,20 +7460,20 @@ folly::Future<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrif
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_get_keys(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
+folly::SemiFuture<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_get_keys(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_get_keys, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_keys(rpcOptions, std::move(callback), p_string_map);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::get_keys(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_keys(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::map<::std::string, ::std::string>>& p_string_map) {
   get_keys(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_string_map);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_keys(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_get_keys(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -7481,7 +7481,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_keys(::std::
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_get_keys_presult;
+  using result = ::py3::simple::SimpleService_get_keys_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -7502,27 +7502,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_keys(::std::
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_get_keys(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_get_keys(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_get_keys(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_get_keys(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_get_keys(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_get_keys(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_get_keys(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_get_keys(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_get_keys(_return, state);
 }
 
-void SimpleServiceAsyncClient::lookup_double(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_key) {
+void apache::thrift::Client<::py3::simple::SimpleService>::lookup_double(std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   lookup_double(rpcOptions, std::move(callback), p_key);
 }
 
-void SimpleServiceAsyncClient::lookup_double(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_key) {
+void apache::thrift::Client<::py3::simple::SimpleService>::lookup_double(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, ::std::int32_t p_key) {
   auto [ctx, header] = lookup_doubleCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -7535,7 +7535,7 @@ void SimpleServiceAsyncClient::lookup_double(apache::thrift::RpcOptions& rpcOpti
   lookup_doubleImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_key);
 }
 
-void SimpleServiceAsyncClient::lookup_doubleImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_key, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::lookup_doubleImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, ::std::int32_t p_key, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -7564,7 +7564,7 @@ void SimpleServiceAsyncClient::lookup_doubleImpl(apache::thrift::RpcOptions& rpc
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::lookup_doubleCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::lookup_doubleCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -7581,12 +7581,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-double SimpleServiceAsyncClient::sync_lookup_double(::std::int32_t p_key) {
+double apache::thrift::Client<::py3::simple::SimpleService>::sync_lookup_double(::std::int32_t p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_lookup_double(rpcOptions, p_key);
 }
 
-double SimpleServiceAsyncClient::sync_lookup_double(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_key) {
+double apache::thrift::Client<::py3::simple::SimpleService>::sync_lookup_double(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_key) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -7615,17 +7615,17 @@ double SimpleServiceAsyncClient::sync_lookup_double(apache::thrift::RpcOptions& 
 }
 
 
-folly::Future<double> SimpleServiceAsyncClient::future_lookup_double(::std::int32_t p_key) {
+folly::Future<double> apache::thrift::Client<::py3::simple::SimpleService>::future_lookup_double(::std::int32_t p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_lookup_double(rpcOptions, p_key);
 }
 
-folly::SemiFuture<double> SimpleServiceAsyncClient::semifuture_lookup_double(::std::int32_t p_key) {
+folly::SemiFuture<double> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_lookup_double(::std::int32_t p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_lookup_double(rpcOptions, p_key);
 }
 
-folly::Future<double> SimpleServiceAsyncClient::future_lookup_double(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_key) {
+folly::Future<double> apache::thrift::Client<::py3::simple::SimpleService>::future_lookup_double(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_key) {
   folly::Promise<double> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<double>>(std::move(promise), recv_wrapped_lookup_double, channel_);
@@ -7633,14 +7633,14 @@ folly::Future<double> SimpleServiceAsyncClient::future_lookup_double(apache::thr
   return future;
 }
 
-folly::SemiFuture<double> SimpleServiceAsyncClient::semifuture_lookup_double(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_key) {
+folly::SemiFuture<double> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_lookup_double(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_key) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_lookup_double, channel_);
   auto callback = std::move(callbackAndFuture.first);
   lookup_double(rpcOptions, std::move(callback), p_key);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_lookup_double(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_key) {
+folly::Future<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_lookup_double(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_key) {
   folly::Promise<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<double>>(std::move(promise), recv_wrapped_lookup_double, channel_);
@@ -7648,20 +7648,20 @@ folly::Future<std::pair<double, std::unique_ptr<apache::thrift::transport::THead
   return future;
 }
 
-folly::SemiFuture<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_lookup_double(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_key) {
+folly::SemiFuture<std::pair<double, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_lookup_double(apache::thrift::RpcOptions& rpcOptions, ::std::int32_t p_key) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_lookup_double, channel_);
   auto callback = std::move(callbackAndFuture.first);
   lookup_double(rpcOptions, std::move(callback), p_key);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::lookup_double(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_key) {
+void apache::thrift::Client<::py3::simple::SimpleService>::lookup_double(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, ::std::int32_t p_key) {
   lookup_double(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_key);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_lookup_double(double& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_lookup_double(double& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -7669,7 +7669,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_lookup_double(do
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_lookup_double_presult;
+  using result = ::py3::simple::SimpleService_lookup_double_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -7690,7 +7690,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_lookup_double(do
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-double SimpleServiceAsyncClient::recv_lookup_double(::apache::thrift::ClientReceiveState& state) {
+double apache::thrift::Client<::py3::simple::SimpleService>::recv_lookup_double(::apache::thrift::ClientReceiveState& state) {
   double _return;
   auto ew = recv_wrapped_lookup_double(_return, state);
   if (ew) {
@@ -7699,20 +7699,20 @@ double SimpleServiceAsyncClient::recv_lookup_double(::apache::thrift::ClientRece
   return _return;
 }
 
-double SimpleServiceAsyncClient::recv_instance_lookup_double(::apache::thrift::ClientReceiveState& state) {
+double apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_lookup_double(::apache::thrift::ClientReceiveState& state) {
   return recv_lookup_double(state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_lookup_double(double& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_lookup_double(double& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_lookup_double(_return, state);
 }
 
-void SimpleServiceAsyncClient::retrieve_binary(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_something) {
+void apache::thrift::Client<::py3::simple::SimpleService>::retrieve_binary(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_something) {
   ::apache::thrift::RpcOptions rpcOptions;
   retrieve_binary(rpcOptions, std::move(callback), p_something);
 }
 
-void SimpleServiceAsyncClient::retrieve_binary(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_something) {
+void apache::thrift::Client<::py3::simple::SimpleService>::retrieve_binary(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_something) {
   auto [ctx, header] = retrieve_binaryCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -7725,7 +7725,7 @@ void SimpleServiceAsyncClient::retrieve_binary(apache::thrift::RpcOptions& rpcOp
   retrieve_binaryImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_something);
 }
 
-void SimpleServiceAsyncClient::retrieve_binaryImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_something, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::retrieve_binaryImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_something, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -7754,7 +7754,7 @@ void SimpleServiceAsyncClient::retrieve_binaryImpl(apache::thrift::RpcOptions& r
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::retrieve_binaryCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::retrieve_binaryCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -7771,12 +7771,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_retrieve_binary(::std::string& _return, const ::std::string& p_something) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_retrieve_binary(::std::string& _return, const ::std::string& p_something) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_retrieve_binary(rpcOptions, _return, p_something);
 }
 
-void SimpleServiceAsyncClient::sync_retrieve_binary(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::string& p_something) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_retrieve_binary(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::string& p_something) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -7805,17 +7805,17 @@ void SimpleServiceAsyncClient::sync_retrieve_binary(apache::thrift::RpcOptions& 
 }
 
 
-folly::Future<::std::string> SimpleServiceAsyncClient::future_retrieve_binary(const ::std::string& p_something) {
+folly::Future<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::future_retrieve_binary(const ::std::string& p_something) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_retrieve_binary(rpcOptions, p_something);
 }
 
-folly::SemiFuture<::std::string> SimpleServiceAsyncClient::semifuture_retrieve_binary(const ::std::string& p_something) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_retrieve_binary(const ::std::string& p_something) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_retrieve_binary(rpcOptions, p_something);
 }
 
-folly::Future<::std::string> SimpleServiceAsyncClient::future_retrieve_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_something) {
+folly::Future<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::future_retrieve_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_something) {
   folly::Promise<::std::string> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::string>>(std::move(promise), recv_wrapped_retrieve_binary, channel_);
@@ -7823,14 +7823,14 @@ folly::Future<::std::string> SimpleServiceAsyncClient::future_retrieve_binary(ap
   return future;
 }
 
-folly::SemiFuture<::std::string> SimpleServiceAsyncClient::semifuture_retrieve_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_something) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_retrieve_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_something) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_retrieve_binary, channel_);
   auto callback = std::move(callbackAndFuture.first);
   retrieve_binary(rpcOptions, std::move(callback), p_something);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_retrieve_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_something) {
+folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_retrieve_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_something) {
   folly::Promise<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::string>>(std::move(promise), recv_wrapped_retrieve_binary, channel_);
@@ -7838,20 +7838,20 @@ folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_retrieve_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_something) {
+folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_retrieve_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_something) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_retrieve_binary, channel_);
   auto callback = std::move(callbackAndFuture.first);
   retrieve_binary(rpcOptions, std::move(callback), p_something);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::retrieve_binary(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_something) {
+void apache::thrift::Client<::py3::simple::SimpleService>::retrieve_binary(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_something) {
   retrieve_binary(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_something);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_retrieve_binary(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_retrieve_binary(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -7859,7 +7859,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_retrieve_binary(
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_retrieve_binary_presult;
+  using result = ::py3::simple::SimpleService_retrieve_binary_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -7880,27 +7880,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_retrieve_binary(
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_retrieve_binary(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_retrieve_binary(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_retrieve_binary(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_retrieve_binary(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_retrieve_binary(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_retrieve_binary(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_retrieve_binary(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_retrieve_binary(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_retrieve_binary(_return, state);
 }
 
-void SimpleServiceAsyncClient::contain_binary(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_binaries) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contain_binary(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_binaries) {
   ::apache::thrift::RpcOptions rpcOptions;
   contain_binary(rpcOptions, std::move(callback), p_binaries);
 }
 
-void SimpleServiceAsyncClient::contain_binary(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_binaries) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contain_binary(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::std::string>& p_binaries) {
   auto [ctx, header] = contain_binaryCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -7913,7 +7913,7 @@ void SimpleServiceAsyncClient::contain_binary(apache::thrift::RpcOptions& rpcOpt
   contain_binaryImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_binaries);
 }
 
-void SimpleServiceAsyncClient::contain_binaryImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_binaries, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contain_binaryImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::std::string>& p_binaries, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -7942,7 +7942,7 @@ void SimpleServiceAsyncClient::contain_binaryImpl(apache::thrift::RpcOptions& rp
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::contain_binaryCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::contain_binaryCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -7959,12 +7959,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_contain_binary(::std::set<::std::string>& _return, const ::std::vector<::std::string>& p_binaries) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_contain_binary(::std::set<::std::string>& _return, const ::std::vector<::std::string>& p_binaries) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_contain_binary(rpcOptions, _return, p_binaries);
 }
 
-void SimpleServiceAsyncClient::sync_contain_binary(apache::thrift::RpcOptions& rpcOptions, ::std::set<::std::string>& _return, const ::std::vector<::std::string>& p_binaries) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_contain_binary(apache::thrift::RpcOptions& rpcOptions, ::std::set<::std::string>& _return, const ::std::vector<::std::string>& p_binaries) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -7993,17 +7993,17 @@ void SimpleServiceAsyncClient::sync_contain_binary(apache::thrift::RpcOptions& r
 }
 
 
-folly::Future<::std::set<::std::string>> SimpleServiceAsyncClient::future_contain_binary(const ::std::vector<::std::string>& p_binaries) {
+folly::Future<::std::set<::std::string>> apache::thrift::Client<::py3::simple::SimpleService>::future_contain_binary(const ::std::vector<::std::string>& p_binaries) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_contain_binary(rpcOptions, p_binaries);
 }
 
-folly::SemiFuture<::std::set<::std::string>> SimpleServiceAsyncClient::semifuture_contain_binary(const ::std::vector<::std::string>& p_binaries) {
+folly::SemiFuture<::std::set<::std::string>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_contain_binary(const ::std::vector<::std::string>& p_binaries) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_contain_binary(rpcOptions, p_binaries);
 }
 
-folly::Future<::std::set<::std::string>> SimpleServiceAsyncClient::future_contain_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_binaries) {
+folly::Future<::std::set<::std::string>> apache::thrift::Client<::py3::simple::SimpleService>::future_contain_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_binaries) {
   folly::Promise<::std::set<::std::string>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::set<::std::string>>>(std::move(promise), recv_wrapped_contain_binary, channel_);
@@ -8011,14 +8011,14 @@ folly::Future<::std::set<::std::string>> SimpleServiceAsyncClient::future_contai
   return future;
 }
 
-folly::SemiFuture<::std::set<::std::string>> SimpleServiceAsyncClient::semifuture_contain_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_binaries) {
+folly::SemiFuture<::std::set<::std::string>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_contain_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_binaries) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_contain_binary, channel_);
   auto callback = std::move(callbackAndFuture.first);
   contain_binary(rpcOptions, std::move(callback), p_binaries);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_contain_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_binaries) {
+folly::Future<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_contain_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_binaries) {
   folly::Promise<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::set<::std::string>>>(std::move(promise), recv_wrapped_contain_binary, channel_);
@@ -8026,20 +8026,20 @@ folly::Future<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrif
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_contain_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_binaries) {
+folly::SemiFuture<std::pair<::std::set<::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_contain_binary(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::std::string>& p_binaries) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_contain_binary, channel_);
   auto callback = std::move(callbackAndFuture.first);
   contain_binary(rpcOptions, std::move(callback), p_binaries);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::contain_binary(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::string>& p_binaries) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contain_binary(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::std::string>& p_binaries) {
   contain_binary(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_binaries);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_contain_binary(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_contain_binary(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -8047,7 +8047,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_contain_binary(:
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_contain_binary_presult;
+  using result = ::py3::simple::SimpleService_contain_binary_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -8068,27 +8068,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_contain_binary(:
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_contain_binary(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_contain_binary(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_contain_binary(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_contain_binary(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_contain_binary(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_contain_binary(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_contain_binary(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_contain_binary(::std::set<::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_contain_binary(_return, state);
 }
 
-void SimpleServiceAsyncClient::contain_enum(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contain_enum(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
   ::apache::thrift::RpcOptions rpcOptions;
   contain_enum(rpcOptions, std::move(callback), p_the_enum);
 }
 
-void SimpleServiceAsyncClient::contain_enum(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contain_enum(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
   auto [ctx, header] = contain_enumCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -8101,7 +8101,7 @@ void SimpleServiceAsyncClient::contain_enum(apache::thrift::RpcOptions& rpcOptio
   contain_enumImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_the_enum);
 }
 
-void SimpleServiceAsyncClient::contain_enumImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::py3::simple::AnEnum>& p_the_enum, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contain_enumImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector<::py3::simple::AnEnum>& p_the_enum, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -8130,7 +8130,7 @@ void SimpleServiceAsyncClient::contain_enumImpl(apache::thrift::RpcOptions& rpcO
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::contain_enumCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::contain_enumCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -8147,12 +8147,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_contain_enum(::std::vector<::py3::simple::AnEnum>& _return, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_contain_enum(::std::vector<::py3::simple::AnEnum>& _return, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_contain_enum(rpcOptions, _return, p_the_enum);
 }
 
-void SimpleServiceAsyncClient::sync_contain_enum(apache::thrift::RpcOptions& rpcOptions, ::std::vector<::py3::simple::AnEnum>& _return, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_contain_enum(apache::thrift::RpcOptions& rpcOptions, ::std::vector<::py3::simple::AnEnum>& _return, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -8181,17 +8181,17 @@ void SimpleServiceAsyncClient::sync_contain_enum(apache::thrift::RpcOptions& rpc
 }
 
 
-folly::Future<::std::vector<::py3::simple::AnEnum>> SimpleServiceAsyncClient::future_contain_enum(const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
+folly::Future<::std::vector<::py3::simple::AnEnum>> apache::thrift::Client<::py3::simple::SimpleService>::future_contain_enum(const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_contain_enum(rpcOptions, p_the_enum);
 }
 
-folly::SemiFuture<::std::vector<::py3::simple::AnEnum>> SimpleServiceAsyncClient::semifuture_contain_enum(const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
+folly::SemiFuture<::std::vector<::py3::simple::AnEnum>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_contain_enum(const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_contain_enum(rpcOptions, p_the_enum);
 }
 
-folly::Future<::std::vector<::py3::simple::AnEnum>> SimpleServiceAsyncClient::future_contain_enum(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
+folly::Future<::std::vector<::py3::simple::AnEnum>> apache::thrift::Client<::py3::simple::SimpleService>::future_contain_enum(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
   folly::Promise<::std::vector<::py3::simple::AnEnum>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::vector<::py3::simple::AnEnum>>>(std::move(promise), recv_wrapped_contain_enum, channel_);
@@ -8199,14 +8199,14 @@ folly::Future<::std::vector<::py3::simple::AnEnum>> SimpleServiceAsyncClient::fu
   return future;
 }
 
-folly::SemiFuture<::std::vector<::py3::simple::AnEnum>> SimpleServiceAsyncClient::semifuture_contain_enum(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
+folly::SemiFuture<::std::vector<::py3::simple::AnEnum>> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_contain_enum(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_contain_enum, channel_);
   auto callback = std::move(callbackAndFuture.first);
   contain_enum(rpcOptions, std::move(callback), p_the_enum);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::vector<::py3::simple::AnEnum>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_contain_enum(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
+folly::Future<std::pair<::std::vector<::py3::simple::AnEnum>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_contain_enum(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
   folly::Promise<std::pair<::std::vector<::py3::simple::AnEnum>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::vector<::py3::simple::AnEnum>>>(std::move(promise), recv_wrapped_contain_enum, channel_);
@@ -8214,20 +8214,20 @@ folly::Future<std::pair<::std::vector<::py3::simple::AnEnum>, std::unique_ptr<ap
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::vector<::py3::simple::AnEnum>, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_contain_enum(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
+folly::SemiFuture<std::pair<::std::vector<::py3::simple::AnEnum>, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_contain_enum(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_contain_enum, channel_);
   auto callback = std::move(callbackAndFuture.first);
   contain_enum(rpcOptions, std::move(callback), p_the_enum);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::contain_enum(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
+void apache::thrift::Client<::py3::simple::SimpleService>::contain_enum(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<::py3::simple::AnEnum>& p_the_enum) {
   contain_enum(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_the_enum);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_contain_enum(::std::vector<::py3::simple::AnEnum>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_contain_enum(::std::vector<::py3::simple::AnEnum>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -8235,7 +8235,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_contain_enum(::s
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_contain_enum_presult;
+  using result = ::py3::simple::SimpleService_contain_enum_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -8256,27 +8256,27 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_contain_enum(::s
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_contain_enum(::std::vector<::py3::simple::AnEnum>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_contain_enum(::std::vector<::py3::simple::AnEnum>& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_contain_enum(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_contain_enum(::std::vector<::py3::simple::AnEnum>& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_contain_enum(::std::vector<::py3::simple::AnEnum>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_contain_enum(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_contain_enum(::std::vector<::py3::simple::AnEnum>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_contain_enum(::std::vector<::py3::simple::AnEnum>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_contain_enum(_return, state);
 }
 
-void SimpleServiceAsyncClient::get_binary_union_struct(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::BinaryUnion& p_u) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_binary_union_struct(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::BinaryUnion& p_u) {
   ::apache::thrift::RpcOptions rpcOptions;
   get_binary_union_struct(rpcOptions, std::move(callback), p_u);
 }
 
-void SimpleServiceAsyncClient::get_binary_union_struct(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::BinaryUnion& p_u) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_binary_union_struct(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::py3::simple::BinaryUnion& p_u) {
   auto [ctx, header] = get_binary_union_structCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -8289,7 +8289,7 @@ void SimpleServiceAsyncClient::get_binary_union_struct(apache::thrift::RpcOption
   get_binary_union_structImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_u);
 }
 
-void SimpleServiceAsyncClient::get_binary_union_structImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::BinaryUnion& p_u, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_binary_union_structImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::py3::simple::BinaryUnion& p_u, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -8318,7 +8318,7 @@ void SimpleServiceAsyncClient::get_binary_union_structImpl(apache::thrift::RpcOp
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> SimpleServiceAsyncClient::get_binary_union_structCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::SimpleService>::get_binary_union_structCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -8335,12 +8335,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void SimpleServiceAsyncClient::sync_get_binary_union_struct(::py3::simple::BinaryUnionStruct& _return, const ::py3::simple::BinaryUnion& p_u) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_get_binary_union_struct(::py3::simple::BinaryUnionStruct& _return, const ::py3::simple::BinaryUnion& p_u) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_get_binary_union_struct(rpcOptions, _return, p_u);
 }
 
-void SimpleServiceAsyncClient::sync_get_binary_union_struct(apache::thrift::RpcOptions& rpcOptions, ::py3::simple::BinaryUnionStruct& _return, const ::py3::simple::BinaryUnion& p_u) {
+void apache::thrift::Client<::py3::simple::SimpleService>::sync_get_binary_union_struct(apache::thrift::RpcOptions& rpcOptions, ::py3::simple::BinaryUnionStruct& _return, const ::py3::simple::BinaryUnion& p_u) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -8369,17 +8369,17 @@ void SimpleServiceAsyncClient::sync_get_binary_union_struct(apache::thrift::RpcO
 }
 
 
-folly::Future<::py3::simple::BinaryUnionStruct> SimpleServiceAsyncClient::future_get_binary_union_struct(const ::py3::simple::BinaryUnion& p_u) {
+folly::Future<::py3::simple::BinaryUnionStruct> apache::thrift::Client<::py3::simple::SimpleService>::future_get_binary_union_struct(const ::py3::simple::BinaryUnion& p_u) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_get_binary_union_struct(rpcOptions, p_u);
 }
 
-folly::SemiFuture<::py3::simple::BinaryUnionStruct> SimpleServiceAsyncClient::semifuture_get_binary_union_struct(const ::py3::simple::BinaryUnion& p_u) {
+folly::SemiFuture<::py3::simple::BinaryUnionStruct> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_get_binary_union_struct(const ::py3::simple::BinaryUnion& p_u) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_get_binary_union_struct(rpcOptions, p_u);
 }
 
-folly::Future<::py3::simple::BinaryUnionStruct> SimpleServiceAsyncClient::future_get_binary_union_struct(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::BinaryUnion& p_u) {
+folly::Future<::py3::simple::BinaryUnionStruct> apache::thrift::Client<::py3::simple::SimpleService>::future_get_binary_union_struct(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::BinaryUnion& p_u) {
   folly::Promise<::py3::simple::BinaryUnionStruct> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::py3::simple::BinaryUnionStruct>>(std::move(promise), recv_wrapped_get_binary_union_struct, channel_);
@@ -8387,14 +8387,14 @@ folly::Future<::py3::simple::BinaryUnionStruct> SimpleServiceAsyncClient::future
   return future;
 }
 
-folly::SemiFuture<::py3::simple::BinaryUnionStruct> SimpleServiceAsyncClient::semifuture_get_binary_union_struct(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::BinaryUnion& p_u) {
+folly::SemiFuture<::py3::simple::BinaryUnionStruct> apache::thrift::Client<::py3::simple::SimpleService>::semifuture_get_binary_union_struct(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::BinaryUnion& p_u) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_get_binary_union_struct, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_binary_union_struct(rpcOptions, std::move(callback), p_u);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::py3::simple::BinaryUnionStruct, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_future_get_binary_union_struct(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::BinaryUnion& p_u) {
+folly::Future<std::pair<::py3::simple::BinaryUnionStruct, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_future_get_binary_union_struct(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::BinaryUnion& p_u) {
   folly::Promise<std::pair<::py3::simple::BinaryUnionStruct, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::py3::simple::BinaryUnionStruct>>(std::move(promise), recv_wrapped_get_binary_union_struct, channel_);
@@ -8402,20 +8402,20 @@ folly::Future<std::pair<::py3::simple::BinaryUnionStruct, std::unique_ptr<apache
   return future;
 }
 
-folly::SemiFuture<std::pair<::py3::simple::BinaryUnionStruct, std::unique_ptr<apache::thrift::transport::THeader>>> SimpleServiceAsyncClient::header_semifuture_get_binary_union_struct(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::BinaryUnion& p_u) {
+folly::SemiFuture<std::pair<::py3::simple::BinaryUnionStruct, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::SimpleService>::header_semifuture_get_binary_union_struct(apache::thrift::RpcOptions& rpcOptions, const ::py3::simple::BinaryUnion& p_u) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_get_binary_union_struct, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_binary_union_struct(rpcOptions, std::move(callback), p_u);
   return std::move(callbackAndFuture.second);
 }
 
-void SimpleServiceAsyncClient::get_binary_union_struct(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::py3::simple::BinaryUnion& p_u) {
+void apache::thrift::Client<::py3::simple::SimpleService>::get_binary_union_struct(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::py3::simple::BinaryUnion& p_u) {
   get_binary_union_struct(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_u);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_binary_union_struct(::py3::simple::BinaryUnionStruct& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_wrapped_get_binary_union_struct(::py3::simple::BinaryUnionStruct& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -8423,7 +8423,7 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_binary_union
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = SimpleService_get_binary_union_struct_presult;
+  using result = ::py3::simple::SimpleService_get_binary_union_struct_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -8444,20 +8444,19 @@ folly::exception_wrapper SimpleServiceAsyncClient::recv_wrapped_get_binary_union
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void SimpleServiceAsyncClient::recv_get_binary_union_struct(::py3::simple::BinaryUnionStruct& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_get_binary_union_struct(::py3::simple::BinaryUnionStruct& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_get_binary_union_struct(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void SimpleServiceAsyncClient::recv_instance_get_binary_union_struct(::py3::simple::BinaryUnionStruct& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_get_binary_union_struct(::py3::simple::BinaryUnionStruct& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_get_binary_union_struct(_return, state);
 }
 
-folly::exception_wrapper SimpleServiceAsyncClient::recv_instance_wrapped_get_binary_union_struct(::py3::simple::BinaryUnionStruct& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::SimpleService>::recv_instance_wrapped_get_binary_union_struct(::py3::simple::BinaryUnionStruct& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_get_binary_union_struct(_return, state);
 }
 
 
-}} // py3::simple

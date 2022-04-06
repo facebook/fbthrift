@@ -21,8 +21,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace test_cpp2 { namespace cpp_reflection {
+class service_with_special_names;
+}} // test_cpp2::cpp_reflection
+namespace apache::thrift {
 
-class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAsyncClient {
+template <>
+class Client<::test_cpp2::cpp_reflection::service_with_special_names> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -2693,4 +2697,11 @@ class service_with_special_namesAsyncClient : public apache::thrift::GeneratedAs
  public:
 };
 
+} // namespace apache::thrift
+
+namespace test_cpp2 { namespace cpp_reflection {
+class service_with_special_namesAsyncClient : public ::apache::thrift::Client<service_with_special_names> {
+ public:
+  using ::apache::thrift::Client<::test_cpp2::cpp_reflection::service_with_special_names>::Client;
+};
 }} // test_cpp2::cpp_reflection

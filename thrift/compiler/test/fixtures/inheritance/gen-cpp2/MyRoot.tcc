@@ -30,7 +30,7 @@ void MyRootAsyncProcessor::executeRequest_do_root(apache::thrift::ServerRequest&
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyRoot_do_root_pargs args;
+  ::cpp2::MyRoot_do_root_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyRoot.do_root", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "do_root", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -72,7 +72,7 @@ void MyRootAsyncProcessor::process_do_root(apache::thrift::ResponseChannelReques
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyRoot_do_root_pargs args;
+  ::cpp2::MyRoot_do_root_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyRoot.do_root", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -90,7 +90,7 @@ void MyRootAsyncProcessor::process_do_root(apache::thrift::ResponseChannelReques
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyRootAsyncProcessor::return_do_root(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  MyRoot_do_root_presult result;
+  ::cpp2::MyRoot_do_root_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 

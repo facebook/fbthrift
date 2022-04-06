@@ -19,8 +19,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace some { namespace valid { namespace ns {
+class ReturnService;
+}}} // some::valid::ns
+namespace apache::thrift {
 
-class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
+template <>
+class Client<::some::valid::ns::ReturnService> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -2024,4 +2028,11 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 };
 
+} // namespace apache::thrift
+
+namespace some { namespace valid { namespace ns {
+class ReturnServiceAsyncClient : public ::apache::thrift::Client<ReturnService> {
+ public:
+  using ::apache::thrift::Client<::some::valid::ns::ReturnService>::Client;
+};
 }}} // some::valid::ns

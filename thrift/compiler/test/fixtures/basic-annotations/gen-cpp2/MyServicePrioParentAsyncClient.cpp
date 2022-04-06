@@ -14,11 +14,11 @@ typedef apache::thrift::ThriftPresult<false> MyServicePrioParent_ping_pargs;
 typedef apache::thrift::ThriftPresult<true> MyServicePrioParent_ping_presult;
 typedef apache::thrift::ThriftPresult<false> MyServicePrioParent_pong_pargs;
 typedef apache::thrift::ThriftPresult<true> MyServicePrioParent_pong_presult;
-
+} // cpp2
 template <typename Protocol_, typename RpcOptions>
-void MyServicePrioParentAsyncClient::pingT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::pingT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
 
-  MyServicePrioParent_ping_pargs args;
+  ::cpp2::MyServicePrioParent_ping_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
 
@@ -30,9 +30,9 @@ void MyServicePrioParentAsyncClient::pingT(Protocol_* prot, RpcOptions&& rpcOpti
 }
 
 template <typename Protocol_, typename RpcOptions>
-void MyServicePrioParentAsyncClient::pongT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::pongT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
 
-  MyServicePrioParent_pong_pargs args;
+  ::cpp2::MyServicePrioParent_pong_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
 
@@ -45,12 +45,12 @@ void MyServicePrioParentAsyncClient::pongT(Protocol_* prot, RpcOptions&& rpcOpti
 
 
 
-void MyServicePrioParentAsyncClient::ping(std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::ping(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   ping(rpcOptions, std::move(callback));
 }
 
-void MyServicePrioParentAsyncClient::ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto [ctx, header] = pingCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -63,7 +63,7 @@ void MyServicePrioParentAsyncClient::ping(apache::thrift::RpcOptions& rpcOptions
   pingImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback));
 }
 
-void MyServicePrioParentAsyncClient::pingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::pingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -92,7 +92,7 @@ void MyServicePrioParentAsyncClient::pingImpl(apache::thrift::RpcOptions& rpcOpt
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> MyServicePrioParentAsyncClient::pingCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::cpp2::MyServicePrioParent>::pingCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -109,12 +109,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void MyServicePrioParentAsyncClient::sync_ping() {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::sync_ping() {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_ping(rpcOptions);
 }
 
-void MyServicePrioParentAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOptions) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::sync_ping(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -143,17 +143,17 @@ void MyServicePrioParentAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOp
 }
 
 
-folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_ping() {
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::future_ping() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_ping(rpcOptions);
 }
 
-folly::SemiFuture<folly::Unit> MyServicePrioParentAsyncClient::semifuture_ping() {
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::semifuture_ping() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_ping(rpcOptions);
 }
 
-folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_ping(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::future_ping(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_ping, channel_);
@@ -161,14 +161,14 @@ folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_ping(apache::t
   return future;
 }
 
-folly::SemiFuture<folly::Unit> MyServicePrioParentAsyncClient::semifuture_ping(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::semifuture_ping(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_ping, channel_);
   auto callback = std::move(callbackAndFuture.first);
   ping(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServicePrioParentAsyncClient::header_future_ping(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::cpp2::MyServicePrioParent>::header_future_ping(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_ping, channel_);
@@ -176,20 +176,20 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return future;
 }
 
-folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServicePrioParentAsyncClient::header_semifuture_ping(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::cpp2::MyServicePrioParent>::header_semifuture_ping(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_ping, channel_);
   auto callback = std::move(callbackAndFuture.first);
   ping(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-void MyServicePrioParentAsyncClient::ping(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::ping(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   ping(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper MyServicePrioParentAsyncClient::recv_wrapped_ping(::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::cpp2::MyServicePrioParent>::recv_wrapped_ping(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -197,7 +197,7 @@ folly::exception_wrapper MyServicePrioParentAsyncClient::recv_wrapped_ping(::apa
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = MyServicePrioParent_ping_presult;
+  using result = ::cpp2::MyServicePrioParent_ping_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -218,27 +218,27 @@ folly::exception_wrapper MyServicePrioParentAsyncClient::recv_wrapped_ping(::apa
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void MyServicePrioParentAsyncClient::recv_ping(::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::recv_ping(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_ping(state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void MyServicePrioParentAsyncClient::recv_instance_ping(::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::recv_instance_ping(::apache::thrift::ClientReceiveState& state) {
   recv_ping(state);
 }
 
-folly::exception_wrapper MyServicePrioParentAsyncClient::recv_instance_wrapped_ping(::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::cpp2::MyServicePrioParent>::recv_instance_wrapped_ping(::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_ping(state);
 }
 
-void MyServicePrioParentAsyncClient::pong(std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::pong(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   pong(rpcOptions, std::move(callback));
 }
 
-void MyServicePrioParentAsyncClient::pong(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::pong(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto [ctx, header] = pongCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -251,7 +251,7 @@ void MyServicePrioParentAsyncClient::pong(apache::thrift::RpcOptions& rpcOptions
   pongImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback));
 }
 
-void MyServicePrioParentAsyncClient::pongImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::pongImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -280,7 +280,7 @@ void MyServicePrioParentAsyncClient::pongImpl(apache::thrift::RpcOptions& rpcOpt
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> MyServicePrioParentAsyncClient::pongCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::cpp2::MyServicePrioParent>::pongCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -297,12 +297,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void MyServicePrioParentAsyncClient::sync_pong() {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::sync_pong() {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_pong(rpcOptions);
 }
 
-void MyServicePrioParentAsyncClient::sync_pong(apache::thrift::RpcOptions& rpcOptions) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::sync_pong(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -331,17 +331,17 @@ void MyServicePrioParentAsyncClient::sync_pong(apache::thrift::RpcOptions& rpcOp
 }
 
 
-folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_pong() {
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::future_pong() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_pong(rpcOptions);
 }
 
-folly::SemiFuture<folly::Unit> MyServicePrioParentAsyncClient::semifuture_pong() {
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::semifuture_pong() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_pong(rpcOptions);
 }
 
-folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_pong(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::future_pong(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_pong, channel_);
@@ -349,14 +349,14 @@ folly::Future<folly::Unit> MyServicePrioParentAsyncClient::future_pong(apache::t
   return future;
 }
 
-folly::SemiFuture<folly::Unit> MyServicePrioParentAsyncClient::semifuture_pong(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::MyServicePrioParent>::semifuture_pong(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_pong, channel_);
   auto callback = std::move(callbackAndFuture.first);
   pong(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServicePrioParentAsyncClient::header_future_pong(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::cpp2::MyServicePrioParent>::header_future_pong(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise), recv_wrapped_pong, channel_);
@@ -364,20 +364,20 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return future;
 }
 
-folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServicePrioParentAsyncClient::header_semifuture_pong(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::cpp2::MyServicePrioParent>::header_semifuture_pong(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_pong, channel_);
   auto callback = std::move(callbackAndFuture.first);
   pong(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-void MyServicePrioParentAsyncClient::pong(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::pong(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   pong(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper MyServicePrioParentAsyncClient::recv_wrapped_pong(::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::cpp2::MyServicePrioParent>::recv_wrapped_pong(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -385,7 +385,7 @@ folly::exception_wrapper MyServicePrioParentAsyncClient::recv_wrapped_pong(::apa
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = MyServicePrioParent_pong_presult;
+  using result = ::cpp2::MyServicePrioParent_pong_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -406,20 +406,19 @@ folly::exception_wrapper MyServicePrioParentAsyncClient::recv_wrapped_pong(::apa
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void MyServicePrioParentAsyncClient::recv_pong(::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::recv_pong(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_pong(state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void MyServicePrioParentAsyncClient::recv_instance_pong(::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::cpp2::MyServicePrioParent>::recv_instance_pong(::apache::thrift::ClientReceiveState& state) {
   recv_pong(state);
 }
 
-folly::exception_wrapper MyServicePrioParentAsyncClient::recv_instance_wrapped_pong(::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::cpp2::MyServicePrioParent>::recv_instance_wrapped_pong(::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_pong(state);
 }
 
 
-} // cpp2

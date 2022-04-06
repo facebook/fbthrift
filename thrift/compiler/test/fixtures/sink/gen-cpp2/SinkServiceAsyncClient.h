@@ -19,8 +19,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class SinkService;
+} // cpp2
+namespace apache::thrift {
 
-class SinkServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
+template <>
+class Client<::cpp2::SinkService> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -157,4 +161,11 @@ class SinkServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class SinkServiceAsyncClient : public ::apache::thrift::Client<SinkService> {
+ public:
+  using ::apache::thrift::Client<::cpp2::SinkService>::Client;
+};
 } // cpp2

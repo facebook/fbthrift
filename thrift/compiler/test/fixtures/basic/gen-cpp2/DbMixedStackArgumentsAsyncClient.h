@@ -18,8 +18,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class DbMixedStackArguments;
+} // cpp2
+namespace apache::thrift {
 
-class DbMixedStackArgumentsAsyncClient : public apache::thrift::GeneratedAsyncClient {
+template <>
+class Client<::cpp2::DbMixedStackArguments> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -224,4 +228,11 @@ class DbMixedStackArgumentsAsyncClient : public apache::thrift::GeneratedAsyncCl
  public:
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class DbMixedStackArgumentsAsyncClient : public ::apache::thrift::Client<DbMixedStackArguments> {
+ public:
+  using ::apache::thrift::Client<::cpp2::DbMixedStackArguments>::Client;
+};
 } // cpp2

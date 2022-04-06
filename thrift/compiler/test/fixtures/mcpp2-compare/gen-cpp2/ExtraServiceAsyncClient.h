@@ -19,8 +19,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace extra { namespace svc {
+class ExtraService;
+}} // extra::svc
+namespace apache::thrift {
 
-class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClient {
+template <>
+class Client<::extra::svc::ExtraService> : public ::some::valid::ns::ParamServiceAsyncClient {
  public:
   using ::some::valid::ns::ParamServiceAsyncClient::ParamServiceAsyncClient;
 
@@ -764,4 +768,11 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
  public:
 };
 
+} // namespace apache::thrift
+
+namespace extra { namespace svc {
+class ExtraServiceAsyncClient : public ::apache::thrift::Client<ExtraService> {
+ public:
+  using ::apache::thrift::Client<::extra::svc::ExtraService>::Client;
+};
 }} // extra::svc

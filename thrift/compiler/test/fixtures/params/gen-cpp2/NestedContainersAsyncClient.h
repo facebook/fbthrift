@@ -17,8 +17,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class NestedContainers;
+} // cpp2
+namespace apache::thrift {
 
-class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient {
+template <>
+class Client<::cpp2::NestedContainers> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -494,4 +498,11 @@ class NestedContainersAsyncClient : public apache::thrift::GeneratedAsyncClient 
  public:
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class NestedContainersAsyncClient : public ::apache::thrift::Client<NestedContainers> {
+ public:
+  using ::apache::thrift::Client<::cpp2::NestedContainers>::Client;
+};
 } // cpp2

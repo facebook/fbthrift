@@ -32,7 +32,7 @@ void MyServiceAsyncProcessor::executeRequest_first(apache::thrift::ServerRequest
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyService_first_pargs args;
+  ::cpp2::MyService_first_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.first", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "first", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -74,7 +74,7 @@ void MyServiceAsyncProcessor::process_first(apache::thrift::ResponseChannelReque
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyService_first_pargs args;
+  ::cpp2::MyService_first_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.first", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -92,7 +92,7 @@ void MyServiceAsyncProcessor::process_first(apache::thrift::ResponseChannelReque
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_first(apache::thrift::ContextStack* ctx, ::cpp2::annotated_inline_string const& _return) {
   ProtocolOut_ prot;
-  MyService_first_presult result;
+  ::cpp2::MyService_first_presult result;
   result.get<0>().value = const_cast<::cpp2::annotated_inline_string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -128,7 +128,7 @@ void MyServiceAsyncProcessor::executeRequest_second(apache::thrift::ServerReques
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyService_second_pargs args;
+  ::cpp2::MyService_second_pargs args;
   ::std::int64_t uarg_count{0};
   args.get<0>().value = &uarg_count;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.second", serverRequest.requestContext()));
@@ -172,7 +172,7 @@ void MyServiceAsyncProcessor::process_second(apache::thrift::ResponseChannelRequ
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyService_second_pargs args;
+  ::cpp2::MyService_second_pargs args;
   ::std::int64_t uarg_count{0};
   args.get<0>().value = &uarg_count;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.second", ctx));
@@ -192,7 +192,7 @@ void MyServiceAsyncProcessor::process_second(apache::thrift::ResponseChannelRequ
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_second(apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
-  MyService_second_presult result;
+  ::cpp2::MyService_second_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);

@@ -19,8 +19,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace some { namespace valid { namespace ns {
+class ParamService;
+}}} // some::valid::ns
+namespace apache::thrift {
 
-class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
+template <>
+class Client<::some::valid::ns::ParamService> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -2770,4 +2774,11 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 };
 
+} // namespace apache::thrift
+
+namespace some { namespace valid { namespace ns {
+class ParamServiceAsyncClient : public ::apache::thrift::Client<ParamService> {
+ public:
+  using ::apache::thrift::Client<::some::valid::ns::ParamService>::Client;
+};
 }}} // some::valid::ns

@@ -31,7 +31,7 @@ void MyServiceFastAsyncProcessor::executeRequest_hasDataById(apache::thrift::Ser
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyServiceFast_hasDataById_pargs args;
+  ::cpp2::MyServiceFast_hasDataById_pargs args;
   ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.hasDataById", serverRequest.requestContext()));
@@ -75,7 +75,7 @@ void MyServiceFastAsyncProcessor::process_hasDataById(apache::thrift::ResponseCh
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyServiceFast_hasDataById_pargs args;
+  ::cpp2::MyServiceFast_hasDataById_pargs args;
   ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.hasDataById", ctx));
@@ -95,7 +95,7 @@ void MyServiceFastAsyncProcessor::process_hasDataById(apache::thrift::ResponseCh
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceFastAsyncProcessor::return_hasDataById(apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
-  MyServiceFast_hasDataById_presult result;
+  ::cpp2::MyServiceFast_hasDataById_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -127,7 +127,7 @@ void MyServiceFastAsyncProcessor::executeRequest_getDataById(apache::thrift::Ser
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyServiceFast_getDataById_pargs args;
+  ::cpp2::MyServiceFast_getDataById_pargs args;
   ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.getDataById", serverRequest.requestContext()));
@@ -171,7 +171,7 @@ void MyServiceFastAsyncProcessor::process_getDataById(apache::thrift::ResponseCh
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyServiceFast_getDataById_pargs args;
+  ::cpp2::MyServiceFast_getDataById_pargs args;
   ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServiceFast.getDataById", ctx));
@@ -191,7 +191,7 @@ void MyServiceFastAsyncProcessor::process_getDataById(apache::thrift::ResponseCh
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceFastAsyncProcessor::return_getDataById(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  MyServiceFast_getDataById_presult result;
+  ::cpp2::MyServiceFast_getDataById_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -223,7 +223,7 @@ void MyServiceFastAsyncProcessor::executeRequest_putDataById(apache::thrift::Ser
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyServiceFast_putDataById_pargs args;
+  ::cpp2::MyServiceFast_putDataById_pargs args;
   ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   ::std::string uarg_data;
@@ -269,7 +269,7 @@ void MyServiceFastAsyncProcessor::process_putDataById(apache::thrift::ResponseCh
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyServiceFast_putDataById_pargs args;
+  ::cpp2::MyServiceFast_putDataById_pargs args;
   ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   ::std::string uarg_data;
@@ -291,7 +291,7 @@ void MyServiceFastAsyncProcessor::process_putDataById(apache::thrift::ResponseCh
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceFastAsyncProcessor::return_putDataById(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  MyServiceFast_putDataById_presult result;
+  ::cpp2::MyServiceFast_putDataById_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -321,7 +321,7 @@ void MyServiceFastAsyncProcessor::executeRequest_lobDataById(apache::thrift::Ser
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyServiceFast_lobDataById_pargs args;
+  ::cpp2::MyServiceFast_lobDataById_pargs args;
   ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   ::std::string uarg_data;
@@ -355,7 +355,7 @@ void MyServiceFastAsyncProcessor::process_lobDataById(apache::thrift::ResponseCh
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyServiceFast_lobDataById_pargs args;
+  ::cpp2::MyServiceFast_lobDataById_pargs args;
   ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   ::std::string uarg_data;

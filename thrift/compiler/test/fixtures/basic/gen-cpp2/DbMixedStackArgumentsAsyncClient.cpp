@@ -14,11 +14,11 @@ typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apac
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::binary, ::std::string*>> DbMixedStackArguments_getDataByKey0_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::string, ::std::string*>> DbMixedStackArguments_getDataByKey1_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::binary, ::std::string*>> DbMixedStackArguments_getDataByKey1_presult;
-
+} // cpp2
 template <typename Protocol_, typename RpcOptions>
-void DbMixedStackArgumentsAsyncClient::getDataByKey0T(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::getDataByKey0T(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key) {
 
-  DbMixedStackArguments_getDataByKey0_pargs args;
+  ::cpp2::DbMixedStackArguments_getDataByKey0_pargs args;
   args.get<0>().value = const_cast<::std::string*>(&p_key);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -31,9 +31,9 @@ void DbMixedStackArgumentsAsyncClient::getDataByKey0T(Protocol_* prot, RpcOption
 }
 
 template <typename Protocol_, typename RpcOptions>
-void DbMixedStackArgumentsAsyncClient::getDataByKey1T(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::getDataByKey1T(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key) {
 
-  DbMixedStackArguments_getDataByKey1_pargs args;
+  ::cpp2::DbMixedStackArguments_getDataByKey1_pargs args;
   args.get<0>().value = const_cast<::std::string*>(&p_key);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
@@ -47,12 +47,12 @@ void DbMixedStackArgumentsAsyncClient::getDataByKey1T(Protocol_* prot, RpcOption
 
 
 
-void DbMixedStackArgumentsAsyncClient::getDataByKey0(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_key) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::getDataByKey0(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   getDataByKey0(rpcOptions, std::move(callback), p_key);
 }
 
-void DbMixedStackArgumentsAsyncClient::getDataByKey0(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_key) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::getDataByKey0(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_key) {
   auto [ctx, header] = getDataByKey0Ctx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -65,7 +65,7 @@ void DbMixedStackArgumentsAsyncClient::getDataByKey0(apache::thrift::RpcOptions&
   getDataByKey0Impl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_key);
 }
 
-void DbMixedStackArgumentsAsyncClient::getDataByKey0Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key, bool stealRpcOptions) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::getDataByKey0Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -94,7 +94,7 @@ void DbMixedStackArgumentsAsyncClient::getDataByKey0Impl(apache::thrift::RpcOpti
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> DbMixedStackArgumentsAsyncClient::getDataByKey0Ctx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::cpp2::DbMixedStackArguments>::getDataByKey0Ctx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -111,12 +111,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void DbMixedStackArgumentsAsyncClient::sync_getDataByKey0(::std::string& _return, const ::std::string& p_key) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::sync_getDataByKey0(::std::string& _return, const ::std::string& p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_getDataByKey0(rpcOptions, _return, p_key);
 }
 
-void DbMixedStackArgumentsAsyncClient::sync_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::string& p_key) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::sync_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::string& p_key) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -145,17 +145,17 @@ void DbMixedStackArgumentsAsyncClient::sync_getDataByKey0(apache::thrift::RpcOpt
 }
 
 
-folly::Future<::std::string> DbMixedStackArgumentsAsyncClient::future_getDataByKey0(const ::std::string& p_key) {
+folly::Future<::std::string> apache::thrift::Client<::cpp2::DbMixedStackArguments>::future_getDataByKey0(const ::std::string& p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_getDataByKey0(rpcOptions, p_key);
 }
 
-folly::SemiFuture<::std::string> DbMixedStackArgumentsAsyncClient::semifuture_getDataByKey0(const ::std::string& p_key) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::cpp2::DbMixedStackArguments>::semifuture_getDataByKey0(const ::std::string& p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_getDataByKey0(rpcOptions, p_key);
 }
 
-folly::Future<::std::string> DbMixedStackArgumentsAsyncClient::future_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
+folly::Future<::std::string> apache::thrift::Client<::cpp2::DbMixedStackArguments>::future_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
   folly::Promise<::std::string> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::string>>(std::move(promise), recv_wrapped_getDataByKey0, channel_);
@@ -163,14 +163,14 @@ folly::Future<::std::string> DbMixedStackArgumentsAsyncClient::future_getDataByK
   return future;
 }
 
-folly::SemiFuture<::std::string> DbMixedStackArgumentsAsyncClient::semifuture_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::cpp2::DbMixedStackArguments>::semifuture_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_getDataByKey0, channel_);
   auto callback = std::move(callbackAndFuture.first);
   getDataByKey0(rpcOptions, std::move(callback), p_key);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> DbMixedStackArgumentsAsyncClient::header_future_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
+folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::cpp2::DbMixedStackArguments>::header_future_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
   folly::Promise<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::string>>(std::move(promise), recv_wrapped_getDataByKey0, channel_);
@@ -178,20 +178,20 @@ folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> DbMixedStackArgumentsAsyncClient::header_semifuture_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
+folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::cpp2::DbMixedStackArguments>::header_semifuture_getDataByKey0(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_getDataByKey0, channel_);
   auto callback = std::move(callbackAndFuture.first);
   getDataByKey0(rpcOptions, std::move(callback), p_key);
   return std::move(callbackAndFuture.second);
 }
 
-void DbMixedStackArgumentsAsyncClient::getDataByKey0(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_key) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::getDataByKey0(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_key) {
   getDataByKey0(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_key);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper DbMixedStackArgumentsAsyncClient::recv_wrapped_getDataByKey0(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::cpp2::DbMixedStackArguments>::recv_wrapped_getDataByKey0(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -199,7 +199,7 @@ folly::exception_wrapper DbMixedStackArgumentsAsyncClient::recv_wrapped_getDataB
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = DbMixedStackArguments_getDataByKey0_presult;
+  using result = ::cpp2::DbMixedStackArguments_getDataByKey0_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -220,27 +220,27 @@ folly::exception_wrapper DbMixedStackArgumentsAsyncClient::recv_wrapped_getDataB
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void DbMixedStackArgumentsAsyncClient::recv_getDataByKey0(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::recv_getDataByKey0(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_getDataByKey0(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void DbMixedStackArgumentsAsyncClient::recv_instance_getDataByKey0(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::recv_instance_getDataByKey0(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_getDataByKey0(_return, state);
 }
 
-folly::exception_wrapper DbMixedStackArgumentsAsyncClient::recv_instance_wrapped_getDataByKey0(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::cpp2::DbMixedStackArguments>::recv_instance_wrapped_getDataByKey0(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_getDataByKey0(_return, state);
 }
 
-void DbMixedStackArgumentsAsyncClient::getDataByKey1(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_key) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::getDataByKey1(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   getDataByKey1(rpcOptions, std::move(callback), p_key);
 }
 
-void DbMixedStackArgumentsAsyncClient::getDataByKey1(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_key) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::getDataByKey1(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::string& p_key) {
   auto [ctx, header] = getDataByKey1Ctx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -253,7 +253,7 @@ void DbMixedStackArgumentsAsyncClient::getDataByKey1(apache::thrift::RpcOptions&
   getDataByKey1Impl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback), p_key);
 }
 
-void DbMixedStackArgumentsAsyncClient::getDataByKey1Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key, bool stealRpcOptions) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::getDataByKey1Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::std::string& p_key, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -282,7 +282,7 @@ void DbMixedStackArgumentsAsyncClient::getDataByKey1Impl(apache::thrift::RpcOpti
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> DbMixedStackArgumentsAsyncClient::getDataByKey1Ctx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::cpp2::DbMixedStackArguments>::getDataByKey1Ctx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -299,12 +299,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-void DbMixedStackArgumentsAsyncClient::sync_getDataByKey1(::std::string& _return, const ::std::string& p_key) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::sync_getDataByKey1(::std::string& _return, const ::std::string& p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_getDataByKey1(rpcOptions, _return, p_key);
 }
 
-void DbMixedStackArgumentsAsyncClient::sync_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::string& p_key) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::sync_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, const ::std::string& p_key) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -333,17 +333,17 @@ void DbMixedStackArgumentsAsyncClient::sync_getDataByKey1(apache::thrift::RpcOpt
 }
 
 
-folly::Future<::std::string> DbMixedStackArgumentsAsyncClient::future_getDataByKey1(const ::std::string& p_key) {
+folly::Future<::std::string> apache::thrift::Client<::cpp2::DbMixedStackArguments>::future_getDataByKey1(const ::std::string& p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_getDataByKey1(rpcOptions, p_key);
 }
 
-folly::SemiFuture<::std::string> DbMixedStackArgumentsAsyncClient::semifuture_getDataByKey1(const ::std::string& p_key) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::cpp2::DbMixedStackArguments>::semifuture_getDataByKey1(const ::std::string& p_key) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_getDataByKey1(rpcOptions, p_key);
 }
 
-folly::Future<::std::string> DbMixedStackArgumentsAsyncClient::future_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
+folly::Future<::std::string> apache::thrift::Client<::cpp2::DbMixedStackArguments>::future_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
   folly::Promise<::std::string> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::string>>(std::move(promise), recv_wrapped_getDataByKey1, channel_);
@@ -351,14 +351,14 @@ folly::Future<::std::string> DbMixedStackArgumentsAsyncClient::future_getDataByK
   return future;
 }
 
-folly::SemiFuture<::std::string> DbMixedStackArgumentsAsyncClient::semifuture_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
+folly::SemiFuture<::std::string> apache::thrift::Client<::cpp2::DbMixedStackArguments>::semifuture_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_getDataByKey1, channel_);
   auto callback = std::move(callbackAndFuture.first);
   getDataByKey1(rpcOptions, std::move(callback), p_key);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> DbMixedStackArgumentsAsyncClient::header_future_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
+folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::cpp2::DbMixedStackArguments>::header_future_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
   folly::Promise<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::string>>(std::move(promise), recv_wrapped_getDataByKey1, channel_);
@@ -366,20 +366,20 @@ folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> DbMixedStackArgumentsAsyncClient::header_semifuture_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
+folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::cpp2::DbMixedStackArguments>::header_semifuture_getDataByKey1(apache::thrift::RpcOptions& rpcOptions, const ::std::string& p_key) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_getDataByKey1, channel_);
   auto callback = std::move(callbackAndFuture.first);
   getDataByKey1(rpcOptions, std::move(callback), p_key);
   return std::move(callbackAndFuture.second);
 }
 
-void DbMixedStackArgumentsAsyncClient::getDataByKey1(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_key) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::getDataByKey1(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::string& p_key) {
   getDataByKey1(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_key);
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper DbMixedStackArgumentsAsyncClient::recv_wrapped_getDataByKey1(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::cpp2::DbMixedStackArguments>::recv_wrapped_getDataByKey1(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -387,7 +387,7 @@ folly::exception_wrapper DbMixedStackArgumentsAsyncClient::recv_wrapped_getDataB
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = DbMixedStackArguments_getDataByKey1_presult;
+  using result = ::cpp2::DbMixedStackArguments_getDataByKey1_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -408,20 +408,19 @@ folly::exception_wrapper DbMixedStackArgumentsAsyncClient::recv_wrapped_getDataB
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void DbMixedStackArgumentsAsyncClient::recv_getDataByKey1(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::recv_getDataByKey1(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_getDataByKey1(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void DbMixedStackArgumentsAsyncClient::recv_instance_getDataByKey1(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::cpp2::DbMixedStackArguments>::recv_instance_getDataByKey1(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_getDataByKey1(_return, state);
 }
 
-folly::exception_wrapper DbMixedStackArgumentsAsyncClient::recv_instance_wrapped_getDataByKey1(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::cpp2::DbMixedStackArguments>::recv_instance_wrapped_getDataByKey1(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_getDataByKey1(_return, state);
 }
 
 
-} // cpp2

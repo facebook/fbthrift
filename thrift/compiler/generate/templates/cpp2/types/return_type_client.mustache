@@ -19,9 +19,9 @@
 %><%/function:creates_interaction?%><%!
 %><%#function:creates_interaction?%><%!
   %><%#type:void?%><%!
-    %><%service:parent_service_cpp_name%>AsyncClient::<%function:created_interaction%><%!
+    %>apache::thrift::Client<<%service:parent_service_qualified_name%>>::<%function:created_interaction%><%!
   %><%/type:void?%><%!
   %><%^type:void?%><%!
-    %>std::pair<<%service:parent_service_cpp_name%>AsyncClient::<%function:created_interaction%>, <% > types/return_type_client_no_handle%>><%!
+    %>std::pair<apache::thrift::Client<<%service:parent_service_qualified_name%>>::<%function:created_interaction%>, <% > types/return_type_client_no_handle%>><%!
   %><%/type:void?%><%!
 %><%/function:creates_interaction?%>

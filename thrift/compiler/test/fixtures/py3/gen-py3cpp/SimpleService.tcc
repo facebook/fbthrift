@@ -110,7 +110,7 @@ void SimpleServiceAsyncProcessor::executeRequest_get_five(apache::thrift::Server
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_get_five_pargs args;
+  ::py3::simple::SimpleService_get_five_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.get_five", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "get_five", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -152,7 +152,7 @@ void SimpleServiceAsyncProcessor::process_get_five(apache::thrift::ResponseChann
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_get_five_pargs args;
+  ::py3::simple::SimpleService_get_five_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.get_five", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -170,7 +170,7 @@ void SimpleServiceAsyncProcessor::process_get_five(apache::thrift::ResponseChann
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_get_five(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_get_five_presult result;
+  ::py3::simple::SimpleService_get_five_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -206,7 +206,7 @@ void SimpleServiceAsyncProcessor::executeRequest_add_five(apache::thrift::Server
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_add_five_pargs args;
+  ::py3::simple::SimpleService_add_five_pargs args;
   ::std::int32_t uarg_num{0};
   args.get<0>().value = &uarg_num;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.add_five", serverRequest.requestContext()));
@@ -250,7 +250,7 @@ void SimpleServiceAsyncProcessor::process_add_five(apache::thrift::ResponseChann
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_add_five_pargs args;
+  ::py3::simple::SimpleService_add_five_pargs args;
   ::std::int32_t uarg_num{0};
   args.get<0>().value = &uarg_num;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.add_five", ctx));
@@ -270,7 +270,7 @@ void SimpleServiceAsyncProcessor::process_add_five(apache::thrift::ResponseChann
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_add_five(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_add_five_presult result;
+  ::py3::simple::SimpleService_add_five_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -306,7 +306,7 @@ void SimpleServiceAsyncProcessor::executeRequest_do_nothing(apache::thrift::Serv
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_do_nothing_pargs args;
+  ::py3::simple::SimpleService_do_nothing_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.do_nothing", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "do_nothing", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -348,7 +348,7 @@ void SimpleServiceAsyncProcessor::process_do_nothing(apache::thrift::ResponseCha
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_do_nothing_pargs args;
+  ::py3::simple::SimpleService_do_nothing_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.do_nothing", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -366,7 +366,7 @@ void SimpleServiceAsyncProcessor::process_do_nothing(apache::thrift::ResponseCha
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_do_nothing(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  SimpleService_do_nothing_presult result;
+  ::py3::simple::SimpleService_do_nothing_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -400,7 +400,7 @@ void SimpleServiceAsyncProcessor::executeRequest_concat(apache::thrift::ServerRe
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_concat_pargs args;
+  ::py3::simple::SimpleService_concat_pargs args;
   auto uarg_first = std::make_unique<::std::string>();
   args.get<0>().value = uarg_first.get();
   auto uarg_second = std::make_unique<::std::string>();
@@ -446,7 +446,7 @@ void SimpleServiceAsyncProcessor::process_concat(apache::thrift::ResponseChannel
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_concat_pargs args;
+  ::py3::simple::SimpleService_concat_pargs args;
   auto uarg_first = std::make_unique<::std::string>();
   args.get<0>().value = uarg_first.get();
   auto uarg_second = std::make_unique<::std::string>();
@@ -468,7 +468,7 @@ void SimpleServiceAsyncProcessor::process_concat(apache::thrift::ResponseChannel
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_concat(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  SimpleService_concat_presult result;
+  ::py3::simple::SimpleService_concat_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -504,7 +504,7 @@ void SimpleServiceAsyncProcessor::executeRequest_get_value(apache::thrift::Serve
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_get_value_pargs args;
+  ::py3::simple::SimpleService_get_value_pargs args;
   auto uarg_simple_struct = std::make_unique<::py3::simple::SimpleStruct>();
   args.get<0>().value = uarg_simple_struct.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.get_value", serverRequest.requestContext()));
@@ -548,7 +548,7 @@ void SimpleServiceAsyncProcessor::process_get_value(apache::thrift::ResponseChan
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_get_value_pargs args;
+  ::py3::simple::SimpleService_get_value_pargs args;
   auto uarg_simple_struct = std::make_unique<::py3::simple::SimpleStruct>();
   args.get<0>().value = uarg_simple_struct.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.get_value", ctx));
@@ -568,7 +568,7 @@ void SimpleServiceAsyncProcessor::process_get_value(apache::thrift::ResponseChan
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_get_value(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_get_value_presult result;
+  ::py3::simple::SimpleService_get_value_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -604,7 +604,7 @@ void SimpleServiceAsyncProcessor::executeRequest_negate(apache::thrift::ServerRe
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_negate_pargs args;
+  ::py3::simple::SimpleService_negate_pargs args;
   bool uarg_input{0};
   args.get<0>().value = &uarg_input;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.negate", serverRequest.requestContext()));
@@ -648,7 +648,7 @@ void SimpleServiceAsyncProcessor::process_negate(apache::thrift::ResponseChannel
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_negate_pargs args;
+  ::py3::simple::SimpleService_negate_pargs args;
   bool uarg_input{0};
   args.get<0>().value = &uarg_input;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.negate", ctx));
@@ -668,7 +668,7 @@ void SimpleServiceAsyncProcessor::process_negate(apache::thrift::ResponseChannel
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_negate(apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
-  SimpleService_negate_presult result;
+  ::py3::simple::SimpleService_negate_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -704,7 +704,7 @@ void SimpleServiceAsyncProcessor::executeRequest_tiny(apache::thrift::ServerRequ
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_tiny_pargs args;
+  ::py3::simple::SimpleService_tiny_pargs args;
   ::std::int8_t uarg_input{0};
   args.get<0>().value = &uarg_input;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.tiny", serverRequest.requestContext()));
@@ -748,7 +748,7 @@ void SimpleServiceAsyncProcessor::process_tiny(apache::thrift::ResponseChannelRe
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_tiny_pargs args;
+  ::py3::simple::SimpleService_tiny_pargs args;
   ::std::int8_t uarg_input{0};
   args.get<0>().value = &uarg_input;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.tiny", ctx));
@@ -768,7 +768,7 @@ void SimpleServiceAsyncProcessor::process_tiny(apache::thrift::ResponseChannelRe
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_tiny(apache::thrift::ContextStack* ctx, ::std::int8_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_tiny_presult result;
+  ::py3::simple::SimpleService_tiny_presult result;
   result.get<0>().value = const_cast<::std::int8_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -804,7 +804,7 @@ void SimpleServiceAsyncProcessor::executeRequest_small(apache::thrift::ServerReq
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_small_pargs args;
+  ::py3::simple::SimpleService_small_pargs args;
   ::std::int16_t uarg_input{0};
   args.get<0>().value = &uarg_input;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.small", serverRequest.requestContext()));
@@ -848,7 +848,7 @@ void SimpleServiceAsyncProcessor::process_small(apache::thrift::ResponseChannelR
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_small_pargs args;
+  ::py3::simple::SimpleService_small_pargs args;
   ::std::int16_t uarg_input{0};
   args.get<0>().value = &uarg_input;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.small", ctx));
@@ -868,7 +868,7 @@ void SimpleServiceAsyncProcessor::process_small(apache::thrift::ResponseChannelR
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_small(apache::thrift::ContextStack* ctx, ::std::int16_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_small_presult result;
+  ::py3::simple::SimpleService_small_presult result;
   result.get<0>().value = const_cast<::std::int16_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -904,7 +904,7 @@ void SimpleServiceAsyncProcessor::executeRequest_big(apache::thrift::ServerReque
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_big_pargs args;
+  ::py3::simple::SimpleService_big_pargs args;
   ::std::int64_t uarg_input{0};
   args.get<0>().value = &uarg_input;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.big", serverRequest.requestContext()));
@@ -948,7 +948,7 @@ void SimpleServiceAsyncProcessor::process_big(apache::thrift::ResponseChannelReq
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_big_pargs args;
+  ::py3::simple::SimpleService_big_pargs args;
   ::std::int64_t uarg_input{0};
   args.get<0>().value = &uarg_input;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.big", ctx));
@@ -968,7 +968,7 @@ void SimpleServiceAsyncProcessor::process_big(apache::thrift::ResponseChannelReq
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_big(apache::thrift::ContextStack* ctx, ::std::int64_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_big_presult result;
+  ::py3::simple::SimpleService_big_presult result;
   result.get<0>().value = const_cast<::std::int64_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1004,7 +1004,7 @@ void SimpleServiceAsyncProcessor::executeRequest_two(apache::thrift::ServerReque
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_two_pargs args;
+  ::py3::simple::SimpleService_two_pargs args;
   double uarg_input{0};
   args.get<0>().value = &uarg_input;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.two", serverRequest.requestContext()));
@@ -1048,7 +1048,7 @@ void SimpleServiceAsyncProcessor::process_two(apache::thrift::ResponseChannelReq
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_two_pargs args;
+  ::py3::simple::SimpleService_two_pargs args;
   double uarg_input{0};
   args.get<0>().value = &uarg_input;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.two", ctx));
@@ -1068,7 +1068,7 @@ void SimpleServiceAsyncProcessor::process_two(apache::thrift::ResponseChannelReq
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_two(apache::thrift::ContextStack* ctx, double const& _return) {
   ProtocolOut_ prot;
-  SimpleService_two_presult result;
+  ::py3::simple::SimpleService_two_presult result;
   result.get<0>().value = const_cast<double*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1104,7 +1104,7 @@ void SimpleServiceAsyncProcessor::executeRequest_expected_exception(apache::thri
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_expected_exception_pargs args;
+  ::py3::simple::SimpleService_expected_exception_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.expected_exception", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "expected_exception", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -1146,7 +1146,7 @@ void SimpleServiceAsyncProcessor::process_expected_exception(apache::thrift::Res
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_expected_exception_pargs args;
+  ::py3::simple::SimpleService_expected_exception_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.expected_exception", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -1164,7 +1164,7 @@ void SimpleServiceAsyncProcessor::process_expected_exception(apache::thrift::Res
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_expected_exception(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  SimpleService_expected_exception_presult result;
+  ::py3::simple::SimpleService_expected_exception_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -1173,7 +1173,7 @@ void SimpleServiceAsyncProcessor::throw_wrapped_expected_exception(apache::thrif
   if (!ew) {
     return;
   }
-  SimpleService_expected_exception_presult result;
+  ::py3::simple::SimpleService_expected_exception_presult result;
   if (ew.with_exception([&]( ::py3::simple::SimpleException& e) {
     if (ctx) {
       ctx->userExceptionWrapped(true, ew);
@@ -1215,7 +1215,7 @@ void SimpleServiceAsyncProcessor::executeRequest_unexpected_exception(apache::th
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_unexpected_exception_pargs args;
+  ::py3::simple::SimpleService_unexpected_exception_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.unexpected_exception", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "unexpected_exception", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -1257,7 +1257,7 @@ void SimpleServiceAsyncProcessor::process_unexpected_exception(apache::thrift::R
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_unexpected_exception_pargs args;
+  ::py3::simple::SimpleService_unexpected_exception_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.unexpected_exception", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -1275,7 +1275,7 @@ void SimpleServiceAsyncProcessor::process_unexpected_exception(apache::thrift::R
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_unexpected_exception(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_unexpected_exception_presult result;
+  ::py3::simple::SimpleService_unexpected_exception_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1311,7 +1311,7 @@ void SimpleServiceAsyncProcessor::executeRequest_sum_i16_list(apache::thrift::Se
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_sum_i16_list_pargs args;
+  ::py3::simple::SimpleService_sum_i16_list_pargs args;
   auto uarg_numbers = std::make_unique<::std::vector<::std::int16_t>>();
   args.get<0>().value = uarg_numbers.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.sum_i16_list", serverRequest.requestContext()));
@@ -1355,7 +1355,7 @@ void SimpleServiceAsyncProcessor::process_sum_i16_list(apache::thrift::ResponseC
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_sum_i16_list_pargs args;
+  ::py3::simple::SimpleService_sum_i16_list_pargs args;
   auto uarg_numbers = std::make_unique<::std::vector<::std::int16_t>>();
   args.get<0>().value = uarg_numbers.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.sum_i16_list", ctx));
@@ -1375,7 +1375,7 @@ void SimpleServiceAsyncProcessor::process_sum_i16_list(apache::thrift::ResponseC
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_sum_i16_list(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_sum_i16_list_presult result;
+  ::py3::simple::SimpleService_sum_i16_list_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1411,7 +1411,7 @@ void SimpleServiceAsyncProcessor::executeRequest_sum_i32_list(apache::thrift::Se
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_sum_i32_list_pargs args;
+  ::py3::simple::SimpleService_sum_i32_list_pargs args;
   auto uarg_numbers = std::make_unique<::std::vector<::std::int32_t>>();
   args.get<0>().value = uarg_numbers.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.sum_i32_list", serverRequest.requestContext()));
@@ -1455,7 +1455,7 @@ void SimpleServiceAsyncProcessor::process_sum_i32_list(apache::thrift::ResponseC
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_sum_i32_list_pargs args;
+  ::py3::simple::SimpleService_sum_i32_list_pargs args;
   auto uarg_numbers = std::make_unique<::std::vector<::std::int32_t>>();
   args.get<0>().value = uarg_numbers.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.sum_i32_list", ctx));
@@ -1475,7 +1475,7 @@ void SimpleServiceAsyncProcessor::process_sum_i32_list(apache::thrift::ResponseC
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_sum_i32_list(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_sum_i32_list_presult result;
+  ::py3::simple::SimpleService_sum_i32_list_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1511,7 +1511,7 @@ void SimpleServiceAsyncProcessor::executeRequest_sum_i64_list(apache::thrift::Se
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_sum_i64_list_pargs args;
+  ::py3::simple::SimpleService_sum_i64_list_pargs args;
   auto uarg_numbers = std::make_unique<::std::vector<::std::int64_t>>();
   args.get<0>().value = uarg_numbers.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.sum_i64_list", serverRequest.requestContext()));
@@ -1555,7 +1555,7 @@ void SimpleServiceAsyncProcessor::process_sum_i64_list(apache::thrift::ResponseC
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_sum_i64_list_pargs args;
+  ::py3::simple::SimpleService_sum_i64_list_pargs args;
   auto uarg_numbers = std::make_unique<::std::vector<::std::int64_t>>();
   args.get<0>().value = uarg_numbers.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.sum_i64_list", ctx));
@@ -1575,7 +1575,7 @@ void SimpleServiceAsyncProcessor::process_sum_i64_list(apache::thrift::ResponseC
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_sum_i64_list(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_sum_i64_list_presult result;
+  ::py3::simple::SimpleService_sum_i64_list_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1611,7 +1611,7 @@ void SimpleServiceAsyncProcessor::executeRequest_concat_many(apache::thrift::Ser
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_concat_many_pargs args;
+  ::py3::simple::SimpleService_concat_many_pargs args;
   auto uarg_words = std::make_unique<::std::vector<::std::string>>();
   args.get<0>().value = uarg_words.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.concat_many", serverRequest.requestContext()));
@@ -1655,7 +1655,7 @@ void SimpleServiceAsyncProcessor::process_concat_many(apache::thrift::ResponseCh
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_concat_many_pargs args;
+  ::py3::simple::SimpleService_concat_many_pargs args;
   auto uarg_words = std::make_unique<::std::vector<::std::string>>();
   args.get<0>().value = uarg_words.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.concat_many", ctx));
@@ -1675,7 +1675,7 @@ void SimpleServiceAsyncProcessor::process_concat_many(apache::thrift::ResponseCh
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_concat_many(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  SimpleService_concat_many_presult result;
+  ::py3::simple::SimpleService_concat_many_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1711,7 +1711,7 @@ void SimpleServiceAsyncProcessor::executeRequest_count_structs(apache::thrift::S
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_count_structs_pargs args;
+  ::py3::simple::SimpleService_count_structs_pargs args;
   auto uarg_items = std::make_unique<::std::vector<::py3::simple::SimpleStruct>>();
   args.get<0>().value = uarg_items.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.count_structs", serverRequest.requestContext()));
@@ -1755,7 +1755,7 @@ void SimpleServiceAsyncProcessor::process_count_structs(apache::thrift::Response
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_count_structs_pargs args;
+  ::py3::simple::SimpleService_count_structs_pargs args;
   auto uarg_items = std::make_unique<::std::vector<::py3::simple::SimpleStruct>>();
   args.get<0>().value = uarg_items.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.count_structs", ctx));
@@ -1775,7 +1775,7 @@ void SimpleServiceAsyncProcessor::process_count_structs(apache::thrift::Response
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_count_structs(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_count_structs_presult result;
+  ::py3::simple::SimpleService_count_structs_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1811,7 +1811,7 @@ void SimpleServiceAsyncProcessor::executeRequest_sum_set(apache::thrift::ServerR
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_sum_set_pargs args;
+  ::py3::simple::SimpleService_sum_set_pargs args;
   auto uarg_numbers = std::make_unique<::std::set<::std::int32_t>>();
   args.get<0>().value = uarg_numbers.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.sum_set", serverRequest.requestContext()));
@@ -1855,7 +1855,7 @@ void SimpleServiceAsyncProcessor::process_sum_set(apache::thrift::ResponseChanne
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_sum_set_pargs args;
+  ::py3::simple::SimpleService_sum_set_pargs args;
   auto uarg_numbers = std::make_unique<::std::set<::std::int32_t>>();
   args.get<0>().value = uarg_numbers.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.sum_set", ctx));
@@ -1875,7 +1875,7 @@ void SimpleServiceAsyncProcessor::process_sum_set(apache::thrift::ResponseChanne
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_sum_set(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_sum_set_presult result;
+  ::py3::simple::SimpleService_sum_set_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1911,7 +1911,7 @@ void SimpleServiceAsyncProcessor::executeRequest_contains_word(apache::thrift::S
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_contains_word_pargs args;
+  ::py3::simple::SimpleService_contains_word_pargs args;
   auto uarg_words = std::make_unique<::std::set<::std::string>>();
   args.get<0>().value = uarg_words.get();
   auto uarg_word = std::make_unique<::std::string>();
@@ -1957,7 +1957,7 @@ void SimpleServiceAsyncProcessor::process_contains_word(apache::thrift::Response
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_contains_word_pargs args;
+  ::py3::simple::SimpleService_contains_word_pargs args;
   auto uarg_words = std::make_unique<::std::set<::std::string>>();
   args.get<0>().value = uarg_words.get();
   auto uarg_word = std::make_unique<::std::string>();
@@ -1979,7 +1979,7 @@ void SimpleServiceAsyncProcessor::process_contains_word(apache::thrift::Response
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_contains_word(apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
-  SimpleService_contains_word_presult result;
+  ::py3::simple::SimpleService_contains_word_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2015,7 +2015,7 @@ void SimpleServiceAsyncProcessor::executeRequest_get_map_value(apache::thrift::S
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_get_map_value_pargs args;
+  ::py3::simple::SimpleService_get_map_value_pargs args;
   auto uarg_words = std::make_unique<::std::map<::std::string, ::std::string>>();
   args.get<0>().value = uarg_words.get();
   auto uarg_key = std::make_unique<::std::string>();
@@ -2061,7 +2061,7 @@ void SimpleServiceAsyncProcessor::process_get_map_value(apache::thrift::Response
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_get_map_value_pargs args;
+  ::py3::simple::SimpleService_get_map_value_pargs args;
   auto uarg_words = std::make_unique<::std::map<::std::string, ::std::string>>();
   args.get<0>().value = uarg_words.get();
   auto uarg_key = std::make_unique<::std::string>();
@@ -2083,7 +2083,7 @@ void SimpleServiceAsyncProcessor::process_get_map_value(apache::thrift::Response
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_get_map_value(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  SimpleService_get_map_value_presult result;
+  ::py3::simple::SimpleService_get_map_value_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2119,7 +2119,7 @@ void SimpleServiceAsyncProcessor::executeRequest_map_length(apache::thrift::Serv
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_map_length_pargs args;
+  ::py3::simple::SimpleService_map_length_pargs args;
   auto uarg_items = std::make_unique<::std::map<::std::string, ::py3::simple::SimpleStruct>>();
   args.get<0>().value = uarg_items.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.map_length", serverRequest.requestContext()));
@@ -2163,7 +2163,7 @@ void SimpleServiceAsyncProcessor::process_map_length(apache::thrift::ResponseCha
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_map_length_pargs args;
+  ::py3::simple::SimpleService_map_length_pargs args;
   auto uarg_items = std::make_unique<::std::map<::std::string, ::py3::simple::SimpleStruct>>();
   args.get<0>().value = uarg_items.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.map_length", ctx));
@@ -2183,7 +2183,7 @@ void SimpleServiceAsyncProcessor::process_map_length(apache::thrift::ResponseCha
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_map_length(apache::thrift::ContextStack* ctx, ::std::int16_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_map_length_presult result;
+  ::py3::simple::SimpleService_map_length_presult result;
   result.get<0>().value = const_cast<::std::int16_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2219,7 +2219,7 @@ void SimpleServiceAsyncProcessor::executeRequest_sum_map_values(apache::thrift::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_sum_map_values_pargs args;
+  ::py3::simple::SimpleService_sum_map_values_pargs args;
   auto uarg_items = std::make_unique<::std::map<::std::string, ::std::int16_t>>();
   args.get<0>().value = uarg_items.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.sum_map_values", serverRequest.requestContext()));
@@ -2263,7 +2263,7 @@ void SimpleServiceAsyncProcessor::process_sum_map_values(apache::thrift::Respons
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_sum_map_values_pargs args;
+  ::py3::simple::SimpleService_sum_map_values_pargs args;
   auto uarg_items = std::make_unique<::std::map<::std::string, ::std::int16_t>>();
   args.get<0>().value = uarg_items.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.sum_map_values", ctx));
@@ -2283,7 +2283,7 @@ void SimpleServiceAsyncProcessor::process_sum_map_values(apache::thrift::Respons
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_sum_map_values(apache::thrift::ContextStack* ctx, ::std::int16_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_sum_map_values_presult result;
+  ::py3::simple::SimpleService_sum_map_values_presult result;
   result.get<0>().value = const_cast<::std::int16_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2319,7 +2319,7 @@ void SimpleServiceAsyncProcessor::executeRequest_complex_sum_i32(apache::thrift:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_complex_sum_i32_pargs args;
+  ::py3::simple::SimpleService_complex_sum_i32_pargs args;
   auto uarg_counter = std::make_unique<::py3::simple::ComplexStruct>();
   args.get<0>().value = uarg_counter.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.complex_sum_i32", serverRequest.requestContext()));
@@ -2363,7 +2363,7 @@ void SimpleServiceAsyncProcessor::process_complex_sum_i32(apache::thrift::Respon
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_complex_sum_i32_pargs args;
+  ::py3::simple::SimpleService_complex_sum_i32_pargs args;
   auto uarg_counter = std::make_unique<::py3::simple::ComplexStruct>();
   args.get<0>().value = uarg_counter.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.complex_sum_i32", ctx));
@@ -2383,7 +2383,7 @@ void SimpleServiceAsyncProcessor::process_complex_sum_i32(apache::thrift::Respon
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_complex_sum_i32(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_complex_sum_i32_presult result;
+  ::py3::simple::SimpleService_complex_sum_i32_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2419,7 +2419,7 @@ void SimpleServiceAsyncProcessor::executeRequest_repeat_name(apache::thrift::Ser
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_repeat_name_pargs args;
+  ::py3::simple::SimpleService_repeat_name_pargs args;
   auto uarg_counter = std::make_unique<::py3::simple::ComplexStruct>();
   args.get<0>().value = uarg_counter.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.repeat_name", serverRequest.requestContext()));
@@ -2463,7 +2463,7 @@ void SimpleServiceAsyncProcessor::process_repeat_name(apache::thrift::ResponseCh
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_repeat_name_pargs args;
+  ::py3::simple::SimpleService_repeat_name_pargs args;
   auto uarg_counter = std::make_unique<::py3::simple::ComplexStruct>();
   args.get<0>().value = uarg_counter.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.repeat_name", ctx));
@@ -2483,7 +2483,7 @@ void SimpleServiceAsyncProcessor::process_repeat_name(apache::thrift::ResponseCh
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_repeat_name(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  SimpleService_repeat_name_presult result;
+  ::py3::simple::SimpleService_repeat_name_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2519,7 +2519,7 @@ void SimpleServiceAsyncProcessor::executeRequest_get_struct(apache::thrift::Serv
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_get_struct_pargs args;
+  ::py3::simple::SimpleService_get_struct_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.get_struct", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "get_struct", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -2561,7 +2561,7 @@ void SimpleServiceAsyncProcessor::process_get_struct(apache::thrift::ResponseCha
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_get_struct_pargs args;
+  ::py3::simple::SimpleService_get_struct_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.get_struct", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -2579,7 +2579,7 @@ void SimpleServiceAsyncProcessor::process_get_struct(apache::thrift::ResponseCha
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_get_struct(apache::thrift::ContextStack* ctx, ::py3::simple::SimpleStruct const& _return) {
   ProtocolOut_ prot;
-  SimpleService_get_struct_presult result;
+  ::py3::simple::SimpleService_get_struct_presult result;
   result.get<0>().value = const_cast<::py3::simple::SimpleStruct*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2615,7 +2615,7 @@ void SimpleServiceAsyncProcessor::executeRequest_fib(apache::thrift::ServerReque
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_fib_pargs args;
+  ::py3::simple::SimpleService_fib_pargs args;
   ::std::int16_t uarg_n{0};
   args.get<0>().value = &uarg_n;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.fib", serverRequest.requestContext()));
@@ -2659,7 +2659,7 @@ void SimpleServiceAsyncProcessor::process_fib(apache::thrift::ResponseChannelReq
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_fib_pargs args;
+  ::py3::simple::SimpleService_fib_pargs args;
   ::std::int16_t uarg_n{0};
   args.get<0>().value = &uarg_n;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.fib", ctx));
@@ -2679,7 +2679,7 @@ void SimpleServiceAsyncProcessor::process_fib(apache::thrift::ResponseChannelReq
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_fib(apache::thrift::ContextStack* ctx, ::std::vector<::std::int32_t> const& _return) {
   ProtocolOut_ prot;
-  SimpleService_fib_presult result;
+  ::py3::simple::SimpleService_fib_presult result;
   result.get<0>().value = const_cast<::std::vector<::std::int32_t>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2715,7 +2715,7 @@ void SimpleServiceAsyncProcessor::executeRequest_unique_words(apache::thrift::Se
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_unique_words_pargs args;
+  ::py3::simple::SimpleService_unique_words_pargs args;
   auto uarg_words = std::make_unique<::std::vector<::std::string>>();
   args.get<0>().value = uarg_words.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.unique_words", serverRequest.requestContext()));
@@ -2759,7 +2759,7 @@ void SimpleServiceAsyncProcessor::process_unique_words(apache::thrift::ResponseC
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_unique_words_pargs args;
+  ::py3::simple::SimpleService_unique_words_pargs args;
   auto uarg_words = std::make_unique<::std::vector<::std::string>>();
   args.get<0>().value = uarg_words.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.unique_words", ctx));
@@ -2779,7 +2779,7 @@ void SimpleServiceAsyncProcessor::process_unique_words(apache::thrift::ResponseC
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_unique_words(apache::thrift::ContextStack* ctx, ::std::set<::std::string> const& _return) {
   ProtocolOut_ prot;
-  SimpleService_unique_words_presult result;
+  ::py3::simple::SimpleService_unique_words_presult result;
   result.get<0>().value = const_cast<::std::set<::std::string>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2815,7 +2815,7 @@ void SimpleServiceAsyncProcessor::executeRequest_words_count(apache::thrift::Ser
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_words_count_pargs args;
+  ::py3::simple::SimpleService_words_count_pargs args;
   auto uarg_words = std::make_unique<::std::vector<::std::string>>();
   args.get<0>().value = uarg_words.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.words_count", serverRequest.requestContext()));
@@ -2859,7 +2859,7 @@ void SimpleServiceAsyncProcessor::process_words_count(apache::thrift::ResponseCh
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_words_count_pargs args;
+  ::py3::simple::SimpleService_words_count_pargs args;
   auto uarg_words = std::make_unique<::std::vector<::std::string>>();
   args.get<0>().value = uarg_words.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.words_count", ctx));
@@ -2879,7 +2879,7 @@ void SimpleServiceAsyncProcessor::process_words_count(apache::thrift::ResponseCh
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_words_count(apache::thrift::ContextStack* ctx, ::std::map<::std::string, ::std::int16_t> const& _return) {
   ProtocolOut_ prot;
-  SimpleService_words_count_presult result;
+  ::py3::simple::SimpleService_words_count_presult result;
   result.get<0>().value = const_cast<::std::map<::std::string, ::std::int16_t>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2915,7 +2915,7 @@ void SimpleServiceAsyncProcessor::executeRequest_set_enum(apache::thrift::Server
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_set_enum_pargs args;
+  ::py3::simple::SimpleService_set_enum_pargs args;
   ::py3::simple::AnEnum uarg_in_enum{static_cast<::py3::simple::AnEnum>(0)};
   args.get<0>().value = &uarg_in_enum;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.set_enum", serverRequest.requestContext()));
@@ -2959,7 +2959,7 @@ void SimpleServiceAsyncProcessor::process_set_enum(apache::thrift::ResponseChann
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_set_enum_pargs args;
+  ::py3::simple::SimpleService_set_enum_pargs args;
   ::py3::simple::AnEnum uarg_in_enum{static_cast<::py3::simple::AnEnum>(0)};
   args.get<0>().value = &uarg_in_enum;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.set_enum", ctx));
@@ -2979,7 +2979,7 @@ void SimpleServiceAsyncProcessor::process_set_enum(apache::thrift::ResponseChann
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_set_enum(apache::thrift::ContextStack* ctx, ::py3::simple::AnEnum const& _return) {
   ProtocolOut_ prot;
-  SimpleService_set_enum_presult result;
+  ::py3::simple::SimpleService_set_enum_presult result;
   result.get<0>().value = const_cast<::py3::simple::AnEnum*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -3015,7 +3015,7 @@ void SimpleServiceAsyncProcessor::executeRequest_list_of_lists(apache::thrift::S
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_list_of_lists_pargs args;
+  ::py3::simple::SimpleService_list_of_lists_pargs args;
   ::std::int16_t uarg_num_lists{0};
   args.get<0>().value = &uarg_num_lists;
   ::std::int16_t uarg_num_items{0};
@@ -3061,7 +3061,7 @@ void SimpleServiceAsyncProcessor::process_list_of_lists(apache::thrift::Response
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_list_of_lists_pargs args;
+  ::py3::simple::SimpleService_list_of_lists_pargs args;
   ::std::int16_t uarg_num_lists{0};
   args.get<0>().value = &uarg_num_lists;
   ::std::int16_t uarg_num_items{0};
@@ -3083,7 +3083,7 @@ void SimpleServiceAsyncProcessor::process_list_of_lists(apache::thrift::Response
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_list_of_lists(apache::thrift::ContextStack* ctx, ::std::vector<::std::vector<::std::int32_t>> const& _return) {
   ProtocolOut_ prot;
-  SimpleService_list_of_lists_presult result;
+  ::py3::simple::SimpleService_list_of_lists_presult result;
   result.get<0>().value = const_cast<::std::vector<::std::vector<::std::int32_t>>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -3119,7 +3119,7 @@ void SimpleServiceAsyncProcessor::executeRequest_word_character_frequency(apache
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_word_character_frequency_pargs args;
+  ::py3::simple::SimpleService_word_character_frequency_pargs args;
   auto uarg_sentence = std::make_unique<::std::string>();
   args.get<0>().value = uarg_sentence.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.word_character_frequency", serverRequest.requestContext()));
@@ -3163,7 +3163,7 @@ void SimpleServiceAsyncProcessor::process_word_character_frequency(apache::thrif
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_word_character_frequency_pargs args;
+  ::py3::simple::SimpleService_word_character_frequency_pargs args;
   auto uarg_sentence = std::make_unique<::std::string>();
   args.get<0>().value = uarg_sentence.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.word_character_frequency", ctx));
@@ -3183,7 +3183,7 @@ void SimpleServiceAsyncProcessor::process_word_character_frequency(apache::thrif
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_word_character_frequency(apache::thrift::ContextStack* ctx, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>> const& _return) {
   ProtocolOut_ prot;
-  SimpleService_word_character_frequency_presult result;
+  ::py3::simple::SimpleService_word_character_frequency_presult result;
   result.get<0>().value = const_cast<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -3219,7 +3219,7 @@ void SimpleServiceAsyncProcessor::executeRequest_list_of_sets(apache::thrift::Se
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_list_of_sets_pargs args;
+  ::py3::simple::SimpleService_list_of_sets_pargs args;
   auto uarg_some_words = std::make_unique<::std::string>();
   args.get<0>().value = uarg_some_words.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.list_of_sets", serverRequest.requestContext()));
@@ -3263,7 +3263,7 @@ void SimpleServiceAsyncProcessor::process_list_of_sets(apache::thrift::ResponseC
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_list_of_sets_pargs args;
+  ::py3::simple::SimpleService_list_of_sets_pargs args;
   auto uarg_some_words = std::make_unique<::std::string>();
   args.get<0>().value = uarg_some_words.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.list_of_sets", ctx));
@@ -3283,7 +3283,7 @@ void SimpleServiceAsyncProcessor::process_list_of_sets(apache::thrift::ResponseC
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_list_of_sets(apache::thrift::ContextStack* ctx, ::std::vector<::std::set<::std::string>> const& _return) {
   ProtocolOut_ prot;
-  SimpleService_list_of_sets_presult result;
+  ::py3::simple::SimpleService_list_of_sets_presult result;
   result.get<0>().value = const_cast<::std::vector<::std::set<::std::string>>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -3319,7 +3319,7 @@ void SimpleServiceAsyncProcessor::executeRequest_nested_map_argument(apache::thr
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_nested_map_argument_pargs args;
+  ::py3::simple::SimpleService_nested_map_argument_pargs args;
   auto uarg_struct_map = std::make_unique<::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>>();
   args.get<0>().value = uarg_struct_map.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.nested_map_argument", serverRequest.requestContext()));
@@ -3363,7 +3363,7 @@ void SimpleServiceAsyncProcessor::process_nested_map_argument(apache::thrift::Re
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_nested_map_argument_pargs args;
+  ::py3::simple::SimpleService_nested_map_argument_pargs args;
   auto uarg_struct_map = std::make_unique<::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>>();
   args.get<0>().value = uarg_struct_map.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.nested_map_argument", ctx));
@@ -3383,7 +3383,7 @@ void SimpleServiceAsyncProcessor::process_nested_map_argument(apache::thrift::Re
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_nested_map_argument(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  SimpleService_nested_map_argument_presult result;
+  ::py3::simple::SimpleService_nested_map_argument_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -3419,7 +3419,7 @@ void SimpleServiceAsyncProcessor::executeRequest_make_sentence(apache::thrift::S
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_make_sentence_pargs args;
+  ::py3::simple::SimpleService_make_sentence_pargs args;
   auto uarg_word_chars = std::make_unique<::std::vector<::std::vector<::std::string>>>();
   args.get<0>().value = uarg_word_chars.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.make_sentence", serverRequest.requestContext()));
@@ -3463,7 +3463,7 @@ void SimpleServiceAsyncProcessor::process_make_sentence(apache::thrift::Response
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_make_sentence_pargs args;
+  ::py3::simple::SimpleService_make_sentence_pargs args;
   auto uarg_word_chars = std::make_unique<::std::vector<::std::vector<::std::string>>>();
   args.get<0>().value = uarg_word_chars.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.make_sentence", ctx));
@@ -3483,7 +3483,7 @@ void SimpleServiceAsyncProcessor::process_make_sentence(apache::thrift::Response
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_make_sentence(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  SimpleService_make_sentence_presult result;
+  ::py3::simple::SimpleService_make_sentence_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -3519,7 +3519,7 @@ void SimpleServiceAsyncProcessor::executeRequest_get_union(apache::thrift::Serve
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_get_union_pargs args;
+  ::py3::simple::SimpleService_get_union_pargs args;
   auto uarg_sets = std::make_unique<::std::vector<::std::set<::std::int32_t>>>();
   args.get<0>().value = uarg_sets.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.get_union", serverRequest.requestContext()));
@@ -3563,7 +3563,7 @@ void SimpleServiceAsyncProcessor::process_get_union(apache::thrift::ResponseChan
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_get_union_pargs args;
+  ::py3::simple::SimpleService_get_union_pargs args;
   auto uarg_sets = std::make_unique<::std::vector<::std::set<::std::int32_t>>>();
   args.get<0>().value = uarg_sets.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.get_union", ctx));
@@ -3583,7 +3583,7 @@ void SimpleServiceAsyncProcessor::process_get_union(apache::thrift::ResponseChan
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_get_union(apache::thrift::ContextStack* ctx, ::std::set<::std::int32_t> const& _return) {
   ProtocolOut_ prot;
-  SimpleService_get_union_presult result;
+  ::py3::simple::SimpleService_get_union_presult result;
   result.get<0>().value = const_cast<::std::set<::std::int32_t>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -3619,7 +3619,7 @@ void SimpleServiceAsyncProcessor::executeRequest_get_keys(apache::thrift::Server
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_get_keys_pargs args;
+  ::py3::simple::SimpleService_get_keys_pargs args;
   auto uarg_string_map = std::make_unique<::std::vector<::std::map<::std::string, ::std::string>>>();
   args.get<0>().value = uarg_string_map.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.get_keys", serverRequest.requestContext()));
@@ -3663,7 +3663,7 @@ void SimpleServiceAsyncProcessor::process_get_keys(apache::thrift::ResponseChann
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_get_keys_pargs args;
+  ::py3::simple::SimpleService_get_keys_pargs args;
   auto uarg_string_map = std::make_unique<::std::vector<::std::map<::std::string, ::std::string>>>();
   args.get<0>().value = uarg_string_map.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.get_keys", ctx));
@@ -3683,7 +3683,7 @@ void SimpleServiceAsyncProcessor::process_get_keys(apache::thrift::ResponseChann
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_get_keys(apache::thrift::ContextStack* ctx, ::std::set<::std::string> const& _return) {
   ProtocolOut_ prot;
-  SimpleService_get_keys_presult result;
+  ::py3::simple::SimpleService_get_keys_presult result;
   result.get<0>().value = const_cast<::std::set<::std::string>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -3719,7 +3719,7 @@ void SimpleServiceAsyncProcessor::executeRequest_lookup_double(apache::thrift::S
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_lookup_double_pargs args;
+  ::py3::simple::SimpleService_lookup_double_pargs args;
   ::std::int32_t uarg_key{0};
   args.get<0>().value = &uarg_key;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.lookup_double", serverRequest.requestContext()));
@@ -3763,7 +3763,7 @@ void SimpleServiceAsyncProcessor::process_lookup_double(apache::thrift::Response
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_lookup_double_pargs args;
+  ::py3::simple::SimpleService_lookup_double_pargs args;
   ::std::int32_t uarg_key{0};
   args.get<0>().value = &uarg_key;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.lookup_double", ctx));
@@ -3783,7 +3783,7 @@ void SimpleServiceAsyncProcessor::process_lookup_double(apache::thrift::Response
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_lookup_double(apache::thrift::ContextStack* ctx, double const& _return) {
   ProtocolOut_ prot;
-  SimpleService_lookup_double_presult result;
+  ::py3::simple::SimpleService_lookup_double_presult result;
   result.get<0>().value = const_cast<double*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -3819,7 +3819,7 @@ void SimpleServiceAsyncProcessor::executeRequest_retrieve_binary(apache::thrift:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_retrieve_binary_pargs args;
+  ::py3::simple::SimpleService_retrieve_binary_pargs args;
   auto uarg_something = std::make_unique<::std::string>();
   args.get<0>().value = uarg_something.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.retrieve_binary", serverRequest.requestContext()));
@@ -3863,7 +3863,7 @@ void SimpleServiceAsyncProcessor::process_retrieve_binary(apache::thrift::Respon
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_retrieve_binary_pargs args;
+  ::py3::simple::SimpleService_retrieve_binary_pargs args;
   auto uarg_something = std::make_unique<::std::string>();
   args.get<0>().value = uarg_something.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.retrieve_binary", ctx));
@@ -3883,7 +3883,7 @@ void SimpleServiceAsyncProcessor::process_retrieve_binary(apache::thrift::Respon
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_retrieve_binary(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  SimpleService_retrieve_binary_presult result;
+  ::py3::simple::SimpleService_retrieve_binary_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -3919,7 +3919,7 @@ void SimpleServiceAsyncProcessor::executeRequest_contain_binary(apache::thrift::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_contain_binary_pargs args;
+  ::py3::simple::SimpleService_contain_binary_pargs args;
   auto uarg_binaries = std::make_unique<::std::vector<::std::string>>();
   args.get<0>().value = uarg_binaries.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.contain_binary", serverRequest.requestContext()));
@@ -3963,7 +3963,7 @@ void SimpleServiceAsyncProcessor::process_contain_binary(apache::thrift::Respons
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_contain_binary_pargs args;
+  ::py3::simple::SimpleService_contain_binary_pargs args;
   auto uarg_binaries = std::make_unique<::std::vector<::std::string>>();
   args.get<0>().value = uarg_binaries.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.contain_binary", ctx));
@@ -3983,7 +3983,7 @@ void SimpleServiceAsyncProcessor::process_contain_binary(apache::thrift::Respons
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_contain_binary(apache::thrift::ContextStack* ctx, ::std::set<::std::string> const& _return) {
   ProtocolOut_ prot;
-  SimpleService_contain_binary_presult result;
+  ::py3::simple::SimpleService_contain_binary_presult result;
   result.get<0>().value = const_cast<::std::set<::std::string>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -4019,7 +4019,7 @@ void SimpleServiceAsyncProcessor::executeRequest_contain_enum(apache::thrift::Se
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_contain_enum_pargs args;
+  ::py3::simple::SimpleService_contain_enum_pargs args;
   auto uarg_the_enum = std::make_unique<::std::vector<::py3::simple::AnEnum>>();
   args.get<0>().value = uarg_the_enum.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.contain_enum", serverRequest.requestContext()));
@@ -4063,7 +4063,7 @@ void SimpleServiceAsyncProcessor::process_contain_enum(apache::thrift::ResponseC
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_contain_enum_pargs args;
+  ::py3::simple::SimpleService_contain_enum_pargs args;
   auto uarg_the_enum = std::make_unique<::std::vector<::py3::simple::AnEnum>>();
   args.get<0>().value = uarg_the_enum.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.contain_enum", ctx));
@@ -4083,7 +4083,7 @@ void SimpleServiceAsyncProcessor::process_contain_enum(apache::thrift::ResponseC
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_contain_enum(apache::thrift::ContextStack* ctx, ::std::vector<::py3::simple::AnEnum> const& _return) {
   ProtocolOut_ prot;
-  SimpleService_contain_enum_presult result;
+  ::py3::simple::SimpleService_contain_enum_presult result;
   result.get<0>().value = const_cast<::std::vector<::py3::simple::AnEnum>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -4119,7 +4119,7 @@ void SimpleServiceAsyncProcessor::executeRequest_get_binary_union_struct(apache:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_get_binary_union_struct_pargs args;
+  ::py3::simple::SimpleService_get_binary_union_struct_pargs args;
   auto uarg_u = std::make_unique<::py3::simple::BinaryUnion>();
   args.get<0>().value = uarg_u.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.get_binary_union_struct", serverRequest.requestContext()));
@@ -4163,7 +4163,7 @@ void SimpleServiceAsyncProcessor::process_get_binary_union_struct(apache::thrift
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SimpleService_get_binary_union_struct_pargs args;
+  ::py3::simple::SimpleService_get_binary_union_struct_pargs args;
   auto uarg_u = std::make_unique<::py3::simple::BinaryUnion>();
   args.get<0>().value = uarg_u.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SimpleService.get_binary_union_struct", ctx));
@@ -4183,7 +4183,7 @@ void SimpleServiceAsyncProcessor::process_get_binary_union_struct(apache::thrift
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SimpleServiceAsyncProcessor::return_get_binary_union_struct(apache::thrift::ContextStack* ctx, ::py3::simple::BinaryUnionStruct const& _return) {
   ProtocolOut_ prot;
-  SimpleService_get_binary_union_struct_presult result;
+  ::py3::simple::SimpleService_get_binary_union_struct_presult result;
   result.get<0>().value = const_cast<::py3::simple::BinaryUnionStruct*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);

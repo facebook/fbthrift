@@ -17,8 +17,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class NullService;
+} // cpp2
+namespace apache::thrift {
 
-class NullServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
+template <>
+class Client<::cpp2::NullService> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -29,4 +33,11 @@ class NullServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
 
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class NullServiceAsyncClient : public ::apache::thrift::Client<NullService> {
+ public:
+  using ::apache::thrift::Client<::cpp2::NullService>::Client;
+};
 } // cpp2

@@ -30,7 +30,7 @@ void GoodServiceAsyncProcessor::executeRequest_bar(apache::thrift::ServerRequest
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  GoodService_bar_pargs args;
+  ::cpp2::GoodService_bar_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "BadService.bar", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "bar", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -72,7 +72,7 @@ void GoodServiceAsyncProcessor::process_bar(apache::thrift::ResponseChannelReque
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  GoodService_bar_pargs args;
+  ::cpp2::GoodService_bar_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "BadService.bar", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -90,7 +90,7 @@ void GoodServiceAsyncProcessor::process_bar(apache::thrift::ResponseChannelReque
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse GoodServiceAsyncProcessor::return_bar(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  GoodService_bar_presult result;
+  ::cpp2::GoodService_bar_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -131,7 +131,7 @@ void GoodServiceAsyncProcessor::executeRequest_BadInteraction_foo(apache::thrift
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  GoodService_BadInteraction_foo_pargs args;
+  ::cpp2::GoodService_BadInteraction_foo_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "BadService.BadInteraction.foo", serverRequest.requestContext()));
   auto& iface = static_cast<GoodServiceSvIf::BadInteractionIf&>(*tile);
   try {
@@ -176,7 +176,7 @@ void GoodServiceAsyncProcessor::process_BadInteraction_foo(apache::thrift::Respo
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  GoodService_BadInteraction_foo_pargs args;
+  ::cpp2::GoodService_BadInteraction_foo_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "BadService.BadInteraction.foo", ctx));
   auto& iface = static_cast<GoodServiceSvIf::BadInteractionIf&>(*tile);
   try {
@@ -195,7 +195,7 @@ void GoodServiceAsyncProcessor::process_BadInteraction_foo(apache::thrift::Respo
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse GoodServiceAsyncProcessor::return_BadInteraction_foo(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  GoodService_BadInteraction_foo_presult result;
+  ::cpp2::GoodService_BadInteraction_foo_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 

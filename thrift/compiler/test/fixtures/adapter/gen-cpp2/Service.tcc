@@ -30,7 +30,7 @@ void ServiceAsyncProcessor::executeRequest_func(apache::thrift::ServerRequest&& 
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  Service_func_pargs args;
+  ::cpp2::Service_func_pargs args;
   auto uarg_arg1 = std::make_unique<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>>();
   args.get<0>().value = uarg_arg1.get();
   auto uarg_arg2 = std::make_unique<::std::string>();
@@ -78,7 +78,7 @@ void ServiceAsyncProcessor::process_func(apache::thrift::ResponseChannelRequest:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  Service_func_pargs args;
+  ::cpp2::Service_func_pargs args;
   auto uarg_arg1 = std::make_unique<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>>();
   args.get<0>().value = uarg_arg1.get();
   auto uarg_arg2 = std::make_unique<::std::string>();
@@ -102,7 +102,7 @@ void ServiceAsyncProcessor::process_func(apache::thrift::ResponseChannelRequest:
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ServiceAsyncProcessor::return_func(apache::thrift::ContextStack* ctx, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> const& _return) {
   ProtocolOut_ prot;
-  Service_func_presult result;
+  ::cpp2::Service_func_presult result;
   result.get<0>().value = const_cast<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);

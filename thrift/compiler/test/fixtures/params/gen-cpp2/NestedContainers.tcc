@@ -38,7 +38,7 @@ void NestedContainersAsyncProcessor::executeRequest_mapList(apache::thrift::Serv
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  NestedContainers_mapList_pargs args;
+  ::cpp2::NestedContainers_mapList_pargs args;
   auto uarg_foo = std::make_unique<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapList", serverRequest.requestContext()));
@@ -82,7 +82,7 @@ void NestedContainersAsyncProcessor::process_mapList(apache::thrift::ResponseCha
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  NestedContainers_mapList_pargs args;
+  ::cpp2::NestedContainers_mapList_pargs args;
   auto uarg_foo = std::make_unique<::std::map<::std::int32_t, ::std::vector<::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapList", ctx));
@@ -102,7 +102,7 @@ void NestedContainersAsyncProcessor::process_mapList(apache::thrift::ResponseCha
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse NestedContainersAsyncProcessor::return_mapList(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  NestedContainers_mapList_presult result;
+  ::cpp2::NestedContainers_mapList_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -136,7 +136,7 @@ void NestedContainersAsyncProcessor::executeRequest_mapSet(apache::thrift::Serve
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  NestedContainers_mapSet_pargs args;
+  ::cpp2::NestedContainers_mapSet_pargs args;
   auto uarg_foo = std::make_unique<::std::map<::std::int32_t, ::std::set<::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapSet", serverRequest.requestContext()));
@@ -180,7 +180,7 @@ void NestedContainersAsyncProcessor::process_mapSet(apache::thrift::ResponseChan
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  NestedContainers_mapSet_pargs args;
+  ::cpp2::NestedContainers_mapSet_pargs args;
   auto uarg_foo = std::make_unique<::std::map<::std::int32_t, ::std::set<::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.mapSet", ctx));
@@ -200,7 +200,7 @@ void NestedContainersAsyncProcessor::process_mapSet(apache::thrift::ResponseChan
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse NestedContainersAsyncProcessor::return_mapSet(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  NestedContainers_mapSet_presult result;
+  ::cpp2::NestedContainers_mapSet_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -234,7 +234,7 @@ void NestedContainersAsyncProcessor::executeRequest_listMap(apache::thrift::Serv
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  NestedContainers_listMap_pargs args;
+  ::cpp2::NestedContainers_listMap_pargs args;
   auto uarg_foo = std::make_unique<::std::vector<::std::map<::std::int32_t, ::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listMap", serverRequest.requestContext()));
@@ -278,7 +278,7 @@ void NestedContainersAsyncProcessor::process_listMap(apache::thrift::ResponseCha
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  NestedContainers_listMap_pargs args;
+  ::cpp2::NestedContainers_listMap_pargs args;
   auto uarg_foo = std::make_unique<::std::vector<::std::map<::std::int32_t, ::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listMap", ctx));
@@ -298,7 +298,7 @@ void NestedContainersAsyncProcessor::process_listMap(apache::thrift::ResponseCha
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse NestedContainersAsyncProcessor::return_listMap(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  NestedContainers_listMap_presult result;
+  ::cpp2::NestedContainers_listMap_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -332,7 +332,7 @@ void NestedContainersAsyncProcessor::executeRequest_listSet(apache::thrift::Serv
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  NestedContainers_listSet_pargs args;
+  ::cpp2::NestedContainers_listSet_pargs args;
   auto uarg_foo = std::make_unique<::std::vector<::std::set<::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listSet", serverRequest.requestContext()));
@@ -376,7 +376,7 @@ void NestedContainersAsyncProcessor::process_listSet(apache::thrift::ResponseCha
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  NestedContainers_listSet_pargs args;
+  ::cpp2::NestedContainers_listSet_pargs args;
   auto uarg_foo = std::make_unique<::std::vector<::std::set<::std::int32_t>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.listSet", ctx));
@@ -396,7 +396,7 @@ void NestedContainersAsyncProcessor::process_listSet(apache::thrift::ResponseCha
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse NestedContainersAsyncProcessor::return_listSet(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  NestedContainers_listSet_presult result;
+  ::cpp2::NestedContainers_listSet_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -430,7 +430,7 @@ void NestedContainersAsyncProcessor::executeRequest_turtles(apache::thrift::Serv
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  NestedContainers_turtles_pargs args;
+  ::cpp2::NestedContainers_turtles_pargs args;
   auto uarg_foo = std::make_unique<::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.turtles", serverRequest.requestContext()));
@@ -474,7 +474,7 @@ void NestedContainersAsyncProcessor::process_turtles(apache::thrift::ResponseCha
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  NestedContainers_turtles_pargs args;
+  ::cpp2::NestedContainers_turtles_pargs args;
   auto uarg_foo = std::make_unique<::std::vector<::std::vector<::std::map<::std::int32_t, ::std::map<::std::int32_t, ::std::set<::std::int32_t>>>>>>();
   args.get<0>().value = uarg_foo.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "NestedContainers.turtles", ctx));
@@ -494,7 +494,7 @@ void NestedContainersAsyncProcessor::process_turtles(apache::thrift::ResponseCha
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse NestedContainersAsyncProcessor::return_turtles(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  NestedContainers_turtles_presult result;
+  ::cpp2::NestedContainers_turtles_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 

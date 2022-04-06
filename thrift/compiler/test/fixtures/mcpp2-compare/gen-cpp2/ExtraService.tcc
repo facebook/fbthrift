@@ -41,7 +41,7 @@ void ExtraServiceAsyncProcessor::executeRequest_simple_function(apache::thrift::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_simple_function_pargs args;
+  ::extra::svc::ExtraService_simple_function_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.simple_function", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "simple_function", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -83,7 +83,7 @@ void ExtraServiceAsyncProcessor::process_simple_function(apache::thrift::Respons
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_simple_function_pargs args;
+  ::extra::svc::ExtraService_simple_function_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.simple_function", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -101,7 +101,7 @@ void ExtraServiceAsyncProcessor::process_simple_function(apache::thrift::Respons
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ExtraServiceAsyncProcessor::return_simple_function(apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
-  ExtraService_simple_function_presult result;
+  ::extra::svc::ExtraService_simple_function_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -133,7 +133,7 @@ void ExtraServiceAsyncProcessor::executeRequest_throws_function(apache::thrift::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_throws_function_pargs args;
+  ::extra::svc::ExtraService_throws_function_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "throws_function", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -175,7 +175,7 @@ void ExtraServiceAsyncProcessor::process_throws_function(apache::thrift::Respons
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_throws_function_pargs args;
+  ::extra::svc::ExtraService_throws_function_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -193,7 +193,7 @@ void ExtraServiceAsyncProcessor::process_throws_function(apache::thrift::Respons
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ExtraServiceAsyncProcessor::return_throws_function(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  ExtraService_throws_function_presult result;
+  ::extra::svc::ExtraService_throws_function_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -202,7 +202,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function(apache::thrift::R
   if (!ew) {
     return;
   }
-  ExtraService_throws_function_presult result;
+  ::extra::svc::ExtraService_throws_function_presult result;
   if (ew.with_exception([&]( ::some::valid::ns::AnException& e) {
     if (ctx) {
       ctx->userExceptionWrapped(true, ew);
@@ -254,7 +254,7 @@ void ExtraServiceAsyncProcessor::executeRequest_throws_function2(apache::thrift:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_throws_function2_pargs args;
+  ::extra::svc::ExtraService_throws_function2_pargs args;
   bool uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function2", serverRequest.requestContext()));
@@ -298,7 +298,7 @@ void ExtraServiceAsyncProcessor::process_throws_function2(apache::thrift::Respon
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_throws_function2_pargs args;
+  ::extra::svc::ExtraService_throws_function2_pargs args;
   bool uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function2", ctx));
@@ -318,7 +318,7 @@ void ExtraServiceAsyncProcessor::process_throws_function2(apache::thrift::Respon
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ExtraServiceAsyncProcessor::return_throws_function2(apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
-  ExtraService_throws_function2_presult result;
+  ::extra::svc::ExtraService_throws_function2_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -329,7 +329,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function2(apache::thrift::
   if (!ew) {
     return;
   }
-  ExtraService_throws_function2_presult result;
+  ::extra::svc::ExtraService_throws_function2_presult result;
   if (ew.with_exception([&]( ::some::valid::ns::AnException& e) {
     if (ctx) {
       ctx->userExceptionWrapped(true, ew);
@@ -381,7 +381,7 @@ void ExtraServiceAsyncProcessor::executeRequest_throws_function3(apache::thrift:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_throws_function3_pargs args;
+  ::extra::svc::ExtraService_throws_function3_pargs args;
   bool uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   ::std::string uarg_param2;
@@ -427,7 +427,7 @@ void ExtraServiceAsyncProcessor::process_throws_function3(apache::thrift::Respon
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_throws_function3_pargs args;
+  ::extra::svc::ExtraService_throws_function3_pargs args;
   bool uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   ::std::string uarg_param2;
@@ -449,7 +449,7 @@ void ExtraServiceAsyncProcessor::process_throws_function3(apache::thrift::Respon
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ExtraServiceAsyncProcessor::return_throws_function3(apache::thrift::ContextStack* ctx, ::std::map<::std::int32_t, ::std::string> const& _return) {
   ProtocolOut_ prot;
-  ExtraService_throws_function3_presult result;
+  ::extra::svc::ExtraService_throws_function3_presult result;
   result.get<0>().value = const_cast<::std::map<::std::int32_t, ::std::string>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -460,7 +460,7 @@ void ExtraServiceAsyncProcessor::throw_wrapped_throws_function3(apache::thrift::
   if (!ew) {
     return;
   }
-  ExtraService_throws_function3_presult result;
+  ::extra::svc::ExtraService_throws_function3_presult result;
   if (ew.with_exception([&]( ::some::valid::ns::AnException& e) {
     if (ctx) {
       ctx->userExceptionWrapped(true, ew);
@@ -512,7 +512,7 @@ void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret(apache::thrift::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_oneway_void_ret_pargs args;
+  ::extra::svc::ExtraService_oneway_void_ret_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "oneway_void_ret", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -542,7 +542,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret(apache::thrift::Respons
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_oneway_void_ret_pargs args;
+  ::extra::svc::ExtraService_oneway_void_ret_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -573,7 +573,7 @@ void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret_i32_i32_i32_i32_
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_pargs args;
+  ::extra::svc::ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_pargs args;
   ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   ::std::int32_t uarg_param2{0};
@@ -613,7 +613,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_i32_i32_i32_i32_i32_par
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_pargs args;
+  ::extra::svc::ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_pargs args;
   ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   ::std::int32_t uarg_param2{0};
@@ -650,7 +650,7 @@ void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret_map_setlist_para
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_oneway_void_ret_map_setlist_param_pargs args;
+  ::extra::svc::ExtraService_oneway_void_ret_map_setlist_param_pargs args;
   ::std::map<::std::string, ::std::int64_t> uarg_param1;
   args.get<0>().value = &uarg_param1;
   ::std::set<::std::vector<::std::string>> uarg_param2;
@@ -684,7 +684,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(apach
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_oneway_void_ret_map_setlist_param_pargs args;
+  ::extra::svc::ExtraService_oneway_void_ret_map_setlist_param_pargs args;
   ::std::map<::std::string, ::std::int64_t> uarg_param1;
   args.get<0>().value = &uarg_param1;
   ::std::set<::std::vector<::std::string>> uarg_param2;
@@ -719,7 +719,7 @@ void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret_struct_param(apa
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_oneway_void_ret_struct_param_pargs args;
+  ::extra::svc::ExtraService_oneway_void_ret_struct_param_pargs args;
   ::some::valid::ns::MyStruct uarg_param1;
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_struct_param", serverRequest.requestContext()));
@@ -751,7 +751,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_struct_param(apache::th
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_oneway_void_ret_struct_param_pargs args;
+  ::extra::svc::ExtraService_oneway_void_ret_struct_param_pargs args;
   ::some::valid::ns::MyStruct uarg_param1;
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_struct_param", ctx));
@@ -784,7 +784,7 @@ void ExtraServiceAsyncProcessor::executeRequest_oneway_void_ret_listunion_param(
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_oneway_void_ret_listunion_param_pargs args;
+  ::extra::svc::ExtraService_oneway_void_ret_listunion_param_pargs args;
   ::std::vector<::some::valid::ns::ComplexUnion> uarg_param1;
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_listunion_param", serverRequest.requestContext()));
@@ -816,7 +816,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(apache:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ExtraService_oneway_void_ret_listunion_param_pargs args;
+  ::extra::svc::ExtraService_oneway_void_ret_listunion_param_pargs args;
   ::std::vector<::some::valid::ns::ComplexUnion> uarg_param1;
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_listunion_param", ctx));

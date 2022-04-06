@@ -48,7 +48,7 @@ void <%service:parent_service_cpp_name%>AsyncProcessor::executeRequest_<%#servic
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  <%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_pargs args;
+  <% > common/namespace_cpp2%><%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_pargs args;
 <%#function:args%><%#field:type%>
 <%^type:resolves_to_complex_return?%>
 <%^type:enum?%>
@@ -140,7 +140,7 @@ void <%service:parent_service_cpp_name%>AsyncProcessor::process_<%#service:inter
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  <%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_pargs args;
+  <% > common/namespace_cpp2%><%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_pargs args;
 <%#function:args%><%#field:type%>
 <%^type:resolves_to_complex_return?%>
 <%^type:enum?%>
@@ -208,8 +208,8 @@ std::pair<apache::thrift::SerializedResponse, apache::thrift::detail::SinkConsum
 <%/type:void?%>
   ProtocolOut_ prot;
 <%#function:returns_stream?%>
-  <%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_presult::FieldsType result;
-  using StreamPResultType = <%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_presult::StreamPResultType;
+  <% > common/namespace_cpp2%><%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_presult::FieldsType result;
+  using StreamPResultType = <% > common/namespace_cpp2%><%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_presult::StreamPResultType;
       <%#type:stream_has_first_response?%>
   result.get<0>().value = const_cast<<%type:cpp_type%>::ResponseType*>(&_return.response);
   result.setIsSet(0, true);
@@ -241,9 +241,9 @@ std::pair<apache::thrift::SerializedResponse, apache::thrift::detail::SinkConsum
   return {serializeResponse(&prot, ctx, result), std::move(encodedStream)};
 <%/function:returns_stream?%>
 <%#function:returns_sink?%>
-  <%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_presult::FieldsType result;
-  using SinkPResultType = <%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_presult::SinkPResultType;
-  using FinalResponsePResultType = <%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_presult::FinalResponsePResultType;
+  <% > common/namespace_cpp2%><%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_presult::FieldsType result;
+  using SinkPResultType = <% > common/namespace_cpp2%><%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_presult::SinkPResultType;
+  using FinalResponsePResultType = <% > common/namespace_cpp2%><%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_presult::FinalResponsePResultType;
   <%#type:sink_has_first_response?%>
   result.get<0>().value = &_return.response;
   result.setIsSet(0, true);
@@ -285,7 +285,7 @@ std::pair<apache::thrift::SerializedResponse, apache::thrift::detail::SinkConsum
   return {serializeResponse(&prot, ctx, result), std::move(sinkConsumerImpl)};
 <%/function:returns_sink?%>
 <%^function:returns_stream?%><%^function:returns_sink?%>
-  <%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_presult result;
+  <% > common/namespace_cpp2%><%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_presult result;
 <%^type:void?%>
   result.get<0>().value = const_cast<<%type:cpp_type%>*>(&_return);
   result.setIsSet(0, true);
@@ -300,7 +300,7 @@ void <%service:parent_service_cpp_name%>AsyncProcessor::throw_wrapped_<%#service
     return;
   }
 <%#function:exceptions?%>
-  <%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_presult result;
+  <% > common/namespace_cpp2%><%service:parent_service_cpp_name%>_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%>_presult result;
 <%/function:exceptions?%>
 <%#function:exceptions%>
   if (ew.with_exception([&](<%#field:type%><% > common/type_namespace_cpp2%><%type:name%><%/field:type%>& e) {

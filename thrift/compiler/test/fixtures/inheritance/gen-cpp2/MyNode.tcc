@@ -30,7 +30,7 @@ void MyNodeAsyncProcessor::executeRequest_do_mid(apache::thrift::ServerRequest&&
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyNode_do_mid_pargs args;
+  ::cpp2::MyNode_do_mid_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyNode.do_mid", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "do_mid", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -72,7 +72,7 @@ void MyNodeAsyncProcessor::process_do_mid(apache::thrift::ResponseChannelRequest
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyNode_do_mid_pargs args;
+  ::cpp2::MyNode_do_mid_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyNode.do_mid", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -90,7 +90,7 @@ void MyNodeAsyncProcessor::process_do_mid(apache::thrift::ResponseChannelRequest
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyNodeAsyncProcessor::return_do_mid(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  MyNode_do_mid_presult result;
+  ::cpp2::MyNode_do_mid_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 

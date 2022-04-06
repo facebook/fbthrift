@@ -32,7 +32,7 @@ void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey0(apache::t
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  DbMixedStackArguments_getDataByKey0_pargs args;
+  ::cpp2::DbMixedStackArguments_getDataByKey0_pargs args;
   auto uarg_key = std::make_unique<::std::string>();
   args.get<0>().value = uarg_key.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "DbMixedStackArguments.getDataByKey0", serverRequest.requestContext()));
@@ -76,7 +76,7 @@ void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey0(apache::thrift::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  DbMixedStackArguments_getDataByKey0_pargs args;
+  ::cpp2::DbMixedStackArguments_getDataByKey0_pargs args;
   auto uarg_key = std::make_unique<::std::string>();
   args.get<0>().value = uarg_key.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "DbMixedStackArguments.getDataByKey0", ctx));
@@ -96,7 +96,7 @@ void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey0(apache::thrift::
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse DbMixedStackArgumentsAsyncProcessor::return_getDataByKey0(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  DbMixedStackArguments_getDataByKey0_presult result;
+  ::cpp2::DbMixedStackArguments_getDataByKey0_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -132,7 +132,7 @@ void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey1(apache::t
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  DbMixedStackArguments_getDataByKey1_pargs args;
+  ::cpp2::DbMixedStackArguments_getDataByKey1_pargs args;
   ::std::string uarg_key;
   args.get<0>().value = &uarg_key;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "DbMixedStackArguments.getDataByKey1", serverRequest.requestContext()));
@@ -176,7 +176,7 @@ void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey1(apache::thrift::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  DbMixedStackArguments_getDataByKey1_pargs args;
+  ::cpp2::DbMixedStackArguments_getDataByKey1_pargs args;
   ::std::string uarg_key;
   args.get<0>().value = &uarg_key;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "DbMixedStackArguments.getDataByKey1", ctx));
@@ -196,7 +196,7 @@ void DbMixedStackArgumentsAsyncProcessor::process_getDataByKey1(apache::thrift::
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse DbMixedStackArgumentsAsyncProcessor::return_getDataByKey1(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  DbMixedStackArguments_getDataByKey1_presult result;
+  ::cpp2::DbMixedStackArguments_getDataByKey1_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);

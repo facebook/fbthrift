@@ -84,7 +84,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_get(apache::thrift
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_get_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_get_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.get", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "get", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -126,7 +126,7 @@ void service_with_special_namesAsyncProcessor::process_get(apache::thrift::Respo
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_get_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_get_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.get", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -144,7 +144,7 @@ void service_with_special_namesAsyncProcessor::process_get(apache::thrift::Respo
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_get(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_get_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_get_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -180,7 +180,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_getter(apache::thr
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_getter_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_getter_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.getter", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "getter", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -222,7 +222,7 @@ void service_with_special_namesAsyncProcessor::process_getter(apache::thrift::Re
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_getter_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_getter_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.getter", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -240,7 +240,7 @@ void service_with_special_namesAsyncProcessor::process_getter(apache::thrift::Re
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_getter(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_getter_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_getter_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -276,7 +276,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_lists(apache::thri
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_lists_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_lists_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.lists", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "lists", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -318,7 +318,7 @@ void service_with_special_namesAsyncProcessor::process_lists(apache::thrift::Res
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_lists_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_lists_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.lists", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -336,7 +336,7 @@ void service_with_special_namesAsyncProcessor::process_lists(apache::thrift::Res
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_lists(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_lists_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_lists_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -372,7 +372,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_maps(apache::thrif
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_maps_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_maps_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.maps", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "maps", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -414,7 +414,7 @@ void service_with_special_namesAsyncProcessor::process_maps(apache::thrift::Resp
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_maps_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_maps_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.maps", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -432,7 +432,7 @@ void service_with_special_namesAsyncProcessor::process_maps(apache::thrift::Resp
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_maps(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_maps_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_maps_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -468,7 +468,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_name(apache::thrif
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_name_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_name_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.name", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "name", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -510,7 +510,7 @@ void service_with_special_namesAsyncProcessor::process_name(apache::thrift::Resp
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_name_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_name_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.name", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -528,7 +528,7 @@ void service_with_special_namesAsyncProcessor::process_name(apache::thrift::Resp
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_name(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_name_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_name_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -564,7 +564,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_name_to_value(apac
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_name_to_value_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.name_to_value", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "name_to_value", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -606,7 +606,7 @@ void service_with_special_namesAsyncProcessor::process_name_to_value(apache::thr
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_name_to_value_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.name_to_value", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -624,7 +624,7 @@ void service_with_special_namesAsyncProcessor::process_name_to_value(apache::thr
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_name_to_value(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_name_to_value_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -660,7 +660,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_names(apache::thri
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_names_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_names_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.names", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "names", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -702,7 +702,7 @@ void service_with_special_namesAsyncProcessor::process_names(apache::thrift::Res
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_names_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_names_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.names", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -720,7 +720,7 @@ void service_with_special_namesAsyncProcessor::process_names(apache::thrift::Res
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_names(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_names_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_names_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -756,7 +756,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_prefix_tree(apache
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_prefix_tree_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.prefix_tree", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "prefix_tree", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -798,7 +798,7 @@ void service_with_special_namesAsyncProcessor::process_prefix_tree(apache::thrif
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_prefix_tree_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.prefix_tree", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -816,7 +816,7 @@ void service_with_special_namesAsyncProcessor::process_prefix_tree(apache::thrif
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_prefix_tree(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_prefix_tree_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -852,7 +852,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_sets(apache::thrif
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_sets_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_sets_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.sets", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "sets", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -894,7 +894,7 @@ void service_with_special_namesAsyncProcessor::process_sets(apache::thrift::Resp
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_sets_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_sets_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.sets", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -912,7 +912,7 @@ void service_with_special_namesAsyncProcessor::process_sets(apache::thrift::Resp
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_sets(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_sets_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_sets_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -948,7 +948,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_setter(apache::thr
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_setter_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_setter_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.setter", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "setter", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -990,7 +990,7 @@ void service_with_special_namesAsyncProcessor::process_setter(apache::thrift::Re
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_setter_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_setter_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.setter", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -1008,7 +1008,7 @@ void service_with_special_namesAsyncProcessor::process_setter(apache::thrift::Re
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_setter(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_setter_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_setter_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1044,7 +1044,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_str(apache::thrift
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_str_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_str_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.str", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "str", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -1086,7 +1086,7 @@ void service_with_special_namesAsyncProcessor::process_str(apache::thrift::Respo
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_str_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_str_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.str", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -1104,7 +1104,7 @@ void service_with_special_namesAsyncProcessor::process_str(apache::thrift::Respo
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_str(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_str_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_str_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1140,7 +1140,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_strings(apache::th
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_strings_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_strings_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.strings", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "strings", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -1182,7 +1182,7 @@ void service_with_special_namesAsyncProcessor::process_strings(apache::thrift::R
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_strings_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_strings_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.strings", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -1200,7 +1200,7 @@ void service_with_special_namesAsyncProcessor::process_strings(apache::thrift::R
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_strings(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_strings_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_strings_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1236,7 +1236,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_type(apache::thrif
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_type_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_type_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.type", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "type", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -1278,7 +1278,7 @@ void service_with_special_namesAsyncProcessor::process_type(apache::thrift::Resp
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_type_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_type_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.type", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -1296,7 +1296,7 @@ void service_with_special_namesAsyncProcessor::process_type(apache::thrift::Resp
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_type(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_type_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_type_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1332,7 +1332,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_value(apache::thri
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_value_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_value_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.value", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "value", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -1374,7 +1374,7 @@ void service_with_special_namesAsyncProcessor::process_value(apache::thrift::Res
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_value_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_value_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.value", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -1392,7 +1392,7 @@ void service_with_special_namesAsyncProcessor::process_value(apache::thrift::Res
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_value(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_value_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_value_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1428,7 +1428,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_value_to_name(apac
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_value_to_name_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.value_to_name", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "value_to_name", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -1470,7 +1470,7 @@ void service_with_special_namesAsyncProcessor::process_value_to_name(apache::thr
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_value_to_name_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.value_to_name", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -1488,7 +1488,7 @@ void service_with_special_namesAsyncProcessor::process_value_to_name(apache::thr
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_value_to_name(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_value_to_name_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1524,7 +1524,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_values(apache::thr
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_values_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_values_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.values", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "values", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -1566,7 +1566,7 @@ void service_with_special_namesAsyncProcessor::process_values(apache::thrift::Re
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_values_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_values_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.values", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -1584,7 +1584,7 @@ void service_with_special_namesAsyncProcessor::process_values(apache::thrift::Re
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_values(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_values_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_values_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1620,7 +1620,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_id(apache::thrift:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_id_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_id_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.id", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "id", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -1662,7 +1662,7 @@ void service_with_special_namesAsyncProcessor::process_id(apache::thrift::Respon
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_id_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_id_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.id", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -1680,7 +1680,7 @@ void service_with_special_namesAsyncProcessor::process_id(apache::thrift::Respon
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_id(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_id_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_id_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1716,7 +1716,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_ids(apache::thrift
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_ids_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_ids_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.ids", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "ids", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -1758,7 +1758,7 @@ void service_with_special_namesAsyncProcessor::process_ids(apache::thrift::Respo
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_ids_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_ids_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.ids", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -1776,7 +1776,7 @@ void service_with_special_namesAsyncProcessor::process_ids(apache::thrift::Respo
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_ids(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_ids_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_ids_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1812,7 +1812,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_descriptor(apache:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_descriptor_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.descriptor", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "descriptor", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -1854,7 +1854,7 @@ void service_with_special_namesAsyncProcessor::process_descriptor(apache::thrift
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_descriptor_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.descriptor", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -1872,7 +1872,7 @@ void service_with_special_namesAsyncProcessor::process_descriptor(apache::thrift
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_descriptor(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_descriptor_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1908,7 +1908,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_descriptors(apache
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_descriptors_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.descriptors", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "descriptors", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -1950,7 +1950,7 @@ void service_with_special_namesAsyncProcessor::process_descriptors(apache::thrif
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_descriptors_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.descriptors", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -1968,7 +1968,7 @@ void service_with_special_namesAsyncProcessor::process_descriptors(apache::thrif
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_descriptors(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_descriptors_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2004,7 +2004,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_key(apache::thrift
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_key_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_key_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.key", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "key", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -2046,7 +2046,7 @@ void service_with_special_namesAsyncProcessor::process_key(apache::thrift::Respo
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_key_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_key_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.key", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -2064,7 +2064,7 @@ void service_with_special_namesAsyncProcessor::process_key(apache::thrift::Respo
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_key(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_key_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_key_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2100,7 +2100,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_keys(apache::thrif
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_keys_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_keys_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.keys", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "keys", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -2142,7 +2142,7 @@ void service_with_special_namesAsyncProcessor::process_keys(apache::thrift::Resp
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_keys_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_keys_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.keys", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -2160,7 +2160,7 @@ void service_with_special_namesAsyncProcessor::process_keys(apache::thrift::Resp
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_keys(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_keys_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_keys_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2196,7 +2196,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_annotation(apache:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_annotation_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.annotation", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "annotation", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -2238,7 +2238,7 @@ void service_with_special_namesAsyncProcessor::process_annotation(apache::thrift
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_annotation_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.annotation", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -2256,7 +2256,7 @@ void service_with_special_namesAsyncProcessor::process_annotation(apache::thrift
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_annotation(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_annotation_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2292,7 +2292,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_annotations(apache
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_annotations_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.annotations", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "annotations", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -2334,7 +2334,7 @@ void service_with_special_namesAsyncProcessor::process_annotations(apache::thrif
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_annotations_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.annotations", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -2352,7 +2352,7 @@ void service_with_special_namesAsyncProcessor::process_annotations(apache::thrif
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_annotations(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_annotations_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2388,7 +2388,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_member(apache::thr
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_member_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_member_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.member", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "member", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -2430,7 +2430,7 @@ void service_with_special_namesAsyncProcessor::process_member(apache::thrift::Re
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_member_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_member_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.member", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -2448,7 +2448,7 @@ void service_with_special_namesAsyncProcessor::process_member(apache::thrift::Re
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_member(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_member_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_member_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2484,7 +2484,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_members(apache::th
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_members_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_members_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.members", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "members", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -2526,7 +2526,7 @@ void service_with_special_namesAsyncProcessor::process_members(apache::thrift::R
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_members_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_members_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.members", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -2544,7 +2544,7 @@ void service_with_special_namesAsyncProcessor::process_members(apache::thrift::R
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_members(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_members_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_members_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2580,7 +2580,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_field(apache::thri
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_field_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_field_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.field", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "field", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -2622,7 +2622,7 @@ void service_with_special_namesAsyncProcessor::process_field(apache::thrift::Res
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_field_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_field_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.field", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -2640,7 +2640,7 @@ void service_with_special_namesAsyncProcessor::process_field(apache::thrift::Res
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_field(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_field_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_field_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2676,7 +2676,7 @@ void service_with_special_namesAsyncProcessor::executeRequest_fields(apache::thr
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_fields_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_fields_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.fields", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "fields", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -2718,7 +2718,7 @@ void service_with_special_namesAsyncProcessor::process_fields(apache::thrift::Re
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service_with_special_names_fields_pargs args;
+  ::test_cpp2::cpp_reflection::service_with_special_names_fields_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service_with_special_names.fields", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -2736,7 +2736,7 @@ void service_with_special_namesAsyncProcessor::process_fields(apache::thrift::Re
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_fields(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service_with_special_names_fields_presult result;
+  ::test_cpp2::cpp_reflection::service_with_special_names_fields_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);

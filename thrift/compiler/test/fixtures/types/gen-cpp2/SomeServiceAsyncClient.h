@@ -18,8 +18,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+class SomeService;
+}}}} // apache::thrift::fixtures::types
+namespace apache::thrift {
 
-class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
+template <>
+class Client<::apache::thrift::fixtures::types::SomeService> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -220,4 +224,11 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 };
 
+} // namespace apache::thrift
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class SomeServiceAsyncClient : public ::apache::thrift::Client<SomeService> {
+ public:
+  using ::apache::thrift::Client<::apache::thrift::fixtures::types::SomeService>::Client;
+};
 }}}} // apache::thrift::fixtures::types

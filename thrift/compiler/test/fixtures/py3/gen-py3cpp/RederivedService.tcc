@@ -30,7 +30,7 @@ void RederivedServiceAsyncProcessor::executeRequest_get_seven(apache::thrift::Se
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  RederivedService_get_seven_pargs args;
+  ::py3::simple::RederivedService_get_seven_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "RederivedService.get_seven", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "get_seven", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -72,7 +72,7 @@ void RederivedServiceAsyncProcessor::process_get_seven(apache::thrift::ResponseC
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  RederivedService_get_seven_pargs args;
+  ::py3::simple::RederivedService_get_seven_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "RederivedService.get_seven", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -90,7 +90,7 @@ void RederivedServiceAsyncProcessor::process_get_seven(apache::thrift::ResponseC
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse RederivedServiceAsyncProcessor::return_get_seven(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  RederivedService_get_seven_presult result;
+  ::py3::simple::RederivedService_get_seven_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);

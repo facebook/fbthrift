@@ -18,8 +18,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class PubSubStreamingService;
+} // cpp2
+namespace apache::thrift {
 
-class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
+template <>
+class Client<::cpp2::PubSubStreamingService> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -495,4 +499,11 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
  public:
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class PubSubStreamingServiceAsyncClient : public ::apache::thrift::Client<PubSubStreamingService> {
+ public:
+  using ::apache::thrift::Client<::cpp2::PubSubStreamingService>::Client;
+};
 } // cpp2

@@ -12,11 +12,11 @@
 namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false> GoodService_bar_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> GoodService_bar_presult;
-
+} // cpp2
 template <typename Protocol_, typename RpcOptions>
-void GoodServiceAsyncClient::barT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
+void apache::thrift::Client<::cpp2::GoodService>::barT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
 
-  GoodService_bar_pargs args;
+  ::cpp2::GoodService_bar_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
 
@@ -29,15 +29,15 @@ void GoodServiceAsyncClient::barT(Protocol_* prot, RpcOptions&& rpcOptions, std:
 
 
 
-GoodServiceAsyncClient::BadInteraction GoodServiceAsyncClient::createBadInteraction() {
+apache::thrift::Client<::cpp2::GoodService>::BadInteraction apache::thrift::Client<::cpp2::GoodService>::createBadInteraction() {
   return BadInteraction(channel_, "BadInteraction");
 }
-void GoodServiceAsyncClient::bar(std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::cpp2::GoodService>::bar(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   bar(rpcOptions, std::move(callback));
 }
 
-void GoodServiceAsyncClient::bar(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::cpp2::GoodService>::bar(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto [ctx, header] = barCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -50,7 +50,7 @@ void GoodServiceAsyncClient::bar(apache::thrift::RpcOptions& rpcOptions, std::un
   barImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback));
 }
 
-void GoodServiceAsyncClient::barImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
+void apache::thrift::Client<::cpp2::GoodService>::barImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -79,7 +79,7 @@ void GoodServiceAsyncClient::barImpl(apache::thrift::RpcOptions& rpcOptions, std
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> GoodServiceAsyncClient::barCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::cpp2::GoodService>::barCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -96,12 +96,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int32_t GoodServiceAsyncClient::sync_bar() {
+::std::int32_t apache::thrift::Client<::cpp2::GoodService>::sync_bar() {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_bar(rpcOptions);
 }
 
-::std::int32_t GoodServiceAsyncClient::sync_bar(apache::thrift::RpcOptions& rpcOptions) {
+::std::int32_t apache::thrift::Client<::cpp2::GoodService>::sync_bar(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -130,17 +130,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int32_t> GoodServiceAsyncClient::future_bar() {
+folly::Future<::std::int32_t> apache::thrift::Client<::cpp2::GoodService>::future_bar() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_bar(rpcOptions);
 }
 
-folly::SemiFuture<::std::int32_t> GoodServiceAsyncClient::semifuture_bar() {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::cpp2::GoodService>::semifuture_bar() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_bar(rpcOptions);
 }
 
-folly::Future<::std::int32_t> GoodServiceAsyncClient::future_bar(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<::std::int32_t> apache::thrift::Client<::cpp2::GoodService>::future_bar(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<::std::int32_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_bar, channel_);
@@ -148,14 +148,14 @@ folly::Future<::std::int32_t> GoodServiceAsyncClient::future_bar(apache::thrift:
   return future;
 }
 
-folly::SemiFuture<::std::int32_t> GoodServiceAsyncClient::semifuture_bar(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::cpp2::GoodService>::semifuture_bar(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_bar, channel_);
   auto callback = std::move(callbackAndFuture.first);
   bar(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> GoodServiceAsyncClient::header_future_bar(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::cpp2::GoodService>::header_future_bar(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_bar, channel_);
@@ -163,20 +163,20 @@ folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> GoodServiceAsyncClient::header_semifuture_bar(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::cpp2::GoodService>::header_semifuture_bar(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_bar, channel_);
   auto callback = std::move(callbackAndFuture.first);
   bar(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-void GoodServiceAsyncClient::bar(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void apache::thrift::Client<::cpp2::GoodService>::bar(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   bar(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper GoodServiceAsyncClient::recv_wrapped_bar(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::cpp2::GoodService>::recv_wrapped_bar(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -184,7 +184,7 @@ folly::exception_wrapper GoodServiceAsyncClient::recv_wrapped_bar(::std::int32_t
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = GoodService_bar_presult;
+  using result = ::cpp2::GoodService_bar_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -205,7 +205,7 @@ folly::exception_wrapper GoodServiceAsyncClient::recv_wrapped_bar(::std::int32_t
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int32_t GoodServiceAsyncClient::recv_bar(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::cpp2::GoodService>::recv_bar(::apache::thrift::ClientReceiveState& state) {
   ::std::int32_t _return;
   auto ew = recv_wrapped_bar(_return, state);
   if (ew) {
@@ -214,25 +214,26 @@ folly::exception_wrapper GoodServiceAsyncClient::recv_wrapped_bar(::std::int32_t
   return _return;
 }
 
-::std::int32_t GoodServiceAsyncClient::recv_instance_bar(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::cpp2::GoodService>::recv_instance_bar(::apache::thrift::ClientReceiveState& state) {
   return recv_bar(state);
 }
 
-folly::exception_wrapper GoodServiceAsyncClient::recv_instance_wrapped_bar(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::cpp2::GoodService>::recv_instance_wrapped_bar(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_bar(_return, state);
 }
 
 
 
+namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false> GoodService_BadInteraction_foo_pargs;
 typedef apache::thrift::ThriftPresult<true> GoodService_BadInteraction_foo_presult;
-
+} // cpp2
 template <typename Protocol_, typename RpcOptions>
-void GoodServiceAsyncClient::BadInteraction::fooT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
+void apache::thrift::Client<::cpp2::GoodService>::BadInteraction::fooT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
   apache::thrift::RpcOptions rpcOpts(std::forward<RpcOptions>(rpcOptions));
   setInteraction(rpcOpts);
 
-  GoodService_BadInteraction_foo_pargs args;
+  ::cpp2::GoodService_BadInteraction_foo_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
 
@@ -247,7 +248,7 @@ void GoodServiceAsyncClient::BadInteraction::fooT(Protocol_* prot, RpcOptions&& 
 
 
 
-void GoodServiceAsyncClient::BadInteraction::foo(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::cpp2::GoodService>::BadInteraction::foo(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto [ctx, header] = fooCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -260,7 +261,7 @@ void GoodServiceAsyncClient::BadInteraction::foo(apache::thrift::RpcOptions& rpc
   fooImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback));
 }
 
-void GoodServiceAsyncClient::BadInteraction::fooImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
+void apache::thrift::Client<::cpp2::GoodService>::BadInteraction::fooImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -289,7 +290,7 @@ void GoodServiceAsyncClient::BadInteraction::fooImpl(apache::thrift::RpcOptions&
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> GoodServiceAsyncClient::BadInteraction::fooCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::cpp2::GoodService>::BadInteraction::fooCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -305,12 +306,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 
   return {std::move(ctx), std::move(header)};
 }
-void GoodServiceAsyncClient::BadInteraction::sync_foo() {
+void apache::thrift::Client<::cpp2::GoodService>::BadInteraction::sync_foo() {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_foo(rpcOptions);
 }
 
-void GoodServiceAsyncClient::BadInteraction::sync_foo(apache::thrift::RpcOptions& rpcOptions) {
+void apache::thrift::Client<::cpp2::GoodService>::BadInteraction::sync_foo(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -339,12 +340,12 @@ void GoodServiceAsyncClient::BadInteraction::sync_foo(apache::thrift::RpcOptions
 }
 
 
-folly::SemiFuture<folly::Unit> GoodServiceAsyncClient::BadInteraction::semifuture_foo() {
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::GoodService>::BadInteraction::semifuture_foo() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_foo(rpcOptions);
 }
 
-folly::SemiFuture<folly::Unit> GoodServiceAsyncClient::BadInteraction::semifuture_foo(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<folly::Unit> apache::thrift::Client<::cpp2::GoodService>::BadInteraction::semifuture_foo(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_foo, channel_);
   auto callback = std::move(callbackAndFuture.first);
   foo(rpcOptions, std::move(callback));
@@ -354,7 +355,7 @@ folly::SemiFuture<folly::Unit> GoodServiceAsyncClient::BadInteraction::semifutur
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper GoodServiceAsyncClient::BadInteraction::recv_wrapped_foo(::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::cpp2::GoodService>::BadInteraction::recv_wrapped_foo(::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -362,7 +363,7 @@ folly::exception_wrapper GoodServiceAsyncClient::BadInteraction::recv_wrapped_fo
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = GoodService_BadInteraction_foo_presult;
+  using result = ::cpp2::GoodService_BadInteraction_foo_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -382,11 +383,10 @@ folly::exception_wrapper GoodServiceAsyncClient::BadInteraction::recv_wrapped_fo
   }
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
-void GoodServiceAsyncClient::BadInteraction::recv_foo(::apache::thrift::ClientReceiveState& state) {
+void apache::thrift::Client<::cpp2::GoodService>::BadInteraction::recv_foo(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_foo(state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-} // cpp2

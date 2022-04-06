@@ -30,7 +30,7 @@ void MyLeafAsyncProcessor::executeRequest_do_leaf(apache::thrift::ServerRequest&
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyLeaf_do_leaf_pargs args;
+  ::cpp2::MyLeaf_do_leaf_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyLeaf.do_leaf", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "do_leaf", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -72,7 +72,7 @@ void MyLeafAsyncProcessor::process_do_leaf(apache::thrift::ResponseChannelReques
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyLeaf_do_leaf_pargs args;
+  ::cpp2::MyLeaf_do_leaf_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyLeaf.do_leaf", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -90,7 +90,7 @@ void MyLeafAsyncProcessor::process_do_leaf(apache::thrift::ResponseChannelReques
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyLeafAsyncProcessor::return_do_leaf(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  MyLeaf_do_leaf_presult result;
+  ::cpp2::MyLeaf_do_leaf_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 

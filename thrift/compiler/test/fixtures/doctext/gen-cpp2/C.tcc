@@ -37,7 +37,7 @@ void CAsyncProcessor::executeRequest_f(apache::thrift::ServerRequest&& serverReq
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  C_f_pargs args;
+  ::cpp2::C_f_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "C.f", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "f", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -79,7 +79,7 @@ void CAsyncProcessor::process_f(apache::thrift::ResponseChannelRequest::UniquePt
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  C_f_pargs args;
+  ::cpp2::C_f_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "C.f", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -97,7 +97,7 @@ void CAsyncProcessor::process_f(apache::thrift::ResponseChannelRequest::UniquePt
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse CAsyncProcessor::return_f(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  C_f_presult result;
+  ::cpp2::C_f_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -131,7 +131,7 @@ void CAsyncProcessor::executeRequest_numbers(apache::thrift::ServerRequest&& ser
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  C_numbers_pargs args;
+  ::cpp2::C_numbers_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "C.numbers", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "numbers", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -173,7 +173,7 @@ void CAsyncProcessor::process_numbers(apache::thrift::ResponseChannelRequest::Un
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  C_numbers_pargs args;
+  ::cpp2::C_numbers_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "C.numbers", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -191,8 +191,8 @@ void CAsyncProcessor::process_numbers(apache::thrift::ResponseChannelRequest::Un
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::ResponseAndServerStreamFactory CAsyncProcessor::return_numbers(apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, ::apache::thrift::ServerStream<::cpp2::number>&& _return) {
   ProtocolOut_ prot;
-  C_numbers_presult::FieldsType result;
-  using StreamPResultType = C_numbers_presult::StreamPResultType;
+  ::cpp2::C_numbers_presult::FieldsType result;
+  using StreamPResultType = ::cpp2::C_numbers_presult::StreamPResultType;
   auto& returnStream = _return;
 
       using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
@@ -230,7 +230,7 @@ void CAsyncProcessor::executeRequest_thing(apache::thrift::ServerRequest&& serve
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  C_thing_pargs args;
+  ::cpp2::C_thing_pargs args;
   ::std::int32_t uarg_a{0};
   args.get<0>().value = &uarg_a;
   auto uarg_b = std::make_unique<::std::string>();
@@ -278,7 +278,7 @@ void CAsyncProcessor::process_thing(apache::thrift::ResponseChannelRequest::Uniq
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  C_thing_pargs args;
+  ::cpp2::C_thing_pargs args;
   ::std::int32_t uarg_a{0};
   args.get<0>().value = &uarg_a;
   auto uarg_b = std::make_unique<::std::string>();
@@ -302,7 +302,7 @@ void CAsyncProcessor::process_thing(apache::thrift::ResponseChannelRequest::Uniq
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse CAsyncProcessor::return_thing(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  C_thing_presult result;
+  ::cpp2::C_thing_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -313,7 +313,7 @@ void CAsyncProcessor::throw_wrapped_thing(apache::thrift::ResponseChannelRequest
   if (!ew) {
     return;
   }
-  C_thing_presult result;
+  ::cpp2::C_thing_presult result;
   if (ew.with_exception([&]( ::cpp2::Bang& e) {
     if (ctx) {
       ctx->userExceptionWrapped(true, ew);

@@ -32,7 +32,7 @@ void MyServiceAsyncProcessor::executeRequest_query(apache::thrift::ServerRequest
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyService_query_pargs args;
+  ::cpp2::MyService_query_pargs args;
   auto uarg_s = std::make_unique<::cpp2::MyStruct>();
   args.get<0>().value = uarg_s.get();
   auto uarg_i = std::make_unique<::cpp2::Included>();
@@ -78,7 +78,7 @@ void MyServiceAsyncProcessor::process_query(apache::thrift::ResponseChannelReque
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyService_query_pargs args;
+  ::cpp2::MyService_query_pargs args;
   auto uarg_s = std::make_unique<::cpp2::MyStruct>();
   args.get<0>().value = uarg_s.get();
   auto uarg_i = std::make_unique<::cpp2::Included>();
@@ -100,7 +100,7 @@ void MyServiceAsyncProcessor::process_query(apache::thrift::ResponseChannelReque
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_query(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  MyService_query_presult result;
+  ::cpp2::MyService_query_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -134,7 +134,7 @@ void MyServiceAsyncProcessor::executeRequest_has_arg_docs(apache::thrift::Server
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyService_has_arg_docs_pargs args;
+  ::cpp2::MyService_has_arg_docs_pargs args;
   auto uarg_s = std::make_unique<::cpp2::MyStruct>();
   args.get<0>().value = uarg_s.get();
   auto uarg_i = std::make_unique<::cpp2::Included>();
@@ -180,7 +180,7 @@ void MyServiceAsyncProcessor::process_has_arg_docs(apache::thrift::ResponseChann
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyService_has_arg_docs_pargs args;
+  ::cpp2::MyService_has_arg_docs_pargs args;
   auto uarg_s = std::make_unique<::cpp2::MyStruct>();
   args.get<0>().value = uarg_s.get();
   auto uarg_i = std::make_unique<::cpp2::Included>();
@@ -202,7 +202,7 @@ void MyServiceAsyncProcessor::process_has_arg_docs(apache::thrift::ResponseChann
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_has_arg_docs(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  MyService_has_arg_docs_presult result;
+  ::cpp2::MyService_has_arg_docs_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 

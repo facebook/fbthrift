@@ -18,8 +18,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class C;
+} // cpp2
+namespace apache::thrift {
 
-class CAsyncClient : public apache::thrift::GeneratedAsyncClient {
+template <>
+class Client<::cpp2::C> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -311,4 +315,11 @@ class CAsyncClient : public apache::thrift::GeneratedAsyncClient {
  public:
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class CAsyncClient : public ::apache::thrift::Client<C> {
+ public:
+  using ::apache::thrift::Client<::cpp2::C>::Client;
+};
 } // cpp2

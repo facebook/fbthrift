@@ -12,11 +12,11 @@
 namespace py3 { namespace simple {
 typedef apache::thrift::ThriftPresult<false> RederivedService_get_seven_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> RederivedService_get_seven_presult;
-
+}} // py3::simple
 template <typename Protocol_, typename RpcOptions>
-void RederivedServiceAsyncClient::get_sevenT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
+void apache::thrift::Client<::py3::simple::RederivedService>::get_sevenT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
 
-  RederivedService_get_seven_pargs args;
+  ::py3::simple::RederivedService_get_seven_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
 
@@ -29,12 +29,12 @@ void RederivedServiceAsyncClient::get_sevenT(Protocol_* prot, RpcOptions&& rpcOp
 
 
 
-void RederivedServiceAsyncClient::get_seven(std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::py3::simple::RederivedService>::get_seven(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
   get_seven(rpcOptions, std::move(callback));
 }
 
-void RederivedServiceAsyncClient::get_seven(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void apache::thrift::Client<::py3::simple::RederivedService>::get_seven(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto [ctx, header] = get_sevenCtx(&rpcOptions);
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId =
@@ -47,7 +47,7 @@ void RederivedServiceAsyncClient::get_seven(apache::thrift::RpcOptions& rpcOptio
   get_sevenImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback));
 }
 
-void RederivedServiceAsyncClient::get_sevenImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
+void apache::thrift::Client<::py3::simple::RederivedService>::get_sevenImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -76,7 +76,7 @@ void RederivedServiceAsyncClient::get_sevenImpl(apache::thrift::RpcOptions& rpcO
   }
 }
 
-std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> RederivedServiceAsyncClient::get_sevenCtx(apache::thrift::RpcOptions* rpcOptions) {
+std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> apache::thrift::Client<::py3::simple::RederivedService>::get_sevenCtx(apache::thrift::RpcOptions* rpcOptions) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(
       apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(channel_->getProtocolId());
@@ -93,12 +93,12 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
   return {std::move(ctx), std::move(header)};
 }
 
-::std::int32_t RederivedServiceAsyncClient::sync_get_seven() {
+::std::int32_t apache::thrift::Client<::py3::simple::RederivedService>::sync_get_seven() {
   ::apache::thrift::RpcOptions rpcOptions;
   return sync_get_seven(rpcOptions);
 }
 
-::std::int32_t RederivedServiceAsyncClient::sync_get_seven(apache::thrift::RpcOptions& rpcOptions) {
+::std::int32_t apache::thrift::Client<::py3::simple::RederivedService>::sync_get_seven(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
@@ -127,17 +127,17 @@ std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apa
 }
 
 
-folly::Future<::std::int32_t> RederivedServiceAsyncClient::future_get_seven() {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::RederivedService>::future_get_seven() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_get_seven(rpcOptions);
 }
 
-folly::SemiFuture<::std::int32_t> RederivedServiceAsyncClient::semifuture_get_seven() {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::RederivedService>::semifuture_get_seven() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_get_seven(rpcOptions);
 }
 
-folly::Future<::std::int32_t> RederivedServiceAsyncClient::future_get_seven(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<::std::int32_t> apache::thrift::Client<::py3::simple::RederivedService>::future_get_seven(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<::std::int32_t> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_get_seven, channel_);
@@ -145,14 +145,14 @@ folly::Future<::std::int32_t> RederivedServiceAsyncClient::future_get_seven(apac
   return future;
 }
 
-folly::SemiFuture<::std::int32_t> RederivedServiceAsyncClient::semifuture_get_seven(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<::std::int32_t> apache::thrift::Client<::py3::simple::RederivedService>::semifuture_get_seven(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_get_seven, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_seven(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> RederivedServiceAsyncClient::header_future_get_seven(apache::thrift::RpcOptions& rpcOptions) {
+folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::RederivedService>::header_future_get_seven(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
   auto future = promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::int32_t>>(std::move(promise), recv_wrapped_get_seven, channel_);
@@ -160,20 +160,20 @@ folly::Future<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transpor
   return future;
 }
 
-folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> RederivedServiceAsyncClient::header_semifuture_get_seven(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::py3::simple::RederivedService>::header_semifuture_get_seven(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_get_seven, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get_seven(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-void RederivedServiceAsyncClient::get_seven(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void apache::thrift::Client<::py3::simple::RederivedService>::get_seven(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   get_seven(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
-folly::exception_wrapper RederivedServiceAsyncClient::recv_wrapped_get_seven(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::RederivedService>::recv_wrapped_get_seven(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -181,7 +181,7 @@ folly::exception_wrapper RederivedServiceAsyncClient::recv_wrapped_get_seven(::s
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
   }
 
-  using result = RederivedService_get_seven_presult;
+  using result = ::py3::simple::RederivedService_get_seven_presult;
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -202,7 +202,7 @@ folly::exception_wrapper RederivedServiceAsyncClient::recv_wrapped_get_seven(::s
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-::std::int32_t RederivedServiceAsyncClient::recv_get_seven(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::RederivedService>::recv_get_seven(::apache::thrift::ClientReceiveState& state) {
   ::std::int32_t _return;
   auto ew = recv_wrapped_get_seven(_return, state);
   if (ew) {
@@ -211,13 +211,12 @@ folly::exception_wrapper RederivedServiceAsyncClient::recv_wrapped_get_seven(::s
   return _return;
 }
 
-::std::int32_t RederivedServiceAsyncClient::recv_instance_get_seven(::apache::thrift::ClientReceiveState& state) {
+::std::int32_t apache::thrift::Client<::py3::simple::RederivedService>::recv_instance_get_seven(::apache::thrift::ClientReceiveState& state) {
   return recv_get_seven(state);
 }
 
-folly::exception_wrapper RederivedServiceAsyncClient::recv_instance_wrapped_get_seven(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper apache::thrift::Client<::py3::simple::RederivedService>::recv_instance_wrapped_get_seven(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_get_seven(_return, state);
 }
 
 
-}} // py3::simple

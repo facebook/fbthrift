@@ -36,7 +36,7 @@ void RaiserAsyncProcessor::executeRequest_doBland(apache::thrift::ServerRequest&
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  Raiser_doBland_pargs args;
+  ::cpp2::Raiser_doBland_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.doBland", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "doBland", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -78,7 +78,7 @@ void RaiserAsyncProcessor::process_doBland(apache::thrift::ResponseChannelReques
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  Raiser_doBland_pargs args;
+  ::cpp2::Raiser_doBland_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.doBland", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -96,7 +96,7 @@ void RaiserAsyncProcessor::process_doBland(apache::thrift::ResponseChannelReques
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse RaiserAsyncProcessor::return_doBland(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  Raiser_doBland_presult result;
+  ::cpp2::Raiser_doBland_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -130,7 +130,7 @@ void RaiserAsyncProcessor::executeRequest_doRaise(apache::thrift::ServerRequest&
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  Raiser_doRaise_pargs args;
+  ::cpp2::Raiser_doRaise_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.doRaise", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "doRaise", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -172,7 +172,7 @@ void RaiserAsyncProcessor::process_doRaise(apache::thrift::ResponseChannelReques
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  Raiser_doRaise_pargs args;
+  ::cpp2::Raiser_doRaise_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.doRaise", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -190,7 +190,7 @@ void RaiserAsyncProcessor::process_doRaise(apache::thrift::ResponseChannelReques
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse RaiserAsyncProcessor::return_doRaise(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  Raiser_doRaise_presult result;
+  ::cpp2::Raiser_doRaise_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -199,7 +199,7 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(apache::thrift::ResponseChannel
   if (!ew) {
     return;
   }
-  Raiser_doRaise_presult result;
+  ::cpp2::Raiser_doRaise_presult result;
   if (ew.with_exception([&]( ::cpp2::Banal& e) {
     if (ctx) {
       ctx->userExceptionWrapped(true, ew);
@@ -261,7 +261,7 @@ void RaiserAsyncProcessor::executeRequest_get200(apache::thrift::ServerRequest&&
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  Raiser_get200_pargs args;
+  ::cpp2::Raiser_get200_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.get200", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "get200", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -303,7 +303,7 @@ void RaiserAsyncProcessor::process_get200(apache::thrift::ResponseChannelRequest
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  Raiser_get200_pargs args;
+  ::cpp2::Raiser_get200_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.get200", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -321,7 +321,7 @@ void RaiserAsyncProcessor::process_get200(apache::thrift::ResponseChannelRequest
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse RaiserAsyncProcessor::return_get200(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  Raiser_get200_presult result;
+  ::cpp2::Raiser_get200_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -357,7 +357,7 @@ void RaiserAsyncProcessor::executeRequest_get500(apache::thrift::ServerRequest&&
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  Raiser_get500_pargs args;
+  ::cpp2::Raiser_get500_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.get500", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "get500", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -399,7 +399,7 @@ void RaiserAsyncProcessor::process_get500(apache::thrift::ResponseChannelRequest
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  Raiser_get500_pargs args;
+  ::cpp2::Raiser_get500_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Raiser.get500", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -417,7 +417,7 @@ void RaiserAsyncProcessor::process_get500(apache::thrift::ResponseChannelRequest
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse RaiserAsyncProcessor::return_get500(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  Raiser_get500_presult result;
+  ::cpp2::Raiser_get500_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -428,7 +428,7 @@ void RaiserAsyncProcessor::throw_wrapped_get500(apache::thrift::ResponseChannelR
   if (!ew) {
     return;
   }
-  Raiser_get500_presult result;
+  ::cpp2::Raiser_get500_presult result;
   if (ew.with_exception([&]( ::cpp2::Fiery& e) {
     if (ctx) {
       ctx->userExceptionWrapped(true, ew);

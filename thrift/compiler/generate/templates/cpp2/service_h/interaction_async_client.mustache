@@ -16,7 +16,7 @@
 
 %>class <%service:cpp_name%> final : public apache::thrift::InteractionHandle {
   using apache::thrift::InteractionHandle::InteractionHandle;
-  friend class <%service:parent_service_cpp_name%>AsyncClient;
+  friend class ::apache::thrift::Client<<%service:parent_service_qualified_name%>>;
  public:
 
 

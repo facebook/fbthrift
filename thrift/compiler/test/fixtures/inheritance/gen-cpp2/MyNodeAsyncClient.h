@@ -18,8 +18,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class MyNode;
+} // cpp2
+namespace apache::thrift {
 
-class MyNodeAsyncClient : public ::cpp2::MyRootAsyncClient {
+template <>
+class Client<::cpp2::MyNode> : public ::cpp2::MyRootAsyncClient {
  public:
   using ::cpp2::MyRootAsyncClient::MyRootAsyncClient;
 
@@ -123,4 +127,11 @@ class MyNodeAsyncClient : public ::cpp2::MyRootAsyncClient {
  public:
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class MyNodeAsyncClient : public ::apache::thrift::Client<MyNode> {
+ public:
+  using ::apache::thrift::Client<::cpp2::MyNode>::Client;
+};
 } // cpp2

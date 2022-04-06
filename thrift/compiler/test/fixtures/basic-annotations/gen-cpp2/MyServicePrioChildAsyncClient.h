@@ -18,8 +18,12 @@ namespace apache { namespace thrift {
 }}
 
 namespace cpp2 {
+class MyServicePrioChild;
+} // cpp2
+namespace apache::thrift {
 
-class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncClient {
+template <>
+class Client<::cpp2::MyServicePrioChild> : public ::cpp2::MyServicePrioParentAsyncClient {
  public:
   using ::cpp2::MyServicePrioParentAsyncClient::MyServicePrioParentAsyncClient;
 
@@ -123,4 +127,11 @@ class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncCli
  public:
 };
 
+} // namespace apache::thrift
+
+namespace cpp2 {
+class MyServicePrioChildAsyncClient : public ::apache::thrift::Client<MyServicePrioChild> {
+ public:
+  using ::apache::thrift::Client<::cpp2::MyServicePrioChild>::Client;
+};
 } // cpp2

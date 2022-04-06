@@ -82,7 +82,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_i16_param(apache::thrif
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_i16_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_i16_param_pargs args;
   ::std::int16_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_i16_param", serverRequest.requestContext()));
@@ -126,7 +126,7 @@ void ParamServiceAsyncProcessor::process_void_ret_i16_param(apache::thrift::Resp
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_i16_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_i16_param_pargs args;
   ::std::int16_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_i16_param", ctx));
@@ -146,7 +146,7 @@ void ParamServiceAsyncProcessor::process_void_ret_i16_param(apache::thrift::Resp
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_void_ret_i16_param(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  ParamService_void_ret_i16_param_presult result;
+  ::some::valid::ns::ParamService_void_ret_i16_param_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -180,7 +180,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_byte_i16_param(apache::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_byte_i16_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_byte_i16_param_pargs args;
   ::std::int8_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   ::std::int16_t uarg_param2{0};
@@ -226,7 +226,7 @@ void ParamServiceAsyncProcessor::process_void_ret_byte_i16_param(apache::thrift:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_byte_i16_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_byte_i16_param_pargs args;
   ::std::int8_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   ::std::int16_t uarg_param2{0};
@@ -248,7 +248,7 @@ void ParamServiceAsyncProcessor::process_void_ret_byte_i16_param(apache::thrift:
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_void_ret_byte_i16_param(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  ParamService_void_ret_byte_i16_param_presult result;
+  ::some::valid::ns::ParamService_void_ret_byte_i16_param_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -282,7 +282,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_map_param(apache::thrif
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_map_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_map_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_param", serverRequest.requestContext()));
@@ -326,7 +326,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_param(apache::thrift::Resp
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_map_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_map_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_param", ctx));
@@ -346,7 +346,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_param(apache::thrift::Resp
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_void_ret_map_param(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  ParamService_void_ret_map_param_presult result;
+  ::some::valid::ns::ParamService_void_ret_map_param_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -380,7 +380,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_map_setlist_param(apach
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_map_setlist_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_map_setlist_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
   args.get<0>().value = uarg_param1.get();
   auto uarg_param2 = std::make_unique<::std::set<::std::vector<::std::string>>>();
@@ -426,7 +426,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_setlist_param(apache::thri
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_map_setlist_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_map_setlist_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
   args.get<0>().value = uarg_param1.get();
   auto uarg_param2 = std::make_unique<::std::set<::std::vector<::std::string>>>();
@@ -448,7 +448,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_setlist_param(apache::thri
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_void_ret_map_setlist_param(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  ParamService_void_ret_map_setlist_param_presult result;
+  ::some::valid::ns::ParamService_void_ret_map_setlist_param_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -482,7 +482,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_map_typedef_param(apach
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_map_typedef_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_map_typedef_param_pargs args;
   ::some::valid::ns::simpleTypeDef uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_typedef_param", serverRequest.requestContext()));
@@ -526,7 +526,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_typedef_param(apache::thri
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_map_typedef_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_map_typedef_param_pargs args;
   ::some::valid::ns::simpleTypeDef uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_map_typedef_param", ctx));
@@ -546,7 +546,7 @@ void ParamServiceAsyncProcessor::process_void_ret_map_typedef_param(apache::thri
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_void_ret_map_typedef_param(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  ParamService_void_ret_map_typedef_param_presult result;
+  ::some::valid::ns::ParamService_void_ret_map_typedef_param_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -580,7 +580,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_enum_param(apache::thri
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_enum_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_enum_param_pargs args;
   ::some::valid::ns::MyEnumA uarg_param1{static_cast<::some::valid::ns::MyEnumA>(0)};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_enum_param", serverRequest.requestContext()));
@@ -624,7 +624,7 @@ void ParamServiceAsyncProcessor::process_void_ret_enum_param(apache::thrift::Res
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_enum_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_enum_param_pargs args;
   ::some::valid::ns::MyEnumA uarg_param1{static_cast<::some::valid::ns::MyEnumA>(0)};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_enum_param", ctx));
@@ -644,7 +644,7 @@ void ParamServiceAsyncProcessor::process_void_ret_enum_param(apache::thrift::Res
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_void_ret_enum_param(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  ParamService_void_ret_enum_param_presult result;
+  ::some::valid::ns::ParamService_void_ret_enum_param_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -678,7 +678,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_struct_param(apache::th
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_struct_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_struct_param_pargs args;
   auto uarg_param1 = std::make_unique<::some::valid::ns::MyStruct>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_struct_param", serverRequest.requestContext()));
@@ -722,7 +722,7 @@ void ParamServiceAsyncProcessor::process_void_ret_struct_param(apache::thrift::R
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_struct_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_struct_param_pargs args;
   auto uarg_param1 = std::make_unique<::some::valid::ns::MyStruct>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_struct_param", ctx));
@@ -742,7 +742,7 @@ void ParamServiceAsyncProcessor::process_void_ret_struct_param(apache::thrift::R
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_void_ret_struct_param(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  ParamService_void_ret_struct_param_presult result;
+  ::some::valid::ns::ParamService_void_ret_struct_param_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -776,7 +776,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_listunion_param(apache:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_listunion_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_listunion_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::vector<::some::valid::ns::ComplexUnion>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_listunion_param", serverRequest.requestContext()));
@@ -820,7 +820,7 @@ void ParamServiceAsyncProcessor::process_void_ret_listunion_param(apache::thrift
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_void_ret_listunion_param_pargs args;
+  ::some::valid::ns::ParamService_void_ret_listunion_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::vector<::some::valid::ns::ComplexUnion>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.void_ret_listunion_param", ctx));
@@ -840,7 +840,7 @@ void ParamServiceAsyncProcessor::process_void_ret_listunion_param(apache::thrift
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_void_ret_listunion_param(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  ParamService_void_ret_listunion_param_presult result;
+  ::some::valid::ns::ParamService_void_ret_listunion_param_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -874,7 +874,7 @@ void ParamServiceAsyncProcessor::executeRequest_bool_ret_i32_i64_param(apache::t
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_bool_ret_i32_i64_param_pargs args;
+  ::some::valid::ns::ParamService_bool_ret_i32_i64_param_pargs args;
   ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   ::std::int64_t uarg_param2{0};
@@ -920,7 +920,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_i32_i64_param(apache::thrift::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_bool_ret_i32_i64_param_pargs args;
+  ::some::valid::ns::ParamService_bool_ret_i32_i64_param_pargs args;
   ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   ::std::int64_t uarg_param2{0};
@@ -942,7 +942,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_i32_i64_param(apache::thrift::
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_bool_ret_i32_i64_param(apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
-  ParamService_bool_ret_i32_i64_param_presult result;
+  ::some::valid::ns::ParamService_bool_ret_i32_i64_param_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -978,7 +978,7 @@ void ParamServiceAsyncProcessor::executeRequest_bool_ret_map_param(apache::thrif
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_bool_ret_map_param_pargs args;
+  ::some::valid::ns::ParamService_bool_ret_map_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_map_param", serverRequest.requestContext()));
@@ -1022,7 +1022,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_map_param(apache::thrift::Resp
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_bool_ret_map_param_pargs args;
+  ::some::valid::ns::ParamService_bool_ret_map_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_map_param", ctx));
@@ -1042,7 +1042,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_map_param(apache::thrift::Resp
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_bool_ret_map_param(apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
-  ParamService_bool_ret_map_param_presult result;
+  ::some::valid::ns::ParamService_bool_ret_map_param_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1078,7 +1078,7 @@ void ParamServiceAsyncProcessor::executeRequest_bool_ret_union_param(apache::thr
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_bool_ret_union_param_pargs args;
+  ::some::valid::ns::ParamService_bool_ret_union_param_pargs args;
   auto uarg_param1 = std::make_unique<::some::valid::ns::ComplexUnion>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_union_param", serverRequest.requestContext()));
@@ -1122,7 +1122,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_union_param(apache::thrift::Re
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_bool_ret_union_param_pargs args;
+  ::some::valid::ns::ParamService_bool_ret_union_param_pargs args;
   auto uarg_param1 = std::make_unique<::some::valid::ns::ComplexUnion>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.bool_ret_union_param", ctx));
@@ -1142,7 +1142,7 @@ void ParamServiceAsyncProcessor::process_bool_ret_union_param(apache::thrift::Re
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_bool_ret_union_param(apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
-  ParamService_bool_ret_union_param_presult result;
+  ::some::valid::ns::ParamService_bool_ret_union_param_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1178,7 +1178,7 @@ void ParamServiceAsyncProcessor::executeRequest_i64_ret_float_double_param(apach
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_i64_ret_float_double_param_pargs args;
+  ::some::valid::ns::ParamService_i64_ret_float_double_param_pargs args;
   float uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   double uarg_param2{0};
@@ -1224,7 +1224,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_float_double_param(apache::thri
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_i64_ret_float_double_param_pargs args;
+  ::some::valid::ns::ParamService_i64_ret_float_double_param_pargs args;
   float uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   double uarg_param2{0};
@@ -1246,7 +1246,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_float_double_param(apache::thri
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_i64_ret_float_double_param(apache::thrift::ContextStack* ctx, ::std::int64_t const& _return) {
   ProtocolOut_ prot;
-  ParamService_i64_ret_float_double_param_presult result;
+  ::some::valid::ns::ParamService_i64_ret_float_double_param_presult result;
   result.get<0>().value = const_cast<::std::int64_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1282,7 +1282,7 @@ void ParamServiceAsyncProcessor::executeRequest_i64_ret_string_typedef_param(apa
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_i64_ret_string_typedef_param_pargs args;
+  ::some::valid::ns::ParamService_i64_ret_string_typedef_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::string>();
   args.get<0>().value = uarg_param1.get();
   auto uarg_param2 = std::make_unique<::std::set<::some::valid::ns::mostComplexTypeDef>>();
@@ -1328,7 +1328,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_string_typedef_param(apache::th
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_i64_ret_string_typedef_param_pargs args;
+  ::some::valid::ns::ParamService_i64_ret_string_typedef_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::string>();
   args.get<0>().value = uarg_param1.get();
   auto uarg_param2 = std::make_unique<::std::set<::some::valid::ns::mostComplexTypeDef>>();
@@ -1350,7 +1350,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_string_typedef_param(apache::th
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_i64_ret_string_typedef_param(apache::thrift::ContextStack* ctx, ::std::int64_t const& _return) {
   ProtocolOut_ prot;
-  ParamService_i64_ret_string_typedef_param_presult result;
+  ::some::valid::ns::ParamService_i64_ret_string_typedef_param_presult result;
   result.get<0>().value = const_cast<::std::int64_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1382,7 +1382,7 @@ void ParamServiceAsyncProcessor::executeRequest_i64_ret_i32_i32_i32_i32_i32_para
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_i64_ret_i32_i32_i32_i32_i32_param_pargs args;
+  ::some::valid::ns::ParamService_i64_ret_i32_i32_i32_i32_i32_param_pargs args;
   ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   ::std::int32_t uarg_param2{0};
@@ -1434,7 +1434,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(apach
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_i64_ret_i32_i32_i32_i32_i32_param_pargs args;
+  ::some::valid::ns::ParamService_i64_ret_i32_i32_i32_i32_i32_param_pargs args;
   ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   ::std::int32_t uarg_param2{0};
@@ -1462,7 +1462,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(apach
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::ContextStack* ctx, ::std::int64_t const& _return) {
   ProtocolOut_ prot;
-  ParamService_i64_ret_i32_i32_i32_i32_i32_param_presult result;
+  ::some::valid::ns::ParamService_i64_ret_i32_i32_i32_i32_i32_param_presult result;
   result.get<0>().value = const_cast<::std::int64_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1498,7 +1498,7 @@ void ParamServiceAsyncProcessor::executeRequest_double_ret_setstruct_param(apach
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_double_ret_setstruct_param_pargs args;
+  ::some::valid::ns::ParamService_double_ret_setstruct_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::set<::some::valid::ns::MyStruct>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.double_ret_setstruct_param", serverRequest.requestContext()));
@@ -1542,7 +1542,7 @@ void ParamServiceAsyncProcessor::process_double_ret_setstruct_param(apache::thri
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_double_ret_setstruct_param_pargs args;
+  ::some::valid::ns::ParamService_double_ret_setstruct_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::set<::some::valid::ns::MyStruct>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.double_ret_setstruct_param", ctx));
@@ -1562,7 +1562,7 @@ void ParamServiceAsyncProcessor::process_double_ret_setstruct_param(apache::thri
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_double_ret_setstruct_param(apache::thrift::ContextStack* ctx, double const& _return) {
   ProtocolOut_ prot;
-  ParamService_double_ret_setstruct_param_presult result;
+  ::some::valid::ns::ParamService_double_ret_setstruct_param_presult result;
   result.get<0>().value = const_cast<double*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1598,7 +1598,7 @@ void ParamServiceAsyncProcessor::executeRequest_string_ret_string_param(apache::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_string_ret_string_param_pargs args;
+  ::some::valid::ns::ParamService_string_ret_string_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::string>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.string_ret_string_param", serverRequest.requestContext()));
@@ -1642,7 +1642,7 @@ void ParamServiceAsyncProcessor::process_string_ret_string_param(apache::thrift:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_string_ret_string_param_pargs args;
+  ::some::valid::ns::ParamService_string_ret_string_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::string>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.string_ret_string_param", ctx));
@@ -1662,7 +1662,7 @@ void ParamServiceAsyncProcessor::process_string_ret_string_param(apache::thrift:
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_string_ret_string_param(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  ParamService_string_ret_string_param_presult result;
+  ::some::valid::ns::ParamService_string_ret_string_param_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1698,7 +1698,7 @@ void ParamServiceAsyncProcessor::executeRequest_binary_ret_binary_param(apache::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_binary_ret_binary_param_pargs args;
+  ::some::valid::ns::ParamService_binary_ret_binary_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::string>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.binary_ret_binary_param", serverRequest.requestContext()));
@@ -1742,7 +1742,7 @@ void ParamServiceAsyncProcessor::process_binary_ret_binary_param(apache::thrift:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_binary_ret_binary_param_pargs args;
+  ::some::valid::ns::ParamService_binary_ret_binary_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::string>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.binary_ret_binary_param", ctx));
@@ -1762,7 +1762,7 @@ void ParamServiceAsyncProcessor::process_binary_ret_binary_param(apache::thrift:
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_binary_ret_binary_param(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  ParamService_binary_ret_binary_param_presult result;
+  ::some::valid::ns::ParamService_binary_ret_binary_param_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1798,7 +1798,7 @@ void ParamServiceAsyncProcessor::executeRequest_map_ret_bool_param(apache::thrif
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_map_ret_bool_param_pargs args;
+  ::some::valid::ns::ParamService_map_ret_bool_param_pargs args;
   bool uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.map_ret_bool_param", serverRequest.requestContext()));
@@ -1842,7 +1842,7 @@ void ParamServiceAsyncProcessor::process_map_ret_bool_param(apache::thrift::Resp
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_map_ret_bool_param_pargs args;
+  ::some::valid::ns::ParamService_map_ret_bool_param_pargs args;
   bool uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.map_ret_bool_param", ctx));
@@ -1862,7 +1862,7 @@ void ParamServiceAsyncProcessor::process_map_ret_bool_param(apache::thrift::Resp
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_map_ret_bool_param(apache::thrift::ContextStack* ctx, ::std::map<::std::string, ::std::int64_t> const& _return) {
   ProtocolOut_ prot;
-  ParamService_map_ret_bool_param_presult result;
+  ::some::valid::ns::ParamService_map_ret_bool_param_presult result;
   result.get<0>().value = const_cast<::std::map<::std::string, ::std::int64_t>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -1898,7 +1898,7 @@ void ParamServiceAsyncProcessor::executeRequest_list_ret_map_setlist_param(apach
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_list_ret_map_setlist_param_pargs args;
+  ::some::valid::ns::ParamService_list_ret_map_setlist_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<::std::int32_t, ::std::vector<::std::string>>>();
   args.get<0>().value = uarg_param1.get();
   auto uarg_param2 = std::make_unique<::std::vector<::std::string>>();
@@ -1944,7 +1944,7 @@ void ParamServiceAsyncProcessor::process_list_ret_map_setlist_param(apache::thri
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_list_ret_map_setlist_param_pargs args;
+  ::some::valid::ns::ParamService_list_ret_map_setlist_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<::std::int32_t, ::std::vector<::std::string>>>();
   args.get<0>().value = uarg_param1.get();
   auto uarg_param2 = std::make_unique<::std::vector<::std::string>>();
@@ -1966,7 +1966,7 @@ void ParamServiceAsyncProcessor::process_list_ret_map_setlist_param(apache::thri
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_list_ret_map_setlist_param(apache::thrift::ContextStack* ctx, ::std::vector<bool> const& _return) {
   ProtocolOut_ prot;
-  ParamService_list_ret_map_setlist_param_presult result;
+  ::some::valid::ns::ParamService_list_ret_map_setlist_param_presult result;
   result.get<0>().value = const_cast<::std::vector<bool>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2002,7 +2002,7 @@ void ParamServiceAsyncProcessor::executeRequest_mapsetlistmapliststring_ret_list
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_mapsetlistmapliststring_ret_listlistlist_param_pargs args;
+  ::some::valid::ns::ParamService_mapsetlistmapliststring_ret_listlistlist_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.mapsetlistmapliststring_ret_listlistlist_param", serverRequest.requestContext()));
@@ -2046,7 +2046,7 @@ void ParamServiceAsyncProcessor::process_mapsetlistmapliststring_ret_listlistlis
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_mapsetlistmapliststring_ret_listlistlist_param_pargs args;
+  ::some::valid::ns::ParamService_mapsetlistmapliststring_ret_listlistlist_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.mapsetlistmapliststring_ret_listlistlist_param", ctx));
@@ -2066,7 +2066,7 @@ void ParamServiceAsyncProcessor::process_mapsetlistmapliststring_ret_listlistlis
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_mapsetlistmapliststring_ret_listlistlist_param(apache::thrift::ContextStack* ctx, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> const& _return) {
   ProtocolOut_ prot;
-  ParamService_mapsetlistmapliststring_ret_listlistlist_param_presult result;
+  ::some::valid::ns::ParamService_mapsetlistmapliststring_ret_listlistlist_param_presult result;
   result.get<0>().value = const_cast<::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2102,7 +2102,7 @@ void ParamServiceAsyncProcessor::executeRequest_typedef_ret_i32_param(apache::th
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_typedef_ret_i32_param_pargs args;
+  ::some::valid::ns::ParamService_typedef_ret_i32_param_pargs args;
   ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.typedef_ret_i32_param", serverRequest.requestContext()));
@@ -2146,7 +2146,7 @@ void ParamServiceAsyncProcessor::process_typedef_ret_i32_param(apache::thrift::R
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_typedef_ret_i32_param_pargs args;
+  ::some::valid::ns::ParamService_typedef_ret_i32_param_pargs args;
   ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.typedef_ret_i32_param", ctx));
@@ -2166,7 +2166,7 @@ void ParamServiceAsyncProcessor::process_typedef_ret_i32_param(apache::thrift::R
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_typedef_ret_i32_param(apache::thrift::ContextStack* ctx, ::some::valid::ns::simpleTypeDef const& _return) {
   ProtocolOut_ prot;
-  ParamService_typedef_ret_i32_param_presult result;
+  ::some::valid::ns::ParamService_typedef_ret_i32_param_presult result;
   result.get<0>().value = const_cast<::some::valid::ns::simpleTypeDef*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2198,7 +2198,7 @@ void ParamServiceAsyncProcessor::executeRequest_listtypedef_ret_typedef_param(ap
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_listtypedef_ret_typedef_param_pargs args;
+  ::some::valid::ns::ParamService_listtypedef_ret_typedef_param_pargs args;
   auto uarg_param1 = std::make_unique<::some::valid::ns::complexStructTypeDef>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listtypedef_ret_typedef_param", serverRequest.requestContext()));
@@ -2242,7 +2242,7 @@ void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(apache::t
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_listtypedef_ret_typedef_param_pargs args;
+  ::some::valid::ns::ParamService_listtypedef_ret_typedef_param_pargs args;
   auto uarg_param1 = std::make_unique<::some::valid::ns::complexStructTypeDef>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listtypedef_ret_typedef_param", ctx));
@@ -2262,7 +2262,7 @@ void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(apache::t
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_listtypedef_ret_typedef_param(apache::thrift::ContextStack* ctx, ::std::vector<::some::valid::ns::simpleTypeDef> const& _return) {
   ProtocolOut_ prot;
-  ParamService_listtypedef_ret_typedef_param_presult result;
+  ::some::valid::ns::ParamService_listtypedef_ret_typedef_param_presult result;
   result.get<0>().value = const_cast<::std::vector<::some::valid::ns::simpleTypeDef>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2298,7 +2298,7 @@ void ParamServiceAsyncProcessor::executeRequest_enum_ret_double_param(apache::th
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_enum_ret_double_param_pargs args;
+  ::some::valid::ns::ParamService_enum_ret_double_param_pargs args;
   double uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.enum_ret_double_param", serverRequest.requestContext()));
@@ -2342,7 +2342,7 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_param(apache::thrift::R
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_enum_ret_double_param_pargs args;
+  ::some::valid::ns::ParamService_enum_ret_double_param_pargs args;
   double uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.enum_ret_double_param", ctx));
@@ -2362,7 +2362,7 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_param(apache::thrift::R
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_enum_ret_double_param(apache::thrift::ContextStack* ctx, ::some::valid::ns::MyEnumA const& _return) {
   ProtocolOut_ prot;
-  ParamService_enum_ret_double_param_presult result;
+  ::some::valid::ns::ParamService_enum_ret_double_param_presult result;
   result.get<0>().value = const_cast<::some::valid::ns::MyEnumA*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2398,7 +2398,7 @@ void ParamServiceAsyncProcessor::executeRequest_enum_ret_double_enum_param(apach
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_enum_ret_double_enum_param_pargs args;
+  ::some::valid::ns::ParamService_enum_ret_double_enum_param_pargs args;
   double uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   ::some::valid::ns::MyEnumA uarg_param2{static_cast<::some::valid::ns::MyEnumA>(0)};
@@ -2444,7 +2444,7 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_enum_param(apache::thri
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_enum_ret_double_enum_param_pargs args;
+  ::some::valid::ns::ParamService_enum_ret_double_enum_param_pargs args;
   double uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   ::some::valid::ns::MyEnumA uarg_param2{static_cast<::some::valid::ns::MyEnumA>(0)};
@@ -2466,7 +2466,7 @@ void ParamServiceAsyncProcessor::process_enum_ret_double_enum_param(apache::thri
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_enum_ret_double_enum_param(apache::thrift::ContextStack* ctx, ::some::valid::ns::MyEnumA const& _return) {
   ProtocolOut_ prot;
-  ParamService_enum_ret_double_enum_param_presult result;
+  ::some::valid::ns::ParamService_enum_ret_double_enum_param_presult result;
   result.get<0>().value = const_cast<::some::valid::ns::MyEnumA*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2502,7 +2502,7 @@ void ParamServiceAsyncProcessor::executeRequest_listenum_ret_map_param(apache::t
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_listenum_ret_map_param_pargs args;
+  ::some::valid::ns::ParamService_listenum_ret_map_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listenum_ret_map_param", serverRequest.requestContext()));
@@ -2546,7 +2546,7 @@ void ParamServiceAsyncProcessor::process_listenum_ret_map_param(apache::thrift::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_listenum_ret_map_param_pargs args;
+  ::some::valid::ns::ParamService_listenum_ret_map_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listenum_ret_map_param", ctx));
@@ -2566,7 +2566,7 @@ void ParamServiceAsyncProcessor::process_listenum_ret_map_param(apache::thrift::
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_listenum_ret_map_param(apache::thrift::ContextStack* ctx, ::std::vector<::some::valid::ns::MyEnumA> const& _return) {
   ProtocolOut_ prot;
-  ParamService_listenum_ret_map_param_presult result;
+  ::some::valid::ns::ParamService_listenum_ret_map_param_presult result;
   result.get<0>().value = const_cast<::std::vector<::some::valid::ns::MyEnumA>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2598,7 +2598,7 @@ void ParamServiceAsyncProcessor::executeRequest_struct_ret_i16_param(apache::thr
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_struct_ret_i16_param_pargs args;
+  ::some::valid::ns::ParamService_struct_ret_i16_param_pargs args;
   ::std::int16_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.struct_ret_i16_param", serverRequest.requestContext()));
@@ -2642,7 +2642,7 @@ void ParamServiceAsyncProcessor::process_struct_ret_i16_param(apache::thrift::Re
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_struct_ret_i16_param_pargs args;
+  ::some::valid::ns::ParamService_struct_ret_i16_param_pargs args;
   ::std::int16_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.struct_ret_i16_param", ctx));
@@ -2662,7 +2662,7 @@ void ParamServiceAsyncProcessor::process_struct_ret_i16_param(apache::thrift::Re
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_struct_ret_i16_param(apache::thrift::ContextStack* ctx, ::some::valid::ns::MyStruct const& _return) {
   ProtocolOut_ prot;
-  ParamService_struct_ret_i16_param_presult result;
+  ::some::valid::ns::ParamService_struct_ret_i16_param_presult result;
   result.get<0>().value = const_cast<::some::valid::ns::MyStruct*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2698,7 +2698,7 @@ void ParamServiceAsyncProcessor::executeRequest_setstruct_ret_set_param(apache::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_setstruct_ret_set_param_pargs args;
+  ::some::valid::ns::ParamService_setstruct_ret_set_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::set<::std::string>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.setstruct_ret_set_param", serverRequest.requestContext()));
@@ -2742,7 +2742,7 @@ void ParamServiceAsyncProcessor::process_setstruct_ret_set_param(apache::thrift:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_setstruct_ret_set_param_pargs args;
+  ::some::valid::ns::ParamService_setstruct_ret_set_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::set<::std::string>>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.setstruct_ret_set_param", ctx));
@@ -2762,7 +2762,7 @@ void ParamServiceAsyncProcessor::process_setstruct_ret_set_param(apache::thrift:
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_setstruct_ret_set_param(apache::thrift::ContextStack* ctx, ::std::set<::some::valid::ns::MyStruct> const& _return) {
   ProtocolOut_ prot;
-  ParamService_setstruct_ret_set_param_presult result;
+  ::some::valid::ns::ParamService_setstruct_ret_set_param_presult result;
   result.get<0>().value = const_cast<::std::set<::some::valid::ns::MyStruct>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2798,7 +2798,7 @@ void ParamServiceAsyncProcessor::executeRequest_union_ret_i32_i32_param(apache::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_union_ret_i32_i32_param_pargs args;
+  ::some::valid::ns::ParamService_union_ret_i32_i32_param_pargs args;
   ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   ::std::int32_t uarg_param2{0};
@@ -2844,7 +2844,7 @@ void ParamServiceAsyncProcessor::process_union_ret_i32_i32_param(apache::thrift:
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_union_ret_i32_i32_param_pargs args;
+  ::some::valid::ns::ParamService_union_ret_i32_i32_param_pargs args;
   ::std::int32_t uarg_param1{0};
   args.get<0>().value = &uarg_param1;
   ::std::int32_t uarg_param2{0};
@@ -2866,7 +2866,7 @@ void ParamServiceAsyncProcessor::process_union_ret_i32_i32_param(apache::thrift:
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_union_ret_i32_i32_param(apache::thrift::ContextStack* ctx, ::some::valid::ns::ComplexUnion const& _return) {
   ProtocolOut_ prot;
-  ParamService_union_ret_i32_i32_param_presult result;
+  ::some::valid::ns::ParamService_union_ret_i32_i32_param_presult result;
   result.get<0>().value = const_cast<::some::valid::ns::ComplexUnion*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -2902,7 +2902,7 @@ void ParamServiceAsyncProcessor::executeRequest_listunion_string_param(apache::t
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_listunion_string_param_pargs args;
+  ::some::valid::ns::ParamService_listunion_string_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::string>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listunion_string_param", serverRequest.requestContext()));
@@ -2946,7 +2946,7 @@ void ParamServiceAsyncProcessor::process_listunion_string_param(apache::thrift::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ParamService_listunion_string_param_pargs args;
+  ::some::valid::ns::ParamService_listunion_string_param_pargs args;
   auto uarg_param1 = std::make_unique<::std::string>();
   args.get<0>().value = uarg_param1.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ParamService.listunion_string_param", ctx));
@@ -2966,7 +2966,7 @@ void ParamServiceAsyncProcessor::process_listunion_string_param(apache::thrift::
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ParamServiceAsyncProcessor::return_listunion_string_param(apache::thrift::ContextStack* ctx, ::std::vector<::some::valid::ns::ComplexUnion> const& _return) {
   ProtocolOut_ prot;
-  ParamService_listunion_string_param_presult result;
+  ::some::valid::ns::ParamService_listunion_string_param_presult result;
   result.get<0>().value = const_cast<::std::vector<::some::valid::ns::ComplexUnion>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);

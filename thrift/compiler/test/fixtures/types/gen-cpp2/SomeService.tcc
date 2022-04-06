@@ -32,7 +32,7 @@ void SomeServiceAsyncProcessor::executeRequest_bounce_map(apache::thrift::Server
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SomeService_bounce_map_pargs args;
+  ::apache::thrift::fixtures::types::SomeService_bounce_map_pargs args;
   auto uarg_m = std::make_unique<::apache::thrift::fixtures::types::SomeMap>();
   args.get<0>().value = uarg_m.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SomeService.bounce_map", serverRequest.requestContext()));
@@ -76,7 +76,7 @@ void SomeServiceAsyncProcessor::process_bounce_map(apache::thrift::ResponseChann
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SomeService_bounce_map_pargs args;
+  ::apache::thrift::fixtures::types::SomeService_bounce_map_pargs args;
   auto uarg_m = std::make_unique<::apache::thrift::fixtures::types::SomeMap>();
   args.get<0>().value = uarg_m.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SomeService.bounce_map", ctx));
@@ -96,7 +96,7 @@ void SomeServiceAsyncProcessor::process_bounce_map(apache::thrift::ResponseChann
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SomeServiceAsyncProcessor::return_bounce_map(apache::thrift::ContextStack* ctx, ::apache::thrift::fixtures::types::SomeMap const& _return) {
   ProtocolOut_ prot;
-  SomeService_bounce_map_presult result;
+  ::apache::thrift::fixtures::types::SomeService_bounce_map_presult result;
   result.get<0>().value = const_cast<::apache::thrift::fixtures::types::SomeMap*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -132,7 +132,7 @@ void SomeServiceAsyncProcessor::executeRequest_binary_keyed_map(apache::thrift::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SomeService_binary_keyed_map_pargs args;
+  ::apache::thrift::fixtures::types::SomeService_binary_keyed_map_pargs args;
   auto uarg_r = std::make_unique<::std::vector<::std::int64_t>>();
   args.get<0>().value = uarg_r.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SomeService.binary_keyed_map", serverRequest.requestContext()));
@@ -176,7 +176,7 @@ void SomeServiceAsyncProcessor::process_binary_keyed_map(apache::thrift::Respons
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  SomeService_binary_keyed_map_pargs args;
+  ::apache::thrift::fixtures::types::SomeService_binary_keyed_map_pargs args;
   auto uarg_r = std::make_unique<::std::vector<::std::int64_t>>();
   args.get<0>().value = uarg_r.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SomeService.binary_keyed_map", ctx));
@@ -196,7 +196,7 @@ void SomeServiceAsyncProcessor::process_binary_keyed_map(apache::thrift::Respons
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SomeServiceAsyncProcessor::return_binary_keyed_map(apache::thrift::ContextStack* ctx, ::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t> const& _return) {
   ProtocolOut_ prot;
-  SomeService_binary_keyed_map_presult result;
+  ::apache::thrift::fixtures::types::SomeService_binary_keyed_map_presult result;
   result.get<0>().value = const_cast<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);

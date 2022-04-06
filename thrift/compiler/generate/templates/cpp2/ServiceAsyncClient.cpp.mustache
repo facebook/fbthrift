@@ -23,6 +23,7 @@
 <% > common/namespace_cpp2_begin%>
 
 <% > service_common/typedefs%>
+<% > common/namespace_cpp2_end%>
 
 <% > service_async_client_cpp/templated_received%>
 
@@ -37,7 +38,7 @@
 <% > service_async_client_cpp/future_functions%>
 
 <%^service:reduced_client?%><%^function:creates_interaction?%><%^type:streamresponse?%>
-void <%service:cpp_name%>AsyncClient::<%function:cpp_name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%function:comma%><% > service_common/function_param_list_client%>) {
+void apache::thrift::Client<<%service:qualified_name%>>::<%function:cpp_name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%function:comma%><% > service_common/function_param_list_client%>) {
   <%function:cpp_name%>(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback))<%function:comma%><% > service_common/param_list%>);
 }
 <%/type:streamresponse?%><%/function:creates_interaction?%><%/service:reduced_client?%>
@@ -58,7 +59,7 @@ void <%service:cpp_name%>AsyncClient::<%function:cpp_name%>(folly::Function<void
 
 <%/function:oneway?%>
 <%/function:starts_interaction?%><%#function:starts_interaction?%>
-<%service:parent_service_cpp_name%>AsyncClient::<%type:name%> <%service:cpp_name%>AsyncClient::<%function:cpp_name%>() {
+apache::thrift::Client<<%service:parent_service_qualified_name%>>::<%type:name%> apache::thrift::Client<<%service:qualified_name%>>::<%function:cpp_name%>() {
   return <%type:name%>(channel_, "<%type:name%>");
 }
 <%/function:starts_interaction?%>
@@ -66,7 +67,10 @@ void <%service:cpp_name%>AsyncClient::<%function:cpp_name%>(folly::Function<void
 
 <%#service:interactions%>
 
+<% > common/namespace_cpp2_begin%>
+
 <% > service_common/typedefs%>
+<% > common/namespace_cpp2_end%>
 
 <% > service_async_client_cpp/templated_received%>
 
@@ -90,4 +94,3 @@ void <%service:cpp_name%>AsyncClient::<%function:cpp_name%>(folly::Function<void
 <%/function:return_type%><%/service:functions%>
 
 <%/service:interactions%>
-<% > common/namespace_cpp2_end%>

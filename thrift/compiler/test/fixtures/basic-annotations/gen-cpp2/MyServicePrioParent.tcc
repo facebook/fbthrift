@@ -32,7 +32,7 @@ void MyServicePrioParentAsyncProcessor::executeRequest_ping(apache::thrift::Serv
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyServicePrioParent_ping_pargs args;
+  ::cpp2::MyServicePrioParent_ping_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServicePrioParent.ping", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "ping", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -74,7 +74,7 @@ void MyServicePrioParentAsyncProcessor::process_ping(apache::thrift::ResponseCha
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyServicePrioParent_ping_pargs args;
+  ::cpp2::MyServicePrioParent_ping_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServicePrioParent.ping", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -92,7 +92,7 @@ void MyServicePrioParentAsyncProcessor::process_ping(apache::thrift::ResponseCha
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServicePrioParentAsyncProcessor::return_ping(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  MyServicePrioParent_ping_presult result;
+  ::cpp2::MyServicePrioParent_ping_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -126,7 +126,7 @@ void MyServicePrioParentAsyncProcessor::executeRequest_pong(apache::thrift::Serv
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyServicePrioParent_pong_pargs args;
+  ::cpp2::MyServicePrioParent_pong_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServicePrioParent.pong", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "pong", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -168,7 +168,7 @@ void MyServicePrioParentAsyncProcessor::process_pong(apache::thrift::ResponseCha
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  MyServicePrioParent_pong_pargs args;
+  ::cpp2::MyServicePrioParent_pong_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyServicePrioParent.pong", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -186,7 +186,7 @@ void MyServicePrioParentAsyncProcessor::process_pong(apache::thrift::ResponseCha
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServicePrioParentAsyncProcessor::return_pong(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  MyServicePrioParent_pong_presult result;
+  ::cpp2::MyServicePrioParent_pong_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 

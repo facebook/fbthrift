@@ -30,7 +30,7 @@ void DerivedServiceAsyncProcessor::executeRequest_get_six(apache::thrift::Server
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  DerivedService_get_six_pargs args;
+  ::py3::simple::DerivedService_get_six_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "DerivedService.get_six", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "get_six", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -72,7 +72,7 @@ void DerivedServiceAsyncProcessor::process_get_six(apache::thrift::ResponseChann
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  DerivedService_get_six_pargs args;
+  ::py3::simple::DerivedService_get_six_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "DerivedService.get_six", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -90,7 +90,7 @@ void DerivedServiceAsyncProcessor::process_get_six(apache::thrift::ResponseChann
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse DerivedServiceAsyncProcessor::return_get_six(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  DerivedService_get_six_presult result;
+  ::py3::simple::DerivedService_get_six_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);

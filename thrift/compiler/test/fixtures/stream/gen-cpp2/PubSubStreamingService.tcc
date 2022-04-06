@@ -53,7 +53,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstream(apache::t
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  PubSubStreamingService_returnstream_pargs args;
+  ::cpp2::PubSubStreamingService_returnstream_pargs args;
   ::std::int32_t uarg_i32_from{0};
   args.get<0>().value = &uarg_i32_from;
   ::std::int32_t uarg_i32_to{0};
@@ -99,7 +99,7 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(apache::thrift::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  PubSubStreamingService_returnstream_pargs args;
+  ::cpp2::PubSubStreamingService_returnstream_pargs args;
   ::std::int32_t uarg_i32_from{0};
   args.get<0>().value = &uarg_i32_from;
   ::std::int32_t uarg_i32_to{0};
@@ -121,8 +121,8 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(apache::thrift::
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_returnstream(apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, ::apache::thrift::ServerStream<::std::int32_t>&& _return) {
   ProtocolOut_ prot;
-  PubSubStreamingService_returnstream_presult::FieldsType result;
-  using StreamPResultType = PubSubStreamingService_returnstream_presult::StreamPResultType;
+  ::cpp2::PubSubStreamingService_returnstream_presult::FieldsType result;
+  using StreamPResultType = ::cpp2::PubSubStreamingService_returnstream_presult::StreamPResultType;
   auto& returnStream = _return;
 
       using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
@@ -160,7 +160,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_streamthrows(apache::t
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  PubSubStreamingService_streamthrows_pargs args;
+  ::cpp2::PubSubStreamingService_streamthrows_pargs args;
   ::std::int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.streamthrows", serverRequest.requestContext()));
@@ -204,7 +204,7 @@ void PubSubStreamingServiceAsyncProcessor::process_streamthrows(apache::thrift::
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  PubSubStreamingService_streamthrows_pargs args;
+  ::cpp2::PubSubStreamingService_streamthrows_pargs args;
   ::std::int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.streamthrows", ctx));
@@ -224,8 +224,8 @@ void PubSubStreamingServiceAsyncProcessor::process_streamthrows(apache::thrift::
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_streamthrows(apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, ::apache::thrift::ServerStream<::std::int32_t>&& _return) {
   ProtocolOut_ prot;
-  PubSubStreamingService_streamthrows_presult::FieldsType result;
-  using StreamPResultType = PubSubStreamingService_streamthrows_presult::StreamPResultType;
+  ::cpp2::PubSubStreamingService_streamthrows_presult::FieldsType result;
+  using StreamPResultType = ::cpp2::PubSubStreamingService_streamthrows_presult::StreamPResultType;
   auto& returnStream = _return;
 
   struct ExMapType {
@@ -273,7 +273,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_boththrows(apache::thr
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  PubSubStreamingService_boththrows_pargs args;
+  ::cpp2::PubSubStreamingService_boththrows_pargs args;
   ::std::int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.boththrows", serverRequest.requestContext()));
@@ -317,7 +317,7 @@ void PubSubStreamingServiceAsyncProcessor::process_boththrows(apache::thrift::Re
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  PubSubStreamingService_boththrows_pargs args;
+  ::cpp2::PubSubStreamingService_boththrows_pargs args;
   ::std::int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.boththrows", ctx));
@@ -337,8 +337,8 @@ void PubSubStreamingServiceAsyncProcessor::process_boththrows(apache::thrift::Re
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_boththrows(apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, ::apache::thrift::ServerStream<::std::int32_t>&& _return) {
   ProtocolOut_ prot;
-  PubSubStreamingService_boththrows_presult::FieldsType result;
-  using StreamPResultType = PubSubStreamingService_boththrows_presult::StreamPResultType;
+  ::cpp2::PubSubStreamingService_boththrows_presult::FieldsType result;
+  using StreamPResultType = ::cpp2::PubSubStreamingService_boththrows_presult::StreamPResultType;
   auto& returnStream = _return;
 
   struct ExMapType {
@@ -361,7 +361,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_boththrows(apache::thri
   if (!ew) {
     return;
   }
-  PubSubStreamingService_boththrows_presult result;
+  ::cpp2::PubSubStreamingService_boththrows_presult result;
   if (ew.with_exception([&]( ::cpp2::FooEx& e) {
     if (ctx) {
       ctx->userExceptionWrapped(true, ew);
@@ -403,7 +403,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamthrow
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  PubSubStreamingService_responseandstreamthrows_pargs args;
+  ::cpp2::PubSubStreamingService_responseandstreamthrows_pargs args;
   ::std::int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.responseandstreamthrows", serverRequest.requestContext()));
@@ -447,7 +447,7 @@ void PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows(apach
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  PubSubStreamingService_responseandstreamthrows_pargs args;
+  ::cpp2::PubSubStreamingService_responseandstreamthrows_pargs args;
   ::std::int32_t uarg_foo{0};
   args.get<0>().value = &uarg_foo;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "PubSubStreamingService.responseandstreamthrows", ctx));
@@ -467,8 +467,8 @@ void PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows(apach
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_responseandstreamthrows(apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, ::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>&& _return) {
   ProtocolOut_ prot;
-  PubSubStreamingService_responseandstreamthrows_presult::FieldsType result;
-  using StreamPResultType = PubSubStreamingService_responseandstreamthrows_presult::StreamPResultType;
+  ::cpp2::PubSubStreamingService_responseandstreamthrows_presult::FieldsType result;
+  using StreamPResultType = ::cpp2::PubSubStreamingService_responseandstreamthrows_presult::StreamPResultType;
   result.get<0>().value = const_cast<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>::ResponseType*>(&_return.response);
   result.setIsSet(0, true);
   auto& returnStream = _return.stream;
@@ -493,7 +493,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_responseandstreamthrows
   if (!ew) {
     return;
   }
-  PubSubStreamingService_responseandstreamthrows_presult result;
+  ::cpp2::PubSubStreamingService_responseandstreamthrows_presult result;
   if (ew.with_exception([&]( ::cpp2::FooEx& e) {
     if (ctx) {
       ctx->userExceptionWrapped(true, ew);
@@ -531,7 +531,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstreamFast(apach
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  PubSubStreamingService_returnstreamFast_pargs args;
+  ::cpp2::PubSubStreamingService_returnstreamFast_pargs args;
   ::std::int32_t uarg_i32_from{0};
   args.get<0>().value = &uarg_i32_from;
   ::std::int32_t uarg_i32_to{0};
@@ -577,7 +577,7 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstreamFast(apache::thri
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  PubSubStreamingService_returnstreamFast_pargs args;
+  ::cpp2::PubSubStreamingService_returnstreamFast_pargs args;
   ::std::int32_t uarg_i32_from{0};
   args.get<0>().value = &uarg_i32_from;
   ::std::int32_t uarg_i32_to{0};
@@ -599,8 +599,8 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstreamFast(apache::thri
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_returnstreamFast(apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, ::apache::thrift::ServerStream<::std::int32_t>&& _return) {
   ProtocolOut_ prot;
-  PubSubStreamingService_returnstreamFast_presult::FieldsType result;
-  using StreamPResultType = PubSubStreamingService_returnstreamFast_presult::StreamPResultType;
+  ::cpp2::PubSubStreamingService_returnstreamFast_presult::FieldsType result;
+  using StreamPResultType = ::cpp2::PubSubStreamingService_returnstreamFast_presult::StreamPResultType;
   auto& returnStream = _return;
 
       using ExMapType = apache::thrift::detail::ap::EmptyExMapType;

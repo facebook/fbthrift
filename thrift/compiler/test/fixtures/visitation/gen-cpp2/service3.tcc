@@ -40,7 +40,7 @@ void service3AsyncProcessor::executeRequest_methodA(apache::thrift::ServerReques
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service3_methodA_pargs args;
+  ::test_cpp2::cpp_reflection::service3_methodA_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service3.methodA", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "methodA", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -82,7 +82,7 @@ void service3AsyncProcessor::process_methodA(apache::thrift::ResponseChannelRequ
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service3_methodA_pargs args;
+  ::test_cpp2::cpp_reflection::service3_methodA_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service3.methodA", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -100,7 +100,7 @@ void service3AsyncProcessor::process_methodA(apache::thrift::ResponseChannelRequ
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service3AsyncProcessor::return_methodA(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  service3_methodA_presult result;
+  ::test_cpp2::cpp_reflection::service3_methodA_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -134,7 +134,7 @@ void service3AsyncProcessor::executeRequest_methodB(apache::thrift::ServerReques
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service3_methodB_pargs args;
+  ::test_cpp2::cpp_reflection::service3_methodB_pargs args;
   ::std::int32_t uarg_x{0};
   args.get<0>().value = &uarg_x;
   auto uarg_y = std::make_unique<::test_cpp2::cpp_reflection::struct1>();
@@ -182,7 +182,7 @@ void service3AsyncProcessor::process_methodB(apache::thrift::ResponseChannelRequ
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service3_methodB_pargs args;
+  ::test_cpp2::cpp_reflection::service3_methodB_pargs args;
   ::std::int32_t uarg_x{0};
   args.get<0>().value = &uarg_x;
   auto uarg_y = std::make_unique<::test_cpp2::cpp_reflection::struct1>();
@@ -206,7 +206,7 @@ void service3AsyncProcessor::process_methodB(apache::thrift::ResponseChannelRequ
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service3AsyncProcessor::return_methodB(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  service3_methodB_presult result;
+  ::test_cpp2::cpp_reflection::service3_methodB_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -240,7 +240,7 @@ void service3AsyncProcessor::executeRequest_methodC(apache::thrift::ServerReques
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service3_methodC_pargs args;
+  ::test_cpp2::cpp_reflection::service3_methodC_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service3.methodC", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "methodC", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -282,7 +282,7 @@ void service3AsyncProcessor::process_methodC(apache::thrift::ResponseChannelRequ
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service3_methodC_pargs args;
+  ::test_cpp2::cpp_reflection::service3_methodC_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service3.methodC", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -300,7 +300,7 @@ void service3AsyncProcessor::process_methodC(apache::thrift::ResponseChannelRequ
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service3AsyncProcessor::return_methodC(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service3_methodC_presult result;
+  ::test_cpp2::cpp_reflection::service3_methodC_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -336,7 +336,7 @@ void service3AsyncProcessor::executeRequest_methodD(apache::thrift::ServerReques
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service3_methodD_pargs args;
+  ::test_cpp2::cpp_reflection::service3_methodD_pargs args;
   ::std::int32_t uarg_i{0};
   args.get<0>().value = &uarg_i;
   auto uarg_j = std::make_unique<::test_cpp2::cpp_reflection::struct1>();
@@ -384,7 +384,7 @@ void service3AsyncProcessor::process_methodD(apache::thrift::ResponseChannelRequ
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service3_methodD_pargs args;
+  ::test_cpp2::cpp_reflection::service3_methodD_pargs args;
   ::std::int32_t uarg_i{0};
   args.get<0>().value = &uarg_i;
   auto uarg_j = std::make_unique<::test_cpp2::cpp_reflection::struct1>();
@@ -408,7 +408,7 @@ void service3AsyncProcessor::process_methodD(apache::thrift::ResponseChannelRequ
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service3AsyncProcessor::return_methodD(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
-  service3_methodD_presult result;
+  ::test_cpp2::cpp_reflection::service3_methodD_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -444,7 +444,7 @@ void service3AsyncProcessor::executeRequest_methodE(apache::thrift::ServerReques
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service3_methodE_pargs args;
+  ::test_cpp2::cpp_reflection::service3_methodE_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service3.methodE", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "methodE", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -486,7 +486,7 @@ void service3AsyncProcessor::process_methodE(apache::thrift::ResponseChannelRequ
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service3_methodE_pargs args;
+  ::test_cpp2::cpp_reflection::service3_methodE_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "service3.methodE", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -504,7 +504,7 @@ void service3AsyncProcessor::process_methodE(apache::thrift::ResponseChannelRequ
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service3AsyncProcessor::return_methodE(apache::thrift::ContextStack* ctx, ::test_cpp2::cpp_reflection::struct2 const& _return) {
   ProtocolOut_ prot;
-  service3_methodE_presult result;
+  ::test_cpp2::cpp_reflection::service3_methodE_presult result;
   result.get<0>().value = const_cast<::test_cpp2::cpp_reflection::struct2*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -540,7 +540,7 @@ void service3AsyncProcessor::executeRequest_methodF(apache::thrift::ServerReques
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service3_methodF_pargs args;
+  ::test_cpp2::cpp_reflection::service3_methodF_pargs args;
   ::std::int32_t uarg_l{0};
   args.get<0>().value = &uarg_l;
   auto uarg_m = std::make_unique<::test_cpp2::cpp_reflection::struct1>();
@@ -588,7 +588,7 @@ void service3AsyncProcessor::process_methodF(apache::thrift::ResponseChannelRequ
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  service3_methodF_pargs args;
+  ::test_cpp2::cpp_reflection::service3_methodF_pargs args;
   ::std::int32_t uarg_l{0};
   args.get<0>().value = &uarg_l;
   auto uarg_m = std::make_unique<::test_cpp2::cpp_reflection::struct1>();
@@ -612,7 +612,7 @@ void service3AsyncProcessor::process_methodF(apache::thrift::ResponseChannelRequ
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse service3AsyncProcessor::return_methodF(apache::thrift::ContextStack* ctx, ::test_cpp2::cpp_reflection::struct3 const& _return) {
   ProtocolOut_ prot;
-  service3_methodF_presult result;
+  ::test_cpp2::cpp_reflection::service3_methodF_presult result;
   result.get<0>().value = const_cast<::test_cpp2::cpp_reflection::struct3*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
