@@ -48,7 +48,8 @@ TEST_F(AsyncStopTLSTest, SynchronousReadEOF) {
     cb->readEOF();
   }));
   EXPECT_CALL(transport_, setReadCB(nullptr));
-  operation->start(&transport_);
+  operation->start(
+      &transport_, AsyncStopTLS::Role::Server, std::chrono::milliseconds(0));
 }
 
 // Simulates what would happen if the socket we attempted to start stoptls on
@@ -62,7 +63,8 @@ TEST_F(AsyncStopTLSTest, SynchronousReadErr) {
     cb->readErr(socketErr);
   }));
   EXPECT_CALL(transport_, setReadCB(nullptr));
-  operation->start(&transport_);
+  operation->start(
+      &transport_, AsyncStopTLS::Role::Server, std::chrono::milliseconds(0));
 }
 
 // Simulates what would happen if peer misbehaved and closed connection instead
@@ -73,7 +75,8 @@ TEST_F(AsyncStopTLSTest, AsynchronousReadEOF) {
   fizz::AsyncFizzBase::ReadCallback* readCB{nullptr};
   EXPECT_CALL(transport_, setReadCB(_)).WillOnce(SaveArg<0>(&readCB));
   EXPECT_CALL(transport_, tlsShutdown());
-  operation->start(&transport_);
+  operation->start(
+      &transport_, AsyncStopTLS::Role::Server, std::chrono::milliseconds(0));
   Mock::VerifyAndClearExpectations(&transport_);
   ASSERT_NE(readCB, nullptr);
 
@@ -91,7 +94,8 @@ TEST_F(AsyncStopTLSTest, AsynchronousReadErr) {
   fizz::AsyncFizzBase::ReadCallback* readCB{nullptr};
   EXPECT_CALL(transport_, setReadCB(_)).WillOnce(SaveArg<0>(&readCB));
   EXPECT_CALL(transport_, tlsShutdown());
-  operation->start(&transport_);
+  operation->start(
+      &transport_, AsyncStopTLS::Role::Server, std::chrono::milliseconds(0));
   Mock::VerifyAndClearExpectations(&transport_);
   ASSERT_NE(readCB, nullptr);
 
@@ -114,7 +118,8 @@ TEST_F(AsyncStopTLSTest, SynchronousUnexpectedApplicationData) {
     cb->readBufferAvailable(kUnexpectedData->clone());
   }));
   EXPECT_CALL(transport_, setReadCB(nullptr));
-  operation->start(&transport_);
+  operation->start(
+      &transport_, AsyncStopTLS::Role::Server, std::chrono::milliseconds(0));
 }
 
 TEST_F(AsyncStopTLSTest, AsynchronousUnexpectedApplicationData) {
@@ -123,7 +128,8 @@ TEST_F(AsyncStopTLSTest, AsynchronousUnexpectedApplicationData) {
   fizz::AsyncFizzBase::ReadCallback* readCB{nullptr};
   EXPECT_CALL(transport_, setReadCB(_)).WillOnce(SaveArg<0>(&readCB));
   EXPECT_CALL(transport_, tlsShutdown());
-  operation->start(&transport_);
+  operation->start(
+      &transport_, AsyncStopTLS::Role::Server, std::chrono::milliseconds(0));
   Mock::VerifyAndClearExpectations(&transport_);
   ASSERT_NE(readCB, nullptr);
 
@@ -145,15 +151,17 @@ TEST_F(AsyncStopTLSTest, SynchronousStopTLSSuccess) {
             kUnexpectedData->computeChainDataLength());
       }));
 
-  EXPECT_CALL(transport_, setReadCB(_));
+  EXPECT_CALL(transport_, setReadCB(Ne(nullptr)));
   EXPECT_CALL(transport_, setReadCB(nullptr));
-  EXPECT_CALL(transport_, setEndOfTLSCallback(_))
+  EXPECT_CALL(transport_, setEndOfTLSCallback(Ne(nullptr)))
       .WillOnce(SaveArg<0>(&stoptlsCB));
+  EXPECT_CALL(transport_, setEndOfTLSCallback(Eq(nullptr)));
   EXPECT_CALL(transport_, tlsShutdown()).WillOnce(Invoke([&]() {
     ASSERT_NE(stoptlsCB, nullptr);
     stoptlsCB->endOfTLS(&transport_, kUnexpectedData->clone());
   }));
-  operation->start(&transport_);
+  operation->start(
+      &transport_, AsyncStopTLS::Role::Server, std::chrono::milliseconds(0));
 }
 //
 // Simulates a successful stoptls connection that fires asynchronously --
@@ -166,7 +174,8 @@ TEST_F(AsyncStopTLSTest, AsynchronousStopTLSSuccess) {
   EXPECT_CALL(transport_, setEndOfTLSCallback(_))
       .WillOnce(SaveArg<0>(&stoptlsCB));
   EXPECT_CALL(transport_, tlsShutdown());
-  operation->start(&transport_);
+  operation->start(
+      &transport_, AsyncStopTLS::Role::Server, std::chrono::milliseconds(0));
   Mock::VerifyAndClearExpectations(&transport_);
 
   ASSERT_NE(stoptlsCB, nullptr);
@@ -179,4 +188,61 @@ TEST_F(AsyncStopTLSTest, AsynchronousStopTLSSuccess) {
       }));
   EXPECT_CALL(transport_, setReadCB(nullptr));
   stoptlsCB->endOfTLS(&transport_, kUnexpectedData->clone());
+}
+
+// Simulates a client initiating StopTLS, but never receiving the server sent
+// close_notify within a specified timeout.
+TEST_F(AsyncStopTLSTest, ClientStopTLSTimeoutError) {
+  folly::EventBase evb;
+  AsyncStopTLS::UniquePtr operation(new AsyncStopTLS(callback_));
+
+  fizz::AsyncFizzBase::EndOfTLSCallback* stoptlsCB{nullptr};
+  EXPECT_CALL(transport_, setReadCB(Ne(nullptr)));
+  EXPECT_CALL(transport_, setReadCB(Eq(nullptr)));
+  EXPECT_CALL(transport_, setEndOfTLSCallback(Ne(nullptr)))
+      .WillOnce(SaveArg<0>(&stoptlsCB));
+  EXPECT_CALL(transport_, setEndOfTLSCallback(Eq(nullptr)));
+
+  // We are the client, we should not initiate `tlsShutdown`
+  EXPECT_CALL(transport_, tlsShutdown()).Times(0);
+
+  auto mockUnderlyingTransport =
+      transport_.getUnderlyingTransport<folly::test::MockAsyncTransport>();
+  ASSERT_NE(mockUnderlyingTransport, nullptr);
+  EXPECT_CALL(*mockUnderlyingTransport, getEventBase())
+      .WillRepeatedly(Return(&evb));
+
+  EXPECT_CALL(callback_, stopTLSError(_));
+  operation->start(
+      &transport_, AsyncStopTLS::Role::Client, std::chrono::milliseconds(10));
+  evb.loop();
+}
+
+// Simulates a client initiating StopTLS with a timeout, and successfully
+// negotiating it.
+TEST_F(AsyncStopTLSTest, ClientStopTLS) {
+  folly::EventBase evb;
+  AsyncStopTLS::UniquePtr operation(new AsyncStopTLS(callback_));
+
+  fizz::AsyncFizzBase::EndOfTLSCallback* stoptlsCB{nullptr};
+  EXPECT_CALL(transport_, setEndOfTLSCallback(Ne(nullptr)))
+      .WillOnce(SaveArg<0>(&stoptlsCB));
+  EXPECT_CALL(transport_, setEndOfTLSCallback(Eq(nullptr)));
+
+  // We are the client, we should not initiate `tlsShutdown`
+  EXPECT_CALL(transport_, tlsShutdown()).Times(0);
+
+  auto mockUnderlyingTransport =
+      transport_.getUnderlyingTransport<folly::test::MockAsyncTransport>();
+  ASSERT_NE(mockUnderlyingTransport, nullptr);
+  EXPECT_CALL(*mockUnderlyingTransport, getEventBase())
+      .WillRepeatedly(Return(&evb));
+
+  EXPECT_CALL(callback_, stopTLSSuccess(_));
+  operation->start(
+      &transport_, AsyncStopTLS::Role::Client, std::chrono::milliseconds(10));
+  ASSERT_NE(stoptlsCB, nullptr);
+
+  evb.runInLoop([=] { stoptlsCB->endOfTLS(&transport_, nullptr); });
+  evb.loop();
 }

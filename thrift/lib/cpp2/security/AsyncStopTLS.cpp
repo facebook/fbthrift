@@ -19,7 +19,10 @@
 namespace apache {
 namespace thrift {
 
-void AsyncStopTLS::start(fizz::AsyncFizzBase* transport) {
+void AsyncStopTLS::start(
+    fizz::AsyncFizzBase* transport,
+    Role role,
+    std::chrono::milliseconds timeout) {
   DestructorGuard guard(this);
 
   DCHECK(!transport_);
@@ -33,18 +36,37 @@ void AsyncStopTLS::start(fizz::AsyncFizzBase* transport) {
 
   // Because attaching a read callback above may have synchronously
   // transitioned us to a different state, we must explicitly check that we
-  // have not invoked our awaiter before starting the tlsShutdown()
+  // have not invoked our awaiter before kicking off the StopTLS transaction
+
+  // For servers, StopTLS begins with the server sending a close_notify.
+  //
+  // For clients, StopTLS begins by waiting for the server to send a
+  // close_notify.
   if (awaiter_) {
-    transport->tlsShutdown();
+    if (timeout.count() > 0) {
+      auto evb = transport->getEventBase();
+      CHECK(transport->getEventBase());
+      transactionTimeout_ = folly::AsyncTimeout::make(
+          *evb, [this]() noexcept { this->stopTLSTimeoutExpired(); });
+
+      transactionTimeout_->scheduleTimeout(timeout);
+    }
+    if (role == Role::Server) {
+      transport->tlsShutdown();
+    }
   }
+}
+
+void AsyncStopTLS::stopTLSTimeoutExpired() noexcept {
+  static folly::Indestructible<folly::exception_wrapper> exc{
+      folly::make_exception_wrapper<std::runtime_error>(
+          "AsyncStopTLS: timeout expired")};
+  prepareForTerminalCallback()->stopTLSError(*exc);
 }
 
 void AsyncStopTLS::endOfTLS(
     fizz::AsyncFizzBase*, std::unique_ptr<folly::IOBuf> postTLSData) {
-  transport_->setReadCB(nullptr);
-
-  auto awaiter = std::exchange(awaiter_, nullptr);
-  awaiter->stopTLSSuccess(std::move(postTLSData));
+  prepareForTerminalCallback()->stopTLSSuccess(std::move(postTLSData));
 }
 
 // This should never be called because we are using `isBufferMovable` and
@@ -68,11 +90,9 @@ void AsyncStopTLS::readDataAvailable(size_t) noexcept {
 //
 // This is an error with respect to the StopTLS handshake negotiation.
 void AsyncStopTLS::readEOF() noexcept {
-  transport_->setReadCB(nullptr);
-
-  auto awaiter = std::exchange(awaiter_, nullptr);
-  awaiter->stopTLSError(folly::make_exception_wrapper<std::runtime_error>(
-      "stoptls protocol error: readEOF() before negotiation completion"));
+  prepareForTerminalCallback()->stopTLSError(
+      folly::make_exception_wrapper<std::runtime_error>(
+          "stoptls protocol error: readEOF() before negotiation completion"));
 }
 
 // The underlying transport is giving us application data *before* we received
@@ -80,10 +100,8 @@ void AsyncStopTLS::readEOF() noexcept {
 //
 // This is an error with respect to the StopTLS handshake negotiation.
 void AsyncStopTLS::readBufferAvailable(std::unique_ptr<folly::IOBuf>) noexcept {
-  transport_->setReadCB(nullptr);
-
-  auto awaiter = std::exchange(awaiter_, nullptr);
-  awaiter->stopTLSError(folly::make_exception_wrapper<std::runtime_error>(
+  prepareForTerminalCallback()->stopTLSError(folly::make_exception_wrapper<
+                                             std::runtime_error>(
       "stoptls protocol error: received unexpected application data, expecting close_notify"));
 }
 
@@ -92,10 +110,7 @@ void AsyncStopTLS::readBufferAvailable(std::unique_ptr<folly::IOBuf>) noexcept {
 //
 // This is an error with respect ot the StopTLS handshake negotiation.
 void AsyncStopTLS::readErr(const folly::AsyncSocketException& ex) noexcept {
-  transport_->setReadCB(nullptr);
-
-  auto awaiter = std::exchange(awaiter_, nullptr);
-  awaiter->stopTLSError(ex);
+  prepareForTerminalCallback()->stopTLSError(ex);
 }
 } // namespace thrift
 } // namespace apache

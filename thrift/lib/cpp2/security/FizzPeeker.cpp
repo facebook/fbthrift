@@ -116,7 +116,12 @@ class ThriftFizzAcceptorHandshakeHelper
     if (thriftExtension_ && thriftExtension_->getNegotiatedStopTLS()) {
       VLOG(5) << "Beginning StopTLS negotiation";
       stopTLSAsyncFrame_.reset(new AsyncStopTLS(*this));
-      stopTLSAsyncFrame_->start(transport);
+
+      // We are running as part of a wangle::ManagedConnection. The timeout
+      // is managed by wangle; wangle will close() the underlying transport
+      // (which will trigger an error) when its own timer elapses.
+      stopTLSAsyncFrame_->start(
+          transport, AsyncStopTLS::Role::Server, std::chrono::milliseconds(0));
     } else {
       callback_->connectionReady(
           std::move(transport_),

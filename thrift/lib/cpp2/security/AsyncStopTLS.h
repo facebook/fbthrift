@@ -50,12 +50,27 @@ class AsyncStopTLS : public folly::DelayedDestruction,
     virtual ~Callback() = default;
   };
   explicit AsyncStopTLS(Callback& awaiter) : awaiter_(&awaiter) {}
+
+  enum class Role { Client, Server };
+
   /**
    * Begins an asynchronous StopTLS transaction on the supplied transport.
    *
    * The transport must outlive AsyncStopTLS.
+   *
+   * @param  transport  A fizz::AsyncFizzBase instance that the StopTLS
+   *                    negotiation will be performed on. The `transport` must
+   *                    outlive `this`.
+   * @param  role       Determines whether we are the Server or the Client in
+   *                    a StopTLS transaction.
+   * @param  timeout    If non-zero, an internal timer will ensure that the
+   *                    StopTLS callback will be invoked within the specified
+   *                    time.
    */
-  void start(fizz::AsyncFizzBase* transport);
+  void start(
+      fizz::AsyncFizzBase* transport,
+      Role role,
+      std::chrono::milliseconds timeout);
 
  private:
   ~AsyncStopTLS() override {
@@ -79,8 +94,20 @@ class AsyncStopTLS : public folly::DelayedDestruction,
   void readBufferAvailable(std::unique_ptr<folly::IOBuf>) noexcept override;
   void readErr(const folly::AsyncSocketException& ex) noexcept override;
 
+  void stopTLSTimeoutExpired() noexcept;
+
+  Callback* prepareForTerminalCallback() noexcept {
+    if (transactionTimeout_) {
+      transactionTimeout_.reset();
+    }
+    transport_->setReadCB(nullptr);
+    transport_->setEndOfTLSCallback(nullptr);
+    return std::exchange(awaiter_, nullptr);
+  }
+
   Callback* awaiter_{nullptr};
   fizz::AsyncFizzBase* transport_{nullptr};
+  std::unique_ptr<folly::AsyncTimeout> transactionTimeout_{nullptr};
 };
 
 } // namespace thrift
