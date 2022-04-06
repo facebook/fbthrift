@@ -74,8 +74,6 @@ class CoreTestFixture : public testing::Test {
   std::shared_ptr<testing::StrictMock<testutil::testservice::TestServiceMock>>
       service_ = std::make_shared<
           testing::StrictMock<testutil::testservice::TestServiceMock>>();
-  std::shared_ptr<concurrency::ThreadManager> threadManager_ =
-      concurrency::ThreadManager::newSimpleThreadManager(1);
   ThriftProcessor processor_;
   folly::EventBase eventBase_;
   std::shared_ptr<FakeChannel> channel_;

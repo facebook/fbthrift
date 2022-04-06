@@ -29,8 +29,7 @@ namespace thrift {
 using namespace testutil::testservice;
 
 CoreTestFixture::CoreTestFixture() : processor_(server_) {
-  threadManager_->start();
-  server_.setThreadManager(threadManager_);
+  server_.setThreadManagerType(BaseThriftServer::ThreadManagerType::SIMPLE);
   server_.setInterface(service_);
   server_.setup();
   channel_ = std::make_shared<FakeChannel>(&eventBase_);
@@ -38,7 +37,7 @@ CoreTestFixture::CoreTestFixture() : processor_(server_) {
 }
 
 CoreTestFixture::~CoreTestFixture() {
-  threadManager_->join();
+  server_.cleanUp();
 }
 
 std::unique_ptr<Cpp2ConnContext> CoreTestFixture::newCpp2ConnContext() {

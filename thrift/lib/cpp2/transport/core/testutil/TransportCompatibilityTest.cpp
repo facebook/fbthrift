@@ -33,6 +33,7 @@
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/ServerFlags.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
@@ -132,16 +133,21 @@ template <typename Service>
 void SampleServer<Service>::setupServer() {
   DCHECK(!server_) << "First close the server with stopServer()";
 
-  auto cpp2PFac =
-      std::make_shared<ThriftServerAsyncProcessorFactory<Service>>(handler_);
-
   server_ = std::make_unique<ThriftServer>();
   observer_ = std::make_shared<FakeServerObserver>();
   server_->setObserver(observer_);
   server_->setPort(0);
   server_->setNumIOWorkerThreads(numIOThreads_);
   server_->setNumCPUWorkerThreads(numWorkerThreads_);
-  server_->setInterface(cpp2PFac);
+  if (useResourcePoolsFlagsSet()) {
+    server_->ensureResourcePools();
+    auto& resourcePool = server_->resourcePoolSet().resourcePool(
+        ResourcePoolHandle::defaultAsync());
+    resourcePool.executor().value()->setNumThreads(numWorkerThreads_);
+    resourcePool.concurrencyController().value()->setExecutionLimitRequests(
+        numWorkerThreads_);
+  }
+  server_->setInterface(handler_);
   server_->setGetLoad(
       [](const std::string& metric) { return metric.empty() ? 123 : -1; });
 }
@@ -1283,8 +1289,7 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
       : public apache::thrift::AsyncProcessorFactory {
    public:
     explicit TestAsyncProcessorFactory(
-        std::shared_ptr<ThriftServerAsyncProcessorFactory<
-            testutil::testservice::TestServiceMock>> fac)
+        std::shared_ptr<testutil::testservice::TestServiceMock> fac)
         : underlyingFac_(std::move(fac)) {}
     std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
       return std::make_unique<TestAsyncProcessor>(
@@ -1296,17 +1301,16 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
       return underlyingFac_->getServiceHandlers();
     }
 
+    std::optional<std::reference_wrapper<ServiceRequestInfoMap const>>
+    getServiceRequestInfoMap() const override {
+      return underlyingFac_->getServiceRequestInfoMap();
+    }
+
    private:
-    std::shared_ptr<ThriftServerAsyncProcessorFactory<
-        testutil::testservice::TestServiceMock>>
-        underlyingFac_;
+    std::shared_ptr<testutil::testservice::TestServiceMock> underlyingFac_;
   };
 
-  auto cpp2PFac = std::make_shared<ThriftServerAsyncProcessorFactory<
-      testutil::testservice::TestServiceMock>>(handler_);
-
-  server_->getServer()->setInterface(
-      std::make_shared<TestAsyncProcessorFactory>(std::move(cpp2PFac)));
+  server_->getServer()->setInterface(handler_);
   startServer();
   TestRequestResponse_Simple();
 }
