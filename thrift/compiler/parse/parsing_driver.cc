@@ -126,7 +126,7 @@ void parsing_driver::parse_file() {
   }
 
   // Create new scope and scan for includes
-  verbose([&](auto& o) { o << "Scanning " << path << " for includes\n"; });
+  verbose("Scanning {} for includes\n", path);
   mode = parsing_mode::INCLUDES;
   try {
     if (parser_->parse() != 0) {
@@ -186,7 +186,7 @@ void parsing_driver::parse_file() {
   }
 
   mode = parsing_mode::PROGRAM;
-  verbose([&](auto& o) { o << "Parsing " << path << " for types\n"; });
+  verbose("Parsing {} for types\n", path);
   try {
     if (parser_->parse() != 0) {
       failure("Parser error during types pass.");
@@ -247,7 +247,7 @@ std::string parsing_driver::find_include_file(const std::string& filename) {
     if (boost::filesystem::exists(sfilename)) {
       return sfilename.string();
     } else {
-      debug([&](auto& o) { o << "Could not find: " << filename << "."; });
+      debug("Could not find: {}.", filename);
     }
   }
   // File was not found

@@ -26,6 +26,7 @@
 #include <vector>
 
 #include <boost/optional.hpp>
+#include <fmt/core.h>
 
 #include <thrift/compiler/ast/diagnostic_context.h>
 #include <thrift/compiler/ast/node_list.h>
@@ -202,14 +203,16 @@ class parsing_driver {
    */
   // TODO(afuller): Remove these, and have the parser call the functions on ctx_
   // directly.
-  template <typename... Args>
-  void debug(Args&&... args) {
-    ctx_.debug(get_lineno(), get_text(), std::forward<Args>(args)...);
+  template <typename... T>
+  void debug(fmt::format_string<T...> fmt, T&&... args) {
+    ctx_.debug(
+        get_lineno(), get_text(), fmt::format(fmt, std::forward<T>(args)...));
   }
 
-  template <typename... Args>
-  void verbose(Args&&... args) {
-    ctx_.info(get_lineno(), get_text(), std::forward<Args>(args)...);
+  template <typename... T>
+  void verbose(fmt::format_string<T...> fmt, T&&... args) {
+    ctx_.info(
+        get_lineno(), get_text(), fmt::format(fmt, std::forward<T>(args)...));
   }
 
   template <typename... Args>

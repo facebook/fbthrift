@@ -560,7 +560,7 @@ Typedef:
 Enum:
   tok_enum Identifier "{" EnumValueList "}"
     {
-      driver.debug("Enum => tok_enum Identifier { EnumValueList }");
+      driver.debug("Enum => tok_enum Identifier {{ EnumValueList }}");
       $$ = new t_enum(driver.program, std::move($2));
       $$->set_values(std::move(*own($4)));
       $$->set_lineno(@2.end.line);
@@ -689,12 +689,12 @@ ConstListContents:
 ConstMap:
   "{" ConstMapContents CommaOrSemicolonOptional "}"
     {
-      driver.debug("ConstMap => { ConstMapContents CommaOrSemicolonOptional }");
+      driver.debug("ConstMap => {{ ConstMapContents CommaOrSemicolonOptional }}");
       $$ = $2;
     }
 | "{" "}"
     {
-      driver.debug("ConstMap => { }");
+      driver.debug("ConstMap => {{ }}");
       $$ = new t_const_value();
       $$->set_map();
     }
@@ -717,13 +717,13 @@ ConstMapContents:
 ConstStruct:
   ConstStructType "{" ConstStructContents CommaOrSemicolonOptional "}"
     {
-      driver.debug("ConstStruct => ConstStructType { ConstStructContents CommaOrSemicolonOptional }");
+      driver.debug("ConstStruct => ConstStructType {{ ConstStructContents CommaOrSemicolonOptional }}");
       $$ = $3;
       $$->set_ttype($1);
     }
 | ConstStructType "{" "}"
     {
-      driver.debug("ConstStruct => ConstStructType { }");
+      driver.debug("ConstStruct => ConstStructType {{ }}");
       $$ = new t_const_value();
       $$->set_map();
       $$->set_ttype($1);
@@ -754,7 +754,7 @@ ConstStructContents:
 Struct:
   tok_struct Identifier "{" FieldList "}"
     {
-      driver.debug("Struct => tok_struct Identifier { FieldList }");
+      driver.debug("Struct => tok_struct Identifier {{ FieldList }}");
       $$ = new t_struct(driver.program, std::move($2));
       driver.set_fields(*$$, std::move(*own($4)));
       $$->set_lineno(@2.end.line);
@@ -763,7 +763,7 @@ Struct:
 Union:
   tok_union Identifier "{" FieldList "}"
     {
-      driver.debug("Union => tok_union Identifier { FieldList }");
+      driver.debug("Union => tok_union Identifier {{ FieldList }}");
       $$ = new t_union(driver.program, std::move($2));
       driver.set_fields(*$$, std::move(*own($4)));
       $$->set_lineno(@2.end.line);
@@ -774,7 +774,7 @@ Exception:
   ErrorSafety ErrorKind ErrorBlame tok_exception Identifier "{" FieldList "}"
     {
       driver.debug("Exception => ErrorSafety ErrorKind ErrorBlame tok_exception "
-        "Identifier { FieldList }");
+        "Identifier {{ FieldList }}");
       // TODO(afuller): Correct resulting source_loc.begin when safety qualifier is omitted.
       $$ = new t_exception(driver.program, std::move($5));
       $$->set_safety($1);
@@ -802,7 +802,7 @@ ErrorBlame:
 Service:
   tok_service Identifier Extends "{" FunctionList "}"
     {
-      driver.debug("Service => tok_service Identifier Extends { FunctionList }");
+      driver.debug("Service => tok_service Identifier Extends {{ FunctionList }}");
       $$ = new t_service(driver.program, std::move($2), $3);
       driver.set_functions(*$$, own($5));
       $$->set_lineno(@2.end.line);
@@ -819,7 +819,7 @@ Extends:
 Interaction:
   tok_interaction Identifier "{" FunctionList "}"
     {
-      driver.debug("Interaction -> tok_interaction Identifier { FunctionList }");
+      driver.debug("Interaction -> tok_interaction Identifier {{ FunctionList }}");
       $$ = new t_interaction(driver.program, std::move($2));
       driver.set_functions(*$$, own($4));
       $$->set_lineno(@2.end.line);

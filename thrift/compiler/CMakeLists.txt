@@ -76,6 +76,7 @@ target_link_libraries(
   compiler_base
   compiler_ast
   ${Boost_LIBRARIES}
+  fmt::fmt
 )
 
 # The Thrift compiler library.
