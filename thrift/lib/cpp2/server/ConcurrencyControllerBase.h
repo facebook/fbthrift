@@ -18,6 +18,7 @@
 
 #include <optional>
 
+#include <folly/io/async/Request.h>
 #include <thrift/lib/cpp2/server/ConcurrencyControllerInterface.h>
 
 namespace apache::thrift {
@@ -44,12 +45,14 @@ class ConcurrencyControllerBase : public ConcurrencyControllerInterface {
     // callback right after the request is finished execution
     // This is more of the handler code completion instead
     // of the request hits its end of liftcycle
-    virtual void onFinishExecution(PerRequestStats& /* stats  */) {}
+    virtual void onFinishExecution(
+        folly::RequestContext* /* context  */, PerRequestStats& /* stats  */) {}
   };
 
   std::optional<PerRequestStats> onExecute(ServerRequest& /* request */);
 
-  void onFinishExecution(PerRequestStats& /* stats */);
+  void onFinishExecution(
+      folly::RequestContext* /* context  */, PerRequestStats& /* stats */);
 
   // not thread-safe
   // Should be called up front

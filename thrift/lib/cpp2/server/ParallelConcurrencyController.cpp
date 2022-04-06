@@ -134,7 +134,8 @@ void ParallelConcurrencyController::executeRequest() {
     auto stats = ConcurrencyControllerBase::onExecute(serverRequest);
     AsyncProcessorHelper::executeRequest(std::move(*req));
     if (stats) {
-      ConcurrencyControllerBase::onFinishExecution(stats.value());
+      ConcurrencyControllerBase::onFinishExecution(
+          serverRequest.follyRequestContext().get(), stats.value());
     }
     return;
 

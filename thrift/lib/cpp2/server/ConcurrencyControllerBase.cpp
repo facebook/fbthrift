@@ -73,14 +73,15 @@ ConcurrencyControllerBase::onExecute(ServerRequest& req) {
   return std::nullopt;
 }
 
-void ConcurrencyControllerBase::onFinishExecution(PerRequestStats& stats) {
+void ConcurrencyControllerBase::onFinishExecution(
+    folly::RequestContext* context, PerRequestStats& stats) {
   // use local observer
   if (observer_) {
-    observer_->onFinishExecution(stats);
+    observer_->onFinishExecution(context, stats);
   } else {
     // use global observer
     if (auto observer = getGlobalObserver()) {
-      observer->onFinishExecution(stats);
+      observer->onFinishExecution(context, stats);
     }
   }
 }
