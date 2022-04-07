@@ -48,7 +48,12 @@ struct DisableLazyChecksum {} (
   thrift.uri = "facebook.com/thrift/annotation/cpp/DisableLazyChecksum",
 )
 
-// An annotation that applies a C++ adapter to fields. For example:
+// An annotation that applies a C++ adapter to typedef or field. For example:
+//
+//   @cpp.Adapter{name = "IdAdapter"}
+//   typedef i64 MyI64;
+//
+// Here the type 'MyI64' has the C++ adapter `IdAdapter`.
 //
 //   struct User {
 //     @cpp.Adapter{name = "IdAdapter"}
@@ -57,6 +62,7 @@ struct DisableLazyChecksum {} (
 //
 // Here the field `id` has the C++ adapter `IdAdapter`.
 @scope.Field
+@scope.Typedef
 struct Adapter {
   // The name of a C++ adapter type used to convert between Thrift and native
   // C++ representation.
