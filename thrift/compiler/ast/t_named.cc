@@ -28,6 +28,7 @@ namespace compiler {
 t_named::~t_named() = default;
 
 void t_named::add_structured_annotation(std::unique_ptr<t_const> annot) {
+  assert(!annot->type().empty());
   structured_annotations_raw_.emplace_back(annot.get());
   structured_annotations_.emplace_back(std::move(annot));
 }

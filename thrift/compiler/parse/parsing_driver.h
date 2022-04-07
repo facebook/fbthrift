@@ -292,14 +292,6 @@ class parsing_driver {
   // and returns false iff not.
   bool require_experimental_feature(const char* feature);
 
-  /**
-   * Hands a pointer to be deleted when the parsing driver itself destructs.
-   */
-  template <typename T>
-  void delete_at_the_end(T* ptr) {
-    deleters_.push_back(deleter{ptr});
-  }
-
   // Returns the source range object containing the location information.
   source_range get_source_range(const YYLTYPE& loc) const;
 
@@ -401,38 +393,6 @@ class parsing_driver {
       const YYLTYPE& loc);
 
  private:
-  class deleter {
-   public:
-    template <typename T>
-    explicit deleter(T* ptr)
-        : ptr_(ptr),
-          delete_([](const void* ptr) { delete static_cast<const T*>(ptr); }) {}
-
-    deleter(const deleter&) = delete;
-    deleter& operator=(const deleter&) = delete;
-
-    deleter(deleter&& rhs) noexcept : ptr_{rhs.ptr_}, delete_{rhs.delete_} {
-      rhs.ptr_ = nullptr;
-      rhs.delete_ = nullptr;
-    }
-
-    deleter& operator=(deleter&& rhs) {
-      std::swap(ptr_, rhs.ptr_);
-      std::swap(delete_, rhs.delete_);
-      return *this;
-    }
-
-    ~deleter() {
-      if (!!ptr_) {
-        delete_(ptr_);
-      }
-    }
-
-   private:
-    const void* ptr_;
-    void (*delete_)(const void*);
-  };
-
   void compute_location_impl(
       YYLTYPE& yylloc, YYSTYPE& yylval, const char* text);
 
@@ -441,7 +401,6 @@ class parsing_driver {
 
   std::unique_ptr<yy::parser> parser_;
 
-  std::vector<deleter> deleters_;
   diagnostic_context& ctx_;
 
   std::unordered_set<std::string> programs_that_parsed_definition_;
@@ -450,18 +409,6 @@ class parsing_driver {
    * Parse a single .thrift file. The file to parse is stored in params.program.
    */
   void parse_file();
-
-  // Returns true if the node should be
-  // added to the program. Otherwise, the driver itself
-  // takes ownership of node.
-  template <typename T>
-  bool should_add_node(std::unique_ptr<T>& node) {
-    if (mode != parsing_mode::PROGRAM) {
-      delete_at_the_end(node.release());
-      return false;
-    }
-    return true;
-  }
 
   // Adds an unnamed typedef to the program
   // TODO(afuller): Remove the need for these by an explicit t_type_ref node

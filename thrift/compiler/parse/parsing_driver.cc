@@ -453,6 +453,9 @@ void parsing_driver::set_attributes(
     std::unique_ptr<t_def_attrs> attrs,
     std::unique_ptr<t_annotations> annots,
     const YYLTYPE& loc) const {
+  if (mode != parsing_mode::PROGRAM) {
+    return;
+  }
   node.set_src_range(get_source_range(loc));
   if (attrs != nullptr) {
     if (attrs->doc) {
@@ -535,7 +538,7 @@ void parsing_driver::set_fields(t_structured& tstruct, t_field_list&& fields) {
 
 t_type_ref parsing_driver::new_type_ref(
     const t_type& type, std::unique_ptr<t_annotations> annotations) {
-  if (annotations == nullptr) {
+  if (annotations == nullptr || mode != parsing_mode::PROGRAM) {
     return type;
   }
 
@@ -547,11 +550,7 @@ t_type_ref parsing_driver::new_type_ref(
     auto node = std::make_unique<t_base_type>(*tbase_type);
     set_annotations(node.get(), std::move(annotations));
     t_type_ref result(*node);
-    if (mode == parsing_mode::INCLUDES) {
-      delete_at_the_end(node.release());
-    } else {
-      program->add_unnamed_type(std::move(node));
-    }
+    program->add_unnamed_type(std::move(node));
     return result;
   }
 
@@ -570,14 +569,14 @@ t_type_ref parsing_driver::new_type_ref(
 t_type_ref parsing_driver::new_type_ref(
     std::unique_ptr<t_templated_type> node,
     std::unique_ptr<t_annotations> annotations) {
+  if (mode != parsing_mode::PROGRAM) {
+    return {};
+  }
+
   assert(node != nullptr);
   const t_type* type = node.get();
   set_annotations(node.get(), std::move(annotations));
-  if (mode == parsing_mode::INCLUDES) {
-    delete_at_the_end(node.release());
-  } else {
-    program->add_type_instantiation(std::move(node));
-  }
+  program->add_type_instantiation(std::move(node));
   return *type;
 }
 
@@ -585,8 +584,7 @@ t_type_ref parsing_driver::new_type_ref(
     std::string name,
     std::unique_ptr<t_annotations> annotations,
     bool is_const) {
-  if (mode == parsing_mode::INCLUDES) {
-    // Ignore identifier-based type references in include mode
+  if (mode != parsing_mode::PROGRAM) {
     return {};
   }
 
@@ -640,32 +638,34 @@ void parsing_driver::set_functions(
 }
 
 t_ref<t_named> parsing_driver::add_def(std::unique_ptr<t_named> node) {
-  t_ref<t_named> result(node.get());
-  if (should_add_node(node)) {
-    // Add to scope.
-    // TODO(afuller): Move program level scope management to t_program.
-    if (auto* tnode = dynamic_cast<t_interaction*>(node.get())) {
-      scope_cache->add_interaction(scoped_name(*node), tnode);
-    } else if (auto* tnode = dynamic_cast<t_service*>(node.get())) {
-      scope_cache->add_service(scoped_name(*node), tnode);
-    } else if (auto* tnode = dynamic_cast<t_const*>(node.get())) {
-      scope_cache->add_constant(scoped_name(*node), tnode);
-    } else if (auto* tnode = dynamic_cast<t_enum*>(node.get())) {
-      scope_cache->add_type(scoped_name(*node), tnode);
-      // Register enum value names in scope.
-      for (const auto& value : tnode->consts()) {
-        // TODO(afuller): Remove ability to access unscoped enum values.
-        scope_cache->add_constant(scoped_name(value), &value);
-        scope_cache->add_constant(scoped_name(*node, value), &value);
-      }
-    } else if (auto* tnode = dynamic_cast<t_type*>(node.get())) {
-      scope_cache->add_type(scoped_name(*node), tnode);
-    } else {
-      throw std::logic_error("Unsupported declaration.");
-    }
-    // Add to program.
-    program->add_definition(std::move(node));
+  if (mode != parsing_mode::PROGRAM) {
+    return nullptr;
   }
+
+  t_ref<t_named> result(node.get());
+  // Add to scope.
+  // TODO(afuller): Move program level scope management to t_program.
+  if (auto* tnode = dynamic_cast<t_interaction*>(node.get())) {
+    scope_cache->add_interaction(scoped_name(*node), tnode);
+  } else if (auto* tnode = dynamic_cast<t_service*>(node.get())) {
+    scope_cache->add_service(scoped_name(*node), tnode);
+  } else if (auto* tnode = dynamic_cast<t_const*>(node.get())) {
+    scope_cache->add_constant(scoped_name(*node), tnode);
+  } else if (auto* tnode = dynamic_cast<t_enum*>(node.get())) {
+    scope_cache->add_type(scoped_name(*node), tnode);
+    // Register enum value names in scope.
+    for (const auto& value : tnode->consts()) {
+      // TODO(afuller): Remove ability to access unscoped enum values.
+      scope_cache->add_constant(scoped_name(value), &value);
+      scope_cache->add_constant(scoped_name(*node, value), &value);
+    }
+  } else if (auto* tnode = dynamic_cast<t_type*>(node.get())) {
+    scope_cache->add_type(scoped_name(*node), tnode);
+  } else {
+    throw std::logic_error("Unsupported declaration.");
+  }
+  // Add to program.
+  program->add_definition(std::move(node));
   return result;
 }
 
