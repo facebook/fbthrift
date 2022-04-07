@@ -24,26 +24,23 @@ import com.facebook.thrift.payload.ClientResponsePayload;
 import com.facebook.thrift.payload.Reader;
 import com.facebook.thrift.protocol.ByteBufTProtocol;
 import com.facebook.thrift.protocol.TProtocolType;
-import io.netty.util.internal.PlatformDependent;
-import io.rsocket.util.ByteBufPayload;
+import com.facebook.thrift.util.resources.RpcResources;
+import io.netty.buffer.ByteBuf;
+import io.netty.util.ReferenceCountUtil;
 import java.util.function.Function;
 import org.apache.thrift.ClientPushMetadata;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.UnicastProcessor;
 
 public final class HeaderAwareRSocketRpcClient implements RpcClient {
 
   private static final String HEADER_KEY = "header_response";
 
   private final RpcClient delegate;
-  private final HeaderEventBus headerEventBus;
 
-  public HeaderAwareRSocketRpcClient(RpcClient delegate, HeaderEventBus headerEventBus) {
+  public HeaderAwareRSocketRpcClient(RpcClient delegate) {
     this.delegate = delegate;
-    this.headerEventBus = headerEventBus;
   }
 
   @Override
@@ -76,30 +73,9 @@ public final class HeaderAwareRSocketRpcClient implements RpcClient {
   @Override
   public <T, K> Flux<ClientResponsePayload<K>> singleRequestStreamingResponse(
       ClientRequestPayload<T> payload, RpcOptions options) {
-    try {
-      FluxProcessor<ClientResponsePayload<K>, ClientResponsePayload<K>> headerProcessor =
-          UnicastProcessor.create(PlatformDependent.newSpscQueue());
-      return delegate
-          .<T, K>singleRequestStreamingResponse(payload, options)
-          .switchOnFirst(
-              (signal, clientResponsePayloadFlux) -> {
-                ClientResponsePayload<K> clientResponsePayload = signal.get();
-                assert clientResponsePayload != null;
-                final int streamId = clientResponsePayload.getResponseRpcMetadata().getStreamId();
-                headerEventBus.sendAddToMapEvent(streamId, headerProcessor);
-
-                return clientResponsePayloadFlux.doFinally(
-                    __ -> {
-                      headerProcessor.onComplete();
-                      headerEventBus.sendRemoveFromMap(streamId);
-                    });
-              })
-          .mergeWith(headerProcessor)
-          .map(new HeaderResponseHandler<>(payload.getResponseReader()))
-          .map(t -> (ClientResponsePayload<K>) t);
-    } catch (Throwable t) {
-      return Flux.error(t);
-    }
+    return delegate
+        .<T, K>singleRequestStreamingResponse(payload, options)
+        .map(new HeaderResponseHandler<>(payload.getResponseReader()));
   }
 
   @Override
@@ -133,15 +109,20 @@ public final class HeaderAwareRSocketRpcClient implements RpcClient {
           && response.getData() instanceof String
           && response.getData().equals(HEADER_KEY)) {
 
-        ByteBufTProtocol dataProtocol =
-            TProtocolType.TBinary.apply(ByteBufPayload.create(new byte[1]).sliceData());
-        K streamResponse = (K) StreamResponse.fromData(responseReader.read(dataProtocol));
-        return ClientResponsePayload.createStreamResult(
-            streamResponse,
-            kClientResponsePayload.getResponseRpcMetadata(),
-            kClientResponsePayload.getStreamPayloadMetadata(),
-            kClientResponsePayload.getBinaryHeaders(),
-            kClientResponsePayload.getStreamId());
+        ByteBuf buffer = RpcResources.getByteBufAllocator().buffer(1, 1);
+        try {
+          ByteBufTProtocol dataProtocol = TProtocolType.TBinary.apply(buffer);
+          K streamResponse = (K) StreamResponse.fromData(responseReader.read(dataProtocol));
+
+          return ClientResponsePayload.createStreamResult(
+              streamResponse,
+              kClientResponsePayload.getResponseRpcMetadata(),
+              kClientResponsePayload.getStreamPayloadMetadata(),
+              kClientResponsePayload.getBinaryHeaders(),
+              kClientResponsePayload.getStreamId());
+        } finally {
+          ReferenceCountUtil.release(buffer);
+        }
       }
       return kClientResponsePayload;
     }
