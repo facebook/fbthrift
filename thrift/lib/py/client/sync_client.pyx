@@ -84,6 +84,7 @@ cdef class SyncClient:
                 response_iobuf = folly.iobuf.from_unique_ptr(cmove(resp.buf.value()))
                 response = response_cls()
                 deserialize(protocol_factory, b"".join(response_iobuf), response)
+                self._last_resp_headers = resp.headers
                 return response
             elif resp.buf.hasError():
                 # TODO: return correct exception type
@@ -102,3 +103,6 @@ cdef class SyncClient:
 
     def set_onetime_header(SyncClient self, string key, string value):
         self._onetime_headers[key] = value
+
+    def get_last_response_headers(SyncClient self):
+        return self._last_resp_headers

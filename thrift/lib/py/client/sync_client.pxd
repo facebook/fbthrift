@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from libcpp.map cimport map as cmap
 from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
 from libcpp.unordered_map cimport unordered_map
@@ -22,3 +23,4 @@ cdef class SyncClient:
     cdef unique_ptr[cOmniClient] _omni_client
     cdef unordered_map[string, string] _persistent_headers
     cdef unordered_map[string, string] _onetime_headers
+    cdef cmap[string, string] _last_resp_headers

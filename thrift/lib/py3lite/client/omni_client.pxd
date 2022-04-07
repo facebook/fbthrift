@@ -16,6 +16,7 @@ from folly cimport cFollyExceptionWrapper, cFollySemiFuture
 from folly.expected cimport cExpected
 from folly.iobuf cimport cIOBuf
 from libc.stdint cimport uint16_t
+from libcpp.map cimport map as cmap
 from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
 from libcpp.unordered_map cimport unordered_map
@@ -31,6 +32,7 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h" namespace "::a
 cdef extern from "thrift/lib/py3lite/client/OmniClient.h" namespace "::thrift::py3lite::client":
     cdef cppclass cOmniClientResponseWithHeaders "::thrift::py3lite::client::OmniClientResponseWithHeaders":
         cExpected[unique_ptr[cIOBuf], cFollyExceptionWrapper] buf
+        cmap[string, string] headers
 
     cdef cppclass cOmniClient "::thrift::py3lite::client::OmniClient":
         cOmniClient(cRequestChannel_ptr channel, const string& serviceName)
