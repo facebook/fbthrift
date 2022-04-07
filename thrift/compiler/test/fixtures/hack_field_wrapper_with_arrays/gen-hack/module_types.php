@@ -186,7 +186,7 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
     return new static();
   }
 
-  public static async function genFromShape(self::TConstructorShape $shape)[zoned]: Awaitable<this> {
+  public static async function genFromShape(self::TConstructorShape $shape): Awaitable<this> {
     $obj = new static();
     $union_annotated_field = Shapes::idx($shape, 'union_annotated_field');
     if ($union_annotated_field !== null) {
@@ -201,7 +201,7 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
     return $obj;
   }
 
-  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[zoned]: Awaitable<this> {
+  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): Awaitable<this> {
     $obj = new static();
     $union_annotated_field = idx($map, 'union_annotated_field');
     if ($union_annotated_field !== null) {
@@ -334,7 +334,7 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {
+  public static async function __genFromShape(self::TShape $shape): Awaitable<this> {
     $obj = new static();
     $union_annotated_field = Shapes::idx($shape, 'union_annotated_field');
     if ($union_annotated_field !== null) {
@@ -349,7 +349,7 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
     return $obj;
   }
 
-  public async function __genToShape()[zoned]: Awaitable<self::TShape> {
+  public async function __genToShape(): Awaitable<self::TShape> {
     $union_annotated_field = await $this->union_annotated_field?->genUnwrap();
     return shape(
       'union_annotated_field' => $union_annotated_field,
@@ -451,7 +451,7 @@ class MyException extends \TException implements \IThriftAsyncStruct {
     return new static();
   }
 
-  public static async function genFromShape(self::TConstructorShape $shape)[zoned]: Awaitable<this> {
+  public static async function genFromShape(self::TConstructorShape $shape): Awaitable<this> {
     $obj = new static();
     $code = Shapes::idx($shape, 'code');
     if ($code !== null) {
@@ -468,7 +468,7 @@ class MyException extends \TException implements \IThriftAsyncStruct {
     return $obj;
   }
 
-  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[zoned]: Awaitable<this> {
+  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): Awaitable<this> {
     $obj = new static();
     $code = idx($map, 'code');
     if ($code !== null) {

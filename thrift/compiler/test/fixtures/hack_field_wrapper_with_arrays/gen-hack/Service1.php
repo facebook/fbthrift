@@ -551,7 +551,7 @@ class Service1_func_args implements \IThriftSyncStruct, \IThriftShapishAsyncStru
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {
+  public static async function __genFromShape(self::TShape $shape): Awaitable<this> {
     $obj = new static();
     $obj->arg1 = $shape['arg1'];
     $arg2 = Shapes::idx($shape, 'arg2');
@@ -561,7 +561,7 @@ class Service1_func_args implements \IThriftSyncStruct, \IThriftShapishAsyncStru
     return $obj;
   }
 
-  public async function __genToShape()[zoned]: Awaitable<self::TShape> {
+  public async function __genToShape(): Awaitable<self::TShape> {
     return shape(
       'arg1' => $this->arg1,
       'arg2' => await ($this->arg2 === null 
@@ -807,7 +807,7 @@ class Service1_func1_args implements \IThriftSyncStruct, \IThriftShapishAsyncStr
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {
+  public static async function __genFromShape(self::TShape $shape): Awaitable<this> {
     $obj = new static();
     $obj->arg1 = $shape['arg1'];
     $arg2 = Shapes::idx($shape, 'arg2');
@@ -817,7 +817,7 @@ class Service1_func1_args implements \IThriftSyncStruct, \IThriftShapishAsyncStr
     return $obj;
   }
 
-  public async function __genToShape()[zoned]: Awaitable<self::TShape> {
+  public async function __genToShape(): Awaitable<self::TShape> {
     return shape(
       'arg1' => $this->arg1,
       'arg2' => await ($this->arg2 === null 

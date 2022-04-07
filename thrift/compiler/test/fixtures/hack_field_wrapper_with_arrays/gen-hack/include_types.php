@@ -205,7 +205,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {
+  public static async function __genFromShape(self::TShape $shape): Awaitable<this> {
     $obj = new static();
     $nested_struct = Shapes::idx($shape, 'nested_struct');
     if ($nested_struct !== null) {
@@ -214,7 +214,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct {
     return $obj;
   }
 
-  public async function __genToShape()[zoned]: Awaitable<self::TShape> {
+  public async function __genToShape(): Awaitable<self::TShape> {
     return shape(
       'nested_struct' => await ($this->nested_struct === null 
         ? null 
@@ -363,7 +363,7 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     return new static();
   }
 
-  public static async function genFromShape(self::TConstructorShape $shape)[zoned]: Awaitable<this> {
+  public static async function genFromShape(self::TConstructorShape $shape): Awaitable<this> {
     $obj = new static();
     $wrapped_field = Shapes::idx($shape, 'wrapped_field');
     if ($wrapped_field !== null) {
@@ -388,7 +388,7 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     return $obj;
   }
 
-  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[zoned]: Awaitable<this> {
+  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): Awaitable<this> {
     $obj = new static();
     $wrapped_field = idx($map, 'wrapped_field');
     if ($wrapped_field !== null) {
@@ -549,7 +549,7 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {
+  public static async function __genFromShape(self::TShape $shape): Awaitable<this> {
     $obj = new static();
     await $obj->get_wrapped_field()->genWrap($shape['wrapped_field']);
     await $obj->get_annotated_field()->genWrap($shape['annotated_field']);
@@ -562,7 +562,7 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     return $obj;
   }
 
-  public async function __genToShape()[zoned]: Awaitable<self::TShape> {
+  public async function __genToShape(): Awaitable<self::TShape> {
     $wrapped_field = await ($this->wrapped_field as nonnull)->genUnwrap();
     $annotated_field = await ($this->annotated_field as nonnull)->genUnwrap();
     $adapted__and_wrapped_type = await ($this->adapted__and_wrapped_type as nonnull)->genUnwrap();
@@ -1088,7 +1088,7 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {
+  public static async function __genFromShape(self::TShape $shape): Awaitable<this> {
     $obj = new static();
     $obj->map_of_string_to_MyStruct = self::__stringifyMapKeys(
       await Dict\map_async(
@@ -1159,7 +1159,7 @@ class MyComplexStruct implements \IThriftSyncStruct, \IThriftShapishAsyncStruct 
     return $obj;
   }
 
-  public async function __genToShape()[zoned]: Awaitable<self::TShape> {
+  public async function __genToShape(): Awaitable<self::TShape> {
     return shape(
       'map_of_string_to_MyStruct' => await Dict\map_async(
         $this->map_of_string_to_MyStruct,

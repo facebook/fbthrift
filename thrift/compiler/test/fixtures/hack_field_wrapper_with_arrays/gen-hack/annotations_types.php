@@ -294,7 +294,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     return new static();
   }
 
-  public static async function genFromShape(self::TConstructorShape $shape)[zoned]: Awaitable<this> {
+  public static async function genFromShape(self::TConstructorShape $shape): Awaitable<this> {
     $obj = new static();
     $name = Shapes::idx($shape, 'name');
     if ($name !== null) {
@@ -315,7 +315,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     return $obj;
   }
 
-  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[zoned]: Awaitable<this> {
+  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): Awaitable<this> {
     $obj = new static();
     $name = idx($map, 'name');
     if ($name !== null) {
@@ -464,7 +464,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {
+  public static async function __genFromShape(self::TShape $shape): Awaitable<this> {
     $obj = new static();
     $obj->name = $shape['name'];
     $recurse = Shapes::idx($shape, 'recurse');
@@ -486,7 +486,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     return $obj;
   }
 
-  public async function __genToShape()[zoned]: Awaitable<self::TShape> {
+  public async function __genToShape(): Awaitable<self::TShape> {
     $recurse = await ($this->recurse as nonnull)->genUnwrap();
     return shape(
       'name' => $this->name,

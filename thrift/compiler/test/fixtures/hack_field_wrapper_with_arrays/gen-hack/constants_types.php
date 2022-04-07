@@ -143,7 +143,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     return new static();
   }
 
-  public static async function genFromShape(self::TConstructorShape $shape)[zoned]: Awaitable<this> {
+  public static async function genFromShape(self::TConstructorShape $shape): Awaitable<this> {
     $obj = new static();
     $weeks = Shapes::idx($shape, 'weeks');
     if ($weeks !== null) {
@@ -168,7 +168,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     return $obj;
   }
 
-  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[zoned]: Awaitable<this> {
+  public static async function genFromMap_DEPRECATED(@KeyedContainer<string, mixed> $map): Awaitable<this> {
     $obj = new static();
     $weeks = idx($map, 'weeks');
     if ($weeks !== null) {
@@ -296,7 +296,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     return Dict\map_keys($m, $key ==> (string)$key);
   }
 
-  public static async function __genFromShape(self::TShape $shape)[zoned]: Awaitable<this> {
+  public static async function __genFromShape(self::TShape $shape): Awaitable<this> {
     $obj = new static();
     $obj->weeks = $shape['weeks'];
     $obj->title = $shape['title'];
@@ -315,7 +315,7 @@ class Internship implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct {
     return $obj;
   }
 
-  public async function __genToShape()[zoned]: Awaitable<self::TShape> {
+  public async function __genToShape(): Awaitable<self::TShape> {
     $compensation = await ($this->compensation as nonnull)->genUnwrap();
     return shape(
       'weeks' => $this->weeks,

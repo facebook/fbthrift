@@ -3248,7 +3248,7 @@ void t_hack_generator::generate_php_struct_async_shape_methods(
   generate_php_struct_async_struct_creation_method_footer(out);
   out << "\n";
   indent(out)
-      << "public async function __genToShape()[zoned]: Awaitable<self::TShape> {\n";
+      << "public async function __genToShape(): Awaitable<self::TShape> {\n";
   indent_up();
   for (const auto& field : tstruct->fields()) {
     if (find_hack_wrapper(field)) {
@@ -4349,7 +4349,7 @@ void t_hack_generator::generate_php_struct_async_struct_creation_method_header(
       break;
   }
 
-  out << "[zoned]: Awaitable<this> {\n";
+  out << ": Awaitable<this> {\n";
   indent_up();
   out << indent() << "$obj = new static();\n";
 }
