@@ -15,7 +15,7 @@
 
 import unittest
 
-from transitive_deps.a.lite_types import A
+from transitive_deps.a.thrift_types import A
 
 
 class TransitiveDepsTest(unittest.TestCase):
