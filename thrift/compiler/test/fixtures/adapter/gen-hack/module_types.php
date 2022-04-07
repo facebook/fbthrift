@@ -8,6 +8,7 @@
 
 type SetWithAdapter = \Adapter2::THackType;
 type ListWithElemAdapter = Vector<\Adapter1::THackType>;
+type MyI64 = int;
 type StructWithAdapter = \Adapter2::THackType;
 type UnionWithAdapter = \Adapter2::THackType;
 /**
@@ -100,6 +101,10 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'adapter' => \Adapter1::class,
       'type' => \TType::STRING,
     ),
+    9 => shape(
+      'var' => 'longField',
+      'type' => \TType::I64,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'intField' => 1,
@@ -110,6 +115,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'mapField' => 6,
     'optionalMapField' => 7,
     'binaryField' => 8,
+    'longField' => 9,
   ];
 
   const type TConstructorShape = shape(
@@ -121,6 +127,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'mapField' => ?\Adapter3::THackType,
     ?'optionalMapField' => ?\Adapter3::THackType,
     ?'binaryField' => ?\Adapter1::THackType,
+    ?'longField' => ?int,
   );
 
   const type TShape = shape(
@@ -132,8 +139,9 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'mapField' => \Adapter3::THackType,
     ?'optionalMapField' => ?\Adapter3::THackType,
     'binaryField' => \Adapter1::THackType,
+    'longField' => int,
   );
-  const int STRUCTURAL_ID = 3693521661416523209;
+  const int STRUCTURAL_ID = 5175647014973364666;
   /**
    * Original thrift field:-
    * 1: i32 intField
@@ -174,8 +182,13 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * 8: binary binaryField
    */
   public \Adapter1::THackType $binaryField;
+  /**
+   * Original thrift field:-
+   * 9: i64 longField
+   */
+  public int $longField;
 
-  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter1::THackType $optionalIntField = null, ?\Adapter1::THackType $intFieldWithDefault = null, ?\Adapter2::THackType $setField = null, ?\Adapter2::THackType $optionalSetField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter3::THackType $optionalMapField = null, ?\Adapter1::THackType $binaryField = null  )[] {
+  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter1::THackType $optionalIntField = null, ?\Adapter1::THackType $intFieldWithDefault = null, ?\Adapter2::THackType $setField = null, ?\Adapter2::THackType $optionalSetField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter3::THackType $optionalMapField = null, ?\Adapter1::THackType $binaryField = null, ?int $longField = null  )[] {
     $this->intField = $intField ?? \Adapter1::fromThrift(0);
     $this->optionalIntField = $optionalIntField;
     $this->intFieldWithDefault = $intFieldWithDefault ?? \Adapter1::fromThrift(13);
@@ -184,6 +197,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     $this->mapField = $mapField ?? \Adapter3::fromThrift(Map {});
     $this->optionalMapField = $optionalMapField;
     $this->binaryField = $binaryField ?? \Adapter1::fromThrift('');
+    $this->longField = $longField ?? 0;
   }
 
   public static function withDefaultValues()[]: this {
@@ -200,6 +214,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       Shapes::idx($shape, 'mapField'),
       Shapes::idx($shape, 'optionalMapField'),
       Shapes::idx($shape, 'binaryField'),
+      Shapes::idx($shape, 'longField'),
     );
   }
 
@@ -415,6 +430,26 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "name" => "binaryField",
             )
           ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 9,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.MyI64",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "longField",
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -425,6 +460,16 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
+        'longField' => shape(
+          'field' => dict[],
+          'type' => dict[
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter1",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -443,6 +488,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         $val1 ==> (new Vector($val1)),
       )),
       $shape['binaryField'],
+      $shape['longField'],
     );
   }
 
@@ -463,6 +509,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       )
         |> $$ === null ? null : dict($$),
       'binaryField' => $this->binaryField,
+      'longField' => $this->longField,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -557,6 +604,9 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     if (idx($parsed, 'binaryField') !== null) {
       $this->binaryField = /* HH_FIXME[4110] */ $parsed['binaryField'];
     }    
+    if (idx($parsed, 'longField') !== null) {
+      $this->longField = /* HH_FIXME[4110] */ $parsed['longField'];
+    }    
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
@@ -575,6 +625,7 @@ enum BazEnum: int {
   setField = 4;
   mapField = 6;
   binaryField = 8;
+  longField = 9;
 }
 
 /**
@@ -630,12 +681,18 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
       'adapter' => \Adapter1::class,
       'type' => \TType::STRING,
     ),
+    9 => shape(
+      'var' => 'longField',
+      'union' => true,
+      'type' => \TType::I64,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'intField' => 1,
     'setField' => 4,
     'mapField' => 6,
     'binaryField' => 8,
+    'longField' => 9,
   ];
 
   const type TConstructorShape = shape(
@@ -643,6 +700,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
     ?'setField' => ?\Adapter2::THackType,
     ?'mapField' => ?\Adapter3::THackType,
     ?'binaryField' => ?\Adapter1::THackType,
+    ?'longField' => ?int,
   );
 
   const type TShape = shape(
@@ -650,8 +708,9 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
     ?'setField' => ?\Adapter2::THackType,
     ?'mapField' => ?\Adapter3::THackType,
     ?'binaryField' => ?\Adapter1::THackType,
+    ?'longField' => ?int,
   );
-  const int STRUCTURAL_ID = 2036191889248458060;
+  const int STRUCTURAL_ID = 8924052603013047554;
   /**
    * Original thrift field:-
    * 1: i32 intField
@@ -672,9 +731,14 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
    * 8: binary binaryField
    */
   public ?\Adapter1::THackType $binaryField;
+  /**
+   * Original thrift field:-
+   * 9: i64 longField
+   */
+  public ?int $longField;
   protected BazEnum $_type = BazEnum::_EMPTY_;
 
-  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter2::THackType $setField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter1::THackType $binaryField = null  )[] {
+  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter2::THackType $setField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter1::THackType $binaryField = null, ?int $longField = null  )[] {
     $this->_type = BazEnum::_EMPTY_;
     if ($intField !== null) {
       $this->intField = $intField;
@@ -692,6 +756,10 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
       $this->binaryField = $binaryField;
       $this->_type = BazEnum::binaryField;
     }
+    if ($longField !== null) {
+      $this->longField = $longField;
+      $this->_type = BazEnum::longField;
+    }
   }
 
   public static function withDefaultValues()[]: this {
@@ -704,6 +772,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
       Shapes::idx($shape, 'setField'),
       Shapes::idx($shape, 'mapField'),
       Shapes::idx($shape, 'binaryField'),
+      Shapes::idx($shape, 'longField'),
     );
   }
 
@@ -728,6 +797,9 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
         break;
       case BazEnum::binaryField:
         $this->binaryField = null;
+        break;
+      case BazEnum::longField:
+        $this->longField = null;
         break;
       case BazEnum::_EMPTY_:
         break;
@@ -813,6 +885,26 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
       (string)$this->_type,
     );
     return $this->binaryField as nonnull;
+  }
+
+  public function set_longField(int $longField)[write_props]: this {
+    $this->reset();
+    $this->_type = BazEnum::longField;
+    $this->longField = $longField;
+    return $this;
+  }
+
+  public function get_longField()[]: ?int {
+    return $this->longField;
+  }
+
+  public function getx_longField()[]: int {
+    invariant(
+      $this->_type === BazEnum::longField,
+      'get_longField called on an instance of Baz whose current type is %s',
+      (string)$this->_type,
+    );
+    return $this->longField as nonnull;
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
@@ -920,6 +1012,26 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
               "name" => "binaryField",
             )
           ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 9,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.MyI64",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "longField",
+            )
+          ),
         ],
         "is_union" => true,
       )
@@ -930,6 +1042,16 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
     return shape(
       'struct' => dict[],
       'fields' => dict[
+        'longField' => shape(
+          'field' => dict[],
+          'type' => dict[
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter1",
+              )
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -942,6 +1064,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
         $val0 ==> (new Vector($val0)),
       )),
       Shapes::idx($shape, 'binaryField'),
+      Shapes::idx($shape, 'longField'),
     );
   }
 
@@ -955,6 +1078,7 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
       )
         |> $$ === null ? null : dict($$),
       'binaryField' => $this->binaryField,
+      'longField' => $this->longField,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -1010,6 +1134,10 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
     if (idx($parsed, 'binaryField') !== null) {
       $this->binaryField = /* HH_FIXME[4110] */ $parsed['binaryField'];
       $this->_type = BazEnum::binaryField;
+    }    
+    if (idx($parsed, 'longField') !== null) {
+      $this->longField = /* HH_FIXME[4110] */ $parsed['longField'];
+      $this->_type = BazEnum::longField;
     }    
   }
 

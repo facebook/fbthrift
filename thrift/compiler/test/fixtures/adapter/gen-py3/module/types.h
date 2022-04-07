@@ -57,6 +57,9 @@ void reset_field<::cpp2::Foo>(
     case 7:
       obj.binaryField_ref().copy_from(default_inst<::cpp2::Foo>().binaryField_ref());
       return;
+    case 8:
+      obj.longField_ref().copy_from(default_inst<::cpp2::Foo>().longField_ref());
+      return;
   }
 }
 

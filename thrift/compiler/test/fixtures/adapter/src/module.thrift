@@ -35,6 +35,9 @@ typedef list<
   )
 > ListWithElemAdapter
 
+@cpp.Adapter{name = "my::Adapter1"}
+typedef i64 MyI64
+
 struct Foo {
   1: i32 (
     hack.adapter = '\Adapter1',
@@ -82,6 +85,7 @@ struct Foo {
     cpp.adapter = 'my::Adapter1',
     py.adapter = 'my.Adapter1',
   ) binaryField;
+  9: MyI64 longField;
 }
 
 union Baz {
@@ -108,6 +112,7 @@ union Baz {
     cpp.adapter = 'my::Adapter1',
     py.adapter = 'my.Adapter1',
   ) binaryField;
+  9: MyI64 longField;
 }
 
 struct Bar {

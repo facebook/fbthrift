@@ -73,6 +73,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[cmap[string,vector[string]]] mapField_ref()
         __optional_field_ref[cmap[string,vector[string]]] optionalMapField_ref()
         __field_ref[string] binaryField_ref()
+        __field_ref[cint64_t] longField_ref()
 
     cdef enum cBaz__type "::cpp2::Baz::Type":
         cBaz__type___EMPTY__ "::cpp2::Baz::Type::__EMPTY__",
@@ -80,6 +81,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cBaz__type_setField "::cpp2::Baz::Type::setField",
         cBaz__type_mapField "::cpp2::Baz::Type::mapField",
         cBaz__type_binaryField "::cpp2::Baz::Type::binaryField",
+        cBaz__type_longField "::cpp2::Baz::Type::longField",
 
     cdef cppclass cBaz "::cpp2::Baz":
         cBaz() except +
@@ -95,6 +97,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cmap[string,vector[string]]& set_mapField(const cmap[string,vector[string]]&)
         const string& get_binaryField() const
         string& set_binaryField(const string&)
+        const cint64_t& get_longField() const
+        cint64_t& set_longField(const cint64_t&)
 
 
     cdef cppclass cBar "::cpp2::Bar":
@@ -138,6 +142,7 @@ cdef class Foo(thrift.py3.types.Struct):
     cdef inline object mapField_impl(self)
     cdef inline object optionalMapField_impl(self)
     cdef inline object binaryField_impl(self)
+    cdef inline object longField_impl(self)
     cdef Set__string __fbthrift_cached_setField
     cdef Set__string __fbthrift_cached_optionalSetField
     cdef Map__string_List__string __fbthrift_cached_mapField
@@ -164,7 +169,8 @@ cdef class Baz(thrift.py3.types.Union):
         object intField,
         object setField,
         object mapField,
-        bytes binaryField
+        bytes binaryField,
+        object longField
     ) except *
 
     @staticmethod

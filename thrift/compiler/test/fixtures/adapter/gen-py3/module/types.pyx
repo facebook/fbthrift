@@ -126,6 +126,7 @@ cdef class Foo(thrift.py3.types.Struct):
           "mapField": deref(self._cpp_obj).mapField_ref().has_value(),
           "optionalMapField": deref(self._cpp_obj).optionalMapField_ref().has_value(),
           "binaryField": deref(self._cpp_obj).binaryField_ref().has_value(),
+          "longField": deref(self._cpp_obj).longField_ref().has_value(),
         })
 
     @staticmethod
@@ -212,6 +213,14 @@ cdef class Foo(thrift.py3.types.Struct):
     def binaryField(self):
         return self.binaryField_impl()
 
+    cdef inline longField_impl(self):
+
+        return deref(self._cpp_obj).longField_ref().value()
+
+    @property
+    def longField(self):
+        return self.longField_impl()
+
 
     def __hash__(Foo self):
         return super().__hash__()
@@ -257,7 +266,7 @@ cdef class Foo(thrift.py3.types.Struct):
         return __get_field_name_by_index[cFoo](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 8
+        self._fbthrift_struct_size = 9
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Foo self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -284,12 +293,18 @@ cdef class Baz(thrift.py3.types.Union):
         intField=None,
         setField=None,
         mapField=None,
-        bytes binaryField=None
+        bytes binaryField=None,
+        longField=None
     ):
         if intField is not None:
             if not isinstance(intField, int):
                 raise TypeError(f'intField is not a { int !r}.')
             intField = <cint32_t> intField
+
+        if longField is not None:
+            if not isinstance(longField, int):
+                raise TypeError(f'longField is not a { int !r}.')
+            longField = <cint64_t> longField
 
         self._cpp_obj = __to_shared_ptr(cmove(Baz._make_instance(
           NULL,
@@ -297,6 +312,7 @@ cdef class Baz(thrift.py3.types.Union):
           setField,
           mapField,
           binaryField,
+          longField,
         )))
         self._load_cache()
 
@@ -317,6 +333,13 @@ cdef class Baz(thrift.py3.types.Union):
             return Baz(mapField=value)
         if isinstance(value, bytes):
             return Baz(binaryField=value)
+        if isinstance(value, int):
+            if not isinstance(value, pbool):
+                try:
+                    <cint64_t> value
+                    return Baz(longField=value)
+                except OverflowError:
+                    pass
         raise ValueError(f"Unable to derive correct union field for value: {value}")
 
     @staticmethod
@@ -325,7 +348,8 @@ cdef class Baz(thrift.py3.types.Union):
         object intField,
         object setField,
         object mapField,
-        bytes binaryField
+        bytes binaryField,
+        object longField
     ) except *:
         cdef unique_ptr[cBaz] c_inst = make_unique[cBaz]()
         cdef bint any_set = False
@@ -348,6 +372,11 @@ cdef class Baz(thrift.py3.types.Union):
             if any_set:
                 raise TypeError("At most one field may be set when initializing a union")
             deref(c_inst).set_binaryField(binaryField)
+            any_set = True
+        if longField is not None:
+            if any_set:
+                raise TypeError("At most one field may be set when initializing a union")
+            deref(c_inst).set_longField(longField)
             any_set = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -384,6 +413,12 @@ cdef class Baz(thrift.py3.types.Union):
             raise AttributeError(f'Union contains a value of type {self.type.name}, not binaryField')
         return self.value
 
+    @property
+    def longField(self):
+        if self.type.value != 9:
+            raise AttributeError(f'Union contains a value of type {self.type.name}, not longField')
+        return self.value
+
 
     def __hash__(Baz self):
         return  super().__hash__()
@@ -401,6 +436,8 @@ cdef class Baz(thrift.py3.types.Union):
             self.value = Map__string_List__string._fbthrift_create(make_shared[cmap[string,vector[string]]](deref(self._cpp_obj).get_mapField()))
         elif type == 8:
             self.value = deref(self._cpp_obj).get_binaryField()
+        elif type == 9:
+            self.value = deref(self._cpp_obj).get_longField()
 
     def __copy__(Baz self):
         cdef shared_ptr[cBaz] cpp_obj = make_shared[cBaz](
@@ -436,7 +473,7 @@ cdef class Baz(thrift.py3.types.Union):
         return __get_field_name_by_index[cBaz](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 4
+        self._fbthrift_struct_size = 5
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Baz self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -1087,5 +1124,6 @@ Sequence.register(List__Foo)
 
 SetWithAdapter = Set__string
 ListWithElemAdapter = List__string
+MyI64 = int
 StructWithAdapter = Bar
 UnionWithAdapter = Baz

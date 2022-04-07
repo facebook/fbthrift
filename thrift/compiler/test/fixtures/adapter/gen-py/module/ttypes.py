@@ -37,7 +37,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Foo', 'Baz', 'Bar', 'StructWithFieldAdapter', 'SetWithAdapter', 'ListWithElemAdapter', 'StructWithAdapter', 'UnionWithAdapter']
+__all__ = ['UTF8STRINGS', 'Foo', 'Baz', 'Bar', 'StructWithFieldAdapter', 'SetWithAdapter', 'ListWithElemAdapter', 'MyI64', 'StructWithAdapter', 'UnionWithAdapter']
 
 class Foo:
   """
@@ -50,6 +50,7 @@ class Foo:
    - mapField
    - optionalMapField
    - binaryField
+   - longField
   """
 
   thrift_spec = None
@@ -196,6 +197,11 @@ class Foo:
           self.binaryField = iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 9:
+        if ftype == TType.I64:
+          self.longField = iprot.readI64()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -261,6 +267,10 @@ class Foo:
       oprot.writeFieldBegin('binaryField', TType.STRING, 8)
       oprot.writeString(self.binaryField)
       oprot.writeFieldEnd()
+    if self.longField != None:
+      oprot.writeFieldBegin('longField', TType.I64, 9)
+      oprot.writeI64(self.longField)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -314,6 +324,8 @@ class Foo:
         self.optionalMapField[_tmp_kp77] = _list78
     if 'binaryField' in json_obj and json_obj['binaryField'] is not None:
       self.binaryField = json_obj['binaryField']
+    if 'longField' in json_obj and json_obj['longField'] is not None:
+      self.longField = long(json_obj['longField'])
 
   def __repr__(self):
     L = []
@@ -350,6 +362,10 @@ class Foo:
       value = pprint.pformat(self.binaryField, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    binaryField=%s' % (value))
+    if self.longField is not None:
+      value = pprint.pformat(self.longField, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    longField=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -371,6 +387,7 @@ class Baz(object):
    - setField
    - mapField
    - binaryField
+   - longField
   """
 
   thrift_spec = None
@@ -381,6 +398,7 @@ class Baz(object):
   SETFIELD = 4
   MAPFIELD = 6
   BINARYFIELD = 8
+  LONGFIELD = 9
   
   @staticmethod
   def isUnion():
@@ -402,6 +420,10 @@ class Baz(object):
     assert self.field == 8
     return self.value
 
+  def get_longField(self):
+    assert self.field == 9
+    return self.value
+
   def set_intField(self, value):
     self.field = 1
     self.value = value
@@ -416,6 +438,10 @@ class Baz(object):
 
   def set_binaryField(self, value):
     self.field = 8
+    self.value = value
+
+  def set_longField(self, value):
+    self.field = 9
     self.value = value
 
   def getType(self):
@@ -440,6 +466,10 @@ class Baz(object):
       padding = ' ' * 12
       value = padding.join(value.splitlines(True))
       member = '\n    %s=%s' % ('binaryField', value)
+    if self.field == 9:
+      padding = ' ' * 10
+      value = padding.join(value.splitlines(True))
+      member = '\n    %s=%s' % ('longField', value)
     return "%s(%s)" % (self.__class__.__name__, member)
 
   def read(self, iprot):
@@ -527,6 +557,13 @@ class Baz(object):
           self.set_binaryField(binaryField)
         else:
           iprot.skip(ftype)
+      elif fid == 9:
+        if ftype == TType.I64:
+          longField = iprot.readI64()
+          assert self.field == 0 and self.value is None
+          self.set_longField(longField)
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -570,6 +607,11 @@ class Baz(object):
       binaryField = self.value
       oprot.writeString(binaryField)
       oprot.writeFieldEnd()
+    if self.field == 9:
+      oprot.writeFieldBegin('longField', TType.I64, 9)
+      longField = self.value
+      oprot.writeI64(longField)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeUnionEnd()
   
@@ -612,6 +654,9 @@ class Baz(object):
     if 'binaryField' in obj:
       binaryField = obj['binaryField']
       self.set_binaryField(binaryField)
+    if 'longField' in obj:
+      longField = long(obj['longField'])
+      self.set_longField(longField)
 
   def __eq__(self, other):
     if not isinstance(other, self.__class__):
@@ -994,6 +1039,7 @@ class StructWithFieldAdapter:
 
 SetWithAdapter = UnimplementedTypedef()
 ListWithElemAdapter = UnimplementedTypedef()
+MyI64 = UnimplementedTypedef()
 StructWithAdapter = my.Adapter2.Type
 UnionWithAdapter = my.Adapter2.Type
 all_structs.append(Foo)
@@ -1007,6 +1053,7 @@ Foo.thrift_spec = (
   (6, TType.MAP, 'mapField', (TType.STRING,True,TType.LIST,(TType.STRING,True)), None, 2, ), # 6
   (7, TType.MAP, 'optionalMapField', (TType.STRING,True,TType.LIST,(TType.STRING,True)), None, 1, ), # 7
   (8, TType.STRING, 'binaryField', False, None, 2, ), # 8
+  (9, TType.I64, 'longField', None, None, 2, ), # 9
 )
 
 Foo.thrift_struct_annotations = {
@@ -1014,7 +1061,7 @@ Foo.thrift_struct_annotations = {
 Foo.thrift_field_annotations = {
 }
 
-def Foo__init__(self, intField=None, optionalIntField=None, intFieldWithDefault=Foo.thrift_spec[3][4], setField=None, optionalSetField=None, mapField=None, optionalMapField=None, binaryField=None,):
+def Foo__init__(self, intField=None, optionalIntField=None, intFieldWithDefault=Foo.thrift_spec[3][4], setField=None, optionalSetField=None, mapField=None, optionalMapField=None, binaryField=None, longField=None,):
   self.intField = intField
   self.optionalIntField = optionalIntField
   self.intFieldWithDefault = intFieldWithDefault
@@ -1023,6 +1070,7 @@ def Foo__init__(self, intField=None, optionalIntField=None, intFieldWithDefault=
   self.mapField = mapField
   self.optionalMapField = optionalMapField
   self.binaryField = binaryField
+  self.longField = longField
 
 Foo.__init__ = Foo__init__
 
@@ -1035,6 +1083,7 @@ def Foo__setstate__(self, state):
   state.setdefault('mapField', None)
   state.setdefault('optionalMapField', None)
   state.setdefault('binaryField', None)
+  state.setdefault('longField', None)
   self.__dict__ = state
 
 Foo.__getstate__ = lambda self: self.__dict__.copy()
@@ -1051,6 +1100,7 @@ Baz.thrift_spec = (
   (6, TType.MAP, 'mapField', (TType.STRING,True,TType.LIST,(TType.STRING,True)), None, 2, ), # 6
   None, # 7
   (8, TType.STRING, 'binaryField', False, None, 2, ), # 8
+  (9, TType.I64, 'longField', None, None, 2, ), # 9
 )
 
 Baz.thrift_struct_annotations = {
@@ -1058,7 +1108,7 @@ Baz.thrift_struct_annotations = {
 Baz.thrift_field_annotations = {
 }
 
-def Baz__init__(self, intField=None, setField=None, mapField=None, binaryField=None,):
+def Baz__init__(self, intField=None, setField=None, mapField=None, binaryField=None, longField=None,):
   self.field = 0
   self.value = None
   if intField is not None:
@@ -1077,6 +1127,10 @@ def Baz__init__(self, intField=None, setField=None, mapField=None, binaryField=N
     assert self.field == 0 and self.value is None
     self.field = 8
     self.value = binaryField
+  if longField is not None:
+    assert self.field == 0 and self.value is None
+    self.field = 9
+    self.value = longField
 
 Baz.__init__ = Baz__init__
 

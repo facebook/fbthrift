@@ -198,6 +198,20 @@ _readField_binaryField:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           8,
+          9,
+          apache::thrift::protocol::T_I64))) {
+    goto _loop;
+  }
+_readField_longField:
+  {
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::MyI64>::readWithContext(*iprot, this->__fbthrift_field_longField, _readState);
+    
+  }
+ this->__isset.set(8, true);
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          9,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -282,6 +296,14 @@ _loop:
         goto _skip;
       }
     }
+    case 9:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64))) {
+        goto _readField_longField;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -329,6 +351,10 @@ uint32_t Foo::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("binaryField", apache::thrift::protocol::T_STRING, 8);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::serializedSize<false>(*prot_, my::Adapter1::toThrift(this->__fbthrift_field_binaryField));
   }
+  {
+    xfer += prot_->serializedFieldSize("longField", apache::thrift::protocol::T_I64, 9);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::MyI64>::serializedSize<false>(*prot_, this->__fbthrift_field_longField);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -368,6 +394,10 @@ uint32_t Foo::serializedSizeZC(Protocol_ const* prot_) const {
   {
     xfer += prot_->serializedFieldSize("binaryField", apache::thrift::protocol::T_STRING, 8);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::serializedSize<true>(*prot_, my::Adapter1::toThrift(this->__fbthrift_field_binaryField));
+  }
+  {
+    xfer += prot_->serializedFieldSize("longField", apache::thrift::protocol::T_I64, 9);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::MyI64>::serializedSize<false>(*prot_, this->__fbthrift_field_longField);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -438,6 +468,13 @@ uint32_t Foo::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 8, kPrevFieldId>(*prot_, "binaryField", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::write(*prot_, my::Adapter1::toThrift(this->__fbthrift_field_binaryField));
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    constexpr int16_t kPrevFieldId = 8;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 9, kPrevFieldId>(*prot_, "longField", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::MyI64>::write(*prot_, this->__fbthrift_field_longField);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -528,6 +565,17 @@ void Baz::readNoXfer(Protocol_* iprot) {
         }
         break;
       }
+      case 9:
+      {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64)) {
+          this->set_longField();
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::MyI64>::readWithContext(*iprot, value_.longField, _readState);
+          
+        } else {
+          _readState.skip(iprot);
+        }
+        break;
+      }
       default:
       {
         _readState.skip(iprot);
@@ -572,6 +620,12 @@ uint32_t Baz::serializedSize(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::serializedSize<false>(*prot_, my::Adapter1::toThrift(value_.binaryField));
       break;
     }
+    case Baz::Type::longField:
+    {
+      xfer += prot_->serializedFieldSize("longField", apache::thrift::protocol::T_I64, 9);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::MyI64>::serializedSize<false>(*prot_, value_.longField);
+      break;
+    }
     case Baz::Type::__EMPTY__:;
   }
   xfer += prot_->serializedSizeStop();
@@ -605,6 +659,12 @@ uint32_t Baz::serializedSizeZC(Protocol_ const* prot_) const {
     {
       xfer += prot_->serializedFieldSize("binaryField", apache::thrift::protocol::T_STRING, 8);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::serializedSize<true>(*prot_, my::Adapter1::toThrift(value_.binaryField));
+      break;
+    }
+    case Baz::Type::longField:
+    {
+      xfer += prot_->serializedFieldSize("longField", apache::thrift::protocol::T_I64, 9);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::MyI64>::serializedSize<false>(*prot_, value_.longField);
       break;
     }
     case Baz::Type::__EMPTY__:;
@@ -647,6 +707,14 @@ uint32_t Baz::write(Protocol_* prot_) const {
       constexpr int16_t kPrevFieldId = 6;
       xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 8, kPrevFieldId>(*prot_, "binaryField", false);
       xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::write(*prot_, my::Adapter1::toThrift(value_.binaryField));
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case Baz::Type::longField:
+    {
+      constexpr int16_t kPrevFieldId = 8;
+      xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 9, kPrevFieldId>(*prot_, "longField", false);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::MyI64>::write(*prot_, value_.longField);
       xfer += prot_->writeFieldEnd();
       break;
     }

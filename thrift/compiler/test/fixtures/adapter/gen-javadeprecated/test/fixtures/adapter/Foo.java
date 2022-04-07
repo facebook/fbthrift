@@ -34,6 +34,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
   private static final TField MAP_FIELD_FIELD_DESC = new TField("mapField", TType.MAP, (short)6);
   private static final TField OPTIONAL_MAP_FIELD_FIELD_DESC = new TField("optionalMapField", TType.MAP, (short)7);
   private static final TField BINARY_FIELD_FIELD_DESC = new TField("binaryField", TType.STRING, (short)8);
+  private static final TField LONG_FIELD_FIELD_DESC = new TField("longField", TType.I64, (short)9);
 
   public int intField;
   public int optionalIntField;
@@ -43,6 +44,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
   public Map<String,List<String>> mapField;
   public Map<String,List<String>> optionalMapField;
   public byte[] binaryField;
+  public long longField;
   public static final int INTFIELD = 1;
   public static final int OPTIONALINTFIELD = 2;
   public static final int INTFIELDWITHDEFAULT = 3;
@@ -51,12 +53,14 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
   public static final int MAPFIELD = 6;
   public static final int OPTIONALMAPFIELD = 7;
   public static final int BINARYFIELD = 8;
+  public static final int LONGFIELD = 9;
 
   // isset id assignments
   private static final int __INTFIELD_ISSET_ID = 0;
   private static final int __OPTIONALINTFIELD_ISSET_ID = 1;
   private static final int __INTFIELDWITHDEFAULT_ISSET_ID = 2;
-  private BitSet __isset_bit_vector = new BitSet(3);
+  private static final int __LONGFIELD_ISSET_ID = 3;
+  private BitSet __isset_bit_vector = new BitSet(4);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -86,6 +90,8 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
                 new FieldValueMetaData(TType.STRING)))));
     tmpMetaDataMap.put(BINARYFIELD, new FieldMetaData("binaryField", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(LONGFIELD, new FieldMetaData("longField", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.I64)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -103,7 +109,8 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
       int intFieldWithDefault,
       Set<String> setField,
       Map<String,List<String>> mapField,
-      byte[] binaryField) {
+      byte[] binaryField,
+      long longField) {
     this();
     this.intField = intField;
     setIntFieldIsSet(true);
@@ -112,6 +119,8 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
     this.setField = setField;
     this.mapField = mapField;
     this.binaryField = binaryField;
+    this.longField = longField;
+    setLongFieldIsSet(true);
   }
 
   public Foo(
@@ -122,7 +131,8 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
       Set<String> optionalSetField,
       Map<String,List<String>> mapField,
       Map<String,List<String>> optionalMapField,
-      byte[] binaryField) {
+      byte[] binaryField,
+      long longField) {
     this();
     this.intField = intField;
     setIntFieldIsSet(true);
@@ -135,6 +145,8 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
     this.mapField = mapField;
     this.optionalMapField = optionalMapField;
     this.binaryField = binaryField;
+    this.longField = longField;
+    setLongFieldIsSet(true);
   }
 
   public static class Builder {
@@ -146,8 +158,9 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
     private Map<String,List<String>> mapField;
     private Map<String,List<String>> optionalMapField;
     private byte[] binaryField;
+    private long longField;
 
-    BitSet __optional_isset = new BitSet(3);
+    BitSet __optional_isset = new BitSet(4);
 
     public Builder() {
     }
@@ -195,6 +208,12 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
       return this;
     }
 
+    public Builder setLongField(final long longField) {
+      this.longField = longField;
+      __optional_isset.set(__LONGFIELD_ISSET_ID, true);
+      return this;
+    }
+
     public Foo build() {
       Foo result = new Foo();
       if (__optional_isset.get(__INTFIELD_ISSET_ID)) {
@@ -211,6 +230,9 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
       result.setMapField(this.mapField);
       result.setOptionalMapField(this.optionalMapField);
       result.setBinaryField(this.binaryField);
+      if (__optional_isset.get(__LONGFIELD_ISSET_ID)) {
+        result.setLongField(this.longField);
+      }
       return result;
     }
   }
@@ -243,6 +265,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
     if (other.isSetBinaryField()) {
       this.binaryField = TBaseHelper.deepCopy(other.binaryField);
     }
+    this.longField = TBaseHelper.deepCopy(other.longField);
   }
 
   public Foo deepCopy() {
@@ -438,6 +461,29 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
     }
   }
 
+  public long getLongField() {
+    return this.longField;
+  }
+
+  public Foo setLongField(long longField) {
+    this.longField = longField;
+    setLongFieldIsSet(true);
+    return this;
+  }
+
+  public void unsetLongField() {
+    __isset_bit_vector.clear(__LONGFIELD_ISSET_ID);
+  }
+
+  // Returns true if field longField is set (has been assigned a value) and false otherwise
+  public boolean isSetLongField() {
+    return __isset_bit_vector.get(__LONGFIELD_ISSET_ID);
+  }
+
+  public void setLongFieldIsSet(boolean __value) {
+    __isset_bit_vector.set(__LONGFIELD_ISSET_ID, __value);
+  }
+
   @SuppressWarnings("unchecked")
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
@@ -505,6 +551,14 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
       }
       break;
 
+    case LONGFIELD:
+      if (__value == null) {
+        unsetLongField();
+      } else {
+        setLongField((Long)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -535,6 +589,9 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
 
     case BINARYFIELD:
       return getBinaryField();
+
+    case LONGFIELD:
+      return new Long(getLongField());
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -567,12 +624,14 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
 
     if (!TBaseHelper.equalsSlow(this.isSetBinaryField(), that.isSetBinaryField(), this.binaryField, that.binaryField)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.longField, that.longField)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {intField, optionalIntField, intFieldWithDefault, setField, optionalSetField, mapField, optionalMapField, binaryField});
+    return Arrays.deepHashCode(new Object[] {intField, optionalIntField, intFieldWithDefault, setField, optionalSetField, mapField, optionalMapField, binaryField, longField});
   }
 
   @Override
@@ -648,6 +707,14 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(binaryField, other.binaryField);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetLongField()).compareTo(other.isSetLongField());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(longField, other.longField);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -800,6 +867,14 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case LONGFIELD:
+          if (__field.type == TType.I64) {
+            this.longField = iprot.readI64();
+            setLongFieldIsSet(true);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -895,6 +970,9 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
       oprot.writeBinary(this.binaryField);
       oprot.writeFieldEnd();
     }
+    oprot.writeFieldBegin(LONG_FIELD_FIELD_DESC);
+    oprot.writeI64(this.longField);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -1003,6 +1081,13 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
         }
         if (this.getBinaryField().length > 128) sb.append(" ...");
     }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("longField");
+    sb.append(space);
+    sb.append(":").append(space);
+    sb.append(TBaseHelper.toString(this.getLongField(), indent + 1, prettyPrint));
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");

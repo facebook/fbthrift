@@ -30,11 +30,13 @@ public class Baz extends TUnion<Baz> {
   private static final TField SET_FIELD_FIELD_DESC = new TField("setField", TType.SET, (short)4);
   private static final TField MAP_FIELD_FIELD_DESC = new TField("mapField", TType.MAP, (short)6);
   private static final TField BINARY_FIELD_FIELD_DESC = new TField("binaryField", TType.STRING, (short)8);
+  private static final TField LONG_FIELD_FIELD_DESC = new TField("longField", TType.I64, (short)9);
 
   public static final int INTFIELD = 1;
   public static final int SETFIELD = 4;
   public static final int MAPFIELD = 6;
   public static final int BINARYFIELD = 8;
+  public static final int LONGFIELD = 9;
 
   public static final Map<Integer, FieldMetaData> metaDataMap = new HashMap<>();
 
@@ -75,6 +77,12 @@ public class Baz extends TUnion<Baz> {
   public static Baz binaryField(byte[] __value) {
     Baz x = new Baz();
     x.setBinaryField(__value);
+    return x;
+  }
+
+  public static Baz longField(Long __value) {
+    Baz x = new Baz();
+    x.setLongField(__value);
     return x;
   }
 
@@ -148,6 +156,13 @@ public class Baz extends TUnion<Baz> {
           return binaryField;
         }
         break;
+      case LONGFIELD:
+        if (__field.type == LONG_FIELD_FIELD_DESC.type) {
+          Long longField;
+          longField = iprot.readI64();
+          return longField;
+        }
+        break;
     }
     TProtocolUtil.skip(iprot, __field.type);
     return null;
@@ -191,6 +206,10 @@ public class Baz extends TUnion<Baz> {
         byte[] binaryField = (byte[])getFieldValue();
         oprot.writeBinary(binaryField);
         return;
+      case LONGFIELD:
+        Long longField = (Long)getFieldValue();
+        oprot.writeI64(longField);
+        return;
       default:
         throw new IllegalStateException("Cannot write union with unknown field " + setField);
     }
@@ -207,6 +226,8 @@ public class Baz extends TUnion<Baz> {
         return MAP_FIELD_FIELD_DESC;
       case BINARYFIELD:
         return BINARY_FIELD_FIELD_DESC;
+      case LONGFIELD:
+        return LONG_FIELD_FIELD_DESC;
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -264,6 +285,14 @@ public class Baz extends TUnion<Baz> {
 
   public void setBinaryField(byte[] __value) {
     __setValue(BINARYFIELD, __value);
+  }
+
+  public Long getLongField() {
+    return (Long) __getValue(LONGFIELD);
+  }
+
+  public void setLongField(Long __value) {
+    __setValue(LONGFIELD, __value);
   }
 
   public boolean equals(Object other) {

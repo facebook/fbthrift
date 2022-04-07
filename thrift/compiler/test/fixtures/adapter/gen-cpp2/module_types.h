@@ -24,10 +24,12 @@ struct optionalSetField;
 struct mapField;
 struct optionalMapField;
 struct binaryField;
+struct longField;
 struct intField;
 struct setField;
 struct mapField;
 struct binaryField;
+struct longField;
 struct structField;
 struct optionalStructField;
 struct structListField;
@@ -72,6 +74,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(optionalMapField);
 #define APACHE_THRIFT_ACCESSOR_binaryField
 APACHE_THRIFT_DEFINE_ACCESSOR(binaryField);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_longField
+#define APACHE_THRIFT_ACCESSOR_longField
+APACHE_THRIFT_DEFINE_ACCESSOR(longField);
+#endif
 #ifndef APACHE_THRIFT_ACCESSOR_intField
 #define APACHE_THRIFT_ACCESSOR_intField
 APACHE_THRIFT_DEFINE_ACCESSOR(intField);
@@ -87,6 +93,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(mapField);
 #ifndef APACHE_THRIFT_ACCESSOR_binaryField
 #define APACHE_THRIFT_ACCESSOR_binaryField
 APACHE_THRIFT_DEFINE_ACCESSOR(binaryField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_longField
+#define APACHE_THRIFT_ACCESSOR_longField
+APACHE_THRIFT_DEFINE_ACCESSOR(longField);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_structField
 #define APACHE_THRIFT_ACCESSOR_structField
@@ -147,6 +157,7 @@ class StructWithFieldAdapter;
 namespace cpp2 {
 typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::set<::std::string>> SetWithAdapter;
 typedef ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>> ListWithElemAdapter;
+typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> MyI64;
 typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Bar> StructWithAdapter;
 typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Baz> UnionWithAdapter;
 
@@ -185,7 +196,7 @@ class Foo final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> optionalIntField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intFieldWithDefault__arg, ::cpp2::SetWithAdapter setField__arg, ::cpp2::SetWithAdapter optionalSetField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> mapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> optionalMapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> binaryField__arg);
+  Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> optionalIntField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intFieldWithDefault__arg, ::cpp2::SetWithAdapter setField__arg, ::cpp2::SetWithAdapter optionalSetField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> mapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> optionalMapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> binaryField__arg, ::cpp2::MyI64 longField__arg);
 
   Foo(Foo&&) noexcept;
   Foo(const Foo& src);
@@ -213,7 +224,9 @@ class Foo final  {
  private:
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> __fbthrift_field_binaryField;
  private:
-  apache::thrift::detail::isset_bitset<8, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+  ::cpp2::MyI64 __fbthrift_field_longField;
+ private:
+  apache::thrift::detail::isset_bitset<9, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -540,6 +553,56 @@ class Foo final  {
     return {static_cast<T&&>(this->__fbthrift_field_binaryField), __isset.at(7), __isset.bit(7)};
   }
 
+  template <typename..., typename T = ::cpp2::MyI64>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> longField_ref() const& {
+    return {this->__fbthrift_field_longField, __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyI64>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> longField_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_longField), __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyI64>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> longField_ref() & {
+    return {this->__fbthrift_field_longField, __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyI64>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> longField_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_longField), __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyI64>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> longField() const& {
+    return {this->__fbthrift_field_longField, __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyI64>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> longField() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_longField), __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyI64>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> longField() & {
+    return {this->__fbthrift_field_longField, __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyI64>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> longField() && {
+    return {static_cast<T&&>(this->__fbthrift_field_longField), __isset.at(8), __isset.bit(8)};
+  }
+
+  ::cpp2::MyI64 get_longField() const {
+    return __fbthrift_field_longField;
+  }
+
+  [[deprecated("Use `FOO.longField_ref() = BAR;` instead of `FOO.set_longField(BAR);`")]]
+  ::cpp2::MyI64& set_longField(::cpp2::MyI64 longField_) {
+    longField_ref() = longField_;
+    return __fbthrift_field_longField;
+  }
+
   template <class Protocol_>
   unsigned long read(Protocol_* iprot);
   template <class Protocol_>
@@ -591,6 +654,7 @@ class Baz final  {
     setField = 4,
     mapField = 6,
     binaryField = 8,
+    longField = 9,
   } ;
 
   Baz()
@@ -619,6 +683,11 @@ class Baz final  {
       case Type::binaryField:
       {
         set_binaryField(std::move(rhs.value_.binaryField));
+        break;
+      }
+      case Type::longField:
+      {
+        set_longField(std::move(rhs.value_.longField));
         break;
       }
       default:
@@ -655,6 +724,11 @@ class Baz final  {
         set_binaryField(rhs.value_.binaryField);
         break;
       }
+      case Type::longField:
+      {
+        set_longField(rhs.value_.longField);
+        break;
+      }
       default:
       {
         assert(false);
@@ -686,6 +760,11 @@ class Baz final  {
       case Type::binaryField:
       {
         set_binaryField(std::move(rhs.value_.binaryField));
+        break;
+      }
+      case Type::longField:
+      {
+        set_longField(std::move(rhs.value_.longField));
         break;
       }
       default:
@@ -723,6 +802,11 @@ class Baz final  {
         set_binaryField(rhs.value_.binaryField);
         break;
       }
+      case Type::longField:
+      {
+        set_longField(rhs.value_.longField);
+        break;
+      }
       default:
       {
         assert(false);
@@ -740,6 +824,7 @@ class Baz final  {
     ::cpp2::SetWithAdapter setField;
     ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> mapField;
     ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> binaryField;
+    ::cpp2::MyI64 longField;
 
     storage_type() {}
     ~storage_type() {}
@@ -818,6 +903,13 @@ class Baz final  {
     return value_.binaryField;
   }
 
+  ::cpp2::MyI64& set_longField(::cpp2::MyI64 t = ::cpp2::MyI64()) {
+    __fbthrift_clear();
+    type_ = Type::longField;
+    ::new (std::addressof(value_.longField)) ::cpp2::MyI64(t);
+    return value_.longField;
+  }
+
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> const& get_intField() const {
     if (type_ != Type::intField) {
       ::apache::thrift::detail::throw_on_bad_field_access();
@@ -846,6 +938,13 @@ class Baz final  {
     return value_.binaryField;
   }
 
+  ::cpp2::MyI64 const& get_longField() const {
+    if (type_ != Type::longField) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.longField;
+  }
+
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>& mutable_intField() {
     assert(type_ == Type::intField);
     return value_.intField;
@@ -866,6 +965,11 @@ class Baz final  {
     return value_.binaryField;
   }
 
+  ::cpp2::MyI64& mutable_longField() {
+    assert(type_ == Type::longField);
+    return value_.longField;
+  }
+
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> move_intField() {
     assert(type_ == Type::intField);
     return std::move(value_.intField);
@@ -884,6 +988,11 @@ class Baz final  {
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> move_binaryField() {
     assert(type_ == Type::binaryField);
     return std::move(value_.binaryField);
+  }
+
+  ::cpp2::MyI64 move_longField() {
+    assert(type_ == Type::longField);
+    return std::move(value_.longField);
   }
 
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
@@ -961,6 +1070,25 @@ class Baz final  {
   template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> binaryField_ref() && {
     return {std::move(value_.binaryField), type_, binaryField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+  template <typename..., typename T = ::cpp2::MyI64>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> longField_ref() const& {
+    return {value_.longField, type_, longField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::cpp2::MyI64>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> longField_ref() const&& {
+    return {std::move(value_.longField), type_, longField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::cpp2::MyI64>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&> longField_ref() & {
+    return {value_.longField, type_, longField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::cpp2::MyI64>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> longField_ref() && {
+    return {std::move(value_.longField), type_, longField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
   Type getType() const { return static_cast<Type>(type_); }
 
@@ -1525,7 +1653,7 @@ template <> struct TEnumDataStorage<::cpp2::Baz::Type>;
 template <> struct TEnumTraits<::cpp2::Baz::Type> {
   using type = ::cpp2::Baz::Type;
 
-  static constexpr std::size_t const size = 4;
+  static constexpr std::size_t const size = 5;
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 

@@ -16,6 +16,8 @@ pub mod types {
 
     pub type ListWithElemAdapter = ::std::vec::Vec<::std::string::String>;
 
+    pub type MyI64 = ::std::primitive::i64;
+
     pub type StructWithAdapter = crate::types::Bar;
 
     pub type UnionWithAdapter = crate::types::Baz;
@@ -30,6 +32,7 @@ pub mod types {
         pub mapField: ::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter>,
         pub optionalMapField: ::std::option::Option<::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter>>,
         pub binaryField: ::std::vec::Vec<::std::primitive::u8>,
+        pub longField: crate::types::MyI64,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -44,6 +47,7 @@ pub mod types {
         setField(crate::types::SetWithAdapter),
         mapField(::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter>),
         binaryField(::std::vec::Vec<::std::primitive::u8>),
+        longField(crate::types::MyI64),
         UnknownField(::std::primitive::i32),
     }
 
@@ -81,6 +85,7 @@ pub mod types {
 
 
 
+
     impl ::std::default::Default for self::Foo {
         fn default() -> Self {
             Self {
@@ -92,6 +97,7 @@ pub mod types {
                 mapField: ::std::default::Default::default(),
                 optionalMapField: ::std::option::Option::None,
                 binaryField: ::std::default::Default::default(),
+                longField: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -109,6 +115,7 @@ pub mod types {
                 .field("mapField", &self.mapField)
                 .field("optionalMapField", &self.optionalMapField)
                 .field("binaryField", &self.binaryField)
+                .field("longField", &self.longField)
                 .finish()
         }
     }
@@ -156,6 +163,9 @@ pub mod types {
             p.write_field_begin("binaryField", ::fbthrift::TType::String, 8);
             ::fbthrift::Serialize::write(&self.binaryField, p);
             p.write_field_end();
+            p.write_field_begin("longField", ::fbthrift::TType::I64, 9);
+            ::fbthrift::Serialize::write(&self.longField, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -170,6 +180,7 @@ pub mod types {
                 ::fbthrift::Field::new("binaryField", ::fbthrift::TType::String, 8),
                 ::fbthrift::Field::new("intField", ::fbthrift::TType::I32, 1),
                 ::fbthrift::Field::new("intFieldWithDefault", ::fbthrift::TType::I32, 3),
+                ::fbthrift::Field::new("longField", ::fbthrift::TType::I64, 9),
                 ::fbthrift::Field::new("mapField", ::fbthrift::TType::Map, 6),
                 ::fbthrift::Field::new("optionalIntField", ::fbthrift::TType::I32, 2),
                 ::fbthrift::Field::new("optionalMapField", ::fbthrift::TType::Map, 7),
@@ -184,6 +195,7 @@ pub mod types {
             let mut field_mapField = ::std::option::Option::None;
             let mut field_optionalMapField = ::std::option::Option::None;
             let mut field_binaryField = ::std::option::Option::None;
+            let mut field_longField = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -197,6 +209,7 @@ pub mod types {
                     (::fbthrift::TType::Map, 6) => field_mapField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Map, 7) => field_optionalMapField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 8) => field_binaryField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I64, 9) => field_longField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -211,6 +224,7 @@ pub mod types {
                 mapField: field_mapField.unwrap_or_default(),
                 optionalMapField: field_optionalMapField,
                 binaryField: field_binaryField.unwrap_or_default(),
+                longField: field_longField.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
@@ -255,6 +269,11 @@ pub mod types {
                     ::fbthrift::Serialize::write(inner, p);
                     p.write_field_end();
                 }
+                Baz::longField(inner) => {
+                    p.write_field_begin("longField", ::fbthrift::TType::I64, 9);
+                    ::fbthrift::Serialize::write(inner, p);
+                    p.write_field_end();
+                }
                 Baz::UnknownField(_) => {}
             }
             p.write_field_stop();
@@ -270,6 +289,7 @@ pub mod types {
             static FIELDS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("binaryField", ::fbthrift::TType::String, 8),
                 ::fbthrift::Field::new("intField", ::fbthrift::TType::I32, 1),
+                ::fbthrift::Field::new("longField", ::fbthrift::TType::I64, 9),
                 ::fbthrift::Field::new("mapField", ::fbthrift::TType::Map, 6),
                 ::fbthrift::Field::new("setField", ::fbthrift::TType::Set, 4),
             ];
@@ -295,6 +315,10 @@ pub mod types {
                     (::fbthrift::TType::String, 8, false) => {
                         once = true;
                         alt = ::std::option::Option::Some(Baz::binaryField(::fbthrift::Deserialize::read(p)?));
+                    }
+                    (::fbthrift::TType::I64, 9, false) => {
+                        once = true;
+                        alt = ::std::option::Option::Some(Baz::longField(::fbthrift::Deserialize::read(p)?));
                     }
                     (fty, _, false) => p.skip(fty)?,
                     (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(

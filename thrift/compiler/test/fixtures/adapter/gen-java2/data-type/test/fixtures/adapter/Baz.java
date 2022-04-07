@@ -33,6 +33,8 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
     private static final TField MAP_FIELD_FIELD_DESC = new TField("mapField", TType.MAP, (short)6);
     public static final int _BINARYFIELD = 8;
     private static final TField BINARY_FIELD_FIELD_DESC = new TField("binaryField", TType.STRING, (short)8);
+    public static final int _LONGFIELD = 9;
+    private static final TField LONG_FIELD_FIELD_DESC = new TField("longField", TType.I64, (short)9);
 
     static {
       NAMES_TO_IDS.put("intField", 1);
@@ -47,6 +49,9 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
       NAMES_TO_IDS.put("binaryField", 8);
       THRIFT_NAMES_TO_IDS.put("binaryField", 8);
       FIELD_METADATA.put(8, BINARY_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("longField", 9);
+      THRIFT_NAMES_TO_IDS.put("longField", 9);
+      FIELD_METADATA.put(9, LONG_FIELD_FIELD_DESC);
     }
 
     private Object value;
@@ -84,6 +89,13 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
         this.id = 8;
     }
     
+    @ThriftConstructor
+    @Deprecated
+    public Baz(final long longField) {
+        this.value = longField;
+        this.id = 9;
+    }
+    
     public static Baz fromIntField(final int intField) {
         Baz res = new Baz();
         res.value = intField;
@@ -109,6 +121,13 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
         Baz res = new Baz();
         res.value = binaryField;
         res.id = 8;
+        return res;
+    }
+    
+    public static Baz fromLongField(final long longField) {
+        Baz res = new Baz();
+        res.value = longField;
+        res.id = 9;
         return res;
     }
     
@@ -161,6 +180,18 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
         return this.id == 8;
     }
 
+    @com.facebook.swift.codec.ThriftField(value=9, name="longField", requiredness=Requiredness.NONE)
+    public long getLongField() {
+        if (this.id != 9) {
+            throw new IllegalStateException("Not a longField element!");
+        }
+        return (long) value;
+    }
+
+    public boolean isSetLongField() {
+        return this.id == 9;
+    }
+
     @ThriftUnionId
     public short getThriftId() {
         return this.id;
@@ -190,6 +221,10 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
         }
         if (isSetBinaryField()) {
             visitor.visitBinaryField(getBinaryField());
+            return;
+        }
+        if (isSetLongField()) {
+            visitor.visitLongField(getLongField());
             return;
         }
     }
@@ -232,6 +267,7 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
         void visitSetField(Set<String> setField);
         void visitMapField(Map<String, List<String>> mapField);
         void visitBinaryField(byte[] binaryField);
+        void visitLongField(long longField);
     }
 
     public void write0(TProtocol oprot) throws TException {
@@ -279,6 +315,13 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
         oprot.writeFieldBegin(BINARY_FIELD_FIELD_DESC);
         byte[] binaryField = (byte[])this.value;
         oprot.writeBinary(java.nio.ByteBuffer.wrap(binaryField));
+        oprot.writeFieldEnd();
+        break;
+      }
+      case _LONGFIELD: {
+        oprot.writeFieldBegin(LONG_FIELD_FIELD_DESC);
+        long longField = (long)this.value;
+        oprot.writeI64(longField);
         oprot.writeFieldEnd();
         break;
       }
@@ -359,6 +402,12 @@ public final class Baz implements com.facebook.thrift.payload.ThriftSerializable
             if (__field.type == BINARY_FIELD_FIELD_DESC.type) {
               byte[] binaryField = oprot.readBinary().array();
               res.value = binaryField;
+            }
+            break;
+          case _LONGFIELD:
+            if (__field.type == LONG_FIELD_FIELD_DESC.type) {
+              long longField = oprot.readI64();
+              res.value = longField;
             }
             break;
           default:

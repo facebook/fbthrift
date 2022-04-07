@@ -428,6 +428,10 @@ class facebook_thrift_annotation_cpp_Adapter implements \IThriftSyncStruct, \ITh
           shape(
           )
         ),
+        'facebook_thrift_annotation_Typedef' => facebook_thrift_annotation_Typedef::fromShape(
+          shape(
+          )
+        ),
       ],
       'fields' => dict[
       ],

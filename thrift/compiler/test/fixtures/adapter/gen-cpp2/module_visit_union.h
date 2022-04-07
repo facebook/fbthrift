@@ -27,6 +27,8 @@ struct VisitUnion<::cpp2::Baz> {
       return f(2, *static_cast<T&&>(t).mapField_ref());
     case Union::Type::binaryField:
       return f(3, *static_cast<T&&>(t).binaryField_ref());
+    case Union::Type::longField:
+      return f(4, *static_cast<T&&>(t).longField_ref());
     case Union::Type::__EMPTY__: ;
     }
   }

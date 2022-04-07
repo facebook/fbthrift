@@ -30,11 +30,13 @@ public class Baz extends TUnion<Baz> implements Comparable<Baz> {
   private static final TField SET_FIELD_FIELD_DESC = new TField("setField", TType.SET, (short)4);
   private static final TField MAP_FIELD_FIELD_DESC = new TField("mapField", TType.MAP, (short)6);
   private static final TField BINARY_FIELD_FIELD_DESC = new TField("binaryField", TType.STRING, (short)8);
+  private static final TField LONG_FIELD_FIELD_DESC = new TField("longField", TType.I64, (short)9);
 
   public static final int INTFIELD = 1;
   public static final int SETFIELD = 4;
   public static final int MAPFIELD = 6;
   public static final int BINARYFIELD = 8;
+  public static final int LONGFIELD = 9;
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -52,6 +54,8 @@ public class Baz extends TUnion<Baz> implements Comparable<Baz> {
                 new FieldValueMetaData(TType.STRING)))));
     tmpMetaDataMap.put(BINARYFIELD, new FieldMetaData("binaryField", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(LONGFIELD, new FieldMetaData("longField", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.I64)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -95,6 +99,12 @@ public class Baz extends TUnion<Baz> implements Comparable<Baz> {
     return x;
   }
 
+  public static Baz longField(long __value) {
+    Baz x = new Baz();
+    x.setLongField(__value);
+    return x;
+  }
+
 
   @Override
   protected void checkType(short setField, Object __value) throws ClassCastException {
@@ -119,6 +129,11 @@ public class Baz extends TUnion<Baz> implements Comparable<Baz> {
           break;
         }
         throw new ClassCastException("Was expecting value of type byte[] for field 'binaryField', but got " + __value.getClass().getSimpleName());
+      case LONGFIELD:
+        if (__value instanceof Long) {
+          break;
+        }
+        throw new ClassCastException("Was expecting value of type Long for field 'longField', but got " + __value.getClass().getSimpleName());
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -153,6 +168,11 @@ public class Baz extends TUnion<Baz> implements Comparable<Baz> {
             break;
           case BINARYFIELD:
             if (__field.type == BINARY_FIELD_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+          case LONGFIELD:
+            if (__field.type == LONG_FIELD_FIELD_DESC.type) {
               setField_ = __field.id;
             }
             break;
@@ -236,6 +256,13 @@ public class Baz extends TUnion<Baz> implements Comparable<Baz> {
           return binaryField;
         }
         break;
+      case LONGFIELD:
+        if (__field.type == LONG_FIELD_FIELD_DESC.type) {
+          Long longField;
+          longField = iprot.readI64();
+          return longField;
+        }
+        break;
     }
     TProtocolUtil.skip(iprot, __field.type);
     return null;
@@ -279,6 +306,10 @@ public class Baz extends TUnion<Baz> implements Comparable<Baz> {
         byte[] binaryField = (byte[])getFieldValue();
         oprot.writeBinary(binaryField);
         return;
+      case LONGFIELD:
+        Long longField = (Long)getFieldValue();
+        oprot.writeI64(longField);
+        return;
       default:
         throw new IllegalStateException("Cannot write union with unknown field " + setField);
     }
@@ -295,6 +326,8 @@ public class Baz extends TUnion<Baz> implements Comparable<Baz> {
         return MAP_FIELD_FIELD_DESC;
       case BINARYFIELD:
         return BINARY_FIELD_FIELD_DESC;
+      case LONGFIELD:
+        return LONG_FIELD_FIELD_DESC;
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -353,6 +386,15 @@ public class Baz extends TUnion<Baz> implements Comparable<Baz> {
 
   public void setBinaryField(byte[] __value) {
     __setValue(BINARYFIELD, __value);
+  }
+
+  public long getLongField() {
+    return (Long) __getValue(LONGFIELD);
+  }
+
+  public void setLongField(long __value) {
+    setField_ = LONGFIELD;
+    value_ = __value;
   }
 
   public boolean equals(Object other) {

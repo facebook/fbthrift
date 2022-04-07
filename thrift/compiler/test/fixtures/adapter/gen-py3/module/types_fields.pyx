@@ -33,6 +33,7 @@ cdef class __Foo_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"mapField")] = __Foo_FieldsSetter._set_field_5
         __fbthrift_inst._setters[__cstring_view(<const char*>"optionalMapField")] = __Foo_FieldsSetter._set_field_6
         __fbthrift_inst._setters[__cstring_view(<const char*>"binaryField")] = __Foo_FieldsSetter._set_field_7
+        __fbthrift_inst._setters[__cstring_view(<const char*>"longField")] = __Foo_FieldsSetter._set_field_8
         return __fbthrift_inst
 
     cdef void set_field(__Foo_FieldsSetter self, const char* name, object value) except *:
@@ -108,6 +109,16 @@ cdef class __Foo_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, bytes):
             raise TypeError(f'binaryField is not a { bytes !r}.')
         deref(self._struct_cpp_obj).binaryField_ref().assign(cmove(bytes_to_string(_fbthrift_value)))
+
+    cdef void _set_field_8(self, _fbthrift_value) except *:
+        # for field longField
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cFoo](deref(self._struct_cpp_obj), 8)
+            return
+        if not isinstance(_fbthrift_value, int):
+            raise TypeError(f'longField is not a { int !r}.')
+        _fbthrift_value = <cint64_t> _fbthrift_value
+        deref(self._struct_cpp_obj).longField_ref().assign(_fbthrift_value)
 
 
 @__cython.auto_pickle(False)

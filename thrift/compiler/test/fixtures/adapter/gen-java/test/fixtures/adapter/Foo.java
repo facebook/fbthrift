@@ -32,7 +32,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         @com.facebook.swift.codec.ThriftField(value=5, name="optionalSetField", requiredness=Requiredness.OPTIONAL) final Set<String> optionalSetField,
         @com.facebook.swift.codec.ThriftField(value=6, name="mapField", requiredness=Requiredness.NONE) final Map<String, List<String>> mapField,
         @com.facebook.swift.codec.ThriftField(value=7, name="optionalMapField", requiredness=Requiredness.OPTIONAL) final Map<String, List<String>> optionalMapField,
-        @com.facebook.swift.codec.ThriftField(value=8, name="binaryField", requiredness=Requiredness.NONE) final byte[] binaryField
+        @com.facebook.swift.codec.ThriftField(value=8, name="binaryField", requiredness=Requiredness.NONE) final byte[] binaryField,
+        @com.facebook.swift.codec.ThriftField(value=9, name="longField", requiredness=Requiredness.NONE) final long longField
     ) {
         this.intField = intField;
         this.optionalIntField = optionalIntField;
@@ -42,6 +43,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         this.mapField = mapField;
         this.optionalMapField = optionalMapField;
         this.binaryField = binaryField;
+        this.longField = longField;
     }
     
     @ThriftConstructor
@@ -54,6 +56,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       this.mapField = null;
       this.optionalMapField = null;
       this.binaryField = null;
+      this.longField = 0L;
     }
     
     public static class Builder {
@@ -66,6 +69,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         private Map<String, List<String>> mapField = null;
         private Map<String, List<String>> optionalMapField = null;
         private byte[] binaryField = null;
+        private long longField = 0L;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
         public Builder setIntField(int intField) {
@@ -131,6 +135,14 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     
         public byte[] getBinaryField() { return binaryField; }
     
+            @com.facebook.swift.codec.ThriftField(value=9, name="longField", requiredness=Requiredness.NONE)
+        public Builder setLongField(long longField) {
+            this.longField = longField;
+            return this;
+        }
+    
+        public long getLongField() { return longField; }
+    
         public Builder() { }
         public Builder(Foo other) {
             this.intField = other.intField;
@@ -141,6 +153,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             this.mapField = other.mapField;
             this.optionalMapField = other.optionalMapField;
             this.binaryField = other.binaryField;
+            this.longField = other.longField;
         }
     
         @ThriftConstructor
@@ -153,7 +166,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 this.optionalSetField,
                 this.mapField,
                 this.optionalMapField,
-                this.binaryField
+                this.binaryField,
+                this.longField
             );
             return result;
         }
@@ -187,6 +201,9 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         private final byte[] binaryField;
     public static final int _BINARYFIELD = 8;
     private static final TField BINARY_FIELD_FIELD_DESC = new TField("binaryField", TType.STRING, (short)8);
+        private final long longField;
+    public static final int _LONGFIELD = 9;
+    private static final TField LONG_FIELD_FIELD_DESC = new TField("longField", TType.I64, (short)9);
     static {
       NAMES_TO_IDS.put("intField", 1);
       THRIFT_NAMES_TO_IDS.put("intField", 1);
@@ -212,6 +229,9 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       NAMES_TO_IDS.put("binaryField", 8);
       THRIFT_NAMES_TO_IDS.put("binaryField", 8);
       FIELD_METADATA.put(8, BINARY_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("longField", 9);
+      THRIFT_NAMES_TO_IDS.put("longField", 9);
+      FIELD_METADATA.put(9, LONG_FIELD_FIELD_DESC);
     }
     
     
@@ -253,6 +273,11 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     @com.facebook.swift.codec.ThriftField(value=8, name="binaryField", requiredness=Requiredness.NONE)
     public byte[] getBinaryField() { return binaryField; }
     
+    
+    
+    @com.facebook.swift.codec.ThriftField(value=9, name="longField", requiredness=Requiredness.NONE)
+    public long getLongField() { return longField; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -264,6 +289,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         helper.add("mapField", mapField);
         helper.add("optionalMapField", optionalMapField);
         helper.add("binaryField", binaryField);
+        helper.add("longField", longField);
         return helper.toString();
     }
     
@@ -287,6 +313,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             Objects.equals(mapField, other.mapField) &&
             Objects.equals(optionalMapField, other.optionalMapField) &&
             Arrays.equals(binaryField, other.binaryField) &&
+            Objects.equals(longField, other.longField) &&
             true;
     }
     
@@ -300,7 +327,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             optionalSetField,
             mapField,
             optionalMapField,
-            binaryField
+            binaryField,
+            longField
         });
     }
     
@@ -451,6 +479,14 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _LONGFIELD:
+          if (__field.type == TType.I64) {
+            long longField = oprot.readI64();
+            builder.setLongField(longField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -531,6 +567,9 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         oprot.writeBinary(java.nio.ByteBuffer.wrap(this.binaryField));
         oprot.writeFieldEnd();
       }
+      oprot.writeFieldBegin(LONG_FIELD_FIELD_DESC);
+      oprot.writeI64(this.longField);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }

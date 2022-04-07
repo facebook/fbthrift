@@ -34,6 +34,8 @@ struct VisitByFieldId<::cpp2::Foo> {
       return f(6, static_cast<T&&>(t).optionalMapField_ref());
     case 8:
       return f(7, static_cast<T&&>(t).binaryField_ref());
+    case 9:
+      return f(8, static_cast<T&&>(t).longField_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::Foo");
     }
@@ -53,6 +55,8 @@ struct VisitByFieldId<::cpp2::Baz> {
       return f(2, static_cast<T&&>(t).mapField_ref());
     case 8:
       return f(3, static_cast<T&&>(t).binaryField_ref());
+    case 9:
+      return f(4, static_cast<T&&>(t).longField_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::Baz");
     }

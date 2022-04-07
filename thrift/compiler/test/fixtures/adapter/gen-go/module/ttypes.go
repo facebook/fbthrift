@@ -34,6 +34,10 @@ type ListWithElemAdapter = []string
 
 func ListWithElemAdapterPtr(v ListWithElemAdapter) *ListWithElemAdapter { return &v }
 
+type MyI64 = int64
+
+func MyI64Ptr(v MyI64) *MyI64 { return &v }
+
 type StructWithAdapter = *Bar
 
 func StructWithAdapterPtr(v StructWithAdapter) *StructWithAdapter { return &v }
@@ -55,6 +59,7 @@ func NewUnionWithAdapter() UnionWithAdapter { return NewBaz() }
 //  - MapField
 //  - OptionalMapField
 //  - BinaryField
+//  - LongField
 type Foo struct {
   IntField int32 `thrift:"intField,1" db:"intField" json:"intField"`
   OptionalIntField *int32 `thrift:"optionalIntField,2,optional" db:"optionalIntField" json:"optionalIntField,omitempty"`
@@ -64,6 +69,7 @@ type Foo struct {
   MapField map[string]ListWithElemAdapter `thrift:"mapField,6" db:"mapField" json:"mapField"`
   OptionalMapField map[string]ListWithElemAdapter `thrift:"optionalMapField,7,optional" db:"optionalMapField" json:"optionalMapField,omitempty"`
   BinaryField []byte `thrift:"binaryField,8" db:"binaryField" json:"binaryField"`
+  LongField MyI64 `thrift:"longField,9" db:"longField" json:"longField"`
 }
 
 func NewFoo() *Foo {
@@ -109,6 +115,10 @@ func (p *Foo) GetOptionalMapField() map[string]ListWithElemAdapter {
 func (p *Foo) GetBinaryField() []byte {
   return p.BinaryField
 }
+
+func (p *Foo) GetLongField() MyI64 {
+  return p.LongField
+}
 func (p *Foo) IsSetOptionalIntField() bool {
   return p != nil && p.OptionalIntField != nil
 }
@@ -141,6 +151,7 @@ func (p FooBuilder) Emit() *Foo{
     MapField: p.obj.MapField,
     OptionalMapField: p.obj.OptionalMapField,
     BinaryField: p.obj.BinaryField,
+    LongField: p.obj.LongField,
   }
 }
 
@@ -184,6 +195,11 @@ func (f *FooBuilder) BinaryField(binaryField []byte) *FooBuilder {
   return f
 }
 
+func (f *FooBuilder) LongField(longField MyI64) *FooBuilder {
+  f.obj.LongField = longField
+  return f
+}
+
 func (f *Foo) SetIntField(intField int32) *Foo {
   f.IntField = intField
   return f
@@ -221,6 +237,11 @@ func (f *Foo) SetOptionalMapField(optionalMapField map[string]ListWithElemAdapte
 
 func (f *Foo) SetBinaryField(binaryField []byte) *Foo {
   f.BinaryField = binaryField
+  return f
+}
+
+func (f *Foo) SetLongField(longField MyI64) *Foo {
+  f.LongField = longField
   return f
 }
 
@@ -267,6 +288,10 @@ func (p *Foo) Read(iprot thrift.Protocol) error {
       }
     case 8:
       if err := p.ReadField8(iprot); err != nil {
+        return err
+      }
+    case 9:
+      if err := p.ReadField9(iprot); err != nil {
         return err
       }
     default:
@@ -444,6 +469,16 @@ func (p *Foo)  ReadField8(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Foo)  ReadField9(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+    return thrift.PrependError("error reading field 9: ", err)
+  } else {
+    temp := MyI64(v)
+    p.LongField = temp
+  }
+  return nil
+}
+
 func (p *Foo) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Foo"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -455,6 +490,7 @@ func (p *Foo) Write(oprot thrift.Protocol) error {
   if err := p.writeField6(oprot); err != nil { return err }
   if err := p.writeField7(oprot); err != nil { return err }
   if err := p.writeField8(oprot); err != nil { return err }
+  if err := p.writeField9(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -614,6 +650,16 @@ func (p *Foo) writeField8(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *Foo) writeField9(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("longField", thrift.I64, 9); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 9:longField: ", p), err) }
+  if err := oprot.WriteI64(int64(p.LongField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.longField (9) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 9:longField: ", p), err) }
+  return err
+}
+
 func (p *Foo) String() string {
   if p == nil {
     return "<nil>"
@@ -632,7 +678,8 @@ func (p *Foo) String() string {
   mapFieldVal := fmt.Sprintf("%v", p.MapField)
   optionalMapFieldVal := fmt.Sprintf("%v", p.OptionalMapField)
   binaryFieldVal := fmt.Sprintf("%v", p.BinaryField)
-  return fmt.Sprintf("Foo({IntField:%s OptionalIntField:%s IntFieldWithDefault:%s SetField:%s OptionalSetField:%s MapField:%s OptionalMapField:%s BinaryField:%s})", intFieldVal, optionalIntFieldVal, intFieldWithDefaultVal, setFieldVal, optionalSetFieldVal, mapFieldVal, optionalMapFieldVal, binaryFieldVal)
+  longFieldVal := fmt.Sprintf("%v", p.LongField)
+  return fmt.Sprintf("Foo({IntField:%s OptionalIntField:%s IntFieldWithDefault:%s SetField:%s OptionalSetField:%s MapField:%s OptionalMapField:%s BinaryField:%s LongField:%s})", intFieldVal, optionalIntFieldVal, intFieldWithDefaultVal, setFieldVal, optionalSetFieldVal, mapFieldVal, optionalMapFieldVal, binaryFieldVal, longFieldVal)
 }
 
 // Attributes:
@@ -640,6 +687,7 @@ func (p *Foo) String() string {
 //  - SetField
 //  - MapField
 //  - BinaryField
+//  - LongField
 type Baz struct {
   IntField *int32 `thrift:"intField,1,optional" db:"intField" json:"intField,omitempty"`
   // unused fields # 2 to 3
@@ -648,6 +696,7 @@ type Baz struct {
   MapField map[string]ListWithElemAdapter `thrift:"mapField,6,optional" db:"mapField" json:"mapField,omitempty"`
   // unused field # 7
   BinaryField []byte `thrift:"binaryField,8,optional" db:"binaryField" json:"binaryField,omitempty"`
+  LongField *MyI64 `thrift:"longField,9,optional" db:"longField" json:"longField,omitempty"`
 }
 
 func NewBaz() *Baz {
@@ -676,6 +725,13 @@ var Baz_BinaryField_DEFAULT []byte
 func (p *Baz) GetBinaryField() []byte {
   return p.BinaryField
 }
+var Baz_LongField_DEFAULT MyI64
+func (p *Baz) GetLongField() MyI64 {
+  if !p.IsSetLongField() {
+    return Baz_LongField_DEFAULT
+  }
+return *p.LongField
+}
 func (p *Baz) CountSetFieldsBaz() int {
   count := 0
   if (p.IsSetIntField()) {
@@ -688,6 +744,9 @@ func (p *Baz) CountSetFieldsBaz() int {
     count++
   }
   if (p.IsSetBinaryField()) {
+    count++
+  }
+  if (p.IsSetLongField()) {
     count++
   }
   return count
@@ -710,6 +769,10 @@ func (p *Baz) IsSetBinaryField() bool {
   return p != nil && p.BinaryField != nil
 }
 
+func (p *Baz) IsSetLongField() bool {
+  return p != nil && p.LongField != nil
+}
+
 type BazBuilder struct {
   obj *Baz
 }
@@ -726,6 +789,7 @@ func (p BazBuilder) Emit() *Baz{
     SetField: p.obj.SetField,
     MapField: p.obj.MapField,
     BinaryField: p.obj.BinaryField,
+    LongField: p.obj.LongField,
   }
 }
 
@@ -749,6 +813,11 @@ func (b *BazBuilder) BinaryField(binaryField []byte) *BazBuilder {
   return b
 }
 
+func (b *BazBuilder) LongField(longField *MyI64) *BazBuilder {
+  b.obj.LongField = longField
+  return b
+}
+
 func (b *Baz) SetIntField(intField *int32) *Baz {
   b.IntField = intField
   return b
@@ -766,6 +835,11 @@ func (b *Baz) SetMapField(mapField map[string]ListWithElemAdapter) *Baz {
 
 func (b *Baz) SetBinaryField(binaryField []byte) *Baz {
   b.BinaryField = binaryField
+  return b
+}
+
+func (b *Baz) SetLongField(longField *MyI64) *Baz {
+  b.LongField = longField
   return b
 }
 
@@ -796,6 +870,10 @@ func (p *Baz) Read(iprot thrift.Protocol) error {
       }
     case 8:
       if err := p.ReadField8(iprot); err != nil {
+        return err
+      }
+    case 9:
+      if err := p.ReadField9(iprot); err != nil {
         return err
       }
     default:
@@ -893,6 +971,16 @@ func (p *Baz)  ReadField8(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Baz)  ReadField9(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+    return thrift.PrependError("error reading field 9: ", err)
+  } else {
+    temp := MyI64(v)
+    p.LongField = &temp
+  }
+  return nil
+}
+
 func (p *Baz) Write(oprot thrift.Protocol) error {
   if c := p.CountSetFieldsBaz(); c > 1 {
     return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
@@ -903,6 +991,7 @@ func (p *Baz) Write(oprot thrift.Protocol) error {
   if err := p.writeField4(oprot); err != nil { return err }
   if err := p.writeField6(oprot); err != nil { return err }
   if err := p.writeField8(oprot); err != nil { return err }
+  if err := p.writeField9(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -991,6 +1080,18 @@ func (p *Baz) writeField8(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *Baz) writeField9(oprot thrift.Protocol) (err error) {
+  if p.IsSetLongField() {
+    if err := oprot.WriteFieldBegin("longField", thrift.I64, 9); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 9:longField: ", p), err) }
+    if err := oprot.WriteI64(int64(*p.LongField)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.longField (9) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 9:longField: ", p), err) }
+  }
+  return err
+}
+
 func (p *Baz) String() string {
   if p == nil {
     return "<nil>"
@@ -1005,7 +1106,13 @@ func (p *Baz) String() string {
   setFieldVal := fmt.Sprintf("%v", p.SetField)
   mapFieldVal := fmt.Sprintf("%v", p.MapField)
   binaryFieldVal := fmt.Sprintf("%v", p.BinaryField)
-  return fmt.Sprintf("Baz({IntField:%s SetField:%s MapField:%s BinaryField:%s})", intFieldVal, setFieldVal, mapFieldVal, binaryFieldVal)
+  var longFieldVal string
+  if p.LongField == nil {
+    longFieldVal = "<nil>"
+  } else {
+    longFieldVal = fmt.Sprintf("%v", *p.LongField)
+  }
+  return fmt.Sprintf("Baz({IntField:%s SetField:%s MapField:%s BinaryField:%s LongField:%s})", intFieldVal, setFieldVal, mapFieldVal, binaryFieldVal, longFieldVal)
 }
 
 // Attributes:

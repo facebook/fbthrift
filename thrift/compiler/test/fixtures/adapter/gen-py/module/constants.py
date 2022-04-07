@@ -22,5 +22,5 @@ import thrift.annotation.thrift.ttypes
 import my
 
 
-from .ttypes import UTF8STRINGS, Foo, Baz, Bar, StructWithFieldAdapter, SetWithAdapter, ListWithElemAdapter, StructWithAdapter, UnionWithAdapter
+from .ttypes import UTF8STRINGS, Foo, Baz, Bar, StructWithFieldAdapter, SetWithAdapter, ListWithElemAdapter, MyI64, StructWithAdapter, UnionWithAdapter
 
