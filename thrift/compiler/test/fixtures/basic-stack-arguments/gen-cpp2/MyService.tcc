@@ -65,7 +65,6 @@ void MyServiceAsyncProcessor::executeRequest_hasDataById(apache::thrift::ServerR
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_hasDataById(std::move(callback), args.get<0>().ref());
 }
@@ -165,7 +164,6 @@ void MyServiceAsyncProcessor::executeRequest_getDataById(apache::thrift::ServerR
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_getDataById(std::move(callback), args.get<0>().ref());
 }
@@ -267,7 +265,6 @@ void MyServiceAsyncProcessor::executeRequest_putDataById(apache::thrift::ServerR
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_putDataById(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }

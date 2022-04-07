@@ -108,11 +108,10 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_i16_param(apache::thrif
     , throw_wrapped_void_ret_i16_param<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_eb_void_ret_i16_param(std::move(callback), args.get<0>().ref());
 }
@@ -212,7 +211,6 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_byte_i16_param(apache::
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_void_ret_byte_i16_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
@@ -312,7 +310,6 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_map_param(apache::thrif
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_void_ret_map_param(std::move(callback), std::move(uarg_param1));
 }
@@ -412,7 +409,6 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_map_setlist_param(apach
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_void_ret_map_setlist_param(std::move(callback), std::move(uarg_param1), std::move(uarg_param2));
 }
@@ -512,7 +508,6 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_map_typedef_param(apach
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_void_ret_map_typedef_param(std::move(callback), args.get<0>().ref());
 }
@@ -610,7 +605,6 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_enum_param(apache::thri
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_void_ret_enum_param(std::move(callback), args.get<0>().ref());
 }
@@ -708,7 +702,6 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_struct_param(apache::th
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_void_ret_struct_param(std::move(callback), std::move(uarg_param1));
 }
@@ -806,7 +799,6 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_listunion_param(apache:
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_void_ret_listunion_param(std::move(callback), std::move(uarg_param1));
 }
@@ -906,7 +898,6 @@ void ParamServiceAsyncProcessor::executeRequest_bool_ret_i32_i64_param(apache::t
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_bool_ret_i32_i64_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
@@ -1008,7 +999,6 @@ void ParamServiceAsyncProcessor::executeRequest_bool_ret_map_param(apache::thrif
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_bool_ret_map_param(std::move(callback), std::move(uarg_param1));
 }
@@ -1108,7 +1098,6 @@ void ParamServiceAsyncProcessor::executeRequest_bool_ret_union_param(apache::thr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_bool_ret_union_param(std::move(callback), std::move(uarg_param1));
 }
@@ -1210,7 +1199,6 @@ void ParamServiceAsyncProcessor::executeRequest_i64_ret_float_double_param(apach
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_i64_ret_float_double_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
@@ -1314,7 +1302,6 @@ void ParamServiceAsyncProcessor::executeRequest_i64_ret_string_typedef_param(apa
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_i64_ret_string_typedef_param(std::move(callback), std::move(uarg_param1), std::move(uarg_param2));
 }
@@ -1416,11 +1403,10 @@ void ParamServiceAsyncProcessor::executeRequest_i64_ret_i32_i32_i32_i32_i32_para
     , throw_wrapped_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref(), args.get<2>().ref(), args.get<3>().ref(), args.get<4>().ref());
 }
@@ -1528,7 +1514,6 @@ void ParamServiceAsyncProcessor::executeRequest_double_ret_setstruct_param(apach
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_double_ret_setstruct_param(std::move(callback), std::move(uarg_param1));
 }
@@ -1628,7 +1613,6 @@ void ParamServiceAsyncProcessor::executeRequest_string_ret_string_param(apache::
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_string_ret_string_param(std::move(callback), std::move(uarg_param1));
 }
@@ -1728,7 +1712,6 @@ void ParamServiceAsyncProcessor::executeRequest_binary_ret_binary_param(apache::
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_binary_ret_binary_param(std::move(callback), std::move(uarg_param1));
 }
@@ -1828,7 +1811,6 @@ void ParamServiceAsyncProcessor::executeRequest_map_ret_bool_param(apache::thrif
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_map_ret_bool_param(std::move(callback), args.get<0>().ref());
 }
@@ -1930,7 +1912,6 @@ void ParamServiceAsyncProcessor::executeRequest_list_ret_map_setlist_param(apach
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_list_ret_map_setlist_param(std::move(callback), std::move(uarg_param1), std::move(uarg_param2));
 }
@@ -2032,7 +2013,6 @@ void ParamServiceAsyncProcessor::executeRequest_mapsetlistmapliststring_ret_list
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_mapsetlistmapliststring_ret_listlistlist_param(std::move(callback), std::move(uarg_param1));
 }
@@ -2132,7 +2112,6 @@ void ParamServiceAsyncProcessor::executeRequest_typedef_ret_i32_param(apache::th
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_typedef_ret_i32_param(std::move(callback), args.get<0>().ref());
 }
@@ -2224,11 +2203,10 @@ void ParamServiceAsyncProcessor::executeRequest_listtypedef_ret_typedef_param(ap
     , throw_wrapped_listtypedef_ret_typedef_param<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_eb_listtypedef_ret_typedef_param(std::move(callback), std::move(uarg_param1));
 }
@@ -2328,7 +2306,6 @@ void ParamServiceAsyncProcessor::executeRequest_enum_ret_double_param(apache::th
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_enum_ret_double_param(std::move(callback), args.get<0>().ref());
 }
@@ -2430,7 +2407,6 @@ void ParamServiceAsyncProcessor::executeRequest_enum_ret_double_enum_param(apach
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_enum_ret_double_enum_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
@@ -2532,7 +2508,6 @@ void ParamServiceAsyncProcessor::executeRequest_listenum_ret_map_param(apache::t
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_listenum_ret_map_param(std::move(callback), std::move(uarg_param1));
 }
@@ -2624,11 +2599,10 @@ void ParamServiceAsyncProcessor::executeRequest_struct_ret_i16_param(apache::thr
     , throw_wrapped_struct_ret_i16_param<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_eb_struct_ret_i16_param(std::move(callback), args.get<0>().ref());
 }
@@ -2728,7 +2702,6 @@ void ParamServiceAsyncProcessor::executeRequest_setstruct_ret_set_param(apache::
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_setstruct_ret_set_param(std::move(callback), std::move(uarg_param1));
 }
@@ -2830,7 +2803,6 @@ void ParamServiceAsyncProcessor::executeRequest_union_ret_i32_i32_param(apache::
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_union_ret_i32_i32_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
@@ -2932,7 +2904,6 @@ void ParamServiceAsyncProcessor::executeRequest_listunion_string_param(apache::t
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_listunion_string_param(std::move(callback), std::move(uarg_param1));
 }

@@ -138,7 +138,6 @@ void SimpleServiceAsyncProcessor::executeRequest_get_five(apache::thrift::Server
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_get_five(std::move(callback));
 }
@@ -236,7 +235,6 @@ void SimpleServiceAsyncProcessor::executeRequest_add_five(apache::thrift::Server
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_add_five(std::move(callback), args.get<0>().ref());
 }
@@ -334,7 +332,6 @@ void SimpleServiceAsyncProcessor::executeRequest_do_nothing(apache::thrift::Serv
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_do_nothing(std::move(callback));
 }
@@ -432,7 +429,6 @@ void SimpleServiceAsyncProcessor::executeRequest_concat(apache::thrift::ServerRe
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_concat(std::move(callback), std::move(uarg_first), std::move(uarg_second));
 }
@@ -534,7 +530,6 @@ void SimpleServiceAsyncProcessor::executeRequest_get_value(apache::thrift::Serve
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_get_value(std::move(callback), std::move(uarg_simple_struct));
 }
@@ -634,7 +629,6 @@ void SimpleServiceAsyncProcessor::executeRequest_negate(apache::thrift::ServerRe
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_negate(std::move(callback), args.get<0>().ref());
 }
@@ -734,7 +728,6 @@ void SimpleServiceAsyncProcessor::executeRequest_tiny(apache::thrift::ServerRequ
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_tiny(std::move(callback), args.get<0>().ref());
 }
@@ -834,7 +827,6 @@ void SimpleServiceAsyncProcessor::executeRequest_small(apache::thrift::ServerReq
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_small(std::move(callback), args.get<0>().ref());
 }
@@ -934,7 +926,6 @@ void SimpleServiceAsyncProcessor::executeRequest_big(apache::thrift::ServerReque
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_big(std::move(callback), args.get<0>().ref());
 }
@@ -1034,7 +1025,6 @@ void SimpleServiceAsyncProcessor::executeRequest_two(apache::thrift::ServerReque
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_two(std::move(callback), args.get<0>().ref());
 }
@@ -1132,7 +1122,6 @@ void SimpleServiceAsyncProcessor::executeRequest_expected_exception(apache::thri
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_expected_exception(std::move(callback));
 }
@@ -1243,7 +1232,6 @@ void SimpleServiceAsyncProcessor::executeRequest_unexpected_exception(apache::th
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_unexpected_exception(std::move(callback));
 }
@@ -1341,7 +1329,6 @@ void SimpleServiceAsyncProcessor::executeRequest_sum_i16_list(apache::thrift::Se
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_sum_i16_list(std::move(callback), std::move(uarg_numbers));
 }
@@ -1441,7 +1428,6 @@ void SimpleServiceAsyncProcessor::executeRequest_sum_i32_list(apache::thrift::Se
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_sum_i32_list(std::move(callback), std::move(uarg_numbers));
 }
@@ -1541,7 +1527,6 @@ void SimpleServiceAsyncProcessor::executeRequest_sum_i64_list(apache::thrift::Se
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_sum_i64_list(std::move(callback), std::move(uarg_numbers));
 }
@@ -1641,7 +1626,6 @@ void SimpleServiceAsyncProcessor::executeRequest_concat_many(apache::thrift::Ser
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_concat_many(std::move(callback), std::move(uarg_words));
 }
@@ -1741,7 +1725,6 @@ void SimpleServiceAsyncProcessor::executeRequest_count_structs(apache::thrift::S
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_count_structs(std::move(callback), std::move(uarg_items));
 }
@@ -1841,7 +1824,6 @@ void SimpleServiceAsyncProcessor::executeRequest_sum_set(apache::thrift::ServerR
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_sum_set(std::move(callback), std::move(uarg_numbers));
 }
@@ -1943,7 +1925,6 @@ void SimpleServiceAsyncProcessor::executeRequest_contains_word(apache::thrift::S
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_contains_word(std::move(callback), std::move(uarg_words), std::move(uarg_word));
 }
@@ -2047,7 +2028,6 @@ void SimpleServiceAsyncProcessor::executeRequest_get_map_value(apache::thrift::S
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_get_map_value(std::move(callback), std::move(uarg_words), std::move(uarg_key));
 }
@@ -2149,7 +2129,6 @@ void SimpleServiceAsyncProcessor::executeRequest_map_length(apache::thrift::Serv
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_map_length(std::move(callback), std::move(uarg_items));
 }
@@ -2249,7 +2228,6 @@ void SimpleServiceAsyncProcessor::executeRequest_sum_map_values(apache::thrift::
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_sum_map_values(std::move(callback), std::move(uarg_items));
 }
@@ -2349,7 +2327,6 @@ void SimpleServiceAsyncProcessor::executeRequest_complex_sum_i32(apache::thrift:
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_complex_sum_i32(std::move(callback), std::move(uarg_counter));
 }
@@ -2449,7 +2426,6 @@ void SimpleServiceAsyncProcessor::executeRequest_repeat_name(apache::thrift::Ser
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_repeat_name(std::move(callback), std::move(uarg_counter));
 }
@@ -2547,7 +2523,6 @@ void SimpleServiceAsyncProcessor::executeRequest_get_struct(apache::thrift::Serv
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_get_struct(std::move(callback));
 }
@@ -2645,7 +2620,6 @@ void SimpleServiceAsyncProcessor::executeRequest_fib(apache::thrift::ServerReque
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_fib(std::move(callback), args.get<0>().ref());
 }
@@ -2745,7 +2719,6 @@ void SimpleServiceAsyncProcessor::executeRequest_unique_words(apache::thrift::Se
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_unique_words(std::move(callback), std::move(uarg_words));
 }
@@ -2845,7 +2818,6 @@ void SimpleServiceAsyncProcessor::executeRequest_words_count(apache::thrift::Ser
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_words_count(std::move(callback), std::move(uarg_words));
 }
@@ -2945,7 +2917,6 @@ void SimpleServiceAsyncProcessor::executeRequest_set_enum(apache::thrift::Server
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_set_enum(std::move(callback), args.get<0>().ref());
 }
@@ -3047,7 +3018,6 @@ void SimpleServiceAsyncProcessor::executeRequest_list_of_lists(apache::thrift::S
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_list_of_lists(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
@@ -3149,7 +3119,6 @@ void SimpleServiceAsyncProcessor::executeRequest_word_character_frequency(apache
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_word_character_frequency(std::move(callback), std::move(uarg_sentence));
 }
@@ -3249,7 +3218,6 @@ void SimpleServiceAsyncProcessor::executeRequest_list_of_sets(apache::thrift::Se
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_list_of_sets(std::move(callback), std::move(uarg_some_words));
 }
@@ -3349,7 +3317,6 @@ void SimpleServiceAsyncProcessor::executeRequest_nested_map_argument(apache::thr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_nested_map_argument(std::move(callback), std::move(uarg_struct_map));
 }
@@ -3449,7 +3416,6 @@ void SimpleServiceAsyncProcessor::executeRequest_make_sentence(apache::thrift::S
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_make_sentence(std::move(callback), std::move(uarg_word_chars));
 }
@@ -3549,7 +3515,6 @@ void SimpleServiceAsyncProcessor::executeRequest_get_union(apache::thrift::Serve
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_get_union(std::move(callback), std::move(uarg_sets));
 }
@@ -3649,7 +3614,6 @@ void SimpleServiceAsyncProcessor::executeRequest_get_keys(apache::thrift::Server
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_get_keys(std::move(callback), std::move(uarg_string_map));
 }
@@ -3749,7 +3713,6 @@ void SimpleServiceAsyncProcessor::executeRequest_lookup_double(apache::thrift::S
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_lookup_double(std::move(callback), args.get<0>().ref());
 }
@@ -3849,7 +3812,6 @@ void SimpleServiceAsyncProcessor::executeRequest_retrieve_binary(apache::thrift:
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_retrieve_binary(std::move(callback), std::move(uarg_something));
 }
@@ -3949,7 +3911,6 @@ void SimpleServiceAsyncProcessor::executeRequest_contain_binary(apache::thrift::
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_contain_binary(std::move(callback), std::move(uarg_binaries));
 }
@@ -4049,7 +4010,6 @@ void SimpleServiceAsyncProcessor::executeRequest_contain_enum(apache::thrift::Se
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_contain_enum(std::move(callback), std::move(uarg_the_enum));
 }
@@ -4149,7 +4109,6 @@ void SimpleServiceAsyncProcessor::executeRequest_get_binary_union_struct(apache:
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_get_binary_union_struct(std::move(callback), std::move(uarg_u));
 }

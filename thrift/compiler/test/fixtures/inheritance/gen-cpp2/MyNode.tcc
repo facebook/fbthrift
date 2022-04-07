@@ -58,7 +58,6 @@ void MyNodeAsyncProcessor::executeRequest_do_mid(apache::thrift::ServerRequest&&
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_do_mid(std::move(callback));
 }

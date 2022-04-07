@@ -98,7 +98,6 @@ void SinkServiceAsyncProcessor::executeRequest_method(apache::thrift::ServerRequ
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
     );
   iface_->async_tm_method(std::move(callback));
 }
@@ -123,7 +122,7 @@ void SinkServiceAsyncProcessor::process_method(apache::thrift::ResponseChannelRe
         ew, std::move(req), ctx, eb, "method");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_method<ProtocolIn_,ProtocolOut_>, throw_wrapped_method<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_method<ProtocolIn_,ProtocolOut_>, throw_wrapped_method<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_tm_method(std::move(callback));
 }
 
@@ -206,7 +205,6 @@ void SinkServiceAsyncProcessor::executeRequest_methodAndReponse(apache::thrift::
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
     );
   iface_->async_tm_methodAndReponse(std::move(callback));
 }
@@ -231,7 +229,7 @@ void SinkServiceAsyncProcessor::process_methodAndReponse(apache::thrift::Respons
         ew, std::move(req), ctx, eb, "methodAndReponse");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodAndReponse<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodAndReponse<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndSinkConsumer<::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodAndReponse<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodAndReponse<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_tm_methodAndReponse(std::move(callback));
 }
 
@@ -316,7 +314,6 @@ void SinkServiceAsyncProcessor::executeRequest_methodThrow(apache::thrift::Serve
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
     );
   iface_->async_tm_methodThrow(std::move(callback));
 }
@@ -341,7 +338,7 @@ void SinkServiceAsyncProcessor::process_methodThrow(apache::thrift::ResponseChan
         ew, std::move(req), ctx, eb, "methodThrow");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodThrow<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodThrow<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodThrow<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodThrow<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_tm_methodThrow(std::move(callback));
 }
 
@@ -441,7 +438,6 @@ void SinkServiceAsyncProcessor::executeRequest_methodSinkThrow(apache::thrift::S
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
     );
   iface_->async_tm_methodSinkThrow(std::move(callback));
 }
@@ -466,7 +462,7 @@ void SinkServiceAsyncProcessor::process_methodSinkThrow(apache::thrift::Response
         ew, std::move(req), ctx, eb, "methodSinkThrow");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodSinkThrow<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodSinkThrow<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodSinkThrow<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodSinkThrow<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_tm_methodSinkThrow(std::move(callback));
 }
 
@@ -549,7 +545,6 @@ void SinkServiceAsyncProcessor::executeRequest_methodFinalThrow(apache::thrift::
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
     );
   iface_->async_tm_methodFinalThrow(std::move(callback));
 }
@@ -574,7 +569,7 @@ void SinkServiceAsyncProcessor::process_methodFinalThrow(apache::thrift::Respons
         ew, std::move(req), ctx, eb, "methodFinalThrow");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodFinalThrow<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodFinalThrow<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodFinalThrow<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodFinalThrow<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_tm_methodFinalThrow(std::move(callback));
 }
 
@@ -667,7 +662,6 @@ void SinkServiceAsyncProcessor::executeRequest_methodBothThrow(apache::thrift::S
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
     );
   iface_->async_tm_methodBothThrow(std::move(callback));
 }
@@ -692,7 +686,7 @@ void SinkServiceAsyncProcessor::process_methodBothThrow(apache::thrift::Response
         ew, std::move(req), ctx, eb, "methodBothThrow");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodBothThrow<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodBothThrow<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodBothThrow<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodBothThrow<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_tm_methodBothThrow(std::move(callback));
 }
 
@@ -777,11 +771,10 @@ void SinkServiceAsyncProcessor::executeRequest_methodFast(apache::thrift::Server
     , throw_wrapped_methodFast<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
     );
   iface_->async_eb_methodFast(std::move(callback));
 }
@@ -806,7 +799,7 @@ void SinkServiceAsyncProcessor::process_methodFast(apache::thrift::ResponseChann
         ew, std::move(req), ctx, eb, "methodFast");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodFast<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodFast<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, nullptr, ctx, eb);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodFast<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodFast<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, nullptr, ctx);
   iface_->async_eb_methodFast(std::move(callback));
 }
 

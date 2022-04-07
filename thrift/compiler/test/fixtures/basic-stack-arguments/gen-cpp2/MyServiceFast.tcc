@@ -57,11 +57,10 @@ void MyServiceFastAsyncProcessor::executeRequest_hasDataById(apache::thrift::Ser
     , throw_wrapped_hasDataById<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_eb_hasDataById(std::move(callback), args.get<0>().ref());
 }
@@ -153,11 +152,10 @@ void MyServiceFastAsyncProcessor::executeRequest_getDataById(apache::thrift::Ser
     , throw_wrapped_getDataById<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_eb_getDataById(std::move(callback), args.get<0>().ref());
 }
@@ -251,11 +249,10 @@ void MyServiceFastAsyncProcessor::executeRequest_putDataById(apache::thrift::Ser
     , throw_wrapped_putDataById<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_eb_putDataById(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }

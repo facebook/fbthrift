@@ -71,7 +71,6 @@ void MyServiceAsyncProcessor::executeRequest_ping(apache::thrift::ServerRequest&
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_ping(std::move(callback));
 }
@@ -165,7 +164,6 @@ void MyServiceAsyncProcessor::executeRequest_getRandomData(apache::thrift::Serve
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_getRandomData(std::move(callback));
 }
@@ -263,7 +261,6 @@ void MyServiceAsyncProcessor::executeRequest_sink(apache::thrift::ServerRequest&
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_sink(std::move(callback), args.get<0>().ref());
 }
@@ -363,7 +360,6 @@ void MyServiceAsyncProcessor::executeRequest_putDataById(apache::thrift::ServerR
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_putDataById(std::move(callback), args.get<0>().ref(), std::move(uarg_data));
 }
@@ -463,7 +459,6 @@ void MyServiceAsyncProcessor::executeRequest_hasDataById(apache::thrift::ServerR
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_hasDataById(std::move(callback), args.get<0>().ref());
 }
@@ -563,7 +558,6 @@ void MyServiceAsyncProcessor::executeRequest_getDataById(apache::thrift::ServerR
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_getDataById(std::move(callback), args.get<0>().ref());
 }
@@ -663,7 +657,6 @@ void MyServiceAsyncProcessor::executeRequest_deleteDataById(apache::thrift::Serv
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_deleteDataById(std::move(callback), args.get<0>().ref());
 }

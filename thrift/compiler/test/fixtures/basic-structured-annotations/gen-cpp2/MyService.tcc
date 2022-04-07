@@ -60,7 +60,6 @@ void MyServiceAsyncProcessor::executeRequest_first(apache::thrift::ServerRequest
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_first(std::move(callback));
 }
@@ -158,7 +157,6 @@ void MyServiceAsyncProcessor::executeRequest_second(apache::thrift::ServerReques
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_second(std::move(callback), args.get<0>().ref());
 }

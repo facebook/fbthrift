@@ -58,7 +58,6 @@ void DerivedServiceAsyncProcessor::executeRequest_get_six(apache::thrift::Server
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_get_six(std::move(callback));
 }

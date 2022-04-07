@@ -58,7 +58,6 @@ void MyLeafAsyncProcessor::executeRequest_do_leaf(apache::thrift::ServerRequest&
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_do_leaf(std::move(callback));
 }

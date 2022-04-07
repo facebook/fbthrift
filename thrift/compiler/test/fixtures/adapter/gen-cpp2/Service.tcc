@@ -64,7 +64,6 @@ void ServiceAsyncProcessor::executeRequest_func(apache::thrift::ServerRequest&& 
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_func(std::move(callback), std::move(uarg_arg1), std::move(uarg_arg2), std::move(uarg_arg3));
 }

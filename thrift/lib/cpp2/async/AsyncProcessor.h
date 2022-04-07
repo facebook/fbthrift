@@ -1281,7 +1281,6 @@ class HandlerCallback : public HandlerCallbackBase {
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
       Cpp2RequestContext* reqCtx,
-      folly::Executor::KeepAlive<> streamEx = nullptr,
       TilePtr&& interaction = {});
 
   HandlerCallback(
@@ -1298,7 +1297,6 @@ class HandlerCallback : public HandlerCallbackBase {
       ConcurrencyControllerInterface* notifyConcurrencyController,
       ConcurrencyControllerInterface::UserData
           notifyConcurrencyControllerUserData,
-      folly::Executor::KeepAlive<> streamEx = nullptr,
       TilePtr&& interaction = {});
 
   void result(InputType r) { doResult(std::forward<InputType>(r)); }
@@ -1311,7 +1309,6 @@ class HandlerCallback : public HandlerCallbackBase {
   virtual void doResult(InputType r);
 
   cob_ptr cp_;
-  folly::Executor::KeepAlive<> streamEx_;
 };
 
 template <>
@@ -1662,7 +1659,6 @@ HandlerCallback<T>::HandlerCallback(
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx,
-    folly::Executor::KeepAlive<> streamEx,
     TilePtr&& interaction)
     : HandlerCallbackBase(
           std::move(req),
@@ -1672,8 +1668,7 @@ HandlerCallback<T>::HandlerCallback(
           tm,
           reqCtx,
           std::move(interaction)),
-      cp_(cp),
-      streamEx_(std::move(streamEx)) {
+      cp_(cp) {
   this->protoSeqId_ = protoSeqId;
 }
 
@@ -1692,7 +1687,6 @@ HandlerCallback<T>::HandlerCallback(
     ConcurrencyControllerInterface* notifyConcurrencyController,
     ConcurrencyControllerInterface::UserData
         notifyConcurrencyControllerUserData,
-    folly::Executor::KeepAlive<> streamEx,
     TilePtr&& interaction)
     : HandlerCallbackBase(
           std::move(req),
@@ -1706,8 +1700,7 @@ HandlerCallback<T>::HandlerCallback(
           notifyConcurrencyController,
           notifyConcurrencyControllerUserData,
           std::move(interaction)),
-      cp_(cp),
-      streamEx_(std::move(streamEx)) {
+      cp_(cp) {
   this->protoSeqId_ = protoSeqId;
 }
 
@@ -1735,7 +1728,7 @@ void HandlerCallback<T>::doResult(InputType r) {
   auto reply = Helper::call(
       cp_,
       this->ctx_.get(),
-      std::move(this->streamEx_),
+      executor_ ? executor_.get() : eb_,
       std::forward<InputType>(r));
   this->ctx_.reset();
   sendReply(std::move(reply));
@@ -1760,10 +1753,7 @@ struct HandlerCallbackHelper {
   using CobPtr =
       apache::thrift::SerializedResponse (*)(ContextStack*, InputType);
   static apache::thrift::SerializedResponse call(
-      CobPtr cob,
-      ContextStack* ctx,
-      folly::Executor::KeepAlive<>,
-      InputType input) {
+      CobPtr cob, ContextStack* ctx, folly::Executor*, InputType input) {
     return cob(ctx, input);
   }
 };
@@ -1774,11 +1764,8 @@ struct HandlerCallbackHelperServerStream {
   using CobPtr = ResponseAndServerStreamFactory (*)(
       ContextStack*, folly::Executor::KeepAlive<>, InputType);
   static ResponseAndServerStreamFactory call(
-      CobPtr cob,
-      ContextStack* ctx,
-      folly::Executor::KeepAlive<> streamEx,
-      InputType input) {
-    return cob(ctx, std::move(streamEx), std::move(input));
+      CobPtr cob, ContextStack* ctx, folly::Executor* ex, InputType input) {
+    return cob(ctx, ex, std::move(input));
   }
 };
 
@@ -1798,11 +1785,8 @@ struct HandlerCallbackHelperSink {
       std::pair<apache::thrift::SerializedResponse, SinkConsumerImpl> (*)(
           ContextStack*, InputType, folly::Executor::KeepAlive<>);
   static std::pair<apache::thrift::SerializedResponse, SinkConsumerImpl> call(
-      CobPtr cob,
-      ContextStack* ctx,
-      folly::Executor::KeepAlive<> streamEx,
-      InputType input) {
-    return cob(ctx, std::move(input), std::move(streamEx));
+      CobPtr cob, ContextStack* ctx, folly::Executor* ex, InputType input) {
+    return cob(ctx, std::move(input), ex);
   }
 };
 

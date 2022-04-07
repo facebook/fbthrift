@@ -68,7 +68,6 @@ void service3AsyncProcessor::executeRequest_methodA(apache::thrift::ServerReques
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_methodA(std::move(callback));
 }
@@ -168,7 +167,6 @@ void service3AsyncProcessor::executeRequest_methodB(apache::thrift::ServerReques
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_methodB(std::move(callback), args.get<0>().ref(), std::move(uarg_y), args.get<2>().ref());
 }
@@ -268,7 +266,6 @@ void service3AsyncProcessor::executeRequest_methodC(apache::thrift::ServerReques
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_methodC(std::move(callback));
 }
@@ -370,7 +367,6 @@ void service3AsyncProcessor::executeRequest_methodD(apache::thrift::ServerReques
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_methodD(std::move(callback), args.get<0>().ref(), std::move(uarg_j), args.get<2>().ref());
 }
@@ -472,7 +468,6 @@ void service3AsyncProcessor::executeRequest_methodE(apache::thrift::ServerReques
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_methodE(std::move(callback));
 }
@@ -574,7 +569,6 @@ void service3AsyncProcessor::executeRequest_methodF(apache::thrift::ServerReques
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_methodF(std::move(callback), args.get<0>().ref(), std::move(uarg_m), args.get<2>().ref());
 }

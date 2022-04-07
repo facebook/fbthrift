@@ -69,7 +69,6 @@ void ExtraServiceAsyncProcessor::executeRequest_simple_function(apache::thrift::
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_simple_function(std::move(callback));
 }
@@ -157,11 +156,10 @@ void ExtraServiceAsyncProcessor::executeRequest_throws_function(apache::thrift::
     , throw_wrapped_throws_function<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_eb_throws_function(std::move(callback));
 }
@@ -284,7 +282,6 @@ void ExtraServiceAsyncProcessor::executeRequest_throws_function2(apache::thrift:
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_throws_function2(std::move(callback), args.get<0>().ref());
 }
@@ -413,7 +410,6 @@ void ExtraServiceAsyncProcessor::executeRequest_throws_function3(apache::thrift:
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_throws_function3(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }

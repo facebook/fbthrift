@@ -58,7 +58,6 @@ void MyServicePrioChildAsyncProcessor::executeRequest_pang(apache::thrift::Serve
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_pang(std::move(callback));
 }

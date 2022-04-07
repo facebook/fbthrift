@@ -85,7 +85,6 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstream(apache::t
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
     );
   iface_->async_tm_returnstream(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
@@ -114,7 +113,7 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(apache::thrift::
         ew, std::move(req), ctx, eb, "returnstream");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>>(std::move(req), std::move(ctxStack), return_returnstream<ProtocolIn_,ProtocolOut_>, throw_wrapped_returnstream<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>>(std::move(req), std::move(ctxStack), return_returnstream<ProtocolIn_,ProtocolOut_>, throw_wrapped_returnstream<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_tm_returnstream(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
@@ -190,7 +189,6 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_streamthrows(apache::t
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
     );
   iface_->async_tm_streamthrows(std::move(callback), args.get<0>().ref());
 }
@@ -217,7 +215,7 @@ void PubSubStreamingServiceAsyncProcessor::process_streamthrows(apache::thrift::
         ew, std::move(req), ctx, eb, "streamthrows");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>>(std::move(req), std::move(ctxStack), return_streamthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_streamthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>>(std::move(req), std::move(ctxStack), return_streamthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_streamthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_tm_streamthrows(std::move(callback), args.get<0>().ref());
 }
 
@@ -303,7 +301,6 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_boththrows(apache::thr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
     );
   iface_->async_tm_boththrows(std::move(callback), args.get<0>().ref());
 }
@@ -330,7 +327,7 @@ void PubSubStreamingServiceAsyncProcessor::process_boththrows(apache::thrift::Re
         ew, std::move(req), ctx, eb, "boththrows");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>>(std::move(req), std::move(ctxStack), return_boththrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_boththrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>>(std::move(req), std::move(ctxStack), return_boththrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_boththrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_tm_boththrows(std::move(callback), args.get<0>().ref());
 }
 
@@ -433,7 +430,6 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_responseandstreamthrow
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
     );
   iface_->async_tm_responseandstreamthrows(std::move(callback), args.get<0>().ref());
 }
@@ -460,7 +456,7 @@ void PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows(apach
         ew, std::move(req), ctx, eb, "responseandstreamthrows");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>>(std::move(req), std::move(ctxStack), return_responseandstreamthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_responseandstreamthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ResponseAndServerStream<::std::int32_t, ::std::int32_t>>>(std::move(req), std::move(ctxStack), return_responseandstreamthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_responseandstreamthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_tm_responseandstreamthrows(std::move(callback), args.get<0>().ref());
 }
 
@@ -559,11 +555,10 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstreamFast(apach
     , throw_wrapped_returnstreamFast<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
     );
   iface_->async_eb_returnstreamFast(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
@@ -592,7 +587,7 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstreamFast(apache::thri
         ew, std::move(req), ctx, eb, "returnstreamFast");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>>(std::move(req), std::move(ctxStack), return_returnstreamFast<ProtocolIn_,ProtocolOut_>, throw_wrapped_returnstreamFast<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, nullptr, ctx, eb);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>>(std::move(req), std::move(ctxStack), return_returnstreamFast<ProtocolIn_,ProtocolOut_>, throw_wrapped_returnstreamFast<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, nullptr, ctx);
   iface_->async_eb_returnstreamFast(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 

@@ -65,7 +65,6 @@ void CAsyncProcessor::executeRequest_f(apache::thrift::ServerRequest&& serverReq
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_f(std::move(callback));
 }
@@ -159,7 +158,6 @@ void CAsyncProcessor::executeRequest_numbers(apache::thrift::ServerRequest&& ser
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    , apache::thrift::ServerInterface::getBlockingThreadManager(apache::thrift::detail::ServerRequestHelper::executor(serverRequest))
     );
   iface_->async_tm_numbers(std::move(callback));
 }
@@ -184,7 +182,7 @@ void CAsyncProcessor::process_numbers(apache::thrift::ResponseChannelRequest::Un
         ew, std::move(req), ctx, eb, "numbers");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::cpp2::number>>>(std::move(req), std::move(ctxStack), return_numbers<ProtocolIn_,ProtocolOut_>, throw_wrapped_numbers<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, apache::thrift::ServerInterface::getBlockingThreadManager(tm));
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::cpp2::number>>>(std::move(req), std::move(ctxStack), return_numbers<ProtocolIn_,ProtocolOut_>, throw_wrapped_numbers<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_tm_numbers(std::move(callback));
 }
 
@@ -264,7 +262,6 @@ void CAsyncProcessor::executeRequest_thing(apache::thrift::ServerRequest&& serve
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_thing(std::move(callback), args.get<0>().ref(), std::move(uarg_b), std::move(uarg_c));
 }

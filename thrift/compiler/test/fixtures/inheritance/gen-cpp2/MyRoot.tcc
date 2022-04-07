@@ -58,7 +58,6 @@ void MyRootAsyncProcessor::executeRequest_do_root(apache::thrift::ServerRequest&
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_do_root(std::move(callback));
 }

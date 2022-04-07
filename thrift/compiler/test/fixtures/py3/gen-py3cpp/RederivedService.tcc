@@ -58,7 +58,6 @@ void RederivedServiceAsyncProcessor::executeRequest_get_seven(apache::thrift::Se
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_get_seven(std::move(callback));
 }

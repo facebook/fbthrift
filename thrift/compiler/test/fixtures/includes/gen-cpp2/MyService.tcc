@@ -64,7 +64,6 @@ void MyServiceAsyncProcessor::executeRequest_query(apache::thrift::ServerRequest
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_query(std::move(callback), std::move(uarg_s), std::move(uarg_i));
 }
@@ -166,7 +165,6 @@ void MyServiceAsyncProcessor::executeRequest_has_arg_docs(apache::thrift::Server
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_has_arg_docs(std::move(callback), std::move(uarg_s), std::move(uarg_i));
 }

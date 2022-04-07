@@ -90,11 +90,10 @@ void ReturnServiceAsyncProcessor::executeRequest_noReturn(apache::thrift::Server
     , throw_wrapped_noReturn<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_eb_noReturn(std::move(callback));
 }
@@ -188,7 +187,6 @@ void ReturnServiceAsyncProcessor::executeRequest_boolReturn(apache::thrift::Serv
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_boolReturn(std::move(callback));
 }
@@ -284,7 +282,6 @@ void ReturnServiceAsyncProcessor::executeRequest_i16Return(apache::thrift::Serve
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_i16Return(std::move(callback));
 }
@@ -380,7 +377,6 @@ void ReturnServiceAsyncProcessor::executeRequest_i32Return(apache::thrift::Serve
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_i32Return(std::move(callback));
 }
@@ -476,7 +472,6 @@ void ReturnServiceAsyncProcessor::executeRequest_i64Return(apache::thrift::Serve
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_i64Return(std::move(callback));
 }
@@ -572,7 +567,6 @@ void ReturnServiceAsyncProcessor::executeRequest_floatReturn(apache::thrift::Ser
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_floatReturn(std::move(callback));
 }
@@ -668,7 +662,6 @@ void ReturnServiceAsyncProcessor::executeRequest_doubleReturn(apache::thrift::Se
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_doubleReturn(std::move(callback));
 }
@@ -756,11 +749,10 @@ void ReturnServiceAsyncProcessor::executeRequest_stringReturn(apache::thrift::Se
     , throw_wrapped_stringReturn<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_eb_stringReturn(std::move(callback));
 }
@@ -856,7 +848,6 @@ void ReturnServiceAsyncProcessor::executeRequest_binaryReturn(apache::thrift::Se
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_binaryReturn(std::move(callback));
 }
@@ -952,7 +943,6 @@ void ReturnServiceAsyncProcessor::executeRequest_mapReturn(apache::thrift::Serve
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_mapReturn(std::move(callback));
 }
@@ -1048,7 +1038,6 @@ void ReturnServiceAsyncProcessor::executeRequest_simpleTypedefReturn(apache::thr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_simpleTypedefReturn(std::move(callback));
 }
@@ -1144,7 +1133,6 @@ void ReturnServiceAsyncProcessor::executeRequest_complexTypedefReturn(apache::th
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_complexTypedefReturn(std::move(callback));
 }
@@ -1240,7 +1228,6 @@ void ReturnServiceAsyncProcessor::executeRequest_list_mostComplexTypedefReturn(a
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_list_mostComplexTypedefReturn(std::move(callback));
 }
@@ -1328,11 +1315,10 @@ void ReturnServiceAsyncProcessor::executeRequest_enumReturn(apache::thrift::Serv
     , throw_wrapped_enumReturn<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_eb_enumReturn(std::move(callback));
 }
@@ -1420,11 +1406,10 @@ void ReturnServiceAsyncProcessor::executeRequest_list_EnumReturn(apache::thrift:
     , throw_wrapped_list_EnumReturn<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_eb_list_EnumReturn(std::move(callback));
 }
@@ -1520,7 +1505,6 @@ void ReturnServiceAsyncProcessor::executeRequest_structReturn(apache::thrift::Se
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_structReturn(std::move(callback));
 }
@@ -1616,7 +1600,6 @@ void ReturnServiceAsyncProcessor::executeRequest_set_StructReturn(apache::thrift
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_set_StructReturn(std::move(callback));
 }
@@ -1704,11 +1687,10 @@ void ReturnServiceAsyncProcessor::executeRequest_unionReturn(apache::thrift::Ser
     , throw_wrapped_unionReturn<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_eb_unionReturn(std::move(callback));
 }
@@ -1804,7 +1786,6 @@ void ReturnServiceAsyncProcessor::executeRequest_list_UnionReturn(apache::thrift
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_list_UnionReturn(std::move(callback));
 }
@@ -1894,11 +1875,10 @@ void ReturnServiceAsyncProcessor::executeRequest_readDataEb(apache::thrift::Serv
     , throw_wrapped_readDataEb<ProtocolIn_, ProtocolOut_>
     , serverRequest.requestContext()->getProtoSeqId()
     , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
-    , apache::thrift::detail::ServerRequestHelper::executor(serverRequest)
+    , nullptr
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_eb_readDataEb(std::move(callback), args.get<0>().ref());
 }
@@ -1998,7 +1978,6 @@ void ReturnServiceAsyncProcessor::executeRequest_readData(apache::thrift::Server
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_readData(std::move(callback), args.get<0>().ref());
 }

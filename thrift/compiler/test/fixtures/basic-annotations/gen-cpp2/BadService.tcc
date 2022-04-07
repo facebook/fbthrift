@@ -58,7 +58,6 @@ void GoodServiceAsyncProcessor::executeRequest_bar(apache::thrift::ServerRequest
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_bar(std::move(callback));
 }
@@ -160,8 +159,6 @@ void GoodServiceAsyncProcessor::executeRequest_BadInteraction_foo(apache::thrift
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
-    
     , std::move(tile));
   iface.async_tm_foo(std::move(callback));
 }

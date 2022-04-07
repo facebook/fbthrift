@@ -60,7 +60,6 @@ void MyServicePrioParentAsyncProcessor::executeRequest_ping(apache::thrift::Serv
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_ping(std::move(callback));
 }
@@ -154,7 +153,6 @@ void MyServicePrioParentAsyncProcessor::executeRequest_pong(apache::thrift::Serv
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    
     );
   iface_->async_tm_pong(std::move(callback));
 }
