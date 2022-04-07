@@ -118,6 +118,10 @@ class Cpp2Worker : public IOWorkerContext,
    */
   ThriftServer* getServer() const { return server_; }
 
+  const server::ServerConfigs* getServerContext() const override {
+    return getServer();
+  }
+
   /**
    * Get a shared_ptr of this Cpp2Worker.
    */

@@ -569,7 +569,7 @@ void PubSubStreamingServiceAsyncProcessor::executeRequest_returnstreamFast(apach
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void PubSubStreamingServiceAsyncProcessor::process_returnstreamFast(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void PubSubStreamingServiceAsyncProcessor::process_returnstreamFast(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager*) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
@@ -592,7 +592,7 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstreamFast(apache::thri
         ew, std::move(req), ctx, eb, "returnstreamFast");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>>(std::move(req), std::move(ctxStack), return_returnstreamFast<ProtocolIn_,ProtocolOut_>, throw_wrapped_returnstreamFast<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, eb);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<::std::int32_t>>>(std::move(req), std::move(ctxStack), return_returnstreamFast<ProtocolIn_,ProtocolOut_>, throw_wrapped_returnstreamFast<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, nullptr, ctx, eb);
   iface_->async_eb_returnstreamFast(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 

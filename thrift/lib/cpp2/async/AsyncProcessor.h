@@ -1099,8 +1099,7 @@ class HandlerCallbackBase {
   }
 
  public:
-  HandlerCallbackBase()
-      : eb_(nullptr), tm_(nullptr), reqCtx_(nullptr), protoSeqId_(0) {}
+  HandlerCallbackBase() : eb_(nullptr), reqCtx_(nullptr), protoSeqId_(0) {}
 
   HandlerCallbackBase(
       ResponseChannelRequest::UniquePtr req,
@@ -1115,7 +1114,12 @@ class HandlerCallbackBase {
         interaction_(std::move(interaction)),
         ewp_(ewp),
         eb_(eb),
-        tm_(tm),
+        executor_(
+            tm ? tm->getKeepAlive(
+                     reqCtx->getRequestExecutionScope(),
+                     apache::thrift::concurrency::ThreadManager::Source::
+                         INTERNAL)
+               : nullptr),
         reqCtx_(reqCtx),
         protoSeqId_(0) {}
 
@@ -1196,7 +1200,7 @@ class HandlerCallbackBase {
   template <class F>
   void runFuncInQueue(F&& func, bool oneway = false);
 
-  folly::Executor::KeepAlive<> getInternalKeepAlive();
+  const folly::Executor::KeepAlive<>& getInternalKeepAlive();
 
  protected:
   folly::Optional<uint32_t> checksumIfNeeded(
@@ -1244,8 +1248,7 @@ class HandlerCallbackBase {
 
   // Useful pointers, so handler doesn't need to have a pointer to the server
   folly::EventBase* eb_{nullptr};
-  concurrency::ThreadManager* tm_{nullptr};
-  folly::Executor* executor_{nullptr};
+  folly::Executor::KeepAlive<> executor_{};
   Cpp2RequestContext* reqCtx_{nullptr};
 
   int32_t protoSeqId_;
@@ -1605,9 +1608,8 @@ void GeneratedAsyncProcessor::processInThread(
 
 template <class F>
 void HandlerCallbackBase::runFuncInQueue(F&& func, bool) {
-  assert(tm_ != nullptr);
   assert(getEventBase()->isInEventBaseThread());
-  tm_->add(
+  getThreadManager()->add(
       concurrency::FunctionRunner::create(std::forward<F>(func)),
       0, // timeout
       0, // expiration

@@ -397,14 +397,10 @@ folly::Executor::KeepAlive<> ServerInterface::getInternalKeepAlive() {
   }
 }
 
-folly::Executor::KeepAlive<> HandlerCallbackBase::getInternalKeepAlive() {
-  if (getThreadManager()) {
-    return getThreadManager()->getKeepAlive(
-        getRequestContext()->getRequestExecutionScope(),
-        apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
-  } else {
-    return folly::Executor::getKeepAliveToken(getHandlerExecutor());
-  }
+const folly::Executor::KeepAlive<>&
+HandlerCallbackBase::getInternalKeepAlive() {
+  DCHECK(executor_);
+  return executor_;
 }
 
 HandlerCallbackBase::~HandlerCallbackBase() {
@@ -440,14 +436,23 @@ folly::EventBase* HandlerCallbackBase::getEventBase() {
 }
 
 concurrency::ThreadManager* HandlerCallbackBase::getThreadManager() {
-  return tm_;
+  if (reqCtx_) {
+    if (auto connCtx = reqCtx_->getConnectionContext()) {
+      if (auto workerCtx = connCtx->getWorkerContext()) {
+        if (auto serverCtx = workerCtx->getServerContext()) {
+          return serverCtx->getThreadManager().get();
+        }
+      }
+    }
+  }
+  return nullptr;
 }
 
 folly::Executor* HandlerCallbackBase::getHandlerExecutor() {
-  if (executor_ == nullptr) {
-    return tm_;
+  if (!executor_) {
+    return getThreadManager();
   }
-  return executor_;
+  return executor_.get();
 }
 
 folly::Optional<uint32_t> HandlerCallbackBase::checksumIfNeeded(
@@ -581,7 +586,7 @@ bool HandlerCallbackBase::fulfillTilePromise(std::unique_ptr<Tile> ptr) {
   auto fn = [ctx = reqCtx_,
              interaction = std::move(interaction_),
              ptr = std::move(ptr),
-             tm = tm_,
+             tm = getThreadManager(),
              eb = eb_]() mutable {
     TilePtr tile{ptr.release(), eb};
     DCHECK(dynamic_cast<TilePromise*>(interaction.get()));

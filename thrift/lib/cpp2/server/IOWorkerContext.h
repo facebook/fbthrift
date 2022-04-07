@@ -21,6 +21,7 @@
 #include <folly/io/async/EventBaseAtomicNotificationQueue.h>
 
 #include <thrift/lib/cpp2/async/ReplyInfo.h>
+#include <thrift/lib/cpp2/server/ServerConfigs.h>
 
 namespace apache {
 namespace thrift {
@@ -45,6 +46,8 @@ class IOWorkerContext {
   }
 
   folly::EventBase* getWorkerEventBase() const { return eventBase_; }
+
+  virtual const server::ServerConfigs* getServerContext() const = 0;
 
  protected:
   /**

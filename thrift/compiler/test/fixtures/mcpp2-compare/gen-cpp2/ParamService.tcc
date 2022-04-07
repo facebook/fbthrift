@@ -118,7 +118,7 @@ void ParamServiceAsyncProcessor::executeRequest_void_ret_i16_param(apache::thrif
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ParamServiceAsyncProcessor::process_void_ret_i16_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ParamServiceAsyncProcessor::process_void_ret_i16_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager*) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
@@ -139,7 +139,7 @@ void ParamServiceAsyncProcessor::process_void_ret_i16_param(apache::thrift::Resp
         ew, std::move(req), ctx, eb, "void_ret_i16_param");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_void_ret_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_void_ret_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, nullptr, ctx);
   iface_->async_eb_void_ret_i16_param(std::move(callback), args.get<0>().ref());
 }
 
@@ -1426,7 +1426,7 @@ void ParamServiceAsyncProcessor::executeRequest_i64_ret_i32_i32_i32_i32_i32_para
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager*) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
@@ -1455,7 +1455,7 @@ void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(apach
         ew, std::move(req), ctx, eb, "i64_ret_i32_i32_i32_i32_i32_param");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int64_t>>(std::move(req), std::move(ctxStack), return_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::int64_t>>(std::move(req), std::move(ctxStack), return_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, nullptr, ctx);
   iface_->async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref(), args.get<2>().ref(), args.get<3>().ref(), args.get<4>().ref());
 }
 
@@ -2234,7 +2234,7 @@ void ParamServiceAsyncProcessor::executeRequest_listtypedef_ret_typedef_param(ap
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager*) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
@@ -2255,7 +2255,7 @@ void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(apache::t
         ew, std::move(req), ctx, eb, "listtypedef_ret_typedef_param");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::simpleTypeDef>>>>(std::move(req), std::move(ctxStack), return_listtypedef_ret_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listtypedef_ret_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::simpleTypeDef>>>>(std::move(req), std::move(ctxStack), return_listtypedef_ret_typedef_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_listtypedef_ret_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, nullptr, ctx);
   iface_->async_eb_listtypedef_ret_typedef_param(std::move(callback), std::move(uarg_param1));
 }
 
@@ -2634,7 +2634,7 @@ void ParamServiceAsyncProcessor::executeRequest_struct_ret_i16_param(apache::thr
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ParamServiceAsyncProcessor::process_struct_ret_i16_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ParamServiceAsyncProcessor::process_struct_ret_i16_param(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager*) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
@@ -2655,7 +2655,7 @@ void ParamServiceAsyncProcessor::process_struct_ret_i16_param(apache::thrift::Re
         ew, std::move(req), ctx, eb, "struct_ret_i16_param");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>>(std::move(req), std::move(ctxStack), return_struct_ret_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_struct_ret_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>>(std::move(req), std::move(ctxStack), return_struct_ret_i16_param<ProtocolIn_,ProtocolOut_>, throw_wrapped_struct_ret_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, nullptr, ctx);
   iface_->async_eb_struct_ret_i16_param(std::move(callback), args.get<0>().ref());
 }
 

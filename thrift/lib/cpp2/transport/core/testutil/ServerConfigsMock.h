@@ -84,6 +84,11 @@ class ServerConfigsMock : public ServerConfigs {
 
   uint32_t getListenerTos() const override { return 0; }
 
+  std::shared_ptr<concurrency::ThreadManager> getThreadManager()
+      const override {
+    return {};
+  }
+
  public:
   uint64_t maxResponseSize_{0};
   std::chrono::milliseconds queueTimeout_{std::chrono::milliseconds(500)};

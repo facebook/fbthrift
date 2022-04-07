@@ -41,6 +41,10 @@ class Cpp2ConnContext;
 class AdaptiveConcurrencyController;
 class ResourcePoolSet;
 
+namespace concurrency {
+class ThreadManager;
+}
+
 namespace server {
 
 struct PreprocessParams;
@@ -183,6 +187,9 @@ class ServerConfigs {
   void setRejectRequestsUntilStarted(bool rejectRequestsUntilStarted) {
     rejectRequestsUntilStarted_ = rejectRequestsUntilStarted;
   }
+
+  virtual std::shared_ptr<concurrency::ThreadManager> getThreadManager()
+      const = 0;
 
  private:
   folly::relaxed_atomic<int32_t> activeRequests_{0};

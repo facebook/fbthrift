@@ -787,7 +787,7 @@ void SinkServiceAsyncProcessor::executeRequest_methodFast(apache::thrift::Server
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void SinkServiceAsyncProcessor::process_methodFast(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void SinkServiceAsyncProcessor::process_methodFast(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager*) {
   if (!req->getShouldStartProcessing()) {
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
@@ -806,7 +806,7 @@ void SinkServiceAsyncProcessor::process_methodFast(apache::thrift::ResponseChann
         ew, std::move(req), ctx, eb, "methodFast");
     return;
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodFast<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodFast<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx, eb);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::SinkConsumer<::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodFast<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodFast<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, nullptr, ctx, eb);
   iface_->async_eb_methodFast(std::move(callback));
 }
 
