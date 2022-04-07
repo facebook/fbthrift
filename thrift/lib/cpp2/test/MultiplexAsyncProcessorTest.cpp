@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp2/async/AsyncProcessorHelper.h>
 #include <thrift/lib/cpp2/async/MultiplexAsyncProcessor.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
+#include <thrift/lib/cpp2/server/ServerFlags.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -383,6 +384,30 @@ class WildcardThrowsInternalError : public TProcessorFactory {
             tm);
       }
 
+      void executeRequest(
+          ServerRequest&& request,
+          const AsyncProcessorFactory::MethodMetadata& methodMetadata)
+          override {
+        if (AsyncProcessorHelper::isWildcardMethodMetadata(methodMetadata)) {
+          std::string message = folly::variant_match(
+              message_,
+              [](const std::string& m) { return m; },
+              [](FromCurrentContextData) {
+                return folly::to<std::string>(ContextData::readFromCurrent());
+              });
+          auto eb = detail::ServerRequestHelper::eventBase(request);
+          eb->runInEventBaseThread([request = std::move(request),
+                                    message = std::move(message)]() mutable {
+            request.request()->sendErrorWrapped(
+                folly::make_exception_wrapper<TApplicationException>(
+                    TApplicationException::INTERNAL_ERROR, std::move(message)),
+                "" /* errorCode */);
+          });
+          return;
+        }
+        inner_->executeRequest(std::move(request), methodMetadata);
+      }
+
       void terminateInteraction(
           int64_t id,
           Cpp2ConnContext& ctx,
@@ -419,6 +444,7 @@ class WithUnimplementedMethodMetadata : public TProcessorFactory {
 } // namespace
 
 TEST_F(MultiplexAsyncProcessorServerTest, BasicWildcard) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* wildcard support incomplete */);
   auto runner = runMultiplexedServices(
       {std::make_shared<FirstHandler>(),
        std::make_shared<WildcardThrowsInternalError<SecondHandler>>(
@@ -458,6 +484,7 @@ TEST_F(MultiplexAsyncProcessorServerTest, WildcardSwallows) {
 }
 
 TEST_F(MultiplexAsyncProcessorServerTest, WildcardConflicts) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* wildcard support incomplete */);
   auto runner = runMultiplexedServices(
       {std::make_shared<SecondHandler>(),
        std::make_shared<WildcardThrowsInternalError<ConflictsHandler>>(
@@ -476,6 +503,7 @@ TEST_F(MultiplexAsyncProcessorServerTest, WildcardConflicts) {
 }
 
 TEST_F(MultiplexAsyncProcessorServerTest, UnimplementedMetadataActsAsWildcard) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* wildcard support incomplete */);
   auto runner = runMultiplexedServices(
       {std::make_shared<WithUnimplementedMethodMetadata<FirstHandler>>(),
        std::make_shared<SecondHandler>()});
@@ -584,6 +612,8 @@ RequestChannel::Ptr makeRocketChannel(folly::AsyncSocket::UniquePtr socket) {
 } // namespace
 
 TEST_F(MultiplexAsyncProcessorServerTest, Interaction) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* Interactions not supported yet */);
+
   using Counter = std::atomic<int>;
 
   class TerminateInteractionTrackingProcessor : public AsyncProcessor {
@@ -636,6 +666,12 @@ TEST_F(MultiplexAsyncProcessorServerTest, Interaction) {
           context,
           eb,
           tm);
+    }
+
+    void executeRequest(
+        ServerRequest&& request,
+        const AsyncProcessorFactory::MethodMetadata& methodMetadata) override {
+      delegate_->executeRequest(std::move(request), methodMetadata);
     }
 
     virtual void terminateInteraction(
@@ -732,6 +768,7 @@ TEST_F(MultiplexAsyncProcessorServerTest, Interaction) {
 }
 
 TEST_F(MultiplexAsyncProcessorServerTest, InteractionConflict) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* Interactions not supported yet */);
   class Interaction1 : public Interaction1SvIf {
    public:
     std::unique_ptr<Thing1If> createThing1() override {
