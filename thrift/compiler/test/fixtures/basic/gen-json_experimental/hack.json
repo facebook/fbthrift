@@ -7,8 +7,8 @@
     "hack": "facebook.thrift.annotation",
     "hs2": "facebook.thrift.annotation.hack",
     "java": "com.facebook.thrift.annotation.java_deprecated",
-    "java.swift": "com.facebook.thrift.annotation.java_swift",
-    "java2": "com.facebook.thrift.annotation.java",
+    "java.swift": "com.facebook.thrift.annotation.hack",
+    "java2": "com.facebook.thrift.annotation.hack",
     "py": "thrift.annotation.hack",
     "py.asyncio": "facebook_thrift_asyncio.annotation.hack",
     "py3": "facebook.thrift.annotation.hack"

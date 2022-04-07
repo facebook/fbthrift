@@ -5,7 +5,7 @@
     "cpp2": "facebook.thrift.annotation",
     "go": "thrift.annotation.scope",
     "java": "com.facebook.thrift.annotation_deprecated",
-    "java.swift": "com.facebook.thrift.annotation_swift",
+    "java.swift": "com.facebook.thrift.annotation",
     "java2": "com.facebook.thrift.annotation",
     "php": "facebook_thrift_annotation",
     "py": "thrift.annotation.scope",

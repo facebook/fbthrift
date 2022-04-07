@@ -15,6 +15,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum MapListExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -131,6 +132,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum MapSetExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -247,6 +249,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum ListMapExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -363,6 +366,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum ListSetExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -479,6 +483,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum TurtlesExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }

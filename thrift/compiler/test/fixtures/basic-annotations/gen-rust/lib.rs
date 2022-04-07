@@ -636,6 +636,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum PingExn {
+            #[doc(hidden)]
             Success(()),
             myExcept(crate::types::MyException),
             ApplicationException(::fbthrift::ApplicationException),
@@ -777,6 +778,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum GetRandomDataExn {
+            #[doc(hidden)]
             Success(::std::string::String),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -899,6 +901,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum HasDataByIdExn {
+            #[doc(hidden)]
             Success(::std::primitive::bool),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1021,6 +1024,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum GetDataByIdExn {
+            #[doc(hidden)]
             Success(::std::string::String),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1143,6 +1147,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum PutDataByIdExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1259,6 +1264,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum LobDataByIdExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1375,6 +1381,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum DoNothingExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1494,6 +1501,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum PingExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1610,6 +1618,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum PongExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1729,6 +1738,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum PangExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1849,6 +1859,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum FooExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1967,6 +1978,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum BarExn {
+            #[doc(hidden)]
             Success(::std::primitive::i32),
             ApplicationException(::fbthrift::ApplicationException),
         }

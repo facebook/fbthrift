@@ -15,6 +15,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum DoRootExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -134,6 +135,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum DoMidExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -253,6 +255,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum DoLeafExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }

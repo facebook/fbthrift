@@ -450,6 +450,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum FExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -565,6 +566,7 @@ pub mod services {
         }
         #[derive(Clone, Debug)]
         pub enum NumbersStreamExn {
+            #[doc(hidden)]
             Success(crate::types::number),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -657,6 +659,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum ThingExn {
+            #[doc(hidden)]
             Success(::std::string::String),
             bang(crate::types::Bang),
             ApplicationException(::fbthrift::ApplicationException),

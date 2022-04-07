@@ -465,6 +465,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum PingExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -581,6 +582,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum GetRandomDataExn {
+            #[doc(hidden)]
             Success(::std::string::String),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -703,6 +705,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum SinkExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -819,6 +822,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum PutDataByIdExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -935,6 +939,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum HasDataByIdExn {
+            #[doc(hidden)]
             Success(::std::primitive::bool),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1057,6 +1062,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum GetDataByIdExn {
+            #[doc(hidden)]
             Success(::std::string::String),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1179,6 +1185,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum DeleteDataByIdExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1295,6 +1302,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum LobDataByIdExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1411,6 +1419,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum InvalidReturnForHackExn {
+            #[doc(hidden)]
             Success(::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1536,6 +1545,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum GetDataByKey0Exn {
+            #[doc(hidden)]
             Success(::std::vec::Vec<::std::primitive::u8>),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1658,6 +1668,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum GetDataByKey1Exn {
+            #[doc(hidden)]
             Success(::std::vec::Vec<::std::primitive::u8>),
             ApplicationException(::fbthrift::ApplicationException),
         }

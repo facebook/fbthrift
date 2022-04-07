@@ -624,6 +624,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum DoBlandExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -740,6 +741,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum DoRaiseExn {
+            #[doc(hidden)]
             Success(()),
             b(crate::types::Banal),
             f(crate::types::Fiery),
@@ -931,6 +933,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum Get200Exn {
+            #[doc(hidden)]
             Success(::std::string::String),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1053,6 +1056,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum Get500Exn {
+            #[doc(hidden)]
             Success(::std::string::String),
             f(crate::types::Fiery),
             b(crate::types::Banal),

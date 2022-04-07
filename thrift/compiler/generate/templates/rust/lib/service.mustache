@@ -26,6 +26,7 @@
 
         #[derive(Clone, Debug)]
         pub enum {{function:upcamel}}StreamExn {
+            #[doc(hidden)]
             Success({{#function:return_type}}{{#type:stream_elem_type}}{{>lib/type}}{{/type:stream_elem_type}}{{/function:return_type}}),{{!
             }}{{#function:stream_exceptions}}
             {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!
@@ -209,6 +210,7 @@
         {{#function:stream_has_first_response?}}
         #[derive(Clone, Debug)]
         pub enum {{function:upcamel}}Exn {
+            #[doc(hidden)]
             Success({{#function:return_type}}{{#type:stream_first_response_type}}{{>lib/type}}{{/type:stream_first_response_type}}{{/function:return_type}}),{{!
             }}{{#function:exceptions}}
             {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!
@@ -395,6 +397,7 @@
 
         #[derive(Clone, Debug)]
         pub enum {{function:upcamel}}Exn {
+            #[doc(hidden)]
             Success({{#function:return_type}}{{>lib/type}}{{/function:return_type}}),{{!
             }}{{#function:exceptions}}
             {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!

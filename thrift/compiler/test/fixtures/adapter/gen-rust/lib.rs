@@ -576,6 +576,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum FuncExn {
+            #[doc(hidden)]
             Success(::std::primitive::i32),
             ApplicationException(::fbthrift::ApplicationException),
         }

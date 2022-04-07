@@ -499,6 +499,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum PingExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -617,6 +618,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum PingExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -733,6 +735,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum GetRandomDataExn {
+            #[doc(hidden)]
             Success(::std::string::String),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -855,6 +858,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum HasDataByIdExn {
+            #[doc(hidden)]
             Success(::std::primitive::bool),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -977,6 +981,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum GetDataByIdExn {
+            #[doc(hidden)]
             Success(::std::string::String),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1099,6 +1104,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum PutDataByIdExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1215,6 +1221,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum LobDataByIdExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1330,6 +1337,7 @@ pub mod services {
         }
         #[derive(Clone, Debug)]
         pub enum StreamByIdStreamExn {
+            #[doc(hidden)]
             Success(crate::types::MyStruct),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1421,6 +1429,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum StreamByIdWithExceptionStreamExn {
+            #[doc(hidden)]
             Success(crate::types::MyStruct),
             e(crate::types::MyException),
             ApplicationException(::fbthrift::ApplicationException),
@@ -1567,6 +1576,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum StreamByIdWithResponseStreamExn {
+            #[doc(hidden)]
             Success(crate::types::MyStruct),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1657,6 +1667,7 @@ pub mod services {
         }
         #[derive(Clone, Debug)]
         pub enum StreamByIdWithResponseExn {
+            #[doc(hidden)]
             Success(crate::types::MyDataItem),
             ApplicationException(::fbthrift::ApplicationException),
         }

@@ -120,6 +120,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum ReturnExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -236,6 +237,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum SuperExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }

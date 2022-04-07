@@ -2856,6 +2856,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum BounceMapExn {
+            #[doc(hidden)]
             Success(include::types::SomeMap),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -2978,6 +2979,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum BinaryKeyedMapExn {
+            #[doc(hidden)]
             Success(::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>),
             ApplicationException(::fbthrift::ApplicationException),
         }

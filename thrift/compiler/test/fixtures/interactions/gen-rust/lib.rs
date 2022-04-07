@@ -128,6 +128,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum FrobnicateExn {
+            #[doc(hidden)]
             Success(::std::primitive::i32),
             ex(crate::types::CustomException),
             ApplicationException(::fbthrift::ApplicationException),
@@ -275,6 +276,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum PingExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -390,6 +392,7 @@ pub mod services {
         }
         #[derive(Clone, Debug)]
         pub enum TruthifyStreamExn {
+            #[doc(hidden)]
             Success(::std::primitive::bool),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -482,6 +485,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum EncodeExn {
+            #[doc(hidden)]
             Success(),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -607,6 +611,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum FrobnicateExn {
+            #[doc(hidden)]
             Success(::std::primitive::i32),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -729,6 +734,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum PingExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -844,6 +850,7 @@ pub mod services {
         }
         #[derive(Clone, Debug)]
         pub enum TruthifyStreamExn {
+            #[doc(hidden)]
             Success(::std::primitive::bool),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -936,6 +943,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum EncodeExn {
+            #[doc(hidden)]
             Success(),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1061,6 +1069,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum FrobnicateExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1179,6 +1188,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum FooExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1295,6 +1305,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum InteractExn {
+            #[doc(hidden)]
             Success(()),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1411,6 +1422,7 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum InteractFastExn {
+            #[doc(hidden)]
             Success(::std::primitive::i32),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1532,6 +1544,7 @@ pub mod services {
         }
         #[derive(Clone, Debug)]
         pub enum SerializeStreamExn {
+            #[doc(hidden)]
             Success(::std::primitive::i32),
             ApplicationException(::fbthrift::ApplicationException),
         }
@@ -1622,6 +1635,7 @@ pub mod services {
         }
         #[derive(Clone, Debug)]
         pub enum SerializeExn {
+            #[doc(hidden)]
             Success(::std::primitive::i32),
             ApplicationException(::fbthrift::ApplicationException),
         }
