@@ -854,6 +854,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void setupThreadManager();
 
   /**
+   * Apply various runtime checks to determine whether we can use resource pools
+   * in this service
+   */
+  void runtimeResourcePoolsChecks();
+
+  /**
    * Ensure that this Thrift Server has ResourcePools set up. If there is
    * already a non-empty ResourcePoolSet, nothing will be done. Otherwise, the
    * default setup of ResourcePools will be created.

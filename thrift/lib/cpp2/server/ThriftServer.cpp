@@ -423,6 +423,8 @@ void ThriftServer::setup() {
       setObserver(server::observerFactory_->getObserver());
     }
 
+    runtimeResourcePoolsChecks();
+
     if (!useResourcePoolsFlagsSet()) {
       // We always need a threadmanager for cpp2.
       LOG(INFO) << "Using thread manager (resource pools not enabled)";
@@ -641,6 +643,26 @@ void ThriftServer::setupThreadManager() {
     }
     threadManager->start();
     setThreadManagerInternal(threadManager);
+  }
+}
+
+void ThriftServer::runtimeResourcePoolsChecks() {
+  // Check whether there are any interactions
+  auto serverRequestInfoMap =
+      getDecoratedProcessorFactory().getServiceRequestInfoMap();
+  if (serverRequestInfoMap) {
+    for (auto const& request : serverRequestInfoMap.value().get()) {
+      if (request.second.interactionName) {
+        // We've found an interaction in this service. Mark it is incompatible
+        // with resource pools
+        LOG(INFO) << "Resource pools disabled. Interaction "
+                  << request.second.interactionName.value() << " on request "
+                  << request.first;
+        runtimeServerActions_.interactionInService = true;
+        runtimeDisableResourcePools();
+        break;
+      }
+    }
   }
 }
 
