@@ -9,6 +9,7 @@ import typing as _typing
 
 import enum
 
+import folly.iobuf as _fbthrift_iobuf
 import fbcode.thrift.py3lite.types as _fbthrift_py3lite_types
 import fbcode.thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
