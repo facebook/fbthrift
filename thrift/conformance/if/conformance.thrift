@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ namespace py thrift.conformance.conformance
 namespace py.asyncio thrift_asyncio.conformance.conformance
 namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
+namespace java2 org.apache.thrift.conformance
 namespace go thrift.conformance.conformance
 
 include "thrift/conformance/if/any.thrift"

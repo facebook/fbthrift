@@ -20,7 +20,7 @@ namespace cpp2 facebook.thrift.annotation.api
 namespace py3 facebook.thrift.annotation.api
 namespace php facebook_thrift_annotation_api
 namespace java2 com.facebook.thrift.annotation.api
-namespace java.swift com.facebook.thrift.annotation.api_swift
+namespace java.swift com.facebook.thrift.annotation.api
 namespace java com.facebook.thrift.annotation.api_deprecated
 namespace py.asyncio facebook_thrift_asyncio.annotation.api
 namespace go thrift.annotation.api
