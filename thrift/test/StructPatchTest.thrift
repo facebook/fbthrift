@@ -17,17 +17,16 @@
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/patch.thrift"
 
+@patch.GeneratePatch
 package "facebook.com/thrift/test/patch"
 
 namespace cpp2 apache.thrift.test.patch
 
-@patch.GeneratePatch
 struct MyData {
   1: string data1;
   2: i32 data2;
 }
 
-@patch.GeneratePatch
 struct MyStruct {
   1: bool boolVal;
   2: byte byteVal;

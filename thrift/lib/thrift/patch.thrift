@@ -25,6 +25,7 @@ namespace java2 com.facebook.thrift.op
 // An annotation that indicates a patch representation
 // should be generated for the associated definition.
 @scope.Struct
+@scope.Program
 @thrift.Experimental
 struct GeneratePatch {} (thrift.uri = "facebook.com/thrift/op/GeneratePatch")
 

@@ -29,6 +29,24 @@ constexpr auto kGeneratePatchUri = "facebook.com/thrift/op/GeneratePatch";
 constexpr auto kGenerateOptionalPatchUri =
     "facebook.com/thrift/op/GenerateOptionalPatch";
 
+const t_const* inherit_annotation_or_null(
+    const t_program& program, const t_named& node, const char* uri) {
+  if (const t_const* annot = node.find_structured_annotation_or_null(uri)) {
+    return annot;
+  } else if (node.generated()) { // Generated nodes do not inherit.
+    return nullptr;
+  }
+  return program.find_structured_annotation_or_null(uri);
+}
+const t_const* inherit_annotation_or_null(
+    diagnostic_context& ctx, const t_named& node, const char* uri) {
+  if (const t_program* program = dynamic_cast<const t_program*>(ctx.root())) {
+    return inherit_annotation_or_null(*program, node, uri);
+  }
+  ctx.failure("Could not resolve program.");
+  return nullptr;
+}
+
 // TODO(afuller): Index all types by uri, and find them that way.
 const char* getPatchTypeName(t_base_type::type base_type) {
   switch (base_type) {
@@ -230,7 +248,7 @@ void generate_optional_patch(
     diagnostic_context& ctx, mutator_context& mctx, t_struct& node) {
   if (auto* annot =
           node.find_structured_annotation_or_null(kGenerateOptionalPatchUri)) {
-    // Add a 'optional patch' for the given patch type..
+    // Add a 'optional patch' for the given patch type.
     if (t_type_ref value_type = resolve_value_type(node)) {
       patch_generator::get_for(ctx, mctx).add_optional_patch(
           *annot, value_type, node);
@@ -245,10 +263,9 @@ void generate_optional_patch(
 // annotation.
 void generate_struct_patch(
     diagnostic_context& ctx, mutator_context& mctx, t_struct& node) {
-  if (auto* annot =
-          node.find_structured_annotation_or_null(kGeneratePatchUri)) {
+  if (auto* annot = inherit_annotation_or_null(ctx, node, kGeneratePatchUri)) {
     // Add a 'structure patch' and 'struct value patch' using it.
-    auto generator = patch_generator::get_for(ctx, mctx);
+    auto& generator = patch_generator::get_for(ctx, mctx);
     auto& struct_patch = generator.add_structure_patch(*annot, node);
     auto& patch = generator.add_struct_value_patch(*annot, node, struct_patch);
 
@@ -396,6 +413,7 @@ t_struct& patch_generator::gen_struct(
     const t_node& annot, std::string name, std::string uri) {
   auto generated = std::make_unique<t_struct>(&program_, std::move(name));
   t_struct* ptr = generated.get();
+  generated->set_generated();
   generated->set_uri(std::move(uri));
   // Attribute the new struct to the anntation.
   generated->set_lineno(annot.lineno());

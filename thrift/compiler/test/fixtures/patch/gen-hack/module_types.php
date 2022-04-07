@@ -105,12 +105,7 @@ class MyData implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[
-        'GeneratePatch' => GeneratePatch::fromShape(
-          shape(
-          )
-        ),
-      ],
+      'struct' => dict[],
       'fields' => dict[
       ],
     );
@@ -850,31 +845,8 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
-      'struct' => dict[
-        'GeneratePatch' => GeneratePatch::fromShape(
-          shape(
-          )
-        ),
-      ],
+      'struct' => dict[],
       'fields' => dict[
-        'structVal' => shape(
-          'field' => dict[],
-          'type' => dict[
-            'GeneratePatch' => GeneratePatch::fromShape(
-              shape(
-              )
-            ),
-          ],
-        ),
-        'optStructVal' => shape(
-          'field' => dict[],
-          'type' => dict[
-            'GeneratePatch' => GeneratePatch::fromShape(
-              shape(
-              )
-            ),
-          ],
-        ),
       ],
     );
   }
@@ -1407,15 +1379,6 @@ class MyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'assign' => shape(
-          'field' => dict[],
-          'type' => dict[
-            'GeneratePatch' => GeneratePatch::fromShape(
-              shape(
-              )
-            ),
-          ],
-        ),
       ],
     );
   }
@@ -1640,15 +1603,6 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'ensure' => shape(
-          'field' => dict[],
-          'type' => dict[
-            'GeneratePatch' => GeneratePatch::fromShape(
-              shape(
-              )
-            ),
-          ],
-        ),
       ],
     );
   }
@@ -4456,15 +4410,6 @@ class MyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'assign' => shape(
-          'field' => dict[],
-          'type' => dict[
-            'GeneratePatch' => GeneratePatch::fromShape(
-              shape(
-              )
-            ),
-          ],
-        ),
       ],
     );
   }
@@ -4689,15 +4634,6 @@ class OptionalMyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishS
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'ensure' => shape(
-          'field' => dict[],
-          'type' => dict[
-            'GeneratePatch' => GeneratePatch::fromShape(
-              shape(
-              )
-            ),
-          ],
-        ),
       ],
     );
   }

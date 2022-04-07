@@ -58,6 +58,10 @@ class GeneratePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
+        'facebook_thrift_annotation_Program' => facebook_thrift_annotation_Program::fromShape(
+          shape(
+          )
+        ),
         'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
           shape(
           )

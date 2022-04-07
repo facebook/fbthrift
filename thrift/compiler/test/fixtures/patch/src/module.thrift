@@ -16,6 +16,7 @@
 
 include "thrift/lib/thrift/patch.thrift"
 
+@patch.GeneratePatch
 package "test.dev/fixtures/patch"
 
 namespace android test.fixtures.patch
@@ -23,13 +24,11 @@ namespace java test.fixtures.patch
 namespace java2 test.fixtures.patch
 namespace java.swift test.fixtures.patch
 
-@patch.GeneratePatch
 struct MyData {
   1: string data1;
   2: i32 data2;
 }
 
-@patch.GeneratePatch
 struct MyStruct {
   1: bool boolVal;
   2: byte byteVal;

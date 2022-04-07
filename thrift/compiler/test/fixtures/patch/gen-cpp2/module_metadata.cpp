@@ -49,7 +49,6 @@ StructMetadata<::cpp2::MyData>::gen(ThriftMetadata& metadata) {
     field.structured_annotations_ref() = f.structured_annotations;
     module_MyData.fields_ref()->push_back(std::move(field));
   }
-  module_MyData.structured_annotations_ref()->push_back(*cvStruct("patch.GeneratePatch", {}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
@@ -96,7 +95,6 @@ StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
     field.structured_annotations_ref() = f.structured_annotations;
     module_MyStruct.fields_ref()->push_back(std::move(field));
   }
-  module_MyStruct.structured_annotations_ref()->push_back(*cvStruct("patch.GeneratePatch", {}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&

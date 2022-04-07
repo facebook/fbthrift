@@ -25,6 +25,7 @@ def _fbthrift_gen_metadata_struct_GeneratePatch(metadata_struct: _fbthrift_metad
         is_union=False,
         structured_annotations=[
             _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="scope.Struct"), fields= {  }),
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="scope.Program"), fields= {  }),
             _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="thrift.Experimental"), fields= {  }),
         ])
     new_struct = metadata_struct(structs=struct_dict)

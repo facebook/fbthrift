@@ -55,6 +55,10 @@ class t_named : public t_node {
   const std::string& uri() const { return uri_; }
   void set_uri(std::string uri) { uri_ = std::move(uri); }
 
+  // If this struct was generated rather than defined directly in the IDL.
+  bool generated() const noexcept { return generated_; }
+  void set_generated(bool value = true) { generated_ = value; }
+
  protected:
   // t_named is abstract.
   t_named() = default;
@@ -64,6 +68,7 @@ class t_named : public t_node {
   std::string name_;
 
  private:
+  bool generated_ = false;
   std::string uri_;
   std::vector<std::shared_ptr<const t_const>> structured_annotations_;
 
