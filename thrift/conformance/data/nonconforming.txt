@@ -5,11 +5,19 @@ cpp2/RoundTripTest/double/NaN.Binary
 cpp2/RoundTripTest/float/NaN.Compact
 cpp2/RoundTripTest/float/NaN.Binary
 cpp2/RoundTripTest/float/NaN.SimpleJson
+cpp2/RoundTripTest/testset.float/NaN.Binary
+cpp2/RoundTripTest/testset.float/NaN.Compact
+cpp2/RoundTripTest/testset.double/NaN.Binary
+cpp2/RoundTripTest/testset.double/NaN.Compact
 # Python: NaN
 python/RoundTripTest/double/NaN.Binary
 python/RoundTripTest/double/NaN.Compact
 python/RoundTripTest/float/NaN.Binary
 python/RoundTripTest/float/NaN.Compact
+python/RoundTripTest/testset.float/NaN.Binary
+python/RoundTripTest/testset.float/NaN.Compact
+python/RoundTripTest/testset.double/NaN.Binary
+python/RoundTripTest/testset.double/NaN.Compact
 # Python: SimpleJSON
 python/RoundTripTest/binary/bad_utf8.SimpleJson
 python/RoundTripTest/binary/empty.SimpleJson

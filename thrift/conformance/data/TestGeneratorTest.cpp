@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,43 +26,28 @@
 namespace apache::thrift::conformance::data {
 
 TEST(TestGeneratorTest, RoundTripSuite) {
-  AnyRegistry registry;
-  registry.registerType<Value>(
-      createThriftTypeInfo({"facebook.com/thrift/conformance/Value"}));
-  registry.registerSerializer<Value>(
-      &getAnyStandardSerializer<Value, StandardProtocol::Binary>());
-  registry.registerSerializer<Value>(
-      &getAnyStandardSerializer<Value, StandardProtocol::Compact>());
-  registry.registerSerializer<Value>(
-      &getAnyStandardSerializer<Value, StandardProtocol::Json>());
-  registry.registerSerializer<Value>(
-      &getAnyStandardSerializer<Value, StandardProtocol::SimpleJson>());
-  auto suite = createRoundTripSuite(
-      {
-          StandardProtocol::Binary,
-          StandardProtocol::Compact,
-          StandardProtocol::Json,
-          StandardProtocol::SimpleJson,
-      },
-      registry);
-
-  constexpr size_t kNumProtocols = 4;
+  auto suite = createRoundTripSuite();
+  constexpr size_t kNumProtocols = 2;
   constexpr size_t kNumTypes = 8;
-  EXPECT_EQ(*suite.name_ref(), "RoundTripTest");
-  ASSERT_EQ(suite.tests_ref()->size(), kNumProtocols * kNumTypes);
+  EXPECT_EQ(*suite.name(), "RoundTripTest");
+  ASSERT_EQ(suite.tests()->size(), kNumProtocols * kNumTypes);
+  EXPECT_EQ(*suite.tests()->at(0 * kNumTypes).name(), "Binary");
+  EXPECT_EQ(*suite.tests()->at(1 * kNumTypes).name(), "Compact");
 
-  EXPECT_EQ(*suite.tests_ref()->at(0 * kNumTypes).name_ref(), "Binary");
-  EXPECT_EQ(*suite.tests_ref()->at(1 * kNumTypes).name_ref(), "Compact");
-  EXPECT_EQ(*suite.tests_ref()->at(2 * kNumTypes).name_ref(), "Json");
-  EXPECT_EQ(*suite.tests_ref()->at(3 * kNumTypes).name_ref(), "SimpleJson");
+  const auto& test = suite.tests()->at(1);
+  EXPECT_EQ(*test.name(), "Binary");
+  ASSERT_GT(test.testCases()->size(), 0);
 
-  const auto& test = suite.tests_ref()->at(1);
-  EXPECT_EQ(*test.name_ref(), "Binary");
-
-  ASSERT_GT(test.testCases_ref()->size(), 0);
-  const auto& testCase = test.testCases_ref()->at(0);
-  EXPECT_EQ(*testCase.name_ref(), "byte/zero");
-  EXPECT_EQ(testCase.test_ref()->getType(), TestCaseUnion::roundTrip);
+  {
+    const auto& testCase = test.testCases()->at(0);
+    EXPECT_EQ(*testCase.name(), "byte/zero");
+    EXPECT_TRUE(testCase.test()->roundTrip_ref());
+  }
+  {
+    const auto& testCase = test.testCases()->at(1);
+    EXPECT_EQ(*testCase.name(), "testset.byte/zero");
+    EXPECT_TRUE(testCase.test()->roundTrip_ref());
+  }
 }
 
 } // namespace apache::thrift::conformance::data

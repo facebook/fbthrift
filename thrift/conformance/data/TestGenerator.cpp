@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 #include <thrift/conformance/cpp2/Object.h>
 #include <thrift/conformance/data/ValueGenerator.h>
 #include <thrift/lib/cpp2/type/Name.h>
+#include <thrift/test/testset/Testset.h>
 
 namespace apache::thrift::conformance::data {
 
@@ -29,16 +30,29 @@ namespace {
 template <typename TT>
 Test createRoundTripTest(
     const AnyRegistry& registry, const Protocol& protocol) {
+  using namespace apache::thrift::test::testset::detail;
+
   Test test;
   test.name_ref() = protocol.name();
   for (const auto& value : ValueGenerator<TT>::getInterestingValues()) {
+    // Test case #1: Use ValueStruct
     RoundTripTestCase roundTrip;
     roundTrip.request_ref()->value_ref() =
         registry.store(asValueStruct<TT>(value.value), protocol);
 
-    auto& testCase = test.testCases_ref()->emplace_back();
-    testCase.name_ref() = fmt::format("{}/{}", type::getName<TT>(), value.name);
-    testCase.test_ref()->set_roundTrip(std::move(roundTrip));
+    auto& testCase1 = test.testCases_ref()->emplace_back();
+    testCase1.name_ref() =
+        fmt::format("{}/{}", type::getName<TT>(), value.name);
+    testCase1.test_ref()->set_roundTrip(roundTrip);
+
+    // Test case #2: Use Testset
+    typename struct_ByFieldType<TT, mod_set<>>::type data;
+    data.field_1_ref() = value.value;
+    roundTrip.request_ref()->value_ref() = registry.store(data, protocol);
+    auto& testCase2 = test.testCases_ref()->emplace_back();
+    testCase2.name_ref() =
+        fmt::format("testset.{}/{}", type::getName<TT>(), value.name);
+    testCase2.test_ref()->set_roundTrip(roundTrip);
   }
 
   return test;
