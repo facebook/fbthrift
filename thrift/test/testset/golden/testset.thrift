@@ -3,6 +3,12 @@
 
 namespace cpp2 apache.thrift.test.testset
 namespace py3 thrift.test
+namespace php apache_thrift
+namespace py thrift.test.testset
+namespace py.asyncio thrift_asyncio.test.testset
+namespace java.swift org.apache.thrift.test
+namespace go thrift.test.testset
+namespace java2 org.apache.thrift.test
 
 struct struct_empty {
 } (thrift.uri="facebook.com/thrift/test/testset/struct_empty")
