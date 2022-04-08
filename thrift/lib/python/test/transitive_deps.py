@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from folly cimport cFollyExecutor, cFollyPromise
-from folly.async_generator cimport cAsyncGenerator
+import unittest
 
-from thrift.py3.std_libcpp cimport optional
+from transitive_deps.a.thrift_types import A
 
-cdef extern from "thrift/lib/py3lite/util.h" namespace "::thrift::py3lite":
-  cAsyncGenerator[TChunk] toAsyncGenerator[TChunk](
-    object,
-    cFollyExecutor*,
-    void(*)(object, cFollyPromise[optional[TChunk]])
-  )
 
-cdef public api void cancelAsyncGenerator(object generator)
+class TransitiveDepsTest(unittest.TestCase):
+    def test_a(self) -> None:
+        A()

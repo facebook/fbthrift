@@ -18,8 +18,8 @@
 
 #include <folly/CppAttributes.h>
 #include <folly/Portability.h>
-#include <thrift/lib/py3lite/util.h>
-#include <thrift/lib/py3lite/util_api.h> // @manual
+#include <thrift/lib/python/util.h>
+#include <thrift/lib/python/util_api.h> // @manual
 
 #if FOLLY_HAS_COROUTINES
 

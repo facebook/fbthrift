@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/py3lite/server/server.h>
-#include <thrift/lib/py3lite/server/server_api.h> // @manual
+#include <thrift/lib/python/server/server.h>
+#include <thrift/lib/python/server/server_api.h> // @manual
 
 namespace thrift {
 namespace py3lite {

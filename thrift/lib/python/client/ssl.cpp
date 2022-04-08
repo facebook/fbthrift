@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/py3lite/client/ssl.h>
+#include <thrift/lib/python/client/ssl.h>
 
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
-#include <thrift/lib/py3lite/client/RequestChannel.h>
+#include <thrift/lib/python/client/RequestChannel.h>
 
 namespace thrift {
 namespace py3lite {

@@ -29,7 +29,7 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h" namespace "::a
         SINGLE_REQUEST_STREAMING_RESPONSE = 4,
         SINK = 6,
 
-cdef extern from "thrift/lib/py3lite/client/OmniClient.h" namespace "::thrift::py3lite::client":
+cdef extern from "thrift/lib/python/client/OmniClient.h" namespace "::thrift::py3lite::client":
     cdef cppclass cOmniClientResponseWithHeaders "::thrift::py3lite::client::OmniClientResponseWithHeaders":
         cExpected[unique_ptr[cIOBuf], cFollyExceptionWrapper] buf
         cmap[string, string] headers

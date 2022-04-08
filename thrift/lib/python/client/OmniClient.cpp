@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/py3lite/client/OmniClient.h>
+#include <thrift/lib/python/client/OmniClient.h>
 
 #include <fmt/format.h>
 #include <folly/experimental/coro/BlockingWait.h>

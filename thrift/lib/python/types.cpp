@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/py3lite/types.h>
-#include <thrift/lib/py3lite/types_api.h> // @manual
+#include <thrift/lib/python/types.h>
+#include <thrift/lib/python/types_api.h> // @manual
 
 #include <folly/Indestructible.h>
 #include <folly/Range.h>

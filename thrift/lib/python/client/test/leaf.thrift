@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-include "thrift/lib/py3lite/client/test/test.thrift"
+include "thrift/lib/python/client/test/test.thrift"
 
 namespace cpp2 thrift.py3lite.test
 namespace py3 thrift.py3lite

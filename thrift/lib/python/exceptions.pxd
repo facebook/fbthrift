@@ -74,7 +74,7 @@ cdef extern from "thrift/lib/cpp/transport/TTransportException.h" namespace "apa
         int getErrno()
 
 
-cdef extern from "thrift/lib/py3lite/exceptions.h" namespace "::thrift::py3lite::exception":
+cdef extern from "thrift/lib/python/exceptions.h" namespace "::thrift::py3lite::exception":
     cdef unique_ptr[T] try_make_unique_exception[T](const cFollyExceptionWrapper& ex)
 
 

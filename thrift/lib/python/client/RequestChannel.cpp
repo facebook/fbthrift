@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/py3lite/client/RequestChannel.h>
+#include <thrift/lib/python/client/RequestChannel.h>
 
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/transport/THeader.h>
