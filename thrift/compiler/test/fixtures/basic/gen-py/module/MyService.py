@@ -1896,6 +1896,14 @@ class Client(Iface):
       except AttributeError:
         pass
 
+  def get_last_response_headers(self):
+    if self._fbthrift_cpp_transport:
+      return self._fbthrift_cpp_transport.get_last_response_headers()
+    try:
+      return self._iprot.trans.get_headers()
+    except AttributeError:
+      return {}
+
   def set_max_frame_size(self, size):
     if self._fbthrift_cpp_transport:
       pass

@@ -2363,6 +2363,18 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
       << indent() << "      pass" << endl
       << endl;
 
+  f_service_
+      << indent() << "def get_last_response_headers(self):" << endl
+      << indent() << "  if self._fbthrift_cpp_transport:" << endl
+      << indent()
+      << "    return self._fbthrift_cpp_transport.get_last_response_headers()"
+      << endl
+      << indent() << "  try:" << endl
+      << indent() << "    return self._iprot.trans.get_headers()" << endl
+      << indent() << "  except AttributeError:" << endl
+      << indent() << "    return {}" << endl
+      << endl;
+
   f_service_ << indent() << "def set_max_frame_size(self, size):" << endl
              << indent() << "  if self._fbthrift_cpp_transport:" << endl
              << indent() << "    pass" << endl
