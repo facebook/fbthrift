@@ -22,13 +22,11 @@ void DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey0(apache::
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &DbMixedStackArgumentsAsyncProcessor::process_getDataByKey0<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey0<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey0(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -44,7 +42,7 @@ void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey0(apache::t
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "getDataByKey0");
     return;
@@ -121,13 +119,11 @@ void DbMixedStackArgumentsAsyncProcessor::setUpAndProcess_getDataByKey1(apache::
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &DbMixedStackArgumentsAsyncProcessor::process_getDataByKey1<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey1<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey1(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -143,7 +139,7 @@ void DbMixedStackArgumentsAsyncProcessor::executeRequest_getDataByKey1(apache::t
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "getDataByKey1");
     return;

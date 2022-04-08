@@ -74,38 +74,6 @@ template <typename T>
 struct HandlerCallbackHelper;
 }
 
-class EventTask : public concurrency::Runnable, public InteractionTask {
- public:
-  EventTask(
-      ResponseChannelRequest::UniquePtr req,
-      SerializedCompressedRequest&& serializedRequest,
-      folly::EventBase* eb,
-      concurrency::ThreadManager* tm,
-      Cpp2RequestContext* ctx,
-      bool oneway)
-      : req_(std::move(req)),
-        serializedRequest_(std::move(serializedRequest)),
-        ctx_(ctx),
-        eb_(eb),
-        tm_(tm),
-        oneway_(oneway) {}
-
-  ~EventTask() override;
-
-  void expired();
-  void failWith(folly::exception_wrapper ex, std::string exCode) override;
-
-  void setTile(TilePtr&& tile) override;
-
- protected:
-  ResponseChannelRequest::UniquePtr req_;
-  SerializedCompressedRequest serializedRequest_;
-  Cpp2RequestContext* ctx_;
-  folly::EventBase* eb_;
-  concurrency::ThreadManager* tm_;
-  bool oneway_;
-};
-
 class AsyncProcessor;
 class ServiceHandlerBase;
 class ServerRequest;
@@ -523,12 +491,13 @@ class ServerRequest {
 
   // The executor is only available once the request has been assigned to
   // a resource pool.
-  static folly::Executor* executor(ServerRequest& sr) {
+  static folly::Executor::KeepAlive<> executor(ServerRequest& sr) {
     return sr.executor_ ? sr.executor_ : eventBase(sr);
   }
 
-  static void setExecutor(ServerRequest& sr, folly::Executor* executor) {
-    sr.executor_ = executor;
+  static void setExecutor(
+      ServerRequest& sr, folly::Executor::KeepAlive<> executor) {
+    sr.executor_ = std::move(executor);
   }
 
   static protocol::PROTOCOL_TYPES protocol(ServerRequest& sr) {
@@ -558,7 +527,7 @@ class ServerRequest {
  private:
   ResponseChannelRequest::UniquePtr request_;
   SerializedCompressedRequest serializedRequest_;
-  folly::Executor* executor_{nullptr};
+  folly::Executor::KeepAlive<> executor_{};
   Cpp2RequestContext* ctx_;
   protocol::PROTOCOL_TYPES protocol_;
   std::shared_ptr<folly::RequestContext> follyRequestContext_;
@@ -708,7 +677,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
       RpcKind kind,
-      ProcessFunc<ChildType> processFunc,
+      ExecuteFunc<ChildType> executeFunc,
       ChildType* childClass);
 
  private:
@@ -717,10 +686,9 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       ResponseChannelRequest::UniquePtr req,
       SerializedCompressedRequest&& serializedRequest,
       Cpp2RequestContext* ctx,
-      folly::EventBase* eb,
-      concurrency::ThreadManager* tm,
+      folly::Executor::KeepAlive<> executor,
       RpcKind kind,
-      ProcessFunc<ChildType> processFunc,
+      ExecuteFunc<ChildType> executeFunc,
       ChildType* childClass,
       Tile* tile);
 
@@ -745,36 +713,64 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       Cpp2ConnContext& conn, folly::EventBase&) noexcept final;
 };
 
+class EventTask : public concurrency::Runnable, public InteractionTask {
+ public:
+  EventTask(
+      ResponseChannelRequest::UniquePtr req,
+      SerializedCompressedRequest&& serializedRequest,
+      folly::Executor::KeepAlive<> executor,
+      Cpp2RequestContext* ctx,
+      bool oneway)
+      : req_(
+            std::move(req),
+            std::move(serializedRequest),
+            ctx,
+            {},
+            {},
+            {},
+            {},
+            {}),
+        oneway_(oneway) {
+    detail::ServerRequestHelper::setExecutor(req_, std::move(executor));
+  }
+
+  ~EventTask() override;
+
+  void expired();
+  void failWith(folly::exception_wrapper ex, std::string exCode) override;
+
+  void setTile(TilePtr&& tile) override;
+
+ protected:
+  ServerRequest req_;
+  bool oneway_;
+};
+
 template <typename ChildType>
 class RequestTask final : public EventTask {
  public:
   RequestTask(
       ResponseChannelRequest::UniquePtr req,
       SerializedCompressedRequest&& serializedRequest,
-      folly::EventBase* eb,
-      concurrency::ThreadManager* tm,
+      folly::Executor::KeepAlive<> executor,
       Cpp2RequestContext* ctx,
       bool oneway,
       ChildType* childClass,
-      GeneratedAsyncProcessor::ProcessFunc<ChildType> processFunc)
+      GeneratedAsyncProcessor::ExecuteFunc<ChildType> executeFunc)
       : EventTask(
-            std::move(req), std::move(serializedRequest), eb, tm, ctx, oneway),
+            std::move(req),
+            std::move(serializedRequest),
+            std::move(executor),
+            ctx,
+            oneway),
         childClass_(childClass),
-        processFunc_(processFunc) {}
+        executeFunc_(executeFunc) {}
 
-  void run() override {
-    if (ctx_->getTimestamps().getSamplingStatus().isEnabled()) {
-      // Since this request was queued, reset the processBegin
-      // time to the actual start time, and not the queue time.
-      ctx_->getTimestamps().processBegin = std::chrono::steady_clock::now();
-    }
-    (childClass_->*processFunc_)(
-        std::move(req_), std::move(serializedRequest_), ctx_, eb_, tm_);
-  }
+  void run() override;
 
  private:
   ChildType* childClass_;
-  GeneratedAsyncProcessor::ProcessFunc<ChildType> processFunc_;
+  GeneratedAsyncProcessor::ExecuteFunc<ChildType> executeFunc_;
 };
 
 /**
@@ -1137,7 +1133,7 @@ class HandlerCallbackBase {
       std::unique_ptr<ContextStack> ctx,
       exnw_ptr ewp,
       folly::EventBase* eb,
-      folly::Executor* executor,
+      folly::Executor::KeepAlive<> executor,
       Cpp2RequestContext* reqCtx,
       RequestPileInterface* notifyRequestPile,
       RequestPileInterface::UserData notifyRequestPileUserData,
@@ -1150,7 +1146,7 @@ class HandlerCallbackBase {
         interaction_(std::move(interaction)),
         ewp_(ewp),
         eb_(eb),
-        executor_(executor),
+        executor_(std::move(executor)),
         reqCtx_(reqCtx),
         protoSeqId_(0),
         notifyRequestPile_(notifyRequestPile),
@@ -1299,7 +1295,7 @@ class HandlerCallback : public HandlerCallbackBase {
       exnw_ptr ewp,
       int32_t protoSeqId,
       folly::EventBase* eb,
-      folly::Executor* executor,
+      folly::Executor::KeepAlive<> executor,
       Cpp2RequestContext* reqCtx,
       RequestPileInterface* notifyRequestPile,
       RequestPileInterface::UserData notifyRequestPileUserData,
@@ -1347,7 +1343,7 @@ class HandlerCallback<void> : public HandlerCallbackBase {
       exnw_ptr ewp,
       int32_t protoSeqId,
       folly::EventBase* eb,
-      folly::Executor* executor,
+      folly::Executor::KeepAlive<> executor,
       Cpp2RequestContext* reqCtx,
       RequestPileInterface* notifyRequestPile,
       RequestPileInterface::UserData notifyRequestPileUserData,
@@ -1539,23 +1535,25 @@ GeneratedAsyncProcessor::makeEventTaskForRequest(
     ResponseChannelRequest::UniquePtr req,
     SerializedCompressedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
-    folly::EventBase* eb,
-    concurrency::ThreadManager* tm,
+    folly::Executor::KeepAlive<> executor,
     RpcKind kind,
-    ProcessFunc<ChildType> processFunc,
+    ExecuteFunc<ChildType> executeFunc,
     ChildType* childClass,
     Tile* tile) {
   auto task = std::make_unique<RequestTask<ChildType>>(
       std::move(req),
       std::move(serializedRequest),
-      eb,
-      tm,
+      std::move(executor),
       ctx,
       kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE,
       childClass,
-      processFunc);
+      executeFunc);
   if (tile) {
-    task->setTile({tile, eb});
+    task->setTile(
+        {tile,
+         ctx->getConnectionContext()
+             ->getWorkerContext()
+             ->getWorkerEventBase()});
   }
   return task;
 }
@@ -1565,10 +1563,10 @@ void GeneratedAsyncProcessor::processInThread(
     ResponseChannelRequest::UniquePtr req,
     SerializedCompressedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
-    folly::EventBase* eb,
+    folly::EventBase*,
     concurrency::ThreadManager* tm,
     RpcKind kind,
-    ProcessFunc<ChildType> processFunc,
+    ExecuteFunc<ChildType> executeFunc,
     ChildType* childClass) {
   Tile* tile = nullptr;
   if (auto interactionId = ctx->getInteractionId()) { // includes create
@@ -1588,10 +1586,11 @@ void GeneratedAsyncProcessor::processInThread(
       std::move(req),
       std::move(serializedRequest),
       ctx,
-      eb,
-      tm,
+      tm ? tm->getKeepAlive(
+               std::move(scope), concurrency::ThreadManager::Source::INTERNAL)
+         : folly::Executor::KeepAlive{},
       kind,
-      processFunc,
+      executeFunc,
       childClass,
       tile);
 
@@ -1689,7 +1688,7 @@ HandlerCallback<T>::HandlerCallback(
     exnw_ptr ewp,
     int32_t protoSeqId,
     folly::EventBase* eb,
-    folly::Executor* executor,
+    folly::Executor::KeepAlive<> executor,
     Cpp2RequestContext* reqCtx,
     RequestPileInterface* notifyRequestPile,
     RequestPileInterface::UserData notifyRequestPileUserData,
@@ -1702,7 +1701,7 @@ HandlerCallback<T>::HandlerCallback(
           std::move(ctx),
           ewp,
           eb,
-          executor,
+          std::move(executor),
           reqCtx,
           notifyRequestPile,
           notifyRequestPileUserData,
@@ -1811,6 +1810,23 @@ struct HandlerCallbackHelper<SinkConsumer<SinkElement, FinalResponse>>
           SinkConsumer<SinkElement, FinalResponse>> {};
 
 } // namespace detail
+
+template <typename ChildType>
+void RequestTask<ChildType>::run() {
+  if (req_.requestContext()->getTimestamps().getSamplingStatus().isEnabled()) {
+    // Since this request was queued, reset the processBegin
+    // time to the actual start time, and not the queue time.
+    req_.requestContext()->getTimestamps().processBegin =
+        std::chrono::steady_clock::now();
+  }
+  if (!oneway_ && !req_.request()->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(
+        apache::thrift::detail::ServerRequestHelper::request(std::move(req_)),
+        apache::thrift::detail::ServerRequestHelper::eventBase(req_));
+    return;
+  }
+  (childClass_->*executeFunc_)(std::move(req_));
+}
 
 } // namespace thrift
 } // namespace apache

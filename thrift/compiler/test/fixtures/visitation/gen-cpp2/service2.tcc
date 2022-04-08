@@ -30,13 +30,11 @@ void service2AsyncProcessor::setUpAndProcess_methodA(apache::thrift::ResponseCha
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::process_methodA<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::executeRequest_methodA<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service2AsyncProcessor::executeRequest_methodA(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -50,7 +48,7 @@ void service2AsyncProcessor::executeRequest_methodA(apache::thrift::ServerReques
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "methodA");
     return;
@@ -123,13 +121,11 @@ void service2AsyncProcessor::setUpAndProcess_methodB(apache::thrift::ResponseCha
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::process_methodB<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::executeRequest_methodB<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service2AsyncProcessor::executeRequest_methodB(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -149,7 +145,7 @@ void service2AsyncProcessor::executeRequest_methodB(apache::thrift::ServerReques
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "methodB");
     return;
@@ -228,13 +224,11 @@ void service2AsyncProcessor::setUpAndProcess_methodC(apache::thrift::ResponseCha
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::process_methodC<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::executeRequest_methodC<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service2AsyncProcessor::executeRequest_methodC(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -248,7 +242,7 @@ void service2AsyncProcessor::executeRequest_methodC(apache::thrift::ServerReques
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "methodC");
     return;
@@ -323,13 +317,11 @@ void service2AsyncProcessor::setUpAndProcess_methodD(apache::thrift::ResponseCha
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::process_methodD<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::executeRequest_methodD<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service2AsyncProcessor::executeRequest_methodD(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -349,7 +341,7 @@ void service2AsyncProcessor::executeRequest_methodD(apache::thrift::ServerReques
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "methodD");
     return;
@@ -430,13 +422,11 @@ void service2AsyncProcessor::setUpAndProcess_methodE(apache::thrift::ResponseCha
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::process_methodE<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::executeRequest_methodE<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service2AsyncProcessor::executeRequest_methodE(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -450,7 +440,7 @@ void service2AsyncProcessor::executeRequest_methodE(apache::thrift::ServerReques
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "methodE");
     return;
@@ -525,13 +515,11 @@ void service2AsyncProcessor::setUpAndProcess_methodF(apache::thrift::ResponseCha
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::process_methodF<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &service2AsyncProcessor::executeRequest_methodF<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void service2AsyncProcessor::executeRequest_methodF(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -551,7 +539,7 @@ void service2AsyncProcessor::executeRequest_methodF(apache::thrift::ServerReques
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "methodF");
     return;

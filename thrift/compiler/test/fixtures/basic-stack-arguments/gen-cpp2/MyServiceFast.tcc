@@ -43,7 +43,7 @@ void MyServiceFastAsyncProcessor::executeRequest_hasDataById(apache::thrift::Ser
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "hasDataById");
     return;
@@ -138,7 +138,7 @@ void MyServiceFastAsyncProcessor::executeRequest_getDataById(apache::thrift::Ser
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "getDataById");
     return;
@@ -235,7 +235,7 @@ void MyServiceFastAsyncProcessor::executeRequest_putDataById(apache::thrift::Ser
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "putDataById");
     return;

@@ -29,13 +29,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_foo(apache::thrift::ResponseChanne
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_foo<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::executeRequest_foo<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::executeRequest_foo(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -49,7 +47,7 @@ void MyServiceAsyncProcessor::executeRequest_foo(apache::thrift::ServerRequest&&
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "foo");
     return;
@@ -122,14 +120,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_interact(apache::thrift::ResponseC
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_interact<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::executeRequest_interact<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::executeRequest_interact(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
-  LOG(FATAL) << "interactions unsupported in this build";
   auto tile = serverRequest.requestContext()->releaseTile();
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -146,7 +141,7 @@ void MyServiceAsyncProcessor::executeRequest_interact(apache::thrift::ServerRequ
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "interact");
     return;
@@ -164,7 +159,7 @@ void MyServiceAsyncProcessor::executeRequest_interact(apache::thrift::ServerRequ
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    );
+    , std::move(tile));
   iface_->async_tm_interact(std::move(callback), args.get<0>().ref());
 }
 
@@ -222,14 +217,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_interactFast(apache::thrift::Respo
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_interactFast<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::executeRequest_interactFast<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::executeRequest_interactFast(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
-  LOG(FATAL) << "interactions unsupported in this build";
   auto tile = serverRequest.requestContext()->releaseTile();
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -244,7 +236,7 @@ void MyServiceAsyncProcessor::executeRequest_interactFast(apache::thrift::Server
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "interactFast");
     return;
@@ -262,7 +254,7 @@ void MyServiceAsyncProcessor::executeRequest_interactFast(apache::thrift::Server
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    );
+    , std::move(tile));
   iface_->async_tm_interactFast(std::move(callback));
 }
 
@@ -320,14 +312,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_serialize(apache::thrift::Response
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &MyServiceAsyncProcessor::process_serialize<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &MyServiceAsyncProcessor::executeRequest_serialize<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::executeRequest_serialize(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
-  LOG(FATAL) << "interactions unsupported in this build";
   auto tile = serverRequest.requestContext()->releaseTile();
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -342,7 +331,7 @@ void MyServiceAsyncProcessor::executeRequest_serialize(apache::thrift::ServerReq
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "serialize");
     return;
@@ -360,7 +349,7 @@ void MyServiceAsyncProcessor::executeRequest_serialize(apache::thrift::ServerReq
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    );
+    , std::move(tile));
   iface_->async_tm_serialize(std::move(callback));
 }
 
@@ -438,14 +427,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_frobnicate(apache::t
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_MyInteraction_frobnicate<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::executeRequest_MyInteraction_frobnicate<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::executeRequest_MyInteraction_frobnicate(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
-  LOG(FATAL) << "interactions unsupported in this build";
   auto tile = serverRequest.requestContext()->releaseTile();
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -461,7 +447,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteraction_frobnicate(apache::th
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "MyInteraction.frobnicate");
     return;
@@ -555,14 +541,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_ping(apache::thrift:
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &MyServiceAsyncProcessor::process_MyInteraction_ping<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &MyServiceAsyncProcessor::executeRequest_MyInteraction_ping<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::executeRequest_MyInteraction_ping(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
-  LOG(FATAL) << "interactions unsupported in this build";
   auto tile = serverRequest.requestContext()->releaseTile();
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -621,14 +604,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_truthify(apache::thr
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &MyServiceAsyncProcessor::process_MyInteraction_truthify<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &MyServiceAsyncProcessor::executeRequest_MyInteraction_truthify<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::executeRequest_MyInteraction_truthify(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
-  LOG(FATAL) << "interactions unsupported in this build";
   auto tile = serverRequest.requestContext()->releaseTile();
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -644,7 +624,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteraction_truthify(apache::thri
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "MyInteraction.truthify");
     return;
@@ -724,14 +704,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteraction_encode(apache::thrif
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &MyServiceAsyncProcessor::process_MyInteraction_encode<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &MyServiceAsyncProcessor::executeRequest_MyInteraction_encode<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::executeRequest_MyInteraction_encode(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
-  LOG(FATAL) << "interactions unsupported in this build";
   auto tile = serverRequest.requestContext()->releaseTile();
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -747,7 +724,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteraction_encode(apache::thrift
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "MyInteraction.encode");
     return;
@@ -851,12 +828,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_frobnicate(apach
     return;
   }
   (void)tm;
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_MyInteractionFast_frobnicate<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::executeRequest_MyInteractionFast_frobnicate<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_frobnicate(apache::thrift::ServerRequest&& serverRequest) {
-  LOG(FATAL) << "interactions unsupported in this build";
   auto tile = serverRequest.requestContext()->releaseTile();
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -872,7 +848,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_frobnicate(apache
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "MyInteractionFast.frobnicate");
     return;
@@ -948,12 +924,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_ping(apache::thr
     return;
   }
   (void)tm;
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &MyServiceAsyncProcessor::process_MyInteractionFast_ping<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &MyServiceAsyncProcessor::executeRequest_MyInteractionFast_ping<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_ping(apache::thrift::ServerRequest&& serverRequest) {
-  LOG(FATAL) << "interactions unsupported in this build";
   auto tile = serverRequest.requestContext()->releaseTile();
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -1011,12 +986,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_truthify(apache:
     return;
   }
   (void)tm;
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &MyServiceAsyncProcessor::process_MyInteractionFast_truthify<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &MyServiceAsyncProcessor::executeRequest_MyInteractionFast_truthify<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_truthify(apache::thrift::ServerRequest&& serverRequest) {
-  LOG(FATAL) << "interactions unsupported in this build";
   auto tile = serverRequest.requestContext()->releaseTile();
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -1032,7 +1006,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_truthify(apache::
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "MyInteractionFast.truthify");
     return;
@@ -1111,12 +1085,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_MyInteractionFast_encode(apache::t
     return;
   }
   (void)tm;
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, apache::thrift::RpcKind::SINK, &MyServiceAsyncProcessor::process_MyInteractionFast_encode<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, apache::thrift::RpcKind::SINK, &MyServiceAsyncProcessor::executeRequest_MyInteractionFast_encode<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_encode(apache::thrift::ServerRequest&& serverRequest) {
-  LOG(FATAL) << "interactions unsupported in this build";
   auto tile = serverRequest.requestContext()->releaseTile();
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -1132,7 +1105,7 @@ void MyServiceAsyncProcessor::executeRequest_MyInteractionFast_encode(apache::th
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "MyInteractionFast.encode");
     return;
@@ -1225,14 +1198,11 @@ void MyServiceAsyncProcessor::setUpAndProcess_SerialInteraction_frobnicate(apach
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::process_SerialInteraction_frobnicate<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServiceAsyncProcessor::executeRequest_SerialInteraction_frobnicate<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceAsyncProcessor::executeRequest_SerialInteraction_frobnicate(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
-  LOG(FATAL) << "interactions unsupported in this build";
   auto tile = serverRequest.requestContext()->releaseTile();
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
@@ -1248,7 +1218,7 @@ void MyServiceAsyncProcessor::executeRequest_SerialInteraction_frobnicate(apache
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "SerialInteraction.frobnicate");
     return;

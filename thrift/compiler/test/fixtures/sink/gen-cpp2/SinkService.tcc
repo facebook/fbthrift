@@ -60,13 +60,11 @@ void SinkServiceAsyncProcessor::setUpAndProcess_method(apache::thrift::ResponseC
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_method<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::executeRequest_method<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::executeRequest_method(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -80,7 +78,7 @@ void SinkServiceAsyncProcessor::executeRequest_method(apache::thrift::ServerRequ
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "method");
     return;
@@ -167,13 +165,11 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodAndReponse(apache::thrift:
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodAndReponse<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::executeRequest_methodAndReponse<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::executeRequest_methodAndReponse(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -187,7 +183,7 @@ void SinkServiceAsyncProcessor::executeRequest_methodAndReponse(apache::thrift::
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "methodAndReponse");
     return;
@@ -276,13 +272,11 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodThrow(apache::thrift::Resp
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodThrow<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::executeRequest_methodThrow<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::executeRequest_methodThrow(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -296,7 +290,7 @@ void SinkServiceAsyncProcessor::executeRequest_methodThrow(apache::thrift::Serve
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "methodThrow");
     return;
@@ -400,13 +394,11 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodSinkThrow(apache::thrift::
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodSinkThrow<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::executeRequest_methodSinkThrow<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::executeRequest_methodSinkThrow(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -420,7 +412,7 @@ void SinkServiceAsyncProcessor::executeRequest_methodSinkThrow(apache::thrift::S
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "methodSinkThrow");
     return;
@@ -507,13 +499,11 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodFinalThrow(apache::thrift:
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodFinalThrow<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::executeRequest_methodFinalThrow<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::executeRequest_methodFinalThrow(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -527,7 +517,7 @@ void SinkServiceAsyncProcessor::executeRequest_methodFinalThrow(apache::thrift::
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "methodFinalThrow");
     return;
@@ -624,13 +614,11 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodBothThrow(apache::thrift::
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::NORMAL);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodBothThrow<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::executeRequest_methodBothThrow<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::executeRequest_methodBothThrow(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::NORMAL);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -644,7 +632,7 @@ void SinkServiceAsyncProcessor::executeRequest_methodBothThrow(apache::thrift::S
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "methodBothThrow");
     return;
@@ -757,7 +745,7 @@ void SinkServiceAsyncProcessor::executeRequest_methodFast(apache::thrift::Server
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "methodFast");
     return;

@@ -34,7 +34,7 @@ EventTask::~EventTask() {
 
 void EventTask::expired() {
   // only expire req_ once
-  if (!req_) {
+  if (!req_.request()) {
     return;
   }
   failWith(
@@ -44,7 +44,8 @@ void EventTask::expired() {
 
 void EventTask::failWith(folly::exception_wrapper ex, std::string exCode) {
   auto cleanUp = [oneway = oneway_,
-                  req = std::move(req_),
+                  req = apache::thrift::detail::ServerRequestHelper::request(
+                      std::move(req_)),
                   ex = std::move(ex),
                   exCode = std::move(exCode)]() mutable {
     // if oneway, skip sending back anything
@@ -54,15 +55,17 @@ void EventTask::failWith(folly::exception_wrapper ex, std::string exCode) {
     req->sendErrorWrapped(std::move(ex), std::move(exCode));
   };
 
-  if (eb_->inRunningEventBaseThread()) {
+  auto eb = apache::thrift::detail::ServerRequestHelper::eventBase(req_);
+
+  if (eb->inRunningEventBaseThread()) {
     cleanUp();
   } else {
-    eb_->runInEventBaseThread(std::move(cleanUp));
+    eb->runInEventBaseThread(std::move(cleanUp));
   }
 }
 
 void EventTask::setTile(TilePtr&& tile) {
-  ctx_->setTile(std::move(tile));
+  req_.requestContext()->setTile(std::move(tile));
 }
 
 std::pair<AsyncProcessor*, const AsyncProcessorFactory::MethodMetadata*>
@@ -641,7 +644,7 @@ HandlerCallback<void>::HandlerCallback(
     exnw_ptr ewp,
     int32_t protoSeqId,
     folly::EventBase* eb,
-    folly::Executor* executor,
+    folly::Executor::KeepAlive<> executor,
     Cpp2RequestContext* reqCtx,
     RequestPileInterface* notifyRequestPile,
     RequestPileInterface::UserData notifyRequestPileUserData,
@@ -653,7 +656,7 @@ HandlerCallback<void>::HandlerCallback(
           std::move(ctx),
           ewp,
           eb,
-          executor,
+          std::move(executor),
           reqCtx,
           notifyRequestPile,
           notifyRequestPileUserData,

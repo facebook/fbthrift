@@ -23,11 +23,11 @@ void <%service:parent_service_cpp_name%>AsyncProcessor::setUpAndProcess_<%#servi
 <%^function:eb%>
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::<%function:priority%>);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, <% > types/function_kind%>, &<%service:parent_service_cpp_name%>AsyncProcessor::process_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, <% > types/function_kind%>, &<%service:parent_service_cpp_name%>AsyncProcessor::executeRequest_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
 <%/function:eb%><%#function:eb%>
   <%#function:in_or_creates_interaction?%>
   (void)tm;
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, <% > types/function_kind%>, &<%service:parent_service_cpp_name%>AsyncProcessor::process_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, nullptr, <% > types/function_kind%>, &<%service:parent_service_cpp_name%>AsyncProcessor::executeRequest_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
   <%/function:in_or_creates_interaction?%>
   <%^function:in_or_creates_interaction?%>
   process_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>(std::move(req), std::move(serializedRequest), ctx, eb, tm);
@@ -37,12 +37,7 @@ void <%service:parent_service_cpp_name%>AsyncProcessor::setUpAndProcess_<%#servi
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void <%service:parent_service_cpp_name%>AsyncProcessor::executeRequest_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ServerRequest&& serverRequest) {
-<%^function:eb%>
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::<%function:priority%>);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
-<%/function:eb%>
 <%#function:in_or_creates_interaction?%>
-  LOG(FATAL) << "interactions unsupported in this build";
   auto tile = serverRequest.requestContext()->releaseTile();
 <%/function:in_or_creates_interaction?%>
   // make sure getRequestContext is null
@@ -94,14 +89,14 @@ void <%service:parent_service_cpp_name%>AsyncProcessor::executeRequest_<%#servic
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    <%#service:interaction?%>, std::move(tile)<%/service:interaction?%>);
+    <%#function:in_or_creates_interaction?%>, std::move(tile)<%/function:in_or_creates_interaction?%>);
 <%/function:oneway?%>
 <%^function:oneway?%>
     folly::exception_wrapper ew(std::current_exception(), ex);
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>");
     return;
@@ -119,7 +114,7 @@ void <%service:parent_service_cpp_name%>AsyncProcessor::executeRequest_<%#servic
     , serverRequest.requestContext()
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
-    <%#service:interaction?%>, std::move(tile)<%/service:interaction?%>);
+    <%#function:in_or_creates_interaction?%>, std::move(tile)<%/function:in_or_creates_interaction?%>);
 <%/function:oneway?%>
   <%^service:interaction?%>iface_-><%/service:interaction?%><%#service:interaction?%>iface.<%/service:interaction?%><%#function:eb%>async_eb<%/function:eb%><%^function:eb%>async_tm<%/function:eb%>_<%function:cpp_name%>(std::move(callback)<% > service_tcc/get_args_ref%>);
 }

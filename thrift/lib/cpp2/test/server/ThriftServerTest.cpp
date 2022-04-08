@@ -1142,15 +1142,19 @@ TEST_P(HeaderOrRocket, Priority) {
     explicit TestInterface(int& callCount) : callCount_(callCount) {}
     void priorityHigh() override {
       callCount_++;
-      EXPECT_EQ(
-          getConnectionContext()->getRequestExecutionScope().getPriority(),
-          PRIORITY::HIGH);
+      if (!useResourcePoolsFlagsSet(/* no IDL priority with resource pools*/)) {
+        EXPECT_EQ(
+            getConnectionContext()->getRequestExecutionScope().getPriority(),
+            PRIORITY::HIGH);
+      }
     }
     void priorityBestEffort() override {
       callCount_++;
-      EXPECT_EQ(
-          getConnectionContext()->getRequestExecutionScope().getPriority(),
-          PRIORITY::BEST_EFFORT);
+      if (!useResourcePoolsFlagsSet(/* no IDL priority with resource pools*/)) {
+        EXPECT_EQ(
+            getConnectionContext()->getRequestExecutionScope().getPriority(),
+            PRIORITY::BEST_EFFORT);
+      }
     }
   };
 

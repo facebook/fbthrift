@@ -20,13 +20,11 @@ void MyServicePrioChildAsyncProcessor::setUpAndProcess_pang(apache::thrift::Resp
   }
   auto scope = iface_->getRequestExecutionScope(ctx, apache::thrift::concurrency::BEST_EFFORT);
   ctx->setRequestExecutionScope(std::move(scope));
-  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServicePrioChildAsyncProcessor::process_pang<ProtocolIn_, ProtocolOut_>, this);
+  processInThread(std::move(req), std::move(serializedRequest), ctx, eb, tm, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &MyServicePrioChildAsyncProcessor::executeRequest_pang<ProtocolIn_, ProtocolOut_>, this);
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServicePrioChildAsyncProcessor::executeRequest_pang(apache::thrift::ServerRequest&& serverRequest) {
-  auto scope = iface_->getRequestExecutionScope(serverRequest.requestContext(), apache::thrift::concurrency::BEST_EFFORT);
-  serverRequest.requestContext()->setRequestExecutionScope(std::move(scope));
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
@@ -40,7 +38,7 @@ void MyServicePrioChildAsyncProcessor::executeRequest_pang(apache::thrift::Serve
     apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
         ew
         , apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
-        , nullptr
+        , serverRequest.requestContext()
         , apache::thrift::detail::ServerRequestHelper::eventBase(serverRequest)
         , "pang");
     return;
