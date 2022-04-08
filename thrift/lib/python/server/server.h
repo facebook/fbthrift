@@ -41,6 +41,13 @@ class PythonUserException : public std::exception {
   PythonUserException(const PythonUserException& ex)
       : type_(ex.type_), reason_(ex.reason_), buf_(ex.buf_->clone()) {}
 
+  PythonUserException& operator=(const PythonUserException& ex) {
+    type_ = ex.type_;
+    reason_ = ex.reason_;
+    buf_ = ex.buf_->clone();
+    return *this;
+  }
+
   const std::string& type() const { return type_; }
   const std::string& reason() const { return reason_; }
   const folly::IOBuf* buf() const { return buf_.get(); }
