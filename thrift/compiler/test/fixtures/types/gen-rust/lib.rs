@@ -3350,10 +3350,10 @@ pub mod client {
         }
     }
 
-    impl<'a, T> SomeService for T
+    impl<'a, S> SomeService for S
     where
-        T: ::std::convert::AsRef<dyn SomeService + 'a>,
-        T: ::std::marker::Send,
+        S: ::std::convert::AsRef<dyn SomeService + 'a>,
+        S: ::std::marker::Send,
     {
         fn bounce_map(
             &self,
@@ -3369,6 +3369,35 @@ pub mod client {
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>> {
             self.as_ref().binary_keyed_map(
                 arg_r,
+            )
+        }
+    }
+
+    impl<'a, S, T> SomeServiceExt<T> for S
+    where
+        S: ::std::convert::AsRef<dyn SomeService + 'a>,
+        S: ::std::convert::AsRef<dyn SomeServiceExt<T> + 'a>,
+        S: ::std::marker::Send,
+        T: ::fbthrift::Transport,
+    {
+        fn bounce_map_with_rpc_opts(
+            &self,
+            arg_m: &include::types::SomeMap,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn SomeServiceExt<T>>>::as_ref(self).bounce_map_with_rpc_opts(
+                arg_m,
+                rpc_options,
+            )
+        }
+        fn binary_keyed_map_with_rpc_opts(
+            &self,
+            arg_r: &[::std::primitive::i64],
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn SomeServiceExt<T>>>::as_ref(self).binary_keyed_map_with_rpc_opts(
+                arg_r,
+                rpc_options,
             )
         }
     }

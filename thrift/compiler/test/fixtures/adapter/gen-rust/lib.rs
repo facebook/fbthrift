@@ -878,10 +878,10 @@ pub mod client {
         }
     }
 
-    impl<'a, T> Service for T
+    impl<'a, S> Service for S
     where
-        T: ::std::convert::AsRef<dyn Service + 'a>,
-        T: ::std::marker::Send,
+        S: ::std::convert::AsRef<dyn Service + 'a>,
+        S: ::std::marker::Send,
     {
         fn func(
             &self,
@@ -893,6 +893,29 @@ pub mod client {
                 arg_arg1,
                 arg_arg2,
                 arg_arg3,
+            )
+        }
+    }
+
+    impl<'a, S, T> ServiceExt<T> for S
+    where
+        S: ::std::convert::AsRef<dyn Service + 'a>,
+        S: ::std::convert::AsRef<dyn ServiceExt<T> + 'a>,
+        S: ::std::marker::Send,
+        T: ::fbthrift::Transport,
+    {
+        fn func_with_rpc_opts(
+            &self,
+            arg_arg1: &::std::primitive::str,
+            arg_arg2: &::std::primitive::str,
+            arg_arg3: &crate::types::Foo,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn ServiceExt<T>>>::as_ref(self).func_with_rpc_opts(
+                arg_arg1,
+                arg_arg2,
+                arg_arg3,
+                rpc_options,
             )
         }
     }

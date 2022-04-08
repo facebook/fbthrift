@@ -1640,10 +1640,10 @@ pub mod client {
         }
     }
 
-    impl<'a, T> Raiser for T
+    impl<'a, S> Raiser for S
     where
-        T: ::std::convert::AsRef<dyn Raiser + 'a>,
-        T: ::std::marker::Send,
+        S: ::std::convert::AsRef<dyn Raiser + 'a>,
+        S: ::std::marker::Send,
     {
         fn doBland(
             &self,
@@ -1667,6 +1667,47 @@ pub mod client {
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get500Error>> + ::std::marker::Send + 'static>> {
             self.as_ref().get500(
+            )
+        }
+    }
+
+    impl<'a, S, T> RaiserExt<T> for S
+    where
+        S: ::std::convert::AsRef<dyn Raiser + 'a>,
+        S: ::std::convert::AsRef<dyn RaiserExt<T> + 'a>,
+        S: ::std::marker::Send,
+        T: ::fbthrift::Transport,
+    {
+        fn doBland_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoBlandError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn RaiserExt<T>>>::as_ref(self).doBland_with_rpc_opts(
+                rpc_options,
+            )
+        }
+        fn doRaise_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoRaiseError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn RaiserExt<T>>>::as_ref(self).doRaise_with_rpc_opts(
+                rpc_options,
+            )
+        }
+        fn get200_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get200Error>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn RaiserExt<T>>>::as_ref(self).get200_with_rpc_opts(
+                rpc_options,
+            )
+        }
+        fn get500_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get500Error>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn RaiserExt<T>>>::as_ref(self).get500_with_rpc_opts(
+                rpc_options,
             )
         }
     }

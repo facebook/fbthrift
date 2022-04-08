@@ -1168,10 +1168,10 @@ pub mod client {
         }
     }
 
-    impl<'a, T> C for T
+    impl<'a, S> C for S
     where
-        T: ::std::convert::AsRef<dyn C + 'a>,
-        T: ::std::marker::Send,
+        S: ::std::convert::AsRef<dyn C + 'a>,
+        S: ::std::marker::Send,
     {
         fn f(
             &self,
@@ -1195,6 +1195,45 @@ pub mod client {
                 arg_a,
                 arg_b,
                 arg_c,
+            )
+        }
+    }
+
+    impl<'a, S, T> CExt<T> for S
+    where
+        S: ::std::convert::AsRef<dyn C + 'a>,
+        S: ::std::convert::AsRef<dyn CExt<T> + 'a>,
+        S: ::std::marker::Send,
+        T: ::fbthrift::Transport,
+    {
+        fn f_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::c::FError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn CExt<T>>>::as_ref(self).f_with_rpc_opts(
+                rpc_options,
+            )
+        }
+        fn numbers_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, crate::errors::c::NumbersError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn CExt<T>>>::as_ref(self).numbers_with_rpc_opts(
+                rpc_options,
+            )
+        }
+        fn thing_with_rpc_opts(
+            &self,
+            arg_a: ::std::primitive::i32,
+            arg_b: &::std::primitive::str,
+            arg_c: &::std::collections::BTreeSet<::std::primitive::i32>,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::c::ThingError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn CExt<T>>>::as_ref(self).thing_with_rpc_opts(
+                arg_a,
+                arg_b,
+                arg_c,
+                rpc_options,
             )
         }
     }

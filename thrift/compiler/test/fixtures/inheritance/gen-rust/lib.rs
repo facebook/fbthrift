@@ -515,15 +515,32 @@ pub mod client {
         }
     }
 
-    impl<'a, T> MyRoot for T
+    impl<'a, S> MyRoot for S
     where
-        T: ::std::convert::AsRef<dyn MyRoot + 'a>,
-        T: ::std::marker::Send,
+        S: ::std::convert::AsRef<dyn MyRoot + 'a>,
+        S: ::std::marker::Send,
     {
         fn do_root(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_root::DoRootError>> + ::std::marker::Send + 'static>> {
             self.as_ref().do_root(
+            )
+        }
+    }
+
+    impl<'a, S, T> MyRootExt<T> for S
+    where
+        S: ::std::convert::AsRef<dyn MyRoot + 'a>,
+        S: ::std::convert::AsRef<dyn MyRootExt<T> + 'a>,
+        S: ::std::marker::Send,
+        T: ::fbthrift::Transport,
+    {
+        fn do_root_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_root::DoRootError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyRootExt<T>>>::as_ref(self).do_root_with_rpc_opts(
+                rpc_options,
             )
         }
     }
@@ -711,13 +728,28 @@ pub mod client {
         }
     }
 
+    impl<P, T, S> ::std::convert::AsRef<dyn crate::client::MyRootExt<T> + 'static> for MyNodeImpl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
+        fn as_ref(&self) -> &(dyn crate::client::MyRootExt<T> + 'static)
+        {
+            &self.parent
+        }
+    }
+
     pub trait MyNode: crate::client::MyRoot + ::std::marker::Send {
         fn do_mid(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_node::DoMidError>> + ::std::marker::Send + 'static>>;
     }
 
-    pub trait MyNodeExt<T>: MyNode
+    pub trait MyNodeExt<T>: MyNode + crate::client::MyRootExt<T>
     where
         T: ::fbthrift::Transport,
     {
@@ -779,16 +811,35 @@ pub mod client {
         }
     }
 
-    impl<'a, T> MyNode for T
+    impl<'a, S> MyNode for S
     where
-        T: ::std::convert::AsRef<dyn MyNode + 'a>,
-        T: crate::client::MyRoot,
-        T: ::std::marker::Send,
+        S: ::std::convert::AsRef<dyn MyNode + 'a>,
+        S: crate::client::MyRoot,
+        S: ::std::marker::Send,
     {
         fn do_mid(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_node::DoMidError>> + ::std::marker::Send + 'static>> {
             self.as_ref().do_mid(
+            )
+        }
+    }
+
+    impl<'a, S, T> MyNodeExt<T> for S
+    where
+        S: ::std::convert::AsRef<dyn MyNode + 'a>,
+        S: ::std::convert::AsRef<dyn MyNodeExt<T> + 'a>,
+        S: crate::client::MyRoot,
+        S: crate::client::MyRootExt<T>,
+        S: ::std::marker::Send,
+        T: ::fbthrift::Transport,
+    {
+        fn do_mid_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_node::DoMidError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyNodeExt<T>>>::as_ref(self).do_mid_with_rpc_opts(
+                rpc_options,
             )
         }
     }
@@ -976,6 +1027,21 @@ pub mod client {
         }
     }
 
+    impl<P, T, S> ::std::convert::AsRef<dyn crate::client::MyNodeExt<T> + 'static> for MyLeafImpl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
+        fn as_ref(&self) -> &(dyn crate::client::MyNodeExt<T> + 'static)
+        {
+            &self.parent
+        }
+    }
+
     impl<P, T, S> ::std::convert::AsRef<dyn crate::client::MyRoot + 'static> for MyLeafImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
@@ -991,13 +1057,28 @@ pub mod client {
         }
     }
 
+    impl<P, T, S> ::std::convert::AsRef<dyn crate::client::MyRootExt<T> + 'static> for MyLeafImpl<P, T, S>
+    where
+        P: ::fbthrift::Protocol,
+        T: ::fbthrift::Transport,
+        P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
+        ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
+        P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
+    {
+        fn as_ref(&self) -> &(dyn crate::client::MyRootExt<T> + 'static)
+        {
+            self.parent.as_ref()
+        }
+    }
+
     pub trait MyLeaf: crate::client::MyNode + ::std::marker::Send {
         fn do_leaf(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + ::std::marker::Send + 'static>>;
     }
 
-    pub trait MyLeafExt<T>: MyLeaf
+    pub trait MyLeafExt<T>: MyLeaf + crate::client::MyNodeExt<T>
     where
         T: ::fbthrift::Transport,
     {
@@ -1059,17 +1140,38 @@ pub mod client {
         }
     }
 
-    impl<'a, T> MyLeaf for T
+    impl<'a, S> MyLeaf for S
     where
-        T: ::std::convert::AsRef<dyn MyLeaf + 'a>,
-        T: crate::client::MyNode,
-        T: crate::client::MyRoot,
-        T: ::std::marker::Send,
+        S: ::std::convert::AsRef<dyn MyLeaf + 'a>,
+        S: crate::client::MyNode,
+        S: crate::client::MyRoot,
+        S: ::std::marker::Send,
     {
         fn do_leaf(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + ::std::marker::Send + 'static>> {
             self.as_ref().do_leaf(
+            )
+        }
+    }
+
+    impl<'a, S, T> MyLeafExt<T> for S
+    where
+        S: ::std::convert::AsRef<dyn MyLeaf + 'a>,
+        S: ::std::convert::AsRef<dyn MyLeafExt<T> + 'a>,
+        S: crate::client::MyNode,
+        S: crate::client::MyNodeExt<T>,
+        S: crate::client::MyRoot,
+        S: crate::client::MyRootExt<T>,
+        S: ::std::marker::Send,
+        T: ::fbthrift::Transport,
+    {
+        fn do_leaf_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyLeafExt<T>>>::as_ref(self).do_leaf_with_rpc_opts(
+                rpc_options,
             )
         }
     }

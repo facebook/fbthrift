@@ -602,10 +602,10 @@ pub mod client {
         }
     }
 
-    impl<'a, T> Foo for T
+    impl<'a, S> Foo for S
     where
-        T: ::std::convert::AsRef<dyn Foo + 'a>,
-        T: ::std::marker::Send,
+        S: ::std::convert::AsRef<dyn Foo + 'a>,
+        S: ::std::marker::Send,
     {
         fn r#return(
             &self,
@@ -621,6 +621,35 @@ pub mod client {
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
             self.as_ref().super_(
                 arg_bar,
+            )
+        }
+    }
+
+    impl<'a, S, T> FooExt<T> for S
+    where
+        S: ::std::convert::AsRef<dyn Foo + 'a>,
+        S: ::std::convert::AsRef<dyn FooExt<T> + 'a>,
+        S: ::std::marker::Send,
+        T: ::fbthrift::Transport,
+    {
+        fn r#return_with_rpc_opts(
+            &self,
+            arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn FooExt<T>>>::as_ref(self).r#return_with_rpc_opts(
+                arg_bar,
+                rpc_options,
+            )
+        }
+        fn super__with_rpc_opts(
+            &self,
+            arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn FooExt<T>>>::as_ref(self).super__with_rpc_opts(
+                arg_bar,
+                rpc_options,
             )
         }
     }

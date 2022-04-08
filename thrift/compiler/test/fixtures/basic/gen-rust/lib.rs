@@ -2678,10 +2678,10 @@ pub mod client {
         }
     }
 
-    impl<'a, T> MyService for T
+    impl<'a, S> MyService for S
     where
-        T: ::std::convert::AsRef<dyn MyService + 'a>,
-        T: ::std::marker::Send,
+        S: ::std::convert::AsRef<dyn MyService + 'a>,
+        S: ::std::marker::Send,
     {
         fn ping(
             &self,
@@ -2751,6 +2751,103 @@ pub mod client {
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::errors::my_service::InvalidReturnForHackError>> + ::std::marker::Send + 'static>> {
             self.as_ref().invalid_return_for_hack(
+            )
+        }
+    }
+
+    impl<'a, S, T> MyServiceExt<T> for S
+    where
+        S: ::std::convert::AsRef<dyn MyService + 'a>,
+        S: ::std::convert::AsRef<dyn MyServiceExt<T> + 'a>,
+        S: ::std::marker::Send,
+        T: ::fbthrift::Transport,
+    {
+        fn ping_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).ping_with_rpc_opts(
+                rpc_options,
+            )
+        }
+        fn getRandomData_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).getRandomData_with_rpc_opts(
+                rpc_options,
+            )
+        }
+        fn sink_with_rpc_opts(
+            &self,
+            arg_sink: ::std::primitive::i64,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::SinkError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).sink_with_rpc_opts(
+                arg_sink,
+                rpc_options,
+            )
+        }
+        fn putDataById_with_rpc_opts(
+            &self,
+            arg_id: ::std::primitive::i64,
+            arg_data: &::std::primitive::str,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).putDataById_with_rpc_opts(
+                arg_id,
+                arg_data,
+                rpc_options,
+            )
+        }
+        fn hasDataById_with_rpc_opts(
+            &self,
+            arg_id: ::std::primitive::i64,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).hasDataById_with_rpc_opts(
+                arg_id,
+                rpc_options,
+            )
+        }
+        fn getDataById_with_rpc_opts(
+            &self,
+            arg_id: ::std::primitive::i64,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).getDataById_with_rpc_opts(
+                arg_id,
+                rpc_options,
+            )
+        }
+        fn deleteDataById_with_rpc_opts(
+            &self,
+            arg_id: ::std::primitive::i64,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::DeleteDataByIdError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).deleteDataById_with_rpc_opts(
+                arg_id,
+                rpc_options,
+            )
+        }
+        fn lobDataById_with_rpc_opts(
+            &self,
+            arg_id: ::std::primitive::i64,
+            arg_data: &::std::primitive::str,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).lobDataById_with_rpc_opts(
+                arg_id,
+                arg_data,
+                rpc_options,
+            )
+        }
+        fn invalid_return_for_hack_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::errors::my_service::InvalidReturnForHackError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).invalid_return_for_hack_with_rpc_opts(
+                rpc_options,
             )
         }
     }
@@ -3099,10 +3196,10 @@ pub mod client {
         }
     }
 
-    impl<'a, T> DbMixedStackArguments for T
+    impl<'a, S> DbMixedStackArguments for S
     where
-        T: ::std::convert::AsRef<dyn DbMixedStackArguments + 'a>,
-        T: ::std::marker::Send,
+        S: ::std::convert::AsRef<dyn DbMixedStackArguments + 'a>,
+        S: ::std::marker::Send,
     {
         fn getDataByKey0(
             &self,
@@ -3118,6 +3215,35 @@ pub mod client {
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey1Error>> + ::std::marker::Send + 'static>> {
             self.as_ref().getDataByKey1(
                 arg_key,
+            )
+        }
+    }
+
+    impl<'a, S, T> DbMixedStackArgumentsExt<T> for S
+    where
+        S: ::std::convert::AsRef<dyn DbMixedStackArguments + 'a>,
+        S: ::std::convert::AsRef<dyn DbMixedStackArgumentsExt<T> + 'a>,
+        S: ::std::marker::Send,
+        T: ::fbthrift::Transport,
+    {
+        fn getDataByKey0_with_rpc_opts(
+            &self,
+            arg_key: &::std::primitive::str,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey0Error>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn DbMixedStackArgumentsExt<T>>>::as_ref(self).getDataByKey0_with_rpc_opts(
+                arg_key,
+                rpc_options,
+            )
+        }
+        fn getDataByKey1_with_rpc_opts(
+            &self,
+            arg_key: &::std::primitive::str,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey1Error>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn DbMixedStackArgumentsExt<T>>>::as_ref(self).getDataByKey1_with_rpc_opts(
+                arg_key,
+                rpc_options,
             )
         }
     }

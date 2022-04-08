@@ -1477,10 +1477,10 @@ pub mod client {
         }
     }
 
-    impl<'a, T> MyService for T
+    impl<'a, S> MyService for S
     where
-        T: ::std::convert::AsRef<dyn MyService + 'a>,
-        T: ::std::marker::Send,
+        S: ::std::convert::AsRef<dyn MyService + 'a>,
+        S: ::std::marker::Send,
     {
         fn ping(
             &self,
@@ -1528,6 +1528,75 @@ pub mod client {
             self.as_ref().lobDataById(
                 arg_id,
                 arg_data,
+            )
+        }
+    }
+
+    impl<'a, S, T> MyServiceExt<T> for S
+    where
+        S: ::std::convert::AsRef<dyn MyService + 'a>,
+        S: ::std::convert::AsRef<dyn MyServiceExt<T> + 'a>,
+        S: ::std::marker::Send,
+        T: ::fbthrift::Transport,
+    {
+        fn ping_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).ping_with_rpc_opts(
+                rpc_options,
+            )
+        }
+        fn getRandomData_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).getRandomData_with_rpc_opts(
+                rpc_options,
+            )
+        }
+        fn hasDataById_with_rpc_opts(
+            &self,
+            arg_id: ::std::primitive::i64,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).hasDataById_with_rpc_opts(
+                arg_id,
+                rpc_options,
+            )
+        }
+        fn getDataById_with_rpc_opts(
+            &self,
+            arg_id: ::std::primitive::i64,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).getDataById_with_rpc_opts(
+                arg_id,
+                rpc_options,
+            )
+        }
+        fn putDataById_with_rpc_opts(
+            &self,
+            arg_id: ::std::primitive::i64,
+            arg_data: &::std::primitive::str,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).putDataById_with_rpc_opts(
+                arg_id,
+                arg_data,
+                rpc_options,
+            )
+        }
+        fn lobDataById_with_rpc_opts(
+            &self,
+            arg_id: ::std::primitive::i64,
+            arg_data: &::std::primitive::str,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).lobDataById_with_rpc_opts(
+                arg_id,
+                arg_data,
+                rpc_options,
             )
         }
     }
