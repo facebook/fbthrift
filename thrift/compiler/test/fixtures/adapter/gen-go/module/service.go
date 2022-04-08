@@ -11,7 +11,8 @@ import (
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	cpp0 "thrift/annotation/cpp"
-	thrift1 "thrift/annotation/thrift"
+	python1 "thrift/annotation/python"
+	thrift2 "thrift/annotation/thrift"
 
 )
 
@@ -23,7 +24,8 @@ var _ = bytes.Equal
 var _ = context.Background
 
 var _ = cpp0.GoUnusedProtection__
-var _ = thrift1.GoUnusedProtection__
+var _ = python1.GoUnusedProtection__
+var _ = thrift2.GoUnusedProtection__
 type Service interface {
   // Parameters:
   //  - Arg1
@@ -226,10 +228,10 @@ func (p *ServiceProcessor) FunctionServiceMap() map[string]string {
 }
 
 func NewServiceProcessor(handler Service) *ServiceProcessor {
-  self16 := &ServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
-  self16.processorMap["func"] = &serviceProcessorFunc{handler:handler}
-  self16.functionServiceMap["func"] = "Service"
-  return self16
+  self17 := &ServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
+  self17.processorMap["func"] = &serviceProcessorFunc{handler:handler}
+  self17.functionServiceMap["func"] = "Service"
+  return self17
 }
 
 type serviceProcessorFunc struct {

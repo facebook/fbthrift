@@ -14,6 +14,7 @@ from types import TracebackType
 
 import module.types as _module_types
 import facebook.thrift.annotation.cpp.types as _facebook_thrift_annotation_cpp_types
+import facebook.thrift.annotation.python.types as _facebook_thrift_annotation_python_types
 import facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
 
 

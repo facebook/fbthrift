@@ -20,6 +20,7 @@ namespace java2 test.fixtures.adapter
 namespace java.swift test.fixtures.adapter
 
 include "thrift/annotation/cpp.thrift"
+include "thrift/annotation/python.thrift"
 include "thrift/annotation/thrift.thrift"
 
 typedef set<string> (
@@ -154,6 +155,7 @@ struct Bar {
 
 struct StructWithFieldAdapter {
   @cpp.Adapter{name = "my::Adapter1"}
+  @python.Adapter{name = "my.Adapter1", typeHint = "my.AdaptedType1"}
   1: i32 field;
   @cpp.Adapter{name = "my::Adapter1"}
   @cpp.Ref{type = cpp.RefType.Shared}

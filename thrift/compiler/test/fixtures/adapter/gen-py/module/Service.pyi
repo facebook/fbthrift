@@ -10,6 +10,7 @@ from thrift import Thrift
 from thrift.protocol.TProtocol import TProtocolBase
 
 import thrift.annotation.cpp.ttypes
+import thrift.annotation.python.ttypes
 import thrift.annotation.thrift.ttypes
 import my
 from module.ttypes import *

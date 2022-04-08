@@ -568,6 +568,7 @@ pub mod types {
 #[doc(hidden)]
 pub mod dependencies {
     pub use cpp as cpp;
+    pub use python as python;
     pub use thrift as thrift;
 }
 

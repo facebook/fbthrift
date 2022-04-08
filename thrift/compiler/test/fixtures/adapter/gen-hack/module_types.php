@@ -1734,6 +1734,12 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
                 "name" => "my::Adapter1",
               )
             ),
+            'facebook_thrift_annotation_python_Adapter' => facebook_thrift_annotation_python_Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter1",
+                "typeHint" => "my.AdaptedType1",
+              )
+            ),
           ],
           'type' => dict[],
         ),

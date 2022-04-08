@@ -2,7 +2,7 @@
 // DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 // @generated
 
-package module
+package python
 
 import (
 	"bytes"
@@ -10,9 +10,7 @@ import (
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
-	cpp0 "thrift/annotation/cpp"
-	python1 "thrift/annotation/python"
-	thrift2 "thrift/annotation/thrift"
+	scope0 "thrift/annotation/scope"
 
 )
 
@@ -23,9 +21,7 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
-var _ = cpp0.GoUnusedProtection__
-var _ = python1.GoUnusedProtection__
-var _ = thrift2.GoUnusedProtection__
+var _ = scope0.GoUnusedProtection__
 
 func init() {
 }
