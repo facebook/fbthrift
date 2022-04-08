@@ -68,13 +68,6 @@ interface MyServiceAsyncIf extends \IThriftAsyncIf {
    *               2: string data);
    */
   public function lobDataById(int $id, string $data): Awaitable<void>;
-
-  /**
-   * Original thrift definition:-
-   * set<float>
-   *   invalid_return_for_hack();
-   */
-  public function invalid_return_for_hack(): Awaitable<Set<arraykey>>;
 }
 
 /**
@@ -139,13 +132,6 @@ interface MyServiceIf extends \IThriftSyncIf {
    *               2: string data);
    */
   public function lobDataById(int $id, string $data): void;
-
-  /**
-   * Original thrift definition:-
-   * set<float>
-   *   invalid_return_for_hack();
-   */
-  public function invalid_return_for_hack(): Set<arraykey>;
 }
 
 /**
@@ -217,13 +203,6 @@ interface MyServiceClientIf extends \IThriftSyncIf {
    *               2: string data);
    */
   public function lobDataById(int $id, string $data): Awaitable<void>;
-
-  /**
-   * Original thrift definition:-
-   * set<float>
-   *   invalid_return_for_hack();
-   */
-  public function invalid_return_for_hack(): Awaitable<Set<arraykey>>;
 }
 
 /**
@@ -955,105 +934,6 @@ trait MyServiceClientBase {
     return $currentseqid;
   }
 
-  protected function sendImpl_invalid_return_for_hack(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_invalid_return_for_hack_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('invalid_return_for_hack', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'invalid_return_for_hack', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'invalid_return_for_hack', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('invalid_return_for_hack', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('invalid_return_for_hack', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('invalid_return_for_hack', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('invalid_return_for_hack', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('invalid_return_for_hack', $args, $currentseqid);
-    return $currentseqid;
-  }
-
-  protected function recvImpl_invalid_return_for_hack(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Set<arraykey> {
-    try {
-      $this->eventHandler_->preRecv('invalid_return_for_hack', $expectedsequenceid);
-      if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_invalid_return_for_hack_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
-      } else if ($this->input_ is \TCompactProtocolAccelerated)
-      {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_invalid_return_for_hack_result', Shapes::idx($options, 'read_options', 0));
-      }
-      else
-      {
-        $rseqid = 0;
-        $fname = '';
-        $mtype = 0;
-
-        $this->input_->readMessageBegin(
-          inout $fname,
-          inout $mtype,
-          inout $rseqid,
-        );
-        if ($mtype === \TMessageType::EXCEPTION) {
-          $x = new \TApplicationException();
-          $x->read($this->input_);
-          $this->input_->readMessageEnd();
-          throw $x;
-        }
-        $result = MyService_invalid_return_for_hack_result::withDefaultValues();
-        $result->read($this->input_);
-        $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
-          throw new \TProtocolException("invalid_return_for_hack failed: sequence id is out of order");
-        }
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-          $this->eventHandler_->recvException('invalid_return_for_hack', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->recvError('invalid_return_for_hack', $expectedsequenceid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postRecv('invalid_return_for_hack', $expectedsequenceid, $ex->result);
-          return $ex->result;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->recvError('invalid_return_for_hack', $expectedsequenceid, $ex);
-      throw $ex;
-    }
-    if ($result->success !== null) {
-      $success = $result->success;
-      $this->eventHandler_->postRecv('invalid_return_for_hack', $expectedsequenceid, $success);
-      return $success;
-    }
-    $x = new \TApplicationException("invalid_return_for_hack failed: unknown result", \TApplicationException::MISSING_RESULT);
-    $this->eventHandler_->recvError('invalid_return_for_hack', $expectedsequenceid, $x);
-    throw $x;
-  }
-
 }
 
 class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncClientIf {
@@ -1287,36 +1167,6 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
       $out_transport->resetBuffer();
       await $channel->genSendRequestNoResponse($rpc_options, $msg);
     }
-  }
-
-  /**
-   * Original thrift definition:-
-   * set<float>
-   *   invalid_return_for_hack();
-   */
-  public async function invalid_return_for_hack(): Awaitable<Set<arraykey>> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyService", "invalid_return_for_hack");
-    $currentseqid = $this->sendImpl_invalid_return_for_hack();
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImpl_invalid_return_for_hack($currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
   }
 
 }
@@ -1554,36 +1404,6 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
   }
 
-  /**
-   * Original thrift definition:-
-   * set<float>
-   *   invalid_return_for_hack();
-   */
-  public async function invalid_return_for_hack(): Awaitable<Set<arraykey>> {
-    $hh_frame_metadata = $this->getHHFrameMetadata();
-    if ($hh_frame_metadata !== null) {
-      \HH\set_frame_metadata($hh_frame_metadata);
-    }
-    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
-    await $this->asyncHandler_->genBefore("MyService", "invalid_return_for_hack");
-    $currentseqid = $this->sendImpl_invalid_return_for_hack();
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
-    $response = $this->recvImpl_invalid_return_for_hack($currentseqid);
-    await $this->asyncHandler_->genAfter();
-    return $response;
-  }
-
   /* send and recv functions */
   public function send_ping(): int {
     return $this->sendImpl_ping();
@@ -1629,12 +1449,6 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   }
   public function send_lobDataById(int $id, string $data): int {
     return $this->sendImpl_lobDataById($id, $data);
-  }
-  public function send_invalid_return_for_hack(): int {
-    return $this->sendImpl_invalid_return_for_hack();
-  }
-  public function recv_invalid_return_for_hack(?int $expectedsequenceid = null): Set<arraykey> {
-    return $this->recvImpl_invalid_return_for_hack($expectedsequenceid);
   }
 }
 
@@ -1975,50 +1789,6 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     return;
-  }
-  protected async function process_invalid_return_for_hack(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
-    $handler_ctx = $this->eventHandler_->getHandlerContext('invalid_return_for_hack');
-    $reply_type = \TMessageType::REPLY;
-
-    $this->eventHandler_->preRead($handler_ctx, 'invalid_return_for_hack', dict[]);
-
-    if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, 'MyService_invalid_return_for_hack_args');
-    } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, 'MyService_invalid_return_for_hack_args');
-    } else {
-      $args = MyService_invalid_return_for_hack_args::withDefaultValues();
-      $args->read($input);
-    }
-    $input->readMessageEnd();
-    $this->eventHandler_->postRead($handler_ctx, 'invalid_return_for_hack', $args);
-    $result = MyService_invalid_return_for_hack_result::withDefaultValues();
-    try {
-      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'invalid_return_for_hack', $args);
-      $result->success = await $this->handler->invalid_return_for_hack();
-      $this->eventHandler_->postExec($handler_ctx, 'invalid_return_for_hack', $result);
-    } catch (\Exception $ex) {
-      $reply_type = \TMessageType::EXCEPTION;
-      $this->eventHandler_->handlerError($handler_ctx, 'invalid_return_for_hack', $ex);
-      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
-    }
-    $this->eventHandler_->preWrite($handler_ctx, 'invalid_return_for_hack', $result);
-    if ($output is \TBinaryProtocolAccelerated)
-    {
-      \thrift_protocol_write_binary($output, 'invalid_return_for_hack', $reply_type, $result, $seqid, $output->isStrictWrite());
-    }
-    else if ($output is \TCompactProtocolAccelerated)
-    {
-      \thrift_protocol_write_compact($output, 'invalid_return_for_hack', $reply_type, $result, $seqid);
-    }
-    else
-    {
-      $output->writeMessageBegin("invalid_return_for_hack", $reply_type, $seqid);
-      $result->write($output);
-      $output->writeMessageEnd();
-      $output->getTransport()->flush();
-    }
-    $this->eventHandler_->postWrite($handler_ctx, 'invalid_return_for_hack', $result);
   }
   protected async function process_getThriftServiceMetadata(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $reply_type = \TMessageType::REPLY;
@@ -2397,50 +2167,6 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     return;
-  }
-  protected function process_invalid_return_for_hack(int $seqid, \TProtocol $input, \TProtocol $output): void {
-    $handler_ctx = $this->eventHandler_->getHandlerContext('invalid_return_for_hack');
-    $reply_type = \TMessageType::REPLY;
-
-    $this->eventHandler_->preRead($handler_ctx, 'invalid_return_for_hack', dict[]);
-
-    if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, 'MyService_invalid_return_for_hack_args');
-    } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, 'MyService_invalid_return_for_hack_args');
-    } else {
-      $args = MyService_invalid_return_for_hack_args::withDefaultValues();
-      $args->read($input);
-    }
-    $input->readMessageEnd();
-    $this->eventHandler_->postRead($handler_ctx, 'invalid_return_for_hack', $args);
-    $result = MyService_invalid_return_for_hack_result::withDefaultValues();
-    try {
-      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'invalid_return_for_hack', $args);
-      $result->success = $this->handler->invalid_return_for_hack();
-      $this->eventHandler_->postExec($handler_ctx, 'invalid_return_for_hack', $result);
-    } catch (\Exception $ex) {
-      $reply_type = \TMessageType::EXCEPTION;
-      $this->eventHandler_->handlerError($handler_ctx, 'invalid_return_for_hack', $ex);
-      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
-    }
-    $this->eventHandler_->preWrite($handler_ctx, 'invalid_return_for_hack', $result);
-    if ($output is \TBinaryProtocolAccelerated)
-    {
-      \thrift_protocol_write_binary($output, 'invalid_return_for_hack', $reply_type, $result, $seqid, $output->isStrictWrite());
-    }
-    else if ($output is \TCompactProtocolAccelerated)
-    {
-      \thrift_protocol_write_compact($output, 'invalid_return_for_hack', $reply_type, $result, $seqid);
-    }
-    else
-    {
-      $output->writeMessageBegin("invalid_return_for_hack", $reply_type, $seqid);
-      $result->write($output);
-      $output->writeMessageEnd();
-      $output->getTransport()->flush();
-    }
-    $this->eventHandler_->postWrite($handler_ctx, 'invalid_return_for_hack', $result);
   }
   protected function process_getThriftServiceMetadata(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $reply_type = \TMessageType::REPLY;
@@ -3792,185 +3518,6 @@ class MyService_lobDataById_args implements \IThriftSyncStruct, \IThriftShapishS
 
 }
 
-class MyService_invalid_return_for_hack_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
-  use \ThriftSerializationTrait;
-
-  const dict<int, this::TFieldSpec> SPEC = dict[
-  ];
-  const dict<string, int> FIELDMAP = dict[
-  ];
-
-  const type TConstructorShape = shape(
-  );
-
-  const type TShape = shape(
-    ...
-  );
-  const int STRUCTURAL_ID = 957977401221134810;
-
-  public function __construct(  )[] {
-  }
-
-  public static function withDefaultValues()[]: this {
-    return new static();
-  }
-
-  public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(
-    );
-  }
-
-  public function getName()[]: string {
-    return 'MyService_invalid_return_for_hack_args';
-  }
-
-  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
-      shape(
-        "name" => "module.invalid_return_for_hack_args",
-        "is_union" => false,
-      )
-    );
-  }
-
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-      ],
-    );
-  }
-
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-    );
-  }
-  public function getInstanceKey()[write_props]: string {
-    return \TCompactSerializer::serialize($this);
-  }
-
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-  }
-
-}
-
-class MyService_invalid_return_for_hack_result implements \IThriftSyncStruct {
-  use \ThriftSerializationTrait;
-
-  const dict<int, this::TFieldSpec> SPEC = dict[
-    0 => shape(
-      'var' => 'success',
-      'type' => \TType::SET,
-      'etype' => \TType::FLOAT,
-      'elem' => shape(
-        'type' => \TType::FLOAT,
-      ),
-      'format' => 'collection',
-    ),
-  ];
-  const dict<string, int> FIELDMAP = dict[
-    'success' => 0,
-  ];
-
-  const type TConstructorShape = shape(
-    ?'success' => ?Set<arraykey>,
-  );
-
-  const int STRUCTURAL_ID = 5594803499509360192;
-  public ?Set<arraykey> $success;
-
-  public function __construct(?Set<arraykey> $success = null  )[] {
-    $this->success = $success;
-  }
-
-  public static function withDefaultValues()[]: this {
-    return new static();
-  }
-
-  public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(
-      Shapes::idx($shape, 'success'),
-    );
-  }
-
-  public function getName()[]: string {
-    return 'MyService_invalid_return_for_hack_result';
-  }
-
-  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
-      shape(
-        "name" => "module.MyService_invalid_return_for_hack_result",
-        "fields" => vec[
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 0,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_set" => tmeta_ThriftSetType::fromShape(
-                    shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
-                        )
-                      ),
-                    )
-                  ),
-                )
-              ),
-              "name" => "success",
-            )
-          ),
-        ],
-        "is_union" => false,
-      )
-    );
-  }
-
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-      ],
-    );
-  }
-
-  public function getInstanceKey()[write_props]: string {
-    return \TCompactSerializer::serialize($this);
-  }
-
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-    if (idx($parsed, 'success') !== null) {
-      $_json3 = /* HH_FIXME[4110] */ $parsed['success'];
-      $_container4 = Set {};
-      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
-        $_elem5 = 0.0;
-        $_elem5 = $_value2;
-        $_container4->add($_elem5);
-      }
-      $this->success = $_container4;
-    }    
-  }
-
-}
-
 class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return tmeta_ThriftService::fromShape(
@@ -4156,24 +3703,6 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
                 ),
               ],
               "is_oneway" => true,
-            )
-          ),
-          tmeta_ThriftFunction::fromShape(
-            shape(
-              "name" => "invalid_return_for_hack",
-              "return_type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_set" => tmeta_ThriftSetType::fromShape(
-                    shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
-                        )
-                      ),
-                    )
-                  ),
-                )
-              ),
             )
           ),
         ],

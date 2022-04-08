@@ -75,15 +75,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'idempotent',
       'type' => \TType::BOOL,
     ),
-    8 => shape(
-      'var' => 'floatSet',
-      'type' => \TType::SET,
-      'etype' => \TType::FLOAT,
-      'elem' => shape(
-        'type' => \TType::FLOAT,
-      ),
-      'format' => 'collection',
-    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'MyIntField' => 1,
@@ -93,7 +84,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'oneway' => 5,
     'readonly' => 6,
     'idempotent' => 7,
-    'floatSet' => 8,
   ];
 
   const type TConstructorShape = shape(
@@ -104,7 +94,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'oneway' => ?bool,
     ?'readonly' => ?bool,
     ?'idempotent' => ?bool,
-    ?'floatSet' => ?Set<arraykey>,
   );
 
   const type TShape = shape(
@@ -115,7 +104,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'oneway' => bool,
     'readonly' => bool,
     'idempotent' => bool,
-    'floatSet' => dict<arraykey, bool>,
     ...
   );
   const int STRUCTURAL_ID = 3895122990024057320;
@@ -154,13 +142,8 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * 7: bool idempotent
    */
   public bool $idempotent;
-  /**
-   * Original thrift field:-
-   * 8: set<float> floatSet
-   */
-  public Set<arraykey> $floatSet;
 
-  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?MyDataItem $MyDataField = null, ?MyEnum $myEnum = null, ?bool $oneway = null, ?bool $readonly = null, ?bool $idempotent = null, ?Set<arraykey> $floatSet = null  )[] {
+  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?MyDataItem $MyDataField = null, ?MyEnum $myEnum = null, ?bool $oneway = null, ?bool $readonly = null, ?bool $idempotent = null  )[] {
     $this->MyIntField = $MyIntField ?? 0;
     $this->MyStringField = $MyStringField ?? '';
     $this->MyDataField = $MyDataField;
@@ -168,7 +151,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     $this->oneway = $oneway ?? false;
     $this->readonly = $readonly ?? false;
     $this->idempotent = $idempotent ?? false;
-    $this->floatSet = $floatSet ?? Set {};
   }
 
   public static function withDefaultValues()[]: this {
@@ -184,7 +166,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       Shapes::idx($shape, 'oneway'),
       Shapes::idx($shape, 'readonly'),
       Shapes::idx($shape, 'idempotent'),
-      Shapes::idx($shape, 'floatSet'),
     );
   }
 
@@ -291,25 +272,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "name" => "idempotent",
             )
           ),
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 8,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_set" => tmeta_ThriftSetType::fromShape(
-                    shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
-                        )
-                      ),
-                    )
-                  ),
-                )
-              ),
-              "name" => "floatSet",
-            )
-          ),
         ],
         "is_union" => false,
       )
@@ -320,16 +282,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'floatSet' => shape(
-          'field' => dict[
-            '\facebook\thrift\annotation\SkipCodegen' => \facebook\thrift\annotation\SkipCodegen::fromShape(
-              shape(
-                "reason" => "Invalid key type",
-              )
-            ),
-          ],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -343,7 +295,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $shape['oneway'],
       $shape['readonly'],
       $shape['idempotent'],
-      new Set(Keyset\keys($shape['floatSet'])),
     );
   }
 
@@ -356,7 +307,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'oneway' => $this->oneway,
       'readonly' => $this->readonly,
       'idempotent' => $this->idempotent,
-      'floatSet' => ThriftUtil::toDArray(Dict\fill_keys($this->floatSet->toValuesArray(), true), static::class),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -392,16 +342,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }    
     if (idx($parsed, 'idempotent') !== null) {
       $this->idempotent = /* HH_FIXME[4110] */ $parsed['idempotent'];
-    }    
-    if (idx($parsed, 'floatSet') !== null) {
-      $_json5 = /* HH_FIXME[4110] */ $parsed['floatSet'];
-      $_container6 = Set {};
-      foreach(/* HH_FIXME[4110] */ $_json5 as $_key3 => $_value4) {
-        $_elem7 = 0.0;
-        $_elem7 = $_value4;
-        $_container6->add($_elem7);
-      }
-      $this->floatSet = $_container6;
     }    
   }
 
@@ -489,7 +429,6 @@ enum MyUnionEnum: int {
   myEnum = 1;
   myStruct = 2;
   myDataItem = 3;
-  floatSet = 4;
 }
 
 /**
@@ -518,36 +457,23 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
       'type' => \TType::STRUCT,
       'class' => MyDataItem::class,
     ),
-    4 => shape(
-      'var' => 'floatSet',
-      'union' => true,
-      'type' => \TType::SET,
-      'etype' => \TType::FLOAT,
-      'elem' => shape(
-        'type' => \TType::FLOAT,
-      ),
-      'format' => 'collection',
-    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'myEnum' => 1,
     'myStruct' => 2,
     'myDataItem' => 3,
-    'floatSet' => 4,
   ];
 
   const type TConstructorShape = shape(
     ?'myEnum' => ?MyEnum,
     ?'myStruct' => ?MyStruct,
     ?'myDataItem' => ?MyDataItem,
-    ?'floatSet' => ?Set<arraykey>,
   );
 
   const type TShape = shape(
     ?'myEnum' => ?MyEnum,
     ?'myStruct' => ?MyStruct::TShape,
     ?'myDataItem' => ?MyDataItem::TShape,
-    ?'floatSet' => ?dict<arraykey, bool>,
     ...
   );
   const int STRUCTURAL_ID = 4641160414833587430;
@@ -566,14 +492,9 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
    * 3: struct module.MyDataItem myDataItem
    */
   public ?MyDataItem $myDataItem;
-  /**
-   * Original thrift field:-
-   * 4: set<float> floatSet
-   */
-  public ?Set<arraykey> $floatSet;
   protected MyUnionEnum $_type = MyUnionEnum::_EMPTY_;
 
-  public function __construct(?MyEnum $myEnum = null, ?MyStruct $myStruct = null, ?MyDataItem $myDataItem = null, ?Set<arraykey> $floatSet = null  )[] {
+  public function __construct(?MyEnum $myEnum = null, ?MyStruct $myStruct = null, ?MyDataItem $myDataItem = null  )[] {
     $this->_type = MyUnionEnum::_EMPTY_;
     if ($myEnum !== null) {
       $this->myEnum = $myEnum;
@@ -587,10 +508,6 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
       $this->myDataItem = $myDataItem;
       $this->_type = MyUnionEnum::myDataItem;
     }
-    if ($floatSet !== null) {
-      $this->floatSet = $floatSet;
-      $this->_type = MyUnionEnum::floatSet;
-    }
   }
 
   public static function withDefaultValues()[]: this {
@@ -602,7 +519,6 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
       Shapes::idx($shape, 'myEnum'),
       Shapes::idx($shape, 'myStruct'),
       Shapes::idx($shape, 'myDataItem'),
-      Shapes::idx($shape, 'floatSet'),
     );
   }
 
@@ -624,9 +540,6 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
         break;
       case MyUnionEnum::myDataItem:
         $this->myDataItem = null;
-        break;
-      case MyUnionEnum::floatSet:
-        $this->floatSet = null;
         break;
       case MyUnionEnum::_EMPTY_:
         break;
@@ -694,26 +607,6 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
     return $this->myDataItem as nonnull;
   }
 
-  public function set_floatSet(Set<arraykey> $floatSet)[write_props]: this {
-    $this->reset();
-    $this->_type = MyUnionEnum::floatSet;
-    $this->floatSet = $floatSet;
-    return $this;
-  }
-
-  public function get_floatSet()[]: ?Set<arraykey> {
-    return $this->floatSet;
-  }
-
-  public function getx_floatSet()[]: Set<arraykey> {
-    invariant(
-      $this->_type === MyUnionEnum::floatSet,
-      'get_floatSet called on an instance of MyUnion whose current type is %s',
-      (string)$this->_type,
-    );
-    return $this->floatSet as nonnull;
-  }
-
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
     return tmeta_ThriftStruct::fromShape(
       shape(
@@ -764,25 +657,6 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
               "name" => "myDataItem",
             )
           ),
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 4,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_set" => tmeta_ThriftSetType::fromShape(
-                    shape(
-                      "valueType" => tmeta_ThriftType::fromShape(
-                        shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
-                        )
-                      ),
-                    )
-                  ),
-                )
-              ),
-              "name" => "floatSet",
-            )
-          ),
         ],
         "is_union" => true,
       )
@@ -793,16 +667,6 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'floatSet' => shape(
-          'field' => dict[
-            '\facebook\thrift\annotation\SkipCodegen' => \facebook\thrift\annotation\SkipCodegen::fromShape(
-              shape(
-                "reason" => "Invalid key type",
-              )
-            ),
-          ],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -812,7 +676,6 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
       Shapes::idx($shape, 'myEnum'),
       Shapes::idx($shape, 'myStruct') === null ? null : (MyStruct::__fromShape($shape['myStruct'])),
       Shapes::idx($shape, 'myDataItem') === null ? null : (MyDataItem::__fromShape($shape['myDataItem'])),
-      Shapes::idx($shape, 'floatSet') === null ? null : (new Set(Keyset\keys($shape['floatSet']))),
     );
   }
 
@@ -821,8 +684,6 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
       'myEnum' => $this->myEnum,
       'myStruct' => $this->myStruct?->__toShape(),
       'myDataItem' => $this->myDataItem?->__toShape(),
-      'floatSet' => $this->floatSet
-        |> $$ === null ? null : ThriftUtil::toDArray(Dict\fill_keys($$->toValuesArray(), true), static::class),
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -853,17 +714,6 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
       $_tmp3->readFromJson($_tmp2);
       $this->myDataItem = $_tmp3;
       $this->_type = MyUnionEnum::myDataItem;
-    }    
-    if (idx($parsed, 'floatSet') !== null) {
-      $_json7 = /* HH_FIXME[4110] */ $parsed['floatSet'];
-      $_container8 = Set {};
-      foreach(/* HH_FIXME[4110] */ $_json7 as $_key5 => $_value6) {
-        $_elem9 = 0.0;
-        $_elem9 = $_value6;
-        $_container8->add($_elem9);
-      }
-      $this->floatSet = $_container8;
-      $this->_type = MyUnionEnum::floatSet;
     }    
   }
 

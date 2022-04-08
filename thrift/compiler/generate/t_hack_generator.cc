@@ -363,6 +363,9 @@ class t_hack_generator : public t_oop_generator {
       std::ofstream& out, const t_struct* tstruct, const std::string& name);
   void generate_php_structural_id(
       std::ofstream& out, const t_struct* tstruct, bool asFunction);
+  bool is_valid_hack_type(const t_type* type);
+  bool skip_codegen(const t_field* tfield);
+  bool skip_codegen(const t_function* tfunction);
 
   /**
    * Service-level generation functions
@@ -922,6 +925,9 @@ void t_hack_generator::generate_json_field(
     const std::string& prefix_thrift,
     const std::string& suffix_thrift,
     const std::string& prefix_json) {
+  if (skip_codegen(tfield)) {
+    return;
+  }
   const t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
@@ -1129,6 +1135,9 @@ void t_hack_generator::generate_json_reader(
   indent_down();
   indent(out) << "}\n\n";
   for (const auto& tf : tstruct->fields()) {
+    if (skip_codegen(&tf)) {
+      continue;
+    }
     indent(out) << "if (idx($parsed, '" << tf.name() << "') !== null) {\n";
     indent_up();
     generate_json_field(
@@ -2015,7 +2024,9 @@ std::unique_ptr<t_const_value> t_hack_generator::service_to_tmeta(
     auto tmeta_functions = std::make_unique<t_const_value>();
     tmeta_functions->set_list();
     for (const auto& function : functions) {
-      tmeta_functions->add_list(function_to_tmeta(function));
+      if (!skip_codegen(function)) {
+        tmeta_functions->add_list(function_to_tmeta(function));
+      }
     }
     tmeta_ThriftService->add_map(
         std::make_unique<t_const_value>("functions"),
@@ -2075,7 +2086,9 @@ std::unique_ptr<t_const_value> t_hack_generator::struct_to_tmeta(
     tmeta_fields->set_list();
 
     for (const auto& field : fields) {
-      tmeta_fields->add_list(field_to_tmeta(field));
+      if (!skip_codegen(field)) {
+        tmeta_fields->add_list(field_to_tmeta(field));
+      }
     }
     tmeta->add_map(
         std::make_unique<t_const_value>("fields"), std::move(tmeta_fields));
@@ -2319,6 +2332,75 @@ void t_hack_generator::generate_struct(const t_struct* tstruct) {
   generate_php_struct_definition(f_types_, tstruct);
 }
 
+bool t_hack_generator::is_valid_hack_type(const t_type* type) {
+  if (!type->is_container()) {
+    return true;
+  }
+  const t_type* ktype;
+  if (type->is_map()) {
+    ktype = static_cast<const t_map*>(type)->get_key_type();
+  } else {
+    ktype = static_cast<const t_set*>(type)->get_elem_type();
+  }
+  if (type->is_set()) {
+    return is_type_arraykey(ktype);
+  } else if (type->is_list()) {
+    return is_valid_hack_type(ktype);
+  } else if (type->is_map()) {
+    return is_type_arraykey(ktype) &&
+        is_valid_hack_type(dynamic_cast<const t_map*>(type)->get_val_type());
+  }
+  throw std::runtime_error("Unreachable, all types should be handled above.");
+}
+
+bool t_hack_generator::skip_codegen(const t_field* field) {
+  const auto skip_codegen_field = field->find_structured_annotation_or_null(
+      "facebook.com/thrift/annotation/hack/SkipCodegen");
+  bool is_valid_type = is_valid_hack_type(field->get_type());
+  if (!is_valid_type && skip_codegen_field == nullptr) {
+    throw std::runtime_error(
+        "InvalidKeyType: Hack only supports integers and strings as key for "
+        "map and set - https://fburl.com/wiki/pgzirbu8, field: " +
+        field->get_type()->get_full_name() + " " + field->get_name() + ".");
+  } else if (!is_valid_type && skip_codegen_field != nullptr) {
+    return true;
+  }
+  return false;
+}
+
+bool t_hack_generator::skip_codegen(const t_function* tfunction) {
+  const auto skip_codegen_function =
+      tfunction->find_structured_annotation_or_null(
+          "facebook.com/thrift/annotation/hack/SkipCodegen");
+  t_type const* invalid_type = nullptr;
+  std::string field_name;
+  t_type const* type = tfunction->get_return_type();
+  if (!is_valid_hack_type(type)) {
+    invalid_type = type;
+    field_name = "return type";
+  }
+  if (invalid_type == nullptr) {
+    for (const auto& field : tfunction->params().fields()) {
+      type = field.get_type();
+      if (!is_valid_hack_type(type)) {
+        invalid_type = type;
+        field_name = "param " + field.get_name();
+        break;
+      }
+    }
+  }
+  if (invalid_type != nullptr && skip_codegen_function == nullptr) {
+    throw std::runtime_error(
+        "InvalidKeyType: Hack only supports integers and strings as key for "
+        "map and set - https://fburl.com/wiki/pgzirbu8, function " +
+        tfunction->get_name() + " has invalid " + field_name +
+        " with type: " + invalid_type->get_full_name() + ".");
+  } else if (invalid_type != nullptr && skip_codegen_function != nullptr) {
+    return true;
+  }
+  return false;
+}
+
 /**
  * Generates a struct definition for a thrift exception. Basically the same
  * as a struct but extends the Exception class.
@@ -2425,6 +2507,9 @@ void t_hack_generator::generate_php_struct_spec(
       ? tstruct->fields_id_order()
       : tstruct->fields().copy();
   for (const auto* field_ptr : fields) {
+    if (skip_codegen(field_ptr)) {
+      continue;
+    }
     const auto& field = *field_ptr;
     const t_type& t = *field.type();
     indent(out) << field.id() << " => shape(\n";
@@ -2451,7 +2536,9 @@ void t_hack_generator::generate_php_struct_spec(
   indent(out) << "const dict<string, int> FIELDMAP = dict[\n";
   indent_up();
   for (const auto& field : fields) {
-    indent(out) << "'" << field->name() << "' => " << field->id() << ",\n";
+    if (!skip_codegen(field)) {
+      indent(out) << "'" << field->name() << "' => " << field->id() << ",\n";
+    }
   }
   indent_down();
   indent(out) << "];\n";
@@ -2482,6 +2569,9 @@ void t_hack_generator::generate_php_struct_shape_spec(
               << (is_constructor_shape ? "TConstructorShape" : "TShape")
               << " = shape(\n";
   for (const auto& field : tstruct->fields()) {
+    if (skip_codegen(&field)) {
+      continue;
+    }
     const t_type* t = field.get_type();
     // Compute typehint before resolving typedefs to avoid missing any adapter
     // annotations.
@@ -2751,6 +2841,9 @@ void t_hack_generator::generate_php_struct_shape_methods(
 
   t_name_generator namer;
   for (const auto& field : tstruct->fields()) {
+    if (skip_codegen(&field)) {
+      continue;
+    }
     const t_type* t = field.type()->get_true_type();
 
     std::string dval = "";
@@ -2916,6 +3009,9 @@ void t_hack_generator::generate_php_struct_shape_methods(
   indent_up();
 
   for (const auto& field : tstruct->fields()) {
+    if (skip_codegen(&field)) {
+      continue;
+    }
     const t_type* t = field.type()->get_true_type();
     t_name_generator ngen;
 
@@ -3406,6 +3502,9 @@ void t_hack_generator::generate_php_union_methods(
   out << indent() << "switch ($this->_type) {\n";
   indent_up();
   for (const auto& field : tstruct->fields()) {
+    if (skip_codegen(&field)) {
+      continue;
+    }
     const auto& fieldName = field.name();
     out << indent() << "case " << enumName << "::" << fieldName << ":\n";
     out << indent(get_indent() + 1) << "$this->" << fieldName << " = null;\n";
@@ -3420,6 +3519,9 @@ void t_hack_generator::generate_php_union_methods(
   out << indent() << "}\n\n";
 
   for (const auto& field : tstruct->fields()) {
+    if (skip_codegen(&field)) {
+      continue;
+    }
     const auto& fieldName = field.name();
     auto typehint = type_to_typehint(field.get_type());
 
@@ -3482,6 +3584,9 @@ void t_hack_generator::generate_php_struct_fields(
   auto struct_class_name =
       hack_name(struct_hack_name, tstruct->program(), true);
   for (const auto& field : tstruct->fields()) {
+    if (skip_codegen(&field)) {
+      continue;
+    }
     bool is_base_exception_field = type == ThriftStructType::EXCEPTION &&
         is_base_exception_property(&field);
 
@@ -3785,6 +3890,9 @@ void t_hack_generator::generate_php_struct_constructor(
   auto delim = "";
 
   for (const auto& field : tstruct->fields()) {
+    if (skip_codegen(&field)) {
+      continue;
+    }
     out << delim << "?" << type_to_typehint(field.get_type()) << " $"
         << field.name() << " = null";
     delim = ", ";
@@ -3802,8 +3910,10 @@ void t_hack_generator::generate_php_struct_constructor(
   }
 
   for (const auto& field : tstruct->fields()) {
-    generate_php_struct_constructor_field_assignment(
-        out, field, tstruct, type, name);
+    if (!skip_codegen(&field)) {
+      generate_php_struct_constructor_field_assignment(
+          out, field, tstruct, type, name);
+    }
   }
 
   scope_down(out);
@@ -3898,8 +4008,9 @@ void t_hack_generator::generate_php_struct_structured_annotations_method(
   indent(annotations_out) << "'fields' => dict[\n";
   indent_up();
   for (auto&& field : tstruct->fields()) {
-    if (field.structured_annotations().empty() &&
-        field.type()->structured_annotations().empty()) {
+    if ((field.structured_annotations().empty() &&
+         field.type()->structured_annotations().empty()) ||
+        skip_codegen(&field)) {
       continue;
     }
     indent(annotations_out) << "'" << field.name() << "' => shape(\n";
@@ -3948,7 +4059,9 @@ void t_hack_generator::generate_php_union_enum(
   // If no field is set
   indent(out) << UNION_EMPTY << " = 0;\n";
   for (const auto& field : tstruct->fields()) {
-    indent(out) << field.name() << " = " << field.id() << ";\n";
+    if (!skip_codegen(&field)) {
+      indent(out) << field.name() << " = " << field.id() << ";\n";
+    }
   }
   indent_down();
   out << "}\n\n";
@@ -4001,6 +4114,9 @@ std::string t_hack_generator::render_service_metadata_response(
       queue.push(tservice->get_extends());
 
       for (const auto& function : tservice->functions()) {
+        if (skip_codegen(&function)) {
+          continue;
+        }
         queue.push(function.get_returntype());
         queue.push(&function.params());
         queue.push(function.exceptions());
@@ -4290,6 +4406,9 @@ void t_hack_generator::generate_php_struct_from_shape(
   out << indent() << "return new static(\n";
   indent_up();
   for (const auto& field : tstruct->fields()) {
+    if (skip_codegen(&field)) {
+      continue;
+    }
     const std::string& name = field.name();
     out << indent() << "Shapes::idx($shape, '" << name << "'),\n";
   }
@@ -4315,6 +4434,9 @@ void t_hack_generator::generate_php_struct_from_map(
   out << indent() << "return new static(\n";
   indent_up();
   for (const auto& field : tstruct->fields()) {
+    if (skip_codegen(&field)) {
+      continue;
+    }
     out << indent()
         << "/* HH_FIXME[4110] For backwards compatibility with map's mixed values. */\n";
     out << indent() << "idx($map, '" << field.name() << "'),\n";
@@ -4556,7 +4678,9 @@ void t_hack_generator::generate_service_processor(
 
   // Generate the process subfunctions
   for (const auto* function : get_supported_server_functions(tservice)) {
-    generate_process_function(tservice, function, async);
+    if (!skip_codegen(function)) {
+      generate_process_function(tservice, function, async);
+    }
   }
   generate_process_metadata_function(tservice, mangle, async);
 
@@ -4822,7 +4946,9 @@ void t_hack_generator::generate_service_helpers(
   f_service_ << "// HELPER FUNCTIONS AND STRUCTURES\n\n";
 
   for (const auto* function : get_supported_client_functions(tservice)) {
-    generate_php_function_helpers(tservice, function);
+    if (!skip_codegen(function)) {
+      generate_php_function_helpers(tservice, function);
+    }
   }
 
   for (const auto& interaction : get_interactions(tservice)) {
@@ -4959,6 +5085,9 @@ void t_hack_generator::generate_service_interactions(
 
     // Generate interaction method implementations
     for (const auto& function : get_supported_client_functions(interaction)) {
+      if (skip_codegen(function)) {
+        continue;
+      }
       _generate_service_client_child_fn(f_service_, interaction, function);
       _generate_sendImpl(f_service_, interaction, function);
       if (function->qualifier() != t_function_qualifier::one_way) {
@@ -5649,7 +5778,8 @@ void t_hack_generator::generate_service_interface(
   auto functions = client ? get_supported_client_functions(tservice)
                           : get_supported_server_functions(tservice);
   for (const auto* function : functions) {
-    if (async && client && !is_client_only_function(function)) {
+    if (skip_codegen(function) ||
+        (async && client && !is_client_only_function(function))) {
       continue;
     }
     // Add a blank line before the start of a new function definition
@@ -5714,6 +5844,9 @@ void t_hack_generator::_generate_service_client(
 
   // Generate client method implementations
   for (const auto* function : get_supported_client_functions(tservice)) {
+    if (skip_codegen(function)) {
+      continue;
+    }
     _generate_sendImpl(out, tservice, function);
     if (function->qualifier() != t_function_qualifier::one_way) {
       _generate_recvImpl(out, tservice, function);
@@ -6471,6 +6604,9 @@ void t_hack_generator::_generate_service_client_children(
 
   // Generate functions as necessary.
   for (const auto* function : get_supported_client_functions(tservice)) {
+    if (skip_codegen(function)) {
+      continue;
+    }
     _generate_service_client_child_fn(out, tservice, function);
     if (no_use_hack_collections_) {
       _generate_service_client_child_fn(
@@ -6482,6 +6618,9 @@ void t_hack_generator::_generate_service_client_children(
     out << indent() << "/* send and recv functions */\n";
 
     for (const auto* function : get_supported_server_functions(tservice)) {
+      if (skip_codegen(function)) {
+        continue;
+      }
       const std::string& funname = function->name();
       std::string return_typehint =
           type_to_typehint(function->get_returntype());

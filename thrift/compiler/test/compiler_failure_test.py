@@ -1871,3 +1871,78 @@ class CompilerFailureTest(unittest.TestCase):
             "`@meta.MergeFrom` can be only used with a struct type.\n"
             "[FAILURE:bar.thrift:29] Field id `1` is already used in `Extended5`.\n",
         )
+
+    def test_set_invalid_elem_type(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct S {
+                    1: i32 field,
+                    2: set<float> set_of_float,
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift", gen="hack")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, field: set<float> set_of_float.\n",
+        )
+
+    def test_map_invalid_key_type(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct S {
+                    1: i32 field,
+                    2: map<float, i32> map_of_float_to_int,
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift", gen="hack")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, field: map<float, i32> map_of_float_to_int.\n",
+        )
+
+    def test_rpc_return_invalid_key_type(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                service Foo {
+                    set<float> invalid_rpc_return();
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift", gen="hack")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, function invalid_rpc_return has invalid return type with type: set<float>.\n",
+        )
+
+    def test_rpc_param_invalid_key_type(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                service Foo {
+                    void invalid_rpc_param(set<float> arg1);
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift", gen="hack")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, function invalid_rpc_param has invalid param arg1 with type: set<float>.\n",
+        )
