@@ -18,11 +18,11 @@ constexpr std::size_t const TEnumTraits<::cpp2::YourEnum>::size;
 folly::Range<::cpp2::YourEnum const*> const TEnumTraits<::cpp2::YourEnum>::values = folly::range(TEnumDataStorage<::cpp2::YourEnum>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::YourEnum>::names = folly::range(TEnumDataStorage<::cpp2::YourEnum>::names);
 
-char const* TEnumTraits<::cpp2::YourEnum>::findName(type value) {
+char const* TEnumTraits<::cpp2::YourEnum>::findName(type value) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
-bool TEnumTraits<::cpp2::YourEnum>::findValue(char const* name, type* out) {
+bool TEnumTraits<::cpp2::YourEnum>::findValue(char const* name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
@@ -158,11 +158,11 @@ constexpr std::size_t const TEnumTraits<::cpp2::YourUnion::Type>::size;
 folly::Range<::cpp2::YourUnion::Type const*> const TEnumTraits<::cpp2::YourUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::YourUnion::Type>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::YourUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::YourUnion::Type>::names);
 
-char const* TEnumTraits<::cpp2::YourUnion::Type>::findName(type value) {
+char const* TEnumTraits<::cpp2::YourUnion::Type>::findName(type value) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
-bool TEnumTraits<::cpp2::YourUnion::Type>::findValue(char const* name, type* out) {
+bool TEnumTraits<::cpp2::YourUnion::Type>::findValue(char const* name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 }} // apache::thrift

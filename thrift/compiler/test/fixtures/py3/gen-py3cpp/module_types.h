@@ -170,8 +170,8 @@ template <> struct TEnumTraits<::py3::simple::AnEnum> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::None; }
   static constexpr type max() { return type::FOUR; }
@@ -187,8 +187,8 @@ template <> struct TEnumTraits<::py3::simple::Flags> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::flag_A; }
   static constexpr type max() { return type::flag_D; }
@@ -1843,8 +1843,8 @@ template <> struct TEnumTraits<::py3::simple::BinaryUnion::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 }} // apache::thrift

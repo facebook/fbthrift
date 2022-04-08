@@ -2410,8 +2410,8 @@ template <> struct TEnumTraits<::cpp2::ComplexUnion::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 
@@ -2424,8 +2424,8 @@ template <> struct TEnumTraits<::cpp2::ListUnion::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 
@@ -2438,8 +2438,8 @@ template <> struct TEnumTraits<::cpp2::DataUnion::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 
@@ -2452,8 +2452,8 @@ template <> struct TEnumTraits<::cpp2::ValUnion::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 
@@ -2466,8 +2466,8 @@ template <> struct TEnumTraits<::cpp2::VirtualComplexUnion::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 
@@ -2480,8 +2480,8 @@ template <> struct TEnumTraits<::cpp2::NonCopyableUnion::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 }} // apache::thrift

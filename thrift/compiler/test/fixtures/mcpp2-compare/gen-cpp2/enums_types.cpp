@@ -18,11 +18,11 @@ constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumA>::size;
 folly::Range<::facebook::ns::qwerty::AnEnumA const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumA>::values = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumA>::names = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumA>::names);
 
-char const* TEnumTraits<::facebook::ns::qwerty::AnEnumA>::findName(type value) {
+char const* TEnumTraits<::facebook::ns::qwerty::AnEnumA>::findName(type value) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
-bool TEnumTraits<::facebook::ns::qwerty::AnEnumA>::findValue(char const* name, type* out) {
+bool TEnumTraits<::facebook::ns::qwerty::AnEnumA>::findValue(char const* name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
@@ -44,11 +44,11 @@ constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumB>::size;
 folly::Range<::facebook::ns::qwerty::AnEnumB const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumB>::values = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumB>::names = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumB>::names);
 
-char const* TEnumTraits<::facebook::ns::qwerty::AnEnumB>::findName(type value) {
+char const* TEnumTraits<::facebook::ns::qwerty::AnEnumB>::findName(type value) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
-bool TEnumTraits<::facebook::ns::qwerty::AnEnumB>::findValue(char const* name, type* out) {
+bool TEnumTraits<::facebook::ns::qwerty::AnEnumB>::findValue(char const* name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
@@ -70,11 +70,11 @@ constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumC>::size;
 folly::Range<::facebook::ns::qwerty::AnEnumC const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumC>::values = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumC>::names = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumC>::names);
 
-char const* TEnumTraits<::facebook::ns::qwerty::AnEnumC>::findName(type value) {
+char const* TEnumTraits<::facebook::ns::qwerty::AnEnumC>::findName(type value) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
-bool TEnumTraits<::facebook::ns::qwerty::AnEnumC>::findValue(char const* name, type* out) {
+bool TEnumTraits<::facebook::ns::qwerty::AnEnumC>::findValue(char const* name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
@@ -96,11 +96,11 @@ constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumD>::size;
 folly::Range<::facebook::ns::qwerty::AnEnumD const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumD>::values = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumD>::names = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumD>::names);
 
-char const* TEnumTraits<::facebook::ns::qwerty::AnEnumD>::findName(type value) {
+char const* TEnumTraits<::facebook::ns::qwerty::AnEnumD>::findName(type value) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
-bool TEnumTraits<::facebook::ns::qwerty::AnEnumD>::findValue(char const* name, type* out) {
+bool TEnumTraits<::facebook::ns::qwerty::AnEnumD>::findValue(char const* name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
@@ -122,11 +122,11 @@ constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumE>::size;
 folly::Range<::facebook::ns::qwerty::AnEnumE const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumE>::values = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::facebook::ns::qwerty::AnEnumE>::names = folly::range(TEnumDataStorage<::facebook::ns::qwerty::AnEnumE>::names);
 
-char const* TEnumTraits<::facebook::ns::qwerty::AnEnumE>::findName(type value) {
+char const* TEnumTraits<::facebook::ns::qwerty::AnEnumE>::findName(type value) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
-bool TEnumTraits<::facebook::ns::qwerty::AnEnumE>::findValue(char const* name, type* out) {
+bool TEnumTraits<::facebook::ns::qwerty::AnEnumE>::findValue(char const* name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 

@@ -197,8 +197,8 @@ template <> struct TEnumTraits<::cpp2::EmptyEnum> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 
@@ -212,8 +212,8 @@ template <> struct TEnumTraits<::cpp2::City> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::NYC; }
   static constexpr type max() { return type::LON; }
@@ -229,8 +229,8 @@ template <> struct TEnumTraits<::cpp2::Company> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::FACEBOOK; }
   static constexpr type max() { return type::INSTAGRAM; }
@@ -2428,8 +2428,8 @@ template <> struct TEnumTraits<::cpp2::union1::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 
@@ -2442,8 +2442,8 @@ template <> struct TEnumTraits<::cpp2::union2::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 }} // apache::thrift

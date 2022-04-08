@@ -946,8 +946,8 @@ template <> struct TEnumTraits<::some::valid::ns::MyEnumA> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::fieldA; }
   static constexpr type max() { return type::fieldC; }
@@ -963,8 +963,8 @@ template <> struct TEnumTraits<::some::valid::ns::AnnotatedEnum> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::FIELDA; }
   static constexpr type max() { return type::FIELDC; }
@@ -980,8 +980,8 @@ template <> struct TEnumTraits<::some::valid::ns::AnnotatedEnum2> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::FIELDA; }
   static constexpr type max() { return type::FIELDC; }
@@ -997,8 +997,8 @@ template <> struct TEnumTraits<::some::valid::ns::MyEnumB> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::AField; }
   static constexpr type max() { return type::AField; }
@@ -8881,8 +8881,8 @@ template <> struct TEnumTraits<::some::valid::ns::SimpleUnion::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 
@@ -8895,8 +8895,8 @@ template <> struct TEnumTraits<::some::valid::ns::ComplexUnion::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 
@@ -8909,8 +8909,8 @@ template <> struct TEnumTraits<::some::valid::ns::FloatUnion::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 }} // apache::thrift

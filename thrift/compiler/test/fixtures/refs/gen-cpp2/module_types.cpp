@@ -18,11 +18,11 @@ constexpr std::size_t const TEnumTraits<::cpp2::MyEnum>::size;
 folly::Range<::cpp2::MyEnum const*> const TEnumTraits<::cpp2::MyEnum>::values = folly::range(TEnumDataStorage<::cpp2::MyEnum>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::MyEnum>::names = folly::range(TEnumDataStorage<::cpp2::MyEnum>::names);
 
-char const* TEnumTraits<::cpp2::MyEnum>::findName(type value) {
+char const* TEnumTraits<::cpp2::MyEnum>::findName(type value) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
-bool TEnumTraits<::cpp2::MyEnum>::findValue(char const* name, type* out) {
+bool TEnumTraits<::cpp2::MyEnum>::findValue(char const* name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
@@ -44,11 +44,11 @@ constexpr std::size_t const TEnumTraits<::cpp2::TypedEnum>::size;
 folly::Range<::cpp2::TypedEnum const*> const TEnumTraits<::cpp2::TypedEnum>::values = folly::range(TEnumDataStorage<::cpp2::TypedEnum>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::TypedEnum>::names = folly::range(TEnumDataStorage<::cpp2::TypedEnum>::names);
 
-char const* TEnumTraits<::cpp2::TypedEnum>::findName(type value) {
+char const* TEnumTraits<::cpp2::TypedEnum>::findName(type value) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
-bool TEnumTraits<::cpp2::TypedEnum>::findValue(char const* name, type* out) {
+bool TEnumTraits<::cpp2::TypedEnum>::findValue(char const* name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
@@ -91,11 +91,11 @@ constexpr std::size_t const TEnumTraits<::cpp2::MyUnion::Type>::size;
 folly::Range<::cpp2::MyUnion::Type const*> const TEnumTraits<::cpp2::MyUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::MyUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::names);
 
-char const* TEnumTraits<::cpp2::MyUnion::Type>::findName(type value) {
+char const* TEnumTraits<::cpp2::MyUnion::Type>::findName(type value) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
-bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) {
+bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 }} // apache::thrift

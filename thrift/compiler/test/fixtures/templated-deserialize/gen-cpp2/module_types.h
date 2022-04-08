@@ -171,8 +171,8 @@ template <> struct TEnumTraits<::cpp2::MyEnumA> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::fieldA; }
   static constexpr type max() { return type::fieldC; }

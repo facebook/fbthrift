@@ -91,8 +91,8 @@ template <> struct TEnumTraits<::facebook::ns::qwerty::AnEnumA> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::FIELDA; }
   static constexpr type max() { return type::FIELDA; }
@@ -108,8 +108,8 @@ template <> struct TEnumTraits<::facebook::ns::qwerty::AnEnumB> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::FIELDA; }
   static constexpr type max() { return type::FIELDB; }
@@ -125,8 +125,8 @@ template <> struct TEnumTraits<::facebook::ns::qwerty::AnEnumC> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::FIELDC; }
   static constexpr type max() { return type::FIELDC; }
@@ -142,8 +142,8 @@ template <> struct TEnumTraits<::facebook::ns::qwerty::AnEnumD> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::FIELDD; }
   static constexpr type max() { return type::FIELDD; }
@@ -159,8 +159,8 @@ template <> struct TEnumTraits<::facebook::ns::qwerty::AnEnumE> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::FIELDA; }
   static constexpr type max() { return type::FIELDA; }

@@ -917,8 +917,8 @@ template <> struct TEnumTraits<::test_cpp2::cpp_reflection::enum1> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::field0; }
   static constexpr type max() { return type::field2; }
@@ -934,8 +934,8 @@ template <> struct TEnumTraits<::test_cpp2::cpp_reflection::enum2> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::field0_2; }
   static constexpr type max() { return type::field2_2; }
@@ -951,8 +951,8 @@ template <> struct TEnumTraits<::test_cpp2::cpp_reflection::enum3> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::field0_3; }
   static constexpr type max() { return type::field1_3; }
@@ -968,8 +968,8 @@ template <> struct TEnumTraits<::test_cpp2::cpp_reflection::enum_with_special_na
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
   static constexpr type min() { return type::get; }
   static constexpr type max() { return type::fields; }
@@ -11758,8 +11758,8 @@ template <> struct TEnumTraits<::test_cpp2::cpp_reflection::union1::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 
@@ -11772,8 +11772,8 @@ template <> struct TEnumTraits<::test_cpp2::cpp_reflection::union2::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 
@@ -11786,8 +11786,8 @@ template <> struct TEnumTraits<::test_cpp2::cpp_reflection::union3::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 
@@ -11800,8 +11800,8 @@ template <> struct TEnumTraits<::test_cpp2::cpp_reflection::unionA::Type> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 
@@ -11814,8 +11814,8 @@ template <> struct TEnumTraits<::test_cpp2::cpp_reflection::union_with_special_n
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value);
-  static bool findValue(char const* name, type* out);
+  static char const* findName(type value) noexcept;
+  static bool findValue(char const* name, type* out) noexcept;
 
 };
 }} // apache::thrift

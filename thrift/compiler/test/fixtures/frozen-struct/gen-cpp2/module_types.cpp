@@ -18,11 +18,11 @@ constexpr std::size_t const TEnumTraits<::some::ns::EnumB>::size;
 folly::Range<::some::ns::EnumB const*> const TEnumTraits<::some::ns::EnumB>::values = folly::range(TEnumDataStorage<::some::ns::EnumB>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::some::ns::EnumB>::names = folly::range(TEnumDataStorage<::some::ns::EnumB>::names);
 
-char const* TEnumTraits<::some::ns::EnumB>::findName(type value) {
+char const* TEnumTraits<::some::ns::EnumB>::findName(type value) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value);
 }
 
-bool TEnumTraits<::some::ns::EnumB>::findValue(char const* name, type* out) {
+bool TEnumTraits<::some::ns::EnumB>::findValue(char const* name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
