@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -138,13 +138,19 @@ class TProcessorEventHandler {
       bool declared,
       const folly::exception_wrapper& ew_) {
     const auto type = ew_.class_name();
-    const auto what = ew_.what();
-    folly::StringPiece whatsp(what);
+    std::string what;
     if (declared) {
-      CHECK(whatsp.removePrefix(type)) << "weird format: '" << what << "'";
-      CHECK(whatsp.removePrefix(": ")) << "weird format: '" << what << "'";
+      if (auto* eptr = ew_.get_exception()) {
+        what = eptr->what();
+      } else {
+        LOG(FATAL)
+            << "declared exception does not derive from std::exception; what: "
+            << ew_.what();
+      }
+    } else {
+      what = ew_.what().toStdString();
     }
-    return userException(ctx, fn_name, type.toStdString(), whatsp.str());
+    return userException(ctx, fn_name, type.toStdString(), what);
   }
 
  protected:
