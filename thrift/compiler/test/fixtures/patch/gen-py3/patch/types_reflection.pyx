@@ -15,7 +15,7 @@ from thrift.py3.reflection cimport (
 )
 
 cimport facebook.thrift.annotation.scope.types as _facebook_thrift_annotation_scope_types
-cimport facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
+cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
 
 cimport patch.types as _patch_types
 

@@ -11,7 +11,7 @@ from thrift.py3.server import RequestContext, ServiceInterface
 from abc import abstractmethod, ABCMeta
 
 import module.types as _module_types
-import facebook.thrift.annotation.hack.hack.types as _facebook_thrift_annotation_hack_hack_types
+import facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hack_types
 
 _MyServiceInterfaceT = _typing.TypeVar('_MyServiceInterfaceT', bound='MyServiceInterface')
 

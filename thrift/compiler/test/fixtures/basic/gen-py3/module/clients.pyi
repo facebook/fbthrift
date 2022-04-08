@@ -13,7 +13,7 @@ import typing as _typing
 from types import TracebackType
 
 import module.types as _module_types
-import facebook.thrift.annotation.hack.hack.types as _facebook_thrift_annotation_hack_hack_types
+import facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hack_types
 
 
 _MyServiceT = _typing.TypeVar('_MyServiceT', bound='MyService')

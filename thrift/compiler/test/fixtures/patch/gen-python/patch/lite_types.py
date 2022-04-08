@@ -11,7 +11,7 @@ import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
 import facebook.thrift.annotation.scope.lite_types
 
-import facebook.thrift.annotation.thrift.thrift.lite_types
+import facebook.thrift.annotation.thrift.lite_types
 
 
 class GeneratePatch(metaclass=_fbthrift_py3lite_types.StructMeta):

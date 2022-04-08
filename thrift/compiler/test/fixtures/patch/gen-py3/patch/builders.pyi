@@ -12,8 +12,8 @@ import thrift.py3.builder
 
 import facebook.thrift.annotation.scope.types as _facebook_thrift_annotation_scope_types
 import facebook.thrift.annotation.scope.builders as _facebook_thrift_annotation_scope_builders
-import facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
-import facebook.thrift.annotation.thrift.thrift.builders as _facebook_thrift_annotation_thrift_thrift_builders
+import facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
+import facebook.thrift.annotation.thrift.builders as _facebook_thrift_annotation_thrift_builders
 
 import patch.types as _patch_types
 

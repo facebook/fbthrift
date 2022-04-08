@@ -13,7 +13,7 @@ from thrift.py3.reflection cimport (
 
 import folly.iobuf as _fbthrift_iobuf
 
-cimport facebook.thrift.annotation.hack.hack.types as _facebook_thrift_annotation_hack_hack_types
+cimport facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hack_types
 
 cimport module.types as _module_types
 

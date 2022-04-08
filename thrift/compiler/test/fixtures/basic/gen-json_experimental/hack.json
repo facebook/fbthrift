@@ -11,7 +11,7 @@
     "java2": "com.facebook.thrift.annotation.hack",
     "py": "thrift.annotation.hack",
     "py.asyncio": "facebook_thrift_asyncio.annotation.hack",
-    "py3": "facebook.thrift.annotation.hack"
+    "py3": "facebook.thrift.annotation"
   },  "structs" :
   {
       "FieldWrapper" : {

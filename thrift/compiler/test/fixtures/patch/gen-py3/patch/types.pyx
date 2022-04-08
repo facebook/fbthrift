@@ -55,8 +55,8 @@ import weakref as __weakref
 import builtins as _builtins
 cimport facebook.thrift.annotation.scope.types as _facebook_thrift_annotation_scope_types
 import facebook.thrift.annotation.scope.types as _facebook_thrift_annotation_scope_types
-cimport facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
-import facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
+cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
+import facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
 
 cimport patch.types_reflection as _types_reflection
 

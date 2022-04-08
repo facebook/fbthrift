@@ -39,7 +39,7 @@ from thrift.py3.common cimport (
 )
 from folly.optional cimport cOptional as __cOptional
 cimport facebook.thrift.annotation.scope.types as _facebook_thrift_annotation_scope_types
-cimport facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
+cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
 
 cimport patch.types_fields as _fbthrift_types_fields
 

@@ -10,7 +10,7 @@
     "php": "facebook_thrift_annotation_thrift",
     "py": "thrift.annotation.thrift",
     "py.asyncio": "facebook_thrift_asyncio.annotation.thrift",
-    "py3": "facebook.thrift.annotation.thrift"
+    "py3": "facebook.thrift.annotation"
   },  "structs" :
   {
       "RequiresBackwardCompatibility" : {

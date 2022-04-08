@@ -18,7 +18,7 @@ import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import thrift.py3lite.types as _fbthrift_py3lite_types
 import module.lite_types
 import module.lite_metadata
-import facebook.thrift.annotation.hack.hack.lite_types
+import facebook.thrift.annotation.hack.lite_types
 
 
 class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):

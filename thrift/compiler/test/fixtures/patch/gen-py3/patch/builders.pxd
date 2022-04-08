@@ -12,8 +12,8 @@ cimport thrift.py3.builder
 
 cimport facebook.thrift.annotation.scope.types as _facebook_thrift_annotation_scope_types
 cimport facebook.thrift.annotation.scope.builders as _facebook_thrift_annotation_scope_builders
-cimport facebook.thrift.annotation.thrift.thrift.types as _facebook_thrift_annotation_thrift_thrift_types
-cimport facebook.thrift.annotation.thrift.thrift.builders as _facebook_thrift_annotation_thrift_thrift_builders
+cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
+cimport facebook.thrift.annotation.thrift.builders as _facebook_thrift_annotation_thrift_builders
 
 cimport patch.types as _patch_types
 
