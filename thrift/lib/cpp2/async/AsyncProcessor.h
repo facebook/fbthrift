@@ -931,7 +931,16 @@ class ServerInterface : public virtual AsyncProcessorFactory,
     requestParams_.threadManager_ = tm;
   }
 
-  concurrency::ThreadManager* getThreadManager() {
+  // For cases where caller only needs the folly::Executor* interface.
+  // These calls can be replaced with getHandlerExecutor.
+  [[deprecated("Use getHandlerExecutor")]] folly::Executor* getThreadManager() {
+    return getHandlerExecutor();
+  }
+
+  // For cases where the caller needs the ThreadManager interface. Caller
+  // needs to be refactored to replace these calls with getHandlerExecutor.
+  [[deprecated("Use getHandlerExecutor")]] concurrency::ThreadManager*
+  getThreadManager_deprecated() {
     return requestParams_.threadManager_;
   }
 

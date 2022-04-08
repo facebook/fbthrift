@@ -388,8 +388,8 @@ void ServerInterface::BlockingThreadManager::keepAliveRelease() noexcept {
 }
 
 folly::Executor::KeepAlive<> ServerInterface::getInternalKeepAlive() {
-  if (getThreadManager()) {
-    return getThreadManager()->getKeepAlive(
+  if (getThreadManager_deprecated()) {
+    return getThreadManager_deprecated()->getKeepAlive(
         getRequestContext()->getRequestExecutionScope(),
         apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
   } else {
