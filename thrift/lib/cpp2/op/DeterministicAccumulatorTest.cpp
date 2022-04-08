@@ -54,22 +54,22 @@ TEST(DeterministicAccumulatorTest, Exceptions) {
 
   EXPECT_THROW(accumulator.endOrdered(), std::logic_error);
   EXPECT_THROW(accumulator.endUnordered(), std::logic_error);
-  EXPECT_THROW(accumulator.result(), std::bad_optional_access);
+  EXPECT_THROW(accumulator.result(), std::logic_error);
 
   accumulator.beginOrdered();
   accumulator.combine(0);
   EXPECT_THROW(accumulator.endUnordered(), std::logic_error);
-  EXPECT_THROW(accumulator.result(), std::bad_optional_access);
+  EXPECT_THROW(accumulator.result(), std::logic_error);
 
   accumulator.beginUnordered();
   accumulator.combine(0);
   EXPECT_THROW(accumulator.endOrdered(), std::logic_error);
-  EXPECT_THROW(accumulator.result(), std::bad_optional_access);
+  EXPECT_THROW(accumulator.result(), std::logic_error);
 
   accumulator.endUnordered();
   accumulator.combine(0);
   EXPECT_THROW(accumulator.endUnordered(), std::logic_error);
-  EXPECT_THROW(accumulator.result(), std::bad_optional_access);
+  EXPECT_THROW(accumulator.result(), std::logic_error);
 
   accumulator.endOrdered();
   EXPECT_THROW(accumulator.endOrdered(), std::logic_error);
@@ -81,6 +81,20 @@ TEST(DeterministicAccumulatorTest, ArgumentDeduction) {
   DeterministicAccumulator accumulator([]() { return MoveOnlyHahser{}; });
   accumulator.beginOrdered();
   accumulator.combine(0);
+  accumulator.endOrdered();
+  accumulator.result();
+}
+
+TEST(DeterministicAccumulatorTest, ComplexArgumentDeduction) {
+  DeterministicAccumulator accumulator([]() { return MoveOnlyHahser{}; });
+  accumulator.beginOrdered();
+  accumulator.combine(0);
+  accumulator.beginUnordered();
+  accumulator.combine(0);
+  accumulator.beginOrdered();
+  accumulator.combine(0);
+  accumulator.endOrdered();
+  accumulator.endUnordered();
   accumulator.endOrdered();
   accumulator.result();
 }

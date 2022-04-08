@@ -17,11 +17,9 @@
 #pragma once
 
 #include <cstdint>
-#include <optional>
 #include <stack>
 #include <stdexcept>
 #include <utility>
-#include <variant>
 #include <vector>
 
 #include <folly/ScopeGuard.h>
@@ -38,19 +36,29 @@ namespace op {
  * and implementations. Accumulators know how to combine individual thrift
  * primitives and know how to handle ordered/unordered elements.
  *
+ * Context:
+ *   Context wraps a vector of Hasher instances (hashers), the number of ordered
+ *   collection of elements (ordered_count), and a flag that indicates whether
+ *   the context was created with unordered element (has_unordered_context). The
+ *   context is unordered when the count is zero and ordered if the count is
+ *   non-zero. If the context is ordered, the last element of hashers will
+ *   always point to the ordered hasher.
+ *
  * Ordered Elements:
- *   OrderedContext wraps a single Hasher instance that can combine a sequence
- *   of bytes. Each time we start combining an ordered collection of elements we
- *   need to create a new OrderedContext object on context stack. All subsequent
- *   combine operations will use that context to accumulate the hash.
- *   OrderedContext creation can be elided by accumulating into the previous
- *   OrderedContext on the stack. It is only possible if the previous context on
- *   the stack was also OrderedContext. For example: list<list<i64>>.
+ *   Each time we start combining an ordered collection of elements we need to
+ *   check if the previous context is ordered or unordered. If the previous
+ *   context is ordered, we can elide creating a new Hasher by accumulating the
+ *   hash with the Hasher in the previous ordered context and keeping count of
+ *   accumulated Hasher. If the previous context is unordered, we need to create
+ *   a new Hasher instance and push back into the vector of Hasher in the
+ *   previous context. All subsequent combine operations will use that context
+ *   to accumulate the hash. If the stack is empty, we still need to push a new
+ *   ordered context to the stack.
  *
  * Unordered Elements:
- *   UnorderedContext wraps a number of Hasher instances that need to be ordered
- *   before reducing them into one Hasher. Hasher implementations define the way
- *   to order Hasher instances. For example: set<i64>.
+ *   We always need to create a new context for unordered elements. All
+ *   subsequent combine operations will push front a new Hasher into the
+ *   vector of Hasher.
  *
  * Examples:
  *   struct MyData {
@@ -98,49 +106,54 @@ class DeterministicAccumulator {
   explicit DeterministicAccumulator(HasherGenerator generator)
       : generator_(std::move(generator)) {}
 
-  Hasher& result() { return result_.value(); }
-  const Hasher& result() const { return result_.value(); }
+  Hasher& result() {
+    if (set_) {
+      return result_;
+    }
+    folly::throw_exception<std::logic_error>("empty hash result");
+  }
+  const Hasher& result() const {
+    if (set_) {
+      return result_;
+    }
+    folly::throw_exception<std::logic_error>("empty hash result");
+  }
 
   template <typename T>
   void combine(const T& val);
 
   void beginOrdered();
   void endOrdered();
-  void beginUnordered() { context_.emplace(UnorderedContext{}); }
+  void beginUnordered() {
+    context_.emplace(Context{
+        .hashers = {}, .ordered_count = 0, .has_unordered_context = true});
+  }
   void endUnordered();
 
  private:
-  struct OrderedContext {
-    Hasher hasher;
+  struct Context {
+    std::vector<Hasher> hashers;
     // Number of ordered collections that this context represents.
-    // Each time we open a new ordered context and we elide the creation,
-    // this count gets bumped. We decrease it each time we leave an ordered
-    // context (finish an ordered collection of elements).
-    size_t count;
+    // An ordered hasher is always located at the back of the hashers.
+    // Each time when we open a new ordered context and elide the creation,
+    // this ordered_count gets bumped. We decrease it each time we leave an
+    // ordered context (finish an ordered collection of elements).
+    size_t ordered_count{};
+    bool has_unordered_context{};
   };
-  using UnorderedContext = std::vector<Hasher>;
-  using Context = std::variant<OrderedContext, UnorderedContext>;
-  enum ContextType { Ordered, Unordered };
 
   HasherGenerator generator_;
-  std::optional<Hasher> result_;
   std::stack<Context> context_;
+  Hasher result_ = generator_();
+  bool set_{};
 
-  template <ContextType I>
-  constexpr auto* contextIf() noexcept {
-    return !context_.empty() ? std::get_if<I>(&context_.top()) : nullptr;
-  }
-
-  template <ContextType I>
   constexpr auto& context() {
-    if (auto* ctx = contextIf<I>()) {
-      return *ctx;
+    if (context_.empty()) {
+      folly::throw_exception<std::logic_error>("empty hash context");
     }
-    folly::throw_exception<std::logic_error>("ordering context missmatch");
+    return context_.top();
   }
 
-  // Returns the hasher to use for the next value.
-  Hasher& next();
   void exitContext(Hasher result);
 };
 
@@ -164,27 +177,48 @@ FOLLY_NODISCARD auto makeUnorderedHashGuard(Accumulator& accumulator) {
 
 template <typename HasherGenerator>
 void DeterministicAccumulator<HasherGenerator>::beginOrdered() {
-  if (auto* ctx = contextIf<Ordered>()) {
-    ++ctx->count;
-  } else {
-    context_.emplace(OrderedContext{.hasher = generator_(), .count = 1});
+  // If the context stack is empty, push new context to the stack and use it.
+  if (context_.empty()) {
+    context_.emplace(Context{});
   }
+  auto& ctx = context();
+  // If the previous context is not an ordered context, insert a new hasher
+  // back of the vector.
+  if (ctx.ordered_count == 0) {
+    ctx.hashers.push_back(generator_());
+  }
+  ++ctx.ordered_count;
+  return;
 }
 
 template <typename HasherGenerator>
 void DeterministicAccumulator<HasherGenerator>::endOrdered() {
-  auto& ctx = context<Ordered>();
-  if (--ctx.count == 0) {
-    exitContext(std::move(ctx).hasher);
+  auto& ctx = context();
+  // If the previous context is not an ordered context, throw.
+  if (ctx.ordered_count == 0) {
+    folly::throw_exception<std::logic_error>("ordering context mistmatch");
+  }
+  if (--ctx.ordered_count == 0) {
+    if (ctx.has_unordered_context) {
+      // If the context was created with an unordered element, we should not
+      // exit the context.
+      ctx.hashers.back().finalize();
+    } else {
+      exitContext(std::move(ctx.hashers.back()));
+    }
   }
 }
 
 template <typename HasherGenerator>
 void DeterministicAccumulator<HasherGenerator>::endUnordered() {
-  auto& ctx = context<Unordered>();
-  std::sort(ctx.begin(), ctx.end());
+  auto& ctx = context();
+  // If the previous context is not an unordered context, throw.
+  if (ctx.ordered_count > 0) {
+    folly::throw_exception<std::logic_error>("ordering context mistmatch");
+  }
+  std::sort(ctx.hashers.begin(), ctx.hashers.end());
   auto result = generator_();
-  for (const auto& hasher : ctx) {
+  for (const auto& hasher : ctx.hashers) {
     result.combine(hasher);
   }
   exitContext(std::move(result));
@@ -194,29 +228,46 @@ template <typename HasherGenerator>
 void DeterministicAccumulator<HasherGenerator>::exitContext(Hasher result) {
   context_.pop();
   result.finalize();
-  if (auto* ctx = contextIf<Ordered>()) {
-    ctx->hasher.combine(result);
-  } else if (auto* ctx = contextIf<Unordered>()) {
-    ctx->emplace_back(std::move(result));
-  } else {
-    result_.emplace(std::move(result));
+  // If the context stack is empty, set the result.
+  if (context_.empty()) {
+    set_ = true;
+    result_ = std::move(result);
+    return;
   }
+  auto& ctx = context();
+  // If the previous context is an ordered context, combine with the
+  // existing ordered hasher which exists in the back of the vector.
+  if (ctx.ordered_count > 0) {
+    ctx.hashers.back().combine(result);
+    return;
+  }
+  // If the previous context is an unordered context, insert a new hasher to the
+  // vector.
+  ctx.hashers.push_back(std::move(result));
 }
 
 template <typename HasherGenerator>
 template <typename T>
 void DeterministicAccumulator<HasherGenerator>::combine(const T& val) {
+  // If the context stack is empty, set the result.
   if (context_.empty()) {
-    result_.emplace(generator_());
-    result_->combine(val);
-    result_->finalize();
-  } else if (auto* octx = std::get_if<Ordered>(&context_.top())) {
-    octx->hasher.combine(val);
-  } else {
-    auto& uctx = std::get<Unordered>(context_.top());
-    uctx.emplace_back(generator_());
-    uctx.back().combine(val);
+    set_ = true;
+    result_ = generator_();
+    result_.combine(val);
+    result_.finalize();
+    return;
   }
+  auto& ctx = context();
+  // If the previous context is an ordered context, combine with the
+  // existing ordered hasher.
+  if (ctx.ordered_count > 0) {
+    ctx.hashers.back().combine(val);
+    return;
+  }
+  // If the previous context is an unordered context, insert a new hasher
+  // and combine with the new hasher.
+  ctx.hashers.push_back(generator_());
+  ctx.hashers.back().combine(val);
 }
 
 } // namespace op
