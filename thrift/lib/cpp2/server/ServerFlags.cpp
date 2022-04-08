@@ -63,7 +63,7 @@ bool useResourcePools() {
   if (result == firstResult) {
     return result;
   }
-  LOG(FATAL) << "Inconsistent results from useResourcePoolsFlagsSet";
+  LOG(FATAL) << "Inconsistent results from useResourcePools";
 }
 
 bool useResourcePoolsFlagsSet() {

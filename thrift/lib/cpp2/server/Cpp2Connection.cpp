@@ -144,7 +144,7 @@ Cpp2Connection::Cpp2Connection(
           worker_.get()),
       transport_(transport),
       executor_(worker_->getServer()->getExecutor()) {
-  if (!useResourcePoolsFlagsSet()) {
+  if (!useResourcePools()) {
     threadManager_ = worker_->getServer()->getThreadManager();
   }
   context_.setTransportType(Cpp2ConnContext::TransportType::HEADER);
@@ -646,7 +646,7 @@ void Cpp2Connection::requestReceived(
         },
         [&](const PerServiceMetadata::MetadataFound& found) {
           logSetupConnectionEventsOnce(setupLoggingFlag_, context_);
-          if (!server->resourcePoolSet().empty()) {
+          if (useResourcePools()) {
             // We need to process this using request pools
             const ServiceRequestInfo* serviceRequestInfo{nullptr};
             if (serviceRequestInfoMap_) {

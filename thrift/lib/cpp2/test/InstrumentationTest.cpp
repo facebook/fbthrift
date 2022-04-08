@@ -236,7 +236,7 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
       const RequestSetupMetadata& meta) override {
     if (meta.interfaceKind_ref().has_value() &&
         meta.interfaceKind_ref().value() == InterfaceKind::DEBUGGING) {
-      if (apache::thrift::useResourcePoolsFlagsSet()) {
+      if (apache::thrift::useResourcePools()) {
         auto asyncHandle = apache::thrift::ResourcePoolHandle::defaultAsync();
         // Ensure there is an async handler set up in the resource pool.
         if (!resourcePoolSet_.hasResourcePool(asyncHandle)) {
@@ -530,7 +530,7 @@ TEST_F(RequestInstrumentationTest, debugInterfaceTest) {
     client->semifuture_sendRequest();
   }
 
-  if (!useResourcePoolsFlagsSet()) {
+  if (!useResourcePools()) {
     auto echoed = debugClient->semifuture_echo("echome").get();
     EXPECT_TRUE(
         folly::StringPiece(echoed).startsWith("echome:DebugInterface-"));

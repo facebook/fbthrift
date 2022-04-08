@@ -425,7 +425,7 @@ void ThriftServer::setup() {
 
     runtimeResourcePoolsChecks();
 
-    if (!useResourcePoolsFlagsSet()) {
+    if (!useResourcePools()) {
       // We always need a threadmanager for cpp2.
       LOG(INFO) << "Using thread manager (resource pools not enabled)";
       setupThreadManager();

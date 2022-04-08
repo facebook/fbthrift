@@ -193,7 +193,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
         // Allow no thread manager if resource pools in use
         valid &=
             (!!(threadManager_ = std::move(processorInfo->threadManager_)) ||
-             useResourcePoolsFlagsSet());
+             useResourcePools());
         valid &= !!(serverConfigs_ = &processorInfo->serverConfigs_);
         requestsRegistry_ = processorInfo->requestsRegistry_ != nullptr
             ? processorInfo->requestsRegistry_
@@ -214,7 +214,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
         std::addressof(worker_->getMetadataForService(*processorFactory_));
     serviceRequestInfoMap_ = processorFactory_->getServiceRequestInfoMap();
     processor_ = processorFactory_->getProcessor();
-    if (!useResourcePoolsFlagsSet()) {
+    if (!useResourcePools()) {
       threadManager_ = worker_->getServer()->getThreadManager();
     }
     serverConfigs_ = worker_->getServer();
@@ -516,10 +516,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
   const auto& headers = request->getTHeader().getHeaders();
   const auto& name = request->getMethodName();
 
-  bool useResourcePools =
-      useResourcePoolsFlagsSet() && !serverConfigs_->resourcePoolSet().empty();
-
-  if (useResourcePools) {
+  if (useResourcePools()) {
     serverConfigs_->incActiveRequests();
 
     if (!serverConfigs_->shouldHandleRequestForMethod(name)) {
@@ -620,7 +617,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
     if (auto* found = std::get_if<PerServiceMetadata::MetadataFound>(
             &methodMetadataResult);
         LIKELY(found != nullptr)) {
-      if (useResourcePools) {
+      if (useResourcePools()) {
         const ServiceRequestInfo* serviceRequestInfo = serviceRequestInfoMap_
             ? folly::get_ptr(
                   serviceRequestInfoMap_->get(), request->getMethodName())

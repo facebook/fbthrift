@@ -697,7 +697,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
 
   folly::Executor* getExecutor() const {
-    if (useResourcePoolsFlagsSet()) {
+    if (useResourcePools()) {
       return resourcePoolSet()
           .resourcePool(ResourcePoolHandle::defaultAsync())
           .executor()
@@ -768,13 +768,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     maxRequests_.set(maxRequests, source);
     // Eventually we'll remove the simple setMaxRequests but for now ensure it
     // updates the concurrency controller for the default async pool.
-    if (!resourcePoolSet_.empty()) {
+    if (useResourcePools()) {
       if (resourcePoolSet_.hasResourcePool(
               ResourcePoolHandle::defaultAsync())) {
         resourcePoolSet_.resourcePool(ResourcePoolHandle::defaultAsync())
             .concurrencyController()
             .value()
-            ->setExecutionLimitRequests(maxRequests);
+            ->setExecutionLimitRequests(
+                maxRequests != 0 ? maxRequests
+                                 : std::numeric_limits<uint32_t>::max());
       }
     }
   }

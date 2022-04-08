@@ -503,7 +503,7 @@ void doLoadHeaderTest(bool isRocket) {
               tae.getType());
         });
 
-    if (!useResourcePoolsFlagsSet(/* no isOverloaded with resource pools*/)) {
+    if (!useResourcePools(/* no isOverloaded with resource pools*/)) {
       ASSERT_TRUE(matched);
     }
     checkLoadHeader(header, kLoadMetric);
@@ -1569,7 +1569,7 @@ TEST_P(HeaderOrRocket, QueueTimeoutOnServerShutdown) {
 
   auto blockIf = std::make_shared<BlockInterface>();
   auto runner = std::make_unique<ScopedServerInterfaceThread>(blockIf);
-  if (!runner->getThriftServer().resourcePoolSet().empty()) {
+  if (useResourcePools()) {
     // Limit active requests to 1 for this test and ensure we have two threads
     // in the worker pool.
     auto& resourcePool =
