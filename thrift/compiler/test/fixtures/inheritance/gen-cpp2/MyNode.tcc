@@ -60,30 +60,6 @@ void MyNodeAsyncProcessor::executeRequest_do_mid(apache::thrift::ServerRequest&&
   iface_->async_tm_do_mid(std::move(callback));
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
-void MyNodeAsyncProcessor::process_do_mid(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
-  // make sure getRequestContext is null
-  // so async calls don't accidentally use it
-  iface_->setRequestContext(nullptr);
-  ::cpp2::MyNode_do_mid_pargs args;
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyNode.do_mid", ctx));
-  try {
-    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
-  }
-  catch (const std::exception& ex) {
-    folly::exception_wrapper ew(std::current_exception(), ex);
-    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ew, std::move(req), ctx, eb, "do_mid");
-    return;
-  }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(ctxStack), return_do_mid<ProtocolIn_,ProtocolOut_>, throw_wrapped_do_mid<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  iface_->async_tm_do_mid(std::move(callback));
-}
-
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyNodeAsyncProcessor::return_do_mid(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;

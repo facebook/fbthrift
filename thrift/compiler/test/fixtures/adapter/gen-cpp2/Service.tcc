@@ -66,36 +66,6 @@ void ServiceAsyncProcessor::executeRequest_func(apache::thrift::ServerRequest&& 
   iface_->async_tm_func(std::move(callback), std::move(uarg_arg1), std::move(uarg_arg2), std::move(uarg_arg3));
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
-void ServiceAsyncProcessor::process_func(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
-  // make sure getRequestContext is null
-  // so async calls don't accidentally use it
-  iface_->setRequestContext(nullptr);
-  ::cpp2::Service_func_pargs args;
-  auto uarg_arg1 = std::make_unique<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>>();
-  args.get<0>().value = uarg_arg1.get();
-  auto uarg_arg2 = std::make_unique<::std::string>();
-  args.get<1>().value = uarg_arg2.get();
-  auto uarg_arg3 = std::make_unique<::cpp2::Foo>();
-  args.get<2>().value = uarg_arg3.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Service.func", ctx));
-  try {
-    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
-  }
-  catch (const std::exception& ex) {
-    folly::exception_wrapper ew(std::current_exception(), ex);
-    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ew, std::move(req), ctx, eb, "func");
-    return;
-  }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>>(std::move(req), std::move(ctxStack), return_func<ProtocolIn_,ProtocolOut_>, throw_wrapped_func<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  iface_->async_tm_func(std::move(callback), std::move(uarg_arg1), std::move(uarg_arg2), std::move(uarg_arg3));
-}
-
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse ServiceAsyncProcessor::return_func(apache::thrift::ContextStack* ctx, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> const& _return) {
   ProtocolOut_ prot;

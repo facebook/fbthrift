@@ -64,32 +64,6 @@ void SomeServiceAsyncProcessor::executeRequest_bounce_map(apache::thrift::Server
   iface_->async_tm_bounce_map(std::move(callback), std::move(uarg_m));
 }
 
-template <typename ProtocolIn_, typename ProtocolOut_>
-void SomeServiceAsyncProcessor::process_bounce_map(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
-  // make sure getRequestContext is null
-  // so async calls don't accidentally use it
-  iface_->setRequestContext(nullptr);
-  ::apache::thrift::fixtures::types::SomeService_bounce_map_pargs args;
-  auto uarg_m = std::make_unique<::apache::thrift::fixtures::types::SomeMap>();
-  args.get<0>().value = uarg_m.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SomeService.bounce_map", ctx));
-  try {
-    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
-  }
-  catch (const std::exception& ex) {
-    folly::exception_wrapper ew(std::current_exception(), ex);
-    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ew, std::move(req), ctx, eb, "bounce_map");
-    return;
-  }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::apache::thrift::fixtures::types::SomeMap>>>(std::move(req), std::move(ctxStack), return_bounce_map<ProtocolIn_,ProtocolOut_>, throw_wrapped_bounce_map<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  iface_->async_tm_bounce_map(std::move(callback), std::move(uarg_m));
-}
-
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse SomeServiceAsyncProcessor::return_bounce_map(apache::thrift::ContextStack* ctx, ::apache::thrift::fixtures::types::SomeMap const& _return) {
   ProtocolOut_ prot;
@@ -158,32 +132,6 @@ void SomeServiceAsyncProcessor::executeRequest_binary_keyed_map(apache::thrift::
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
     );
-  iface_->async_tm_binary_keyed_map(std::move(callback), std::move(uarg_r));
-}
-
-template <typename ProtocolIn_, typename ProtocolOut_>
-void SomeServiceAsyncProcessor::process_binary_keyed_map(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  if (!req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
-  }
-  // make sure getRequestContext is null
-  // so async calls don't accidentally use it
-  iface_->setRequestContext(nullptr);
-  ::apache::thrift::fixtures::types::SomeService_binary_keyed_map_pargs args;
-  auto uarg_r = std::make_unique<::std::vector<::std::int64_t>>();
-  args.get<0>().value = uarg_r.get();
-  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SomeService.binary_keyed_map", ctx));
-  try {
-    deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
-  }
-  catch (const std::exception& ex) {
-    folly::exception_wrapper ew(std::current_exception(), ex);
-    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
-        ew, std::move(req), ctx, eb, "binary_keyed_map");
-    return;
-  }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>>>>(std::move(req), std::move(ctxStack), return_binary_keyed_map<ProtocolIn_,ProtocolOut_>, throw_wrapped_binary_keyed_map<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   iface_->async_tm_binary_keyed_map(std::move(callback), std::move(uarg_r));
 }
 
