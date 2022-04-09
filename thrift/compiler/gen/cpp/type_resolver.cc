@@ -58,12 +58,19 @@ const std::string& type_resolver::get_type_name(
 }
 
 const std::string& type_resolver::get_type_name(const t_typedef& node) {
-  const t_type& type = *node.type();
+  // When `t_placeholder_typedef` is used, `t_type_ref::deref` will
+  // automatically dereference `t_placeholder_typedef` as well. Since
+  // unstructured annotations are stored in `t_placeholder_typedef`, we can't
+  // use `t_type_ref::deref`.
+  const t_type* type = node.type().get_type();
+  if (type == nullptr) {
+    throw std::runtime_error("t_type_ref has no type.");
+  }
   if (const std::string* adapter = find_structured_adapter_annotation(node)) {
     return detail::get_or_gen(
-        type_cache_, &node, [&]() { return gen_type(type, adapter); });
+        type_cache_, &node, [&]() { return gen_type(*type, adapter); });
   }
-  return get_type_name(type);
+  return get_type_name(*type);
 }
 
 const std::string& type_resolver::get_storage_type_name(
