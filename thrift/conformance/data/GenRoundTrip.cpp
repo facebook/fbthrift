@@ -14,31 +14,14 @@
  * limitations under the License.
  */
 
-#include <cstdio>
-#include <stdexcept>
-#include <vector>
-
 #include <folly/init/Init.h>
-#include <folly/io/IOBuf.h>
-#include <folly/io/IOBufQueue.h>
-#include <thrift/conformance/cpp2/Protocol.h>
 #include <thrift/conformance/data/TestGenerator.h>
-#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 
-using apache::thrift::conformance::getStandardProtocol;
-using apache::thrift::conformance::StandardProtocol;
+using apache::thrift::conformance::data::createRoundTripSuite;
+using apache::thrift::conformance::data::serializeToFile;
 
 int main(int argc, char** argv) {
   folly::Init(&argc, &argv);
-  std::vector<folly::StringPiece> protocolNames;
-
-  auto testSuite = apache::thrift::conformance::data::createRoundTripSuite();
-
-  apache::thrift::BinaryProtocolWriter writer;
-  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-  writer.setOutput(&queue);
-  testSuite.write(&writer);
-  while (auto buf = queue.pop_front()) {
-    ::fwrite(buf->data(), sizeof(uint8_t), buf->length(), stdout);
-  }
+  serializeToFile<apache::thrift::BinaryProtocolWriter>(
+      createRoundTripSuite(), stdout);
 }

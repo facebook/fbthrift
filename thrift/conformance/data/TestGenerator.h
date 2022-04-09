@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,15 @@
 
 #include <thrift/conformance/data/internal/TestGenerator.h>
 
+#include <cstdio>
 #include <set>
 
+#include <glog/logging.h>
+#include <folly/io/IOBufQueue.h>
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 #include <thrift/conformance/cpp2/Protocol.h>
 #include <thrift/conformance/if/gen-cpp2/test_suite_types.h>
+#include <thrift/lib/cpp2/Thrift.h>
 
 namespace apache::thrift::conformance::data {
 
@@ -38,6 +42,20 @@ inline TestSuite createRoundTripSuite(
 
 inline TestSuite createRoundTripSuite(const AnyRegistry& registry) {
   return createRoundTripSuite(detail::kDefaultProtocols, registry);
+}
+
+template <class Writer, class T>
+std::enable_if_t<apache::thrift::is_thrift_class_v<T>> serializeToFile(
+    const T& s, std::FILE* f) {
+  Writer writer;
+  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+  writer.setOutput(&queue);
+  s.write(&writer);
+  while (auto buf = queue.pop_front()) {
+    CHECK_EQ(
+        std::fwrite(buf->data(), sizeof(uint8_t), buf->length(), f),
+        buf->length());
+  }
 }
 
 } // namespace apache::thrift::conformance::data
