@@ -62,6 +62,7 @@ Foo::Foo(const Foo& srcObj) {
   ::apache::thrift::adapt_detail::construct<my::Adapter3, 6>(__fbthrift_field_mapField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter3, 7>(__fbthrift_field_optionalMapField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 8>(__fbthrift_field_binaryField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 9>(__fbthrift_field_longField, *this);
 }
 
 Foo& Foo::operator=(const Foo& src) {
@@ -83,6 +84,7 @@ Foo::Foo() :
   ::apache::thrift::adapt_detail::construct<my::Adapter3, 6>(__fbthrift_field_mapField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter3, 7>(__fbthrift_field_optionalMapField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 8>(__fbthrift_field_binaryField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 9>(__fbthrift_field_longField, *this);
 }
 
 
@@ -107,6 +109,7 @@ Foo::Foo(Foo&& other) noexcept  :
   ::apache::thrift::adapt_detail::construct<my::Adapter3, 6>(__fbthrift_field_mapField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter3, 7>(__fbthrift_field_optionalMapField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 8>(__fbthrift_field_binaryField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 9>(__fbthrift_field_longField, *this);
 }
 
 Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
@@ -124,7 +127,7 @@ Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
 }
 
 
-Foo::Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> optionalIntField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intFieldWithDefault__arg, ::cpp2::SetWithAdapter setField__arg, ::cpp2::SetWithAdapter optionalSetField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> mapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> optionalMapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> binaryField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> longField__arg) :
+Foo::Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> optionalIntField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intFieldWithDefault__arg, ::cpp2::SetWithAdapter setField__arg, ::cpp2::SetWithAdapter optionalSetField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> mapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> optionalMapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> binaryField__arg, ::cpp2::MyI64 longField__arg) :
     __fbthrift_field_intField(std::move(intField__arg)),
     __fbthrift_field_optionalIntField(std::move(optionalIntField__arg)),
     __fbthrift_field_intFieldWithDefault(std::move(intFieldWithDefault__arg)),
@@ -142,6 +145,7 @@ Foo::Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
   ::apache::thrift::adapt_detail::construct<my::Adapter3, 6>(__fbthrift_field_mapField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter3, 7>(__fbthrift_field_optionalMapField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 8>(__fbthrift_field_binaryField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 9>(__fbthrift_field_longField, *this);
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
   __isset.set(folly::index_constant<2>(), true);
@@ -164,7 +168,7 @@ void Foo::__fbthrift_clear() {
   ::apache::thrift::adapt_detail::clear<my::Adapter3, 6>(__fbthrift_field_mapField, *this);
   ::apache::thrift::adapt_detail::clear<my::Adapter3, 7>(__fbthrift_field_optionalMapField, *this);
   ::apache::thrift::adapt_detail::clear<my::Adapter1, 8>(__fbthrift_field_binaryField, *this);
-  this->__fbthrift_field_longField = ::cpp2::MyI64();
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 9>(__fbthrift_field_longField, *this);
   __isset = {};
 }
 
@@ -200,7 +204,7 @@ bool Foo::operator==(const Foo& rhs) const {
   if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_binaryField, rhs.__fbthrift_field_binaryField)) {
     return false;
   }
-  if (!(lhs.longField_ref() == rhs.longField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_longField, rhs.__fbthrift_field_longField)) {
     return false;
   }
   return true;
@@ -727,10 +731,12 @@ FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter3, 6, ::std::map<::std::string, ::cpp2::ListWithElemAdapter>, ::cpp2::Foo>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter3, 7, ::std::map<::std::string, ::cpp2::ListWithElemAdapter>, ::cpp2::Foo>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 8, ::std::string, ::cpp2::Foo>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 9, ::std::int64_t, ::cpp2::Foo>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::std::int32_t, ::cpp2::Baz>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter2, 4, ::std::set<::std::string>, ::cpp2::Baz>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter3, 6, ::std::map<::std::string, ::cpp2::ListWithElemAdapter>, ::cpp2::Baz>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 8, ::std::string, ::cpp2::Baz>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 9, ::std::int64_t, ::cpp2::Baz>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::cpp2::Foo, ::cpp2::Bar>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 2, ::cpp2::Foo, ::cpp2::Bar>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 5, ::cpp2::Baz, ::cpp2::Bar>();

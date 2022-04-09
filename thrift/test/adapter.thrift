@@ -20,37 +20,29 @@ include "thrift/annotation/cpp.thrift"
 cpp_include "thrift/test/AdapterTest.h"
 cpp_include "thrift/lib/cpp2/Adapt.h"
 
-typedef i64 DurationMs (
-  cpp.adapter = "::apache::thrift::test::AdaptTestMsAdapter",
-)
+@cpp.Adapter{name = "::apache::thrift::test::AdaptTestMsAdapter"}
+typedef i64 DurationMs
 
-typedef bool AdaptedBool (
-  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
-)
+@cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+typedef bool AdaptedBool
 
-typedef byte AdaptedByte (
-  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
-)
+@cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+typedef byte AdaptedByte
 
-typedef i16 AdaptedShort (
-  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
-)
+@cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+typedef i16 AdaptedShort
 
-typedef i32 AdaptedInteger (
-  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
-)
+@cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+typedef i32 AdaptedInteger
 
-typedef i64 AdaptedLong (
-  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
-)
+@cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+typedef i64 AdaptedLong
 
-typedef double AdaptedDouble (
-  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
-)
+@cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+typedef double AdaptedDouble
 
-typedef string AdaptedString (
-  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
-)
+@cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+typedef string AdaptedString
 
 typedef binary (
   cpp.type = "::folly::IOBuf",

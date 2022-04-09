@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 namespace cpp2 apache.thrift.test.terse
 
+include "thrift/annotation/cpp.thrift"
 cpp_include "thrift/test/AdapterTest.h"
 
-typedef i64 DurationMs (
-  cpp.adapter = "::apache::thrift::test::AdaptTestMsAdapter",
-)
+@cpp.Adapter{name = "::apache::thrift::test::AdaptTestMsAdapter"}
+typedef i64 DurationMs
 
 typedef binary (
   cpp.type = "::folly::IOBuf",

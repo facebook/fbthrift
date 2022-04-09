@@ -49,11 +49,22 @@ const std::string* find_structured_adapter_annotation(const t_named& node) {
 const std::string& type_resolver::get_type_name(
     const t_field& field, const t_structured& parent) {
   const t_type& type = *field.type();
-  if (const std::string* adapter = find_structured_adapter_annotation(field)) {
+
+  // TODO (dokwon): Support composing adapters.
+  if (const std::string* adapter_on_field =
+          find_structured_adapter_annotation(field)) {
     return detail::get_or_gen(field_type_cache_, &field, [&]() {
-      return gen_field_type(field.id(), type, parent, adapter);
+      return gen_field_type(field.id(), type, parent, adapter_on_field);
     });
   }
+
+  // If @cpp.Adapter is used on typedef of the field, use the typedef name.
+  if (const auto* typedf = dynamic_cast<const t_typedef*>(&type)) {
+    if (find_structured_adapter_annotation(*typedf)) {
+      return namespaces_.get_namespaced_name(*typedf);
+    }
+  }
+
   return get_type_name(type);
 }
 
@@ -83,6 +94,13 @@ const std::string& type_resolver::get_storage_type_name(
   return detail::get_or_gen(storage_type_cache_, {&field, ref_type}, [&]() {
     return gen_storage_type(ref_type, field, parent);
   });
+}
+
+const std::string* type_resolver::find_first_adapter(const t_type& node) {
+  if (const std::string* adapter = find_structured_adapter_annotation(node)) {
+    return adapter;
+  }
+  return t_typedef::get_first_annotation_or_null(&node, {"cpp.adapter"});
 }
 
 const std::string* type_resolver::find_first_adapter(const t_field& field) {

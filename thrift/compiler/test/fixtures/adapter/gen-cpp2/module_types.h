@@ -197,7 +197,7 @@ class Foo final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> optionalIntField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intFieldWithDefault__arg, ::cpp2::SetWithAdapter setField__arg, ::cpp2::SetWithAdapter optionalSetField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> mapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> optionalMapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> binaryField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> longField__arg);
+  Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> optionalIntField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intFieldWithDefault__arg, ::cpp2::SetWithAdapter setField__arg, ::cpp2::SetWithAdapter optionalSetField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> mapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> optionalMapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> binaryField__arg, ::cpp2::MyI64 longField__arg);
 
   Foo(Foo&&) noexcept;
   Foo(const Foo& src);
@@ -225,7 +225,7 @@ class Foo final  {
  private:
   ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> __fbthrift_field_binaryField;
  private:
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> __fbthrift_field_longField;
+  ::cpp2::MyI64 __fbthrift_field_longField;
  private:
   apache::thrift::detail::isset_bitset<9, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
@@ -554,54 +554,44 @@ class Foo final  {
     return {static_cast<T&&>(this->__fbthrift_field_binaryField), __isset.at(7), __isset.bit(7)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>>
+  template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> longField_ref() const& {
     return {this->__fbthrift_field_longField, __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>>
+  template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> longField_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_longField), __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>>
+  template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> longField_ref() & {
     return {this->__fbthrift_field_longField, __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>>
+  template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> longField_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_longField), __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>>
+  template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> longField() const& {
     return {this->__fbthrift_field_longField, __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>>
+  template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> longField() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_longField), __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>>
+  template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> longField() & {
     return {this->__fbthrift_field_longField, __isset.at(8), __isset.bit(8)};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>>
+  template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> longField() && {
     return {static_cast<T&&>(this->__fbthrift_field_longField), __isset.at(8), __isset.bit(8)};
-  }
-
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> get_longField() const {
-    return __fbthrift_field_longField;
-  }
-
-  [[deprecated("Use `FOO.longField_ref() = BAR;` instead of `FOO.set_longField(BAR);`")]]
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>& set_longField(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> longField_) {
-    longField_ref() = longField_;
-    return __fbthrift_field_longField;
   }
 
   template <class Protocol_>
@@ -825,7 +815,7 @@ class Baz final  {
     ::cpp2::SetWithAdapter setField;
     ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> mapField;
     ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> binaryField;
-    ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> longField;
+    ::cpp2::MyI64 longField;
 
     storage_type() {}
     ~storage_type() {}
@@ -939,7 +929,7 @@ class Baz final  {
     return value_.binaryField;
   }
 
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> const& get_longField() const {
+  ::cpp2::MyI64 const& get_longField() const {
     if (type_ != Type::longField) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
@@ -966,7 +956,7 @@ class Baz final  {
     return value_.binaryField;
   }
 
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>& mutable_longField() {
+  ::cpp2::MyI64& mutable_longField() {
     assert(type_ == Type::longField);
     return value_.longField;
   }
@@ -991,7 +981,7 @@ class Baz final  {
     return std::move(value_.binaryField);
   }
 
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> move_longField() {
+  ::cpp2::MyI64 move_longField() {
     assert(type_ == Type::longField);
     return std::move(value_.longField);
   }
@@ -1072,22 +1062,22 @@ class Baz final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> binaryField_ref() && {
     return {std::move(value_.binaryField), type_, binaryField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>>
+  template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> longField_ref() const& {
     return {value_.longField, type_, longField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>>
+  template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> longField_ref() const&& {
     return {std::move(value_.longField), type_, longField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>>
+  template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> longField_ref() & {
     return {value_.longField, type_, longField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t>>
+  template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> longField_ref() && {
     return {std::move(value_.longField), type_, longField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
