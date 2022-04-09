@@ -16,7 +16,7 @@ from libc.stdint cimport uint32_t, int16_t, int64_t
 cimport folly.iobuf
 from libcpp.memory cimport unique_ptr
 
-from thrift.py3lite.serializer cimport Protocol
+from thrift.python.serializer cimport Protocol
 
 
 cdef extern from "<thrift/lib/cpp2/protocol/TableBasedSerializer.h>" namespace "::apache::thrift::detail":

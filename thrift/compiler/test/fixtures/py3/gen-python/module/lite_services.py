@@ -10,8 +10,8 @@ import typing as _typing
 import folly.iobuf as _fbthrift_iobuf
 
 import apache.thrift.metadata.lite_types as _fbthrift_metadata
-from fbcode.thrift.py3lite.serializer import serialize_iobuf, deserialize, Protocol
-from fbcode.thrift.py3lite.server import ServiceInterface, oneway, PythonUserException
+from fbcode.thrift.python.serializer import serialize_iobuf, deserialize, Protocol
+from fbcode.thrift.python.server import ServiceInterface, oneway, PythonUserException
 
 import module.lite_types
 import module.lite_metadata

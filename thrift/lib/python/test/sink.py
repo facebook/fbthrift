@@ -15,7 +15,7 @@
 from typing import AsyncIterator
 from unittest import IsolatedAsyncioTestCase
 
-from thrift.py3lite.sink import ClientSink
+from thrift.python.sink import ClientSink
 
 
 class SinkTests(IsolatedAsyncioTestCase):

@@ -26,7 +26,7 @@ from thrift.py3.server import (
     SocketAddress,
     getServiceName,
 )
-from thrift.py3lite.server import (
+from thrift.python.server import (
     ThriftServer,
 )
 

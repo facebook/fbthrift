@@ -29,8 +29,8 @@ namespace py3lite {
 namespace {
 
 void do_import() {
-  if (0 != import_thrift__py3lite__util()) {
-    throw std::runtime_error("import_thrift__py3lite__util__cancel failed");
+  if (0 != import_thrift__python__util()) {
+    throw std::runtime_error("import_thrift__python__util__cancel failed");
   }
 }
 

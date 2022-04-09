@@ -21,16 +21,16 @@ import socket
 from libc.stdint cimport uint32_t
 from libcpp.utility cimport move as cmove
 from libcpp.string cimport string
-from thrift.py3lite.client cimport ssl as thrift_ssl
-from thrift.py3lite.client.client_wrapper import Client
-from thrift.py3lite.client.request_channel cimport (
+from thrift.python.client cimport ssl as thrift_ssl
+from thrift.python.client.client_wrapper import Client
+from thrift.python.client.request_channel cimport (
     sync_createThriftChannelTCP,
     sync_createThriftChannelUnix,
     ClientType as cClientType,
     RequestChannel,
 )
-from thrift.py3lite.client.request_channel import ClientType
-from thrift.py3lite.serializer cimport Protocol as cProtocol
+from thrift.python.client.request_channel import ClientType
+from thrift.python.serializer cimport Protocol as cProtocol
 
 
 def get_client(

@@ -9,13 +9,13 @@ import typing as _typing
 
 import py3lite_module_root.apache.thrift.metadata.lite_types as _fbthrift_metadata
 import folly.iobuf as _fbthrift_iobuf
-from thrift.py3lite.client import (
+from thrift.python.client import (
     AsyncClient as _fbthrift_py3lite_AsyncClient,
     SyncClient as _fbthrift_py3lite_SyncClient,
     Client as _fbthrift_py3lite_Client,
 )
-import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
-import thrift.py3lite.types as _fbthrift_py3lite_types
+import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_py3lite_types
 import py3lite_module_root.my.namespacing.extend.test.extend.lite_types
 import py3lite_module_root.my.namespacing.extend.test.extend.lite_metadata
 import py3lite_module_root.my.namespacing.test.hsmodule.lite_types

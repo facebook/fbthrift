@@ -368,7 +368,7 @@ class mstch_python_program : public mstch_program {
 
   mstch::node base_library_package() {
     auto option = get_option("base_library_package");
-    return option.empty() ? "thrift.py3lite" : option;
+    return option.empty() ? "thrift.python" : option;
   }
 
   mstch::node root_module_prefix() {

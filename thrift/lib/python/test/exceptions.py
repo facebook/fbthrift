@@ -23,8 +23,8 @@ from testing.thrift_types import (
     UnusedError,
     ValueOrError,
 )
-from thrift.py3lite.exceptions import Error, ApplicationErrorType
-from thrift.py3lite.serializer import (
+from thrift.python.exceptions import Error, ApplicationErrorType
+from thrift.python.serializer import (
     deserialize,
     serialize_iobuf,
 )

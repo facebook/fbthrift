@@ -20,7 +20,7 @@ from libcpp.map cimport map as cmap
 from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
 from libcpp.unordered_map cimport unordered_map
-from thrift.py3lite.client.request_channel cimport cRequestChannel_ptr
+from thrift.python.client.request_channel cimport cRequestChannel_ptr
 
 cdef extern from "thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h" namespace "::apache::thrift":
     cpdef enum class RpcKind:

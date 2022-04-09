@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from thrift.py3lite.client.request_channel import RequestChannel
+from thrift.python.client.request_channel import RequestChannel

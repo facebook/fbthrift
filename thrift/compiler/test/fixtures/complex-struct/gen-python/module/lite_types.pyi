@@ -10,8 +10,8 @@ import typing as _typing
 import enum
 
 import folly.iobuf as _fbthrift_iobuf
-import thrift.py3lite.types as _fbthrift_py3lite_types
-import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_py3lite_types
+import thrift.python.exceptions as _fbthrift_py3lite_exceptions
 
 
 class MyEnum(_fbthrift_py3lite_types.Enum, enum.Enum):

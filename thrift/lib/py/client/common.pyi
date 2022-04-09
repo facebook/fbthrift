@@ -14,7 +14,7 @@
 
 import enum
 
-from thrift.py3lite.client.request_channel import RequestChannel as RequestChannel
+from thrift.python.client.request_channel import RequestChannel as RequestChannel
 
 class Protocol(enum.Enum):
     BINARY: Protocol = ...

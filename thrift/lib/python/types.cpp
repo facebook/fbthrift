@@ -31,8 +31,8 @@ constexpr const size_t kFieldOffset = sizeof(PyObject*);
 namespace {
 
 void do_import() {
-  if (0 != import_thrift__py3lite__types()) {
-    throw std::runtime_error("import_thrift__py3lite__types failed");
+  if (0 != import_thrift__python__types()) {
+    throw std::runtime_error("import_thrift__python__types failed");
   }
 }
 

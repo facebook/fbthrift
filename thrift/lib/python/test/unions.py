@@ -19,11 +19,11 @@ from testing.thrift_types import (
     Integers,
     ReservedUnion,
 )
-from thrift.py3lite.serializer import (
+from thrift.python.serializer import (
     deserialize,
     serialize_iobuf,
 )
-from thrift.py3lite.types import Union
+from thrift.python.types import Union
 
 
 class UnionTests(unittest.TestCase):

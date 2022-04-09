@@ -14,7 +14,7 @@
 
 from cython.view cimport memoryview
 from folly.iobuf cimport IOBuf
-from thrift.py3lite.types cimport Struct, StructOrUnion, Union
+from thrift.python.types cimport Struct, StructOrUnion, Union
 
 import cython
 

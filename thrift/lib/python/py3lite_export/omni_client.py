@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from thrift.py3lite.client.client_wrapper import *  # noqa: F401, F403
+from thrift.python.client.omni_client import *  # noqa: F401, F403

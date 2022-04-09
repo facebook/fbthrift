@@ -19,8 +19,8 @@ from thrift.conformance.conformance.thrift_types import (
     RoundTripRequest,
     RoundTripResponse,
 )
-from thrift.py3lite.conformance.omni_registry import OmniAnyRegistry
-from thrift.py3lite.server import ThriftServer
+from thrift.python.conformance.omni_registry import OmniAnyRegistry
+from thrift.python.server import ThriftServer
 
 
 class Handler(ConformanceServiceInterface):

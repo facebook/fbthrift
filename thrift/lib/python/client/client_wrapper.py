@@ -15,8 +15,8 @@
 from abc import ABC
 from typing import Generic, Type, TypeVar
 
-from thrift.py3lite.client.async_client import AsyncClient
-from thrift.py3lite.client.sync_client import SyncClient
+from thrift.python.client.async_client import AsyncClient
+from thrift.python.client.sync_client import SyncClient
 
 TAsyncClient = TypeVar("TAsyncClient", bound=AsyncClient)
 TSyncClient = TypeVar("TSyncClient", bound=SyncClient)

@@ -20,7 +20,7 @@ from folly.executor cimport get_executor
 from cython.operator import dereference
 from libcpp.memory cimport make_shared, make_unique, shared_ptr
 from libcpp.utility cimport move
-from thrift.py3lite.util cimport toAsyncGenerator
+from thrift.python.util cimport toAsyncGenerator
 
 # TODO: (pyamane) This is here just to validate the types are correct for now
 cdef void generator(object iterator, cFollyPromise[optional[unique_ptr[cIOBuf]]] promise):

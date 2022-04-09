@@ -15,7 +15,7 @@
 import unittest
 
 from thrift.conformance.protocol.thrift_types import StandardProtocol
-from thrift.py3lite.conformance.any_registry import AnyRegistry
+from thrift.python.conformance.any_registry import AnyRegistry
 
 # @manual=//thrift/test/testset:testset-python-types
 from thrift.test.testset import thrift_types

@@ -32,11 +32,11 @@ from testing.thrift_types import (
     easy,
     numerical,
 )
-from thrift.py3lite.serializer import (
+from thrift.python.serializer import (
     deserialize,
     serialize_iobuf,
 )
-from thrift.py3lite.types import (
+from thrift.python.types import (
     isset,
     update_nested_field,
 )

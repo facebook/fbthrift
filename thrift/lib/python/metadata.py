@@ -37,10 +37,10 @@ from apache.thrift.metadata.lite_types import (
     ThriftConstStruct,
     ThriftConstValue,
 )
-from thrift.py3lite.client import Client
-from thrift.py3lite.exceptions import GeneratedError
-from thrift.py3lite.server import ServiceInterface
-from thrift.py3lite.types import Struct, Union as ThriftUnion, Enum
+from thrift.python.client import Client
+from thrift.python.exceptions import GeneratedError
+from thrift.python.server import ServiceInterface
+from thrift.python.types import Struct, Union as ThriftUnion, Enum
 
 
 class ThriftKind(enum.Enum):

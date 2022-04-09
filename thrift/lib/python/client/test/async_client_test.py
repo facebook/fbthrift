@@ -15,18 +15,18 @@
 import asyncio
 
 from later.unittest import TestCase
-from thrift.py3lite.client import ClientType, get_client
-from thrift.py3lite.exceptions import (
+from thrift.python.client import ClientType, get_client
+from thrift.python.exceptions import (
     ApplicationError,
     ApplicationErrorType,
     TransportError,
     TransportErrorType,
 )
-from thrift.py3lite.leaf.lite_clients import LeafService
-from thrift.py3lite.serializer import Protocol
-from thrift.py3lite.test.lite_clients import EchoService, TestService
-from thrift.py3lite.test.lite_types import ArithmeticException, EmptyException
-from thrift.py3lite.test.test_server import server_in_event_loop
+from thrift.python.leaf.lite_clients import LeafService
+from thrift.python.serializer import Protocol
+from thrift.python.test.lite_clients import EchoService, TestService
+from thrift.python.test.lite_types import ArithmeticException, EmptyException
+from thrift.python.test.test_server import server_in_event_loop
 
 
 TEST_HEADER_KEY = "headerKey"

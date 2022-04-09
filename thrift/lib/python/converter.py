@@ -21,8 +21,8 @@ from thrift.py3.serializer import (
     Protocol as py3_Protocol,
 )
 from thrift.py3.types import Struct as py3_Struct
-from thrift.py3lite.serializer import deserialize, Protocol
-from thrift.py3lite.types import Struct, Union
+from thrift.python.serializer import deserialize, Protocol
+from thrift.python.types import Struct, Union
 from thrift.util.Serializer import serialize as py_serialize
 
 T = typing.TypeVar("T", bound=typing.Union[Struct, Union])

@@ -26,10 +26,10 @@ from folly.futures cimport bridgeSemiFutureWith
 from folly.iobuf cimport IOBuf
 from libcpp.memory cimport make_unique
 from libcpp.utility cimport move as cmove
-from thrift.py3lite.client.omni_client cimport cOmniClientResponseWithHeaders, RpcKind
-from thrift.py3lite.exceptions cimport create_py_exception
-from thrift.py3lite.exceptions import ApplicationError, ApplicationErrorType
-from thrift.py3lite.serializer import serialize_iobuf, deserialize
+from thrift.python.client.omni_client cimport cOmniClientResponseWithHeaders, RpcKind
+from thrift.python.exceptions cimport create_py_exception
+from thrift.python.exceptions import ApplicationError, ApplicationErrorType
+from thrift.python.serializer import serialize_iobuf, deserialize
 
 
 @cython.auto_pickle(False)

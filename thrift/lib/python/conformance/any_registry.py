@@ -17,14 +17,14 @@ import typing
 
 from thrift.conformance.any.thrift_types import Any
 from thrift.conformance.protocol.thrift_types import StandardProtocol
-from thrift.py3lite.conformance.universal_name import (
+from thrift.python.conformance.universal_name import (
     find_by_universal_hash,
     get_universal_hash,
     get_universal_hash_prefix,
     UniversalHashAlgorithm,
 )
-from thrift.py3lite.serializer import deserialize, serialize_iobuf, Protocol
-from thrift.py3lite.types import StructOrUnion
+from thrift.python.serializer import deserialize, serialize_iobuf, Protocol
+from thrift.python.types import StructOrUnion
 
 
 def _to_serializer_protocol(protocol: typing.Optional[StandardProtocol]) -> Protocol:

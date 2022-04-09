@@ -26,16 +26,16 @@ from folly.futures cimport bridgeFutureWith
 from libc.stdint cimport uint32_t
 from libcpp.string cimport string
 from libcpp.utility cimport move as cmove
-from thrift.py3lite.client cimport ssl as thrift_ssl
-from thrift.py3lite.client.async_client cimport AsyncClient
-from thrift.py3lite.client.client_wrapper import Client
-from thrift.py3lite.client.request_channel cimport (
+from thrift.python.client cimport ssl as thrift_ssl
+from thrift.python.client.async_client cimport AsyncClient
+from thrift.python.client.client_wrapper import Client
+from thrift.python.client.request_channel cimport (
     createThriftChannelTCP,
     createThriftChannelUnix,
     ClientType as cClientType,
 )
-from thrift.py3lite.client.request_channel import ClientType
-from thrift.py3lite.serializer cimport Protocol as cProtocol
+from thrift.python.client.request_channel import ClientType
+from thrift.python.serializer cimport Protocol as cProtocol
 
 
 def get_client(

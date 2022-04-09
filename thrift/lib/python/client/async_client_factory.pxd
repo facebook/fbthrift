@@ -14,7 +14,7 @@
 
 from cpython.ref cimport PyObject
 from folly cimport cFollyTry
-from thrift.py3lite.client.request_channel cimport cRequestChannel_ptr
+from thrift.python.client.request_channel cimport cRequestChannel_ptr
 
 
 cdef void requestchannel_callback(

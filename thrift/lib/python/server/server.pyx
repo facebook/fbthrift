@@ -26,7 +26,7 @@ from folly.executor cimport get_executor
 from folly.iobuf cimport IOBuf, from_unique_ptr
 from thrift.py3.exceptions cimport cTApplicationException, cTApplicationExceptionType__UNKNOWN, ApplicationError
 from thrift.py3.server cimport Cpp2RequestContext, RequestContext, THRIFT_REQUEST_CONTEXT
-from thrift.py3lite.serializer cimport Protocol
+from thrift.python.serializer cimport Protocol
 from folly cimport (
   cFollyPromise,
   cFollyUnit,

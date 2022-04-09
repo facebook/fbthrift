@@ -18,7 +18,7 @@ from thrift.py.client.sync_client_factory import get_client
 
 # @manual=//thrift/lib/py3lite/client/test:test_service-py
 from thrift.py.test import TestService
-from thrift.py3lite.test.test_server import server_in_another_process
+from thrift.python.test.test_server import server_in_another_process
 
 
 class SyncClientTests(unittest.TestCase):

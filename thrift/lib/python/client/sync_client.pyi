@@ -15,8 +15,8 @@
 import types
 import typing
 
-from thrift.py3lite.client.request_channel import RequestChannel
-from thrift.py3lite.types import Struct, Union
+from thrift.python.client.request_channel import RequestChannel
+from thrift.python.types import Struct, Union
 
 TSyncClient = typing.TypeVar("TSyncClient", bound="SyncClient")
 StructOrUnion = typing.TypeVar("StructOrUnion", bound=typing.Union[Struct, Union])

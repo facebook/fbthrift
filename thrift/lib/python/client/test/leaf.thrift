@@ -17,7 +17,7 @@
 include "thrift/lib/python/client/test/test.thrift"
 
 namespace cpp2 thrift.py3lite.test
-namespace py3 thrift.py3lite
+namespace py3 thrift.python
 
 service LeafService extends test.EchoService {
   list<i32> reverse(1: list<i32> input);

@@ -20,7 +20,7 @@ from apache.thrift.metadata.thrift_types import ThriftPrimitiveType
 from testing.thrift_clients import TestingService, TestingServiceChild
 from testing.thrift_services import TestingServiceInterface
 from testing.thrift_types import hard, HardError, Perm, mixed
-from thrift.py3lite.metadata import gen_metadata, ThriftKind
+from thrift.python.metadata import gen_metadata, ThriftKind
 
 
 class MetadataTests(unittest.TestCase):

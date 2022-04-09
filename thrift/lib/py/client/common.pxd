@@ -22,5 +22,5 @@ cdef extern from "<thrift/lib/cpp/protocol/TProtocolTypes.h>" namespace "apache:
         BINARY "apache::thrift::protocol::T_BINARY_PROTOCOL"
         COMPACT "apache::thrift::protocol::T_COMPACT_PROTOCOL"
 
-from thrift.py3lite.client.request_channel cimport RequestChannel
-from thrift.py3lite.client.request_channel cimport cRequestChannel_ptr
+from thrift.python.client.request_channel cimport RequestChannel
+from thrift.python.client.request_channel cimport cRequestChannel_ptr

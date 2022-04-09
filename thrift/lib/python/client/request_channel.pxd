@@ -15,7 +15,7 @@
 from folly cimport cFollyFuture
 from libc.stdint cimport uint16_t, uint32_t
 from libcpp.string cimport string
-from thrift.py3lite.serializer cimport Protocol as cProtocol
+from thrift.python.serializer cimport Protocol as cProtocol
 
 
 cdef extern from "thrift/lib/cpp/transport/THeader.h":

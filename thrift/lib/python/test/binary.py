@@ -22,8 +22,8 @@ from binary.thrift_services import BinaryServiceInterface
 from binary.thrift_types import Binaries, BinaryUnion
 from folly.iobuf import IOBuf
 from thrift.py3.server import SocketAddress
-from thrift.py3lite.client import get_client
-from thrift.py3lite.server import ThriftServer, ServiceInterface
+from thrift.python.client import get_client
+from thrift.python.server import ThriftServer, ServiceInterface
 
 
 class BinaryTests(unittest.TestCase):

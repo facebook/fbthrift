@@ -23,8 +23,8 @@ namespace py3lite {
 namespace {
 
 void do_import() {
-  if (0 != import_thrift__py3lite__server()) {
-    throw std::runtime_error("import_thrift__py3lite__server failed");
+  if (0 != import_thrift__python__server()) {
+    throw std::runtime_error("import_thrift__python__server failed");
   }
 }
 

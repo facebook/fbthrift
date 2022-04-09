@@ -16,8 +16,8 @@ from libcpp.string cimport string
 from libcpp.memory cimport shared_ptr
 from libc.stdint cimport uint64_t, uint32_t, uint16_t
 from folly cimport cFollyFuture
-from thrift.py3lite.client.request_channel cimport cRequestChannel_ptr, ClientType
-from thrift.py3lite.serializer cimport Protocol as cProtocol
+from thrift.python.client.request_channel cimport cRequestChannel_ptr, ClientType
+from thrift.python.serializer cimport Protocol as cProtocol
 
 
 cdef extern from "folly/ssl/Init.h" namespace "folly::ssl" nogil:

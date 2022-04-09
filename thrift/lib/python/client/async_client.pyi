@@ -16,8 +16,8 @@ import enum
 import types
 import typing
 
-from thrift.py3lite.client.omni_client import RpcKind
-from thrift.py3lite.types import StructOrUnion
+from thrift.python.client.omni_client import RpcKind
+from thrift.python.types import StructOrUnion
 
 TAsyncClient = typing.TypeVar("TAsyncClient", bound="AsyncClient")
 StructOrUnionVar = typing.TypeVar("StructOrUnionVar", bound=StructOrUnion)

@@ -17,7 +17,7 @@ import unittest
 import convertible.thrift_types as thrift_types
 import convertible.ttypes as ttypes
 import convertible.types as types
-from thrift.py3lite.converter import to_py3lite_struct
+from thrift.python.converter import to_py3lite_struct
 
 
 class Py3toPy3liteConverterTest(unittest.TestCase):

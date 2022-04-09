@@ -16,7 +16,7 @@ import copy
 import functools
 
 from cython.operator cimport dereference as deref
-from thrift.py3lite.types cimport StructInfo, createStructTuple, set_struct_field
+from thrift.python.types cimport StructInfo, createStructTuple, set_struct_field
 
 
 cdef class Error(Exception):

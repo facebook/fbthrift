@@ -16,7 +16,7 @@ import typing
 from enum import Enum
 
 from folly.iobuf import IOBuf
-from thrift.py3lite.types import StructOrUnion
+from thrift.python.types import StructOrUnion
 
 sT = typing.TypeVar("sT", bound=StructOrUnion)
 

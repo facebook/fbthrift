@@ -31,8 +31,8 @@ import enum
 import functools
 import itertools
 
-from thrift.py3lite.exceptions cimport GeneratedError
-from thrift.py3lite.serializer cimport cserialize, cdeserialize
+from thrift.python.exceptions cimport GeneratedError
+from thrift.python.serializer cimport cserialize, cdeserialize
 
 
 cdef public api cIOBuf* get_cIOBuf(object buf):

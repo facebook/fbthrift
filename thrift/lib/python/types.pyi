@@ -15,8 +15,8 @@
 import typing
 from enum import Enum
 
-from thrift.py3lite.exceptions import GeneratedError
-from thrift.py3lite.serializer import Protocol
+from thrift.python.exceptions import GeneratedError
+from thrift.python.serializer import Protocol
 
 usT = typing.TypeVar("usT", bound=StructOrUnion)
 sT = typing.TypeVar("sT", bound=Struct)

@@ -24,7 +24,7 @@ from libcpp.string cimport string
 from libcpp.utility cimport move as cmove
 from thrift.protocol import TBinaryProtocol, TCompactProtocol
 from thrift.py.client.common import Protocol
-from thrift.py3lite.client.request_channel cimport RequestChannel
+from thrift.python.client.request_channel cimport RequestChannel
 from thrift.util.Serializer import serialize, deserialize
 from thrift.Thrift import TApplicationException
 

@@ -21,7 +21,7 @@ import socket
 from libc.stdint cimport uint32_t
 from libcpp.utility cimport move as cmove
 from libcpp.string cimport string
-from thrift.py3lite.client.request_channel cimport (
+from thrift.python.client.request_channel cimport (
     sync_createThriftChannelTCP,
     sync_createThriftChannelUnix,
     RequestChannel,

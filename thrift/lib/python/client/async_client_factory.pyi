@@ -16,11 +16,11 @@ import ipaddress
 import os
 import typing
 
-from thrift.py3lite.client.async_client import AsyncClient
-from thrift.py3lite.client.client_wrapper import Client, TAsyncClient, TSyncClient
-from thrift.py3lite.client.request_channel import ClientType
-from thrift.py3lite.client.ssl import SSLContext
-from thrift.py3lite.serializer import Protocol
+from thrift.python.client.async_client import AsyncClient
+from thrift.python.client.client_wrapper import Client, TAsyncClient, TSyncClient
+from thrift.python.client.request_channel import ClientType
+from thrift.python.client.ssl import SSLContext
+from thrift.python.serializer import Protocol
 
 Path = typing.Union[str, bytes, os.PathLike[str], os.PathLike[bytes]]
 

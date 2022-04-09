@@ -16,7 +16,7 @@ cimport folly.iobuf
 from libc.stdint cimport uint32_t
 from libcpp.memory cimport unique_ptr
 
-from thrift.py3lite.types cimport cDynamicStructInfo
+from thrift.python.types cimport cDynamicStructInfo
 
 
 cdef extern from "<thrift/lib/cpp/protocol/TProtocolTypes.h>" namespace "apache::thrift::protocol":

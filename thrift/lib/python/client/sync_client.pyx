@@ -21,10 +21,10 @@ from folly.iobuf cimport IOBuf
 from libcpp.memory cimport make_unique
 from libcpp.string cimport string
 from libcpp.utility cimport move as cmove
-from thrift.py3lite.client.request_channel cimport RequestChannel
-from thrift.py3lite.exceptions cimport create_py_exception
-from thrift.py3lite.exceptions import ApplicationError, ApplicationErrorType
-from thrift.py3lite.serializer import serialize_iobuf, deserialize
+from thrift.python.client.request_channel cimport RequestChannel
+from thrift.python.exceptions cimport create_py_exception
+from thrift.python.exceptions import ApplicationError, ApplicationErrorType
+from thrift.python.serializer import serialize_iobuf, deserialize
 
 
 cdef class SyncClient:
