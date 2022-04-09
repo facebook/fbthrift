@@ -20,11 +20,11 @@ from typing import Any, Type, TypeVar, Union
 from thrift.protocol.TBinaryProtocol import TBinaryProtocolFactory
 from thrift.py3.reflection import inspect
 from thrift.py3.types import Enum, Struct
-from thrift.py3lite.serializer import (
+from thrift.python.serializer import (
     serialize as lite_serialize,
     Protocol as lite_Protocol,
 )
-from thrift.py3lite.types import Struct as lite_Struct, Union as lite_Union
+from thrift.python.types import Struct as lite_Struct, Union as lite_Union
 from thrift.Thrift import TType
 from thrift.util import parse_struct_spec
 from thrift.util.Serializer import deserialize
