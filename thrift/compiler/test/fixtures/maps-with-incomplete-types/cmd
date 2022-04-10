@@ -1,3 +1,1 @@
 mstch_cpp2 src/module.thrift
-mstch_cpp2:sort_objects_without_map_dependency src/self-reference.thrift
-mstch_cpp2:sort_objects_without_map_dependency src/self-reference-annotated.thrift

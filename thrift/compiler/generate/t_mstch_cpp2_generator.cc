@@ -1848,12 +1848,8 @@ class mstch_cpp2_program : public mstch_program {
     const auto& prog_objects = program_->objects();
     const auto& prog_enums = program_->enums();
 
-    const bool sort_objects_with_map_dependency =
-        !has_option("sort_objects_without_map_dependency");
-
     if (!split_id_) {
-      auto edges = cpp2::gen_dependency_graph(
-          program_, prog_objects, sort_objects_with_map_dependency);
+      auto edges = cpp2::gen_dependency_graph(program_, prog_objects);
       objects_ = topological_sort<t_struct*>(
           prog_objects.begin(), prog_objects.end(), edges);
       enums_ = prog_enums;

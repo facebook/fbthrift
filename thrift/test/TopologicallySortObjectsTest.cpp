@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-#include <thrift/test/gen-cpp2/MapWithIncompleteTypeSelfReferenceTest_types.h>
 #include <thrift/test/gen-cpp2/MapWithIncompleteTypeTest_types.h>
 
 #include <folly/portability/GTest.h>
 
 using namespace apache::thrift::test;
-
-TEST(MapWithIncompleteTypeSelfReferenceTest, it_compiles) {
-  A a;
-  B b;
-}
 
 TEST(MapWithIncompleteTypeTest, it_compiles) {
   C c;

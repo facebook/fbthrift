@@ -62,9 +62,7 @@ bool is_custom_type(const t_type& type) {
 }
 
 std::unordered_map<t_struct*, std::vector<t_struct*>> gen_dependency_graph(
-    const t_program* program,
-    const std::vector<t_struct*>& objects,
-    bool sort_objects_with_map_dependency) {
+    const t_program* program, const std::vector<t_struct*>& objects) {
   auto edges =
       std::unordered_map<t_struct*, std::vector<t_struct*>>(objects.size());
   for (t_struct* obj : objects) {
@@ -76,11 +74,7 @@ std::unordered_map<t_struct*, std::vector<t_struct*>> gen_dependency_graph(
       }
 
       auto add_dependency = [&](const t_type* type) {
-        if (sort_objects_with_map_dependency) {
-          // must reference type underlying typedef
-          // as incomplete types are not allowed
-          type = type->get_true_type();
-        }
+        type = type->get_true_type();
         if (const auto strct = dynamic_cast<const t_struct*>(type)) {
           // We're only interested in types defined in the current program.
           if (!strct->is_exception() && strct->program() == program) {
@@ -93,7 +87,9 @@ std::unordered_map<t_struct*, std::vector<t_struct*>> gen_dependency_graph(
 
       auto t = f.type()->get_true_type();
       if (auto map = dynamic_cast<t_map const*>(t)) {
-        if (!sort_objects_with_map_dependency || cpp2::is_custom_type(*map)) {
+        // We don't add non-custom type `std::map` to dependency graph since it
+        // supports incomplete types
+        if (cpp2::is_custom_type(*map)) {
           add_dependency(map->get_key_type());
           add_dependency(map->get_val_type());
         }
