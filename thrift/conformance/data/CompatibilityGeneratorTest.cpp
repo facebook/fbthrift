@@ -38,10 +38,17 @@ TEST(TestGeneratorTest, RoundTripSuite) {
 
   const auto& test = suite.tests()->at(1);
   EXPECT_EQ(test.name(), "Binary");
-  ASSERT_EQ(test.testCases()->size(), 1);
-  const auto& testCase = test.testCases()->at(0);
-  EXPECT_EQ(testCase.name(), "testset.byte/AddField");
-  EXPECT_TRUE(testCase.test()->roundTrip_ref());
+
+  {
+    const auto& testCase = test.testCases()->at(0);
+    EXPECT_EQ(testCase.name(), "testset.byte/AddField");
+    EXPECT_TRUE(testCase.test()->roundTrip_ref());
+  }
+  {
+    const auto& testCase = test.testCases()->at(1);
+    EXPECT_EQ(testCase.name(), "testset.byte/RemoveField");
+    EXPECT_TRUE(testCase.test()->roundTrip_ref());
+  }
 }
 
 } // namespace apache::thrift::conformance::data

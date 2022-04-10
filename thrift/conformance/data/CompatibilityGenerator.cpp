@@ -25,6 +25,7 @@
 #include <vector>
 
 #include <boost/mp11.hpp>
+#include <fmt/core.h>
 #include <folly/init/Init.h>
 #include <folly/io/IOBufQueue.h>
 #include <thrift/conformance/cpp2/AnyRegistry.h>
@@ -37,6 +38,7 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/type/Name.h>
 #include <thrift/test/testset/Testset.h>
+#include <thrift/test/testset/gen-cpp2/testset_types_custom_protocol.h>
 
 using apache::thrift::test::testset::detail::mod_set;
 using apache::thrift::test::testset::detail::struct_ByFieldType;
@@ -75,11 +77,55 @@ TestCase addFieldTestCase(const Protocol& protocol) {
   return testCase;
 }
 
+template <class T>
+Object toObject(const T& t) {
+  Value v;
+  ::apache::thrift::conformance::detail::ObjectWriter writer{&v};
+  t.write(&writer);
+  return std::move(*v.objectValue_ref());
+}
+
+template <class TT>
+std::vector<TestCase> removeFieldTestCase(const Protocol& protocol) {
+  const typename struct_ByFieldType<TT, mod_set<>>::type def;
+  std::vector<TestCase> ret;
+
+  for (const auto& value : ValueGenerator<TT>::getInterestingValues()) {
+    typename struct_ByFieldType<TT, mod_set<>>::type data;
+    data.field_1_ref() = value.value;
+
+    Object obj = toObject(def);
+    Object dataObj = toObject(data);
+    for (auto&& i : *dataObj.members()) {
+      // Add new field with non-existing field id
+      obj.members()[obj.members()->rbegin()->first + 1] = i.second;
+    }
+
+    RoundTripTestCase roundTrip;
+    roundTrip.request()->value() =
+        AnyRegistry::generated().store(def, protocol);
+    roundTrip.request()->value()->data() = *serialize(obj, protocol);
+    roundTrip.expectedResponse().emplace().value() =
+        AnyRegistry::generated().store(def, protocol);
+
+    TestCase testCase;
+    testCase.name() =
+        fmt::format("testset.{}/RemoveField", type::getName<TT>());
+    testCase.test()->roundTrip_ref() = std::move(roundTrip);
+    ret.push_back(std::move(testCase));
+  }
+
+  return ret;
+}
+
 template <typename TT>
 Test createCompatibilityTest(const Protocol& protocol) {
   Test test;
   test.name() = protocol.name();
   test.testCases()->push_back(addFieldTestCase<TT>(protocol));
+  for (auto& t : removeFieldTestCase<TT>(protocol)) {
+    test.testCases()->push_back(std::move(t));
+  }
   return test;
 }
 } // namespace
