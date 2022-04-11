@@ -31,15 +31,15 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public final MyStruct assign;
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public final Boolean clear;
   /**
-   * Patches a given value. Applies second.
+   * Patches a value. Applies second.
    */
   public final MyStructPatch patch;
   public static final int ASSIGN = 1;
@@ -81,7 +81,7 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
   }
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public MyStruct getAssign() {
     return this.assign;
@@ -93,7 +93,7 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
   }
 
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public Boolean isClear() {
     return this.clear;
@@ -105,7 +105,7 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
   }
 
   /**
-   * Patches a given value. Applies second.
+   * Patches a value. Applies second.
    */
   public MyStructPatch getPatch() {
     return this.patch;

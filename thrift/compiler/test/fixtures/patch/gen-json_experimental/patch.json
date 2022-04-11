@@ -248,8 +248,8 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Initializes any unset value. Applies third.\n",
-            "key" : 1,
+            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "key" : 4,
             "lineno" : 40,
             "required" : "optional",
             "type" : "bool"
@@ -257,7 +257,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 4,
+            "key" : 5,
             "lineno" : 40,
             "required" : "opt-in-req-out",
             "type" : {
@@ -294,8 +294,8 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Initializes any unset value. Applies third.\n",
-            "key" : 1,
+            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "key" : 4,
             "lineno" : 56,
             "required" : "optional",
             "type" : "byte"
@@ -303,7 +303,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 4,
+            "key" : 5,
             "lineno" : 56,
             "required" : "opt-in-req-out",
             "type" : {
@@ -340,8 +340,8 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Initializes any unset value. Applies third.\n",
-            "key" : 1,
+            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "key" : 4,
             "lineno" : 72,
             "required" : "optional",
             "type" : "i16"
@@ -349,7 +349,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 4,
+            "key" : 5,
             "lineno" : 72,
             "required" : "opt-in-req-out",
             "type" : {
@@ -386,8 +386,8 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Initializes any unset value. Applies third.\n",
-            "key" : 1,
+            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "key" : 4,
             "lineno" : 88,
             "required" : "optional",
             "type" : "i32"
@@ -395,7 +395,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 4,
+            "key" : 5,
             "lineno" : 88,
             "required" : "opt-in-req-out",
             "type" : {
@@ -432,8 +432,8 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Initializes any unset value. Applies third.\n",
-            "key" : 1,
+            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "key" : 4,
             "lineno" : 104,
             "required" : "optional",
             "type" : "i64"
@@ -441,7 +441,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 4,
+            "key" : 5,
             "lineno" : 104,
             "required" : "opt-in-req-out",
             "type" : {
@@ -478,8 +478,8 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Initializes any unset value. Applies third.\n",
-            "key" : 1,
+            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "key" : 4,
             "lineno" : 120,
             "required" : "optional",
             "type" : "float"
@@ -487,7 +487,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 4,
+            "key" : 5,
             "lineno" : 120,
             "required" : "opt-in-req-out",
             "type" : {
@@ -524,8 +524,8 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Initializes any unset value. Applies third.\n",
-            "key" : 1,
+            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "key" : 4,
             "lineno" : 136,
             "required" : "optional",
             "type" : "double"
@@ -533,7 +533,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 4,
+            "key" : 5,
             "lineno" : 136,
             "required" : "opt-in-req-out",
             "type" : {
@@ -570,8 +570,8 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Initializes any unset value. Applies third.\n",
-            "key" : 1,
+            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "key" : 4,
             "lineno" : 152,
             "required" : "optional",
             "type" : "string"
@@ -579,7 +579,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 4,
+            "key" : 5,
             "lineno" : 152,
             "required" : "opt-in-req-out",
             "type" : {
@@ -616,8 +616,8 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Initializes any unset value. Applies third.\n",
-            "key" : 1,
+            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "key" : 4,
             "lineno" : 174,
             "required" : "optional",
             "type" : "binary"
@@ -625,7 +625,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 4,
+            "key" : 5,
             "lineno" : 174,
             "required" : "opt-in-req-out",
             "type" : {

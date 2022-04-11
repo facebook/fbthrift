@@ -757,9 +757,9 @@ class MyDataPatch:
 class MyDataValuePatch:
   """
   Attributes:
-   - assign: Assigns to a given struct. If set, all other operations are ignored.
-   - clear: Clears a given value. Applies first.
-   - patch: Patches a given value. Applies second.
+   - assign: Assigns a value. If set, all other operations are ignored.
+   - clear: Clears a value. Applies first.
+   - patch: Patches a value. Applies second.
   """
 
   thrift_spec = None
@@ -882,7 +882,7 @@ class OptionalMyDataValuePatch:
   Attributes:
    - clear: Clears any set value. Applies first.
    - patch: Patches any set value. Applies second.
-   - ensure: Initializes any unset value. Applies third.
+   - ensure: Assigns the value, if not already set. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
@@ -917,13 +917,13 @@ class OptionalMyDataValuePatch:
           self.patch.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 1:
+      elif fid == 4:
         if ftype == TType.STRUCT:
           self.ensure = MyData()
           self.ensure.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 5:
         if ftype == TType.STRUCT:
           self.patchAfter = MyDataValuePatch()
           self.patchAfter.read(iprot)
@@ -942,10 +942,6 @@ class OptionalMyDataValuePatch:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('OptionalMyDataValuePatch')
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.STRUCT, 1)
-      self.ensure.write(oprot)
-      oprot.writeFieldEnd()
     if self.clear != None:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
@@ -954,8 +950,12 @@ class OptionalMyDataValuePatch:
       oprot.writeFieldBegin('patch', TType.STRUCT, 3)
       self.patch.write(oprot)
       oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.STRUCT, 4)
+      self.ensure.write(oprot)
+      oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -1506,8 +1506,8 @@ class MyStructPatch:
 class MyStructField21Patch:
   """
   Attributes:
-   - assign: Assigns to a given struct. If set, all other operations are ignored.
-   - clear: Clears a given value. Applies first.
+   - assign: Assigns a value. If set, all other operations are ignored.
+   - clear: Clears a value. Applies first.
    - prepend: Prepends to the front of a given list.
    - append: Appends to the back of a given list.
   """
@@ -1694,7 +1694,7 @@ class OptionalMyStructField21Patch:
   Attributes:
    - clear: Clears any set value. Applies first.
    - patch: Patches any set value. Applies second.
-   - ensure: Initializes any unset value. Applies third.
+   - ensure: Assigns the value, if not already set. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
@@ -1729,7 +1729,7 @@ class OptionalMyStructField21Patch:
           self.patch.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 1:
+      elif fid == 4:
         if ftype == TType.LIST:
           self.ensure = []
           (_etype62, _size59) = iprot.readListBegin()
@@ -1744,7 +1744,7 @@ class OptionalMyStructField21Patch:
           iprot.readListEnd()
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 5:
         if ftype == TType.STRUCT:
           self.patchAfter = MyStructField21Patch()
           self.patchAfter.read(iprot)
@@ -1763,13 +1763,6 @@ class OptionalMyStructField21Patch:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('OptionalMyStructField21Patch')
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.LIST, 1)
-      oprot.writeListBegin(TType.I16, len(self.ensure))
-      for iter66 in self.ensure:
-        oprot.writeI16(iter66)
-      oprot.writeListEnd()
-      oprot.writeFieldEnd()
     if self.clear != None:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
@@ -1778,8 +1771,15 @@ class OptionalMyStructField21Patch:
       oprot.writeFieldBegin('patch', TType.STRUCT, 3)
       self.patch.write(oprot)
       oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.LIST, 4)
+      oprot.writeListBegin(TType.I16, len(self.ensure))
+      for iter66 in self.ensure:
+        oprot.writeI16(iter66)
+      oprot.writeListEnd()
+      oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -1848,8 +1848,8 @@ class OptionalMyStructField21Patch:
 class MyStructField22Patch:
   """
   Attributes:
-   - assign: Assigns to a given struct. If set, all other operations are ignored.
-   - clear: Clears a given value. Applies first.
+   - assign: Assigns a value. If set, all other operations are ignored.
+   - clear: Clears a value. Applies first.
    - remove: Removes entries, if present. Applies thrid.
    - add: Adds entries, if not already present. Applies fourth.
   """
@@ -2030,7 +2030,7 @@ class OptionalMyStructField22Patch:
   Attributes:
    - clear: Clears any set value. Applies first.
    - patch: Patches any set value. Applies second.
-   - ensure: Initializes any unset value. Applies third.
+   - ensure: Assigns the value, if not already set. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
@@ -2065,7 +2065,7 @@ class OptionalMyStructField22Patch:
           self.patch.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 1:
+      elif fid == 4:
         if ftype == TType.SET:
           self.ensure = set()
           (_etype98, _size95) = iprot.readSetBegin()
@@ -2080,7 +2080,7 @@ class OptionalMyStructField22Patch:
           iprot.readSetEnd()
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 5:
         if ftype == TType.STRUCT:
           self.patchAfter = MyStructField22Patch()
           self.patchAfter.read(iprot)
@@ -2099,13 +2099,6 @@ class OptionalMyStructField22Patch:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('OptionalMyStructField22Patch')
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.SET, 1)
-      oprot.writeSetBegin(TType.STRING, len(self.ensure))
-      for iter102 in self.ensure:
-        oprot.writeString(iter102.encode('utf-8')) if UTF8STRINGS and not isinstance(iter102, bytes) else oprot.writeString(iter102)
-      oprot.writeSetEnd()
-      oprot.writeFieldEnd()
     if self.clear != None:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
@@ -2114,8 +2107,15 @@ class OptionalMyStructField22Patch:
       oprot.writeFieldBegin('patch', TType.STRUCT, 3)
       self.patch.write(oprot)
       oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.SET, 4)
+      oprot.writeSetBegin(TType.STRING, len(self.ensure))
+      for iter102 in self.ensure:
+        oprot.writeString(iter102.encode('utf-8')) if UTF8STRINGS and not isinstance(iter102, bytes) else oprot.writeString(iter102)
+      oprot.writeSetEnd()
+      oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2182,8 +2182,8 @@ class OptionalMyStructField22Patch:
 class MyStructField23Patch:
   """
   Attributes:
-   - assign: Assigns to a given struct. If set, all other operations are ignored.
-   - clear: Clears a given value. Applies first.
+   - assign: Assigns a value. If set, all other operations are ignored.
+   - clear: Clears a value. Applies first.
    - put: Adds or replaces the given key/value pairs. Applies Second.
   """
 
@@ -2341,7 +2341,7 @@ class OptionalMyStructField23Patch:
   Attributes:
    - clear: Clears any set value. Applies first.
    - patch: Patches any set value. Applies second.
-   - ensure: Initializes any unset value. Applies third.
+   - ensure: Assigns the value, if not already set. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
@@ -2376,7 +2376,7 @@ class OptionalMyStructField23Patch:
           self.patch.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 1:
+      elif fid == 4:
         if ftype == TType.MAP:
           self.ensure = {}
           (_ktype133, _vtype134, _size132 ) = iprot.readMapBegin() 
@@ -2393,7 +2393,7 @@ class OptionalMyStructField23Patch:
           iprot.readMapEnd()
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 5:
         if ftype == TType.STRUCT:
           self.patchAfter = MyStructField23Patch()
           self.patchAfter.read(iprot)
@@ -2412,14 +2412,6 @@ class OptionalMyStructField23Patch:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('OptionalMyStructField23Patch')
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.MAP, 1)
-      oprot.writeMapBegin(TType.STRING, TType.STRING, len(self.ensure))
-      for kiter141,viter142 in self.ensure.items():
-        oprot.writeString(kiter141.encode('utf-8')) if UTF8STRINGS and not isinstance(kiter141, bytes) else oprot.writeString(kiter141)
-        oprot.writeString(viter142.encode('utf-8')) if UTF8STRINGS and not isinstance(viter142, bytes) else oprot.writeString(viter142)
-      oprot.writeMapEnd()
-      oprot.writeFieldEnd()
     if self.clear != None:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
@@ -2428,8 +2420,16 @@ class OptionalMyStructField23Patch:
       oprot.writeFieldBegin('patch', TType.STRUCT, 3)
       self.patch.write(oprot)
       oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.MAP, 4)
+      oprot.writeMapBegin(TType.STRING, TType.STRING, len(self.ensure))
+      for kiter141,viter142 in self.ensure.items():
+        oprot.writeString(kiter141.encode('utf-8')) if UTF8STRINGS and not isinstance(kiter141, bytes) else oprot.writeString(kiter141)
+        oprot.writeString(viter142.encode('utf-8')) if UTF8STRINGS and not isinstance(viter142, bytes) else oprot.writeString(viter142)
+      oprot.writeMapEnd()
+      oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2497,9 +2497,9 @@ class OptionalMyStructField23Patch:
 class MyStructValuePatch:
   """
   Attributes:
-   - assign: Assigns to a given struct. If set, all other operations are ignored.
-   - clear: Clears a given value. Applies first.
-   - patch: Patches a given value. Applies second.
+   - assign: Assigns a value. If set, all other operations are ignored.
+   - clear: Clears a value. Applies first.
+   - patch: Patches a value. Applies second.
   """
 
   thrift_spec = None
@@ -2622,7 +2622,7 @@ class OptionalMyStructValuePatch:
   Attributes:
    - clear: Clears any set value. Applies first.
    - patch: Patches any set value. Applies second.
-   - ensure: Initializes any unset value. Applies third.
+   - ensure: Assigns the value, if not already set. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
@@ -2657,13 +2657,13 @@ class OptionalMyStructValuePatch:
           self.patch.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 1:
+      elif fid == 4:
         if ftype == TType.STRUCT:
           self.ensure = MyStruct()
           self.ensure.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 5:
         if ftype == TType.STRUCT:
           self.patchAfter = MyStructValuePatch()
           self.patchAfter.read(iprot)
@@ -2682,10 +2682,6 @@ class OptionalMyStructValuePatch:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('OptionalMyStructValuePatch')
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.STRUCT, 1)
-      self.ensure.write(oprot)
-      oprot.writeFieldEnd()
     if self.clear != None:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
@@ -2694,8 +2690,12 @@ class OptionalMyStructValuePatch:
       oprot.writeFieldBegin('patch', TType.STRUCT, 3)
       self.patch.write(oprot)
       oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.STRUCT, 4)
+      self.ensure.write(oprot)
+      oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2935,17 +2935,18 @@ MyDataValuePatch.__setstate__ = MyDataValuePatch__setstate__
 all_structs.append(OptionalMyDataValuePatch)
 OptionalMyDataValuePatch.thrift_spec = (
   None, # 0
-  (1, TType.STRUCT, 'ensure', [MyData, MyData.thrift_spec, False], None, 1, ), # 1
+  None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'patchAfter', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 4
+  (4, TType.STRUCT, 'ensure', [MyData, MyData.thrift_spec, False], None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalMyDataValuePatch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::OptionalPatchAdapter",
 }
 OptionalMyDataValuePatch.thrift_field_annotations = {
-  1: {
+  4: {
     "thrift.box": "",
   },
 }
@@ -3094,10 +3095,11 @@ MyStructField21Patch.__setstate__ = MyStructField21Patch__setstate__
 all_structs.append(OptionalMyStructField21Patch)
 OptionalMyStructField21Patch.thrift_spec = (
   None, # 0
-  (1, TType.LIST, 'ensure', (TType.I16,None), None, 1, ), # 1
+  None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'patchAfter', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 2, ), # 4
+  (4, TType.LIST, 'ensure', (TType.I16,None), None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalMyStructField21Patch.thrift_struct_annotations = {
@@ -3161,10 +3163,11 @@ MyStructField22Patch.__setstate__ = MyStructField22Patch__setstate__
 all_structs.append(OptionalMyStructField22Patch)
 OptionalMyStructField22Patch.thrift_spec = (
   None, # 0
-  (1, TType.SET, 'ensure', (TType.STRING,True), None, 1, ), # 1
+  None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'patchAfter', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 2, ), # 4
+  (4, TType.SET, 'ensure', (TType.STRING,True), None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalMyStructField22Patch.thrift_struct_annotations = {
@@ -3228,10 +3231,11 @@ MyStructField23Patch.__setstate__ = MyStructField23Patch__setstate__
 all_structs.append(OptionalMyStructField23Patch)
 OptionalMyStructField23Patch.thrift_spec = (
   None, # 0
-  (1, TType.MAP, 'ensure', (TType.STRING,True,TType.STRING,True), None, 1, ), # 1
+  None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'patchAfter', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 2, ), # 4
+  (4, TType.MAP, 'ensure', (TType.STRING,True,TType.STRING,True), None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalMyStructField23Patch.thrift_struct_annotations = {
@@ -3294,17 +3298,18 @@ MyStructValuePatch.__setstate__ = MyStructValuePatch__setstate__
 all_structs.append(OptionalMyStructValuePatch)
 OptionalMyStructValuePatch.thrift_spec = (
   None, # 0
-  (1, TType.STRUCT, 'ensure', [MyStruct, MyStruct.thrift_spec, False], None, 1, ), # 1
+  None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [MyStructValuePatch, MyStructValuePatch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'patchAfter', [MyStructValuePatch, MyStructValuePatch.thrift_spec, False], None, 2, ), # 4
+  (4, TType.STRUCT, 'ensure', [MyStruct, MyStruct.thrift_spec, False], None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [MyStructValuePatch, MyStructValuePatch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalMyStructValuePatch.thrift_struct_annotations = {
   "cpp.adapter": "::apache::thrift::op::detail::OptionalPatchAdapter",
 }
 OptionalMyStructValuePatch.thrift_field_annotations = {
-  1: {
+  4: {
     "thrift.box": "",
   },
 }

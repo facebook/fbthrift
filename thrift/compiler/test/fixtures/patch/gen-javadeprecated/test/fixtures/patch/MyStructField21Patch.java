@@ -32,11 +32,11 @@ public class MyStructField21Patch implements TBase, java.io.Serializable, Clonea
   private static final TField APPEND_FIELD_DESC = new TField("append", TType.LIST, (short)5);
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public List<Short> assign;
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public boolean clear;
   /**
@@ -176,14 +176,14 @@ public class MyStructField21Patch implements TBase, java.io.Serializable, Clonea
   }
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public List<Short> getAssign() {
     return this.assign;
   }
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public MyStructField21Patch setAssign(List<Short> assign) {
     this.assign = assign;
@@ -206,14 +206,14 @@ public class MyStructField21Patch implements TBase, java.io.Serializable, Clonea
   }
 
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public boolean isClear() {
     return this.clear;
   }
 
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public MyStructField21Patch setClear(boolean clear) {
     this.clear = clear;

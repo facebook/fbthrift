@@ -66,13 +66,13 @@ class patch_generator {
   // The resulting struct has the form:
   //
   //   struct StructValuePatch<Value, Patch> {
-  //     // Assigns to a given struct. If set, all other operations are ignored.
+  //     // Assigns a value. If set, all other operations are ignored.
   //     optional Value assign (thrift.box);
   //
-  //     // Clears a given struct. Applied first.
+  //     // Clears a value. Applies first.
   //     bool clear;
   //
-  //     // Patches a given struct. Applied second.
+  //     // Patches a value. Applies second.
   //     Patch patch;
   //   }
   //
@@ -85,17 +85,16 @@ class patch_generator {
   // The resulting struct has the form:
   //
   //   struct OptionalPatch<Value, Patch> {
-  //     // Clears a given optional value, leaving it unset. Applied first.
+  //     // Clears any set value. Applies first.
   //     bool clear;
   //
-  //     // The patch to apply to any set value. Applied second.
+  //     // Patches any set value. Applies second.
   //     Patch patch;
   //
-  //     // The value with which to initialize any unset value. Applied third.
+  //     // Assigns the value, if not already set. Applies third.
   //     optional Value ensure (thrift.box);
   //
-  //     // The patch to apply to any set value, including newly set values.
-  //     // Applied fourth.
+  //     // Patches any set value, including newly set values. Applies fourth.
   //     Patch patchAfter;
   //   } (cpp.adapter = "::apache::thrift::op::detail::OptionalPatchAdapter")
   //

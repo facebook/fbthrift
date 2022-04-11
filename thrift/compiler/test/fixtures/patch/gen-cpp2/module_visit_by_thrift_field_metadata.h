@@ -126,9 +126,9 @@ struct VisitByFieldId<::cpp2::OptionalMyDataValuePatch> {
       return f(0, static_cast<T&&>(t).clear_ref());
     case 3:
       return f(1, static_cast<T&&>(t).patch_ref());
-    case 1:
-      return f(2, static_cast<T&&>(t).ensure_ref());
     case 4:
+      return f(2, static_cast<T&&>(t).ensure_ref());
+    case 5:
       return f(3, static_cast<T&&>(t).patchAfter_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::OptionalMyDataValuePatch");
@@ -164,9 +164,9 @@ struct VisitByFieldId<::cpp2::OptionalMyStructField21Patch> {
       return f(0, static_cast<T&&>(t).clear_ref());
     case 3:
       return f(1, static_cast<T&&>(t).patch_ref());
-    case 1:
-      return f(2, static_cast<T&&>(t).ensure_ref());
     case 4:
+      return f(2, static_cast<T&&>(t).ensure_ref());
+    case 5:
       return f(3, static_cast<T&&>(t).patchAfter_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::OptionalMyStructField21Patch");
@@ -202,9 +202,9 @@ struct VisitByFieldId<::cpp2::OptionalMyStructField22Patch> {
       return f(0, static_cast<T&&>(t).clear_ref());
     case 3:
       return f(1, static_cast<T&&>(t).patch_ref());
-    case 1:
-      return f(2, static_cast<T&&>(t).ensure_ref());
     case 4:
+      return f(2, static_cast<T&&>(t).ensure_ref());
+    case 5:
       return f(3, static_cast<T&&>(t).patchAfter_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::OptionalMyStructField22Patch");
@@ -238,9 +238,9 @@ struct VisitByFieldId<::cpp2::OptionalMyStructField23Patch> {
       return f(0, static_cast<T&&>(t).clear_ref());
     case 3:
       return f(1, static_cast<T&&>(t).patch_ref());
-    case 1:
-      return f(2, static_cast<T&&>(t).ensure_ref());
     case 4:
+      return f(2, static_cast<T&&>(t).ensure_ref());
+    case 5:
       return f(3, static_cast<T&&>(t).patchAfter_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::OptionalMyStructField23Patch");
@@ -331,9 +331,9 @@ struct VisitByFieldId<::cpp2::OptionalMyStructValuePatch> {
       return f(0, static_cast<T&&>(t).clear_ref());
     case 3:
       return f(1, static_cast<T&&>(t).patch_ref());
-    case 1:
-      return f(2, static_cast<T&&>(t).ensure_ref());
     case 4:
+      return f(2, static_cast<T&&>(t).ensure_ref());
+    case 5:
       return f(3, static_cast<T&&>(t).patchAfter_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::OptionalMyStructValuePatch");

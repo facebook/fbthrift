@@ -248,7 +248,7 @@
         "fields" : {
           "assign" : {
             "name" : "assign",
-            "docstring" : "Assigns to a given struct. If set, all other operations are ignored.\n",
+            "docstring" : "Assigns a value. If set, all other operations are ignored.\n",
             "key" : 1,
             "lineno" : 20,
             "required" : "optional",
@@ -259,7 +259,7 @@
           },
           "clear" : {
             "name" : "clear",
-            "docstring" : "Clears a given value. Applies first.\n",
+            "docstring" : "Clears a value. Applies first.\n",
             "key" : 2,
             "lineno" : 20,
             "required" : "opt-in-req-out",
@@ -267,7 +267,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "Patches a given value. Applies second.\n",
+            "docstring" : "Patches a value. Applies second.\n",
             "key" : 3,
             "lineno" : 20,
             "required" : "opt-in-req-out",
@@ -305,8 +305,8 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Initializes any unset value. Applies third.\n",
-            "key" : 1,
+            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "key" : 4,
             "lineno" : 20,
             "required" : "optional",
             "type" : {
@@ -317,7 +317,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 4,
+            "key" : 5,
             "lineno" : 20,
             "required" : "opt-in-req-out",
             "type" : {
@@ -573,7 +573,7 @@
         "fields" : {
           "assign" : {
             "name" : "assign",
-            "docstring" : "Assigns to a given struct. If set, all other operations are ignored.\n",
+            "docstring" : "Assigns a value. If set, all other operations are ignored.\n",
             "key" : 1,
             "lineno" : 20,
             "required" : "optional",
@@ -584,7 +584,7 @@
           },
           "clear" : {
             "name" : "clear",
-            "docstring" : "Clears a given value. Applies first.\n",
+            "docstring" : "Clears a value. Applies first.\n",
             "key" : 2,
             "lineno" : 20,
             "required" : "opt-in-req-out",
@@ -641,8 +641,8 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Initializes any unset value. Applies third.\n",
-            "key" : 1,
+            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "key" : 4,
             "lineno" : 20,
             "required" : "optional",
             "type" : {
@@ -653,7 +653,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 4,
+            "key" : 5,
             "lineno" : 20,
             "required" : "opt-in-req-out",
             "type" : {
@@ -671,7 +671,7 @@
         "fields" : {
           "assign" : {
             "name" : "assign",
-            "docstring" : "Assigns to a given struct. If set, all other operations are ignored.\n",
+            "docstring" : "Assigns a value. If set, all other operations are ignored.\n",
             "key" : 1,
             "lineno" : 20,
             "required" : "optional",
@@ -682,7 +682,7 @@
           },
           "clear" : {
             "name" : "clear",
-            "docstring" : "Clears a given value. Applies first.\n",
+            "docstring" : "Clears a value. Applies first.\n",
             "key" : 2,
             "lineno" : 20,
             "required" : "opt-in-req-out",
@@ -739,8 +739,8 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Initializes any unset value. Applies third.\n",
-            "key" : 1,
+            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "key" : 4,
             "lineno" : 20,
             "required" : "optional",
             "type" : {
@@ -751,7 +751,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 4,
+            "key" : 5,
             "lineno" : 20,
             "required" : "opt-in-req-out",
             "type" : {
@@ -769,7 +769,7 @@
         "fields" : {
           "assign" : {
             "name" : "assign",
-            "docstring" : "Assigns to a given struct. If set, all other operations are ignored.\n",
+            "docstring" : "Assigns a value. If set, all other operations are ignored.\n",
             "key" : 1,
             "lineno" : 20,
             "required" : "optional",
@@ -781,7 +781,7 @@
           },
           "clear" : {
             "name" : "clear",
-            "docstring" : "Clears a given value. Applies first.\n",
+            "docstring" : "Clears a value. Applies first.\n",
             "key" : 2,
             "lineno" : 20,
             "required" : "opt-in-req-out",
@@ -828,8 +828,8 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Initializes any unset value. Applies third.\n",
-            "key" : 1,
+            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "key" : 4,
             "lineno" : 20,
             "required" : "optional",
             "type" : {
@@ -841,7 +841,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 4,
+            "key" : 5,
             "lineno" : 20,
             "required" : "opt-in-req-out",
             "type" : {
@@ -859,7 +859,7 @@
         "fields" : {
           "assign" : {
             "name" : "assign",
-            "docstring" : "Assigns to a given struct. If set, all other operations are ignored.\n",
+            "docstring" : "Assigns a value. If set, all other operations are ignored.\n",
             "key" : 1,
             "lineno" : 20,
             "required" : "optional",
@@ -870,7 +870,7 @@
           },
           "clear" : {
             "name" : "clear",
-            "docstring" : "Clears a given value. Applies first.\n",
+            "docstring" : "Clears a value. Applies first.\n",
             "key" : 2,
             "lineno" : 20,
             "required" : "opt-in-req-out",
@@ -878,7 +878,7 @@
           },
           "patch" : {
             "name" : "patch",
-            "docstring" : "Patches a given value. Applies second.\n",
+            "docstring" : "Patches a value. Applies second.\n",
             "key" : 3,
             "lineno" : 20,
             "required" : "opt-in-req-out",
@@ -916,8 +916,8 @@
           },
           "ensure" : {
             "name" : "ensure",
-            "docstring" : "Initializes any unset value. Applies third.\n",
-            "key" : 1,
+            "docstring" : "Assigns the value, if not already set. Applies third.\n",
+            "key" : 4,
             "lineno" : 20,
             "required" : "optional",
             "type" : {
@@ -928,7 +928,7 @@
           "patchAfter" : {
             "name" : "patchAfter",
             "docstring" : "Patches any set value, including newly set values. Applies fourth.\n",
-            "key" : 4,
+            "key" : 5,
             "lineno" : 20,
             "required" : "opt-in-req-out",
             "type" : {

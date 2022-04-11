@@ -1131,7 +1131,7 @@ class OptionalBoolPatch:
   Attributes:
    - clear: Clears any set value. Applies first.
    - patch: Patches any set value. Applies second.
-   - ensure: Initializes any unset value. Applies third.
+   - ensure: Assigns the value, if not already set. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
@@ -1166,12 +1166,12 @@ class OptionalBoolPatch:
           self.patch.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 1:
+      elif fid == 4:
         if ftype == TType.BOOL:
           self.ensure = iprot.readBool()
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 5:
         if ftype == TType.STRUCT:
           self.patchAfter = BoolPatch()
           self.patchAfter.read(iprot)
@@ -1190,10 +1190,6 @@ class OptionalBoolPatch:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('OptionalBoolPatch')
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.BOOL, 1)
-      oprot.writeBool(self.ensure)
-      oprot.writeFieldEnd()
     if self.clear != None:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
@@ -1202,8 +1198,12 @@ class OptionalBoolPatch:
       oprot.writeFieldBegin('patch', TType.STRUCT, 3)
       self.patch.write(oprot)
       oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.BOOL, 4)
+      oprot.writeBool(self.ensure)
+      oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -1270,7 +1270,7 @@ class OptionalBytePatch:
   Attributes:
    - clear: Clears any set value. Applies first.
    - patch: Patches any set value. Applies second.
-   - ensure: Initializes any unset value. Applies third.
+   - ensure: Assigns the value, if not already set. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
@@ -1305,12 +1305,12 @@ class OptionalBytePatch:
           self.patch.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 1:
+      elif fid == 4:
         if ftype == TType.BYTE:
           self.ensure = iprot.readByte()
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 5:
         if ftype == TType.STRUCT:
           self.patchAfter = BytePatch()
           self.patchAfter.read(iprot)
@@ -1329,10 +1329,6 @@ class OptionalBytePatch:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('OptionalBytePatch')
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.BYTE, 1)
-      oprot.writeByte(self.ensure)
-      oprot.writeFieldEnd()
     if self.clear != None:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
@@ -1341,8 +1337,12 @@ class OptionalBytePatch:
       oprot.writeFieldBegin('patch', TType.STRUCT, 3)
       self.patch.write(oprot)
       oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.BYTE, 4)
+      oprot.writeByte(self.ensure)
+      oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -1411,7 +1411,7 @@ class OptionalI16Patch:
   Attributes:
    - clear: Clears any set value. Applies first.
    - patch: Patches any set value. Applies second.
-   - ensure: Initializes any unset value. Applies third.
+   - ensure: Assigns the value, if not already set. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
@@ -1446,12 +1446,12 @@ class OptionalI16Patch:
           self.patch.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 1:
+      elif fid == 4:
         if ftype == TType.I16:
           self.ensure = iprot.readI16()
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 5:
         if ftype == TType.STRUCT:
           self.patchAfter = I16Patch()
           self.patchAfter.read(iprot)
@@ -1470,10 +1470,6 @@ class OptionalI16Patch:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('OptionalI16Patch')
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.I16, 1)
-      oprot.writeI16(self.ensure)
-      oprot.writeFieldEnd()
     if self.clear != None:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
@@ -1482,8 +1478,12 @@ class OptionalI16Patch:
       oprot.writeFieldBegin('patch', TType.STRUCT, 3)
       self.patch.write(oprot)
       oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.I16, 4)
+      oprot.writeI16(self.ensure)
+      oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -1552,7 +1552,7 @@ class OptionalI32Patch:
   Attributes:
    - clear: Clears any set value. Applies first.
    - patch: Patches any set value. Applies second.
-   - ensure: Initializes any unset value. Applies third.
+   - ensure: Assigns the value, if not already set. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
@@ -1587,12 +1587,12 @@ class OptionalI32Patch:
           self.patch.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 1:
+      elif fid == 4:
         if ftype == TType.I32:
           self.ensure = iprot.readI32()
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 5:
         if ftype == TType.STRUCT:
           self.patchAfter = I32Patch()
           self.patchAfter.read(iprot)
@@ -1611,10 +1611,6 @@ class OptionalI32Patch:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('OptionalI32Patch')
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.I32, 1)
-      oprot.writeI32(self.ensure)
-      oprot.writeFieldEnd()
     if self.clear != None:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
@@ -1623,8 +1619,12 @@ class OptionalI32Patch:
       oprot.writeFieldBegin('patch', TType.STRUCT, 3)
       self.patch.write(oprot)
       oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.I32, 4)
+      oprot.writeI32(self.ensure)
+      oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -1693,7 +1693,7 @@ class OptionalI64Patch:
   Attributes:
    - clear: Clears any set value. Applies first.
    - patch: Patches any set value. Applies second.
-   - ensure: Initializes any unset value. Applies third.
+   - ensure: Assigns the value, if not already set. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
@@ -1728,12 +1728,12 @@ class OptionalI64Patch:
           self.patch.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 1:
+      elif fid == 4:
         if ftype == TType.I64:
           self.ensure = iprot.readI64()
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 5:
         if ftype == TType.STRUCT:
           self.patchAfter = I64Patch()
           self.patchAfter.read(iprot)
@@ -1752,10 +1752,6 @@ class OptionalI64Patch:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('OptionalI64Patch')
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.I64, 1)
-      oprot.writeI64(self.ensure)
-      oprot.writeFieldEnd()
     if self.clear != None:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
@@ -1764,8 +1760,12 @@ class OptionalI64Patch:
       oprot.writeFieldBegin('patch', TType.STRUCT, 3)
       self.patch.write(oprot)
       oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.I64, 4)
+      oprot.writeI64(self.ensure)
+      oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -1832,7 +1832,7 @@ class OptionalFloatPatch:
   Attributes:
    - clear: Clears any set value. Applies first.
    - patch: Patches any set value. Applies second.
-   - ensure: Initializes any unset value. Applies third.
+   - ensure: Assigns the value, if not already set. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
@@ -1867,12 +1867,12 @@ class OptionalFloatPatch:
           self.patch.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 1:
+      elif fid == 4:
         if ftype == TType.FLOAT:
           self.ensure = iprot.readFloat()
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 5:
         if ftype == TType.STRUCT:
           self.patchAfter = FloatPatch()
           self.patchAfter.read(iprot)
@@ -1891,10 +1891,6 @@ class OptionalFloatPatch:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('OptionalFloatPatch')
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.FLOAT, 1)
-      oprot.writeFloat(self.ensure)
-      oprot.writeFieldEnd()
     if self.clear != None:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
@@ -1903,8 +1899,12 @@ class OptionalFloatPatch:
       oprot.writeFieldBegin('patch', TType.STRUCT, 3)
       self.patch.write(oprot)
       oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.FLOAT, 4)
+      oprot.writeFloat(self.ensure)
+      oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -1971,7 +1971,7 @@ class OptionalDoublePatch:
   Attributes:
    - clear: Clears any set value. Applies first.
    - patch: Patches any set value. Applies second.
-   - ensure: Initializes any unset value. Applies third.
+   - ensure: Assigns the value, if not already set. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
@@ -2006,12 +2006,12 @@ class OptionalDoublePatch:
           self.patch.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 1:
+      elif fid == 4:
         if ftype == TType.DOUBLE:
           self.ensure = iprot.readDouble()
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 5:
         if ftype == TType.STRUCT:
           self.patchAfter = DoublePatch()
           self.patchAfter.read(iprot)
@@ -2030,10 +2030,6 @@ class OptionalDoublePatch:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('OptionalDoublePatch')
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.DOUBLE, 1)
-      oprot.writeDouble(self.ensure)
-      oprot.writeFieldEnd()
     if self.clear != None:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
@@ -2042,8 +2038,12 @@ class OptionalDoublePatch:
       oprot.writeFieldBegin('patch', TType.STRUCT, 3)
       self.patch.write(oprot)
       oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.DOUBLE, 4)
+      oprot.writeDouble(self.ensure)
+      oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2110,7 +2110,7 @@ class OptionalStringPatch:
   Attributes:
    - clear: Clears any set value. Applies first.
    - patch: Patches any set value. Applies second.
-   - ensure: Initializes any unset value. Applies third.
+   - ensure: Assigns the value, if not already set. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
@@ -2145,12 +2145,12 @@ class OptionalStringPatch:
           self.patch.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 1:
+      elif fid == 4:
         if ftype == TType.STRING:
           self.ensure = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 5:
         if ftype == TType.STRUCT:
           self.patchAfter = StringPatch()
           self.patchAfter.read(iprot)
@@ -2169,10 +2169,6 @@ class OptionalStringPatch:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('OptionalStringPatch')
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.STRING, 1)
-      oprot.writeString(self.ensure.encode('utf-8')) if UTF8STRINGS and not isinstance(self.ensure, bytes) else oprot.writeString(self.ensure)
-      oprot.writeFieldEnd()
     if self.clear != None:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
@@ -2181,8 +2177,12 @@ class OptionalStringPatch:
       oprot.writeFieldBegin('patch', TType.STRUCT, 3)
       self.patch.write(oprot)
       oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.STRING, 4)
+      oprot.writeString(self.ensure.encode('utf-8')) if UTF8STRINGS and not isinstance(self.ensure, bytes) else oprot.writeString(self.ensure)
+      oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2249,7 +2249,7 @@ class OptionalBinaryPatch:
   Attributes:
    - clear: Clears any set value. Applies first.
    - patch: Patches any set value. Applies second.
-   - ensure: Initializes any unset value. Applies third.
+   - ensure: Assigns the value, if not already set. Applies third.
    - patchAfter: Patches any set value, including newly set values. Applies fourth.
   """
 
@@ -2284,12 +2284,12 @@ class OptionalBinaryPatch:
           self.patch.read(iprot)
         else:
           iprot.skip(ftype)
-      elif fid == 1:
+      elif fid == 4:
         if ftype == TType.STRING:
           self.ensure = iprot.readString()
         else:
           iprot.skip(ftype)
-      elif fid == 4:
+      elif fid == 5:
         if ftype == TType.STRUCT:
           self.patchAfter = BinaryPatch()
           self.patchAfter.read(iprot)
@@ -2308,10 +2308,6 @@ class OptionalBinaryPatch:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('OptionalBinaryPatch')
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.STRING, 1)
-      oprot.writeString(self.ensure)
-      oprot.writeFieldEnd()
     if self.clear != None:
       oprot.writeFieldBegin('clear', TType.BOOL, 2)
       oprot.writeBool(self.clear)
@@ -2320,8 +2316,12 @@ class OptionalBinaryPatch:
       oprot.writeFieldBegin('patch', TType.STRUCT, 3)
       self.patch.write(oprot)
       oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.STRING, 4)
+      oprot.writeString(self.ensure)
+      oprot.writeFieldEnd()
     if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 4)
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
       self.patchAfter.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
@@ -2662,10 +2662,11 @@ BinaryPatch.__setstate__ = BinaryPatch__setstate__
 all_structs.append(OptionalBoolPatch)
 OptionalBoolPatch.thrift_spec = (
   None, # 0
-  (1, TType.BOOL, 'ensure', None, None, 1, ), # 1
+  None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [BoolPatch, BoolPatch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'patchAfter', [BoolPatch, BoolPatch.thrift_spec, False], None, 2, ), # 4
+  (4, TType.BOOL, 'ensure', None, None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [BoolPatch, BoolPatch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalBoolPatch.thrift_struct_annotations = {
@@ -2696,10 +2697,11 @@ OptionalBoolPatch.__setstate__ = OptionalBoolPatch__setstate__
 all_structs.append(OptionalBytePatch)
 OptionalBytePatch.thrift_spec = (
   None, # 0
-  (1, TType.BYTE, 'ensure', None, None, 1, ), # 1
+  None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [BytePatch, BytePatch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'patchAfter', [BytePatch, BytePatch.thrift_spec, False], None, 2, ), # 4
+  (4, TType.BYTE, 'ensure', None, None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [BytePatch, BytePatch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalBytePatch.thrift_struct_annotations = {
@@ -2730,10 +2732,11 @@ OptionalBytePatch.__setstate__ = OptionalBytePatch__setstate__
 all_structs.append(OptionalI16Patch)
 OptionalI16Patch.thrift_spec = (
   None, # 0
-  (1, TType.I16, 'ensure', None, None, 1, ), # 1
+  None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [I16Patch, I16Patch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'patchAfter', [I16Patch, I16Patch.thrift_spec, False], None, 2, ), # 4
+  (4, TType.I16, 'ensure', None, None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [I16Patch, I16Patch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalI16Patch.thrift_struct_annotations = {
@@ -2764,10 +2767,11 @@ OptionalI16Patch.__setstate__ = OptionalI16Patch__setstate__
 all_structs.append(OptionalI32Patch)
 OptionalI32Patch.thrift_spec = (
   None, # 0
-  (1, TType.I32, 'ensure', None, None, 1, ), # 1
+  None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [I32Patch, I32Patch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'patchAfter', [I32Patch, I32Patch.thrift_spec, False], None, 2, ), # 4
+  (4, TType.I32, 'ensure', None, None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [I32Patch, I32Patch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalI32Patch.thrift_struct_annotations = {
@@ -2798,10 +2802,11 @@ OptionalI32Patch.__setstate__ = OptionalI32Patch__setstate__
 all_structs.append(OptionalI64Patch)
 OptionalI64Patch.thrift_spec = (
   None, # 0
-  (1, TType.I64, 'ensure', None, None, 1, ), # 1
+  None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [I64Patch, I64Patch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'patchAfter', [I64Patch, I64Patch.thrift_spec, False], None, 2, ), # 4
+  (4, TType.I64, 'ensure', None, None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [I64Patch, I64Patch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalI64Patch.thrift_struct_annotations = {
@@ -2832,10 +2837,11 @@ OptionalI64Patch.__setstate__ = OptionalI64Patch__setstate__
 all_structs.append(OptionalFloatPatch)
 OptionalFloatPatch.thrift_spec = (
   None, # 0
-  (1, TType.FLOAT, 'ensure', None, None, 1, ), # 1
+  None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [FloatPatch, FloatPatch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'patchAfter', [FloatPatch, FloatPatch.thrift_spec, False], None, 2, ), # 4
+  (4, TType.FLOAT, 'ensure', None, None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [FloatPatch, FloatPatch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalFloatPatch.thrift_struct_annotations = {
@@ -2866,10 +2872,11 @@ OptionalFloatPatch.__setstate__ = OptionalFloatPatch__setstate__
 all_structs.append(OptionalDoublePatch)
 OptionalDoublePatch.thrift_spec = (
   None, # 0
-  (1, TType.DOUBLE, 'ensure', None, None, 1, ), # 1
+  None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [DoublePatch, DoublePatch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'patchAfter', [DoublePatch, DoublePatch.thrift_spec, False], None, 2, ), # 4
+  (4, TType.DOUBLE, 'ensure', None, None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [DoublePatch, DoublePatch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalDoublePatch.thrift_struct_annotations = {
@@ -2900,10 +2907,11 @@ OptionalDoublePatch.__setstate__ = OptionalDoublePatch__setstate__
 all_structs.append(OptionalStringPatch)
 OptionalStringPatch.thrift_spec = (
   None, # 0
-  (1, TType.STRING, 'ensure', True, None, 1, ), # 1
+  None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [StringPatch, StringPatch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'patchAfter', [StringPatch, StringPatch.thrift_spec, False], None, 2, ), # 4
+  (4, TType.STRING, 'ensure', True, None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [StringPatch, StringPatch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalStringPatch.thrift_struct_annotations = {
@@ -2934,10 +2942,11 @@ OptionalStringPatch.__setstate__ = OptionalStringPatch__setstate__
 all_structs.append(OptionalBinaryPatch)
 OptionalBinaryPatch.thrift_spec = (
   None, # 0
-  (1, TType.STRING, 'ensure', False, None, 1, ), # 1
+  None, # 1
   (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   (3, TType.STRUCT, 'patch', [BinaryPatch, BinaryPatch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'patchAfter', [BinaryPatch, BinaryPatch.thrift_spec, False], None, 2, ), # 4
+  (4, TType.STRING, 'ensure', False, None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [BinaryPatch, BinaryPatch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalBinaryPatch.thrift_struct_annotations = {

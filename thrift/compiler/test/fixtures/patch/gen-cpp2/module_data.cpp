@@ -139,8 +139,8 @@ const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::OptionalMyDat
 const std::array<int16_t, 4> TStructDataStorage<::cpp2::OptionalMyDataValuePatch>::fields_ids = {{
   2,
   3,
-  1,
   4,
+  5,
 }};
 const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::OptionalMyDataValuePatch>::fields_types = {{
   TType::T_BOOL,
@@ -177,8 +177,8 @@ const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::OptionalMyStr
 const std::array<int16_t, 4> TStructDataStorage<::cpp2::OptionalMyStructField21Patch>::fields_ids = {{
   2,
   3,
-  1,
   4,
+  5,
 }};
 const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::OptionalMyStructField21Patch>::fields_types = {{
   TType::T_BOOL,
@@ -215,8 +215,8 @@ const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::OptionalMyStr
 const std::array<int16_t, 4> TStructDataStorage<::cpp2::OptionalMyStructField22Patch>::fields_ids = {{
   2,
   3,
-  1,
   4,
+  5,
 }};
 const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::OptionalMyStructField22Patch>::fields_types = {{
   TType::T_BOOL,
@@ -250,8 +250,8 @@ const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::OptionalMyStr
 const std::array<int16_t, 4> TStructDataStorage<::cpp2::OptionalMyStructField23Patch>::fields_ids = {{
   2,
   3,
-  1,
   4,
+  5,
 }};
 const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::OptionalMyStructField23Patch>::fields_types = {{
   TType::T_BOOL,
@@ -361,8 +361,8 @@ const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::OptionalMyStr
 const std::array<int16_t, 4> TStructDataStorage<::cpp2::OptionalMyStructValuePatch>::fields_ids = {{
   2,
   3,
-  1,
   4,
+  5,
 }};
 const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::OptionalMyStructValuePatch>::fields_types = {{
   TType::T_BOOL,

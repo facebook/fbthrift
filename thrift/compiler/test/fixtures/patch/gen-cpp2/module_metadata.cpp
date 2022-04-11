@@ -161,8 +161,8 @@ StructMetadata<::cpp2::OptionalMyDataValuePatch>::gen(ThriftMetadata& metadata) 
   module_OptionalMyDataValuePatch_fields[] = {
     {2, "clear", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "patch", false, std::make_unique<Struct<::cpp2::MyDataValuePatch>>("module.MyDataValuePatch"), std::vector<ThriftConstStruct>{}},
-    {1, "ensure", true, std::make_unique<Struct<::cpp2::MyData>>("module.MyData"), std::vector<ThriftConstStruct>{}},
-    {4, "patchAfter", false, std::make_unique<Struct<::cpp2::MyDataValuePatch>>("module.MyDataValuePatch"), std::vector<ThriftConstStruct>{}},
+    {4, "ensure", true, std::make_unique<Struct<::cpp2::MyData>>("module.MyData"), std::vector<ThriftConstStruct>{}},
+    {5, "patchAfter", false, std::make_unique<Struct<::cpp2::MyDataValuePatch>>("module.MyDataValuePatch"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_OptionalMyDataValuePatch_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -215,8 +215,8 @@ StructMetadata<::cpp2::OptionalMyStructField21Patch>::gen(ThriftMetadata& metada
   module_OptionalMyStructField21Patch_fields[] = {
     {2, "clear", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "patch", false, std::make_unique<Struct<::cpp2::MyStructField21Patch>>("module.MyStructField21Patch"), std::vector<ThriftConstStruct>{}},
-    {1, "ensure", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
-    {4, "patchAfter", false, std::make_unique<Struct<::cpp2::MyStructField21Patch>>("module.MyStructField21Patch"), std::vector<ThriftConstStruct>{}},
+    {4, "ensure", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
+    {5, "patchAfter", false, std::make_unique<Struct<::cpp2::MyStructField21Patch>>("module.MyStructField21Patch"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_OptionalMyStructField21Patch_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -269,8 +269,8 @@ StructMetadata<::cpp2::OptionalMyStructField22Patch>::gen(ThriftMetadata& metada
   module_OptionalMyStructField22Patch_fields[] = {
     {2, "clear", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "patch", false, std::make_unique<Struct<::cpp2::MyStructField22Patch>>("module.MyStructField22Patch"), std::vector<ThriftConstStruct>{}},
-    {1, "ensure", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
-    {4, "patchAfter", false, std::make_unique<Struct<::cpp2::MyStructField22Patch>>("module.MyStructField22Patch"), std::vector<ThriftConstStruct>{}},
+    {4, "ensure", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
+    {5, "patchAfter", false, std::make_unique<Struct<::cpp2::MyStructField22Patch>>("module.MyStructField22Patch"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_OptionalMyStructField22Patch_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -322,8 +322,8 @@ StructMetadata<::cpp2::OptionalMyStructField23Patch>::gen(ThriftMetadata& metada
   module_OptionalMyStructField23Patch_fields[] = {
     {2, "clear", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "patch", false, std::make_unique<Struct<::cpp2::MyStructField23Patch>>("module.MyStructField23Patch"), std::vector<ThriftConstStruct>{}},
-    {1, "ensure", true, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
-    {4, "patchAfter", false, std::make_unique<Struct<::cpp2::MyStructField23Patch>>("module.MyStructField23Patch"), std::vector<ThriftConstStruct>{}},
+    {4, "ensure", true, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
+    {5, "patchAfter", false, std::make_unique<Struct<::cpp2::MyStructField23Patch>>("module.MyStructField23Patch"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_OptionalMyStructField23Patch_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -421,8 +421,8 @@ StructMetadata<::cpp2::OptionalMyStructValuePatch>::gen(ThriftMetadata& metadata
   module_OptionalMyStructValuePatch_fields[] = {
     {2, "clear", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "patch", false, std::make_unique<Struct<::cpp2::MyStructValuePatch>>("module.MyStructValuePatch"), std::vector<ThriftConstStruct>{}},
-    {1, "ensure", true, std::make_unique<Struct<::cpp2::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
-    {4, "patchAfter", false, std::make_unique<Struct<::cpp2::MyStructValuePatch>>("module.MyStructValuePatch"), std::vector<ThriftConstStruct>{}},
+    {4, "ensure", true, std::make_unique<Struct<::cpp2::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
+    {5, "patchAfter", false, std::make_unique<Struct<::cpp2::MyStructValuePatch>>("module.MyStructValuePatch"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_OptionalMyStructValuePatch_fields) {
     ::apache::thrift::metadata::ThriftField field;

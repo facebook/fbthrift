@@ -434,7 +434,7 @@ cdef __StructSpec get_reflection__OptionalBoolPatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=4,
             name="ensure",
             type=bool,
             kind=__NumberType.NOT_A_NUMBER,
@@ -446,7 +446,7 @@ cdef __StructSpec get_reflection__OptionalBoolPatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
+            id=5,
             name="patchAfter",
             type=_patch_types.BoolPatch,
             kind=__NumberType.NOT_A_NUMBER,
@@ -495,7 +495,7 @@ cdef __StructSpec get_reflection__OptionalBytePatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=4,
             name="ensure",
             type=int,
             kind=__NumberType.BYTE,
@@ -507,7 +507,7 @@ cdef __StructSpec get_reflection__OptionalBytePatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
+            id=5,
             name="patchAfter",
             type=_patch_types.BytePatch,
             kind=__NumberType.NOT_A_NUMBER,
@@ -556,7 +556,7 @@ cdef __StructSpec get_reflection__OptionalI16Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=4,
             name="ensure",
             type=int,
             kind=__NumberType.I16,
@@ -568,7 +568,7 @@ cdef __StructSpec get_reflection__OptionalI16Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
+            id=5,
             name="patchAfter",
             type=_patch_types.I16Patch,
             kind=__NumberType.NOT_A_NUMBER,
@@ -617,7 +617,7 @@ cdef __StructSpec get_reflection__OptionalI32Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=4,
             name="ensure",
             type=int,
             kind=__NumberType.I32,
@@ -629,7 +629,7 @@ cdef __StructSpec get_reflection__OptionalI32Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
+            id=5,
             name="patchAfter",
             type=_patch_types.I32Patch,
             kind=__NumberType.NOT_A_NUMBER,
@@ -678,7 +678,7 @@ cdef __StructSpec get_reflection__OptionalI64Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=4,
             name="ensure",
             type=int,
             kind=__NumberType.I64,
@@ -690,7 +690,7 @@ cdef __StructSpec get_reflection__OptionalI64Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
+            id=5,
             name="patchAfter",
             type=_patch_types.I64Patch,
             kind=__NumberType.NOT_A_NUMBER,
@@ -739,7 +739,7 @@ cdef __StructSpec get_reflection__OptionalFloatPatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=4,
             name="ensure",
             type=float,
             kind=__NumberType.FLOAT,
@@ -751,7 +751,7 @@ cdef __StructSpec get_reflection__OptionalFloatPatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
+            id=5,
             name="patchAfter",
             type=_patch_types.FloatPatch,
             kind=__NumberType.NOT_A_NUMBER,
@@ -800,7 +800,7 @@ cdef __StructSpec get_reflection__OptionalDoublePatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=4,
             name="ensure",
             type=float,
             kind=__NumberType.DOUBLE,
@@ -812,7 +812,7 @@ cdef __StructSpec get_reflection__OptionalDoublePatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
+            id=5,
             name="patchAfter",
             type=_patch_types.DoublePatch,
             kind=__NumberType.NOT_A_NUMBER,
@@ -861,7 +861,7 @@ cdef __StructSpec get_reflection__OptionalStringPatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=4,
             name="ensure",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -873,7 +873,7 @@ cdef __StructSpec get_reflection__OptionalStringPatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
+            id=5,
             name="patchAfter",
             type=_patch_types.StringPatch,
             kind=__NumberType.NOT_A_NUMBER,
@@ -922,7 +922,7 @@ cdef __StructSpec get_reflection__OptionalBinaryPatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=4,
             name="ensure",
             type=bytes,
             kind=__NumberType.NOT_A_NUMBER,
@@ -934,7 +934,7 @@ cdef __StructSpec get_reflection__OptionalBinaryPatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
+            id=5,
             name="patchAfter",
             type=_patch_types.BinaryPatch,
             kind=__NumberType.NOT_A_NUMBER,

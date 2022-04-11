@@ -362,14 +362,14 @@ class OptionalBoolPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
         (
-            1,  # id
+            4,  # id
             False,  # isUnqualified
             "ensure",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
         (
-            4,  # id
+            5,  # id
             True,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(BoolPatch),  # typeinfo
@@ -408,14 +408,14 @@ class OptionalBytePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
         (
-            1,  # id
+            4,  # id
             False,  # isUnqualified
             "ensure",  # name
             _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
             None,  # default value
         ),
         (
-            4,  # id
+            5,  # id
             True,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(BytePatch),  # typeinfo
@@ -454,14 +454,14 @@ class OptionalI16Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
         (
-            1,  # id
+            4,  # id
             False,  # isUnqualified
             "ensure",  # name
             _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
             None,  # default value
         ),
         (
-            4,  # id
+            5,  # id
             True,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(I16Patch),  # typeinfo
@@ -500,14 +500,14 @@ class OptionalI32Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
         (
-            1,  # id
+            4,  # id
             False,  # isUnqualified
             "ensure",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
         ),
         (
-            4,  # id
+            5,  # id
             True,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(I32Patch),  # typeinfo
@@ -546,14 +546,14 @@ class OptionalI64Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
         (
-            1,  # id
+            4,  # id
             False,  # isUnqualified
             "ensure",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
         ),
         (
-            4,  # id
+            5,  # id
             True,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(I64Patch),  # typeinfo
@@ -592,14 +592,14 @@ class OptionalFloatPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
         (
-            1,  # id
+            4,  # id
             False,  # isUnqualified
             "ensure",  # name
             _fbthrift_py3lite_types.typeinfo_float,  # typeinfo
             None,  # default value
         ),
         (
-            4,  # id
+            5,  # id
             True,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(FloatPatch),  # typeinfo
@@ -638,14 +638,14 @@ class OptionalDoublePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
         (
-            1,  # id
+            4,  # id
             False,  # isUnqualified
             "ensure",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             None,  # default value
         ),
         (
-            4,  # id
+            5,  # id
             True,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(DoublePatch),  # typeinfo
@@ -684,14 +684,14 @@ class OptionalStringPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
         (
-            1,  # id
+            4,  # id
             False,  # isUnqualified
             "ensure",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
         ),
         (
-            4,  # id
+            5,  # id
             True,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(StringPatch),  # typeinfo
@@ -730,14 +730,14 @@ class OptionalBinaryPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
         ),
         (
-            1,  # id
+            4,  # id
             False,  # isUnqualified
             "ensure",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value
         ),
         (
-            4,  # id
+            5,  # id
             True,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(BinaryPatch),  # typeinfo

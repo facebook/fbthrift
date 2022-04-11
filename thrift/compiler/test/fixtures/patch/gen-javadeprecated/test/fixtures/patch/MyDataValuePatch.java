@@ -31,15 +31,15 @@ public class MyDataValuePatch implements TBase, java.io.Serializable, Cloneable,
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public MyData assign;
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public boolean clear;
   /**
-   * Patches a given value. Applies second.
+   * Patches a value. Applies second.
    */
   public MyDataPatch patch;
   public static final int ASSIGN = 1;
@@ -151,14 +151,14 @@ public class MyDataValuePatch implements TBase, java.io.Serializable, Cloneable,
   }
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public MyData getAssign() {
     return this.assign;
   }
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public MyDataValuePatch setAssign(MyData assign) {
     this.assign = assign;
@@ -181,14 +181,14 @@ public class MyDataValuePatch implements TBase, java.io.Serializable, Cloneable,
   }
 
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public boolean isClear() {
     return this.clear;
   }
 
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public MyDataValuePatch setClear(boolean clear) {
     this.clear = clear;
@@ -210,14 +210,14 @@ public class MyDataValuePatch implements TBase, java.io.Serializable, Cloneable,
   }
 
   /**
-   * Patches a given value. Applies second.
+   * Patches a value. Applies second.
    */
   public MyDataPatch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches a given value. Applies second.
+   * Patches a value. Applies second.
    */
   public MyDataValuePatch setPatch(MyDataPatch patch) {
     this.patch = patch;

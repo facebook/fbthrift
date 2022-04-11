@@ -196,9 +196,9 @@ def _fbthrift_gen_metadata_struct_OptionalMyDataValuePatch(metadata_struct: _fbt
         ]),
         _fbthrift_metadata.ThriftField(id=3, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyDataValuePatch")), name="patch", is_optional=False, structured_annotations=[
         ]),
-        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyData")), name="ensure", is_optional=False, structured_annotations=[
+        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyData")), name="ensure", is_optional=False, structured_annotations=[
         ]),
-        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyDataValuePatch")), name="patchAfter", is_optional=False, structured_annotations=[
+        _fbthrift_metadata.ThriftField(id=5, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyDataValuePatch")), name="patchAfter", is_optional=False, structured_annotations=[
         ]),
     ]
     struct_dict = dict(metadata_struct.structs)
@@ -352,9 +352,9 @@ def _fbthrift_gen_metadata_struct_OptionalMyStructField21Patch(metadata_struct: 
         ]),
         _fbthrift_metadata.ThriftField(id=3, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyStructField21Patch")), name="patch", is_optional=False, structured_annotations=[
         ]),
-        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE))), name="ensure", is_optional=False, structured_annotations=[
+        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_list=_fbthrift_metadata.ThriftListType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I16_TYPE))), name="ensure", is_optional=False, structured_annotations=[
         ]),
-        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyStructField21Patch")), name="patchAfter", is_optional=False, structured_annotations=[
+        _fbthrift_metadata.ThriftField(id=5, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyStructField21Patch")), name="patchAfter", is_optional=False, structured_annotations=[
         ]),
     ]
     struct_dict = dict(metadata_struct.structs)
@@ -418,9 +418,9 @@ def _fbthrift_gen_metadata_struct_OptionalMyStructField22Patch(metadata_struct: 
         ]),
         _fbthrift_metadata.ThriftField(id=3, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyStructField22Patch")), name="patch", is_optional=False, structured_annotations=[
         ]),
-        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="ensure", is_optional=False, structured_annotations=[
+        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_set=_fbthrift_metadata.ThriftSetType(valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="ensure", is_optional=False, structured_annotations=[
         ]),
-        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyStructField22Patch")), name="patchAfter", is_optional=False, structured_annotations=[
+        _fbthrift_metadata.ThriftField(id=5, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyStructField22Patch")), name="patchAfter", is_optional=False, structured_annotations=[
         ]),
     ]
     struct_dict = dict(metadata_struct.structs)
@@ -483,9 +483,9 @@ def _fbthrift_gen_metadata_struct_OptionalMyStructField23Patch(metadata_struct: 
         ]),
         _fbthrift_metadata.ThriftField(id=3, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyStructField23Patch")), name="patch", is_optional=False, structured_annotations=[
         ]),
-        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="ensure", is_optional=False, structured_annotations=[
+        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_map=_fbthrift_metadata.ThriftMapType(keyType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE),valueType=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_STRING_TYPE))), name="ensure", is_optional=False, structured_annotations=[
         ]),
-        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyStructField23Patch")), name="patchAfter", is_optional=False, structured_annotations=[
+        _fbthrift_metadata.ThriftField(id=5, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyStructField23Patch")), name="patchAfter", is_optional=False, structured_annotations=[
         ]),
     ]
     struct_dict = dict(metadata_struct.structs)
@@ -547,9 +547,9 @@ def _fbthrift_gen_metadata_struct_OptionalMyStructValuePatch(metadata_struct: _f
         ]),
         _fbthrift_metadata.ThriftField(id=3, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyStructValuePatch")), name="patch", is_optional=False, structured_annotations=[
         ]),
-        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyStruct")), name="ensure", is_optional=False, structured_annotations=[
+        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyStruct")), name="ensure", is_optional=False, structured_annotations=[
         ]),
-        _fbthrift_metadata.ThriftField(id=4, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyStructValuePatch")), name="patchAfter", is_optional=False, structured_annotations=[
+        _fbthrift_metadata.ThriftField(id=5, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.MyStructValuePatch")), name="patchAfter", is_optional=False, structured_annotations=[
         ]),
     ]
     struct_dict = dict(metadata_struct.structs)

@@ -31,15 +31,15 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public MyStruct assign;
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public boolean clear;
   /**
-   * Patches a given value. Applies second.
+   * Patches a value. Applies second.
    */
   public MyStructPatch patch;
   public static final int ASSIGN = 1;
@@ -151,14 +151,14 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
   }
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public MyStruct getAssign() {
     return this.assign;
   }
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public MyStructValuePatch setAssign(MyStruct assign) {
     this.assign = assign;
@@ -181,14 +181,14 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
   }
 
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public boolean isClear() {
     return this.clear;
   }
 
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public MyStructValuePatch setClear(boolean clear) {
     this.clear = clear;
@@ -210,14 +210,14 @@ public class MyStructValuePatch implements TBase, java.io.Serializable, Cloneabl
   }
 
   /**
-   * Patches a given value. Applies second.
+   * Patches a value. Applies second.
    */
   public MyStructPatch getPatch() {
     return this.patch;
   }
 
   /**
-   * Patches a given value. Applies second.
+   * Patches a value. Applies second.
    */
   public MyStructValuePatch setPatch(MyStructPatch patch) {
     this.patch = patch;

@@ -27,8 +27,8 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
     public OptionalMyDataValuePatch(
         @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
         @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.MyDataValuePatch patch,
-        @com.facebook.swift.codec.ThriftField(value=1, name="ensure", requiredness=Requiredness.OPTIONAL) final test.fixtures.patch.MyData ensure,
-        @com.facebook.swift.codec.ThriftField(value=4, name="patchAfter", requiredness=Requiredness.NONE) final test.fixtures.patch.MyDataValuePatch patchAfter
+        @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.OPTIONAL) final test.fixtures.patch.MyData ensure,
+        @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE) final test.fixtures.patch.MyDataValuePatch patchAfter
     ) {
         this.clear = clear;
         this.patch = patch;
@@ -67,7 +67,7 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
     
         public test.fixtures.patch.MyDataValuePatch getPatch() { return patch; }
     
-            @com.facebook.swift.codec.ThriftField(value=1, name="ensure", requiredness=Requiredness.OPTIONAL)
+            @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.OPTIONAL)
         public Builder setEnsure(test.fixtures.patch.MyData ensure) {
             this.ensure = ensure;
             return this;
@@ -75,7 +75,7 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
     
         public test.fixtures.patch.MyData getEnsure() { return ensure; }
     
-            @com.facebook.swift.codec.ThriftField(value=4, name="patchAfter", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE)
         public Builder setPatchAfter(test.fixtures.patch.MyDataValuePatch patchAfter) {
             this.patchAfter = patchAfter;
             return this;
@@ -114,11 +114,11 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
     public static final int _PATCH = 3;
     private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
         private final test.fixtures.patch.MyData ensure;
-    public static final int _ENSURE = 1;
-    private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)1);
+    public static final int _ENSURE = 4;
+    private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)4);
         private final test.fixtures.patch.MyDataValuePatch patchAfter;
-    public static final int _PATCHAFTER = 4;
-    private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)4);
+    public static final int _PATCHAFTER = 5;
+    private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)5);
     static {
       NAMES_TO_IDS.put("clear", 2);
       THRIFT_NAMES_TO_IDS.put("clear", 2);
@@ -126,12 +126,12 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
       NAMES_TO_IDS.put("patch", 3);
       THRIFT_NAMES_TO_IDS.put("patch", 3);
       FIELD_METADATA.put(3, PATCH_FIELD_DESC);
-      NAMES_TO_IDS.put("ensure", 1);
-      THRIFT_NAMES_TO_IDS.put("ensure", 1);
-      FIELD_METADATA.put(1, ENSURE_FIELD_DESC);
-      NAMES_TO_IDS.put("patchAfter", 4);
-      THRIFT_NAMES_TO_IDS.put("patchAfter", 4);
-      FIELD_METADATA.put(4, PATCH_AFTER_FIELD_DESC);
+      NAMES_TO_IDS.put("ensure", 4);
+      THRIFT_NAMES_TO_IDS.put("ensure", 4);
+      FIELD_METADATA.put(4, ENSURE_FIELD_DESC);
+      NAMES_TO_IDS.put("patchAfter", 5);
+      THRIFT_NAMES_TO_IDS.put("patchAfter", 5);
+      FIELD_METADATA.put(5, PATCH_AFTER_FIELD_DESC);
     }
     
     
@@ -145,12 +145,12 @@ public final class OptionalMyDataValuePatch implements com.facebook.thrift.paylo
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=1, name="ensure", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.patch.MyData getEnsure() { return ensure; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=4, name="patchAfter", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE)
     public test.fixtures.patch.MyDataValuePatch getPatchAfter() { return patchAfter; }
     
     @java.lang.Override

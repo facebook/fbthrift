@@ -26,8 +26,8 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable 
   private static final TStruct STRUCT_DESC = new TStruct("OptionalI16Patch");
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
-  private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.I16, (short)1);
-  private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)4);
+  private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.I16, (short)4);
+  private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)5);
 
   /**
    * Clears any set value. Applies first.
@@ -38,7 +38,7 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable 
    */
   public final I16Patch patch;
   /**
-   * Initializes any unset value. Applies third.
+   * Assigns the value, if not already set. Applies third.
    */
   public final Short ensure;
   /**
@@ -47,8 +47,8 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable 
   public final I16Patch patchAfter;
   public static final int CLEAR = 2;
   public static final int PATCH = 3;
-  public static final int ENSURE = 1;
-  public static final int PATCHAFTER = 4;
+  public static final int ENSURE = 4;
+  public static final int PATCHAFTER = 5;
 
   public OptionalI16Patch(
       Boolean clear,
@@ -116,7 +116,7 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable 
   }
 
   /**
-   * Initializes any unset value. Applies third.
+   * Assigns the value, if not already set. Applies third.
    */
   public Short getEnsure() {
     return this.ensure;
@@ -236,13 +236,6 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable 
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.ensure != null) {
-      if (isSetEnsure()) {
-        oprot.writeFieldBegin(ENSURE_FIELD_DESC);
-        oprot.writeI16(this.ensure);
-        oprot.writeFieldEnd();
-      }
-    }
     if (this.clear != null) {
       oprot.writeFieldBegin(CLEAR_FIELD_DESC);
       oprot.writeBool(this.clear);
@@ -252,6 +245,13 @@ public class OptionalI16Patch implements TBase, java.io.Serializable, Cloneable 
       oprot.writeFieldBegin(PATCH_FIELD_DESC);
       this.patch.write(oprot);
       oprot.writeFieldEnd();
+    }
+    if (this.ensure != null) {
+      if (isSetEnsure()) {
+        oprot.writeFieldBegin(ENSURE_FIELD_DESC);
+        oprot.writeI16(this.ensure);
+        oprot.writeFieldEnd();
+      }
     }
     if (this.patchAfter != null) {
       oprot.writeFieldBegin(PATCH_AFTER_FIELD_DESC);

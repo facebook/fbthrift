@@ -31,15 +31,15 @@ public class MyDataValuePatch implements TBase, java.io.Serializable, Cloneable 
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public final MyData assign;
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public final Boolean clear;
   /**
-   * Patches a given value. Applies second.
+   * Patches a value. Applies second.
    */
   public final MyDataPatch patch;
   public static final int ASSIGN = 1;
@@ -81,7 +81,7 @@ public class MyDataValuePatch implements TBase, java.io.Serializable, Cloneable 
   }
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public MyData getAssign() {
     return this.assign;
@@ -93,7 +93,7 @@ public class MyDataValuePatch implements TBase, java.io.Serializable, Cloneable 
   }
 
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public Boolean isClear() {
     return this.clear;
@@ -105,7 +105,7 @@ public class MyDataValuePatch implements TBase, java.io.Serializable, Cloneable 
   }
 
   /**
-   * Patches a given value. Applies second.
+   * Patches a value. Applies second.
    */
   public MyDataPatch getPatch() {
     return this.patch;

@@ -71,11 +71,11 @@ pub mod types {
 
     #[derive(Clone, PartialEq)]
     pub struct MyDataValuePatch {
-        #[doc = "Assigns to a given struct. If set, all other operations are ignored."]
+        #[doc = "Assigns a value. If set, all other operations are ignored."]
         pub assign: ::std::option::Option<crate::types::MyData>,
-        #[doc = "Clears a given value. Applies first."]
+        #[doc = "Clears a value. Applies first."]
         pub clear: ::std::primitive::bool,
-        #[doc = "Patches a given value. Applies second."]
+        #[doc = "Patches a value. Applies second."]
         pub patch: crate::types::MyDataPatch,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
@@ -91,7 +91,7 @@ pub mod types {
         pub clear: ::std::primitive::bool,
         #[doc = "Patches any set value. Applies second."]
         pub patch: crate::types::MyDataValuePatch,
-        #[doc = "Initializes any unset value. Applies third."]
+        #[doc = "Assigns the value, if not already set. Applies third."]
         pub ensure: ::std::option::Option<crate::types::MyData>,
         #[doc = "Patches any set value, including newly set values. Applies fourth."]
         pub patchAfter: crate::types::MyDataValuePatch,
@@ -138,9 +138,9 @@ pub mod types {
 
     #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyStructField21Patch {
-        #[doc = "Assigns to a given struct. If set, all other operations are ignored."]
+        #[doc = "Assigns a value. If set, all other operations are ignored."]
         pub assign: ::std::option::Option<::std::vec::Vec<::std::primitive::i16>>,
-        #[doc = "Clears a given value. Applies first."]
+        #[doc = "Clears a value. Applies first."]
         pub clear: ::std::primitive::bool,
         #[doc = "Prepends to the front of a given list."]
         pub prepend: ::std::vec::Vec<::std::primitive::i16>,
@@ -160,7 +160,7 @@ pub mod types {
         pub clear: ::std::primitive::bool,
         #[doc = "Patches any set value. Applies second."]
         pub patch: crate::types::MyStructField21Patch,
-        #[doc = "Initializes any unset value. Applies third."]
+        #[doc = "Assigns the value, if not already set. Applies third."]
         pub ensure: ::std::option::Option<::std::vec::Vec<::std::primitive::i16>>,
         #[doc = "Patches any set value, including newly set values. Applies fourth."]
         pub patchAfter: crate::types::MyStructField21Patch,
@@ -174,9 +174,9 @@ pub mod types {
 
     #[derive(Clone, PartialEq)]
     pub struct MyStructField22Patch {
-        #[doc = "Assigns to a given struct. If set, all other operations are ignored."]
+        #[doc = "Assigns a value. If set, all other operations are ignored."]
         pub assign: ::std::option::Option<::std::collections::BTreeSet<::std::string::String>>,
-        #[doc = "Clears a given value. Applies first."]
+        #[doc = "Clears a value. Applies first."]
         pub clear: ::std::primitive::bool,
         #[doc = "Removes entries, if present. Applies thrid."]
         pub remove: ::std::collections::BTreeSet<::std::string::String>,
@@ -196,7 +196,7 @@ pub mod types {
         pub clear: ::std::primitive::bool,
         #[doc = "Patches any set value. Applies second."]
         pub patch: crate::types::MyStructField22Patch,
-        #[doc = "Initializes any unset value. Applies third."]
+        #[doc = "Assigns the value, if not already set. Applies third."]
         pub ensure: ::std::option::Option<::std::collections::BTreeSet<::std::string::String>>,
         #[doc = "Patches any set value, including newly set values. Applies fourth."]
         pub patchAfter: crate::types::MyStructField22Patch,
@@ -210,9 +210,9 @@ pub mod types {
 
     #[derive(Clone, PartialEq)]
     pub struct MyStructField23Patch {
-        #[doc = "Assigns to a given struct. If set, all other operations are ignored."]
+        #[doc = "Assigns a value. If set, all other operations are ignored."]
         pub assign: ::std::option::Option<::std::collections::BTreeMap<::std::string::String, ::std::string::String>>,
-        #[doc = "Clears a given value. Applies first."]
+        #[doc = "Clears a value. Applies first."]
         pub clear: ::std::primitive::bool,
         #[doc = "Adds or replaces the given key/value pairs. Applies Second."]
         pub put: ::std::collections::BTreeMap<::std::string::String, ::std::string::String>,
@@ -230,7 +230,7 @@ pub mod types {
         pub clear: ::std::primitive::bool,
         #[doc = "Patches any set value. Applies second."]
         pub patch: crate::types::MyStructField23Patch,
-        #[doc = "Initializes any unset value. Applies third."]
+        #[doc = "Assigns the value, if not already set. Applies third."]
         pub ensure: ::std::option::Option<::std::collections::BTreeMap<::std::string::String, ::std::string::String>>,
         #[doc = "Patches any set value, including newly set values. Applies fourth."]
         pub patchAfter: crate::types::MyStructField23Patch,
@@ -244,11 +244,11 @@ pub mod types {
 
     #[derive(Clone, PartialEq)]
     pub struct MyStructValuePatch {
-        #[doc = "Assigns to a given struct. If set, all other operations are ignored."]
+        #[doc = "Assigns a value. If set, all other operations are ignored."]
         pub assign: ::std::option::Option<crate::types::MyStruct>,
-        #[doc = "Clears a given value. Applies first."]
+        #[doc = "Clears a value. Applies first."]
         pub clear: ::std::primitive::bool,
-        #[doc = "Patches a given value. Applies second."]
+        #[doc = "Patches a value. Applies second."]
         pub patch: crate::types::MyStructPatch,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
@@ -264,7 +264,7 @@ pub mod types {
         pub clear: ::std::primitive::bool,
         #[doc = "Patches any set value. Applies second."]
         pub patch: crate::types::MyStructValuePatch,
-        #[doc = "Initializes any unset value. Applies third."]
+        #[doc = "Assigns the value, if not already set. Applies third."]
         pub ensure: ::std::option::Option<crate::types::MyStruct>,
         #[doc = "Patches any set value, including newly set values. Applies fourth."]
         pub patchAfter: crate::types::MyStructValuePatch,
@@ -850,11 +850,11 @@ pub mod types {
             ::fbthrift::Serialize::write(&self.patch, p);
             p.write_field_end();
             if let ::std::option::Option::Some(some) = &self.ensure {
-                p.write_field_begin("ensure", ::fbthrift::TType::Struct, 1);
+                p.write_field_begin("ensure", ::fbthrift::TType::Struct, 4);
                 ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 4);
+            p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
             ::fbthrift::Serialize::write(&self.patchAfter, p);
             p.write_field_end();
             p.write_field_stop();
@@ -869,9 +869,9 @@ pub mod types {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
-                ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 1),
+                ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
                 ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
-                ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 4),
+                ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
             ];
             let mut field_clear = ::std::option::Option::None;
             let mut field_patch = ::std::option::Option::None;
@@ -884,8 +884,8 @@ pub mod types {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Struct, 1) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Struct, 4) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1307,11 +1307,11 @@ pub mod types {
             ::fbthrift::Serialize::write(&self.patch, p);
             p.write_field_end();
             if let ::std::option::Option::Some(some) = &self.ensure {
-                p.write_field_begin("ensure", ::fbthrift::TType::List, 1);
+                p.write_field_begin("ensure", ::fbthrift::TType::List, 4);
                 ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 4);
+            p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
             ::fbthrift::Serialize::write(&self.patchAfter, p);
             p.write_field_end();
             p.write_field_stop();
@@ -1326,9 +1326,9 @@ pub mod types {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
-                ::fbthrift::Field::new("ensure", ::fbthrift::TType::List, 1),
+                ::fbthrift::Field::new("ensure", ::fbthrift::TType::List, 4),
                 ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
-                ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 4),
+                ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
             ];
             let mut field_clear = ::std::option::Option::None;
             let mut field_patch = ::std::option::Option::None;
@@ -1341,8 +1341,8 @@ pub mod types {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::List, 1) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Struct, 4) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::List, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1499,11 +1499,11 @@ pub mod types {
             ::fbthrift::Serialize::write(&self.patch, p);
             p.write_field_end();
             if let ::std::option::Option::Some(some) = &self.ensure {
-                p.write_field_begin("ensure", ::fbthrift::TType::Set, 1);
+                p.write_field_begin("ensure", ::fbthrift::TType::Set, 4);
                 ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 4);
+            p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
             ::fbthrift::Serialize::write(&self.patchAfter, p);
             p.write_field_end();
             p.write_field_stop();
@@ -1518,9 +1518,9 @@ pub mod types {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
-                ::fbthrift::Field::new("ensure", ::fbthrift::TType::Set, 1),
+                ::fbthrift::Field::new("ensure", ::fbthrift::TType::Set, 4),
                 ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
-                ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 4),
+                ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
             ];
             let mut field_clear = ::std::option::Option::None;
             let mut field_patch = ::std::option::Option::None;
@@ -1533,8 +1533,8 @@ pub mod types {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Set, 1) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Struct, 4) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Set, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1682,11 +1682,11 @@ pub mod types {
             ::fbthrift::Serialize::write(&self.patch, p);
             p.write_field_end();
             if let ::std::option::Option::Some(some) = &self.ensure {
-                p.write_field_begin("ensure", ::fbthrift::TType::Map, 1);
+                p.write_field_begin("ensure", ::fbthrift::TType::Map, 4);
                 ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 4);
+            p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
             ::fbthrift::Serialize::write(&self.patchAfter, p);
             p.write_field_end();
             p.write_field_stop();
@@ -1701,9 +1701,9 @@ pub mod types {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
-                ::fbthrift::Field::new("ensure", ::fbthrift::TType::Map, 1),
+                ::fbthrift::Field::new("ensure", ::fbthrift::TType::Map, 4),
                 ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
-                ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 4),
+                ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
             ];
             let mut field_clear = ::std::option::Option::None;
             let mut field_patch = ::std::option::Option::None;
@@ -1716,8 +1716,8 @@ pub mod types {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Map, 1) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Struct, 4) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Map, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1865,11 +1865,11 @@ pub mod types {
             ::fbthrift::Serialize::write(&self.patch, p);
             p.write_field_end();
             if let ::std::option::Option::Some(some) = &self.ensure {
-                p.write_field_begin("ensure", ::fbthrift::TType::Struct, 1);
+                p.write_field_begin("ensure", ::fbthrift::TType::Struct, 4);
                 ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
-            p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 4);
+            p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
             ::fbthrift::Serialize::write(&self.patchAfter, p);
             p.write_field_end();
             p.write_field_stop();
@@ -1884,9 +1884,9 @@ pub mod types {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
-                ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 1),
+                ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
                 ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
-                ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 4),
+                ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
             ];
             let mut field_clear = ::std::option::Option::None;
             let mut field_patch = ::std::option::Option::None;
@@ -1899,8 +1899,8 @@ pub mod types {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Struct, 1) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Struct, 4) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;

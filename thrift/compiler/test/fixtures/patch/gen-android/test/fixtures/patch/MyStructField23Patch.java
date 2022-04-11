@@ -31,11 +31,11 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
   private static final TField PUT_FIELD_DESC = new TField("put", TType.MAP, (short)7);
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public final Map<String,String> assign;
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public final Boolean clear;
   /**
@@ -81,7 +81,7 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
   }
 
   /**
-   * Assigns to a given struct. If set, all other operations are ignored.
+   * Assigns a value. If set, all other operations are ignored.
    */
   public Map<String,String> getAssign() {
     return this.assign;
@@ -93,7 +93,7 @@ public class MyStructField23Patch implements TBase, java.io.Serializable, Clonea
   }
 
   /**
-   * Clears a given value. Applies first.
+   * Clears a value. Applies first.
    */
   public Boolean isClear() {
     return this.clear;

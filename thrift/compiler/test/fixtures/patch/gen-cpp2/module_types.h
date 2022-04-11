@@ -2555,8 +2555,8 @@ class OptionalMyDataValuePatch final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyDataValuePatch>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::struct_t<::cpp2::MyData>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyDataValuePatch>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::struct_t<::cpp2::MyData>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyDataValuePatch>>>
   >;
 
   void __fbthrift_clear();
@@ -2573,7 +2573,7 @@ class OptionalMyDataValuePatch final  {
   OptionalMyDataValuePatch() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructPatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructPatchAdapter, 4>(__fbthrift_field_patchAfter, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -2773,14 +2773,14 @@ class OptionalMyDataValuePatch final  {
   template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
   template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
   template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() &       { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() const&  { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() &       { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() const&  { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &       { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&  { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &&      { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&& { return std::move(*this).patchAfter_ref(); }
 
  public:
 
@@ -3136,8 +3136,8 @@ class OptionalMyStructField21Patch final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::cpp2::MyStructField21Patch>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::list<::apache::thrift::type::i16_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::cpp2::MyStructField21Patch>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::list<::apache::thrift::type::i16_t>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::cpp2::MyStructField21Patch>>>
   >;
 
   void __fbthrift_clear();
@@ -3154,7 +3154,7 @@ class OptionalMyStructField21Patch final  {
   OptionalMyStructField21Patch() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::ListPatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::ListPatchAdapter, 4>(__fbthrift_field_patchAfter, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::ListPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -3354,14 +3354,14 @@ class OptionalMyStructField21Patch final  {
   template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
   template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
   template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() &       { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() const&  { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() &       { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() const&  { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &       { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&  { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &&      { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&& { return std::move(*this).patchAfter_ref(); }
 
  public:
 
@@ -3727,8 +3727,8 @@ class OptionalMyStructField22Patch final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::cpp2::MyStructField22Patch>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::set<::apache::thrift::type::string_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::cpp2::MyStructField22Patch>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::set<::apache::thrift::type::string_t>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::cpp2::MyStructField22Patch>>>
   >;
 
   void __fbthrift_clear();
@@ -3745,7 +3745,7 @@ class OptionalMyStructField22Patch final  {
   OptionalMyStructField22Patch() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::SetPatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::SetPatchAdapter, 4>(__fbthrift_field_patchAfter, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::SetPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -3945,14 +3945,14 @@ class OptionalMyStructField22Patch final  {
   template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
   template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
   template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() &       { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() const&  { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() &       { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() const&  { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &       { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&  { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &&      { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&& { return std::move(*this).patchAfter_ref(); }
 
  public:
 
@@ -4262,8 +4262,8 @@ class OptionalMyStructField23Patch final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::cpp2::MyStructField23Patch>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::cpp2::MyStructField23Patch>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::cpp2::MyStructField23Patch>>>
   >;
 
   void __fbthrift_clear();
@@ -4280,7 +4280,7 @@ class OptionalMyStructField23Patch final  {
   OptionalMyStructField23Patch() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::MapPatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::MapPatchAdapter, 4>(__fbthrift_field_patchAfter, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::MapPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -4480,14 +4480,14 @@ class OptionalMyStructField23Patch final  {
   template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
   template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
   template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() &       { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() const&  { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() &       { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() const&  { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &       { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&  { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &&      { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&& { return std::move(*this).patchAfter_ref(); }
 
  public:
 
@@ -5967,8 +5967,8 @@ class OptionalMyStructValuePatch final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyStructValuePatch>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::struct_t<::cpp2::MyStruct>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyStructValuePatch>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::struct_t<::cpp2::MyStruct>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyStructValuePatch>>>
   >;
 
   void __fbthrift_clear();
@@ -5985,7 +5985,7 @@ class OptionalMyStructValuePatch final  {
   OptionalMyStructValuePatch() :
       __fbthrift_field_clear() {
     ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructPatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructPatchAdapter, 4>(__fbthrift_field_patchAfter, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -6185,14 +6185,14 @@ class OptionalMyStructValuePatch final  {
   template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
   template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
   template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() &       { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() const&  { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() &       { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() const&  { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &       { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&  { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &&      { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&& { return std::move(*this).patchAfter_ref(); }
 
  public:
 

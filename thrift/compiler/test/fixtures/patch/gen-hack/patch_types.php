@@ -1600,11 +1600,11 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       'type' => \TType::STRUCT,
       'class' => BoolPatch::class,
     ),
-    1 => shape(
+    4 => shape(
       'var' => 'ensure',
       'type' => \TType::BOOL,
     ),
-    4 => shape(
+    5 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => BoolPatch::class,
@@ -1613,8 +1613,8 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
   const dict<string, int> FIELDMAP = dict[
     'clear' => 2,
     'patch' => 3,
-    'ensure' => 1,
-    'patchAfter' => 4,
+    'ensure' => 4,
+    'patchAfter' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -1631,7 +1631,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     ?'patchAfter' => ?BoolPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 8412672391935815140;
+  const int STRUCTURAL_ID = 3751779734282343356;
   /**
    * Clears any set value. Applies first.
    * 
@@ -1647,17 +1647,17 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
    */
   public ?BoolPatch $patch;
   /**
-   * Initializes any unset value. Applies third.
+   * Assigns the value, if not already set. Applies third.
    * 
    * Original thrift field:-
-   * 1: bool ensure
+   * 4: bool ensure
    */
   public ?bool $ensure;
   /**
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 4: struct patch.BoolPatch patchAfter
+   * 5: struct patch.BoolPatch patchAfter
    */
   public ?BoolPatch $patchAfter;
 
@@ -1718,7 +1718,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 1,
+              "id" => 4,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
@@ -1730,7 +1730,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 4,
+              "id" => 5,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => tmeta_ThriftStructType::fromShape(
@@ -1850,11 +1850,11 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
       'type' => \TType::STRUCT,
       'class' => BytePatch::class,
     ),
-    1 => shape(
+    4 => shape(
       'var' => 'ensure',
       'type' => \TType::BYTE,
     ),
-    4 => shape(
+    5 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => BytePatch::class,
@@ -1863,8 +1863,8 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
   const dict<string, int> FIELDMAP = dict[
     'clear' => 2,
     'patch' => 3,
-    'ensure' => 1,
-    'patchAfter' => 4,
+    'ensure' => 4,
+    'patchAfter' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -1881,7 +1881,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     ?'patchAfter' => ?BytePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 6344280821883027515;
+  const int STRUCTURAL_ID = 4314158567468765392;
   /**
    * Clears any set value. Applies first.
    * 
@@ -1897,17 +1897,17 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
    */
   public ?BytePatch $patch;
   /**
-   * Initializes any unset value. Applies third.
+   * Assigns the value, if not already set. Applies third.
    * 
    * Original thrift field:-
-   * 1: byte ensure
+   * 4: byte ensure
    */
   public ?int $ensure;
   /**
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 4: struct patch.BytePatch patchAfter
+   * 5: struct patch.BytePatch patchAfter
    */
   public ?BytePatch $patchAfter;
 
@@ -1968,7 +1968,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 1,
+              "id" => 4,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BYTE_TYPE,
@@ -1980,7 +1980,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 4,
+              "id" => 5,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => tmeta_ThriftStructType::fromShape(
@@ -2105,11 +2105,11 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       'type' => \TType::STRUCT,
       'class' => I16Patch::class,
     ),
-    1 => shape(
+    4 => shape(
       'var' => 'ensure',
       'type' => \TType::I16,
     ),
-    4 => shape(
+    5 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => I16Patch::class,
@@ -2118,8 +2118,8 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
   const dict<string, int> FIELDMAP = dict[
     'clear' => 2,
     'patch' => 3,
-    'ensure' => 1,
-    'patchAfter' => 4,
+    'ensure' => 4,
+    'patchAfter' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -2136,7 +2136,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     ?'patchAfter' => ?I16Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 1368575933884824695;
+  const int STRUCTURAL_ID = 6915320046793404558;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2152,17 +2152,17 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public ?I16Patch $patch;
   /**
-   * Initializes any unset value. Applies third.
+   * Assigns the value, if not already set. Applies third.
    * 
    * Original thrift field:-
-   * 1: i16 ensure
+   * 4: i16 ensure
    */
   public ?int $ensure;
   /**
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 4: struct patch.I16Patch patchAfter
+   * 5: struct patch.I16Patch patchAfter
    */
   public ?I16Patch $patchAfter;
 
@@ -2223,7 +2223,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 1,
+              "id" => 4,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
@@ -2235,7 +2235,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 4,
+              "id" => 5,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => tmeta_ThriftStructType::fromShape(
@@ -2360,11 +2360,11 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       'type' => \TType::STRUCT,
       'class' => I32Patch::class,
     ),
-    1 => shape(
+    4 => shape(
       'var' => 'ensure',
       'type' => \TType::I32,
     ),
-    4 => shape(
+    5 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => I32Patch::class,
@@ -2373,8 +2373,8 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
   const dict<string, int> FIELDMAP = dict[
     'clear' => 2,
     'patch' => 3,
-    'ensure' => 1,
-    'patchAfter' => 4,
+    'ensure' => 4,
+    'patchAfter' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -2391,7 +2391,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     ?'patchAfter' => ?I32Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 2035073824687399400;
+  const int STRUCTURAL_ID = 3728127711020667513;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2407,17 +2407,17 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public ?I32Patch $patch;
   /**
-   * Initializes any unset value. Applies third.
+   * Assigns the value, if not already set. Applies third.
    * 
    * Original thrift field:-
-   * 1: i32 ensure
+   * 4: i32 ensure
    */
   public ?int $ensure;
   /**
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 4: struct patch.I32Patch patchAfter
+   * 5: struct patch.I32Patch patchAfter
    */
   public ?I32Patch $patchAfter;
 
@@ -2478,7 +2478,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 1,
+              "id" => 4,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
@@ -2490,7 +2490,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 4,
+              "id" => 5,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => tmeta_ThriftStructType::fromShape(
@@ -2615,11 +2615,11 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
       'type' => \TType::STRUCT,
       'class' => I64Patch::class,
     ),
-    1 => shape(
+    4 => shape(
       'var' => 'ensure',
       'type' => \TType::I64,
     ),
-    4 => shape(
+    5 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => I64Patch::class,
@@ -2628,8 +2628,8 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
   const dict<string, int> FIELDMAP = dict[
     'clear' => 2,
     'patch' => 3,
-    'ensure' => 1,
-    'patchAfter' => 4,
+    'ensure' => 4,
+    'patchAfter' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -2646,7 +2646,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     ?'patchAfter' => ?I64Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 1021348638132900208;
+  const int STRUCTURAL_ID = 6609118293538896493;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2662,17 +2662,17 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
    */
   public ?I64Patch $patch;
   /**
-   * Initializes any unset value. Applies third.
+   * Assigns the value, if not already set. Applies third.
    * 
    * Original thrift field:-
-   * 1: i64 ensure
+   * 4: i64 ensure
    */
   public ?int $ensure;
   /**
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 4: struct patch.I64Patch patchAfter
+   * 5: struct patch.I64Patch patchAfter
    */
   public ?I64Patch $patchAfter;
 
@@ -2733,7 +2733,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 1,
+              "id" => 4,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
@@ -2745,7 +2745,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 4,
+              "id" => 5,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => tmeta_ThriftStructType::fromShape(
@@ -2865,11 +2865,11 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
       'type' => \TType::STRUCT,
       'class' => FloatPatch::class,
     ),
-    1 => shape(
+    4 => shape(
       'var' => 'ensure',
       'type' => \TType::FLOAT,
     ),
-    4 => shape(
+    5 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => FloatPatch::class,
@@ -2878,8 +2878,8 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
   const dict<string, int> FIELDMAP = dict[
     'clear' => 2,
     'patch' => 3,
-    'ensure' => 1,
-    'patchAfter' => 4,
+    'ensure' => 4,
+    'patchAfter' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -2896,7 +2896,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
     ?'patchAfter' => ?FloatPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 6321532602031647348;
+  const int STRUCTURAL_ID = 8186456629717104138;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2912,17 +2912,17 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
    */
   public ?FloatPatch $patch;
   /**
-   * Initializes any unset value. Applies third.
+   * Assigns the value, if not already set. Applies third.
    * 
    * Original thrift field:-
-   * 1: float ensure
+   * 4: float ensure
    */
   public ?float $ensure;
   /**
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 4: struct patch.FloatPatch patchAfter
+   * 5: struct patch.FloatPatch patchAfter
    */
   public ?FloatPatch $patchAfter;
 
@@ -2983,7 +2983,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 1,
+              "id" => 4,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_FLOAT_TYPE,
@@ -2995,7 +2995,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 4,
+              "id" => 5,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => tmeta_ThriftStructType::fromShape(
@@ -3115,11 +3115,11 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       'type' => \TType::STRUCT,
       'class' => DoublePatch::class,
     ),
-    1 => shape(
+    4 => shape(
       'var' => 'ensure',
       'type' => \TType::DOUBLE,
     ),
-    4 => shape(
+    5 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => DoublePatch::class,
@@ -3128,8 +3128,8 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
   const dict<string, int> FIELDMAP = dict[
     'clear' => 2,
     'patch' => 3,
-    'ensure' => 1,
-    'patchAfter' => 4,
+    'ensure' => 4,
+    'patchAfter' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -3146,7 +3146,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     ?'patchAfter' => ?DoublePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 544057086045006602;
+  const int STRUCTURAL_ID = 8246390203967350121;
   /**
    * Clears any set value. Applies first.
    * 
@@ -3162,17 +3162,17 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    */
   public ?DoublePatch $patch;
   /**
-   * Initializes any unset value. Applies third.
+   * Assigns the value, if not already set. Applies third.
    * 
    * Original thrift field:-
-   * 1: double ensure
+   * 4: double ensure
    */
   public ?float $ensure;
   /**
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 4: struct patch.DoublePatch patchAfter
+   * 5: struct patch.DoublePatch patchAfter
    */
   public ?DoublePatch $patchAfter;
 
@@ -3233,7 +3233,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 1,
+              "id" => 4,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
@@ -3245,7 +3245,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 4,
+              "id" => 5,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => tmeta_ThriftStructType::fromShape(
@@ -3365,11 +3365,11 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       'type' => \TType::STRUCT,
       'class' => StringPatch::class,
     ),
-    1 => shape(
+    4 => shape(
       'var' => 'ensure',
       'type' => \TType::STRING,
     ),
-    4 => shape(
+    5 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => StringPatch::class,
@@ -3378,8 +3378,8 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
   const dict<string, int> FIELDMAP = dict[
     'clear' => 2,
     'patch' => 3,
-    'ensure' => 1,
-    'patchAfter' => 4,
+    'ensure' => 4,
+    'patchAfter' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -3396,7 +3396,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     ?'patchAfter' => ?StringPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 3041818733505872595;
+  const int STRUCTURAL_ID = 4184291972930407740;
   /**
    * Clears any set value. Applies first.
    * 
@@ -3412,17 +3412,17 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    */
   public ?StringPatch $patch;
   /**
-   * Initializes any unset value. Applies third.
+   * Assigns the value, if not already set. Applies third.
    * 
    * Original thrift field:-
-   * 1: string ensure
+   * 4: string ensure
    */
   public ?string $ensure;
   /**
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 4: struct patch.StringPatch patchAfter
+   * 5: struct patch.StringPatch patchAfter
    */
   public ?StringPatch $patchAfter;
 
@@ -3483,7 +3483,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 1,
+              "id" => 4,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
@@ -3495,7 +3495,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 4,
+              "id" => 5,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => tmeta_ThriftStructType::fromShape(
@@ -3615,11 +3615,11 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
       'type' => \TType::STRUCT,
       'class' => BinaryPatch::class,
     ),
-    1 => shape(
+    4 => shape(
       'var' => 'ensure',
       'type' => \TType::STRING,
     ),
-    4 => shape(
+    5 => shape(
       'var' => 'patchAfter',
       'type' => \TType::STRUCT,
       'class' => BinaryPatch::class,
@@ -3628,8 +3628,8 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
   const dict<string, int> FIELDMAP = dict[
     'clear' => 2,
     'patch' => 3,
-    'ensure' => 1,
-    'patchAfter' => 4,
+    'ensure' => 4,
+    'patchAfter' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -3646,7 +3646,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     ?'patchAfter' => ?BinaryPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 8306158524033187717;
+  const int STRUCTURAL_ID = 4422024576090953307;
   /**
    * Clears any set value. Applies first.
    * 
@@ -3662,17 +3662,17 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
    */
   public ?BinaryPatch $patch;
   /**
-   * Initializes any unset value. Applies third.
+   * Assigns the value, if not already set. Applies third.
    * 
    * Original thrift field:-
-   * 1: binary ensure
+   * 4: binary ensure
    */
   public ?string $ensure;
   /**
    * Patches any set value, including newly set values. Applies fourth.
    * 
    * Original thrift field:-
-   * 4: struct patch.BinaryPatch patchAfter
+   * 5: struct patch.BinaryPatch patchAfter
    */
   public ?BinaryPatch $patchAfter;
 
@@ -3733,7 +3733,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 1,
+              "id" => 4,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
@@ -3745,7 +3745,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 4,
+              "id" => 5,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_struct" => tmeta_ThriftStructType::fromShape(

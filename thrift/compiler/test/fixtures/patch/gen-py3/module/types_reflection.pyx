@@ -474,7 +474,7 @@ cdef __StructSpec get_reflection__OptionalMyDataValuePatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=4,
             name="ensure",
             type=_module_types.MyData,
             kind=__NumberType.NOT_A_NUMBER,
@@ -486,7 +486,7 @@ cdef __StructSpec get_reflection__OptionalMyDataValuePatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
+            id=5,
             name="patchAfter",
             type=_module_types.MyDataValuePatch,
             kind=__NumberType.NOT_A_NUMBER,
@@ -885,7 +885,7 @@ cdef __StructSpec get_reflection__OptionalMyStructField21Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=4,
             name="ensure",
             type=_module_types.List__i16,
             kind=__NumberType.NOT_A_NUMBER,
@@ -897,7 +897,7 @@ cdef __StructSpec get_reflection__OptionalMyStructField21Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
+            id=5,
             name="patchAfter",
             type=_module_types.MyStructField21Patch,
             kind=__NumberType.NOT_A_NUMBER,
@@ -1007,7 +1007,7 @@ cdef __StructSpec get_reflection__OptionalMyStructField22Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=4,
             name="ensure",
             type=_module_types.Set__string,
             kind=__NumberType.NOT_A_NUMBER,
@@ -1019,7 +1019,7 @@ cdef __StructSpec get_reflection__OptionalMyStructField22Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
+            id=5,
             name="patchAfter",
             type=_module_types.MyStructField22Patch,
             kind=__NumberType.NOT_A_NUMBER,
@@ -1117,7 +1117,7 @@ cdef __StructSpec get_reflection__OptionalMyStructField23Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=4,
             name="ensure",
             type=_module_types.Map__string_string,
             kind=__NumberType.NOT_A_NUMBER,
@@ -1129,7 +1129,7 @@ cdef __StructSpec get_reflection__OptionalMyStructField23Patch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
+            id=5,
             name="patchAfter",
             type=_module_types.MyStructField23Patch,
             kind=__NumberType.NOT_A_NUMBER,
@@ -1227,7 +1227,7 @@ cdef __StructSpec get_reflection__OptionalMyStructValuePatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=1,
+            id=4,
             name="ensure",
             type=_module_types.MyStruct,
             kind=__NumberType.NOT_A_NUMBER,
@@ -1239,7 +1239,7 @@ cdef __StructSpec get_reflection__OptionalMyStructValuePatch():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=4,
+            id=5,
             name="patchAfter",
             type=_module_types.MyStructValuePatch,
             kind=__NumberType.NOT_A_NUMBER,

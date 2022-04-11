@@ -28,8 +28,8 @@ public class OptionalMyStructField23Patch implements TBase, java.io.Serializable
   private static final TStruct STRUCT_DESC = new TStruct("OptionalMyStructField23Patch");
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
-  private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.MAP, (short)1);
-  private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)4);
+  private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.MAP, (short)4);
+  private static final TField PATCH_AFTER_FIELD_DESC = new TField("patchAfter", TType.STRUCT, (short)5);
 
   /**
    * Clears any set value. Applies first.
@@ -40,7 +40,7 @@ public class OptionalMyStructField23Patch implements TBase, java.io.Serializable
    */
   public final MyStructField23Patch patch;
   /**
-   * Initializes any unset value. Applies third.
+   * Assigns the value, if not already set. Applies third.
    */
   public final Map<String,String> ensure;
   /**
@@ -49,8 +49,8 @@ public class OptionalMyStructField23Patch implements TBase, java.io.Serializable
   public final MyStructField23Patch patchAfter;
   public static final int CLEAR = 2;
   public static final int PATCH = 3;
-  public static final int ENSURE = 1;
-  public static final int PATCHAFTER = 4;
+  public static final int ENSURE = 4;
+  public static final int PATCHAFTER = 5;
 
   public OptionalMyStructField23Patch(
       Boolean clear,
@@ -118,7 +118,7 @@ public class OptionalMyStructField23Patch implements TBase, java.io.Serializable
   }
 
   /**
-   * Initializes any unset value. Applies third.
+   * Assigns the value, if not already set. Applies third.
    */
   public Map<String,String> getEnsure() {
     return this.ensure;
@@ -252,6 +252,16 @@ public class OptionalMyStructField23Patch implements TBase, java.io.Serializable
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    if (this.clear != null) {
+      oprot.writeFieldBegin(CLEAR_FIELD_DESC);
+      oprot.writeBool(this.clear);
+      oprot.writeFieldEnd();
+    }
+    if (this.patch != null) {
+      oprot.writeFieldBegin(PATCH_FIELD_DESC);
+      this.patch.write(oprot);
+      oprot.writeFieldEnd();
+    }
     if (this.ensure != null) {
       if (isSetEnsure()) {
         oprot.writeFieldBegin(ENSURE_FIELD_DESC);
@@ -265,16 +275,6 @@ public class OptionalMyStructField23Patch implements TBase, java.io.Serializable
         }
         oprot.writeFieldEnd();
       }
-    }
-    if (this.clear != null) {
-      oprot.writeFieldBegin(CLEAR_FIELD_DESC);
-      oprot.writeBool(this.clear);
-      oprot.writeFieldEnd();
-    }
-    if (this.patch != null) {
-      oprot.writeFieldBegin(PATCH_FIELD_DESC);
-      this.patch.write(oprot);
-      oprot.writeFieldEnd();
     }
     if (this.patchAfter != null) {
       oprot.writeFieldBegin(PATCH_AFTER_FIELD_DESC);

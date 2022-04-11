@@ -140,52 +140,55 @@ struct StructGen {
 struct PatchGen : StructGen {
   // Standardized patch field ids.
   enum t_patch_field_id : t_field_id {
-    kAssignId = 1, // Value Patch
-    kEnsureId = 1, // Optional Patch
-
+    kAssignId = 1,
     kClearId = 2,
     kPatchId = 3,
 
-    kPrependId = 4, // List, String, Binary Patch
-    kRemoveId = 4, // Set, Map Patch
-    kPatchAfterId = 4, // Optional Patch
+    // Optional, Union
+    kEnsureId = 4,
+    kPatchAfterId = 5,
 
-    kAppendId = 5, // List, String, Binary Patch
-    kAddId = 5, // Set, Map Patch
+    // List, String, Binary
+    kPrependId = 4,
+    kAppendId = 5,
+
+    // Set, Map
+    kRemoveId = 4,
+    kAddId = 5,
 
     // TODO(afuller): Add 'replace' op.
     // kReplaceId = 6,
     kPutId = 7, // Map Patch
-
   };
 
   // {kAssignId}: optional {type} assign (thrift.box);
   t_field& assign(t_type_ref type) {
     return doc(
-        "Assigns to a given struct. If set, all other operations are ignored.",
+        "Assigns a value. If set, all other operations are ignored.",
         box(field(kAssignId, type, "assign")));
-  }
-
-  // {kEnsureId}: optional {type} ensure (thrift.box);
-  t_field& ensure(t_type_ref type) {
-    return doc(
-        "Initializes any unset value. Applies third.",
-        box(field(kEnsureId, type, "ensure")));
   }
 
   // {kClearId}: bool clear;
   t_field& clear() {
     return doc(
-        "Clears a given value. Applies first.",
+        "Clears a value. Applies first.",
         field(kClearId, t_base_type::t_bool(), "clear"));
   }
 
   // {kPatchId}: {patch_type} patch;
   t_field& patch(t_type_ref patch_type) {
     return doc(
-        "Patches a given value. Applies second.",
+        "Patches a value. Applies second.",
         field(kPatchId, patch_type, "patch"));
   }
+
+  // {kEnsureId}: {type} ensure;
+  t_field& ensure(t_type_ref type) {
+    return doc(
+        "Assigns the value, if not already set. Applies third.",
+        field(kEnsureId, type, "ensure"));
+  }
+
   // {kPatchAfterId}: {patch_type} patchAfter;
   t_field& patchAfter(t_type_ref patch_type) {
     return doc(
@@ -295,7 +298,7 @@ t_struct& patch_generator::add_optional_patch(
   PatchGen gen{{annot, gen_prefix_struct(annot, patch_type, "Optional")}};
   doc("Clears any set value. Applies first.", gen.clear());
   doc("Patches any set value. Applies second.", gen.patch(patch_type));
-  gen.ensure(value_type);
+  box(gen.ensure(value_type));
   gen.patchAfter(patch_type);
   gen.set_adapter("OptionalPatchAdapter");
   return gen;
