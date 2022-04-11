@@ -792,9 +792,21 @@ class RequestParams {
   RequestParams() = default;
 
   Cpp2RequestContext* getRequestContext() const { return requestContext_; }
-  concurrency::ThreadManager* getThreadManager() const {
+
+  // For cases where caller only needs the folly::Executor* interface.
+  // These calls can be replaced with getHandlerExecutor.
+  [[deprecated("Use getHandlerExecutor()")]] folly::Executor* getThreadManager()
+      const {
+    return getHandlerExecutor();
+  }
+
+  // For cases where the caller needs the ThreadManager interface. Caller
+  // needs to be refactored to replace these calls with getHandlerExecutor.
+  [[deprecated("Use getHandlerExecutor()")]] concurrency::ThreadManager*
+  getThreadManager_deprecated() const {
     return threadManager_;
   }
+
   folly::EventBase* getEventBase() const { return eventBase_; }
   folly::Executor* getHandlerExecutor() const {
     if (threadManager_) {
