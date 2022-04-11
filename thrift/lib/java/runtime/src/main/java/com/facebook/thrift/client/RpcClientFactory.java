@@ -24,6 +24,7 @@ import com.facebook.thrift.util.resources.RpcResources;
 import com.google.common.base.Preconditions;
 import java.net.SocketAddress;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 
@@ -40,6 +41,7 @@ public interface RpcClientFactory {
     private boolean disableStats = false;
     private boolean disableReconnectingClient = false;
     private boolean disableTimeout = false;
+    private Map<String, String> headerTokens;
     private List<ThriftClientEventHandler> clientEventHandlers;
     private int connectionPoolSize = RpcResources.getNumEventLoopThreads();
 
@@ -75,8 +77,14 @@ public interface RpcClientFactory {
       return this;
     }
 
-    public void setClientEventHandlers(List<ThriftClientEventHandler> clientEventHandlers) {
+    public Builder setHeaderTokens(Map<String, String> headerTokens) {
+      this.headerTokens = headerTokens;
+      return this;
+    }
+
+    public Builder setClientEventHandlers(List<ThriftClientEventHandler> clientEventHandlers) {
       this.clientEventHandlers = clientEventHandlers;
+      return this;
     }
 
     public Builder setConnectionPoolSize(int poolSize) {
@@ -109,6 +117,10 @@ public interface RpcClientFactory {
 
       if (!disableStats) {
         rpcClientFactory = new InstrumentedRpcClientFactory(rpcClientFactory, thriftClientStats);
+      }
+
+      if (headerTokens != null && !headerTokens.isEmpty()) {
+        rpcClientFactory = new TokenPassingRpcClientFactory(rpcClientFactory, headerTokens);
       }
 
       if (clientEventHandlers != null && !clientEventHandlers.isEmpty()) {
