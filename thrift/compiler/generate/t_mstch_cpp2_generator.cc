@@ -1556,9 +1556,11 @@ class mstch_cpp2_program : public mstch_program {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
-      boost::optional<int32_t> split_id = boost::none)
+      boost::optional<int32_t> split_id = boost::none,
+      boost::optional<std::vector<t_struct*>> split_structs = boost::none)
       : mstch_program(program, std::move(generators), std::move(cache), pos),
-        split_id_(split_id) {
+        split_id_(split_id),
+        split_structs_(split_structs) {
     register_methods(
         this,
         {
@@ -1827,6 +1829,7 @@ class mstch_cpp2_program : public mstch_program {
   boost::optional<std::vector<t_struct*>> objects_;
   boost::optional<std::vector<t_enum*>> enums_;
   const boost::optional<int32_t> split_id_;
+  const boost::optional<std::vector<t_struct*>> split_structs_;
 
   const std::vector<t_enum*>& get_program_enums() override {
     if (!enums_) {
@@ -1859,16 +1862,12 @@ class mstch_cpp2_program : public mstch_program {
     int32_t split_count =
         std::max(cpp2::get_split_count(cache_->parsed_options_), 1);
 
-    objects_.emplace();
+    objects_ = *split_structs_;
     enums_.emplace();
 
-    const size_t cnt = prog_objects.size() + prog_enums.size();
+    const size_t cnt = prog_enums.size();
     for (size_t i = split_id_.value_or(0); i < cnt; i += split_count) {
-      if (i < prog_objects.size()) {
-        objects_->push_back(prog_objects[i]);
-      } else {
-        enums_->push_back(prog_enums[i - prog_objects.size()]);
-      }
+      enums_->push_back(prog_enums[i]);
     }
   }
 };
@@ -2117,13 +2116,15 @@ class program_cpp2_generator : public program_generator {
       t_program const* program,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      int32_t split_id) const {
+      int32_t split_id,
+      std::vector<t_struct*> structs) const {
     return std::make_shared<mstch_cpp2_program>(
         program,
         std::move(generators),
         std::move(cache),
         ELEMENT_POSITION::NONE,
-        split_id);
+        split_id,
+        structs);
   }
 };
 
@@ -2252,12 +2253,15 @@ void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
 
   if (auto split_count = cpp2::get_split_count(parsed_options_)) {
     auto digit = std::to_string(split_count - 1).size();
+    auto shards = cpp2::lpt_split(program->objects(), split_count, [](auto t) {
+      return t->fields().size();
+    });
     for (int split_id = 0; split_id < split_count; ++split_id) {
       auto s = std::to_string(split_id);
       s = std::string(digit - s.size(), '0') + s;
       render_to_file(
           program_cpp2_generator{}.generate_with_split_id(
-              program, generators_, cache_, split_id),
+              program, generators_, cache_, split_id, shards.at(split_id)),
           "module_types.cpp",
           name + "_types." + s + ".split.cpp");
     }

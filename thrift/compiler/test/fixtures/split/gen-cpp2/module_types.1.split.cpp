@@ -16,11 +16,11 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
+void TccStructTraits<::cpp2::MyUnion>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyDataItem>;
+  using data = apache::thrift::TStructDataStorage<::cpp2::MyUnion>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -33,51 +33,115 @@ void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::cpp2::MyUnion::Type>::size;
+folly::Range<::cpp2::MyUnion::Type const*> const TEnumTraits<::cpp2::MyUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::MyUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::names);
+
+char const* TEnumTraits<::cpp2::MyUnion::Type>::findName(type value) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value);
+}
+
+bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_value(name, out);
+}
+}} // apache::thrift
 namespace cpp2 {
 
-
-MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
-
-
-void MyDataItem::__fbthrift_clear() {
+void MyUnion::__fbthrift_clear() {
   // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::myEnum:
+      destruct(value_.myEnum);
+      break;
+    case Type::myStruct:
+      destruct(value_.myStruct);
+      break;
+    case Type::myDataItem:
+      destruct(value_.myDataItem);
+      break;
+    default:
+      assert(false);
+      break;
+  }
+  type_ = Type::__EMPTY__;
 }
 
-bool MyDataItem::__fbthrift_is_empty() const {
-  return true;
+bool MyUnion::operator==(const MyUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::myEnum:
+      return value_.myEnum == rhs.value_.myEnum;
+    case Type::myStruct:
+      return value_.myStruct == rhs.value_.myStruct;
+    case Type::myDataItem:
+      return value_.myDataItem == rhs.value_.myDataItem;
+    default:
+      return true;
+  }
 }
 
-bool MyDataItem::operator==(const MyDataItem& rhs) const {
+bool MyUnion::operator<(const MyUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  return true;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
+    case Type::myEnum:
+      return lhs.value_.myEnum < rhs.value_.myEnum;
+    case Type::myStruct:
+      return lhs.value_.myStruct < rhs.value_.myStruct;
+    case Type::myDataItem:
+      return lhs.value_.myDataItem < rhs.value_.myDataItem;
+    default:
+      return false;
+  }
 }
 
-bool MyDataItem::operator<(const MyDataItem& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  return false;
+void swap(MyUnion& a, MyUnion& b) {
+  MyUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
 }
 
+template void MyUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void MyUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-void swap(MyDataItem& a, MyDataItem& b) {
-  using ::std::swap;
-  (void)a;
-  (void)b;
-}
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        MyUnion,
+        ::apache::thrift::type_class::structure,
+        ::cpp2::MyStruct>,
+    "inconsistent use of json option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        MyUnion,
+        ::apache::thrift::type_class::structure,
+        ::cpp2::MyDataItem>,
+    "inconsistent use of json option");
 
-template void MyDataItem::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t MyDataItem::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t MyDataItem::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void MyDataItem::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t MyDataItem::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        MyUnion,
+        ::apache::thrift::type_class::structure,
+        ::cpp2::MyStruct>,
+    "inconsistent use of nimble option");
+static_assert(
+    ::apache::thrift::detail::st::gen_check_nimble<
+        MyUnion,
+        ::apache::thrift::type_class::structure,
+        ::cpp2::MyDataItem>,
+    "inconsistent use of nimble option");
 
 } // cpp2
 

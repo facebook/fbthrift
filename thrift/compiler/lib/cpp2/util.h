@@ -233,6 +233,32 @@ bool is_cpp_ref_unique_either(const t_field* f);
 
 bool deprecated_terse_writes(const t_field* field);
 
+// an implementation of the LPT scheduling
+// Greedy Multiway Partitioning algorithm
+template <class T, class F>
+auto lpt_split(std::vector<T> vec, size_t k, F size) {
+  std::vector<std::vector<T>> ret(k);
+
+  // LPT requires objects to be sorted in descending order; do so here
+  std::sort(vec.begin(), vec.end(), [&](const T& a, const T& b) {
+    return size(a) > size(b);
+  });
+
+  std::multimap<size_t, std::vector<T>*> sizeToVec;
+  while (k) {
+    sizeToVec.emplace(0, &ret[--k]);
+  }
+
+  for (auto& i : vec) {
+    auto top = *sizeToVec.begin();
+    sizeToVec.erase(sizeToVec.begin());
+    top.second->push_back(i);
+    sizeToVec.emplace(top.first + size(i), top.second);
+  }
+
+  return ret;
+}
+
 } // namespace cpp2
 } // namespace compiler
 } // namespace thrift
