@@ -19,6 +19,7 @@ package com.facebook.thrift.client;
 import com.facebook.swift.service.ThriftClientEventHandler;
 import com.facebook.swift.service.ThriftClientStats;
 import com.facebook.thrift.legacy.client.LegacyRpcClientFactory;
+import com.facebook.thrift.rsocket.client.HeaderAwareRpcClientFactory;
 import com.facebook.thrift.rsocket.client.RSocketRpcClientFactory;
 import com.facebook.thrift.util.resources.RpcResources;
 import com.google.common.base.Preconditions;
@@ -44,6 +45,7 @@ public interface RpcClientFactory {
     private Map<String, String> headerTokens;
     private List<ThriftClientEventHandler> clientEventHandlers;
     private int connectionPoolSize = RpcResources.getNumEventLoopThreads();
+    private boolean handleHeaderResponse = false;
 
     private ThriftClientConfig thriftClientConfig;
     private ThriftClientStats thriftClientStats = ThriftClientStatsHolder.getThriftClientStats();
@@ -52,6 +54,11 @@ public interface RpcClientFactory {
 
     public Builder setDisableRSocket(boolean disableRSocket) {
       this.disableRSocket = disableRSocket;
+      return this;
+    }
+
+    public Builder setEnableHandleHeaderResponse(boolean handleHeaderResponse) {
+      this.handleHeaderResponse = handleHeaderResponse;
       return this;
     }
 
@@ -110,9 +117,17 @@ public interface RpcClientFactory {
 
       RpcClientFactory rpcClientFactory;
       if (disableRSocket) {
+        if (handleHeaderResponse) {
+          throw new IllegalArgumentException(
+              "handleHeaderResponse is only applicable if using RSocket");
+        }
         rpcClientFactory = new LegacyRpcClientFactory(thriftClientConfig);
       } else {
-        rpcClientFactory = new RSocketRpcClientFactory(thriftClientConfig);
+        if (handleHeaderResponse) {
+          rpcClientFactory = new HeaderAwareRpcClientFactory(thriftClientConfig);
+        } else {
+          rpcClientFactory = new RSocketRpcClientFactory(thriftClientConfig);
+        }
       }
 
       if (!disableStats) {

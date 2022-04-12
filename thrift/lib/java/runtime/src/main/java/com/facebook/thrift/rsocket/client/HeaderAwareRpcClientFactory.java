@@ -19,7 +19,6 @@ package com.facebook.thrift.rsocket.client;
 import com.facebook.thrift.client.RpcClient;
 import com.facebook.thrift.client.RpcClientFactory;
 import com.facebook.thrift.client.ThriftClientConfig;
-import com.facebook.thrift.model.StreamResponse;
 import com.facebook.thrift.util.ReactorHooks;
 import java.net.SocketAddress;
 import reactor.core.publisher.Mono;
@@ -29,8 +28,6 @@ public final class HeaderAwareRpcClientFactory implements RpcClientFactory {
     ReactorHooks.init();
   }
 
-  private static final StreamResponse<Void, String> HEADER_RESPONSE =
-      StreamResponse.fromData("header_response");
   private final RSocketRpcClientFactory delegate;
 
   public HeaderAwareRpcClientFactory(ThriftClientConfig config) {
