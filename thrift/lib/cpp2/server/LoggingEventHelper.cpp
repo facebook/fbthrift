@@ -42,12 +42,7 @@ void logNonTLSEvent(const ConnectionLoggingContext& context) {
   auto server = context.getWorker()->getServer();
   // There's actually no point in logging these at all as wangle will not set
   // up tls if there's no config.
-  if (server->metadata().wrapper == "TCppServer-py") {
-    // Need extra visibility if we want to change default SSLPolicy on
-    // TCppServer to REQUIRED.
-    THRIFT_CONNECTION_EVENT(non_tls.legacy_python).log(context);
-  } else if (
-      !server->getSSLConfig() || server->isSSLPolicySet() ||
+  if (!server->getSSLConfig() || server->isSSLPolicySet() ||
       (server->isPlaintextAllowedOnLoopback() &&
        context.getPeerAddress()->isLoopbackAddress())) {
     THRIFT_CONNECTION_EVENT(non_tls.manual_policy).log(context);
