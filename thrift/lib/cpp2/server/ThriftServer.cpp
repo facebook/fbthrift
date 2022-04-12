@@ -455,6 +455,9 @@ void ThriftServer::setup() {
           .concurrencyController()
           .value()
           ->setExecutionLimitRequests(getMaxRequests());
+      // During resource pools roll out we want to track services that get
+      // enrolled in the roll out.
+      THRIFT_SERVER_EVENT(resourcepoolsenabled).log(*this);
     }
 
     if (!serverChannel_) {
