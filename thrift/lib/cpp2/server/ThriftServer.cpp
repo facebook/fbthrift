@@ -684,6 +684,12 @@ void ThriftServer::runtimeResourcePoolsChecks() {
     runtimeServerActions_.wildcardMethods = true;
     runtimeDisableResourcePools();
   }
+
+  if (isActiveRequestsTrackingDisabled()) {
+    LOG(INFO) << "Resource pools disabled. Active request tracking disabled";
+    runtimeServerActions_.activeRequestTrackingDisabled = true;
+    runtimeDisableResourcePools();
+  }
 }
 
 void ThriftServer::ensureResourcePools() {

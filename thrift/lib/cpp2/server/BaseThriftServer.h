@@ -186,6 +186,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     bool interactionInService{false};
     bool wildcardMethods{false};
     bool noServiceRequestInfo{false};
+    bool activeRequestTrackingDisabled{false};
   };
 
   /**
