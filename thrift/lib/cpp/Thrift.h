@@ -265,18 +265,10 @@ class FOLLY_EXPORT AppClientError : public AppBaseError {
  */
 
 template <class ServiceTag>
-class ServiceHandler {
-  static_assert(
-      folly::always_false<ServiceTag>,
-      "Invalid instantiation of base template. Is ServiceTag valid?");
-};
+class ServiceHandler;
 
 template <class ServiceTag>
-class Client {
-  static_assert(
-      folly::always_false<ServiceTag>,
-      "Invalid instantiation of base template. Is ServiceTag valid?");
-};
+class Client;
 
 } // namespace thrift
 } // namespace apache
