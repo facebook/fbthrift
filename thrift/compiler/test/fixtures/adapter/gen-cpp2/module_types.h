@@ -13,6 +13,7 @@
 #include "thrift/annotation/gen-cpp2/cpp_types.h"
 #include "thrift/annotation/gen-cpp2/python_types.h"
 #include "thrift/annotation/gen-cpp2/thrift_types.h"
+#include "adapter_dependency.h"
 
 namespace apache {
 namespace thrift {

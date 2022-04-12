@@ -23,6 +23,7 @@
 #include <vector>
 
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/algorithm/string/split.hpp>
 
 #include <thrift/compiler/gen/cpp/type_resolver.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
@@ -206,7 +207,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   static std::string get_cpp2_namespace(t_program const* program);
   static std::string get_cpp2_unprefixed_namespace(t_program const* program);
   static mstch::array get_namespace_array(t_program const* program);
-  static mstch::node cpp_includes(t_program const* program);
+  static mstch::array cpp_includes(t_program const* program);
   static mstch::node include_prefix(
       t_program const* program, std::map<std::string, std::string>& options);
   static std::string get_service_qualified_name(t_service const* service);
@@ -1430,7 +1431,7 @@ class mstch_cpp2_service : public mstch_service {
         service_->program(), cache_->parsed_options_);
   }
   mstch::node thrift_includes() {
-    mstch::array a{};
+    mstch::array a;
     for (auto const* program : service_->program()->get_included_programs()) {
       a.push_back(generators_->program_generator_->generate_cached(
           program, generators_, cache_));
@@ -1678,7 +1679,16 @@ class mstch_cpp2_program : public mstch_program {
     return t_mstch_cpp2_generator::get_namespace_array(program_);
   }
   mstch::node cpp_includes() {
-    return t_mstch_cpp2_generator::cpp_includes(program_);
+    mstch::array includes = t_mstch_cpp2_generator::cpp_includes(program_);
+    auto it = cache_->parsed_options_.find("includes");
+    if (it != cache_->parsed_options_.end()) {
+      std::vector<std::string> extra_includes;
+      boost::split(extra_includes, it->second, [](char c) { return c == ':'; });
+      for (auto& include : extra_includes) {
+        includes.push_back(mstch::map{{"cpp_include", std::move(include)}});
+      }
+    }
+    return includes;
   }
   mstch::node include_prefix() {
     return t_mstch_cpp2_generator::include_prefix(
@@ -1702,7 +1712,7 @@ class mstch_cpp2_program : public mstch_program {
     return cpp_declare_in_structs || cpp_declare_in_typedefs;
   }
   mstch::node thrift_includes() {
-    mstch::array a{};
+    mstch::array a;
     for (auto const* program : program_->get_included_programs()) {
       a.push_back(generators_->program_generator_->generate_cached(
           program, generators_, cache_));
@@ -2363,8 +2373,8 @@ mstch::array t_mstch_cpp2_generator::get_namespace_array(
   return a;
 }
 
-mstch::node t_mstch_cpp2_generator::cpp_includes(t_program const* program) {
-  mstch::array a{};
+mstch::array t_mstch_cpp2_generator::cpp_includes(t_program const* program) {
+  mstch::array a;
   for (auto include : program->cpp_includes()) {
     mstch::map cpp_include;
     if (include.at(0) != '<') {
