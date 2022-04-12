@@ -103,6 +103,12 @@ void mutate_terse_write_annotation_struct(
 
 void mutate_merge_from(
     diagnostic_context& ctx, mutator_context&, t_struct& node) {
+  // TODO(dokwon): Allow annotating @meta.MergeFrom with @meta.Transitive.
+  // Skip merging for structs used as transitive annotations.
+  if (is_transitive_annotation(node)) {
+    return;
+  }
+
   const t_const* merge_from_annotation =
       node.find_structured_annotation_or_null(kMergeFromUri);
   if (!merge_from_annotation) {
@@ -122,10 +128,10 @@ void mutate_merge_from(
     return;
   }
   std::string type_string = it->second->get_string();
-  // If the specified type is from the current program, append the current
-  // program name.
+  // If the specified type and annotation are from the same program, append
+  // the current program name.
   if (type_string.find(".") == std::string::npos) {
-    type_string = node.program()->name() + "." + type_string;
+    type_string = merge_from_annotation->program()->name() + "." + type_string;
   }
 
   const auto* type = node.program()->scope()->find_type(type_string);

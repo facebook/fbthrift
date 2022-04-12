@@ -16,6 +16,7 @@
 
 include "thrift/annotation/meta.thrift"
 include "thrift/test/clear.thrift"
+include "thrift/test/merge_from_annot.thrift"
 
 namespace cpp2 apache.thrift.test.merge_from
 
@@ -62,3 +63,6 @@ struct FieldsWithAnnotation {
 
 @meta.MergeFrom{type = "FieldsWithAnnotation"}
 struct MergedEmptyStruct3 {}
+
+@merge_from_annot.TransitiveMergeFrom
+struct MergedEmptyStruct4 {}

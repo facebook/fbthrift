@@ -91,7 +91,7 @@ TEST(MergeFrom, DifferentProgram) {
       MyStruct>();
 }
 
-TEST(MergeFrom, FieldsWithAnnotation) {
+TEST(MergeFrom, FieldsWithAnnotation1) {
   merge_from::MergedEmptyStruct3 obj;
 
   obj.structured_boxed_field() = 1;
@@ -99,6 +99,20 @@ TEST(MergeFrom, FieldsWithAnnotation) {
 
   auto objs = CompactSerializer::serialize<std::string>(obj);
   merge_from::MergedEmptyStruct3 objd;
+  CompactSerializer::deserialize(objs, objd);
+
+  objd.structured_boxed_field() = 1;
+  objd.unstructured_boxed_field() = 2;
+}
+
+TEST(MergeFrom, FieldsWithAnnotation2) {
+  merge_from::MergedEmptyStruct4 obj;
+
+  obj.structured_boxed_field() = 1;
+  obj.unstructured_boxed_field() = 2;
+
+  auto objs = CompactSerializer::serialize<std::string>(obj);
+  merge_from::MergedEmptyStruct4 objd;
   CompactSerializer::deserialize(objs, objd);
 
   objd.structured_boxed_field() = 1;
