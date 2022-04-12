@@ -184,6 +184,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   struct RuntimeServerActions {
     bool userSuppliedThreadManager{false};
     bool interactionInService{false};
+    bool wildcardMethods{false};
+    bool noServiceRequestInfo{false};
   };
 
   /**

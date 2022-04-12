@@ -651,10 +651,10 @@ void ThriftServer::setupThreadManager() {
 
 void ThriftServer::runtimeResourcePoolsChecks() {
   // Check whether there are any interactions
-  auto serverRequestInfoMap =
+  auto serviceRequestInfoMap =
       getDecoratedProcessorFactory().getServiceRequestInfoMap();
-  if (serverRequestInfoMap) {
-    for (auto const& request : serverRequestInfoMap.value().get()) {
+  if (serviceRequestInfoMap) {
+    for (auto const& request : serviceRequestInfoMap.value().get()) {
       if (request.second.interactionName) {
         // We've found an interaction in this service. Mark it is incompatible
         // with resource pools
@@ -666,6 +666,23 @@ void ThriftServer::runtimeResourcePoolsChecks() {
         break;
       }
     }
+  }
+
+  if (!serviceRequestInfoMap) {
+    // Disable resource pools if there is no service request info
+    LOG(INFO) << "Resource pools disabled. No service request info";
+    runtimeServerActions_.noServiceRequestInfo = true;
+    runtimeDisableResourcePools();
+  }
+
+  // Check whether there are any wildcard services.
+  auto methodMetadata = getDecoratedProcessorFactory().createMethodMetadata();
+  if (!std::holds_alternative<AsyncProcessorFactory::MethodMetadataMap>(
+          methodMetadata)) {
+    // Only accept services with full method metadata
+    LOG(INFO) << "Resource pools disabled. Wildcard methods";
+    runtimeServerActions_.wildcardMethods = true;
+    runtimeDisableResourcePools();
   }
 }
 
