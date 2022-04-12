@@ -41,8 +41,6 @@ folly::relaxed_atomic<bool>& getResourcePoolsRuntimeRequested() {
 
 void runtimeDisableResourcePools() {
   getResourcePoolsRuntimeDisabled().store(true);
-  // Call this to ensure setting is fixed and we detect conflicts going forward.
-  CHECK_EQ(useResourcePools(), false);
 }
 
 void requireResourcePools() {
@@ -52,18 +50,20 @@ void requireResourcePools() {
 }
 
 bool useResourcePools() {
-  static bool thriftAndGFlags = THRIFT_FLAG(experimental_use_resource_pools) ||
-      FLAGS_thrift_experimental_use_resource_pools;
-  static bool firstResult =
-      (thriftAndGFlags || getResourcePoolsRuntimeRequested().load()) &&
-      !getResourcePoolsRuntimeDisabled().load();
-  bool result =
-      (thriftAndGFlags || getResourcePoolsRuntimeRequested().load()) &&
-      !getResourcePoolsRuntimeDisabled().load();
+  // If Gflag is turned on, we will just ignore the rest enablements
+  static bool gFlag = FLAGS_thrift_experimental_use_resource_pools;
+  static bool thriftFlag = THRIFT_FLAG(experimental_use_resource_pools);
+  static bool firstResult = gFlag ||
+      ((thriftFlag || getResourcePoolsRuntimeRequested().load()) &&
+       !getResourcePoolsRuntimeDisabled().load());
+  bool result = gFlag ||
+      ((thriftFlag || getResourcePoolsRuntimeRequested().load()) &&
+       !getResourcePoolsRuntimeDisabled().load());
   if (result == firstResult) {
     return result;
   }
-  LOG(FATAL) << "Inconsistent results from useResourcePools";
+  LOG(ERROR) << "Inconsistent results from useResourcePools";
+  return firstResult;
 }
 
 bool useResourcePoolsFlagsSet() {
