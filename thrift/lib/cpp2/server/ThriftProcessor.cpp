@@ -118,7 +118,7 @@ void ThriftProcessor::onThriftRequest(
             std::move(request), methodName);
       },
       [&](const PerServiceMetadata::MetadataFound& found) {
-        if (useResourcePools()) {
+        if (!server_.resourcePoolSet().empty()) {
           // We need to process this using request pools
           const ServiceRequestInfo* serviceRequestInfo{nullptr};
           if (auto requestInfo = processorFactory.getServiceRequestInfoMap()) {
