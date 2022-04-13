@@ -16,7 +16,7 @@ import unittest
 
 from thrift.py.client.sync_client_factory import get_client
 
-# @manual=//thrift/lib/py3lite/client/test:test_service-py
+# @manual=//thrift/lib/python/client/test:test_service-py
 from thrift.py.test import TestService
 from thrift.python.test.test_server import server_in_another_process
 
