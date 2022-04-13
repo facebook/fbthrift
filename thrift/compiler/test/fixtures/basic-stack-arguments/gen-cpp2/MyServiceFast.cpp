@@ -15,7 +15,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<:
 }
 
 apache::thrift::ServiceHandler<::cpp2::MyServiceFast>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::MyServiceFast>::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::MyServiceFastAsyncProcessor>();
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::MyServiceFastAsyncProcessor>(getServiceRequestInfoMap().value().get());
 }
 
 std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::MyServiceFast>::getServiceRequestInfoMap() const {
@@ -58,7 +58,7 @@ void MyServiceFastAsyncProcessor::processSerializedCompressedRequest(apache::thr
 }
 
 void MyServiceFastAsyncProcessor::processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
+  apache::thrift::detail::ap::process(this, iface_, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
 void MyServiceFastAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
@@ -103,22 +103,26 @@ apache::thrift::ServiceRequestInfoMap MyServiceFastServiceInfoHolder::staticRequ
     {true,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "MyServiceFast.hasDataById",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"getDataById",
     {true,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "MyServiceFast.getDataById",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"putDataById",
     {true,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "MyServiceFast.putDataById",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"lobDataById",
     {true,
      apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
      "MyServiceFast.lobDataById",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   };
 
   return requestInfoMap;

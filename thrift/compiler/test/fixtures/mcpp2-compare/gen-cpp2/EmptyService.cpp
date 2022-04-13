@@ -15,7 +15,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<:
 }
 
 apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<::some::valid::ns::EmptyServiceAsyncProcessor>();
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::some::valid::ns::EmptyServiceAsyncProcessor>(getServiceRequestInfoMap().value().get());
 }
 
 std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::some::valid::ns::EmptyService>::getServiceRequestInfoMap() const {
@@ -42,7 +42,7 @@ void EmptyServiceAsyncProcessor::processSerializedCompressedRequest(apache::thri
 }
 
 void EmptyServiceAsyncProcessor::processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
+  apache::thrift::detail::ap::process(this, iface_, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
 void EmptyServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {

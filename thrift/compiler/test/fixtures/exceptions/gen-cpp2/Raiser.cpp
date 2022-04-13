@@ -15,7 +15,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<:
 }
 
 apache::thrift::ServiceHandler<::cpp2::Raiser>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::Raiser>::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::RaiserAsyncProcessor>();
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::RaiserAsyncProcessor>(getServiceRequestInfoMap().value().get());
 }
 
 std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::Raiser>::getServiceRequestInfoMap() const {
@@ -294,7 +294,7 @@ void RaiserAsyncProcessor::processSerializedCompressedRequest(apache::thrift::Re
 }
 
 void RaiserAsyncProcessor::processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
+  apache::thrift::detail::ap::process(this, iface_, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
 void RaiserAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
@@ -339,22 +339,26 @@ apache::thrift::ServiceRequestInfoMap RaiserServiceInfoHolder::staticRequestInfo
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "Raiser.doBland",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"doRaise",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "Raiser.doRaise",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"get200",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "Raiser.get200",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"get500",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "Raiser.get500",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   };
 
   return requestInfoMap;

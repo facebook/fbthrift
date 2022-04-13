@@ -15,7 +15,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<:
 }
 
 apache::thrift::ServiceHandler<::cpp2::NestedContainers>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::NestedContainers>::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::NestedContainersAsyncProcessor>();
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::NestedContainersAsyncProcessor>(getServiceRequestInfoMap().value().get());
 }
 
 std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::NestedContainers>::getServiceRequestInfoMap() const {
@@ -357,7 +357,7 @@ void NestedContainersAsyncProcessor::processSerializedCompressedRequest(apache::
 }
 
 void NestedContainersAsyncProcessor::processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
+  apache::thrift::detail::ap::process(this, iface_, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
 void NestedContainersAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
@@ -407,27 +407,32 @@ apache::thrift::ServiceRequestInfoMap NestedContainersServiceInfoHolder::staticR
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "NestedContainers.mapList",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"mapSet",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "NestedContainers.mapSet",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"listMap",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "NestedContainers.listMap",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"listSet",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "NestedContainers.listSet",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"turtles",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "NestedContainers.turtles",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   };
 
   return requestInfoMap;

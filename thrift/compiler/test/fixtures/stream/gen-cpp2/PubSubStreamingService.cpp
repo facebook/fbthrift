@@ -15,7 +15,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<:
 }
 
 apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::PubSubStreamingServiceAsyncProcessor>();
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::PubSubStreamingServiceAsyncProcessor>(getServiceRequestInfoMap().value().get());
 }
 
 std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::PubSubStreamingService>::getServiceRequestInfoMap() const {
@@ -274,7 +274,7 @@ void PubSubStreamingServiceAsyncProcessor::processSerializedCompressedRequest(ap
 }
 
 void PubSubStreamingServiceAsyncProcessor::processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
+  apache::thrift::detail::ap::process(this, iface_, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
 void PubSubStreamingServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
@@ -324,27 +324,32 @@ apache::thrift::ServiceRequestInfoMap PubSubStreamingServiceServiceInfoHolder::s
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
      "PubSubStreamingService.returnstream",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"streamthrows",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
      "PubSubStreamingService.streamthrows",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"boththrows",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
      "PubSubStreamingService.boththrows",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"responseandstreamthrows",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
      "PubSubStreamingService.responseandstreamthrows",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"returnstreamFast",
     {true,
      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
      "PubSubStreamingService.returnstreamFast",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   };
 
   return requestInfoMap;

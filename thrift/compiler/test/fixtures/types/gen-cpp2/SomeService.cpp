@@ -15,7 +15,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<:
 }
 
 apache::thrift::ServiceHandler<::apache::thrift::fixtures::types::SomeService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::apache::thrift::fixtures::types::SomeService>::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<::apache::thrift::fixtures::types::SomeServiceAsyncProcessor>();
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::apache::thrift::fixtures::types::SomeServiceAsyncProcessor>(getServiceRequestInfoMap().value().get());
 }
 
 std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::apache::thrift::fixtures::types::SomeService>::getServiceRequestInfoMap() const {
@@ -168,7 +168,7 @@ void SomeServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrif
 }
 
 void SomeServiceAsyncProcessor::processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
+  apache::thrift::detail::ap::process(this, iface_, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
 void SomeServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
@@ -203,12 +203,14 @@ apache::thrift::ServiceRequestInfoMap SomeServiceServiceInfoHolder::staticReques
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "SomeService.bounce_map",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"binary_keyed_map",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "SomeService.binary_keyed_map",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   };
 
   return requestInfoMap;

@@ -15,7 +15,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<:
 }
 
 apache::thrift::ServiceHandler<::cpp2::MyService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::MyService>::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::MyServiceAsyncProcessor>();
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::MyServiceAsyncProcessor>(getServiceRequestInfoMap().value().get());
 }
 
 std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::MyService>::getServiceRequestInfoMap() const {
@@ -844,7 +844,7 @@ void MyServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift:
 }
 
 void MyServiceAsyncProcessor::processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
+  apache::thrift::detail::ap::process(this, iface_, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
 void MyServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
@@ -934,67 +934,80 @@ apache::thrift::ServiceRequestInfoMap MyServiceServiceInfoHolder::staticRequestI
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "MyService.foo",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"interact",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "MyService.interact",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"interactFast",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "MyService.interactFast",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"serialize",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
      "MyService.serialize",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"MyInteraction.frobnicate",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "MyService.MyInteraction.frobnicate",
-     "MyInteraction"}},
+     "MyInteraction",
+     apache::thrift::concurrency::NORMAL}},
   {"MyInteraction.ping",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
      "MyService.MyInteraction.ping",
-     "MyInteraction"}},
+     "MyInteraction",
+     apache::thrift::concurrency::NORMAL}},
   {"MyInteraction.truthify",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
      "MyService.MyInteraction.truthify",
-     "MyInteraction"}},
+     "MyInteraction",
+     apache::thrift::concurrency::NORMAL}},
   {"MyInteraction.encode",
     {false,
      apache::thrift::RpcKind::SINK,
      "MyService.MyInteraction.encode",
-     "MyInteraction"}},
+     "MyInteraction",
+     apache::thrift::concurrency::NORMAL}},
   {"MyInteractionFast.frobnicate",
     {true,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "MyService.MyInteractionFast.frobnicate",
-     "MyInteractionFast"}},
+     "MyInteractionFast",
+     apache::thrift::concurrency::NORMAL}},
   {"MyInteractionFast.ping",
     {true,
      apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
      "MyService.MyInteractionFast.ping",
-     "MyInteractionFast"}},
+     "MyInteractionFast",
+     apache::thrift::concurrency::NORMAL}},
   {"MyInteractionFast.truthify",
     {true,
      apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
      "MyService.MyInteractionFast.truthify",
-     "MyInteractionFast"}},
+     "MyInteractionFast",
+     apache::thrift::concurrency::NORMAL}},
   {"MyInteractionFast.encode",
     {true,
      apache::thrift::RpcKind::SINK,
      "MyService.MyInteractionFast.encode",
-     "MyInteractionFast"}},
+     "MyInteractionFast",
+     apache::thrift::concurrency::NORMAL}},
   {"SerialInteraction.frobnicate",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "MyService.SerialInteraction.frobnicate",
-     "SerialInteraction"}},
+     "SerialInteraction",
+     apache::thrift::concurrency::NORMAL}},
   };
 
   return requestInfoMap;

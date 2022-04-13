@@ -15,7 +15,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<:
 }
 
 apache::thrift::ServiceHandler<::extra::svc::ExtraService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::extra::svc::ExtraService>::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<::extra::svc::ExtraServiceAsyncProcessor>();
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::extra::svc::ExtraServiceAsyncProcessor>(getServiceRequestInfoMap().value().get());
 }
 
 std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::extra::svc::ExtraService>::getServiceRequestInfoMap() const {
@@ -483,7 +483,7 @@ void ExtraServiceAsyncProcessor::processSerializedCompressedRequest(apache::thri
 }
 
 void ExtraServiceAsyncProcessor::processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
+  apache::thrift::detail::ap::process(this, iface_, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
 void ExtraServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
@@ -553,47 +553,56 @@ apache::thrift::ServiceRequestInfoMap ExtraServiceServiceInfoHolder::staticReque
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "ExtraService.simple_function",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"throws_function",
     {true,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "ExtraService.throws_function",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"throws_function2",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "ExtraService.throws_function2",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::HIGH}},
   {"throws_function3",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "ExtraService.throws_function3",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"oneway_void_ret",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
      "ExtraService.oneway_void_ret",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"oneway_void_ret_i32_i32_i32_i32_i32_param",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
      "ExtraService.oneway_void_ret_i32_i32_i32_i32_i32_param",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"oneway_void_ret_map_setlist_param",
     {true,
      apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
      "ExtraService.oneway_void_ret_map_setlist_param",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"oneway_void_ret_struct_param",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
      "ExtraService.oneway_void_ret_struct_param",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"oneway_void_ret_listunion_param",
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE,
      "ExtraService.oneway_void_ret_listunion_param",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   };
   apache::thrift::ServiceRequestInfoMap parentMap = ::some::valid::ns::ParamServiceServiceInfoHolder::staticRequestInfoMap();
   requestInfoMap.insert(std::begin(parentMap), std::end(parentMap));

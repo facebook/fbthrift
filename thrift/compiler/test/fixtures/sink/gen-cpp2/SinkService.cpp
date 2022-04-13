@@ -15,7 +15,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<:
 }
 
 apache::thrift::ServiceHandler<::cpp2::SinkService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::SinkService>::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::SinkServiceAsyncProcessor>();
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::SinkServiceAsyncProcessor>(getServiceRequestInfoMap().value().get());
 }
 
 std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::SinkService>::getServiceRequestInfoMap() const {
@@ -412,7 +412,7 @@ void SinkServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrif
 }
 
 void SinkServiceAsyncProcessor::processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
+  apache::thrift::detail::ap::process(this, iface_, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
 void SinkServiceAsyncProcessor::executeRequest(apache::thrift::ServerRequest&& request, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata) {
@@ -472,37 +472,44 @@ apache::thrift::ServiceRequestInfoMap SinkServiceServiceInfoHolder::staticReques
     {false,
      apache::thrift::RpcKind::SINK,
      "SinkService.method",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"methodAndReponse",
     {false,
      apache::thrift::RpcKind::SINK,
      "SinkService.methodAndReponse",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"methodThrow",
     {false,
      apache::thrift::RpcKind::SINK,
      "SinkService.methodThrow",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"methodSinkThrow",
     {false,
      apache::thrift::RpcKind::SINK,
      "SinkService.methodSinkThrow",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"methodFinalThrow",
     {false,
      apache::thrift::RpcKind::SINK,
      "SinkService.methodFinalThrow",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"methodBothThrow",
     {false,
      apache::thrift::RpcKind::SINK,
      "SinkService.methodBothThrow",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   {"methodFast",
     {true,
      apache::thrift::RpcKind::SINK,
      "SinkService.methodFast",
-     std::nullopt}},
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
   };
 
   return requestInfoMap;

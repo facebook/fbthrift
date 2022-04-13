@@ -919,6 +919,7 @@ void recursiveProcess(
 template <class ProtocolReader, class Processor>
 void nonRecursiveProcess(
     Processor* processor,
+    ServerInterface* si,
     ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
     const apache::thrift::AsyncProcessor::MethodMetadata& untypedMethodMetadata,
@@ -930,9 +931,58 @@ void nonRecursiveProcess(
   const auto& methodMetadata =
       AsyncProcessorHelper::expectMetadataOfType<Metadata>(
           untypedMethodMetadata);
-  auto pfn = getProcessFuncFromProtocol(
+
+  if (untypedMethodMetadata.interactionType ==
+          AsyncProcessor::MethodMetadata::InteractionType::INTERACTION_V1 ||
+      ctx->getInteractionId()) {
+    auto pfn = getProcessFuncFromProtocol(
+        folly::tag<ProtocolReader>, methodMetadata.processFuncs);
+    (processor->*pfn)(
+        std::move(req), std::move(serializedRequest), ctx, eb, tm);
+    return;
+  }
+
+  DCHECK(
+      untypedMethodMetadata.executorType !=
+      AsyncProcessor::MethodMetadata::ExecutorType::UNKNOWN);
+  DCHECK(
+      untypedMethodMetadata.interactionType !=
+      AsyncProcessor::MethodMetadata::InteractionType::UNKNOWN);
+  DCHECK(untypedMethodMetadata.rpcKind);
+  DCHECK(untypedMethodMetadata.priority);
+
+  auto efn = getExecuteFuncFromProtocol(
       folly::tag<ProtocolReader>, methodMetadata.processFuncs);
-  (processor->*pfn)(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+
+  if (!apache::thrift::GeneratedAsyncProcessor::validateRpcKind(
+          req, *untypedMethodMetadata.rpcKind)) {
+    return;
+  }
+
+  if (untypedMethodMetadata.executorType ==
+      AsyncProcessor::MethodMetadata::ExecutorType::ANY) {
+    auto scope =
+        si->getRequestExecutionScope(ctx, *untypedMethodMetadata.priority);
+    ctx->setRequestExecutionScope(std::move(scope));
+    apache::thrift::GeneratedAsyncProcessor::processInThread(
+        std::move(req),
+        std::move(serializedRequest),
+        ctx,
+        eb,
+        tm,
+        *untypedMethodMetadata.rpcKind,
+        efn,
+        processor);
+    return;
+  }
+  if (*untypedMethodMetadata.rpcKind != RpcKind::SINGLE_REQUEST_NO_RESPONSE &&
+      !req->getShouldStartProcessing()) {
+    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
+    return;
+  }
+  apache::thrift::ServerRequest serverRequest{
+      std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  (processor->*efn)(std::move(serverRequest));
 }
 
 // Generated AsyncProcessor::processSerializedCompressedRequestWithMetadata just
@@ -940,6 +990,7 @@ void nonRecursiveProcess(
 template <class Processor>
 void process(
     Processor* processor,
+    ServerInterface* si,
     ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
     const apache::thrift::AsyncProcessor::MethodMetadata& methodMetadata,
@@ -951,6 +1002,7 @@ void process(
     case protocol::T_BINARY_PROTOCOL: {
       return nonRecursiveProcess<BinaryProtocolReader>(
           processor,
+          si,
           std::move(req),
           std::move(serializedRequest),
           methodMetadata,
@@ -961,6 +1013,7 @@ void process(
     case protocol::T_COMPACT_PROTOCOL: {
       return nonRecursiveProcess<CompactProtocolReader>(
           processor,
+          si,
           std::move(req),
           std::move(serializedRequest),
           methodMetadata,
@@ -1074,28 +1127,41 @@ downcastProcessFuncs(
 template <
     class MostDerivedProcessor,
     class CurrentProcessor = MostDerivedProcessor>
-void populateMethodMetadataMap(AsyncProcessorFactory::MethodMetadataMap& map) {
+void populateMethodMetadataMap(
+    AsyncProcessorFactory::MethodMetadataMap& map,
+    const ServiceRequestInfoMap& requestInfoMap) {
   for (const auto& [methodName, processFuncs] :
        CurrentProcessor::getOwnProcessMap()) {
+    const auto& requestInfo = requestInfoMap.at(methodName);
     map.emplace(
         methodName,
         // Always create GeneratatedMethodMetadata<MostDerivedProcessor> so that
         // all entries in the map are of the same type.
         std::make_shared<
             ServerInterface::GeneratedMethodMetadata<MostDerivedProcessor>>(
-            downcastProcessFuncs<MostDerivedProcessor>(processFuncs)));
+            downcastProcessFuncs<MostDerivedProcessor>(processFuncs),
+            requestInfo.isSync
+                ? AsyncProcessorFactory::MethodMetadata::ExecutorType::EVB
+                : AsyncProcessorFactory::MethodMetadata::ExecutorType::ANY,
+            requestInfo.interactionName
+                ? AsyncProcessorFactory::MethodMetadata::InteractionType::
+                      INTERACTION_V1
+                : AsyncProcessorFactory::MethodMetadata::InteractionType::NONE,
+            requestInfo.rpcKind,
+            requestInfo.priority));
   }
   if constexpr (!is_root_async_processor<CurrentProcessor>) {
     populateMethodMetadataMap<
         MostDerivedProcessor,
-        typename CurrentProcessor::BaseAsyncProcessor>(map);
+        typename CurrentProcessor::BaseAsyncProcessor>(map, requestInfoMap);
   }
 }
 
 template <class Processor>
-AsyncProcessorFactory::MethodMetadataMap createMethodMetadataMap() {
+AsyncProcessorFactory::MethodMetadataMap createMethodMetadataMap(
+    const apache::thrift::ServiceRequestInfoMap& requestInfoMap) {
   AsyncProcessorFactory::MethodMetadataMap result;
-  populateMethodMetadataMap<Processor>(result);
+  populateMethodMetadataMap<Processor>(result, requestInfoMap);
   return result;
 }
 

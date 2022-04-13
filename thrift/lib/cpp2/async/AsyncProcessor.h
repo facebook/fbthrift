@@ -90,6 +90,7 @@ struct ServiceRequestInfo {
                                        // service name)
   std::optional<std::string_view>
       interactionName; // Interaction name if part of an interaction
+  concurrency::PRIORITY priority; // Method priority set in the IDL
 };
 
 using ServiceRequestInfoMap =
@@ -127,7 +128,27 @@ class AsyncProcessorFactory {
   virtual std::vector<ServiceHandlerBase*> getServiceHandlers() = 0;
 
   struct MethodMetadata {
+    enum class ExecutorType { UNKNOWN, EVB, ANY };
+
+    enum class InteractionType { UNKNOWN, NONE, INTERACTION_V1 };
+
+    MethodMetadata() = default;
+    MethodMetadata(
+        ExecutorType executor,
+        InteractionType interaction,
+        RpcKind kind,
+        concurrency::PRIORITY prio)
+        : executorType(executor),
+          interactionType(interaction),
+          rpcKind(kind),
+          priority(prio) {}
+
     virtual ~MethodMetadata() = default;
+
+    const ExecutorType executorType{ExecutorType::UNKNOWN};
+    const InteractionType interactionType{InteractionType::UNKNOWN};
+    const std::optional<RpcKind> rpcKind{};
+    const std::optional<concurrency::PRIORITY> priority{};
   };
   /**
    * A map of method names to some loosely typed metadata that will be
@@ -669,6 +690,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       folly::StringPiece interaction = "",
       bool isInteractionFactoryFunction = false);
 
+ public:
   template <typename ChildType>
   static void processInThread(
       ResponseChannelRequest::UniquePtr req,
@@ -1016,9 +1038,14 @@ class ServerInterface : public virtual AsyncProcessorFactory,
   template <typename Processor>
   struct GeneratedMethodMetadata final
       : public AsyncProcessorFactory::MethodMetadata {
-    explicit GeneratedMethodMetadata(
-        GeneratedAsyncProcessor::ProcessFuncs<Processor> funcs)
-        : processFuncs(funcs) {}
+    GeneratedMethodMetadata(
+        GeneratedAsyncProcessor::ProcessFuncs<Processor> funcs,
+        ExecutorType executor,
+        InteractionType interaction,
+        RpcKind rpcKind,
+        concurrency::PRIORITY priority)
+        : MethodMetadata(executor, interaction, rpcKind, priority),
+          processFuncs(funcs) {}
 
     GeneratedAsyncProcessor::ProcessFuncs<Processor> processFuncs;
   };
