@@ -50,12 +50,15 @@ using if_not_opt_type = std::enable_if_t<!is_optional_type<T>::value, R>;
 template <typename Patch, typename Derived>
 class BasePatch {
  public:
-  BasePatch() = default;
-  explicit BasePatch(const Patch& patch) : patch_(patch) {}
-  explicit BasePatch(Patch&& patch) noexcept : patch_(std::move(patch)) {}
+  using underlying_type = Patch;
 
-  const Patch& get() const& { return patch_; }
-  Patch&& get() && { return std::move(patch_); }
+  BasePatch() = default;
+  explicit BasePatch(const underlying_type& patch) : patch_(patch) {}
+  explicit BasePatch(underlying_type&& patch) noexcept
+      : patch_(std::move(patch)) {}
+
+  const underlying_type& get() const& { return patch_; }
+  underlying_type&& get() && { return std::move(patch_); }
 
   void reset() { op::clear<type::struct_t<Patch>>(patch_); }
 
