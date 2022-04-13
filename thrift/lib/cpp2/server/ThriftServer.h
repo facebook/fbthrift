@@ -31,6 +31,7 @@
 #include <folly/Memory.h>
 #include <folly/Singleton.h>
 #include <folly/SocketAddress.h>
+#include <folly/dynamic.h>
 #include <folly/executors/IOThreadPoolExecutor.h>
 #include <folly/experimental/PrimaryPtr.h>
 #include <folly/experimental/coro/AsyncScope.h>
@@ -50,6 +51,7 @@
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
+#include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/PolledServiceHealth.h>
 #include <thrift/lib/cpp2/server/PreprocessParams.h>
 #include <thrift/lib/cpp2/server/RequestDebugLog.h>
@@ -881,6 +883,37 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    * way of getting that (does not inherit from enable_shared_from_this)
    */
   void stopDuplex(std::shared_ptr<ThriftServer> thisServer);
+
+  void setEnableCodel(
+      bool enableCodel,
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) override final {
+    THRIFT_SERVER_EVENT(call.setEnableCodel).log(*this, [enableCodel]() {
+      return folly::dynamic::object("enableCodel", enableCodel);
+    });
+    BaseThriftServer::setEnableCodel(enableCodel, source);
+  }
+
+  void setQueueTimeout(
+      std::chrono::milliseconds timeout,
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) override final {
+    THRIFT_SERVER_EVENT(call.setQueueTimeout).log(*this, [timeout]() {
+      return folly::dynamic::object("timeout_ms", timeout.count());
+    });
+    BaseThriftServer::setQueueTimeout(timeout, source);
+  }
+
+  [[deprecated("Use setPreprocess instead")]] void setIsOverloaded(
+      IsOverloadedFunc isOverloaded) override final {
+    THRIFT_SERVER_EVENT(call.setIsOverloaded).log(*this);
+    BaseThriftServer::setIsOverloaded(std::move(isOverloaded));
+  }
+
+  void setPreprocess(PreprocessFunc preprocess) override final {
+    THRIFT_SERVER_EVENT(call.setPreprocess).log(*this);
+    BaseThriftServer::setPreprocess(std::move(preprocess));
+  }
 
   /**
    * One stop solution:

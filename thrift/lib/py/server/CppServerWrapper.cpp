@@ -703,10 +703,6 @@ class CppServerWrapper : public ThriftServer {
         numCPUWorkerThreads, AttributeSource::OVERRIDE);
   }
 
-  void setEnableCodel(bool enableCodel) {
-    BaseThriftServer::setEnableCodel(enableCodel, AttributeSource::OVERRIDE);
-  }
-
   void setWrapperName(object wrapperName) {
     BaseThriftServer::metadata().wrapper =
         extract<std::string>(str(wrapperName));

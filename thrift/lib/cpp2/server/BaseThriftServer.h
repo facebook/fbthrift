@@ -991,7 +991,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * Codel queuing timeout - limit queueing time before overload
    * http://en.wikipedia.org/wiki/CoDel
    */
-  void setEnableCodel(
+  virtual void setEnableCodel(
       bool enableCodel,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
@@ -1104,7 +1104,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * up with load, and realtime systems should not queue. Only
    * override this if you do heavily batched requests.
    */
-  void setQueueTimeout(
+  virtual void setQueueTimeout(
       std::chrono::milliseconds timeout,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
@@ -1223,7 +1223,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   int getListenBacklog() const { return listenBacklog_.get(); }
 
-  [[deprecated("Use setPreprocess instead")]] void setIsOverloaded(
+  [[deprecated("Use setPreprocess instead")]] virtual void setIsOverloaded(
       IsOverloadedFunc isOverloaded) {
     isOverloaded_ = std::move(isOverloaded);
     runtimeServerActions_.setIsOverloaded = true;
@@ -1232,7 +1232,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     runtimeDisableResourcePools();
   }
 
-  void setPreprocess(PreprocessFunc preprocess) {
+  virtual void setPreprocess(PreprocessFunc preprocess) {
     preprocess_ = std::move(preprocess);
     runtimeServerActions_.setPreprocess = true;
     LOG(INFO) << "thrift server: preprocess() set."

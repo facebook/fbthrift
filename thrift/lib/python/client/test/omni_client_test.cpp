@@ -73,9 +73,9 @@ class TestServiceHandler : virtual public TestServiceSvIf {
 /**
  * Small event-handler to know when a server is ready.
  */
-class ServerEventHandler : public server::TServerEventHandler {
+class ServerReadyEventHandler : public server::TServerEventHandler {
  public:
-  explicit ServerEventHandler(
+  explicit ServerReadyEventHandler(
       folly::Promise<const folly::SocketAddress*>& promise)
       : promise_(promise) {}
 
@@ -95,7 +95,7 @@ class OmniClientTest : public ::testing::Test {
     addr.setFromLocalPort((uint16_t)0);
     server_ = std::make_unique<ThriftServer>();
     server_->setServerEventHandler(
-        std::make_shared<ServerEventHandler>(addressPromise_));
+        std::make_shared<ServerReadyEventHandler>(addressPromise_));
     server_->setAddress(addr);
     server_->setInterface(std::make_shared<TestServiceHandler>());
     serverThread_ = std::thread([this]() { server_->run(); });
@@ -232,7 +232,7 @@ class OmniClientSinkTest : public OmniClientTest {
     addr.setFromLocalPort((uint16_t)0);
     server_ = std::make_unique<ThriftServer>();
     server_->setServerEventHandler(
-        std::make_shared<ServerEventHandler>(addressPromise_));
+        std::make_shared<ServerReadyEventHandler>(addressPromise_));
     server_->setAddress(addr);
     server_->setInterface(std::make_shared<TestServiceHandler>());
     serverThread_ = std::thread([this]() { server_->run(); });
