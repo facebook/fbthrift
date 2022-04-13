@@ -73,7 +73,6 @@ DEFINE_string(
 
 THRIFT_FLAG_DEFINE_bool(server_alpn_prefer_rocket, true);
 THRIFT_FLAG_DEFINE_bool(server_enable_stoptls, false);
-THRIFT_FLAG_DEFINE_bool(ssl_policy_default_required, true);
 THRIFT_FLAG_DEFINE_bool(alpn_allow_mismatch, true);
 
 THRIFT_FLAG_DEFINE_bool(dump_snapshot_on_long_shutdown, true);
@@ -260,19 +259,6 @@ ThriftServer::~ThriftServer() {
   }
   stopCPUWorkers();
   stopWorkers();
-}
-
-SSLPolicy ThriftServer::getSSLPolicy() const {
-  // If it's explicitly set in constructor through gflags or through the
-  // setSSLPolicy setter, then use that value.
-  if (sslPolicy_.has_value()) {
-    return *sslPolicy_;
-  }
-  // Otherwise, fallback to default (currently defined through a ThriftFlag).
-  // REQUIRED is the new default we're migrating to. We use ThriftFlags to
-  // opt-out services that still need to use PERMITTED.
-  return THRIFT_FLAG(ssl_policy_default_required) ? SSLPolicy::REQUIRED
-                                                  : SSLPolicy::PERMITTED;
 }
 
 void ThriftServer::setProcessorFactory(

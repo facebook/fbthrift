@@ -163,7 +163,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   ThriftTlsConfig thriftConfig_;
 
   // Security negotiation settings
-  std::optional<SSLPolicy> sslPolicy_;
+  SSLPolicy sslPolicy_{SSLPolicy::REQUIRED};
   bool strictSSL_ = false;
   // whether we allow plaintext connections from loopback in REQUIRED mode
   bool allowPlaintextOnLoopback_ = false;
@@ -720,10 +720,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     return const_cast<ThriftServer*>(this)->getEventBaseManager();
   }
 
-  SSLPolicy getSSLPolicy() const;
-
-  // Convenience method to check if SSLPolicy is explicitly set
-  bool isSSLPolicySet() const { return sslPolicy_.has_value(); }
+  SSLPolicy getSSLPolicy() const { return sslPolicy_; }
 
   void setSSLPolicy(SSLPolicy policy) { sslPolicy_ = policy; }
 
