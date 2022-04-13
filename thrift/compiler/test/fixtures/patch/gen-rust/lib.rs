@@ -72,7 +72,7 @@ pub mod types {
     #[derive(Clone, PartialEq)]
     pub struct MyDataValuePatch {
         #[doc = "Assigns a value. If set, all other operations are ignored."]
-        pub assign: ::std::option::Option<crate::types::MyData>,
+        pub assign: ::std::option::Option<::std::boxed::Box<crate::types::MyData>>,
         #[doc = "Clears a value. Applies first."]
         pub clear: ::std::primitive::bool,
         #[doc = "Patches a value. Applies second."]
@@ -92,7 +92,7 @@ pub mod types {
         #[doc = "Patches any set value. Applies second."]
         pub patch: crate::types::MyDataValuePatch,
         #[doc = "Assigns the value, if not already set. Applies third."]
-        pub ensure: ::std::option::Option<crate::types::MyData>,
+        pub ensure: ::std::option::Option<::std::boxed::Box<crate::types::MyData>>,
         #[doc = "Patches any set value, including newly set values. Applies fourth."]
         pub patchAfter: crate::types::MyDataValuePatch,
         // This field forces `..Default::default()` when instantiating this
@@ -245,7 +245,7 @@ pub mod types {
     #[derive(Clone, PartialEq)]
     pub struct MyStructValuePatch {
         #[doc = "Assigns a value. If set, all other operations are ignored."]
-        pub assign: ::std::option::Option<crate::types::MyStruct>,
+        pub assign: ::std::option::Option<::std::boxed::Box<crate::types::MyStruct>>,
         #[doc = "Clears a value. Applies first."]
         pub clear: ::std::primitive::bool,
         #[doc = "Patches a value. Applies second."]
@@ -265,7 +265,7 @@ pub mod types {
         #[doc = "Patches any set value. Applies second."]
         pub patch: crate::types::MyStructValuePatch,
         #[doc = "Assigns the value, if not already set. Applies third."]
-        pub ensure: ::std::option::Option<crate::types::MyStruct>,
+        pub ensure: ::std::option::Option<::std::boxed::Box<crate::types::MyStruct>>,
         #[doc = "Patches any set value, including newly set values. Applies fourth."]
         pub patchAfter: crate::types::MyStructValuePatch,
         // This field forces `..Default::default()` when instantiating this

@@ -275,11 +275,21 @@ std::string get_import_name(
 
 enum class FieldKind { Box, Arc, Inline };
 
+bool node_is_boxed(const t_named& node) {
+  return node.has_annotation("rust.box") || node.has_annotation("thrift.box") ||
+      node.find_structured_annotation_or_null(
+          "facebook.com/thrift/annotation/thrift/Box");
+}
+
+bool node_is_arced(const t_named& node) {
+  return node.has_annotation("rust.arc");
+}
+
 FieldKind field_kind(const t_named& node) {
-  if (node.has_annotation("rust.arc")) {
+  if (node_is_arced(node)) {
     return FieldKind::Arc;
   }
-  if (node.has_annotation("rust.box")) {
+  if (node_is_boxed(node)) {
     return FieldKind::Box;
   }
   return FieldKind::Inline;
@@ -1859,8 +1869,9 @@ bool annotation_validator::visit(t_struct* s) {
   }
 
   for (auto& field : s->fields()) {
-    bool box = field.has_annotation("rust.box");
-    bool arc = field.has_annotation("rust.arc");
+    FieldKind kind = field_kind(field);
+    bool box = node_is_boxed(field) || kind == FieldKind::Box;
+    bool arc = node_is_arced(field) || kind == FieldKind::Arc;
     if (box && arc) {
       add_error(
           field.lineno(),

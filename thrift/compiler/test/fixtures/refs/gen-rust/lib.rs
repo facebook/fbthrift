@@ -185,9 +185,9 @@ pub mod types {
 
     #[derive(Clone, PartialEq)]
     pub struct StructWithBox {
-        pub a: ::std::option::Option<::std::string::String>,
-        pub b: ::std::option::Option<::std::vec::Vec<::std::primitive::i64>>,
-        pub c: ::std::option::Option<crate::types::StructWithRef>,
+        pub a: ::std::option::Option<::std::boxed::Box<::std::string::String>>,
+        pub b: ::std::option::Option<::std::boxed::Box<::std::vec::Vec<::std::primitive::i64>>>,
+        pub c: ::std::option::Option<::std::boxed::Box<crate::types::StructWithRef>>,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation

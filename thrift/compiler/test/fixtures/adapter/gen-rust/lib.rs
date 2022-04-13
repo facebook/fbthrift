@@ -72,7 +72,7 @@ pub mod types {
         pub field: ::std::primitive::i32,
         pub shared_field: ::std::primitive::i32,
         pub opt_shared_field: ::std::option::Option<::std::primitive::i32>,
-        pub opt_boxed_field: ::std::option::Option<::std::primitive::i32>,
+        pub opt_boxed_field: ::std::option::Option<::std::boxed::Box<::std::primitive::i32>>,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
