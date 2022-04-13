@@ -2952,6 +2952,7 @@ TEST_F(WriteBatchingTest, IntervalTest) {
 }
 
 TEST_P(HeaderOrRocket, PreprocessHeaders) {
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* callback set past configuration  */);
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
   folly::EventBase base;
   auto client = makeClient(runner, &base);

@@ -1227,13 +1227,17 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       IsOverloadedFunc isOverloaded) {
     isOverloaded_ = std::move(isOverloaded);
     runtimeServerActions_.setIsOverloaded = true;
-    LOG(INFO) << "thrift server: isOverloaded() set";
+    LOG(INFO) << "thrift server: isOverloaded() set."
+              << " ResourcePool will be disabled.";
+    runtimeDisableResourcePools();
   }
 
   void setPreprocess(PreprocessFunc preprocess) {
     preprocess_ = std::move(preprocess);
     runtimeServerActions_.setPreprocess = true;
-    LOG(INFO) << "thrift server: preprocess() set";
+    LOG(INFO) << "thrift server: preprocess() set."
+              << " ResourcePool will be disabled.";
+    runtimeDisableResourcePools();
   }
 
   void setMethodsBypassMaxRequestsLimit(
