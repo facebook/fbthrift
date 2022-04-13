@@ -187,6 +187,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     bool wildcardMethods{false};
     bool noServiceRequestInfo{false};
     bool activeRequestTrackingDisabled{false};
+    bool setPreprocess{false};
+    bool setIsOverloaded{false};
   };
 
   /**
@@ -1224,10 +1226,14 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   [[deprecated("Use setPreprocess instead")]] void setIsOverloaded(
       IsOverloadedFunc isOverloaded) {
     isOverloaded_ = std::move(isOverloaded);
+    runtimeServerActions_.setIsOverloaded = true;
+    LOG(INFO) << "thrift server: isOverloaded() set";
   }
 
   void setPreprocess(PreprocessFunc preprocess) {
     preprocess_ = std::move(preprocess);
+    runtimeServerActions_.setPreprocess = true;
+    LOG(INFO) << "thrift server: preprocess() set";
   }
 
   void setMethodsBypassMaxRequestsLimit(
