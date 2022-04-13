@@ -69,7 +69,7 @@ union union1 {
   2: double ud;
   3: string us;
   4: enum1 ue;
-}
+} (thrift.uri = "facebook.com/thrift/test/reflection/reflection/union1")
 
 union union2 {
   1: i32 ui_2;

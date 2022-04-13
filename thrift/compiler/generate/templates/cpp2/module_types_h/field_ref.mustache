@@ -83,18 +83,4 @@
   FOLLY_ERASE auto <%mixin:field_name%>() &&          { return std::move(*this).<%mixin:field_name%>_ref(); }
   FOLLY_ERASE auto <%mixin:field_name%>() const&&     { return std::move(*this).<%mixin:field_name%>_ref(); }
 <%/struct:mixin_fields%>
-<%^struct:deprecated_tag_incompatible?%><%#struct:thrift_uri%>
- private:
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
-  <%#struct:fields%>
-  template<> decltype(auto) __fbthrift_get<<%field:key%>>() &       { return <%field:cpp_name%>_ref(); }
-  template<> decltype(auto) __fbthrift_get<<%field:key%>>() const&  { return <%field:cpp_name%>_ref(); }
-  template<> decltype(auto) __fbthrift_get<<%field:key%>>() &&      { return std::move(*this).<%field:cpp_name%>_ref(); }
-  template<> decltype(auto) __fbthrift_get<<%field:key%>>() const&& { return std::move(*this).<%field:cpp_name%>_ref(); }
-  <%/struct:fields%>
-
- public:
-<%/struct:thrift_uri%><%/struct:deprecated_tag_incompatible?%>
+<% > module_types_h/get%>

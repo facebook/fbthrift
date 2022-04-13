@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -231,9 +231,15 @@ FATAL_S(unionA_annotation1v, "some more text");
 FATAL_S(unionA_annotation2k, "sample.annotation");
 FATAL_S(unionA_annotation2v, "some text here");
 
+FATAL_S(union1_annotation1k, "thrift.uri");
+FATAL_S(
+    union1_annotation1v,
+    "facebook.com/thrift/test/reflection/reflection/union1");
+
 TEST(fatal_union, annotations) {
   EXPECT_SAME<
-      fatal::list<>,
+      fatal::list<
+          apache::thrift::annotation<union1_annotation1k, union1_annotation1v>>,
       apache::thrift::reflect_variant<union1>::annotations::map>();
 
   EXPECT_SAME<

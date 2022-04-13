@@ -373,6 +373,17 @@ class MyUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myString_ref() && {
     return {std::move(value_.myString), type_, myString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
+ private:
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).myString_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).myString_ref(); }
+
+ public:
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>

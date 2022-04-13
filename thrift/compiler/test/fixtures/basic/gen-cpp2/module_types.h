@@ -1163,6 +1163,29 @@ class MyUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> floatSet_ref() && {
     return {std::move(value_.floatSet), type_, floatSet, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
+ private:
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return myEnum_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return myEnum_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).myEnum_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).myEnum_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &       { return myStruct_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return myStruct_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).myStruct_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).myStruct_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &       { return myDataItem_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&  { return myDataItem_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).myDataItem_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).myDataItem_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return floatSet_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return floatSet_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).floatSet_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).floatSet_ref(); }
+
+ public:
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>

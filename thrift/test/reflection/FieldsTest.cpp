@@ -20,6 +20,7 @@
 
 #include <folly/Utility.h>
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/BadFieldAccess.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/op/Get.h>
 #include <thrift/lib/cpp2/type/Field.h>
@@ -164,4 +165,25 @@ TEST(FieldsTest, field_tag_by_id) {
         test::same_tag<field_tag_by_id<StructTag, Id>, field_t<Id, Tag>>;
       });
 }
+
+TEST(UnionFieldsTest, Get) {
+  test_cpp2::cpp_reflection::union1 u;
+
+  EXPECT_THROW(*op::getById<FieldId{1}>(u), bad_field_access);
+
+  u.ui_ref() = 10;
+  EXPECT_EQ(op::getById<FieldId{1}>(u), 10);
+  EXPECT_THROW(*op::getById<FieldId{2}>(u), bad_field_access);
+  test::same_tag<decltype(u.ui_ref()), decltype(op::getById<FieldId{1}>(u))>;
+
+  op::getById<FieldId{1}>(u) = 20;
+  EXPECT_EQ(u.ui_ref(), 20);
+  EXPECT_EQ(op::getById<FieldId{1}>(u), 20);
+
+  u.us_ref() = "foo";
+  EXPECT_EQ(op::getById<FieldId{3}>(u), "foo");
+  test::same_tag<decltype(u.us_ref()), decltype(op::getById<FieldId{3}>(u))>;
+  EXPECT_THROW(*op::getById<FieldId{1}>(u), bad_field_access);
+}
+
 } // namespace apache::thrift::type

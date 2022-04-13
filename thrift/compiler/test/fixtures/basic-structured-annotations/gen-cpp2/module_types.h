@@ -1795,6 +1795,21 @@ class MyUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> second_ref() && {
     return {std::move(value_.second), type_, second, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
+ private:
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return first_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return first_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).first_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).first_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &       { return second_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return second_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).second_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).second_ref(); }
+
+ public:
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
