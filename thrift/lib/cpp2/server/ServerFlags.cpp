@@ -62,8 +62,10 @@ bool useResourcePools() {
   if (result == firstResult) {
     return result;
   }
+
   LOG(ERROR) << "Inconsistent results from useResourcePools";
-  return firstResult;
+  // when seeing inconsistency we should always disable
+  return false;
 }
 
 bool useResourcePoolsFlagsSet() {
