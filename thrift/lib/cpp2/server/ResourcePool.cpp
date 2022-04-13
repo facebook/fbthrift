@@ -77,12 +77,12 @@ void ResourcePoolSet::setResourcePool(
     std::unique_ptr<RequestPileInterface>&& requestPile,
     std::shared_ptr<folly::ThreadPoolExecutor> executor,
     std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController) {
-  if (resourcePoolsLock_) {
+  std::lock_guard<std::mutex> lock(mutex_);
+  if (locked_) {
     throw std::logic_error("Cannot setResourcePool() after lock()");
   }
-  auto rp = resourcePools_.wlock();
-  rp->resize(std::max(rp->size(), handle.index() + 1));
-  if (rp->at(handle.index())) {
+  resourcePools_.resize(std::max(resourcePools_.size(), handle.index() + 1));
+  if (resourcePools_.at(handle.index())) {
     LOG(ERROR) << "Cannot overwrite resourcePool:" << handle.name();
     throw std::invalid_argument("Cannot overwrite resourcePool");
   }
@@ -91,7 +91,7 @@ void ResourcePoolSet::setResourcePool(
       executor,
       std::move(concurrencyController),
       handle.name()}};
-  rp->at(handle.index()) = std::move(pool);
+  resourcePools_.at(handle.index()) = std::move(pool);
 }
 
 ResourcePoolHandle ResourcePoolSet::addResourcePool(
@@ -99,10 +99,10 @@ ResourcePoolHandle ResourcePoolSet::addResourcePool(
     std::unique_ptr<RequestPileInterface>&& requestPile,
     std::shared_ptr<folly::ThreadPoolExecutor> executor,
     std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController) {
-  if (resourcePoolsLock_) {
+  std::lock_guard<std::mutex> lock(mutex_);
+  if (locked_) {
     throw std::logic_error("Cannot addResourcePool() after lock()");
   }
-  auto rp = resourcePools_.wlock();
   std::unique_ptr<ResourcePool> pool{new ResourcePool{
       std::move(requestPile),
       executor,
@@ -110,37 +110,38 @@ ResourcePoolHandle ResourcePoolSet::addResourcePool(
       poolName}};
   // Ensure that any default slots have been initialized (with empty unique_ptr
   // if necessary).
-  rp->resize(std::max(rp->size(), ResourcePoolHandle::kMaxReservedHandle + 1));
-  rp->emplace_back(std::move(pool));
-  return ResourcePoolHandle::makeHandle(poolName, rp->size() - 1);
+  resourcePools_.resize(std::max(
+      resourcePools_.size(), ResourcePoolHandle::kMaxReservedHandle + 1));
+  resourcePools_.emplace_back(std::move(pool));
+  return ResourcePoolHandle::makeHandle(poolName, resourcePools_.size() - 1);
 }
 
-void ResourcePoolSet::lock() const {
-  auto lock = resourcePools_.rlock();
-  resourcePoolsLock_ = std::move(lock);
+void ResourcePoolSet::lock() {
+  std::lock_guard<std::mutex> lock(mutex_);
+  locked_ = true;
 }
 
 size_t ResourcePoolSet::numQueued() const {
+  if (!locked_) {
+    return 0;
+  }
   size_t sum = 0;
-
-  auto lResourcePool = resourcePools_.rlock();
-
-  for (auto& pool : *lResourcePool) {
-    if (pool->requestPile_) {
-      sum += pool->requestPile_->requestCount();
+  for (auto& pool : resourcePools_) {
+    if (auto rp = pool->requestPile()) {
+      sum += rp.value()->requestCount();
     }
   }
   return sum;
 }
 
 size_t ResourcePoolSet::numInExecution() const {
+  if (!locked_) {
+    return 0;
+  }
   size_t sum = 0;
-
-  auto lResourcePool = resourcePools_.rlock();
-
-  for (auto& pool : *lResourcePool) {
-    if (pool->concurrencyController_) {
-      sum += pool->concurrencyController_->requestCount();
+  for (auto& pool : resourcePools_) {
+    if (auto cc = pool->concurrencyController()) {
+      sum += cc.value()->requestCount();
     }
   }
   return sum;
@@ -148,11 +149,10 @@ size_t ResourcePoolSet::numInExecution() const {
 
 std::optional<ResourcePoolHandle> ResourcePoolSet::findResourcePool(
     std::string_view poolName) const {
-  ResourcePools::ConstLockedPtr localLock;
-  auto& lock = resourcePoolsLock_ ? resourcePoolsLock_
-                                  : localLock = resourcePools_.rlock();
-  for (std::size_t i = 0; i < lock->size(); ++i) {
-    if (lock->at(i) && lock->at(i)->name() == poolName) {
+  auto guard = locked_ ? std::unique_lock<std::mutex>()
+                       : std::unique_lock<std::mutex>(mutex_);
+  for (std::size_t i = 0; i < resourcePools_.size(); ++i) {
+    if (resourcePools_.at(i) && resourcePools_.at(i)->name() == poolName) {
       return ResourcePoolHandle::makeHandle(poolName, i);
     }
   }
@@ -160,43 +160,48 @@ std::optional<ResourcePoolHandle> ResourcePoolSet::findResourcePool(
 }
 
 bool ResourcePoolSet::hasResourcePool(const ResourcePoolHandle& handle) const {
-  ResourcePools::ConstLockedPtr localLock;
-  auto& lock = resourcePoolsLock_ ? resourcePoolsLock_
-                                  : localLock = resourcePools_.rlock();
-  if (handle.index() >= lock->size()) {
+  auto guard = locked_ ? std::unique_lock<std::mutex>()
+                       : std::unique_lock<std::mutex>(mutex_);
+  if (handle.index() >= resourcePools_.size()) {
     return false;
   }
-  return static_cast<bool>((*lock)[handle.index()]);
+  return static_cast<bool>(resourcePools_[handle.index()]);
 }
 
 ResourcePool& ResourcePoolSet::resourcePool(
     const ResourcePoolHandle& handle) const {
-  ResourcePools::ConstLockedPtr localLock;
-  auto& lock = resourcePoolsLock_ ? resourcePoolsLock_
-                                  : localLock = resourcePools_.rlock();
-  DCHECK_LT(handle.index(), lock->size());
-  DCHECK((*lock)[handle.index()]);
-  return *(*lock)[handle.index()].get();
+  auto guard = locked_ ? std::unique_lock<std::mutex>()
+                       : std::unique_lock<std::mutex>(mutex_);
+  DCHECK_LT(handle.index(), resourcePools_.size());
+  DCHECK(resourcePools_[handle.index()]);
+  return *resourcePools_[handle.index()];
 }
 
 bool ResourcePoolSet::empty() const {
-  ResourcePools::ConstLockedPtr localLock;
-  auto& lock = resourcePoolsLock_ ? resourcePoolsLock_
-                                  : localLock = resourcePools_.rlock();
-  return lock->empty();
+  auto guard = locked_ ? std::unique_lock<std::mutex>()
+                       : std::unique_lock<std::mutex>(mutex_);
+  return resourcePools_.empty();
 }
 
 void ResourcePoolSet::stopAndJoin() {
-  resourcePoolsLock_.unlock();
-  auto rp = resourcePools_.wlock();
-  for (auto& resourcePool : *rp) {
-    if (resourcePool && resourcePool->concurrencyController()) {
-      resourcePool->concurrencyController().value()->stop();
+  {
+    // This is called during shutdown - the ResourcePoolSet should have been
+    // locked by this point.
+    std::lock_guard<std::mutex> lock(mutex_);
+    CHECK(locked_);
+  }
+  for (auto& resourcePool : resourcePools_) {
+    if (resourcePool) {
+      if (auto cc = resourcePool->concurrencyController()) {
+        cc.value()->stop();
+      }
     }
   }
-  for (auto& resourcePool : *rp) {
-    if (resourcePool && resourcePool->executor()) {
-      resourcePool->executor().value()->join();
+  for (auto& resourcePool : resourcePools_) {
+    if (resourcePool) {
+      if (auto ex = resourcePool->executor()) {
+        ex.value()->join();
+      }
     }
   }
 }

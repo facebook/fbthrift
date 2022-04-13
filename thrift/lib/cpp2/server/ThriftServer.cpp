@@ -683,6 +683,7 @@ void ThriftServer::runtimeResourcePoolsChecks() {
 void ThriftServer::ensureResourcePools() {
   // If the user has supplied resource pools we will believe them.
   if (!resourcePoolSet().empty()) {
+    resourcePoolSet().lock();
     return;
   }
 
@@ -771,6 +772,7 @@ void ThriftServer::ensureResourcePools() {
           std::move(concurrencyController));
     }
   }
+  resourcePoolSet().lock();
 }
 
 /**
@@ -1116,10 +1118,13 @@ void ThriftServer::stopCPUWorkers() {
   // finish, then stop the task queue workers. Have to do this now, so
   // there aren't tasks completing and trying to write to i/o thread
   // workers after we've stopped the i/o workers.
-  if (threadManager_) {
+  if (useResourcePools()) {
+    resourcePoolSet().stopAndJoin();
+    CHECK(!threadManager_);
+  } else {
+    CHECK(threadManager_);
     threadManager_->join();
   }
-  resourcePoolSet().stopAndJoin();
 #if FOLLY_HAS_COROUTINES
   // Wait for tasks running on AsyncScope to join
   folly::coro::blockingWait(asyncScope_->joinAsync());

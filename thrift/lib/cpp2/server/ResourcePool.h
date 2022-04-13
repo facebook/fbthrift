@@ -98,8 +98,10 @@ class ResourcePool {
 // resource pools but can also be used elsewhere, for example, resources to run
 // requests on special connections.
 //
-// A newly created ResourcePoolSet is writable until lock() is called. After
-// that it is read only.
+// A newly created ResourcePoolSet is writable and readable with synchronization
+// provided by the ResourcePoolSet for access during setup. Once lock() is
+// called it becomes read only (no synchronization is performed and write
+// operations are prohibited).
 class ResourcePoolSet {
  public:
   // Set a specific resource pool by handle. This fails if the ResourcePool
@@ -119,22 +121,20 @@ class ResourcePoolSet {
       std::shared_ptr<folly::ThreadPoolExecutor> executor,
       std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController);
 
-  // Lock the ResourcePool and make it read only. The thrift server
+  // Lock the ResourcePoolSet and make it read only. The thrift server
   // infrastructure will call this at the correct time during setup.
-  void lock() const;
+  void lock();
 
   // Number of requests that are currently sitting in the RequestPile
-  // This will acquire lock so should never be called often
-  // This is an estimate
+  // This is an estimate and should not be called frequently.
   size_t numQueued() const;
 
   // Number of requests that are being executed in the executor
-  // This will acquire lock so should never be called often
-  // This is an estimate
+  // This is an estimate and should not be called frequently.
   size_t numInExecution() const;
 
   // Returns the handle of the ResourcePool with the supplied name if it
-  // exists.
+  // exists. This should be called once and the results cached by the caller.
   std::optional<ResourcePoolHandle> findResourcePool(
       std::string_view poolName) const;
 
@@ -156,10 +156,10 @@ class ResourcePoolSet {
   void stopAndJoin();
 
  private:
-  using ResourcePools =
-      folly::Synchronized<std::vector<std::unique_ptr<ResourcePool>>>;
+  using ResourcePools = std::vector<std::unique_ptr<ResourcePool>>;
   ResourcePools resourcePools_;
-  mutable ResourcePools::ConstRLockedPtr resourcePoolsLock_;
+  mutable std::mutex mutex_;
+  bool locked_{false};
 };
 
 } // namespace apache::thrift
