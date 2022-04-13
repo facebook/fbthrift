@@ -157,5 +157,28 @@ class TProcessorEventHandler {
   TProcessorEventHandler() {}
 };
 
+/**
+ * Derive from this interface if the ProcessorEventHandler is uninterested in
+ * user exceptions.
+ *
+ * The ProcessorEventHandler user exception interface performs symbol demangling
+ * which is relatively expensive. Many ProcessorEventHandlers are uninterested
+ * in user exceptions which results in that work being discarded.
+ */
+class TProcessorEventHandlerNoUserExnCallbacks : public TProcessorEventHandler {
+ public:
+  void userException(
+      void* /*ctx*/,
+      const char* /*fn_name*/,
+      const std::string& /*ex*/,
+      const std::string& /*ex_what*/) final {}
+
+  void userExceptionWrapped(
+      void* /*ctx*/,
+      const char* /*fn_name*/,
+      bool /*declared*/,
+      const folly::exception_wrapper& /*ew_*/) final {}
+};
+
 } // namespace thrift
 } // namespace apache
