@@ -131,7 +131,7 @@ public class PingClient {
 
     // NOTE: the follow code can be simplified after a better api is introduced
     final PingService client =
-        PingService.createClient(
+        PingService.createBlockingClient(
             clientFactory,
             address,
             ProtocolId.BINARY,

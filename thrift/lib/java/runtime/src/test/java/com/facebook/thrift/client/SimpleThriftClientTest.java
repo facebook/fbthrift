@@ -72,7 +72,7 @@ public class SimpleThriftClientTest {
                     .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
             .build();
 
-    PingService client = PingService.createClient(factory, address, ProtocolId.BINARY);
+    PingService client = PingService.createBlockingClient(factory, address, ProtocolId.BINARY);
 
     client.pingVoid(new PingRequest.Builder().setRequest("ping").build());
   }
@@ -101,7 +101,7 @@ public class SimpleThriftClientTest {
                     .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
             .build();
 
-    PingService.Async client = PingService.Async.createClient(factory, address, ProtocolId.BINARY);
+    PingService.Async client = PingService.createAsyncClient(factory, address, ProtocolId.BINARY);
     client.pingVoid(new PingRequest.Builder().setRequest("ping").build()).get();
   }
 
@@ -129,7 +129,7 @@ public class SimpleThriftClientTest {
             .build();
 
     PingService.Reactive client =
-        PingService.Reactive.createClient(factory, address, ProtocolId.BINARY);
+        PingService.createReactiveClient(factory, address, ProtocolId.BINARY);
     client.pingVoid(new PingRequest.Builder().setRequest("ping").build()).block();
   }
 
@@ -161,7 +161,7 @@ public class SimpleThriftClientTest {
     PingRequest pingRequest = new PingRequest.Builder().setRequest("ping").build();
 
     try {
-      PingService open = PingService.createClient(factory, address, ProtocolId.BINARY);
+      PingService open = PingService.createBlockingClient(factory, address, ProtocolId.BINARY);
       open.ping(pingRequest);
       assertEquals(1, metrics.getChannelCount());
     } catch (Throwable t) {
@@ -170,7 +170,7 @@ public class SimpleThriftClientTest {
     }
 
     try {
-      PingService closed = PingService.createClient(factory, address, ProtocolId.BINARY);
+      PingService closed = PingService.createBlockingClient(factory, address, ProtocolId.BINARY);
       closed.ping(pingRequest);
     } catch (Throwable t) {
       assertEquals(metrics.getRejectedConnections(), 1);
@@ -205,7 +205,7 @@ public class SimpleThriftClientTest {
             .build();
 
     PingRequest pingRequest = new PingRequest.Builder().setRequest("ping").build();
-    PingService pingService = PingService.createClient(factory, address, ProtocolId.BINARY);
+    PingService pingService = PingService.createBlockingClient(factory, address, ProtocolId.BINARY);
     try {
       pingService.ping(pingRequest);
     } catch (Throwable t) {
@@ -261,7 +261,7 @@ public class SimpleThriftClientTest {
                     .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)))
             .build();
 
-    PingService pingService = PingService.createClient(factory, address, ProtocolId.BINARY);
+    PingService pingService = PingService.createBlockingClient(factory, address, ProtocolId.BINARY);
 
     for (int i = 0; i < n; i++) {
       PingRequest pingRequest = new PingRequest.Builder().setRequest(i + "ping").build();
@@ -318,7 +318,7 @@ public class SimpleThriftClientTest {
             .build();
 
     PingService.Async pingService =
-        PingService.Async.createClient(factory, address, ProtocolId.BINARY);
+        PingService.createAsyncClient(factory, address, ProtocolId.BINARY);
     LOG.info("new client created, sending ping");
 
     Flux.range(0, n)

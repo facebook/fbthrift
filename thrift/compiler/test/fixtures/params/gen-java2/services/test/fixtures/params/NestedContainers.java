@@ -18,24 +18,24 @@ import java.util.*;
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("NestedContainers")
 public interface NestedContainers extends java.io.Closeable {
-    static NestedContainers createClient(
+    static NestedContainers createBlockingClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
       final org.apache.thrift.ProtocolId _protocolId) {
-        NestedContainers.Reactive _delegate = Reactive.createClient(
+        NestedContainers.Reactive _delegate = createReactiveClient(
             _rpcClientFactory,
             _socketAddress,
             _protocolId);
         return new NestedContainersReactiveBlockingWrapper(_delegate);
     }
 
-    static NestedContainers createClient(
+    static NestedContainers createBlockingClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
       final org.apache.thrift.ProtocolId _protocolId,
       final java.util.Map<String, String> _headers,
       final java.util.Map<String, String> _persistentHeaders) {
-        NestedContainers.Reactive _delegate = Reactive.createClient(
+        NestedContainers.Reactive _delegate = createReactiveClient(
             _rpcClientFactory,
             _socketAddress,
             _protocolId,
@@ -44,78 +44,59 @@ public interface NestedContainers extends java.io.Closeable {
         return new NestedContainersReactiveBlockingWrapper(_delegate);
     }
 
-    static NestedContainers createClient(
-      final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
+    static NestedContainers.Async createAsyncClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
       final org.apache.thrift.ProtocolId _protocolId) {
-        NestedContainers.Reactive _delegate = Reactive.createClient(
-            _rpcClientMono,
+        NestedContainers.Reactive _delegate = createReactiveClient(
+            _rpcClientFactory,
+            _socketAddress,
             _protocolId);
-        return new NestedContainersReactiveBlockingWrapper(_delegate);
+        return new NestedContainersReactiveAsyncWrapper(_delegate);
     }
 
-    static NestedContainers createClient(
-      final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
+    static NestedContainers.Async createAsyncClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
       final org.apache.thrift.ProtocolId _protocolId,
       final java.util.Map<String, String> _headers,
       final java.util.Map<String, String> _persistentHeaders) {
-        NestedContainers.Reactive _delegate = Reactive.createClient(
-            _rpcClientMono,
+        NestedContainers.Reactive _delegate = createReactiveClient(
+            _rpcClientFactory,
+            _socketAddress,
             _protocolId,
             _headers,
             _persistentHeaders);
-        return new NestedContainersReactiveBlockingWrapper(_delegate);
+        return new NestedContainersReactiveAsyncWrapper(_delegate);
+    }
+
+    static NestedContainers.Reactive createReactiveClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
+      final org.apache.thrift.ProtocolId _protocolId) {
+        return new NestedContainersReactiveClient(
+            _protocolId,
+            _rpcClientFactory.createRpcClient(_socketAddress),
+            java.util.Collections.emptyMap(),
+            java.util.Collections.emptyMap());
+    }
+
+    static NestedContainers.Reactive createReactiveClient(
+      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+      final java.net.SocketAddress _socketAddress,
+      final org.apache.thrift.ProtocolId _protocolId,
+      final java.util.Map<String, String> _headers,
+      final java.util.Map<String, String> _persistentHeaders
+      ) {
+        return new NestedContainersReactiveClient(
+            _protocolId,
+            _rpcClientFactory.createRpcClient(_socketAddress),
+            _headers,
+            _persistentHeaders);
     }
 
     @com.facebook.swift.service.ThriftService("NestedContainers")
     public interface Async extends java.io.Closeable {
-        static NestedContainers.Async createClient(
-            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-            final java.net.SocketAddress _socketAddress,
-            final org.apache.thrift.ProtocolId _protocolId) {
-                NestedContainers.Reactive _delegate = Reactive.createClient(
-                    _rpcClientFactory,
-                    _socketAddress,
-                    _protocolId);
-                return new NestedContainersReactiveAsyncWrapper(_delegate);
-        }
-
-        static NestedContainers.Async createClient(
-            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-            final java.net.SocketAddress _socketAddress,
-            final org.apache.thrift.ProtocolId _protocolId,
-            final java.util.Map<String, String> _headers,
-            final java.util.Map<String, String> _persistentHeaders) {
-                NestedContainers.Reactive _delegate = Reactive.createClient(
-                    _rpcClientFactory,
-                    _socketAddress,
-                    _protocolId,
-                    _headers,
-                    _persistentHeaders);
-                return new NestedContainersReactiveAsyncWrapper(_delegate);
-        }
-
-        static NestedContainers.Async createClient(
-            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-            final org.apache.thrift.ProtocolId _protocolId) {
-                NestedContainers.Reactive _delegate = Reactive.createClient(
-                    _rpcClientMono,
-                    _protocolId);
-                return new NestedContainersReactiveAsyncWrapper(_delegate);
-        }
-
-        static NestedContainers.Async createClient(
-            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-            final org.apache.thrift.ProtocolId _protocolId,
-            final java.util.Map<String, String> _headers,
-            final java.util.Map<String, String> _persistentHeaders) {
-                NestedContainers.Reactive _delegate = Reactive.createClient(
-                    _rpcClientMono,
-                    _protocolId,
-                    _headers,
-                    _persistentHeaders);
-                return new NestedContainersReactiveAsyncWrapper(_delegate);
-        }
-
         @java.lang.Override void close();
 
         @ThriftMethod(value = "mapList")
@@ -282,54 +263,6 @@ public interface NestedContainers extends java.io.Closeable {
 
     @com.facebook.swift.service.ThriftService("NestedContainers")
     interface Reactive extends reactor.core.Disposable {
-        static NestedContainers.Reactive createClient(
-            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-            final java.net.SocketAddress _socketAddress,
-            final org.apache.thrift.ProtocolId _protocolId) {
-                return new NestedContainersReactiveClient(
-                    _protocolId,
-                    _rpcClientFactory.createRpcClient(_socketAddress),
-                    java.util.Collections.emptyMap(),
-                    java.util.Collections.emptyMap());
-        }
-
-        static NestedContainers.Reactive createClient(
-            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-            final java.net.SocketAddress _socketAddress,
-            final org.apache.thrift.ProtocolId _protocolId,
-            final java.util.Map<String, String> _headers,
-            final java.util.Map<String, String> _persistentHeaders
-            ) {
-                return new NestedContainersReactiveClient(
-                    _protocolId,
-                    _rpcClientFactory.createRpcClient(_socketAddress),
-                    _headers,
-                    _persistentHeaders);
-        }
-
-        static NestedContainers.Reactive createClient(
-            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-            final org.apache.thrift.ProtocolId _protocolId) {
-                return new NestedContainersReactiveClient(
-                    _protocolId,
-                    _rpcClientMono,
-                    java.util.Collections.emptyMap(),
-                    java.util.Collections.emptyMap());
-        }
-
-        static NestedContainers.Reactive createClient(
-            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-            final org.apache.thrift.ProtocolId _protocolId,
-            final java.util.Map<String, String> _headers,
-            final java.util.Map<String, String> _persistentHeaders
-            ) {
-                return new NestedContainersReactiveClient(
-                    _protocolId,
-                    _rpcClientMono,
-                    _headers,
-                    _persistentHeaders);
-        }
-
         @ThriftMethod(value = "mapList")
         reactor.core.publisher.Mono<Void> mapList(final Map<Integer, List<Integer>> foo);
 
