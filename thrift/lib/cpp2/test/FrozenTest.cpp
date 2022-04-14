@@ -375,19 +375,19 @@ TEST(Frozen, RelativePtr) {
 
 TEST(Frozen, Utf8StringMap) {
   map<string, int> tmap{
-      {u8"anxiety", 1},
-      {u8"a\u00F1onuevo", 2},
-      {u8"aot", 3},
-      {u8"bacon", 4},
+      {"anxiety", 1},
+      {"a\u00F1onuevo", 2},
+      {"aot", 3},
+      {"bacon", 4},
   };
   auto pfmap = freeze(tmap);
   auto& fmap = *pfmap;
-  EXPECT_NE(fmap.find(u8"anxiety"), fmap.end());
-  EXPECT_NE(fmap.find(u8"a\u00F1onuevo"), fmap.end());
-  EXPECT_NE(fmap.find(u8"aot"), fmap.end());
-  EXPECT_NE(fmap.find(u8"bacon"), fmap.end());
-  EXPECT_EQ(fmap.at(u8"anxiety"), 1);
-  EXPECT_EQ(fmap.at(u8"a\u00F1onuevo"), 2);
-  EXPECT_EQ(fmap.at(u8"aot"), 3);
-  EXPECT_EQ(fmap.at(u8"bacon"), 4);
+  EXPECT_NE(fmap.find("anxiety"), fmap.end());
+  EXPECT_NE(fmap.find("a\u00F1onuevo"), fmap.end());
+  EXPECT_NE(fmap.find("aot"), fmap.end());
+  EXPECT_NE(fmap.find("bacon"), fmap.end());
+  EXPECT_EQ(fmap.at("anxiety"), 1);
+  EXPECT_EQ(fmap.at("a\u00F1onuevo"), 2);
+  EXPECT_EQ(fmap.at("aot"), 3);
+  EXPECT_EQ(fmap.at("bacon"), 4);
 }
