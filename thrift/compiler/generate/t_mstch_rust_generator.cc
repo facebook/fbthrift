@@ -1675,8 +1675,15 @@ class type_rust_generator : public type_generator {
   const rust_codegen_options& options_;
 };
 
+struct name_less {
+  bool operator()(const t_type* lhs, const t_type* rhs) const {
+    return lhs->get_scoped_name() < rhs->get_scoped_name();
+  }
+};
+
 mstch::node mstch_rust_service::rust_all_exceptions() {
-  std::map<const t_type*, std::vector<const t_function*>> function_map;
+  std::map<const t_type*, std::vector<const t_function*>, name_less>
+      function_map;
   std::map<const t_type*, std::vector<const t_field*>> field_map;
   for (const auto& fun : service_->functions()) {
     for (const auto& fld : fun.get_xceptions()->fields()) {

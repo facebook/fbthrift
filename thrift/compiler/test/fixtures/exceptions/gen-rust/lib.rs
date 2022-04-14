@@ -2809,6 +2809,24 @@ pub mod errors {
     /// Errors for Raiser functions.
     pub mod raiser {
 
+        pub trait AsBanal {
+            fn as_banal(&self) -> Option<&crate::types::Banal>;
+        }
+
+        impl AsBanal for ::anyhow::Error {
+            fn as_banal(&self) -> Option<&crate::types::Banal> {
+                for cause in self.chain() {
+                    if let Some(DoRaiseError::b(e)) = cause.downcast_ref::<DoRaiseError>() {
+                        return Some(e);
+                    }
+                    if let Some(Get500Error::b(e)) = cause.downcast_ref::<Get500Error>() {
+                        return Some(e);
+                    }
+                }
+                None
+            }
+        }
+
         pub trait AsFiery {
             fn as_fiery(&self) -> Option<&crate::types::Fiery>;
         }
@@ -2838,24 +2856,6 @@ pub mod errors {
                         return Some(e);
                     }
                     if let Some(Get500Error::s(e)) = cause.downcast_ref::<Get500Error>() {
-                        return Some(e);
-                    }
-                }
-                None
-            }
-        }
-
-        pub trait AsBanal {
-            fn as_banal(&self) -> Option<&crate::types::Banal>;
-        }
-
-        impl AsBanal for ::anyhow::Error {
-            fn as_banal(&self) -> Option<&crate::types::Banal> {
-                for cause in self.chain() {
-                    if let Some(DoRaiseError::b(e)) = cause.downcast_ref::<DoRaiseError>() {
-                        return Some(e);
-                    }
-                    if let Some(Get500Error::b(e)) = cause.downcast_ref::<Get500Error>() {
                         return Some(e);
                     }
                 }
