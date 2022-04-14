@@ -74,3 +74,12 @@ struct Transitive {} (thrift.uri = "facebook.com/thrift/annotation/Transitive")
 struct MergeFrom {
   1: string type;
 } (thrift.uri = "facebook.com/thrift/annotation/meta/MergeFrom")
+
+// Calls t_struct::set_generated().
+//
+// Useful for testing.
+@scope.Struct
+@thrift.Experimental
+struct SetGenerated {} (
+  thrift.uri = "facebook.com/thrift/annotation/meta/SetGenerated",
+)

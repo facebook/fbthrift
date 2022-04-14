@@ -13,6 +13,20 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+template <>
+struct VisitUnion<::cpp2::MyUnion> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
+    using Union = std::remove_reference_t<T>;
+    switch (t.getType()) {
+    case Union::Type::option1:
+      return f(0, *static_cast<T&&>(t).option1_ref());
+    case Union::Type::option2:
+      return f(1, *static_cast<T&&>(t).option2_ref());
+    case Union::Type::__EMPTY__: ;
+    }
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

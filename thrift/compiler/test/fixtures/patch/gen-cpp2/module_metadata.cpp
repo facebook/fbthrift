@@ -52,6 +52,85 @@ StructMetadata<::cpp2::MyData>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::MyUnion>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs_ref()->emplace("module.MyUnion", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyUnion = res.first->second;
+  module_MyUnion.name_ref() = "module.MyUnion";
+  module_MyUnion.is_union_ref() = true;
+  static const EncodedThriftField
+  module_MyUnion_fields[] = {
+    {1, "option1", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
+    {2, "option2", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
+  };
+  for (const auto& f : module_MyUnion_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
+    module_MyUnion.fields_ref()->push_back(std::move(field));
+  }
+  return res.first->second;
+}
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::MyUnionPatch>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs_ref()->emplace("module.MyUnionPatch", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyUnionPatch = res.first->second;
+  module_MyUnionPatch.name_ref() = "module.MyUnionPatch";
+  module_MyUnionPatch.is_union_ref() = false;
+  static const EncodedThriftField
+  module_MyUnionPatch_fields[] = {
+    {1, "option1", false, std::make_unique<Struct<::apache::thrift::op::StringPatchStruct>>("patch.StringPatch"), std::vector<ThriftConstStruct>{}},
+    {2, "option2", false, std::make_unique<Struct<::apache::thrift::op::I32PatchStruct>>("patch.I32Patch"), std::vector<ThriftConstStruct>{}},
+  };
+  for (const auto& f : module_MyUnionPatch_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
+    module_MyUnionPatch.fields_ref()->push_back(std::move(field));
+  }
+  module_MyUnionPatch.structured_annotations_ref()->push_back(*cvStruct("meta.SetGenerated", {}).cv_struct_ref());
+  return res.first->second;
+}
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::MyUnionValuePatch>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs_ref()->emplace("module.MyUnionValuePatch", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyUnionValuePatch = res.first->second;
+  module_MyUnionValuePatch.name_ref() = "module.MyUnionValuePatch";
+  module_MyUnionValuePatch.is_union_ref() = false;
+  static const EncodedThriftField
+  module_MyUnionValuePatch_fields[] = {
+    {2, "clear", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
+    {3, "patch", false, std::make_unique<Struct<::cpp2::MyUnionPatch>>("module.MyUnionPatch"), std::vector<ThriftConstStruct>{}},
+    {4, "ensure", false, std::make_unique<Union<::cpp2::MyUnion>>("module.MyUnion"), std::vector<ThriftConstStruct>{}},
+    {5, "patchAfter", false, std::make_unique<Struct<::cpp2::MyUnionPatch>>("module.MyUnionPatch"), std::vector<ThriftConstStruct>{}},
+  };
+  for (const auto& f : module_MyUnionValuePatch_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
+    module_MyUnionValuePatch.fields_ref()->push_back(std::move(field));
+  }
+  module_MyUnionValuePatch.structured_annotations_ref()->push_back(*cvStruct("meta.SetGenerated", {}).cv_struct_ref());
+  return res.first->second;
+}
+const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs_ref()->emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
@@ -85,6 +164,7 @@ StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
     {21, "optListVal", true, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)), std::vector<ThriftConstStruct>{}},
     {22, "optSetVal", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
     {23, "optMapVal", true, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
+    {30, "unionVal", false, std::make_unique<Union<::cpp2::MyUnion>>("module.MyUnion"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -370,6 +450,7 @@ StructMetadata<::cpp2::MyStructPatch>::gen(ThriftMetadata& metadata) {
     {21, "optListVal", false, std::make_unique<Struct<::cpp2::OptionalMyStructField21Patch>>("module.OptionalMyStructField21Patch"), std::vector<ThriftConstStruct>{}},
     {22, "optSetVal", false, std::make_unique<Struct<::cpp2::OptionalMyStructField22Patch>>("module.OptionalMyStructField22Patch"), std::vector<ThriftConstStruct>{}},
     {23, "optMapVal", false, std::make_unique<Struct<::cpp2::OptionalMyStructField23Patch>>("module.OptionalMyStructField23Patch"), std::vector<ThriftConstStruct>{}},
+    {30, "unionVal", false, std::make_unique<Struct<::cpp2::MyUnionValuePatch>>("module.MyUnionValuePatch"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStructPatch_fields) {
     ::apache::thrift::metadata::ThriftField field;

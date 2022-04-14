@@ -47,7 +47,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         @com.facebook.swift.codec.ThriftField(value=20, name="optStructVal", requiredness=Requiredness.OPTIONAL) final test.fixtures.patch.MyData optStructVal,
         @com.facebook.swift.codec.ThriftField(value=21, name="optListVal", requiredness=Requiredness.OPTIONAL) final List<Short> optListVal,
         @com.facebook.swift.codec.ThriftField(value=22, name="optSetVal", requiredness=Requiredness.OPTIONAL) final Set<String> optSetVal,
-        @com.facebook.swift.codec.ThriftField(value=23, name="optMapVal", requiredness=Requiredness.OPTIONAL) final Map<String, String> optMapVal
+        @com.facebook.swift.codec.ThriftField(value=23, name="optMapVal", requiredness=Requiredness.OPTIONAL) final Map<String, String> optMapVal,
+        @com.facebook.swift.codec.ThriftField(value=30, name="unionVal", requiredness=Requiredness.NONE) final test.fixtures.patch.MyUnion unionVal
     ) {
         this.boolVal = boolVal;
         this.byteVal = byteVal;
@@ -72,6 +73,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         this.optListVal = optListVal;
         this.optSetVal = optSetVal;
         this.optMapVal = optMapVal;
+        this.unionVal = unionVal;
     }
     
     @ThriftConstructor
@@ -99,6 +101,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       this.optListVal = null;
       this.optSetVal = null;
       this.optMapVal = null;
+      this.unionVal = null;
     }
     
     public static class Builder {
@@ -126,6 +129,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private List<Short> optListVal = null;
         private Set<String> optSetVal = null;
         private Map<String, String> optMapVal = null;
+        private test.fixtures.patch.MyUnion unionVal = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="boolVal", requiredness=Requiredness.NONE)
         public Builder setBoolVal(boolean boolVal) {
@@ -311,6 +315,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         public Map<String, String> getOptMapVal() { return optMapVal; }
     
+            @com.facebook.swift.codec.ThriftField(value=30, name="unionVal", requiredness=Requiredness.NONE)
+        public Builder setUnionVal(test.fixtures.patch.MyUnion unionVal) {
+            this.unionVal = unionVal;
+            return this;
+        }
+    
+        public test.fixtures.patch.MyUnion getUnionVal() { return unionVal; }
+    
         public Builder() { }
         public Builder(MyStruct other) {
             this.boolVal = other.boolVal;
@@ -336,6 +348,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             this.optListVal = other.optListVal;
             this.optSetVal = other.optSetVal;
             this.optMapVal = other.optMapVal;
+            this.unionVal = other.unionVal;
         }
     
         @ThriftConstructor
@@ -363,7 +376,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 this.optStructVal,
                 this.optListVal,
                 this.optSetVal,
-                this.optMapVal
+                this.optMapVal,
+                this.unionVal
             );
             return result;
         }
@@ -442,6 +456,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private final Map<String, String> optMapVal;
     public static final int _OPTMAPVAL = 23;
     private static final TField OPT_MAP_VAL_FIELD_DESC = new TField("optMapVal", TType.MAP, (short)23);
+        private final test.fixtures.patch.MyUnion unionVal;
+    public static final int _UNIONVAL = 30;
+    private static final TField UNION_VAL_FIELD_DESC = new TField("unionVal", TType.STRUCT, (short)30);
     static {
       NAMES_TO_IDS.put("boolVal", 1);
       THRIFT_NAMES_TO_IDS.put("boolVal", 1);
@@ -512,6 +529,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       NAMES_TO_IDS.put("optMapVal", 23);
       THRIFT_NAMES_TO_IDS.put("optMapVal", 23);
       FIELD_METADATA.put(23, OPT_MAP_VAL_FIELD_DESC);
+      NAMES_TO_IDS.put("unionVal", 30);
+      THRIFT_NAMES_TO_IDS.put("unionVal", 30);
+      FIELD_METADATA.put(30, UNION_VAL_FIELD_DESC);
     }
     
     
@@ -628,6 +648,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     @com.facebook.swift.codec.ThriftField(value=23, name="optMapVal", requiredness=Requiredness.OPTIONAL)
     public Map<String, String> getOptMapVal() { return optMapVal; }
     
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=30, name="unionVal", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.MyUnion getUnionVal() { return unionVal; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -654,6 +679,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         helper.add("optListVal", optListVal);
         helper.add("optSetVal", optSetVal);
         helper.add("optMapVal", optMapVal);
+        helper.add("unionVal", unionVal);
         return helper.toString();
     }
     
@@ -692,6 +718,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             Objects.equals(optListVal, other.optListVal) &&
             Objects.equals(optSetVal, other.optSetVal) &&
             Objects.equals(optMapVal, other.optMapVal) &&
+            Objects.equals(unionVal, other.unionVal) &&
             true;
     }
     
@@ -720,7 +747,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             optStructVal,
             optListVal,
             optSetVal,
-            optMapVal
+            optMapVal,
+            unionVal
         });
     }
     
@@ -952,6 +980,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _UNIONVAL:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.patch.MyUnion unionVal = test.fixtures.patch.MyUnion.read0(oprot);
+            builder.setUnionVal(unionVal);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -1079,6 +1115,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           oprot.writeString(_iter1.getValue());
         }
         oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.unionVal != null) {
+        oprot.writeFieldBegin(UNION_VAL_FIELD_DESC);
+        this.unionVal.write0(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

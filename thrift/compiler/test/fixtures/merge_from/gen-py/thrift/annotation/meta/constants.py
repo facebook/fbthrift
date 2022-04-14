@@ -16,5 +16,5 @@ import thrift.annotation.scope.ttypes
 import thrift.annotation.thrift.ttypes
 
 
-from .ttypes import UTF8STRINGS, Transitive, MergeFrom
+from .ttypes import UTF8STRINGS, Transitive, MergeFrom, SetGenerated
 

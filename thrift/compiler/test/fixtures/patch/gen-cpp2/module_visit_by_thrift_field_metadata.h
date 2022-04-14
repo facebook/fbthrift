@@ -29,6 +29,55 @@ struct VisitByFieldId<::cpp2::MyData> {
 };
 
 template <>
+struct VisitByFieldId<::cpp2::MyUnion> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 1:
+      return f(0, static_cast<T&&>(t).option1_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).option2_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::MyUnion");
+    }
+  }
+};
+
+template <>
+struct VisitByFieldId<::cpp2::MyUnionPatch> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 1:
+      return f(0, static_cast<T&&>(t).option1_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).option2_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::MyUnionPatch");
+    }
+  }
+};
+
+template <>
+struct VisitByFieldId<::cpp2::MyUnionValuePatch> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 2:
+      return f(0, static_cast<T&&>(t).clear_ref());
+    case 3:
+      return f(1, static_cast<T&&>(t).patch_ref());
+    case 4:
+      return f(2, static_cast<T&&>(t).ensure_ref());
+    case 5:
+      return f(3, static_cast<T&&>(t).patchAfter_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::MyUnionValuePatch");
+    }
+  }
+};
+
+template <>
 struct VisitByFieldId<::cpp2::MyStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
@@ -79,6 +128,8 @@ struct VisitByFieldId<::cpp2::MyStruct> {
       return f(21, static_cast<T&&>(t).optSetVal_ref());
     case 23:
       return f(22, static_cast<T&&>(t).optMapVal_ref());
+    case 30:
+      return f(23, static_cast<T&&>(t).unionVal_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::MyStruct");
     }
@@ -299,6 +350,8 @@ struct VisitByFieldId<::cpp2::MyStructPatch> {
       return f(21, static_cast<T&&>(t).optSetVal_ref());
     case 23:
       return f(22, static_cast<T&&>(t).optMapVal_ref());
+    case 30:
+      return f(23, static_cast<T&&>(t).unionVal_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::MyStructPatch");
     }

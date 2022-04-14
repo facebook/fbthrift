@@ -18,6 +18,16 @@ namespace thrift {
 namespace py3 {
 
 
+template<>
+const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
+    ::cpp2::MyUnion::Type>::namesmap() {
+  static const folly::Indestructible<NamesMap> pairs {
+    {
+    }
+  };
+  return *pairs;
+}
+
 
 template<>
 void reset_field<::cpp2::MyData>(
@@ -28,6 +38,38 @@ void reset_field<::cpp2::MyData>(
       return;
     case 1:
       obj.data2_ref().copy_from(default_inst<::cpp2::MyData>().data2_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::cpp2::MyUnionPatch>(
+    ::cpp2::MyUnionPatch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.option1_ref().copy_from(default_inst<::cpp2::MyUnionPatch>().option1_ref());
+      return;
+    case 1:
+      obj.option2_ref().copy_from(default_inst<::cpp2::MyUnionPatch>().option2_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::cpp2::MyUnionValuePatch>(
+    ::cpp2::MyUnionValuePatch& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.clear_ref().copy_from(default_inst<::cpp2::MyUnionValuePatch>().clear_ref());
+      return;
+    case 1:
+      obj.patch_ref().copy_from(default_inst<::cpp2::MyUnionValuePatch>().patch_ref());
+      return;
+    case 2:
+      obj.ensure_ref().copy_from(default_inst<::cpp2::MyUnionValuePatch>().ensure_ref());
+      return;
+    case 3:
+      obj.patchAfter_ref().copy_from(default_inst<::cpp2::MyUnionValuePatch>().patchAfter_ref());
       return;
   }
 }
@@ -104,6 +146,9 @@ void reset_field<::cpp2::MyStruct>(
       return;
     case 22:
       obj.optMapVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optMapVal_ref());
+      return;
+    case 23:
+      obj.unionVal_ref().copy_from(default_inst<::cpp2::MyStruct>().unionVal_ref());
       return;
   }
 }
@@ -228,6 +273,9 @@ void reset_field<::cpp2::MyStructPatch>(
       return;
     case 22:
       obj.optMapVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optMapVal_ref());
+      return;
+    case 23:
+      obj.unionVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().unionVal_ref());
       return;
   }
 }
@@ -381,6 +429,36 @@ void reset_field<::cpp2::OptionalMyStructValuePatch>(
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::MyData>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::MyUnion>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::MyUnionPatch>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::MyUnionValuePatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

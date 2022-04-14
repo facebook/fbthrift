@@ -183,6 +183,61 @@ class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
   }
 };
 
+// A patch for an union value.
+//
+// Patch must have the following fields:
+//   bool clear;
+//   P patch;
+//   T ensure;
+//   P patchAfter;
+// Where P is the patch type for the union type T.
+template <typename Patch>
+class UnionPatch : public BaseEnsurePatch<Patch, UnionPatch<Patch>> {
+  using Base = BaseEnsurePatch<Patch, UnionPatch>;
+  using T = typename Base::value_type;
+  using P = typename Base::value_patch_type;
+
+ public:
+  using Base::Base;
+  using Base::operator=;
+  using Base::apply;
+
+  template <typename U = T>
+  FOLLY_NODISCARD static UnionPatch createEnsure(U&& _default) {
+    UnionPatch patch;
+    patch.ensure(std::forward<U>(_default));
+    return patch;
+  }
+  T& ensure() { return *patch_.ensure(); }
+  P& ensure(const T& val) { return *ensureAnd(val).patchAfter(); }
+  P& ensure(T&& val) { return *ensureAnd(std::move(val)).patchAfter(); }
+
+  void apply(T& val) const {
+    if (*patch_.clear()) {
+      thrift::clear(val);
+    } else {
+      // TODO(afuller): Add op::get support to unions.
+      // patch_.patch()->apply(val);
+    }
+    if (patch_.ensure()->getType() != T::__EMPTY__ &&
+        patch_.ensure()->getType() != val.getType()) {
+      val = *patch_.ensure();
+    }
+    // TODO(afuller): Add op::get support to unions.
+    // patch_.patchAfter()->apply(val);
+  }
+
+  template <typename U>
+  void merge(U&& next) {
+    mergeEnsure(std::forward<U>(next));
+  }
+
+ private:
+  using Base::ensureAnd;
+  using Base::mergeEnsure;
+  using Base::patch_;
+};
+
 } // namespace detail
 } // namespace op
 } // namespace thrift

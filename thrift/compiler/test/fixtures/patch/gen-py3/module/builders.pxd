@@ -10,6 +10,8 @@ cimport folly.iobuf as _fbthrift_iobuf
 
 cimport thrift.py3.builder
 
+cimport facebook.thrift.annotation.meta.types as _facebook_thrift_annotation_meta_types
+cimport facebook.thrift.annotation.meta.builders as _facebook_thrift_annotation_meta_builders
 cimport patch.types as _patch_types
 cimport patch.builders as _patch_builders
 
@@ -18,6 +20,23 @@ cimport module.types as _module_types
 cdef class MyData_Builder(thrift.py3.builder.StructBuilder):
     cdef public str data1
     cdef public pint data2
+
+
+cdef class MyUnion_Builder(thrift.py3.builder.StructBuilder):
+    cdef public str option1
+    cdef public pint option2
+
+
+cdef class MyUnionPatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public object option1
+    cdef public object option2
+
+
+cdef class MyUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pbool clear
+    cdef public object patch
+    cdef public object ensure
+    cdef public object patchAfter
 
 
 cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
@@ -44,6 +63,7 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public list optListVal
     cdef public set optSetVal
     cdef public dict optMapVal
+    cdef public object unionVal
 
 
 cdef class MyDataPatch_Builder(thrift.py3.builder.StructBuilder):
@@ -88,6 +108,7 @@ cdef class MyStructPatch_Builder(thrift.py3.builder.StructBuilder):
     cdef public object optListVal
     cdef public object optSetVal
     cdef public object optMapVal
+    cdef public object unionVal
 
 
 cdef class MyStructField21Patch_Builder(thrift.py3.builder.StructBuilder):

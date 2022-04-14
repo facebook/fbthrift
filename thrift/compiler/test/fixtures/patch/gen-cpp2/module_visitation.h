@@ -5,6 +5,7 @@
  *  @generated @nocommit
  */
 #pragma once
+#include "thrift/annotation/gen-cpp2/meta_visitation.h"
 #include "thrift/lib/thrift/gen-cpp2/patch_visitation.h"
 #include "thrift/compiler/test/fixtures/patch/gen-cpp2/module_for_each_field.h"
 #include "thrift/compiler/test/fixtures/patch/gen-cpp2/module_visit_union.h"

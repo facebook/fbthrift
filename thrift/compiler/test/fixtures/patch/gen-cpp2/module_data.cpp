@@ -12,6 +12,15 @@
 namespace apache {
 namespace thrift {
 
+const std::array<::cpp2::MyUnion::Type, 2> TEnumDataStorage<::cpp2::MyUnion::Type>::values = {{
+  type::option1,
+  type::option2,
+}};
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::cpp2::MyUnion::Type>::names = {{
+  "option1",
+  "option2",
+}};
+
 const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::MyData>::fields_names = {{
   "data1",
   "data2",
@@ -25,7 +34,52 @@ const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::MyData>::fields_
   TType::T_I32,
 }};
 
-const std::array<folly::StringPiece, 23> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
+const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::MyUnion>::fields_names = {{
+  "option1",
+  "option2",
+}};
+const std::array<int16_t, 2> TStructDataStorage<::cpp2::MyUnion>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::MyUnion>::fields_types = {{
+  TType::T_STRING,
+  TType::T_I32,
+}};
+
+const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::MyUnionPatch>::fields_names = {{
+  "option1",
+  "option2",
+}};
+const std::array<int16_t, 2> TStructDataStorage<::cpp2::MyUnionPatch>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::MyUnionPatch>::fields_types = {{
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
+
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::MyUnionValuePatch>::fields_names = {{
+  "clear",
+  "patch",
+  "ensure",
+  "patchAfter",
+}};
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::MyUnionValuePatch>::fields_ids = {{
+  2,
+  3,
+  4,
+  5,
+}};
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::MyUnionValuePatch>::fields_types = {{
+  TType::T_BOOL,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
+
+const std::array<folly::StringPiece, 24> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
   "boolVal",
   "byteVal",
   "i16Val",
@@ -49,8 +103,9 @@ const std::array<folly::StringPiece, 23> TStructDataStorage<::cpp2::MyStruct>::f
   "optListVal",
   "optSetVal",
   "optMapVal",
+  "unionVal",
 }};
-const std::array<int16_t, 23> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
+const std::array<int16_t, 24> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
   1,
   2,
   3,
@@ -74,8 +129,9 @@ const std::array<int16_t, 23> TStructDataStorage<::cpp2::MyStruct>::fields_ids =
   21,
   22,
   23,
+  30,
 }};
-const std::array<protocol::TType, 23> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
+const std::array<protocol::TType, 24> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
   TType::T_BOOL,
   TType::T_BYTE,
   TType::T_I16,
@@ -99,6 +155,7 @@ const std::array<protocol::TType, 23> TStructDataStorage<::cpp2::MyStruct>::fiel
   TType::T_LIST,
   TType::T_SET,
   TType::T_MAP,
+  TType::T_STRUCT,
 }};
 
 const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::MyDataPatch>::fields_names = {{
@@ -260,7 +317,7 @@ const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::OptionalMyStruct
   TType::T_STRUCT,
 }};
 
-const std::array<folly::StringPiece, 23> TStructDataStorage<::cpp2::MyStructPatch>::fields_names = {{
+const std::array<folly::StringPiece, 24> TStructDataStorage<::cpp2::MyStructPatch>::fields_names = {{
   "boolVal",
   "byteVal",
   "i16Val",
@@ -284,8 +341,9 @@ const std::array<folly::StringPiece, 23> TStructDataStorage<::cpp2::MyStructPatc
   "optListVal",
   "optSetVal",
   "optMapVal",
+  "unionVal",
 }};
-const std::array<int16_t, 23> TStructDataStorage<::cpp2::MyStructPatch>::fields_ids = {{
+const std::array<int16_t, 24> TStructDataStorage<::cpp2::MyStructPatch>::fields_ids = {{
   1,
   2,
   3,
@@ -309,8 +367,10 @@ const std::array<int16_t, 23> TStructDataStorage<::cpp2::MyStructPatch>::fields_
   21,
   22,
   23,
+  30,
 }};
-const std::array<protocol::TType, 23> TStructDataStorage<::cpp2::MyStructPatch>::fields_types = {{
+const std::array<protocol::TType, 24> TStructDataStorage<::cpp2::MyStructPatch>::fields_types = {{
+  TType::T_STRUCT,
   TType::T_STRUCT,
   TType::T_STRUCT,
   TType::T_STRUCT,

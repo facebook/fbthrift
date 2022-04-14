@@ -47,7 +47,8 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         @com.facebook.swift.codec.ThriftField(value=20, name="optStructVal", requiredness=Requiredness.NONE) final test.fixtures.patch.OptionalMyDataValuePatch optStructVal,
         @com.facebook.swift.codec.ThriftField(value=21, name="optListVal", requiredness=Requiredness.NONE) final test.fixtures.patch.OptionalMyStructField21Patch optListVal,
         @com.facebook.swift.codec.ThriftField(value=22, name="optSetVal", requiredness=Requiredness.NONE) final test.fixtures.patch.OptionalMyStructField22Patch optSetVal,
-        @com.facebook.swift.codec.ThriftField(value=23, name="optMapVal", requiredness=Requiredness.NONE) final test.fixtures.patch.OptionalMyStructField23Patch optMapVal
+        @com.facebook.swift.codec.ThriftField(value=23, name="optMapVal", requiredness=Requiredness.NONE) final test.fixtures.patch.OptionalMyStructField23Patch optMapVal,
+        @com.facebook.swift.codec.ThriftField(value=30, name="unionVal", requiredness=Requiredness.NONE) final test.fixtures.patch.MyUnionValuePatch unionVal
     ) {
         this.boolVal = boolVal;
         this.byteVal = byteVal;
@@ -72,6 +73,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         this.optListVal = optListVal;
         this.optSetVal = optSetVal;
         this.optMapVal = optMapVal;
+        this.unionVal = unionVal;
     }
     
     @ThriftConstructor
@@ -99,6 +101,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
       this.optListVal = null;
       this.optSetVal = null;
       this.optMapVal = null;
+      this.unionVal = null;
     }
     
     public static class Builder {
@@ -126,6 +129,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         private test.fixtures.patch.OptionalMyStructField21Patch optListVal = null;
         private test.fixtures.patch.OptionalMyStructField22Patch optSetVal = null;
         private test.fixtures.patch.OptionalMyStructField23Patch optMapVal = null;
+        private test.fixtures.patch.MyUnionValuePatch unionVal = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="boolVal", requiredness=Requiredness.NONE)
         public Builder setBoolVal(com.facebook.thrift.op.BoolPatch boolVal) {
@@ -311,6 +315,14 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     
         public test.fixtures.patch.OptionalMyStructField23Patch getOptMapVal() { return optMapVal; }
     
+            @com.facebook.swift.codec.ThriftField(value=30, name="unionVal", requiredness=Requiredness.NONE)
+        public Builder setUnionVal(test.fixtures.patch.MyUnionValuePatch unionVal) {
+            this.unionVal = unionVal;
+            return this;
+        }
+    
+        public test.fixtures.patch.MyUnionValuePatch getUnionVal() { return unionVal; }
+    
         public Builder() { }
         public Builder(MyStructPatch other) {
             this.boolVal = other.boolVal;
@@ -336,6 +348,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
             this.optListVal = other.optListVal;
             this.optSetVal = other.optSetVal;
             this.optMapVal = other.optMapVal;
+            this.unionVal = other.unionVal;
         }
     
         @ThriftConstructor
@@ -363,12 +376,13 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
                 this.optStructVal,
                 this.optListVal,
                 this.optSetVal,
-                this.optMapVal
+                this.optMapVal,
+                this.unionVal
             );
             return result;
         }
     }
-                                                                                                public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                                                                                                    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructPatch");
@@ -441,6 +455,9 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         private final test.fixtures.patch.OptionalMyStructField23Patch optMapVal;
     public static final int _OPTMAPVAL = 23;
     private static final TField OPT_MAP_VAL_FIELD_DESC = new TField("optMapVal", TType.STRUCT, (short)23);
+        private final test.fixtures.patch.MyUnionValuePatch unionVal;
+    public static final int _UNIONVAL = 30;
+    private static final TField UNION_VAL_FIELD_DESC = new TField("unionVal", TType.STRUCT, (short)30);
     static {
       NAMES_TO_IDS.put("boolVal", 1);
       THRIFT_NAMES_TO_IDS.put("boolVal", 1);
@@ -511,6 +528,9 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
       NAMES_TO_IDS.put("optMapVal", 23);
       THRIFT_NAMES_TO_IDS.put("optMapVal", 23);
       FIELD_METADATA.put(23, OPT_MAP_VAL_FIELD_DESC);
+      NAMES_TO_IDS.put("unionVal", 30);
+      THRIFT_NAMES_TO_IDS.put("unionVal", 30);
+      FIELD_METADATA.put(30, UNION_VAL_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
         new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyStructPatch"), 
         MyStructPatch.class, MyStructPatch::read0));
@@ -630,6 +650,11 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     @com.facebook.swift.codec.ThriftField(value=23, name="optMapVal", requiredness=Requiredness.NONE)
     public test.fixtures.patch.OptionalMyStructField23Patch getOptMapVal() { return optMapVal; }
     
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=30, name="unionVal", requiredness=Requiredness.NONE)
+    public test.fixtures.patch.MyUnionValuePatch getUnionVal() { return unionVal; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -656,6 +681,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
         helper.add("optListVal", optListVal);
         helper.add("optSetVal", optSetVal);
         helper.add("optMapVal", optMapVal);
+        helper.add("unionVal", unionVal);
         return helper.toString();
     }
     
@@ -694,6 +720,7 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
     Objects.equals(optListVal, other.optListVal) &&
     Objects.equals(optSetVal, other.optSetVal) &&
     Objects.equals(optMapVal, other.optMapVal) &&
+    Objects.equals(unionVal, other.unionVal) &&
             true;
     }
     
@@ -722,7 +749,8 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
             optStructVal,
             optListVal,
             optSetVal,
-            optMapVal
+            optMapVal,
+            unionVal
         });
     }
     
@@ -923,6 +951,14 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _UNIONVAL:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.patch.MyUnionValuePatch unionVal = test.fixtures.patch.MyUnionValuePatch.read0(oprot);
+            builder.setUnionVal(unionVal);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -1048,6 +1084,11 @@ public final class MyStructPatch implements com.facebook.thrift.payload.ThriftSe
       if (this.optMapVal != null) {
         oprot.writeFieldBegin(OPT_MAP_VAL_FIELD_DESC);
         this.optMapVal.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.unionVal != null) {
+        oprot.writeFieldBegin(UNION_VAL_FIELD_DESC);
+        this.unionVal.write0(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

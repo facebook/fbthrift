@@ -49,6 +49,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
   private static final TField OPT_LIST_VAL_FIELD_DESC = new TField("optListVal", TType.STRUCT, (short)21);
   private static final TField OPT_SET_VAL_FIELD_DESC = new TField("optSetVal", TType.STRUCT, (short)22);
   private static final TField OPT_MAP_VAL_FIELD_DESC = new TField("optMapVal", TType.STRUCT, (short)23);
+  private static final TField UNION_VAL_FIELD_DESC = new TField("unionVal", TType.STRUCT, (short)30);
 
   public BoolPatch boolVal;
   public BytePatch byteVal;
@@ -73,6 +74,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
   public OptionalMyStructField21Patch optListVal;
   public OptionalMyStructField22Patch optSetVal;
   public OptionalMyStructField23Patch optMapVal;
+  public MyUnionValuePatch unionVal;
   public static final int BOOLVAL = 1;
   public static final int BYTEVAL = 2;
   public static final int I16VAL = 3;
@@ -96,6 +98,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
   public static final int OPTLISTVAL = 21;
   public static final int OPTSETVAL = 22;
   public static final int OPTMAPVAL = 23;
+  public static final int UNIONVAL = 30;
 
   // isset id assignments
 
@@ -149,6 +152,8 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
         new StructMetaData(TType.STRUCT, OptionalMyStructField22Patch.class)));
     tmpMetaDataMap.put(OPTMAPVAL, new FieldMetaData("optMapVal", TFieldRequirementType.DEFAULT, 
         new StructMetaData(TType.STRUCT, OptionalMyStructField23Patch.class)));
+    tmpMetaDataMap.put(UNIONVAL, new FieldMetaData("unionVal", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, MyUnionValuePatch.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -182,7 +187,8 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       OptionalMyDataValuePatch optStructVal,
       OptionalMyStructField21Patch optListVal,
       OptionalMyStructField22Patch optSetVal,
-      OptionalMyStructField23Patch optMapVal) {
+      OptionalMyStructField23Patch optMapVal,
+      MyUnionValuePatch unionVal) {
     this();
     this.boolVal = boolVal;
     this.byteVal = byteVal;
@@ -207,6 +213,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     this.optListVal = optListVal;
     this.optSetVal = optSetVal;
     this.optMapVal = optMapVal;
+    this.unionVal = unionVal;
   }
 
   public static class Builder {
@@ -233,6 +240,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     private OptionalMyStructField21Patch optListVal;
     private OptionalMyStructField22Patch optSetVal;
     private OptionalMyStructField23Patch optMapVal;
+    private MyUnionValuePatch unionVal;
 
     public Builder() {
     }
@@ -352,6 +360,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       return this;
     }
 
+    public Builder setUnionVal(final MyUnionValuePatch unionVal) {
+      this.unionVal = unionVal;
+      return this;
+    }
+
     public MyStructPatch build() {
       MyStructPatch result = new MyStructPatch();
       result.setBoolVal(this.boolVal);
@@ -377,6 +390,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       result.setOptListVal(this.optListVal);
       result.setOptSetVal(this.optSetVal);
       result.setOptMapVal(this.optMapVal);
+      result.setUnionVal(this.unionVal);
       return result;
     }
   }
@@ -457,6 +471,9 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
     if (other.isSetOptMapVal()) {
       this.optMapVal = TBaseHelper.deepCopy(other.optMapVal);
+    }
+    if (other.isSetUnionVal()) {
+      this.unionVal = TBaseHelper.deepCopy(other.unionVal);
     }
   }
 
@@ -1016,6 +1033,30 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
+  public MyUnionValuePatch getUnionVal() {
+    return this.unionVal;
+  }
+
+  public MyStructPatch setUnionVal(MyUnionValuePatch unionVal) {
+    this.unionVal = unionVal;
+    return this;
+  }
+
+  public void unsetUnionVal() {
+    this.unionVal = null;
+  }
+
+  // Returns true if field unionVal is set (has been assigned a value) and false otherwise
+  public boolean isSetUnionVal() {
+    return this.unionVal != null;
+  }
+
+  public void setUnionValIsSet(boolean __value) {
+    if (!__value) {
+      this.unionVal = null;
+    }
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case BOOLVAL:
@@ -1202,6 +1243,14 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       }
       break;
 
+    case UNIONVAL:
+      if (__value == null) {
+        unsetUnionVal();
+      } else {
+        setUnionVal((MyUnionValuePatch)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -1278,6 +1327,9 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     case OPTMAPVAL:
       return getOptMapVal();
 
+    case UNIONVAL:
+      return getUnionVal();
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -1339,12 +1391,14 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
 
     if (!TBaseHelper.equalsNobinary(this.isSetOptMapVal(), that.isSetOptMapVal(), this.optMapVal, that.optMapVal)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetUnionVal(), that.isSetUnionVal(), this.unionVal, that.unionVal)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {boolVal, byteVal, i16Val, i32Val, i64Val, floatVal, doubleVal, stringVal, binaryVal, structVal, optBoolVal, optByteVal, optI16Val, optI32Val, optI64Val, optFloatVal, optDoubleVal, optStringVal, optBinaryVal, optStructVal, optListVal, optSetVal, optMapVal});
+    return Arrays.deepHashCode(new Object[] {boolVal, byteVal, i16Val, i32Val, i64Val, floatVal, doubleVal, stringVal, binaryVal, structVal, optBoolVal, optByteVal, optI16Val, optI32Val, optI64Val, optFloatVal, optDoubleVal, optStringVal, optBinaryVal, optStructVal, optListVal, optSetVal, optMapVal, unionVal});
   }
 
   @Override
@@ -1540,6 +1594,14 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(optMapVal, other.optMapVal);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetUnionVal()).compareTo(other.isSetUnionVal());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(unionVal, other.unionVal);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -1741,6 +1803,14 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case UNIONVAL:
+          if (__field.type == TType.STRUCT) {
+            this.unionVal = new MyUnionValuePatch();
+            this.unionVal.read(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -1871,6 +1941,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     if (this.optMapVal != null) {
       oprot.writeFieldBegin(OPT_MAP_VAL_FIELD_DESC);
       this.optMapVal.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.unionVal != null) {
+      oprot.writeFieldBegin(UNION_VAL_FIELD_DESC);
+      this.unionVal.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -2143,6 +2218,17 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       sb.append("null");
     } else {
       sb.append(TBaseHelper.toString(this.getOptMapVal(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("unionVal");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getUnionVal() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getUnionVal(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

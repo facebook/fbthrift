@@ -26,10 +26,7 @@
 
 namespace apache::thrift {
 namespace {
-using test::patch::MyData;
-using test::patch::MyStruct;
-using test::patch::MyStructPatch;
-using test::patch::MyStructValuePatch;
+using namespace test::patch;
 
 using TestStructPatch = op::detail::StructPatch<MyStructValuePatch>;
 using ListPatch = std::decay_t<
@@ -374,6 +371,60 @@ TEST(StructPatchTest, MapPatch) {
       *assignPatch.get().assign(),
       (std::map<std::string, std::string>(
           {{"a", "1"}, {"b", "3"}, {"c", "4"}})));
+}
+
+TEST(UnionPatchTest, ClearAndAssign) {
+  const auto noop = *TestStructPatch()->unionVal();
+  using Patch = decltype(noop);
+
+  MyUnion actual;
+  Patch assignEmpty = Patch::createAssign(actual);
+  EXPECT_EQ(assignEmpty.get(), Patch::createClear().get());
+  EXPECT_EQ(actual.getType(), MyUnion::__EMPTY__);
+  EXPECT_EQ(*assignEmpty.get().clear(), true);
+  EXPECT_EQ(assignEmpty.get().ensure()->getType(), MyUnion::__EMPTY__);
+
+  EXPECT_EQ(actual, MyUnion{});
+  test::expectPatch(noop, actual, {});
+  test::expectPatch(assignEmpty, actual, {});
+
+  actual.option1_ref() = "hi";
+  Patch assign = Patch::createAssign(actual);
+  EXPECT_EQ(actual.getType(), MyUnion::option1);
+  test::expectPatch(noop, actual, actual);
+  test::expectPatch(assignEmpty, actual, {});
+  test::expectPatch(assign, actual, actual);
+  test::expectPatch(assign, {}, actual);
+
+  assignEmpty.apply(actual);
+  EXPECT_EQ(actual.getType(), MyUnion::__EMPTY__);
+  assign.apply(actual);
+  EXPECT_EQ(actual.getType(), MyUnion::option1);
+}
+
+TEST(UnionPatchTest, Ensure) {
+  auto patch = *TestStructPatch()->unionVal();
+  MyUnion expected, actual;
+  patch.ensure().option1_ref() = "hi";
+  expected.option1_ref() = "hi";
+  EXPECT_EQ(patch.get(), decltype(patch)::createEnsure(expected).get());
+
+  // Empty -> expected
+  test::expectPatch(patch, {}, expected);
+  patch.apply(actual);
+  EXPECT_EQ(actual.getType(), MyUnion::option1);
+
+  // Same type is untouched.
+  actual.option1_ref() = "bye";
+  test::expectPatch(patch, actual, actual);
+  patch.apply(actual);
+  EXPECT_EQ(actual.getType(), MyUnion::option1);
+
+  // Different type -> expected.
+  actual.option2_ref() = 1;
+  test::expectPatch(patch, actual, expected);
+  patch.apply(actual);
+  EXPECT_EQ(actual.getType(), MyUnion::option1);
 }
 
 } // namespace

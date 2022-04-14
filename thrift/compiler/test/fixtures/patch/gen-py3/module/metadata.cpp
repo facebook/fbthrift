@@ -12,6 +12,9 @@ namespace cpp2 {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::StructMetadata<MyData>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<MyUnion>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<MyUnionPatch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<MyUnionValuePatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyDataPatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyDataValuePatch>::gen(metadata);

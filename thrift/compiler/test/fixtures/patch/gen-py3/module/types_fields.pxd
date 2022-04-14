@@ -38,6 +38,7 @@ from thrift.py3.types cimport (
 )
 from folly.optional cimport cOptional as __cOptional
 
+cimport facebook.thrift.annotation.meta.types as _facebook_thrift_annotation_meta_types
 cimport patch.types as _patch_types
 
 cimport module.types as _module_types
@@ -54,6 +55,32 @@ cdef class __MyData_FieldsSetter(__StructFieldsSetter):
     cdef __MyData_FieldsSetter _fbthrift_create(_module_types.cMyData* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
     cdef void _set_field_1(self, _fbthrift_value) except *
+
+
+ctypedef void (*__MyUnionPatch_FieldsSetterFunc)(__MyUnionPatch_FieldsSetter, object) except *
+
+cdef class __MyUnionPatch_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cMyUnionPatch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __MyUnionPatch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __MyUnionPatch_FieldsSetter _fbthrift_create(_module_types.cMyUnionPatch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+
+
+ctypedef void (*__MyUnionValuePatch_FieldsSetterFunc)(__MyUnionValuePatch_FieldsSetter, object) except *
+
+cdef class __MyUnionValuePatch_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cMyUnionValuePatch* _struct_cpp_obj
+    cdef cumap[__cstring_view, __MyUnionValuePatch_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __MyUnionValuePatch_FieldsSetter _fbthrift_create(_module_types.cMyUnionValuePatch* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
 
 
 ctypedef void (*__MyStruct_FieldsSetterFunc)(__MyStruct_FieldsSetter, object) except *
@@ -87,6 +114,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_20(self, _fbthrift_value) except *
     cdef void _set_field_21(self, _fbthrift_value) except *
     cdef void _set_field_22(self, _fbthrift_value) except *
+    cdef void _set_field_23(self, _fbthrift_value) except *
 
 
 ctypedef void (*__MyDataPatch_FieldsSetterFunc)(__MyDataPatch_FieldsSetter, object) except *
@@ -159,6 +187,7 @@ cdef class __MyStructPatch_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_20(self, _fbthrift_value) except *
     cdef void _set_field_21(self, _fbthrift_value) except *
     cdef void _set_field_22(self, _fbthrift_value) except *
+    cdef void _set_field_23(self, _fbthrift_value) except *
 
 
 ctypedef void (*__MyStructField21Patch_FieldsSetterFunc)(__MyStructField21Patch_FieldsSetter, object) except *

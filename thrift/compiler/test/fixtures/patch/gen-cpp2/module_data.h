@@ -12,6 +12,13 @@
 
 namespace apache { namespace thrift {
 
+template <> struct TEnumDataStorage<::cpp2::MyUnion::Type> {
+  using type = ::cpp2::MyUnion::Type;
+  static constexpr const std::size_t size = 2;
+  static const std::array<type, size> values;
+  static const std::array<folly::StringPiece, size> names;
+};
+
 template <> struct TStructDataStorage<::cpp2::MyData> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
@@ -19,8 +26,29 @@ template <> struct TStructDataStorage<::cpp2::MyData> {
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
+template <> struct TStructDataStorage<::cpp2::MyUnion> {
+  static constexpr const std::size_t fields_size = 2;
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<protocol::TType, fields_size> fields_types;
+};
+
+template <> struct TStructDataStorage<::cpp2::MyUnionPatch> {
+  static constexpr const std::size_t fields_size = 2;
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<protocol::TType, fields_size> fields_types;
+};
+
+template <> struct TStructDataStorage<::cpp2::MyUnionValuePatch> {
+  static constexpr const std::size_t fields_size = 4;
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<protocol::TType, fields_size> fields_types;
+};
+
 template <> struct TStructDataStorage<::cpp2::MyStruct> {
-  static constexpr const std::size_t fields_size = 23;
+  static constexpr const std::size_t fields_size = 24;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
@@ -90,7 +118,7 @@ template <> struct TStructDataStorage<::cpp2::OptionalMyStructField23Patch> {
 };
 
 template <> struct TStructDataStorage<::cpp2::MyStructPatch> {
-  static constexpr const std::size_t fields_size = 23;
+  static constexpr const std::size_t fields_size = 24;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;

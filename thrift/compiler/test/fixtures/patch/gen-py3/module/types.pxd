@@ -38,6 +38,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 from folly.optional cimport cOptional as __cOptional
+cimport facebook.thrift.annotation.meta.types as _facebook_thrift_annotation_meta_types
 cimport patch.types as _patch_types
 
 cimport module.types_fields as _fbthrift_types_fields
@@ -73,6 +74,54 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] data1_ref()
         __field_ref[cint32_t] data2_ref()
 
+    cdef enum cMyUnion__type "::cpp2::MyUnion::Type":
+        cMyUnion__type___EMPTY__ "::cpp2::MyUnion::Type::__EMPTY__",
+        cMyUnion__type_option1 "::cpp2::MyUnion::Type::option1",
+        cMyUnion__type_option2 "::cpp2::MyUnion::Type::option2",
+
+    cdef cppclass cMyUnion "::cpp2::MyUnion":
+        cMyUnion() except +
+        cMyUnion(const cMyUnion&) except +
+        bint operator==(cMyUnion&)
+        bint operator!=(cMyUnion&)
+        bint operator<(cMyUnion&)
+        bint operator>(cMyUnion&)
+        bint operator<=(cMyUnion&)
+        bint operator>=(cMyUnion&)
+        cMyUnion__type getType() const
+        const string& get_option1() const
+        string& set_option1(const string&)
+        const cint32_t& get_option2() const
+        cint32_t& set_option2(const cint32_t&)
+
+
+    cdef cppclass cMyUnionPatch "::cpp2::MyUnionPatch":
+        cMyUnionPatch() except +
+        cMyUnionPatch(const cMyUnionPatch&) except +
+        bint operator==(cMyUnionPatch&)
+        bint operator!=(cMyUnionPatch&)
+        bint operator<(cMyUnionPatch&)
+        bint operator>(cMyUnionPatch&)
+        bint operator<=(cMyUnionPatch&)
+        bint operator>=(cMyUnionPatch&)
+        __field_ref[_patch_types.cStringPatch] option1_ref()
+        __field_ref[_patch_types.cI32Patch] option2_ref()
+
+
+    cdef cppclass cMyUnionValuePatch "::cpp2::MyUnionValuePatch":
+        cMyUnionValuePatch() except +
+        cMyUnionValuePatch(const cMyUnionValuePatch&) except +
+        bint operator==(cMyUnionValuePatch&)
+        bint operator!=(cMyUnionValuePatch&)
+        bint operator<(cMyUnionValuePatch&)
+        bint operator>(cMyUnionValuePatch&)
+        bint operator<=(cMyUnionValuePatch&)
+        bint operator>=(cMyUnionValuePatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cMyUnionPatch] patch_ref()
+        __field_ref[cMyUnion] ensure_ref()
+        __field_ref[cMyUnionPatch] patchAfter_ref()
+
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
@@ -106,6 +155,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[vector[cint16_t]] optListVal_ref()
         __optional_field_ref[cset[string]] optSetVal_ref()
         __optional_field_ref[cmap[string,string]] optMapVal_ref()
+        __field_ref[cMyUnion] unionVal_ref()
 
 
     cdef cppclass cMyDataPatch "::cpp2::MyDataPatch":
@@ -182,6 +232,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[cOptionalMyStructField21Patch] optListVal_ref()
         __field_ref[cOptionalMyStructField22Patch] optSetVal_ref()
         __field_ref[cOptionalMyStructField23Patch] optMapVal_ref()
+        __field_ref[cMyUnionValuePatch] unionVal_ref()
 
 
     cdef cppclass cMyStructField21Patch "::cpp2::MyStructField21Patch":
@@ -313,6 +364,57 @@ cdef class MyData(thrift.py3.types.Struct):
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyData])
 
+cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
+    pass
+
+
+
+
+cdef class MyUnion(thrift.py3.types.Union):
+    cdef shared_ptr[cMyUnion] _cpp_obj
+    cdef readonly __MyUnionType type
+    cdef readonly object value
+    cdef _load_cache(MyUnion self)
+
+    @staticmethod
+    cdef unique_ptr[cMyUnion] _make_instance(
+        cMyUnion* base_instance,
+        str option1,
+        object option2
+    ) except *
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyUnion])
+
+
+
+cdef class MyUnionPatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cMyUnionPatch] _cpp_obj
+    cdef _fbthrift_types_fields.__MyUnionPatch_FieldsSetter _fields_setter
+    cdef inline object option1_impl(self)
+    cdef inline object option2_impl(self)
+    cdef _patch_types.StringPatch __fbthrift_cached_option1
+    cdef _patch_types.I32Patch __fbthrift_cached_option2
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyUnionPatch])
+
+
+
+cdef class MyUnionValuePatch(thrift.py3.types.Struct):
+    cdef shared_ptr[cMyUnionValuePatch] _cpp_obj
+    cdef _fbthrift_types_fields.__MyUnionValuePatch_FieldsSetter _fields_setter
+    cdef inline object clear_impl(self)
+    cdef inline object patch_impl(self)
+    cdef inline object ensure_impl(self)
+    cdef inline object patchAfter_impl(self)
+    cdef MyUnionPatch __fbthrift_cached_patch
+    cdef MyUnion __fbthrift_cached_ensure
+    cdef MyUnionPatch __fbthrift_cached_patchAfter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyUnionValuePatch])
+
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
@@ -341,11 +443,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef inline object optListVal_impl(self)
     cdef inline object optSetVal_impl(self)
     cdef inline object optMapVal_impl(self)
+    cdef inline object unionVal_impl(self)
     cdef MyData __fbthrift_cached_structVal
     cdef MyData __fbthrift_cached_optStructVal
     cdef List__i16 __fbthrift_cached_optListVal
     cdef Set__string __fbthrift_cached_optSetVal
     cdef Map__string_string __fbthrift_cached_optMapVal
+    cdef MyUnion __fbthrift_cached_unionVal
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStruct])
@@ -421,6 +525,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline object optListVal_impl(self)
     cdef inline object optSetVal_impl(self)
     cdef inline object optMapVal_impl(self)
+    cdef inline object unionVal_impl(self)
     cdef _patch_types.BoolPatch __fbthrift_cached_boolVal
     cdef _patch_types.BytePatch __fbthrift_cached_byteVal
     cdef _patch_types.I16Patch __fbthrift_cached_i16Val
@@ -444,6 +549,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef OptionalMyStructField21Patch __fbthrift_cached_optListVal
     cdef OptionalMyStructField22Patch __fbthrift_cached_optSetVal
     cdef OptionalMyStructField23Patch __fbthrift_cached_optMapVal
+    cdef MyUnionValuePatch __fbthrift_cached_unionVal
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyStructPatch])

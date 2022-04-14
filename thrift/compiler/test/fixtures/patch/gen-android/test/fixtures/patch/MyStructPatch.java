@@ -49,6 +49,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
   private static final TField OPT_LIST_VAL_FIELD_DESC = new TField("optListVal", TType.STRUCT, (short)21);
   private static final TField OPT_SET_VAL_FIELD_DESC = new TField("optSetVal", TType.STRUCT, (short)22);
   private static final TField OPT_MAP_VAL_FIELD_DESC = new TField("optMapVal", TType.STRUCT, (short)23);
+  private static final TField UNION_VAL_FIELD_DESC = new TField("unionVal", TType.STRUCT, (short)30);
 
   public final BoolPatch boolVal;
   public final BytePatch byteVal;
@@ -73,6 +74,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
   public final OptionalMyStructField21Patch optListVal;
   public final OptionalMyStructField22Patch optSetVal;
   public final OptionalMyStructField23Patch optMapVal;
+  public final MyUnionValuePatch unionVal;
   public static final int BOOLVAL = 1;
   public static final int BYTEVAL = 2;
   public static final int I16VAL = 3;
@@ -96,6 +98,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
   public static final int OPTLISTVAL = 21;
   public static final int OPTSETVAL = 22;
   public static final int OPTMAPVAL = 23;
+  public static final int UNIONVAL = 30;
 
   public MyStructPatch(
       BoolPatch boolVal,
@@ -120,7 +123,8 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
       OptionalMyDataValuePatch optStructVal,
       OptionalMyStructField21Patch optListVal,
       OptionalMyStructField22Patch optSetVal,
-      OptionalMyStructField23Patch optMapVal) {
+      OptionalMyStructField23Patch optMapVal,
+      MyUnionValuePatch unionVal) {
     this.boolVal = boolVal;
     this.byteVal = byteVal;
     this.i16Val = i16Val;
@@ -144,6 +148,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
     this.optListVal = optListVal;
     this.optSetVal = optSetVal;
     this.optMapVal = optMapVal;
+    this.unionVal = unionVal;
   }
 
   /**
@@ -264,6 +269,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
       this.optMapVal = TBaseHelper.deepCopy(other.optMapVal);
     } else {
       this.optMapVal = null;
+    }
+    if (other.isSetUnionVal()) {
+      this.unionVal = TBaseHelper.deepCopy(other.unionVal);
+    } else {
+      this.unionVal = null;
     }
   }
 
@@ -478,6 +488,15 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
     return this.optMapVal != null;
   }
 
+  public MyUnionValuePatch getUnionVal() {
+    return this.unionVal;
+  }
+
+  // Returns true if field unionVal is set (has been assigned a value) and false otherwise
+  public boolean isSetUnionVal() {
+    return this.unionVal != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -534,12 +553,14 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetOptMapVal(), that.isSetOptMapVal(), this.optMapVal, that.optMapVal)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetUnionVal(), that.isSetUnionVal(), this.unionVal, that.unionVal)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {boolVal, byteVal, i16Val, i32Val, i64Val, floatVal, doubleVal, stringVal, binaryVal, structVal, optBoolVal, optByteVal, optI16Val, optI32Val, optI64Val, optFloatVal, optDoubleVal, optStringVal, optBinaryVal, optStructVal, optListVal, optSetVal, optMapVal});
+    return Arrays.deepHashCode(new Object[] {boolVal, byteVal, i16Val, i32Val, i64Val, floatVal, doubleVal, stringVal, binaryVal, structVal, optBoolVal, optByteVal, optI16Val, optI32Val, optI64Val, optFloatVal, optDoubleVal, optStringVal, optBinaryVal, optStructVal, optListVal, optSetVal, optMapVal, unionVal});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -571,6 +592,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
     OptionalMyStructField21Patch tmp_optListVal = null;
     OptionalMyStructField22Patch tmp_optSetVal = null;
     OptionalMyStructField23Patch tmp_optMapVal = null;
+    MyUnionValuePatch tmp_unionVal = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -742,6 +764,13 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case UNIONVAL:
+          if (__field.type == TType.STRUCT) {
+            tmp_unionVal = MyUnionValuePatch.deserialize(iprot);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -775,6 +804,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
       ,tmp_optListVal
       ,tmp_optSetVal
       ,tmp_optMapVal
+      ,tmp_unionVal
     );
     _that.validate();
     return _that;
@@ -897,6 +927,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable {
     if (this.optMapVal != null) {
       oprot.writeFieldBegin(OPT_MAP_VAL_FIELD_DESC);
       this.optMapVal.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.unionVal != null) {
+      oprot.writeFieldBegin(UNION_VAL_FIELD_DESC);
+      this.unionVal.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

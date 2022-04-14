@@ -24,6 +24,39 @@ pub mod types {
         pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
 
+    #[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
+    pub enum MyUnion {
+        option1(::std::string::String),
+        option2(::std::primitive::i32),
+        UnknownField(::std::primitive::i32),
+    }
+
+    #[derive(Clone, PartialEq)]
+    pub struct MyUnionPatch {
+        pub option1: patch::types::StringPatch,
+        pub option2: patch::types::I32Patch,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
+    }
+
+    #[derive(Clone, PartialEq)]
+    pub struct MyUnionValuePatch {
+        pub clear: ::std::primitive::bool,
+        pub patch: crate::types::MyUnionPatch,
+        pub ensure: crate::types::MyUnion,
+        pub patchAfter: crate::types::MyUnionPatch,
+        // This field forces `..Default::default()` when instantiating this
+        // struct, to make code future-proof against new fields added later to
+        // the definition in Thrift. If you don't want this, add the annotation
+        // `(rust.exhaustive)` to the Thrift struct to eliminate this field.
+        #[doc(hidden)]
+        pub _dot_dot_Default_default: self::dot_dot::OtherFields,
+    }
+
     #[derive(Clone, PartialEq)]
     pub struct MyStruct {
         pub boolVal: ::std::primitive::bool,
@@ -49,6 +82,7 @@ pub mod types {
         pub optListVal: ::std::option::Option<::std::vec::Vec<::std::primitive::i16>>,
         pub optSetVal: ::std::option::Option<::std::collections::BTreeSet<::std::string::String>>,
         pub optMapVal: ::std::option::Option<::std::collections::BTreeMap<::std::string::String, ::std::string::String>>,
+        pub unionVal: crate::types::MyUnion,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -128,6 +162,7 @@ pub mod types {
         pub optListVal: crate::types::OptionalMyStructField21Patch,
         pub optSetVal: crate::types::OptionalMyStructField22Patch,
         pub optMapVal: crate::types::OptionalMyStructField23Patch,
+        pub unionVal: crate::types::MyUnionValuePatch,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -352,6 +387,253 @@ pub mod types {
     }
 
 
+
+    impl ::std::default::Default for MyUnion {
+        fn default() -> Self {
+            Self::UnknownField(-1)
+        }
+    }
+
+    impl ::fbthrift::GetTType for MyUnion {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for MyUnion
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("MyUnion");
+            match self {
+                MyUnion::option1(inner) => {
+                    p.write_field_begin("option1", ::fbthrift::TType::String, 1);
+                    ::fbthrift::Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                MyUnion::option2(inner) => {
+                    p.write_field_begin("option2", ::fbthrift::TType::I32, 2);
+                    ::fbthrift::Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                MyUnion::UnknownField(_) => {}
+            }
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for MyUnion
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("option1", ::fbthrift::TType::String, 1),
+                ::fbthrift::Field::new("option2", ::fbthrift::TType::I32, 2),
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = ::std::option::Option::None;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32, once) {
+                    (::fbthrift::TType::Stop, _, _) => break,
+                    (::fbthrift::TType::String, 1, false) => {
+                        once = true;
+                        alt = ::std::option::Option::Some(MyUnion::option1(::fbthrift::Deserialize::read(p)?));
+                    }
+                    (::fbthrift::TType::I32, 2, false) => {
+                        once = true;
+                        alt = ::std::option::Option::Some(MyUnion::option2(::fbthrift::Deserialize::read(p)?));
+                    }
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "MyUnion",
+                            badty,
+                            badid,
+                        ),
+                    ))),
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(alt.unwrap_or_default())
+        }
+    }
+
+    impl ::std::default::Default for self::MyUnionPatch {
+        fn default() -> Self {
+            Self {
+                option1: ::std::default::Default::default(),
+                option2: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyUnionPatch {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyUnionPatch")
+                .field("option1", &self.option1)
+                .field("option2", &self.option2)
+                .finish()
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::MyUnionPatch {}
+    unsafe impl ::std::marker::Sync for self::MyUnionPatch {}
+
+    impl ::fbthrift::GetTType for self::MyUnionPatch {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::MyUnionPatch
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("MyUnionPatch");
+            p.write_field_begin("option1", ::fbthrift::TType::Struct, 1);
+            ::fbthrift::Serialize::write(&self.option1, p);
+            p.write_field_end();
+            p.write_field_begin("option2", ::fbthrift::TType::Struct, 2);
+            ::fbthrift::Serialize::write(&self.option2, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::MyUnionPatch
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("option1", ::fbthrift::TType::Struct, 1),
+                ::fbthrift::Field::new("option2", ::fbthrift::TType::Struct, 2),
+            ];
+            let mut field_option1 = ::std::option::Option::None;
+            let mut field_option2 = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::Struct, 1) => field_option1 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 2) => field_option2 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                option1: field_option1.unwrap_or_default(),
+                option2: field_option2.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            })
+        }
+    }
+
+
+    impl ::std::default::Default for self::MyUnionValuePatch {
+        fn default() -> Self {
+            Self {
+                clear: ::std::default::Default::default(),
+                patch: ::std::default::Default::default(),
+                ensure: ::std::default::Default::default(),
+                patchAfter: ::std::default::Default::default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            }
+        }
+    }
+
+    impl ::std::fmt::Debug for self::MyUnionValuePatch {
+        fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            formatter
+                .debug_struct("MyUnionValuePatch")
+                .field("clear", &self.clear)
+                .field("patch", &self.patch)
+                .field("ensure", &self.ensure)
+                .field("patchAfter", &self.patchAfter)
+                .finish()
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::MyUnionValuePatch {}
+    unsafe impl ::std::marker::Sync for self::MyUnionValuePatch {}
+
+    impl ::fbthrift::GetTType for self::MyUnionValuePatch {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::MyUnionValuePatch
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("MyUnionValuePatch");
+            p.write_field_begin("clear", ::fbthrift::TType::Bool, 2);
+            ::fbthrift::Serialize::write(&self.clear, p);
+            p.write_field_end();
+            p.write_field_begin("patch", ::fbthrift::TType::Struct, 3);
+            ::fbthrift::Serialize::write(&self.patch, p);
+            p.write_field_end();
+            p.write_field_begin("ensure", ::fbthrift::TType::Struct, 4);
+            ::fbthrift::Serialize::write(&self.ensure, p);
+            p.write_field_end();
+            p.write_field_begin("patchAfter", ::fbthrift::TType::Struct, 5);
+            ::fbthrift::Serialize::write(&self.patchAfter, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::MyUnionValuePatch
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("clear", ::fbthrift::TType::Bool, 2),
+                ::fbthrift::Field::new("ensure", ::fbthrift::TType::Struct, 4),
+                ::fbthrift::Field::new("patch", ::fbthrift::TType::Struct, 3),
+                ::fbthrift::Field::new("patchAfter", ::fbthrift::TType::Struct, 5),
+            ];
+            let mut field_clear = ::std::option::Option::None;
+            let mut field_patch = ::std::option::Option::None;
+            let mut field_ensure = ::std::option::Option::None;
+            let mut field_patchAfter = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::Bool, 2) => field_clear = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 3) => field_patch = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 4) => field_ensure = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 5) => field_patchAfter = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                clear: field_clear.unwrap_or_default(),
+                patch: field_patch.unwrap_or_default(),
+                ensure: field_ensure.unwrap_or_default(),
+                patchAfter: field_patchAfter.unwrap_or_default(),
+                _dot_dot_Default_default: self::dot_dot::OtherFields(()),
+            })
+        }
+    }
+
+
     impl ::std::default::Default for self::MyStruct {
         fn default() -> Self {
             Self {
@@ -378,6 +660,7 @@ pub mod types {
                 optListVal: ::std::option::Option::None,
                 optSetVal: ::std::option::Option::None,
                 optMapVal: ::std::option::Option::None,
+                unionVal: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -410,6 +693,7 @@ pub mod types {
                 .field("optListVal", &self.optListVal)
                 .field("optSetVal", &self.optSetVal)
                 .field("optMapVal", &self.optMapVal)
+                .field("unionVal", &self.unionVal)
                 .finish()
         }
     }
@@ -522,6 +806,9 @@ pub mod types {
                 ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
+            p.write_field_begin("unionVal", ::fbthrift::TType::Struct, 30);
+            ::fbthrift::Serialize::write(&self.unionVal, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -556,6 +843,7 @@ pub mod types {
                 ::fbthrift::Field::new("optStructVal", ::fbthrift::TType::Struct, 20),
                 ::fbthrift::Field::new("stringVal", ::fbthrift::TType::String, 8),
                 ::fbthrift::Field::new("structVal", ::fbthrift::TType::Struct, 10),
+                ::fbthrift::Field::new("unionVal", ::fbthrift::TType::Struct, 30),
             ];
             let mut field_boolVal = ::std::option::Option::None;
             let mut field_byteVal = ::std::option::Option::None;
@@ -580,6 +868,7 @@ pub mod types {
             let mut field_optListVal = ::std::option::Option::None;
             let mut field_optSetVal = ::std::option::Option::None;
             let mut field_optMapVal = ::std::option::Option::None;
+            let mut field_unionVal = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -608,6 +897,7 @@ pub mod types {
                     (::fbthrift::TType::List, 21) => field_optListVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Set, 22) => field_optSetVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Map, 23) => field_optMapVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 30) => field_unionVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -637,6 +927,7 @@ pub mod types {
                 optListVal: field_optListVal,
                 optSetVal: field_optSetVal,
                 optMapVal: field_optMapVal,
+                unionVal: field_unionVal.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
@@ -928,6 +1219,7 @@ pub mod types {
                 optListVal: ::std::default::Default::default(),
                 optSetVal: ::std::default::Default::default(),
                 optMapVal: ::std::default::Default::default(),
+                unionVal: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -960,6 +1252,7 @@ pub mod types {
                 .field("optListVal", &self.optListVal)
                 .field("optSetVal", &self.optSetVal)
                 .field("optMapVal", &self.optMapVal)
+                .field("unionVal", &self.unionVal)
                 .finish()
         }
     }
@@ -1046,6 +1339,9 @@ pub mod types {
             p.write_field_begin("optMapVal", ::fbthrift::TType::Struct, 23);
             ::fbthrift::Serialize::write(&self.optMapVal, p);
             p.write_field_end();
+            p.write_field_begin("unionVal", ::fbthrift::TType::Struct, 30);
+            ::fbthrift::Serialize::write(&self.unionVal, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -1080,6 +1376,7 @@ pub mod types {
                 ::fbthrift::Field::new("optStructVal", ::fbthrift::TType::Struct, 20),
                 ::fbthrift::Field::new("stringVal", ::fbthrift::TType::Struct, 8),
                 ::fbthrift::Field::new("structVal", ::fbthrift::TType::Struct, 10),
+                ::fbthrift::Field::new("unionVal", ::fbthrift::TType::Struct, 30),
             ];
             let mut field_boolVal = ::std::option::Option::None;
             let mut field_byteVal = ::std::option::Option::None;
@@ -1104,6 +1401,7 @@ pub mod types {
             let mut field_optListVal = ::std::option::Option::None;
             let mut field_optSetVal = ::std::option::Option::None;
             let mut field_optMapVal = ::std::option::Option::None;
+            let mut field_unionVal = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -1132,6 +1430,7 @@ pub mod types {
                     (::fbthrift::TType::Struct, 21) => field_optListVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 22) => field_optSetVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Struct, 23) => field_optMapVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 30) => field_unionVal = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1161,6 +1460,7 @@ pub mod types {
                 optListVal: field_optListVal.unwrap_or_default(),
                 optSetVal: field_optSetVal.unwrap_or_default(),
                 optMapVal: field_optMapVal.unwrap_or_default(),
+                unionVal: field_unionVal.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }

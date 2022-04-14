@@ -16,6 +16,12 @@ from thrift.py3.reflection cimport (
 
 cdef __StructSpec get_reflection__MyData()
 
+cdef __StructSpec get_reflection__MyUnion()
+
+cdef __StructSpec get_reflection__MyUnionPatch()
+
+cdef __StructSpec get_reflection__MyUnionValuePatch()
+
 cdef __StructSpec get_reflection__MyStruct()
 
 cdef __StructSpec get_reflection__MyDataPatch()
