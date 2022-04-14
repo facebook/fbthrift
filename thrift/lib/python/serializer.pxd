@@ -27,4 +27,4 @@ cdef extern from "<thrift/lib/cpp/protocol/TProtocolTypes.h>" namespace "apache:
 
 cdef extern from "<thrift/lib/python/Serializer.h>" namespace "::apache::thrift::python":
     cdef unique_ptr[folly.iobuf.cIOBuf] cserialize "::apache::thrift::python::serialize"(const cDynamicStructInfo& structInfo, obj, Protocol proto) except +
-    cdef uint32_t cdeserialize "::apache::thrift::python::deserialize"(const cDynamicStructInfo& structInfo, const folly.iobuf.cIOBuf* buf, obj, Protocol proto) except? 0
+    cdef uint32_t cdeserialize "::apache::thrift::python::deserialize"(const cDynamicStructInfo& structInfo, const folly.iobuf.cIOBuf* buf, obj, Protocol proto) except +

@@ -14,16 +14,17 @@
 
 from cython.view cimport memoryview
 from folly.iobuf cimport IOBuf
+from thrift.python.exceptions cimport Error
 from thrift.python.types cimport Struct, StructOrUnion, Union
 
 import cython
 
 Buf = cython.fused_type(IOBuf, bytes, bytearray, memoryview)
 
-def serialize_iobuf(StructOrUnion strct, Protocol protocol=Protocol.COMPACT):
+def serialize_iobuf(StructOrUnion strct not None, Protocol protocol=Protocol.COMPACT):
     return strct._serialize(protocol)
 
-def serialize(StructOrUnion struct, Protocol protocol=Protocol.COMPACT):
+def serialize(StructOrUnion struct not None, Protocol protocol=Protocol.COMPACT):
     return b''.join(serialize_iobuf(struct, protocol))
 
 def deserialize_with_length(klass, Buf buf, Protocol protocol=Protocol.COMPACT):
@@ -31,9 +32,13 @@ def deserialize_with_length(klass, Buf buf, Protocol protocol=Protocol.COMPACT):
         raise TypeError("Only Struct or Union classes can be deserialized")
     cdef IOBuf iobuf = buf if isinstance(buf, IOBuf) else IOBuf(buf)
     inst = klass.__new__(klass)
-    cdef uint32_t length = (<Struct>inst)._deserialize(
-        iobuf, protocol) if issubclass(klass, Struct) else (
-        <Union>inst)._deserialize(iobuf, protocol)
+    cdef uint32_t length
+    try:
+        length = (<Struct>inst)._deserialize(
+            iobuf, protocol) if issubclass(klass, Struct) else (
+            <Union>inst)._deserialize(iobuf, protocol)
+    except Exception as e:
+        raise Error.__new__(Error, *e.args) from None
     return inst, length
 
 def deserialize(klass, Buf buf, Protocol protocol=Protocol.COMPACT):
