@@ -28,6 +28,8 @@ class Client<::some::valid::ns::EmptyService> : public apache::thrift::Generated
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
+  using EmptyServiceAsyncClient = ::apache::thrift::Client<::some::valid::ns::EmptyService>;
+
   char const* getServiceName() const noexcept override {
     return "EmptyService";
   }
@@ -38,8 +40,5 @@ class Client<::some::valid::ns::EmptyService> : public apache::thrift::Generated
 } // namespace apache::thrift
 
 namespace some { namespace valid { namespace ns {
-class EmptyServiceAsyncClient : public ::apache::thrift::Client<EmptyService> {
- public:
-  using ::apache::thrift::Client<::some::valid::ns::EmptyService>::Client;
-};
+using EmptyServiceAsyncClient = ::apache::thrift::Client<EmptyService>;
 }}} // some::valid::ns

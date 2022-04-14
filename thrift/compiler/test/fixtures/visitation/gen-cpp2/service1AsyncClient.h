@@ -29,6 +29,8 @@ class Client<::test_cpp2::cpp_reflection::service1> : public apache::thrift::Gen
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
+  using service1AsyncClient = ::apache::thrift::Client<::test_cpp2::cpp_reflection::service1>;
+
   char const* getServiceName() const noexcept override {
     return "service1";
   }
@@ -605,8 +607,5 @@ class Client<::test_cpp2::cpp_reflection::service1> : public apache::thrift::Gen
 } // namespace apache::thrift
 
 namespace test_cpp2 { namespace cpp_reflection {
-class service1AsyncClient : public ::apache::thrift::Client<service1> {
- public:
-  using ::apache::thrift::Client<::test_cpp2::cpp_reflection::service1>::Client;
-};
+using service1AsyncClient = ::apache::thrift::Client<service1>;
 }} // test_cpp2::cpp_reflection

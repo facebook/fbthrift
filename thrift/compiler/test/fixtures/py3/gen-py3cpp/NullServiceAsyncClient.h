@@ -26,6 +26,8 @@ class Client<::cpp2::NullService> : public apache::thrift::GeneratedAsyncClient 
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
+  using NullServiceAsyncClient = ::apache::thrift::Client<::cpp2::NullService>;
+
   char const* getServiceName() const noexcept override {
     return "NullService";
   }
@@ -36,8 +38,5 @@ class Client<::cpp2::NullService> : public apache::thrift::GeneratedAsyncClient 
 } // namespace apache::thrift
 
 namespace cpp2 {
-class NullServiceAsyncClient : public ::apache::thrift::Client<NullService> {
- public:
-  using ::apache::thrift::Client<::cpp2::NullService>::Client;
-};
+using NullServiceAsyncClient = ::apache::thrift::Client<NullService>;
 } // cpp2

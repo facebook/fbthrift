@@ -27,6 +27,8 @@ class Client<::cpp2::MyLeaf> : public ::cpp2::MyNodeAsyncClient {
  public:
   using ::cpp2::MyNodeAsyncClient::MyNodeAsyncClient;
 
+  using MyLeafAsyncClient = ::apache::thrift::Client<::cpp2::MyLeaf>;
+
   char const* getServiceName() const noexcept override {
     return "MyLeaf";
   }
@@ -130,8 +132,5 @@ class Client<::cpp2::MyLeaf> : public ::cpp2::MyNodeAsyncClient {
 } // namespace apache::thrift
 
 namespace cpp2 {
-class MyLeafAsyncClient : public ::apache::thrift::Client<MyLeaf> {
- public:
-  using ::apache::thrift::Client<::cpp2::MyLeaf>::Client;
-};
+using MyLeafAsyncClient = ::apache::thrift::Client<MyLeaf>;
 } // cpp2

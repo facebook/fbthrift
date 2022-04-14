@@ -26,6 +26,8 @@ class Client<<%service:qualified_name%>> : public <%#service:extends%><% > commo
  public:
   using <%#service:extends%><% > common/namespace_cpp2%><%service:cpp_name%>AsyncClient::<%service:cpp_name%>AsyncClient<%/service:extends%><%^service:extends%>apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient<%/service:extends%>;
 
+  using <%service:cpp_name%>AsyncClient = ::apache::thrift::Client<<%service:qualified_name%>>;
+
   char const* getServiceName() const noexcept override {
     return "<%service:parent_service_name%>";
   }
@@ -47,8 +49,5 @@ class Client<<%service:qualified_name%>> : public <%#service:extends%><% > commo
 
 <% > common/namespace_cpp2_begin%>
 
-class <%service:cpp_name%>AsyncClient : public ::apache::thrift::Client<<%service:cpp_name%>> {
- public:
-  using ::apache::thrift::Client<<%service:qualified_name%>>::Client;
-};
+using <%service:cpp_name%>AsyncClient = ::apache::thrift::Client<<%service:cpp_name%>>;
 <% > common/namespace_cpp2_end%>

@@ -29,6 +29,8 @@ class Client<::cpp2::GoodService> : public apache::thrift::GeneratedAsyncClient 
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
+  using GoodServiceAsyncClient = ::apache::thrift::Client<::cpp2::GoodService>;
+
   char const* getServiceName() const noexcept override {
     return "BadService";
   }
@@ -229,8 +231,5 @@ class BadInteraction final : public apache::thrift::InteractionHandle {
 } // namespace apache::thrift
 
 namespace cpp2 {
-class GoodServiceAsyncClient : public ::apache::thrift::Client<GoodService> {
- public:
-  using ::apache::thrift::Client<::cpp2::GoodService>::Client;
-};
+using GoodServiceAsyncClient = ::apache::thrift::Client<GoodService>;
 } // cpp2

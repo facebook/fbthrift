@@ -30,6 +30,8 @@ class Client<::cpp2::MyService> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
+  using MyServiceAsyncClient = ::apache::thrift::Client<::cpp2::MyService>;
+
   char const* getServiceName() const noexcept override {
     return "MyService";
   }
@@ -1029,8 +1031,5 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 } // namespace apache::thrift
 
 namespace cpp2 {
-class MyServiceAsyncClient : public ::apache::thrift::Client<MyService> {
- public:
-  using ::apache::thrift::Client<::cpp2::MyService>::Client;
-};
+using MyServiceAsyncClient = ::apache::thrift::Client<MyService>;
 } // cpp2

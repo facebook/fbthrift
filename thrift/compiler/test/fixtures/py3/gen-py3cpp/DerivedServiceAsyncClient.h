@@ -27,6 +27,8 @@ class Client<::py3::simple::DerivedService> : public ::py3::simple::SimpleServic
  public:
   using ::py3::simple::SimpleServiceAsyncClient::SimpleServiceAsyncClient;
 
+  using DerivedServiceAsyncClient = ::apache::thrift::Client<::py3::simple::DerivedService>;
+
   char const* getServiceName() const noexcept override {
     return "DerivedService";
   }
@@ -132,8 +134,5 @@ class Client<::py3::simple::DerivedService> : public ::py3::simple::SimpleServic
 } // namespace apache::thrift
 
 namespace py3 { namespace simple {
-class DerivedServiceAsyncClient : public ::apache::thrift::Client<DerivedService> {
- public:
-  using ::apache::thrift::Client<::py3::simple::DerivedService>::Client;
-};
+using DerivedServiceAsyncClient = ::apache::thrift::Client<DerivedService>;
 }} // py3::simple

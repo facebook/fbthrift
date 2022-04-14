@@ -30,6 +30,8 @@ class Client<::test_cpp2::cpp_reflection::service_with_special_names> : public a
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
+  using service_with_special_namesAsyncClient = ::apache::thrift::Client<::test_cpp2::cpp_reflection::service_with_special_names>;
+
   char const* getServiceName() const noexcept override {
     return "service_with_special_names";
   }
@@ -2700,8 +2702,5 @@ class Client<::test_cpp2::cpp_reflection::service_with_special_names> : public a
 } // namespace apache::thrift
 
 namespace test_cpp2 { namespace cpp_reflection {
-class service_with_special_namesAsyncClient : public ::apache::thrift::Client<service_with_special_names> {
- public:
-  using ::apache::thrift::Client<::test_cpp2::cpp_reflection::service_with_special_names>::Client;
-};
+using service_with_special_namesAsyncClient = ::apache::thrift::Client<service_with_special_names>;
 }} // test_cpp2::cpp_reflection

@@ -28,6 +28,8 @@ class Client<::some::valid::ns::ParamService> : public apache::thrift::Generated
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
+  using ParamServiceAsyncClient = ::apache::thrift::Client<::some::valid::ns::ParamService>;
+
   char const* getServiceName() const noexcept override {
     return "ParamService";
   }
@@ -2777,8 +2779,5 @@ class Client<::some::valid::ns::ParamService> : public apache::thrift::Generated
 } // namespace apache::thrift
 
 namespace some { namespace valid { namespace ns {
-class ParamServiceAsyncClient : public ::apache::thrift::Client<ParamService> {
- public:
-  using ::apache::thrift::Client<::some::valid::ns::ParamService>::Client;
-};
+using ParamServiceAsyncClient = ::apache::thrift::Client<ParamService>;
 }}} // some::valid::ns

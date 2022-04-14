@@ -28,6 +28,8 @@ class Client<::cpp2::SinkService> : public apache::thrift::GeneratedAsyncClient 
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
+  using SinkServiceAsyncClient = ::apache::thrift::Client<::cpp2::SinkService>;
+
   char const* getServiceName() const noexcept override {
     return "SinkService";
   }
@@ -164,8 +166,5 @@ class Client<::cpp2::SinkService> : public apache::thrift::GeneratedAsyncClient 
 } // namespace apache::thrift
 
 namespace cpp2 {
-class SinkServiceAsyncClient : public ::apache::thrift::Client<SinkService> {
- public:
-  using ::apache::thrift::Client<::cpp2::SinkService>::Client;
-};
+using SinkServiceAsyncClient = ::apache::thrift::Client<SinkService>;
 } // cpp2

@@ -27,6 +27,8 @@ class Client<::apache::thrift::fixtures::types::SomeService> : public apache::th
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
+  using SomeServiceAsyncClient = ::apache::thrift::Client<::apache::thrift::fixtures::types::SomeService>;
+
   char const* getServiceName() const noexcept override {
     return "SomeService";
   }
@@ -227,8 +229,5 @@ class Client<::apache::thrift::fixtures::types::SomeService> : public apache::th
 } // namespace apache::thrift
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-class SomeServiceAsyncClient : public ::apache::thrift::Client<SomeService> {
- public:
-  using ::apache::thrift::Client<::apache::thrift::fixtures::types::SomeService>::Client;
-};
+using SomeServiceAsyncClient = ::apache::thrift::Client<SomeService>;
 }}}} // apache::thrift::fixtures::types

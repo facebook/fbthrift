@@ -28,6 +28,8 @@ class Client<::some::valid::ns::ReturnService> : public apache::thrift::Generate
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
+  using ReturnServiceAsyncClient = ::apache::thrift::Client<::some::valid::ns::ReturnService>;
+
   char const* getServiceName() const noexcept override {
     return "ReturnService";
   }
@@ -2031,8 +2033,5 @@ class Client<::some::valid::ns::ReturnService> : public apache::thrift::Generate
 } // namespace apache::thrift
 
 namespace some { namespace valid { namespace ns {
-class ReturnServiceAsyncClient : public ::apache::thrift::Client<ReturnService> {
- public:
-  using ::apache::thrift::Client<::some::valid::ns::ReturnService>::Client;
-};
+using ReturnServiceAsyncClient = ::apache::thrift::Client<ReturnService>;
 }}} // some::valid::ns

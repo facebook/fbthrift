@@ -26,6 +26,8 @@ class Client<::py3::simple::SimpleService> : public apache::thrift::GeneratedAsy
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
+  using SimpleServiceAsyncClient = ::apache::thrift::Client<::py3::simple::SimpleService>;
+
   char const* getServiceName() const noexcept override {
     return "SimpleService";
   }
@@ -3927,8 +3929,5 @@ class Client<::py3::simple::SimpleService> : public apache::thrift::GeneratedAsy
 } // namespace apache::thrift
 
 namespace py3 { namespace simple {
-class SimpleServiceAsyncClient : public ::apache::thrift::Client<SimpleService> {
- public:
-  using ::apache::thrift::Client<::py3::simple::SimpleService>::Client;
-};
+using SimpleServiceAsyncClient = ::apache::thrift::Client<SimpleService>;
 }} // py3::simple
