@@ -75,7 +75,7 @@ void accumulateHash(
 template <typename Accumulator, typename T>
 void accumulateHash(
     type::structured_c, Accumulator& accumulator, const T& value) {
-  detail::HashProtocol protocol(accumulator);
+  detail::HashProtocol<Accumulator> protocol(accumulator);
   value.write(&protocol);
 }
 
