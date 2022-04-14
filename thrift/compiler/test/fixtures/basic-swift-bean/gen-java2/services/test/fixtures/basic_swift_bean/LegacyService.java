@@ -18,24 +18,24 @@ import java.util.*;
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("LegacyService")
 public interface LegacyService extends java.io.Closeable {
-    static LegacyService createBlockingClient(
+    static LegacyService createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
       final org.apache.thrift.ProtocolId _protocolId) {
-        LegacyService.Reactive _delegate = createReactiveClient(
+        LegacyService.Reactive _delegate = Reactive.createClient(
             _rpcClientFactory,
             _socketAddress,
             _protocolId);
         return new LegacyServiceReactiveBlockingWrapper(_delegate);
     }
 
-    static LegacyService createBlockingClient(
+    static LegacyService createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
       final org.apache.thrift.ProtocolId _protocolId,
       final java.util.Map<String, String> _headers,
       final java.util.Map<String, String> _persistentHeaders) {
-        LegacyService.Reactive _delegate = createReactiveClient(
+        LegacyService.Reactive _delegate = Reactive.createClient(
             _rpcClientFactory,
             _socketAddress,
             _protocolId,
@@ -44,59 +44,78 @@ public interface LegacyService extends java.io.Closeable {
         return new LegacyServiceReactiveBlockingWrapper(_delegate);
     }
 
-    static LegacyService.Async createAsyncClient(
-      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-      final java.net.SocketAddress _socketAddress,
+    static LegacyService createClient(
+      final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId) {
-        LegacyService.Reactive _delegate = createReactiveClient(
-            _rpcClientFactory,
-            _socketAddress,
+        LegacyService.Reactive _delegate = Reactive.createClient(
+            _rpcClientMono,
             _protocolId);
-        return new LegacyServiceReactiveAsyncWrapper(_delegate);
+        return new LegacyServiceReactiveBlockingWrapper(_delegate);
     }
 
-    static LegacyService.Async createAsyncClient(
-      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-      final java.net.SocketAddress _socketAddress,
+    static LegacyService createClient(
+      final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId,
       final java.util.Map<String, String> _headers,
       final java.util.Map<String, String> _persistentHeaders) {
-        LegacyService.Reactive _delegate = createReactiveClient(
-            _rpcClientFactory,
-            _socketAddress,
+        LegacyService.Reactive _delegate = Reactive.createClient(
+            _rpcClientMono,
             _protocolId,
             _headers,
             _persistentHeaders);
-        return new LegacyServiceReactiveAsyncWrapper(_delegate);
-    }
-
-    static LegacyService.Reactive createReactiveClient(
-      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-      final java.net.SocketAddress _socketAddress,
-      final org.apache.thrift.ProtocolId _protocolId) {
-        return new LegacyServiceReactiveClient(
-            _protocolId,
-            _rpcClientFactory.createRpcClient(_socketAddress),
-            java.util.Collections.emptyMap(),
-            java.util.Collections.emptyMap());
-    }
-
-    static LegacyService.Reactive createReactiveClient(
-      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-      final java.net.SocketAddress _socketAddress,
-      final org.apache.thrift.ProtocolId _protocolId,
-      final java.util.Map<String, String> _headers,
-      final java.util.Map<String, String> _persistentHeaders
-      ) {
-        return new LegacyServiceReactiveClient(
-            _protocolId,
-            _rpcClientFactory.createRpcClient(_socketAddress),
-            _headers,
-            _persistentHeaders);
+        return new LegacyServiceReactiveBlockingWrapper(_delegate);
     }
 
     @com.facebook.swift.service.ThriftService("LegacyService")
     public interface Async extends java.io.Closeable {
+        static LegacyService.Async createClient(
+            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+            final java.net.SocketAddress _socketAddress,
+            final org.apache.thrift.ProtocolId _protocolId) {
+                LegacyService.Reactive _delegate = Reactive.createClient(
+                    _rpcClientFactory,
+                    _socketAddress,
+                    _protocolId);
+                return new LegacyServiceReactiveAsyncWrapper(_delegate);
+        }
+
+        static LegacyService.Async createClient(
+            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+            final java.net.SocketAddress _socketAddress,
+            final org.apache.thrift.ProtocolId _protocolId,
+            final java.util.Map<String, String> _headers,
+            final java.util.Map<String, String> _persistentHeaders) {
+                LegacyService.Reactive _delegate = Reactive.createClient(
+                    _rpcClientFactory,
+                    _socketAddress,
+                    _protocolId,
+                    _headers,
+                    _persistentHeaders);
+                return new LegacyServiceReactiveAsyncWrapper(_delegate);
+        }
+
+        static LegacyService.Async createClient(
+            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
+            final org.apache.thrift.ProtocolId _protocolId) {
+                LegacyService.Reactive _delegate = Reactive.createClient(
+                    _rpcClientMono,
+                    _protocolId);
+                return new LegacyServiceReactiveAsyncWrapper(_delegate);
+        }
+
+        static LegacyService.Async createClient(
+            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
+            final org.apache.thrift.ProtocolId _protocolId,
+            final java.util.Map<String, String> _headers,
+            final java.util.Map<String, String> _persistentHeaders) {
+                LegacyService.Reactive _delegate = Reactive.createClient(
+                    _rpcClientMono,
+                    _protocolId,
+                    _headers,
+                    _persistentHeaders);
+                return new LegacyServiceReactiveAsyncWrapper(_delegate);
+        }
+
         @java.lang.Override void close();
 
         @ThriftMethod(value = "getPoints")
@@ -141,6 +160,54 @@ public interface LegacyService extends java.io.Closeable {
 
     @com.facebook.swift.service.ThriftService("LegacyService")
     interface Reactive extends reactor.core.Disposable {
+        static LegacyService.Reactive createClient(
+            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+            final java.net.SocketAddress _socketAddress,
+            final org.apache.thrift.ProtocolId _protocolId) {
+                return new LegacyServiceReactiveClient(
+                    _protocolId,
+                    _rpcClientFactory.createRpcClient(_socketAddress),
+                    java.util.Collections.emptyMap(),
+                    java.util.Collections.emptyMap());
+        }
+
+        static LegacyService.Reactive createClient(
+            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
+            final java.net.SocketAddress _socketAddress,
+            final org.apache.thrift.ProtocolId _protocolId,
+            final java.util.Map<String, String> _headers,
+            final java.util.Map<String, String> _persistentHeaders
+            ) {
+                return new LegacyServiceReactiveClient(
+                    _protocolId,
+                    _rpcClientFactory.createRpcClient(_socketAddress),
+                    _headers,
+                    _persistentHeaders);
+        }
+
+        static LegacyService.Reactive createClient(
+            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
+            final org.apache.thrift.ProtocolId _protocolId) {
+                return new LegacyServiceReactiveClient(
+                    _protocolId,
+                    _rpcClientMono,
+                    java.util.Collections.emptyMap(),
+                    java.util.Collections.emptyMap());
+        }
+
+        static LegacyService.Reactive createClient(
+            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
+            final org.apache.thrift.ProtocolId _protocolId,
+            final java.util.Map<String, String> _headers,
+            final java.util.Map<String, String> _persistentHeaders
+            ) {
+                return new LegacyServiceReactiveClient(
+                    _protocolId,
+                    _rpcClientMono,
+                    _headers,
+                    _persistentHeaders);
+        }
+
         @ThriftMethod(value = "getPoints")
         reactor.core.publisher.Mono<Map<String, List<Integer>>> getPoints(final Set<String> key, final long legacyStuff);
 
