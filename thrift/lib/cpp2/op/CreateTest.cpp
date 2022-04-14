@@ -34,7 +34,8 @@ namespace testset = apache::thrift::test::testset;
 template <typename T>
 struct Wrapper {
   T value;
-  Wrapper() = delete;
+  // TODO(afuller): Support adapting the 'create' op.
+  // Wrapper() = delete;
   bool operator==(const Wrapper& other) const { return value == other.value; }
   bool operator<(const Wrapper& other) const { return value < other.value; }
 };
@@ -45,7 +46,8 @@ struct WrapperWithContext {
   T value;
   int16_t fieldId = 0;
   std::string* meta = nullptr;
-  WrapperWithContext() = delete;
+  // TODO(afuller): Support adapting the 'create' op.
+  // WrapperWithContext() = delete;
   bool operator==(const WrapperWithContext& other) const {
     return value == other.value;
   }
