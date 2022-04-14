@@ -169,6 +169,8 @@ class StructTests(unittest.TestCase):
     def test_runtime_checks(self) -> None:
         x = Runtime()
         with self.assertRaises(TypeError):
+            # pyre-fixme[6]: For 1st param expected `Union[None, bool, __NotSet]`
+            #  but got `int`.
             x(bool_val=5)
 
         with self.assertRaises(TypeError):
@@ -176,6 +178,8 @@ class StructTests(unittest.TestCase):
             Runtime(bool_val=5)
 
         with self.assertRaises(TypeError):
+            # pyre-fixme[6]: For 1st param expected `Union[None, Color, __NotSet]`
+            #  but got `int`.
             x(enum_val=2)
 
         with self.assertRaises(TypeError):
@@ -183,6 +187,8 @@ class StructTests(unittest.TestCase):
             Runtime(enum_val=2)
 
         with self.assertRaises(TypeError):
+            # pyre-fixme[6]: For 1st param expected `Union[None, Sequence[int],
+            #  __NotSet]` but got `List[str]`.
             x(int_list_val=["foo", "bar", "baz"])
 
         with self.assertRaises(TypeError):
