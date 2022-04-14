@@ -56,12 +56,14 @@ struct native_template {
 };
 
 template <typename... Tags>
-using if_all_concrete = std::enable_if_t<(is_concrete_v<Tags> && ...)>;
-
-template <typename... Tags>
 struct types {
   static constexpr bool contains(BaseType baseType) {
-    return (... || (base_type_v<Tags> == baseType));
+    for (bool i : {(base_type_v<Tags> == baseType)...}) {
+      if (i) {
+        return true;
+      }
+    }
+    return false;
   }
 
   template <typename Tag>
@@ -102,12 +104,18 @@ struct concrete_type {
 };
 struct nonconcrete_type {};
 
-template <template <typename...> class T, typename... ParamTags>
-using parametrized_type = folly::conditional_t<
-    (is_concrete_v<ParamTags> && ...),
+template <template <typename...> class T, typename ValTag>
+using parameterized_type = folly::conditional_t<
+    is_concrete_v<ValTag>,
+    concrete_type<standard_template_t<T, ValTag>, native_template_t<T, ValTag>>,
+    nonconcrete_type>;
+
+template <template <typename...> class T, typename KeyTag, typename ValTag>
+using parameterized_kv_type = folly::conditional_t<
+    is_concrete_v<KeyTag> && is_concrete_v<ValTag>,
     concrete_type<
-        standard_template_t<T, ParamTags...>,
-        native_template_t<T, ParamTags...>>,
+        standard_template_t<T, KeyTag, ValTag>,
+        native_template_t<T, KeyTag, ValTag>>,
     nonconcrete_type>;
 
 template <>
@@ -151,16 +159,16 @@ struct traits<exception_t<T>> : concrete_type<T> {};
 
 // Traits for lists.
 template <typename ValTag>
-struct traits<type::list<ValTag>> : parametrized_type<std::vector, ValTag> {};
+struct traits<type::list<ValTag>> : parameterized_type<std::vector, ValTag> {};
 
 // Traits for sets.
 template <typename KeyTag>
-struct traits<set<KeyTag>> : parametrized_type<std::set, KeyTag> {};
+struct traits<set<KeyTag>> : parameterized_type<std::set, KeyTag> {};
 
 // Traits for maps.
 template <typename KeyTag, typename ValTag>
 struct traits<map<KeyTag, ValTag>>
-    : parametrized_type<std::map, KeyTag, ValTag> {};
+    : parameterized_kv_type<std::map, KeyTag, ValTag> {};
 
 // Traits for adapted types.
 //

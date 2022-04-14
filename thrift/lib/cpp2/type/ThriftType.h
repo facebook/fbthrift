@@ -62,9 +62,9 @@ template <typename Tag>
 constexpr bool is_abstract_v = is_thrift_type_tag_v<Tag> && !is_concrete_v<Tag>;
 
 namespace detail {
-template <typename... Tags>
-constexpr void checkTags() {
-  static_assert((is_thrift_type_tag_v<Tags> && ...));
+template <typename Tag>
+constexpr void checkTag() {
+  static_assert(is_thrift_type_tag_v<Tag>, "");
 }
 } // namespace detail
 
@@ -82,7 +82,9 @@ constexpr void checkTags() {
 //     is_a_v<list<i64_t>, list<i64_t>> -> true
 template <typename Tag, typename CTag>
 constexpr bool is_a_v =
-    (detail::checkTags<Tag, CTag>(), std::is_base_of<CTag, Tag>::value);
+    (detail::checkTag<Tag>(),
+     detail::checkTag<CTag>(),
+     std::is_base_of<CTag, Tag>::value);
 
 // Helpers to enable/disable declarations based on if a type tag matches
 // a constraint.
