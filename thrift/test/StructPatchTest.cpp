@@ -57,7 +57,7 @@ MyStruct testValue() {
 TestStructPatch testPatch() {
   auto val = testValue();
   TestStructPatch patch;
-  patch.patch().boolVal() = !op::BoolPatch{};
+  patch.patch()->boolVal() = !op::BoolPatch{};
   *patch->byteVal() = val.byteVal();
   *patch->i16Val() += 2;
   *patch->i32Val() += 3;
@@ -65,14 +65,14 @@ TestStructPatch testPatch() {
   *patch->floatVal() += 5;
   *patch->doubleVal() += 6;
   patch->stringVal() = "_" + op::StringPatch{} + "_";
-  patch->structVal()->patch().data1()->append("Na");
+  patch->structVal()->patch()->data1()->append("Na");
   return patch;
 }
 
 TestStructPatch testOptPatch() {
   auto val = testValue();
   TestStructPatch patch;
-  patch.patch().optBoolVal()->patch() = !op::BoolPatch{};
+  patch.patch()->optBoolVal()->patch() = !op::BoolPatch{};
   patch->optByteVal()->patch() = val.byteVal();
   patch->optI16Val()->patch() += 2;
   patch->optI32Val()->patch() += 3;

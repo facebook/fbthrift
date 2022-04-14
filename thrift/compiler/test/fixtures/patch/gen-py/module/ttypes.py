@@ -2881,6 +2881,7 @@ MyDataPatch.thrift_spec = (
 )
 
 MyDataPatch.thrift_struct_annotations = {
+  "cpp.adapter": "::apache::thrift::op::detail::StructuredPatchAdapter",
 }
 MyDataPatch.thrift_field_annotations = {
 }
@@ -2998,6 +2999,7 @@ MyStructPatch.thrift_spec = (
 )
 
 MyStructPatch.thrift_struct_annotations = {
+  "cpp.adapter": "::apache::thrift::op::detail::StructuredPatchAdapter",
 }
 MyStructPatch.thrift_field_annotations = {
 }

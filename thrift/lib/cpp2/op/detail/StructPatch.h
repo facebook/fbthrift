@@ -35,8 +35,8 @@ void mergeFieldPatch(P1& lhs, const P2& rhs) {
   op::getById<Id>(lhs)->merge(*op::getById<Id>(rhs));
 }
 template <FieldId Id, typename P, typename T>
-void forwardToFieldPatch(P& patch, T&& val) {
-  op::getById<Id>(patch)->assign(op::getById<Id>(std::forward<T>(val)));
+void forwardFromFields(T&& from, P& to) {
+  *op::getById<Id>(to) = op::getById<Id>(std::forward<T>(from));
 }
 template <typename F>
 struct FieldPatch;
@@ -51,10 +51,77 @@ struct FieldPatch<type::fields<FieldTags...>> {
     (..., mergeFieldPatch<type::field_id_v<FieldTags>>(lhs, rhs));
   }
   template <typename T, typename P>
-  static void forwardTo(T&& val, P& patch) {
+  static void forwardFrom(T&& from, P& to) {
     (...,
-     forwardToFieldPatch<type::field_id_v<FieldTags>>(
-         patch, std::forward<T>(val)));
+     forwardFromFields<type::field_id_v<FieldTags>>(std::forward<T>(from), to));
+  }
+};
+
+// Requires Patch have fields with ids 1:1 with the fields they patch.
+template <typename Patch>
+class StructuredPatch : public BasePatch<Patch, StructuredPatch<Patch>> {
+  using Base = BasePatch<Patch, StructuredPatch>;
+
+ public:
+  using Base::apply;
+  using Base::Base;
+  using Base::operator=;
+  using Base::get;
+
+  template <typename T>
+  static StructuredPatch createFrom(T&& val) {
+    StructuredPatch patch;
+    patch.assignFrom(std::forward<T>(val));
+    return patch;
+  }
+
+  Patch& get() & noexcept { return patch_; }
+  Patch* operator->() noexcept { return &patch_; }
+  const Patch* operator->() const noexcept { return &patch_; }
+  Patch& operator*() noexcept { return patch_; }
+  const Patch& operator*() const noexcept { return patch_; }
+
+  template <typename T>
+  void assignFrom(T&& val) {
+    FieldPatch<T>::forwardFrom(std::forward<T>(val), patch_);
+  }
+
+  template <typename T>
+  void apply(T& val) const {
+    FieldPatch<T>::apply(patch_, val);
+  }
+
+  template <typename U>
+  void merge(U&& next) {
+    FieldPatch<Patch>::merge(patch_, std::forward<U>(next).get());
+  }
+
+ private:
+  using Base::patch_;
+  template <typename T>
+  using Fields = ::apache::thrift::detail::st::struct_private_access::fields<T>;
+  template <typename T>
+  using FieldPatch = detail::FieldPatch<Fields<T>>;
+
+  friend bool operator==(
+      const StructuredPatch& lhs, const StructuredPatch& rhs) {
+    return lhs.patch_ == rhs.patch_;
+  }
+  friend bool operator==(const StructuredPatch& lhs, const Patch& rhs) {
+    return lhs.patch_ == rhs;
+  }
+  friend bool operator==(const Patch& lhs, const StructuredPatch& rhs) {
+    return lhs == rhs.patch_;
+  }
+  friend bool operator!=(
+      const StructuredPatch& lhs, const StructuredPatch& rhs) {
+    return lhs.patch_ != rhs.patch_;
+  }
+  friend bool operator!=(const StructuredPatch& lhs, const Patch& rhs) {
+    return lhs.patch_ != rhs;
+  }
+  friend bool operator!=(const Patch& lhs, const StructuredPatch& rhs) {
+    return lhs != rhs.patch_;
   }
 };
 
@@ -76,7 +143,7 @@ class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
   // Convert to a patch, if needed, and return the
   // patch object.
   patch_type& patch() { return ensurePatch(); }
-  patch_type* operator->() { return &ensurePatch(); }
+  auto* operator->() { return patch().operator->(); }
 
   void apply(T& val) const {
     if (applyAssign(val)) {
@@ -85,14 +152,13 @@ class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
     if (*patch_.clear()) {
       thrift::clear(val);
     }
-    FieldPatch::apply(*patch_.patch(), val);
+    patch_.patch()->apply(val);
   }
 
   template <typename U>
   void merge(U&& next) {
     if (!mergeAssignAndClear(std::forward<U>(next))) {
-      // Merge field patches.
-      FieldPatch::merge(*patch_.patch(), *std::forward<U>(next).get().patch());
+      patch_.patch()->merge(*std::forward<U>(next).get().patch());
     }
   }
 
@@ -110,7 +176,7 @@ class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
       *patch_.clear() = true;
 
       // Split the assignment patch into a patch of assignments.
-      FieldPatch::forwardTo(std::move(*patch_.assign()), *patch_.patch());
+      patch_.patch()->assignFrom(std::move(*patch_.assign()));
       patch_.assign().reset();
     }
     return *patch_.patch();

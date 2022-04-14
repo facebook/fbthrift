@@ -360,7 +360,7 @@ cdef __StructSpec get_reflection__MyDataPatch():
         name="MyDataPatch",
         kind=__StructType.STRUCT,
         annotations={
-        },
+            """cpp.adapter""": """::apache::thrift::op::detail::StructuredPatchAdapter""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -507,7 +507,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         name="MyStructPatch",
         kind=__StructType.STRUCT,
         annotations={
-        },
+            """cpp.adapter""": """::apache::thrift::op::detail::StructuredPatchAdapter""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(

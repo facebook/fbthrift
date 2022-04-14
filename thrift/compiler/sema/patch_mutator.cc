@@ -134,6 +134,11 @@ struct StructGen {
   t_struct* operator->() { return &generated; }
   operator t_struct&() { return generated; }
   operator t_type_ref() { return generated; }
+
+  void set_adapter(std::string name) {
+    generated.set_annotation(
+        "cpp.adapter", "::apache::thrift::op::detail::" + std::move(name));
+  }
 };
 
 // Helper for generating patch structs.
@@ -228,11 +233,6 @@ struct PatchGen : StructGen {
         "Adds or replaces the given key/value pairs. Applies Second.",
         field(kPutId, type, "put"));
   }
-
-  void set_adapter(std::string name) {
-    generated.set_annotation(
-        "cpp.adapter", "::apache::thrift::op::detail::" + std::move(name));
-  }
 };
 
 t_type_ref resolve_value_type(t_struct& patch_type) {
@@ -267,9 +267,10 @@ void generate_optional_patch(
 void generate_struct_patch(
     diagnostic_context& ctx, mutator_context& mctx, t_struct& node) {
   if (auto* annot = inherit_annotation_or_null(ctx, node, kGeneratePatchUri)) {
-    // Add a 'structure patch' and 'struct value patch' using it.
     auto& generator = patch_generator::get_for(ctx, mctx);
-    auto& struct_patch = generator.add_structure_patch(*annot, node);
+
+    // Add a 'structured patch' and 'struct value patch' using it.
+    auto& struct_patch = generator.add_structured_patch(*annot, node);
     auto& patch = generator.add_struct_value_patch(*annot, node, struct_patch);
 
     // Add an 'optional patch' based on the added patch type.
@@ -304,7 +305,7 @@ t_struct& patch_generator::add_optional_patch(
   return gen;
 }
 
-t_struct& patch_generator::add_structure_patch(
+t_struct& patch_generator::add_structured_patch(
     const t_const& annot, t_structured& orig) {
   StructGen gen{annot, gen_suffix_struct(annot, orig, "Patch")};
   for (const auto& field : orig.fields()) {
@@ -314,6 +315,7 @@ t_struct& patch_generator::add_structure_patch(
       ctx_.warning(field, "Could not resolve patch type for field.");
     }
   }
+  gen.set_adapter("StructuredPatchAdapter");
   return gen;
 }
 

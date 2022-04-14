@@ -155,6 +155,7 @@ using NumberPatchAdapter = PatchAdapter<NumberPatch>;
 using StringPatchAdapter = PatchAdapter<StringPatch>;
 
 // Adapters for structred types.
+using StructuredPatchAdapter = PatchAdapter<StructuredPatch>;
 using StructPatchAdapter = PatchAdapter<StructPatch>;
 
 // Adapters for containers.

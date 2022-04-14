@@ -58,7 +58,7 @@ class patch_generator {
   //     1: Foo myFoo;
   //   }
   //
-  t_struct& add_structure_patch(const t_const& annot, t_structured& node);
+  t_struct& add_structured_patch(const t_const& annot, t_structured& node);
 
   // Add a value patch representation for the given struct and associate patch
   // type, and return a reference to it.
