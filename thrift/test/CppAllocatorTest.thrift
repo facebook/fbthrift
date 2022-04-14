@@ -34,23 +34,23 @@ struct AlwaysThrowChild {
   7: set<i32> not_aa_set;
   8: map<i32, i32> not_aa_map;
   9: string not_aa_string;
-} (cpp.allocator = "::ScopedAlwaysThrowAlloc")
+} (cpp.allocator = "::ScopedAlwaysThrowAlloc<>")
 
 struct AlwaysThrowParent {
   1: AlwaysThrowChild (cpp.use_allocator) child;
-} (cpp.allocator = "::ScopedAlwaysThrowAlloc")
+} (cpp.allocator = "::ScopedAlwaysThrowAlloc<>")
 
 struct AAStruct {
   1: i32 foo;
-} (cpp.allocator = "::ScopedStatefulAlloc")
+} (cpp.allocator = "::ScopedStatefulAlloc<>")
 
 struct NoAllocatorVia {
   1: AAStruct (cpp.use_allocator) foo;
-} (cpp.allocator = "::ScopedStatefulAlloc")
+} (cpp.allocator = "::ScopedStatefulAlloc<>")
 
 struct YesAllocatorVia {
   1: AAStruct (cpp.use_allocator) foo (cpp.name = "bar");
-} (cpp.allocator = "::ScopedStatefulAlloc", cpp.allocator_via = "bar")
+} (cpp.allocator = "::ScopedStatefulAlloc<>", cpp.allocator_via = "bar")
 
 struct HasContainerFields {
   1: list<i32> (
@@ -62,7 +62,7 @@ struct HasContainerFields {
     cpp.use_allocator,
     cpp.template = "::StatefulAllocMap",
   ) aa_map;
-} (cpp.allocator = "::ScopedStatefulAlloc")
+} (cpp.allocator = "::ScopedStatefulAlloc<>")
 
 typedef map<i32, i32> (
   cpp.use_allocator,
@@ -86,12 +86,12 @@ typedef map<i32, StatefulAllocIntSet> (
 
 struct UsesTypedef {
   1: StatefulAllocIntMap aa_map;
-} (cpp.allocator = "::ScopedStatefulAlloc", cpp.allocator_via = "aa_map")
+} (cpp.allocator = "::ScopedStatefulAlloc<>", cpp.allocator_via = "aa_map")
 
 struct HasNestedContainerFields {
   1: StatefulAllocMapMap aa_map_of_map;
   2: StatefulAllocMapSet aa_map_of_set;
-} (cpp.allocator = "::ScopedStatefulAlloc")
+} (cpp.allocator = "::ScopedStatefulAlloc<>")
 
 struct HasSortedUniqueConstructibleFields {
   1: set<i32> (
@@ -102,7 +102,7 @@ struct HasSortedUniqueConstructibleFields {
     cpp.use_allocator,
     cpp.template = "::StatefulAllocSortedVectorMap",
   ) aa_map;
-} (cpp.allocator = "::ScopedStatefulAlloc")
+} (cpp.allocator = "::ScopedStatefulAlloc<>")
 
 struct CountingChild {
   1: list<i32> (cpp.use_allocator, cpp.template = "::CountingVector") aa_list;
@@ -114,7 +114,7 @@ struct CountingChild {
   7: set<i32> not_aa_set;
   8: map<i32, i32> not_aa_map;
   9: string not_aa_string;
-} (cpp.allocator = "::ScopedCountingAlloc")
+} (cpp.allocator = "::ScopedCountingAlloc<>")
 
 struct CountingParent {
   1: list<CountingChild> (
@@ -122,12 +122,12 @@ struct CountingParent {
     cpp.template = "::CountingVector",
   ) aa_child_list;
   2: list<CountingChild> not_aa_child_list;
-} (cpp.allocator = "::ScopedCountingAlloc")
+} (cpp.allocator = "::ScopedCountingAlloc<>")
 
 struct AlwaysThrowCppRefChild {
   1: i32 value1;
   2: i64 value2;
-} (cpp.allocator = "::ScopedAlwaysThrowAlloc")
+} (cpp.allocator = "::ScopedAlwaysThrowAlloc<>")
 
 struct AlwaysThrowCppRefParent {
   1: AlwaysThrowCppRefChild (cpp.use_allocator) uniqueChild (
@@ -138,12 +138,12 @@ struct AlwaysThrowCppRefParent {
     cpp.ref_type = "shared",
   );
   3: i32 no_alloc;
-} (cpp.allocator = "::ScopedAlwaysThrowAlloc")
+} (cpp.allocator = "::ScopedAlwaysThrowAlloc<>")
 
 struct CountingCppRefChild {
   1: i32 value1;
   2: i64 value2;
-} (cpp.allocator = "::ScopedCountingAlloc")
+} (cpp.allocator = "::ScopedCountingAlloc<>")
 
 struct CountingCppRefParent {
   1: CountingCppRefChild (cpp.use_allocator) uniqueChild (
@@ -160,4 +160,4 @@ struct CountingCppRefParent {
     cpp.use_allocator,
     cpp.template = "::CountingVector",
   ) allocVector (cpp.ref_type = "shared");
-} (cpp.allocator = "::ScopedCountingAlloc")
+} (cpp.allocator = "::ScopedCountingAlloc<>")

@@ -55,20 +55,22 @@ struct AlwaysThrowAllocator : private std::allocator<T> {
   }
 };
 
+template <typename T = char>
 using ScopedAlwaysThrowAlloc =
-    std::scoped_allocator_adaptor<AlwaysThrowAllocator<char>>;
+    std::scoped_allocator_adaptor<AlwaysThrowAllocator<T>>;
 
 template <class T>
-using AlwaysThrowVector = std::vector<T, ScopedAlwaysThrowAlloc>;
+using AlwaysThrowVector = std::vector<T, ScopedAlwaysThrowAlloc<T>>;
 
 template <class T>
-using AlwaysThrowSet = std::set<T, std::less<T>, ScopedAlwaysThrowAlloc>;
+using AlwaysThrowSet = std::set<T, std::less<T>, ScopedAlwaysThrowAlloc<T>>;
 
 template <class K, class V>
-using AlwaysThrowMap = std::map<K, V, std::less<K>, ScopedAlwaysThrowAlloc>;
+using AlwaysThrowMap =
+    std::map<K, V, std::less<K>, ScopedAlwaysThrowAlloc<std::pair<const K, V>>>;
 
 using AlwaysThrowString =
-    std::basic_string<char, std::char_traits<char>, ScopedAlwaysThrowAlloc>;
+    std::basic_string<char, std::char_traits<char>, ScopedAlwaysThrowAlloc<>>;
 
 template <class T>
 using AlwaysThrowUniquePtr = std::unique_ptr<
@@ -111,24 +113,26 @@ struct StatefulAlloc : private std::allocator<T> {
   }
 };
 
-using ScopedStatefulAlloc = std::scoped_allocator_adaptor<StatefulAlloc<char>>;
+template <typename T = char>
+using ScopedStatefulAlloc = std::scoped_allocator_adaptor<StatefulAlloc<T>>;
 
 template <class T>
-using StatefulAllocVector = std::vector<T, ScopedStatefulAlloc>;
+using StatefulAllocVector = std::vector<T, ScopedStatefulAlloc<T>>;
 
 template <class T>
-using StatefulAllocSet = std::set<T, std::less<T>, ScopedStatefulAlloc>;
+using StatefulAllocSet = std::set<T, std::less<T>, ScopedStatefulAlloc<T>>;
 
 template <class K, class V>
-using StatefulAllocMap = std::map<K, V, std::less<K>, ScopedStatefulAlloc>;
+using StatefulAllocMap =
+    std::map<K, V, std::less<K>, ScopedStatefulAlloc<std::pair<const K, V>>>;
 
 template <class T>
 using StatefulAllocSortedVectorSet =
-    folly::sorted_vector_set<T, std::less<T>, ScopedStatefulAlloc>;
+    folly::sorted_vector_set<T, std::less<T>, ScopedStatefulAlloc<T>>;
 
 template <class K, class V>
-using StatefulAllocSortedVectorMap =
-    folly::sorted_vector_map<K, V, std::less<K>, ScopedStatefulAlloc>;
+using StatefulAllocSortedVectorMap = folly::
+    sorted_vector_map<K, V, std::less<K>, ScopedStatefulAlloc<std::pair<K, V>>>;
 
 template <class T>
 struct CountingAlloc : private std::allocator<T> {
@@ -166,19 +170,21 @@ struct CountingAlloc : private std::allocator<T> {
   }
 };
 
-using ScopedCountingAlloc = std::scoped_allocator_adaptor<CountingAlloc<char>>;
+template <typename T = char>
+using ScopedCountingAlloc = std::scoped_allocator_adaptor<CountingAlloc<T>>;
 
 template <class T>
-using CountingVector = std::vector<T, ScopedCountingAlloc>;
+using CountingVector = std::vector<T, ScopedCountingAlloc<T>>;
 
 template <class T>
-using CountingSet = std::set<T, std::less<T>, ScopedCountingAlloc>;
+using CountingSet = std::set<T, std::less<T>, ScopedCountingAlloc<T>>;
 
 template <class K, class V>
-using CountingMap = std::map<K, V, std::less<K>, ScopedCountingAlloc>;
+using CountingMap =
+    std::map<K, V, std::less<K>, ScopedCountingAlloc<std::pair<const K, V>>>;
 
 using CountingString =
-    std::basic_string<char, std::char_traits<char>, ScopedCountingAlloc>;
+    std::basic_string<char, std::char_traits<char>, ScopedCountingAlloc<>>;
 
 template <class T>
 using CountingUniquePtr = std::unique_ptr<

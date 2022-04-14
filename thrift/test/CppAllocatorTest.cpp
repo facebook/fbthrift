@@ -27,7 +27,7 @@ static const char* kTooLong =
     "This is too long for the small string optimization";
 
 TEST(CppAllocatorTest, AlwaysThrowAllocator) {
-  ScopedAlwaysThrowAlloc alloc;
+  ScopedAlwaysThrowAlloc<> alloc;
   AlwaysThrowParent s(alloc);
 
   EXPECT_THROW(s.child_ref()->aa_list_ref()->emplace_back(42), std::bad_alloc);
@@ -43,7 +43,7 @@ TEST(CppAllocatorTest, AlwaysThrowAllocator) {
 }
 
 TEST(CppAllocatorTest, GetAllocator) {
-  ScopedStatefulAlloc alloc(42);
+  ScopedStatefulAlloc<> alloc(42);
 
   NoAllocatorVia s1(alloc);
   EXPECT_EQ(alloc, s1.get_allocator());
@@ -68,7 +68,7 @@ TEST(CppAllocatorTest, Deserialize) {
 
   auto str = serializer::serialize<std::string>(s1);
 
-  ScopedStatefulAlloc alloc(42);
+  ScopedStatefulAlloc<> alloc(42);
   HasContainerFields s2(alloc);
   EXPECT_EQ(s2.get_allocator(), alloc);
   EXPECT_EQ(s2.aa_list_ref()->get_allocator(), alloc);
@@ -89,7 +89,7 @@ TEST(CppAllocatorTest, Deserialize) {
 }
 
 TEST(CppAllocatorTest, UsesTypedef) {
-  ScopedStatefulAlloc alloc(42);
+  ScopedStatefulAlloc<> alloc(42);
   UsesTypedef s(alloc);
   EXPECT_EQ(alloc, s.get_allocator());
 }
@@ -103,7 +103,7 @@ TEST(CppAllocatorTest, DeserializeNested) {
 
   auto str = serializer::serialize<std::string>(s1);
 
-  ScopedStatefulAlloc alloc(42);
+  ScopedStatefulAlloc<> alloc(42);
   HasNestedContainerFields s2(alloc);
 
   EXPECT_EQ(s2.get_allocator(), alloc);
@@ -126,7 +126,7 @@ TEST(CppAllocatorTest, DeserializeSortedUniqueConstructible) {
 
   auto str = serializer::serialize<std::string>(s1);
 
-  ScopedStatefulAlloc alloc(42);
+  ScopedStatefulAlloc<> alloc(42);
   HasSortedUniqueConstructibleFields s2(alloc);
   EXPECT_EQ(s2.get_allocator(), alloc);
   EXPECT_EQ(s2.aa_set_ref()->get_allocator(), alloc);
@@ -144,7 +144,7 @@ TEST(CppAllocatorTest, DeserializeSortedUniqueConstructible) {
 }
 
 TEST(CppAllocatorTest, CountingAllocator) {
-  ScopedCountingAlloc alloc;
+  ScopedCountingAlloc<> alloc;
   CountingParent s(alloc);
 
 #define EXPECT_ALLOC(x)             \
@@ -188,14 +188,14 @@ TEST(CppAllocatorTest, CountingAllocator) {
 }
 
 TEST(CppAllocatorTest, AlwaysThrowAllocatorCppRef) {
-  ScopedAlwaysThrowAlloc alloc;
+  ScopedAlwaysThrowAlloc<> alloc;
   // this is just death instead of a throw since it is throwing an exception on
   // constuctor somehow which results in calling std::terminate
   EXPECT_DEATH({ AlwaysThrowCppRefParent parent(alloc); }, "");
 }
 
 TEST(CppAllocatorTest, AlwaysThrowAllocatorCppRefCount) {
-  ScopedCountingAlloc alloc;
+  ScopedCountingAlloc<> alloc;
   EXPECT_ALLOC({ CountingCppRefParent parent(alloc); });
   CountingCppRefParent parent(alloc);
   // check propagation of allocator for containers with shared_ptr
