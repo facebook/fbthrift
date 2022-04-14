@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -217,4 +217,17 @@ TEST(CppRefContainers, Simple) {
   EXPECT_EQ(v.getType(), CppRefContainers::values);
   EXPECT_EQ((*v.get_values())[0].get_data(), "v1");
   EXPECT_EQ((*v.get_values())[1].get_data(), "v2");
+}
+
+TEST(Empty, Simple) {
+  TestUnion u;
+  EXPECT_TRUE(apache::thrift::empty(u));
+  u.i32_field_ref() = 0;
+  EXPECT_FALSE(apache::thrift::empty(u));
+  u = TestUnion{};
+  EXPECT_TRUE(apache::thrift::empty(u));
+  u.string_field_ref() = "";
+  EXPECT_FALSE(apache::thrift::empty(u));
+  apache::thrift::clear(u);
+  EXPECT_TRUE(apache::thrift::empty(u));
 }

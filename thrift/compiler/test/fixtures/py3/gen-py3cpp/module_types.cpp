@@ -732,6 +732,10 @@ void BinaryUnion::__fbthrift_clear() {
   type_ = Type::__EMPTY__;
 }
 
+bool BinaryUnion::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
+}
+
 
 void swap(BinaryUnion& a, BinaryUnion& b) {
   BinaryUnion temp(std::move(a));

@@ -895,6 +895,10 @@ void union1::__fbthrift_clear() {
   type_ = Type::__EMPTY__;
 }
 
+bool union1::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
+}
+
 bool union1::operator==(const union1& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
@@ -1001,6 +1005,10 @@ void union2::__fbthrift_clear() {
       break;
   }
   type_ = Type::__EMPTY__;
+}
+
+bool union2::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
 }
 
 bool union2::operator==(const union2& rhs) const {

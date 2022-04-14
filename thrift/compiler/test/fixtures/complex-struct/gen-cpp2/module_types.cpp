@@ -1628,6 +1628,10 @@ void MyUnion::__fbthrift_clear() {
   type_ = Type::__EMPTY__;
 }
 
+bool MyUnion::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
+}
+
 bool MyUnion::operator==(const MyUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
@@ -2549,6 +2553,10 @@ void MyUnionFloatFieldThrowExp::__fbthrift_clear() {
       break;
   }
   type_ = Type::__EMPTY__;
+}
+
+bool MyUnionFloatFieldThrowExp::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
 }
 
 bool MyUnionFloatFieldThrowExp::operator==(const MyUnionFloatFieldThrowExp& rhs) const {

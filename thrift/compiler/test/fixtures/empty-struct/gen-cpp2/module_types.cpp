@@ -129,6 +129,10 @@ void Nada::__fbthrift_clear() {
   type_ = Type::__EMPTY__;
 }
 
+bool Nada::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
+}
+
 bool Nada::operator==(const Nada& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {

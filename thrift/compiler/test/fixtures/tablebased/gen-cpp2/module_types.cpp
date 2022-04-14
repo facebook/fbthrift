@@ -616,6 +616,10 @@ void ExampleUnion::__fbthrift_clear() {
   type_ = Type::__EMPTY__;
 }
 
+bool ExampleUnion::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
+}
+
 bool ExampleUnion::operator==(const ExampleUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {

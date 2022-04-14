@@ -78,6 +78,10 @@ void ComplexUnion::__fbthrift_clear() {
   type_ = Type::__EMPTY__;
 }
 
+bool ComplexUnion::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
+}
+
 bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
@@ -196,6 +200,10 @@ void ListUnion::__fbthrift_clear() {
   type_ = Type::__EMPTY__;
 }
 
+bool ListUnion::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
+}
+
 bool ListUnion::operator==(const ListUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
@@ -296,6 +304,10 @@ void DataUnion::__fbthrift_clear() {
       break;
   }
   type_ = Type::__EMPTY__;
+}
+
+bool DataUnion::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
 }
 
 bool DataUnion::operator==(const DataUnion& rhs) const {
@@ -528,6 +540,10 @@ void ValUnion::__fbthrift_clear() {
   type_ = Type::__EMPTY__;
 }
 
+bool ValUnion::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
+}
+
 bool ValUnion::operator==(const ValUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
@@ -652,6 +668,10 @@ void VirtualComplexUnion::__fbthrift_clear() {
       break;
   }
   type_ = Type::__EMPTY__;
+}
+
+bool VirtualComplexUnion::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
 }
 
 bool VirtualComplexUnion::operator==(const VirtualComplexUnion& rhs) const {
@@ -831,6 +851,10 @@ void NonCopyableUnion::__fbthrift_clear() {
       break;
   }
   type_ = Type::__EMPTY__;
+}
+
+bool NonCopyableUnion::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
 }
 
 bool NonCopyableUnion::operator==(const NonCopyableUnion& rhs) const {

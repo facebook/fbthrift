@@ -176,6 +176,10 @@ void union1::__fbthrift_clear() {
   type_ = Type::__EMPTY__;
 }
 
+bool union1::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
+}
+
 bool union1::operator==(const union1& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
@@ -292,6 +296,10 @@ void union2::__fbthrift_clear() {
   type_ = Type::__EMPTY__;
 }
 
+bool union2::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
+}
+
 bool union2::operator==(const union2& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
@@ -406,6 +414,10 @@ void union3::__fbthrift_clear() {
       break;
   }
   type_ = Type::__EMPTY__;
+}
+
+bool union3::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
 }
 
 bool union3::operator==(const union3& rhs) const {
@@ -630,6 +642,10 @@ void unionA::__fbthrift_clear() {
       break;
   }
   type_ = Type::__EMPTY__;
+}
+
+bool unionA::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
 }
 
 bool unionA::operator==(const unionA& rhs) const {
@@ -3443,6 +3459,10 @@ void union_with_special_names::__fbthrift_clear() {
       break;
   }
   type_ = Type::__EMPTY__;
+}
+
+bool union_with_special_names::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
 }
 
 bool union_with_special_names::operator==(const union_with_special_names& rhs) const {

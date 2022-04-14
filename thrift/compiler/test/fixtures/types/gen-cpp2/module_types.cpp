@@ -2436,6 +2436,10 @@ void NoExceptMoveUnion::__fbthrift_clear() {
   type_ = Type::__EMPTY__;
 }
 
+bool NoExceptMoveUnion::__fbthrift_is_empty() const {
+  return type_ == Type::__EMPTY__;
+}
+
 bool NoExceptMoveUnion::operator==(const NoExceptMoveUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
