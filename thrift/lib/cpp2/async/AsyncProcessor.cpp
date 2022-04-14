@@ -68,12 +68,6 @@ void EventTask::setTile(TilePtr&& tile) {
   req_.requestContext()->setTile(std::move(tile));
 }
 
-std::pair<AsyncProcessor*, const AsyncProcessorFactory::MethodMetadata*>
-AsyncProcessorSet::getRequestsProcessor(
-    const AsyncProcessorFactory::MethodMetadata&) {
-  LOG(FATAL) << "Unimplmented getRequestsProcessor called";
-}
-
 char const* AsyncProcessor::getServiceName() {
   return "NoServiceNameSet";
 }

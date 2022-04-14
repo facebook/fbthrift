@@ -325,12 +325,6 @@ class MultiplexAsyncProcessor final : public AsyncProcessor {
     return;
   }
 
-  std::pair<AsyncProcessor*, const AsyncProcessorFactory::MethodMetadata*>
-  getRequestsProcessor(
-      const AsyncProcessorFactory::MethodMetadata& methodMetadata) override {
-    return derefProcessor(methodMetadata);
-  }
-
  private:
   const std::vector<std::unique_ptr<AsyncProcessor>> processors_;
   const MultiplexAsyncProcessorFactory::CompositionMetadata&
