@@ -54,7 +54,6 @@ TEST(DeterministicAccumulatorTest, Exceptions) {
 
   EXPECT_THROW(accumulator.endOrdered(), std::logic_error);
   EXPECT_THROW(accumulator.endUnordered(), std::logic_error);
-  EXPECT_THROW(accumulator.result(), std::logic_error);
 
   accumulator.beginOrdered();
   accumulator.combine(0);

@@ -107,13 +107,13 @@ class DeterministicAccumulator {
       : generator_(std::move(generator)) {}
 
   Hasher& result() {
-    if (set_) {
+    if (context_.empty()) {
       return result_;
     }
     folly::throw_exception<std::logic_error>("empty hash result");
   }
   const Hasher& result() const {
-    if (set_) {
+    if (context_.empty()) {
       return result_;
     }
     folly::throw_exception<std::logic_error>("empty hash result");
@@ -145,7 +145,6 @@ class DeterministicAccumulator {
   HasherGenerator generator_;
   std::stack<Context> context_;
   Hasher result_ = generator_();
-  bool set_{};
 
   constexpr auto& context() {
     if (context_.empty()) {
@@ -230,7 +229,6 @@ void DeterministicAccumulator<HasherGenerator>::exitContext(Hasher result) {
   result.finalize();
   // If the context stack is empty, set the result.
   if (context_.empty()) {
-    set_ = true;
     result_ = std::move(result);
     return;
   }
@@ -251,7 +249,6 @@ template <typename T>
 void DeterministicAccumulator<HasherGenerator>::combine(const T& val) {
   // If the context stack is empty, set the result.
   if (context_.empty()) {
-    set_ = true;
     result_ = generator_();
     result_.combine(val);
     result_.finalize();
