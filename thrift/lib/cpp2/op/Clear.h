@@ -51,7 +51,7 @@ constexpr detail::Empty<Tag> isEmpty;
 //   getDefault<type::string_t>() -> ""
 template <typename Tag, typename T = type::native_type<Tag>>
 constexpr decltype(auto) getIntrinsicDefault() {
-  static_assert(type::is_concrete_v<Tag>);
+  static_assert(type::is_concrete_v<Tag>, "");
   return detail::getIntrinsicDefault<T>(Tag{});
 }
 

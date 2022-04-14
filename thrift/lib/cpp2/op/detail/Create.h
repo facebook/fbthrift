@@ -29,7 +29,7 @@ namespace detail {
 
 template <typename Tag>
 struct Create {
-  static_assert(type::is_concrete_v<Tag>);
+  static_assert(type::is_concrete_v<Tag>, "");
 
   template <typename T = type::native_type<Tag>>
   constexpr T operator()() const {
@@ -39,7 +39,7 @@ struct Create {
 
 template <typename Tag, FieldId Id>
 struct Create<type::field_t<Id, Tag>> {
-  static_assert(type::is_concrete_v<Tag>);
+  static_assert(type::is_concrete_v<Tag>, "");
 
   template <typename Struct, typename T = type::native_type<Tag>>
   constexpr T operator()(Struct&) const {
@@ -50,7 +50,7 @@ struct Create<type::field_t<Id, Tag>> {
 template <typename Adapter, typename Tag, FieldId Id>
 struct Create<type::field_t<Id, type::adapted<Adapter, Tag>>> {
   using adapted_tag = type::adapted<Adapter, Tag>;
-  static_assert(type::is_concrete_v<adapted_tag>);
+  static_assert(type::is_concrete_v<adapted_tag>, "");
 
   template <typename Struct, typename AdapterT = Adapter>
   constexpr adapt_detail::

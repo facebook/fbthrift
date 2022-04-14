@@ -32,7 +32,8 @@ class StdHasher {
   size_t getResult() const { return result_; }
 
   template <typename T>
-  constexpr std::enable_if_t<std::is_arithmetic_v<T>> combine(const T& val) {
+  constexpr std::enable_if_t<std::is_arithmetic<T>::value> combine(
+      const T& val) {
     result_ = folly::hash::hash_combine(val, result_);
   }
   void combine(const folly::IOBuf& value) {

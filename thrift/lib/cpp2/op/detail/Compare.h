@@ -32,7 +32,7 @@ namespace detail {
 
 template <typename Tag>
 struct EqualTo {
-  static_assert(type::is_concrete_v<Tag>);
+  static_assert(type::is_concrete_v<Tag>, "");
   template <typename T1 = type::native_type<Tag>, typename T2 = T1>
   constexpr bool operator()(const T1& lhs, const T2& rhs) const {
     if constexpr (type::is_a_v<Tag, type::string_c>) {
@@ -52,12 +52,13 @@ struct EqualTo<type::adapted<Adapter, Tag>> {
 template <typename Tag>
 struct IdenticalTo : EqualTo<Tag> {
   // Identical is the same as equal for integral, enum and string types.
+  // TODO(afuller): Implement proper specializations for all structured
+  // types.
   static_assert(
       type::is_a_v<Tag, type::integral_c> || type::is_a_v<Tag, type::enum_c> ||
-      type::is_a_v<Tag, type::string_c> ||
-      // TODO(afuller): Implement proper specializations for all structured
-      // types.
-      type::structured_types::contains<Tag>());
+          type::is_a_v<Tag, type::string_c> ||
+          type::structured_types::contains<Tag>(),
+      "");
 };
 
 template <typename Adapter, typename Tag>

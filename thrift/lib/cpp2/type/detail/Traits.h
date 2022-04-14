@@ -38,19 +38,19 @@ namespace detail {
 template <typename Tag>
 struct traits {
   // No types to declare for non concrete types.
-  static_assert(is_abstract_v<Tag>);
+  static_assert(is_abstract_v<Tag>, "");
 };
 
 // Resolves the concrete template type when paramaterizing the given template,
 // with the standard types of the give Tags.
-template <template <typename...> typename TemplateT, typename... Tags>
+template <template <typename...> class TemplateT, typename... Tags>
 using standard_template_t = TemplateT<typename traits<Tags>::standard_type...>;
 
 // Resolves the concrete template type when paramaterizing the given template,
 // with the native types of the give Tags.
-template <template <typename...> typename TemplateT, typename... Tags>
+template <template <typename...> class TemplateT, typename... Tags>
 using native_template_t = TemplateT<typename traits<Tags>::native_type...>;
-template <template <typename...> typename TemplateT, typename... Tags>
+template <template <typename...> class TemplateT, typename... Tags>
 struct native_template {
   using type = native_template_t<TemplateT, Tags...>;
 };
@@ -78,7 +78,7 @@ struct types {
   using at = typename fatal::at<types, I>;
 
   // Converts the type list to a type list of the given types.
-  template <template <typename...> typename T>
+  template <template <typename...> class T>
   using as = T<Tags...>;
 
   template <typename F>
@@ -102,7 +102,7 @@ struct concrete_type {
 };
 struct nonconcrete_type {};
 
-template <template <typename...> typename T, typename... ParamTags>
+template <template <typename...> class T, typename... ParamTags>
 using parametrized_type = folly::conditional_t<
     (is_concrete_v<ParamTags> && ...),
     concrete_type<

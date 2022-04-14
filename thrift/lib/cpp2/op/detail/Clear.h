@@ -56,7 +56,7 @@ FOLLY_EXPORT const T& getIntrinsicDefault(type::structured_c) noexcept {
 
 template <typename Tag>
 struct Clear {
-  static_assert(type::is_concrete_v<Tag>);
+  static_assert(type::is_concrete_v<Tag>, "");
   template <typename T>
   void operator()(T& value) const {
     if constexpr (type::is_a_v<Tag, type::structured_c>) {
@@ -78,7 +78,7 @@ struct Clear<type::adapted<Adapter, Tag>> {
 
 template <typename Tag>
 struct Empty {
-  static_assert(type::is_concrete_v<Tag>);
+  static_assert(type::is_concrete_v<Tag>, "");
   template <typename T = type::native_type<Tag>>
   constexpr bool operator()(const T& value) const {
     if constexpr (type::is_a_v<Tag, type::string_c>) {
