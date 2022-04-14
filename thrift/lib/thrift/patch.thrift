@@ -49,6 +49,7 @@ struct BoolPatch {
 } (
   cpp.name = "BoolPatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::BoolPatchAdapter",
+  cpp.detail.adapted_alias,
 )
 
 // A patch for an 8-bit integer value.
@@ -65,6 +66,7 @@ struct BytePatch {
 } (
   cpp.name = "BytePatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
+  cpp.detail.adapted_alias,
 )
 
 // A patch for a 16-bit integer value.
@@ -81,6 +83,7 @@ struct I16Patch {
 } (
   cpp.name = "I16PatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
+  cpp.detail.adapted_alias,
 )
 
 // A patch for a 32-bit integer value.
@@ -97,6 +100,7 @@ struct I32Patch {
 } (
   cpp.name = "I32PatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
+  cpp.detail.adapted_alias,
 )
 
 // A patch for a 64-bit integer value.
@@ -113,6 +117,7 @@ struct I64Patch {
 } (
   cpp.name = "I64PatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
+  cpp.detail.adapted_alias,
 )
 
 // A patch for a 32-bit floating point value.
@@ -129,6 +134,7 @@ struct FloatPatch {
 } (
   cpp.name = "FloatPatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
+  cpp.detail.adapted_alias,
 )
 
 // A patch for an 64-bit floating point value.
@@ -145,6 +151,7 @@ struct DoublePatch {
 } (
   cpp.name = "DoublePatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::NumberPatchAdapter",
+  cpp.detail.adapted_alias,
 )
 
 // A patch for a string value.
@@ -167,6 +174,7 @@ struct StringPatch {
 } (
   cpp.name = "StringPatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::StringPatchAdapter",
+  cpp.detail.adapted_alias,
 )
 
 // A patch for a binary value.
@@ -180,4 +188,5 @@ struct BinaryPatch {
 } (
   cpp.name = "BinaryPatchStruct",
   cpp.adapter = "::apache::thrift::op::detail::AssignPatchAdapter",
+  cpp.detail.adapted_alias,
 )

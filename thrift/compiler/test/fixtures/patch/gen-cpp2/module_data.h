@@ -40,105 +40,105 @@ template <> struct TStructDataStorage<::cpp2::MyStruct> {
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyDataPatch> {
+template <> struct TStructDataStorage<::cpp2::MyDataPatchStruct> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyDataValuePatch> {
+template <> struct TStructDataStorage<::cpp2::MyDataValuePatchStruct> {
   static constexpr const std::size_t fields_size = 3;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::OptionalMyDataValuePatch> {
+template <> struct TStructDataStorage<::cpp2::OptionalMyDataValuePatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyUnionPatch> {
+template <> struct TStructDataStorage<::cpp2::MyUnionPatchStruct> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyUnionValuePatch> {
+template <> struct TStructDataStorage<::cpp2::MyUnionValuePatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::OptionalMyUnionValuePatch> {
+template <> struct TStructDataStorage<::cpp2::OptionalMyUnionValuePatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyStructField21Patch> {
+template <> struct TStructDataStorage<::cpp2::MyStructField21PatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::OptionalMyStructField21Patch> {
+template <> struct TStructDataStorage<::cpp2::OptionalMyStructField21PatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyStructField22Patch> {
+template <> struct TStructDataStorage<::cpp2::MyStructField22PatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::OptionalMyStructField22Patch> {
+template <> struct TStructDataStorage<::cpp2::OptionalMyStructField22PatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyStructField23Patch> {
+template <> struct TStructDataStorage<::cpp2::MyStructField23PatchStruct> {
   static constexpr const std::size_t fields_size = 3;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::OptionalMyStructField23Patch> {
+template <> struct TStructDataStorage<::cpp2::OptionalMyStructField23PatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyStructPatch> {
+template <> struct TStructDataStorage<::cpp2::MyStructPatchStruct> {
   static constexpr const std::size_t fields_size = 24;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyStructValuePatch> {
+template <> struct TStructDataStorage<::cpp2::MyStructValuePatchStruct> {
   static constexpr const std::size_t fields_size = 3;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::OptionalMyStructValuePatch> {
+template <> struct TStructDataStorage<::cpp2::OptionalMyStructValuePatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;

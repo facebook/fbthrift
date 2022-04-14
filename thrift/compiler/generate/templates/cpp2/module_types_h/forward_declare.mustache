@@ -20,6 +20,9 @@
 
 <%#program:structs%>
 class <%struct:cpp_name%>;
+<%#struct:cpp_adapted_alias%>
+using <%struct:name%> = <%struct:cpp_adapted_alias%>;
+<%/struct:cpp_adapted_alias%>
 <%/program:structs%>
 <% > common/namespace_cpp2_end%>
 <%/program:structs?%>

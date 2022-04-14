@@ -900,6 +900,7 @@ class mstch_cpp2_struct : public mstch_struct {
              &mstch_cpp2_struct::is_struct_orderable},
             {"struct:nondefault_copy_ctor_and_assignment?",
              &mstch_cpp2_struct::nondefault_copy_ctor_and_assignment},
+            {"struct:cpp_adapted_alias", &mstch_cpp2_struct::cpp_adapted_alias},
             {"struct:cpp_name", &mstch_cpp2_struct::cpp_name},
             {"struct:cpp_fullname", &mstch_cpp2_struct::cpp_fullname},
             {"struct:cpp_methods", &mstch_cpp2_struct::cpp_methods},
@@ -1004,6 +1005,12 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node cpp_fullname() {
     return context_->resolver().get_namespaced_name(
         *strct_->get_program(), *strct_);
+  }
+  mstch::node cpp_adapted_alias() {
+    if (strct_->has_annotation("cpp.detail.adapted_alias")) {
+      return context_->resolver().get_type_name(*strct_);
+    }
+    return {};
   }
 
   mstch::node cpp_methods() {

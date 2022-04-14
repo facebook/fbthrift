@@ -63,7 +63,7 @@ struct ForEachField<::cpp2::MyStruct> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyDataPatch> {
+struct ForEachField<::cpp2::MyDataPatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).data1_ref()...);
@@ -72,7 +72,7 @@ struct ForEachField<::cpp2::MyDataPatch> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyDataValuePatch> {
+struct ForEachField<::cpp2::MyDataValuePatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).assign_ref()...);
@@ -82,7 +82,7 @@ struct ForEachField<::cpp2::MyDataValuePatch> {
 };
 
 template <>
-struct ForEachField<::cpp2::OptionalMyDataValuePatch> {
+struct ForEachField<::cpp2::OptionalMyDataValuePatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).clear_ref()...);
@@ -93,7 +93,7 @@ struct ForEachField<::cpp2::OptionalMyDataValuePatch> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyUnionPatch> {
+struct ForEachField<::cpp2::MyUnionPatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).option1_ref()...);
@@ -102,7 +102,7 @@ struct ForEachField<::cpp2::MyUnionPatch> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyUnionValuePatch> {
+struct ForEachField<::cpp2::MyUnionValuePatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).clear_ref()...);
@@ -113,7 +113,7 @@ struct ForEachField<::cpp2::MyUnionValuePatch> {
 };
 
 template <>
-struct ForEachField<::cpp2::OptionalMyUnionValuePatch> {
+struct ForEachField<::cpp2::OptionalMyUnionValuePatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).clear_ref()...);
@@ -124,7 +124,7 @@ struct ForEachField<::cpp2::OptionalMyUnionValuePatch> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyStructField21Patch> {
+struct ForEachField<::cpp2::MyStructField21PatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).assign_ref()...);
@@ -135,7 +135,7 @@ struct ForEachField<::cpp2::MyStructField21Patch> {
 };
 
 template <>
-struct ForEachField<::cpp2::OptionalMyStructField21Patch> {
+struct ForEachField<::cpp2::OptionalMyStructField21PatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).clear_ref()...);
@@ -146,7 +146,7 @@ struct ForEachField<::cpp2::OptionalMyStructField21Patch> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyStructField22Patch> {
+struct ForEachField<::cpp2::MyStructField22PatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).assign_ref()...);
@@ -157,7 +157,7 @@ struct ForEachField<::cpp2::MyStructField22Patch> {
 };
 
 template <>
-struct ForEachField<::cpp2::OptionalMyStructField22Patch> {
+struct ForEachField<::cpp2::OptionalMyStructField22PatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).clear_ref()...);
@@ -168,7 +168,7 @@ struct ForEachField<::cpp2::OptionalMyStructField22Patch> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyStructField23Patch> {
+struct ForEachField<::cpp2::MyStructField23PatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).assign_ref()...);
@@ -178,7 +178,7 @@ struct ForEachField<::cpp2::MyStructField23Patch> {
 };
 
 template <>
-struct ForEachField<::cpp2::OptionalMyStructField23Patch> {
+struct ForEachField<::cpp2::OptionalMyStructField23PatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).clear_ref()...);
@@ -189,7 +189,7 @@ struct ForEachField<::cpp2::OptionalMyStructField23Patch> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyStructPatch> {
+struct ForEachField<::cpp2::MyStructPatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).boolVal_ref()...);
@@ -220,7 +220,7 @@ struct ForEachField<::cpp2::MyStructPatch> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyStructValuePatch> {
+struct ForEachField<::cpp2::MyStructValuePatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).assign_ref()...);
@@ -230,7 +230,7 @@ struct ForEachField<::cpp2::MyStructValuePatch> {
 };
 
 template <>
-struct ForEachField<::cpp2::OptionalMyStructValuePatch> {
+struct ForEachField<::cpp2::OptionalMyStructValuePatchStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).clear_ref()...);

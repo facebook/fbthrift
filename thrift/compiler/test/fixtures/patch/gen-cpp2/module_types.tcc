@@ -37,105 +37,105 @@ struct TccStructTraits<::cpp2::MyStruct> {
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::MyDataPatch> {
+struct TccStructTraits<::cpp2::MyDataPatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::MyDataValuePatch> {
+struct TccStructTraits<::cpp2::MyDataValuePatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::OptionalMyDataValuePatch> {
+struct TccStructTraits<::cpp2::OptionalMyDataValuePatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::MyUnionPatch> {
+struct TccStructTraits<::cpp2::MyUnionPatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::MyUnionValuePatch> {
+struct TccStructTraits<::cpp2::MyUnionValuePatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::OptionalMyUnionValuePatch> {
+struct TccStructTraits<::cpp2::OptionalMyUnionValuePatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::MyStructField21Patch> {
+struct TccStructTraits<::cpp2::MyStructField21PatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::OptionalMyStructField21Patch> {
+struct TccStructTraits<::cpp2::OptionalMyStructField21PatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::MyStructField22Patch> {
+struct TccStructTraits<::cpp2::MyStructField22PatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::OptionalMyStructField22Patch> {
+struct TccStructTraits<::cpp2::OptionalMyStructField22PatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::MyStructField23Patch> {
+struct TccStructTraits<::cpp2::MyStructField23PatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::OptionalMyStructField23Patch> {
+struct TccStructTraits<::cpp2::OptionalMyStructField23PatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::MyStructPatch> {
+struct TccStructTraits<::cpp2::MyStructPatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::MyStructValuePatch> {
+struct TccStructTraits<::cpp2::MyStructValuePatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype) noexcept;
 };
 template <>
-struct TccStructTraits<::cpp2::OptionalMyStructValuePatch> {
+struct TccStructTraits<::cpp2::OptionalMyStructValuePatchStruct> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
@@ -1452,7 +1452,7 @@ extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactPro
 namespace cpp2 {
 
 template <class Protocol_>
-void MyDataPatch::readNoXfer(Protocol_* iprot) {
+void MyDataPatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1515,7 +1515,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyDataPatch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyDataPatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -1547,7 +1547,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t MyDataPatch::serializedSize(Protocol_ const* prot_) const {
+uint32_t MyDataPatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyDataPatch");
   {
@@ -1563,7 +1563,7 @@ uint32_t MyDataPatch::serializedSize(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t MyDataPatch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t MyDataPatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyDataPatch");
   {
@@ -1579,7 +1579,7 @@ uint32_t MyDataPatch::serializedSizeZC(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t MyDataPatch::write(Protocol_* prot_) const {
+uint32_t MyDataPatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyDataPatch");
   bool previousFieldHasValue = true;
@@ -1602,20 +1602,20 @@ uint32_t MyDataPatch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void MyDataPatch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t MyDataPatch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t MyDataPatch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t MyDataPatch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void MyDataPatch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t MyDataPatch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t MyDataPatch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t MyDataPatch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void MyDataPatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyDataPatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyDataPatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyDataPatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void MyDataPatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyDataPatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyDataPatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyDataPatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
 
 template <class Protocol_>
-void MyDataValuePatch::readNoXfer(Protocol_* iprot) {
+void MyDataValuePatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1664,8 +1664,8 @@ _readField_clear:
 _readField_patch:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyDataPatch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataPatch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyDataPatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataPatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patch = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::StructuredPatchAdapter, 3>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -1691,7 +1691,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyDataValuePatch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyDataValuePatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -1731,7 +1731,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t MyDataValuePatch::serializedSize(Protocol_ const* prot_) const {
+uint32_t MyDataValuePatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyDataValuePatch");
   if (this->__fbthrift_field_assign) {
@@ -1744,14 +1744,14 @@ uint32_t MyDataValuePatch::serializedSize(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataPatch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataPatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t MyDataValuePatch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t MyDataValuePatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyDataValuePatch");
   if (this->__fbthrift_field_assign) {
@@ -1764,14 +1764,14 @@ uint32_t MyDataValuePatch::serializedSizeZC(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataPatch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataPatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t MyDataValuePatch::write(Protocol_* prot_) const {
+uint32_t MyDataValuePatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyDataValuePatch");
   bool previousFieldHasValue = true;
@@ -1795,7 +1795,7 @@ uint32_t MyDataValuePatch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "patch", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataPatch>::write(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataPatchStruct>::write(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -1803,20 +1803,20 @@ uint32_t MyDataValuePatch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void MyDataValuePatch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t MyDataValuePatch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t MyDataValuePatch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t MyDataValuePatch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void MyDataValuePatch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t MyDataValuePatch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t MyDataValuePatch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t MyDataValuePatch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void MyDataValuePatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyDataValuePatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyDataValuePatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyDataValuePatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void MyDataValuePatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyDataValuePatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyDataValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyDataValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
 
 template <class Protocol_>
-void OptionalMyDataValuePatch::readNoXfer(Protocol_* iprot) {
+void OptionalMyDataValuePatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -1848,8 +1848,8 @@ _readField_clear:
 _readField_patch:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyDataValuePatch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyDataValuePatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patch = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::StructPatchAdapter, 3>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -1883,8 +1883,8 @@ _readField_ensure:
 _readField_patchAfter:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyDataValuePatch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyDataValuePatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patchAfter = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::StructPatchAdapter, 5>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -1910,7 +1910,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<OptionalMyDataValuePatch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<OptionalMyDataValuePatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -1958,7 +1958,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t OptionalMyDataValuePatch::serializedSize(Protocol_ const* prot_) const {
+uint32_t OptionalMyDataValuePatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("OptionalMyDataValuePatch");
   {
@@ -1967,7 +1967,7 @@ uint32_t OptionalMyDataValuePatch::serializedSize(Protocol_ const* prot_) const 
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   if (this->__fbthrift_field_ensure) {
     xfer += prot_->serializedFieldSize("ensure", apache::thrift::protocol::T_STRUCT, 4);
@@ -1975,14 +1975,14 @@ uint32_t OptionalMyDataValuePatch::serializedSize(Protocol_ const* prot_) const 
   }
   {
     xfer += prot_->serializedFieldSize("patchAfter", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t OptionalMyDataValuePatch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t OptionalMyDataValuePatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("OptionalMyDataValuePatch");
   {
@@ -1991,7 +1991,7 @@ uint32_t OptionalMyDataValuePatch::serializedSizeZC(Protocol_ const* prot_) cons
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   if (this->__fbthrift_field_ensure) {
     xfer += prot_->serializedFieldSize("ensure", apache::thrift::protocol::T_STRUCT, 4);
@@ -1999,14 +1999,14 @@ uint32_t OptionalMyDataValuePatch::serializedSizeZC(Protocol_ const* prot_) cons
   }
   {
     xfer += prot_->serializedFieldSize("patchAfter", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t OptionalMyDataValuePatch::write(Protocol_* prot_) const {
+uint32_t OptionalMyDataValuePatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("OptionalMyDataValuePatch");
   bool previousFieldHasValue = true;
@@ -2021,7 +2021,7 @@ uint32_t OptionalMyDataValuePatch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "patch", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatch>::write(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatchStruct>::write(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patch));
     xfer += prot_->writeFieldEnd();
   }
   if (this->__fbthrift_field_ensure) {
@@ -2037,7 +2037,7 @@ uint32_t OptionalMyDataValuePatch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 4;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 5, kPrevFieldId>(*prot_, "patchAfter", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatch>::write(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatchStruct>::write(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -2045,20 +2045,20 @@ uint32_t OptionalMyDataValuePatch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void OptionalMyDataValuePatch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t OptionalMyDataValuePatch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t OptionalMyDataValuePatch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t OptionalMyDataValuePatch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void OptionalMyDataValuePatch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t OptionalMyDataValuePatch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t OptionalMyDataValuePatch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t OptionalMyDataValuePatch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void OptionalMyDataValuePatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t OptionalMyDataValuePatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t OptionalMyDataValuePatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t OptionalMyDataValuePatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void OptionalMyDataValuePatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t OptionalMyDataValuePatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t OptionalMyDataValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t OptionalMyDataValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
 
 template <class Protocol_>
-void MyUnionPatch::readNoXfer(Protocol_* iprot) {
+void MyUnionPatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2121,7 +2121,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyUnionPatch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyUnionPatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -2153,7 +2153,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t MyUnionPatch::serializedSize(Protocol_ const* prot_) const {
+uint32_t MyUnionPatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyUnionPatch");
   {
@@ -2169,7 +2169,7 @@ uint32_t MyUnionPatch::serializedSize(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t MyUnionPatch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t MyUnionPatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyUnionPatch");
   {
@@ -2185,7 +2185,7 @@ uint32_t MyUnionPatch::serializedSizeZC(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t MyUnionPatch::write(Protocol_* prot_) const {
+uint32_t MyUnionPatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyUnionPatch");
   bool previousFieldHasValue = true;
@@ -2208,20 +2208,20 @@ uint32_t MyUnionPatch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void MyUnionPatch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t MyUnionPatch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t MyUnionPatch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t MyUnionPatch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void MyUnionPatch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t MyUnionPatch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t MyUnionPatch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t MyUnionPatch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void MyUnionPatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyUnionPatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyUnionPatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyUnionPatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void MyUnionPatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyUnionPatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyUnionPatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyUnionPatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
 
 template <class Protocol_>
-void MyUnionValuePatch::readNoXfer(Protocol_* iprot) {
+void MyUnionValuePatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2253,8 +2253,8 @@ _readField_clear:
 _readField_patch:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyUnionPatch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyUnionPatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patch = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::StructuredPatchAdapter, 3>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -2287,8 +2287,8 @@ _readField_ensure:
 _readField_patchAfter:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyUnionPatch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyUnionPatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patchAfter = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::StructuredPatchAdapter, 5>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -2314,7 +2314,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyUnionValuePatch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyUnionValuePatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -2362,7 +2362,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t MyUnionValuePatch::serializedSize(Protocol_ const* prot_) const {
+uint32_t MyUnionValuePatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyUnionValuePatch");
   {
@@ -2371,7 +2371,7 @@ uint32_t MyUnionValuePatch::serializedSize(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   {
     xfer += prot_->serializedFieldSize("ensure", apache::thrift::protocol::T_STRUCT, 4);
@@ -2379,14 +2379,14 @@ uint32_t MyUnionValuePatch::serializedSize(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("patchAfter", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t MyUnionValuePatch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t MyUnionValuePatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyUnionValuePatch");
   {
@@ -2395,7 +2395,7 @@ uint32_t MyUnionValuePatch::serializedSizeZC(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   {
     xfer += prot_->serializedFieldSize("ensure", apache::thrift::protocol::T_STRUCT, 4);
@@ -2403,14 +2403,14 @@ uint32_t MyUnionValuePatch::serializedSizeZC(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("patchAfter", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t MyUnionValuePatch::write(Protocol_* prot_) const {
+uint32_t MyUnionValuePatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyUnionValuePatch");
   bool previousFieldHasValue = true;
@@ -2425,7 +2425,7 @@ uint32_t MyUnionValuePatch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "patch", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatch>::write(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatchStruct>::write(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
     xfer += prot_->writeFieldEnd();
   }
   {
@@ -2439,7 +2439,7 @@ uint32_t MyUnionValuePatch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 4;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 5, kPrevFieldId>(*prot_, "patchAfter", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatch>::write(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionPatchStruct>::write(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -2447,20 +2447,20 @@ uint32_t MyUnionValuePatch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void MyUnionValuePatch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t MyUnionValuePatch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t MyUnionValuePatch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t MyUnionValuePatch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void MyUnionValuePatch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t MyUnionValuePatch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t MyUnionValuePatch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t MyUnionValuePatch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void MyUnionValuePatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyUnionValuePatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyUnionValuePatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyUnionValuePatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void MyUnionValuePatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyUnionValuePatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyUnionValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyUnionValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
 
 template <class Protocol_>
-void OptionalMyUnionValuePatch::readNoXfer(Protocol_* iprot) {
+void OptionalMyUnionValuePatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2492,8 +2492,8 @@ _readField_clear:
 _readField_patch:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyUnionValuePatch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyUnionValuePatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patch = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::UnionPatchAdapter, 3>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -2527,8 +2527,8 @@ _readField_ensure:
 _readField_patchAfter:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyUnionValuePatch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyUnionValuePatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patchAfter = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::UnionPatchAdapter, 5>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -2554,7 +2554,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<OptionalMyUnionValuePatch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<OptionalMyUnionValuePatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -2602,7 +2602,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t OptionalMyUnionValuePatch::serializedSize(Protocol_ const* prot_) const {
+uint32_t OptionalMyUnionValuePatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("OptionalMyUnionValuePatch");
   {
@@ -2611,7 +2611,7 @@ uint32_t OptionalMyUnionValuePatch::serializedSize(Protocol_ const* prot_) const
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   if (this->__fbthrift_field_ensure) {
     xfer += prot_->serializedFieldSize("ensure", apache::thrift::protocol::T_STRUCT, 4);
@@ -2619,14 +2619,14 @@ uint32_t OptionalMyUnionValuePatch::serializedSize(Protocol_ const* prot_) const
   }
   {
     xfer += prot_->serializedFieldSize("patchAfter", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t OptionalMyUnionValuePatch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t OptionalMyUnionValuePatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("OptionalMyUnionValuePatch");
   {
@@ -2635,7 +2635,7 @@ uint32_t OptionalMyUnionValuePatch::serializedSizeZC(Protocol_ const* prot_) con
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   if (this->__fbthrift_field_ensure) {
     xfer += prot_->serializedFieldSize("ensure", apache::thrift::protocol::T_STRUCT, 4);
@@ -2643,14 +2643,14 @@ uint32_t OptionalMyUnionValuePatch::serializedSizeZC(Protocol_ const* prot_) con
   }
   {
     xfer += prot_->serializedFieldSize("patchAfter", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t OptionalMyUnionValuePatch::write(Protocol_* prot_) const {
+uint32_t OptionalMyUnionValuePatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("OptionalMyUnionValuePatch");
   bool previousFieldHasValue = true;
@@ -2665,7 +2665,7 @@ uint32_t OptionalMyUnionValuePatch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "patch", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatch>::write(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatchStruct>::write(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_patch));
     xfer += prot_->writeFieldEnd();
   }
   if (this->__fbthrift_field_ensure) {
@@ -2681,7 +2681,7 @@ uint32_t OptionalMyUnionValuePatch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 4;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 5, kPrevFieldId>(*prot_, "patchAfter", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatch>::write(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatchStruct>::write(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -2689,20 +2689,20 @@ uint32_t OptionalMyUnionValuePatch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void OptionalMyUnionValuePatch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t OptionalMyUnionValuePatch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t OptionalMyUnionValuePatch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t OptionalMyUnionValuePatch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void OptionalMyUnionValuePatch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t OptionalMyUnionValuePatch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t OptionalMyUnionValuePatch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t OptionalMyUnionValuePatch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void OptionalMyUnionValuePatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t OptionalMyUnionValuePatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t OptionalMyUnionValuePatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t OptionalMyUnionValuePatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void OptionalMyUnionValuePatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t OptionalMyUnionValuePatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t OptionalMyUnionValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t OptionalMyUnionValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
 
 template <class Protocol_>
-void MyStructField21Patch::readNoXfer(Protocol_* iprot) {
+void MyStructField21PatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2794,7 +2794,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyStructField21Patch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyStructField21PatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -2842,7 +2842,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t MyStructField21Patch::serializedSize(Protocol_ const* prot_) const {
+uint32_t MyStructField21PatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStructField21Patch");
   if (this->__isset.get(0)) {
@@ -2866,7 +2866,7 @@ uint32_t MyStructField21Patch::serializedSize(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t MyStructField21Patch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t MyStructField21PatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStructField21Patch");
   if (this->__isset.get(0)) {
@@ -2890,7 +2890,7 @@ uint32_t MyStructField21Patch::serializedSizeZC(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t MyStructField21Patch::write(Protocol_* prot_) const {
+uint32_t MyStructField21PatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyStructField21Patch");
   bool previousFieldHasValue = true;
@@ -2929,20 +2929,20 @@ uint32_t MyStructField21Patch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void MyStructField21Patch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t MyStructField21Patch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t MyStructField21Patch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t MyStructField21Patch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void MyStructField21Patch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t MyStructField21Patch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t MyStructField21Patch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t MyStructField21Patch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void MyStructField21PatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyStructField21PatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyStructField21PatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyStructField21PatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void MyStructField21PatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyStructField21PatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyStructField21PatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyStructField21PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
 
 template <class Protocol_>
-void OptionalMyStructField21Patch::readNoXfer(Protocol_* iprot) {
+void OptionalMyStructField21PatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -2974,8 +2974,8 @@ _readField_clear:
 _readField_patch:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyStructField21Patch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21Patch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyStructField21PatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21PatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patch = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::ListPatchAdapter, 3>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -3009,8 +3009,8 @@ _readField_ensure:
 _readField_patchAfter:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyStructField21Patch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21Patch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyStructField21PatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21PatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patchAfter = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::ListPatchAdapter, 5>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -3036,7 +3036,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<OptionalMyStructField21Patch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<OptionalMyStructField21PatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -3084,7 +3084,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t OptionalMyStructField21Patch::serializedSize(Protocol_ const* prot_) const {
+uint32_t OptionalMyStructField21PatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("OptionalMyStructField21Patch");
   {
@@ -3093,7 +3093,7 @@ uint32_t OptionalMyStructField21Patch::serializedSize(Protocol_ const* prot_) co
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21Patch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::ListPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21PatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::ListPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   if (this->__isset.get(2)) {
     xfer += prot_->serializedFieldSize("ensure", apache::thrift::protocol::T_LIST, 4);
@@ -3101,14 +3101,14 @@ uint32_t OptionalMyStructField21Patch::serializedSize(Protocol_ const* prot_) co
   }
   {
     xfer += prot_->serializedFieldSize("patchAfter", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21Patch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::ListPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21PatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::ListPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t OptionalMyStructField21Patch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t OptionalMyStructField21PatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("OptionalMyStructField21Patch");
   {
@@ -3117,7 +3117,7 @@ uint32_t OptionalMyStructField21Patch::serializedSizeZC(Protocol_ const* prot_) 
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21Patch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::ListPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21PatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::ListPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   if (this->__isset.get(2)) {
     xfer += prot_->serializedFieldSize("ensure", apache::thrift::protocol::T_LIST, 4);
@@ -3125,14 +3125,14 @@ uint32_t OptionalMyStructField21Patch::serializedSizeZC(Protocol_ const* prot_) 
   }
   {
     xfer += prot_->serializedFieldSize("patchAfter", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21Patch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::ListPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21PatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::ListPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t OptionalMyStructField21Patch::write(Protocol_* prot_) const {
+uint32_t OptionalMyStructField21PatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("OptionalMyStructField21Patch");
   bool previousFieldHasValue = true;
@@ -3147,7 +3147,7 @@ uint32_t OptionalMyStructField21Patch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "patch", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21Patch>::write(*prot_, ::apache::thrift::op::detail::ListPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21PatchStruct>::write(*prot_, ::apache::thrift::op::detail::ListPatchAdapter::toThrift(this->__fbthrift_field_patch));
     xfer += prot_->writeFieldEnd();
   }
   if (this->__isset.get(2)) {
@@ -3163,7 +3163,7 @@ uint32_t OptionalMyStructField21Patch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 4;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 5, kPrevFieldId>(*prot_, "patchAfter", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21Patch>::write(*prot_, ::apache::thrift::op::detail::ListPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField21PatchStruct>::write(*prot_, ::apache::thrift::op::detail::ListPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -3171,20 +3171,20 @@ uint32_t OptionalMyStructField21Patch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void OptionalMyStructField21Patch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t OptionalMyStructField21Patch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t OptionalMyStructField21Patch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t OptionalMyStructField21Patch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void OptionalMyStructField21Patch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t OptionalMyStructField21Patch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t OptionalMyStructField21Patch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t OptionalMyStructField21Patch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void OptionalMyStructField21PatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t OptionalMyStructField21PatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t OptionalMyStructField21PatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t OptionalMyStructField21PatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void OptionalMyStructField21PatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t OptionalMyStructField21PatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t OptionalMyStructField21PatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t OptionalMyStructField21PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
 
 template <class Protocol_>
-void MyStructField22Patch::readNoXfer(Protocol_* iprot) {
+void MyStructField22PatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3276,7 +3276,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyStructField22Patch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyStructField22PatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -3324,7 +3324,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t MyStructField22Patch::serializedSize(Protocol_ const* prot_) const {
+uint32_t MyStructField22PatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStructField22Patch");
   if (this->__isset.get(0)) {
@@ -3348,7 +3348,7 @@ uint32_t MyStructField22Patch::serializedSize(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t MyStructField22Patch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t MyStructField22PatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStructField22Patch");
   if (this->__isset.get(0)) {
@@ -3372,7 +3372,7 @@ uint32_t MyStructField22Patch::serializedSizeZC(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t MyStructField22Patch::write(Protocol_* prot_) const {
+uint32_t MyStructField22PatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyStructField22Patch");
   bool previousFieldHasValue = true;
@@ -3411,20 +3411,20 @@ uint32_t MyStructField22Patch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void MyStructField22Patch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t MyStructField22Patch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t MyStructField22Patch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t MyStructField22Patch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void MyStructField22Patch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t MyStructField22Patch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t MyStructField22Patch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t MyStructField22Patch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void MyStructField22PatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyStructField22PatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyStructField22PatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyStructField22PatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void MyStructField22PatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyStructField22PatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyStructField22PatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyStructField22PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
 
 template <class Protocol_>
-void OptionalMyStructField22Patch::readNoXfer(Protocol_* iprot) {
+void OptionalMyStructField22PatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3456,8 +3456,8 @@ _readField_clear:
 _readField_patch:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyStructField22Patch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22Patch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyStructField22PatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22PatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patch = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::SetPatchAdapter, 3>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -3491,8 +3491,8 @@ _readField_ensure:
 _readField_patchAfter:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyStructField22Patch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22Patch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyStructField22PatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22PatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patchAfter = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::SetPatchAdapter, 5>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -3518,7 +3518,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<OptionalMyStructField22Patch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<OptionalMyStructField22PatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -3566,7 +3566,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t OptionalMyStructField22Patch::serializedSize(Protocol_ const* prot_) const {
+uint32_t OptionalMyStructField22PatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("OptionalMyStructField22Patch");
   {
@@ -3575,7 +3575,7 @@ uint32_t OptionalMyStructField22Patch::serializedSize(Protocol_ const* prot_) co
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22Patch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::SetPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22PatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::SetPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   if (this->__isset.get(2)) {
     xfer += prot_->serializedFieldSize("ensure", apache::thrift::protocol::T_SET, 4);
@@ -3583,14 +3583,14 @@ uint32_t OptionalMyStructField22Patch::serializedSize(Protocol_ const* prot_) co
   }
   {
     xfer += prot_->serializedFieldSize("patchAfter", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22Patch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::SetPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22PatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::SetPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t OptionalMyStructField22Patch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t OptionalMyStructField22PatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("OptionalMyStructField22Patch");
   {
@@ -3599,7 +3599,7 @@ uint32_t OptionalMyStructField22Patch::serializedSizeZC(Protocol_ const* prot_) 
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22Patch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::SetPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22PatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::SetPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   if (this->__isset.get(2)) {
     xfer += prot_->serializedFieldSize("ensure", apache::thrift::protocol::T_SET, 4);
@@ -3607,14 +3607,14 @@ uint32_t OptionalMyStructField22Patch::serializedSizeZC(Protocol_ const* prot_) 
   }
   {
     xfer += prot_->serializedFieldSize("patchAfter", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22Patch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::SetPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22PatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::SetPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t OptionalMyStructField22Patch::write(Protocol_* prot_) const {
+uint32_t OptionalMyStructField22PatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("OptionalMyStructField22Patch");
   bool previousFieldHasValue = true;
@@ -3629,7 +3629,7 @@ uint32_t OptionalMyStructField22Patch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "patch", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22Patch>::write(*prot_, ::apache::thrift::op::detail::SetPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22PatchStruct>::write(*prot_, ::apache::thrift::op::detail::SetPatchAdapter::toThrift(this->__fbthrift_field_patch));
     xfer += prot_->writeFieldEnd();
   }
   if (this->__isset.get(2)) {
@@ -3645,7 +3645,7 @@ uint32_t OptionalMyStructField22Patch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 4;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 5, kPrevFieldId>(*prot_, "patchAfter", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22Patch>::write(*prot_, ::apache::thrift::op::detail::SetPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField22PatchStruct>::write(*prot_, ::apache::thrift::op::detail::SetPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -3653,20 +3653,20 @@ uint32_t OptionalMyStructField22Patch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void OptionalMyStructField22Patch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t OptionalMyStructField22Patch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t OptionalMyStructField22Patch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t OptionalMyStructField22Patch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void OptionalMyStructField22Patch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t OptionalMyStructField22Patch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t OptionalMyStructField22Patch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t OptionalMyStructField22Patch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void OptionalMyStructField22PatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t OptionalMyStructField22PatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t OptionalMyStructField22PatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t OptionalMyStructField22PatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void OptionalMyStructField22PatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t OptionalMyStructField22PatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t OptionalMyStructField22PatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t OptionalMyStructField22PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
 
 template <class Protocol_>
-void MyStructField23Patch::readNoXfer(Protocol_* iprot) {
+void MyStructField23PatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3741,7 +3741,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyStructField23Patch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyStructField23PatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -3781,7 +3781,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t MyStructField23Patch::serializedSize(Protocol_ const* prot_) const {
+uint32_t MyStructField23PatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStructField23Patch");
   if (this->__isset.get(0)) {
@@ -3801,7 +3801,7 @@ uint32_t MyStructField23Patch::serializedSize(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t MyStructField23Patch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t MyStructField23PatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStructField23Patch");
   if (this->__isset.get(0)) {
@@ -3821,7 +3821,7 @@ uint32_t MyStructField23Patch::serializedSizeZC(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t MyStructField23Patch::write(Protocol_* prot_) const {
+uint32_t MyStructField23PatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyStructField23Patch");
   bool previousFieldHasValue = true;
@@ -3853,20 +3853,20 @@ uint32_t MyStructField23Patch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void MyStructField23Patch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t MyStructField23Patch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t MyStructField23Patch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t MyStructField23Patch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void MyStructField23Patch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t MyStructField23Patch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t MyStructField23Patch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t MyStructField23Patch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void MyStructField23PatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyStructField23PatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyStructField23PatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyStructField23PatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void MyStructField23PatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyStructField23PatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyStructField23PatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyStructField23PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
 
 template <class Protocol_>
-void OptionalMyStructField23Patch::readNoXfer(Protocol_* iprot) {
+void OptionalMyStructField23PatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -3898,8 +3898,8 @@ _readField_clear:
 _readField_patch:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyStructField23Patch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23Patch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyStructField23PatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23PatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patch = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::MapPatchAdapter, 3>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -3933,8 +3933,8 @@ _readField_ensure:
 _readField_patchAfter:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyStructField23Patch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23Patch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyStructField23PatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23PatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patchAfter = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::MapPatchAdapter, 5>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -3960,7 +3960,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<OptionalMyStructField23Patch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<OptionalMyStructField23PatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -4008,7 +4008,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t OptionalMyStructField23Patch::serializedSize(Protocol_ const* prot_) const {
+uint32_t OptionalMyStructField23PatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("OptionalMyStructField23Patch");
   {
@@ -4017,7 +4017,7 @@ uint32_t OptionalMyStructField23Patch::serializedSize(Protocol_ const* prot_) co
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23Patch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::MapPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23PatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::MapPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   if (this->__isset.get(2)) {
     xfer += prot_->serializedFieldSize("ensure", apache::thrift::protocol::T_MAP, 4);
@@ -4025,14 +4025,14 @@ uint32_t OptionalMyStructField23Patch::serializedSize(Protocol_ const* prot_) co
   }
   {
     xfer += prot_->serializedFieldSize("patchAfter", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23Patch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::MapPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23PatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::MapPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t OptionalMyStructField23Patch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t OptionalMyStructField23PatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("OptionalMyStructField23Patch");
   {
@@ -4041,7 +4041,7 @@ uint32_t OptionalMyStructField23Patch::serializedSizeZC(Protocol_ const* prot_) 
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23Patch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::MapPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23PatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::MapPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   if (this->__isset.get(2)) {
     xfer += prot_->serializedFieldSize("ensure", apache::thrift::protocol::T_MAP, 4);
@@ -4049,14 +4049,14 @@ uint32_t OptionalMyStructField23Patch::serializedSizeZC(Protocol_ const* prot_) 
   }
   {
     xfer += prot_->serializedFieldSize("patchAfter", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23Patch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::MapPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23PatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::MapPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t OptionalMyStructField23Patch::write(Protocol_* prot_) const {
+uint32_t OptionalMyStructField23PatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("OptionalMyStructField23Patch");
   bool previousFieldHasValue = true;
@@ -4071,7 +4071,7 @@ uint32_t OptionalMyStructField23Patch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "patch", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23Patch>::write(*prot_, ::apache::thrift::op::detail::MapPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23PatchStruct>::write(*prot_, ::apache::thrift::op::detail::MapPatchAdapter::toThrift(this->__fbthrift_field_patch));
     xfer += prot_->writeFieldEnd();
   }
   if (this->__isset.get(2)) {
@@ -4087,7 +4087,7 @@ uint32_t OptionalMyStructField23Patch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 4;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 5, kPrevFieldId>(*prot_, "patchAfter", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23Patch>::write(*prot_, ::apache::thrift::op::detail::MapPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructField23PatchStruct>::write(*prot_, ::apache::thrift::op::detail::MapPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -4095,20 +4095,20 @@ uint32_t OptionalMyStructField23Patch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void OptionalMyStructField23Patch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t OptionalMyStructField23Patch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t OptionalMyStructField23Patch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t OptionalMyStructField23Patch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void OptionalMyStructField23Patch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t OptionalMyStructField23Patch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t OptionalMyStructField23Patch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t OptionalMyStructField23Patch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void OptionalMyStructField23PatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t OptionalMyStructField23PatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t OptionalMyStructField23PatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t OptionalMyStructField23PatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void OptionalMyStructField23PatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t OptionalMyStructField23PatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t OptionalMyStructField23PatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t OptionalMyStructField23PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
 
 template <class Protocol_>
-void MyStructPatch::readNoXfer(Protocol_* iprot) {
+void MyStructPatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -4288,8 +4288,8 @@ _readField_binaryVal:
 _readField_structVal:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyDataValuePatch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyDataValuePatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_structVal = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::StructPatchAdapter, 10>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -4468,8 +4468,8 @@ _readField_optBinaryVal:
 _readField_optStructVal:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::OptionalMyDataValuePatch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyDataValuePatch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::OptionalMyDataValuePatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyDataValuePatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_optStructVal = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::OptionalPatchAdapter, 20>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -4486,8 +4486,8 @@ _readField_optStructVal:
 _readField_optListVal:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::OptionalMyStructField21Patch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField21Patch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::OptionalMyStructField21PatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField21PatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_optListVal = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::OptionalPatchAdapter, 21>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -4504,8 +4504,8 @@ _readField_optListVal:
 _readField_optSetVal:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::OptionalMyStructField22Patch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField22Patch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::OptionalMyStructField22PatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField22PatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_optSetVal = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::OptionalPatchAdapter, 22>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -4522,8 +4522,8 @@ _readField_optSetVal:
 _readField_optMapVal:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::OptionalMyStructField23Patch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField23Patch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::OptionalMyStructField23PatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField23PatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_optMapVal = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::OptionalPatchAdapter, 23>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -4540,8 +4540,8 @@ _readField_optMapVal:
 _readField_unionVal:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyUnionValuePatch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyUnionValuePatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_unionVal = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::UnionPatchAdapter, 30>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -4567,7 +4567,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyStructPatch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyStructPatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -4775,7 +4775,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t MyStructPatch::serializedSize(Protocol_ const* prot_) const {
+uint32_t MyStructPatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStructPatch");
   {
@@ -4816,7 +4816,7 @@ uint32_t MyStructPatch::serializedSize(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("structVal", apache::thrift::protocol::T_STRUCT, 10);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_structVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_structVal));
   }
   {
     xfer += prot_->serializedFieldSize("optBoolVal", apache::thrift::protocol::T_STRUCT, 11);
@@ -4856,30 +4856,30 @@ uint32_t MyStructPatch::serializedSize(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("optStructVal", apache::thrift::protocol::T_STRUCT, 20);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyDataValuePatch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optStructVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyDataValuePatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optStructVal));
   }
   {
     xfer += prot_->serializedFieldSize("optListVal", apache::thrift::protocol::T_STRUCT, 21);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField21Patch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optListVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField21PatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optListVal));
   }
   {
     xfer += prot_->serializedFieldSize("optSetVal", apache::thrift::protocol::T_STRUCT, 22);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField22Patch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optSetVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField22PatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optSetVal));
   }
   {
     xfer += prot_->serializedFieldSize("optMapVal", apache::thrift::protocol::T_STRUCT, 23);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField23Patch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optMapVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField23PatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optMapVal));
   }
   {
     xfer += prot_->serializedFieldSize("unionVal", apache::thrift::protocol::T_STRUCT, 30);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_unionVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_unionVal));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t MyStructPatch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t MyStructPatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStructPatch");
   {
@@ -4920,7 +4920,7 @@ uint32_t MyStructPatch::serializedSizeZC(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("structVal", apache::thrift::protocol::T_STRUCT, 10);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_structVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_structVal));
   }
   {
     xfer += prot_->serializedFieldSize("optBoolVal", apache::thrift::protocol::T_STRUCT, 11);
@@ -4960,30 +4960,30 @@ uint32_t MyStructPatch::serializedSizeZC(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("optStructVal", apache::thrift::protocol::T_STRUCT, 20);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyDataValuePatch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optStructVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyDataValuePatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optStructVal));
   }
   {
     xfer += prot_->serializedFieldSize("optListVal", apache::thrift::protocol::T_STRUCT, 21);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField21Patch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optListVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField21PatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optListVal));
   }
   {
     xfer += prot_->serializedFieldSize("optSetVal", apache::thrift::protocol::T_STRUCT, 22);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField22Patch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optSetVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField22PatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optSetVal));
   }
   {
     xfer += prot_->serializedFieldSize("optMapVal", apache::thrift::protocol::T_STRUCT, 23);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField23Patch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optMapVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField23PatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optMapVal));
   }
   {
     xfer += prot_->serializedFieldSize("unionVal", apache::thrift::protocol::T_STRUCT, 30);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_unionVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_unionVal));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t MyStructPatch::write(Protocol_* prot_) const {
+uint32_t MyStructPatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyStructPatch");
   bool previousFieldHasValue = true;
@@ -5054,7 +5054,7 @@ uint32_t MyStructPatch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 9;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 10, kPrevFieldId>(*prot_, "structVal", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatch>::write(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_structVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyDataValuePatchStruct>::write(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_structVal));
     xfer += prot_->writeFieldEnd();
   }
   {
@@ -5124,35 +5124,35 @@ uint32_t MyStructPatch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 19;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 20, kPrevFieldId>(*prot_, "optStructVal", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyDataValuePatch>::write(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optStructVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyDataValuePatchStruct>::write(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optStructVal));
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 20;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 21, kPrevFieldId>(*prot_, "optListVal", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField21Patch>::write(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optListVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField21PatchStruct>::write(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optListVal));
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 21;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 22, kPrevFieldId>(*prot_, "optSetVal", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField22Patch>::write(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optSetVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField22PatchStruct>::write(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optSetVal));
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 22;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 23, kPrevFieldId>(*prot_, "optMapVal", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField23Patch>::write(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optMapVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::OptionalMyStructField23PatchStruct>::write(*prot_, ::apache::thrift::op::detail::OptionalPatchAdapter::toThrift(this->__fbthrift_field_optMapVal));
     xfer += prot_->writeFieldEnd();
   }
   {
     constexpr int16_t kPrevFieldId = 23;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 30, kPrevFieldId>(*prot_, "unionVal", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatch>::write(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_unionVal));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyUnionValuePatchStruct>::write(*prot_, ::apache::thrift::op::detail::UnionPatchAdapter::toThrift(this->__fbthrift_field_unionVal));
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -5160,20 +5160,20 @@ uint32_t MyStructPatch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void MyStructPatch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t MyStructPatch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t MyStructPatch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t MyStructPatch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void MyStructPatch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t MyStructPatch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t MyStructPatch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t MyStructPatch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void MyStructPatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyStructPatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyStructPatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyStructPatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void MyStructPatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyStructPatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyStructPatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyStructPatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
 
 template <class Protocol_>
-void MyStructValuePatch::readNoXfer(Protocol_* iprot) {
+void MyStructValuePatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5222,8 +5222,8 @@ _readField_clear:
 _readField_patch:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyStructPatch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructPatch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyStructPatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructPatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patch = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::StructuredPatchAdapter, 3>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -5249,7 +5249,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyStructValuePatch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyStructValuePatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -5289,7 +5289,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t MyStructValuePatch::serializedSize(Protocol_ const* prot_) const {
+uint32_t MyStructValuePatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStructValuePatch");
   if (this->__fbthrift_field_assign) {
@@ -5302,14 +5302,14 @@ uint32_t MyStructValuePatch::serializedSize(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructPatch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructPatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t MyStructValuePatch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t MyStructValuePatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStructValuePatch");
   if (this->__fbthrift_field_assign) {
@@ -5322,14 +5322,14 @@ uint32_t MyStructValuePatch::serializedSizeZC(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructPatch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructPatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t MyStructValuePatch::write(Protocol_* prot_) const {
+uint32_t MyStructValuePatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyStructValuePatch");
   bool previousFieldHasValue = true;
@@ -5353,7 +5353,7 @@ uint32_t MyStructValuePatch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "patch", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructPatch>::write(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructPatchStruct>::write(*prot_, ::apache::thrift::op::detail::StructuredPatchAdapter::toThrift(this->__fbthrift_field_patch));
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -5361,20 +5361,20 @@ uint32_t MyStructValuePatch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void MyStructValuePatch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t MyStructValuePatch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t MyStructValuePatch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t MyStructValuePatch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void MyStructValuePatch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t MyStructValuePatch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t MyStructValuePatch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t MyStructValuePatch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void MyStructValuePatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyStructValuePatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyStructValuePatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyStructValuePatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void MyStructValuePatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyStructValuePatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyStructValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyStructValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace cpp2 {
 
 template <class Protocol_>
-void OptionalMyStructValuePatch::readNoXfer(Protocol_* iprot) {
+void OptionalMyStructValuePatchStruct::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -5406,8 +5406,8 @@ _readField_clear:
 _readField_patch:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyStructValuePatch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyStructValuePatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patch = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::StructPatchAdapter, 3>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -5441,8 +5441,8 @@ _readField_ensure:
 _readField_patchAfter:
   {
     _readState.beforeSubobject(iprot);
-    ::cpp2::MyStructValuePatch tvalue;
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatch>::readWithContext(*iprot, tvalue, _readState);
+    ::cpp2::MyStructValuePatchStruct tvalue;
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatchStruct>::readWithContext(*iprot, tvalue, _readState);
     this->__fbthrift_field_patchAfter = ::apache::thrift::adapt_detail::fromThriftField<::apache::thrift::op::detail::StructPatchAdapter, 5>(::std::move(tvalue), *this);
     _readState.afterSubobject(iprot);
     
@@ -5468,7 +5468,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<OptionalMyStructValuePatch>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<OptionalMyStructValuePatchStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -5516,7 +5516,7 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t OptionalMyStructValuePatch::serializedSize(Protocol_ const* prot_) const {
+uint32_t OptionalMyStructValuePatchStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("OptionalMyStructValuePatch");
   {
@@ -5525,7 +5525,7 @@ uint32_t OptionalMyStructValuePatch::serializedSize(Protocol_ const* prot_) cons
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   if (this->__fbthrift_field_ensure) {
     xfer += prot_->serializedFieldSize("ensure", apache::thrift::protocol::T_STRUCT, 4);
@@ -5533,14 +5533,14 @@ uint32_t OptionalMyStructValuePatch::serializedSize(Protocol_ const* prot_) cons
   }
   {
     xfer += prot_->serializedFieldSize("patchAfter", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatch>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatchStruct>::serializedSize<false>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t OptionalMyStructValuePatch::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t OptionalMyStructValuePatchStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("OptionalMyStructValuePatch");
   {
@@ -5549,7 +5549,7 @@ uint32_t OptionalMyStructValuePatch::serializedSizeZC(Protocol_ const* prot_) co
   }
   {
     xfer += prot_->serializedFieldSize("patch", apache::thrift::protocol::T_STRUCT, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patch));
   }
   if (this->__fbthrift_field_ensure) {
     xfer += prot_->serializedFieldSize("ensure", apache::thrift::protocol::T_STRUCT, 4);
@@ -5557,14 +5557,14 @@ uint32_t OptionalMyStructValuePatch::serializedSizeZC(Protocol_ const* prot_) co
   }
   {
     xfer += prot_->serializedFieldSize("patchAfter", apache::thrift::protocol::T_STRUCT, 5);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatch>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatchStruct>::serializedSize<true>(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t OptionalMyStructValuePatch::write(Protocol_* prot_) const {
+uint32_t OptionalMyStructValuePatchStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("OptionalMyStructValuePatch");
   bool previousFieldHasValue = true;
@@ -5579,7 +5579,7 @@ uint32_t OptionalMyStructValuePatch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 3, kPrevFieldId>(*prot_, "patch", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatch>::write(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patch));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatchStruct>::write(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patch));
     xfer += prot_->writeFieldEnd();
   }
   if (this->__fbthrift_field_ensure) {
@@ -5595,7 +5595,7 @@ uint32_t OptionalMyStructValuePatch::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 4;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 5, kPrevFieldId>(*prot_, "patchAfter", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatch>::write(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::cpp2::MyStructValuePatchStruct>::write(*prot_, ::apache::thrift::op::detail::StructPatchAdapter::toThrift(this->__fbthrift_field_patchAfter));
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -5603,13 +5603,13 @@ uint32_t OptionalMyStructValuePatch::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void OptionalMyStructValuePatch::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t OptionalMyStructValuePatch::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t OptionalMyStructValuePatch::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t OptionalMyStructValuePatch::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void OptionalMyStructValuePatch::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t OptionalMyStructValuePatch::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t OptionalMyStructValuePatch::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t OptionalMyStructValuePatch::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void OptionalMyStructValuePatchStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t OptionalMyStructValuePatchStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t OptionalMyStructValuePatchStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t OptionalMyStructValuePatchStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void OptionalMyStructValuePatchStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t OptionalMyStructValuePatchStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t OptionalMyStructValuePatchStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t OptionalMyStructValuePatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2

@@ -138,6 +138,8 @@ struct StructGen {
   void set_adapter(std::string name) {
     generated.set_annotation(
         "cpp.adapter", "::apache::thrift::op::detail::" + std::move(name));
+    generated.set_annotation("cpp.name", generated.name() + "Struct");
+    generated.set_annotation("cpp.detail.adapted_alias");
   }
 };
 

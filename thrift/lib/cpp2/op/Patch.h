@@ -25,17 +25,40 @@ namespace thrift {
 namespace op {
 
 namespace detail {
-BoolPatch<BoolPatchStruct> patchType(type::bool_t);
-NumberPatch<BytePatchStruct> patchType(type::byte_t);
-NumberPatch<I16PatchStruct> patchType(type::i16_t);
-NumberPatch<I32PatchStruct> patchType(type::i32_t);
-NumberPatch<I64PatchStruct> patchType(type::i64_t);
-NumberPatch<FloatPatchStruct> patchType(type::float_t);
-NumberPatch<DoublePatchStruct> patchType(type::double_t);
-StringPatch<StringPatchStruct> patchType(type::string_t);
-AssignPatch<BinaryPatchStruct> patchType(type::binary_t);
 
-OptionalPatch<OptionalBoolPatchStruct> optPatchType(type::bool_t);
+// A patch for a boolean, which additionally supports:
+// - invert() - Inverts the patch, in place.
+// - operator!(BoolPatch) - Returns an inverted version of the given patch.
+op::BoolPatch patchType(type::bool_t);
+
+// Patches for number types, which additionally support:
+// - add(T value) - Update to the patch to additionally add the given value.
+// - subtract(T value) - Update to the patch to additionally subtract the given
+// value.
+// - operators -, -=, +, += - Alias to the appropriate add and subtract calls.
+I16Patch patchType(type::byte_t);
+I16Patch patchType(type::i16_t);
+I32Patch patchType(type::i32_t);
+I64Patch patchType(type::i64_t);
+FloatPatch patchType(type::float_t);
+DoublePatch patchType(type::double_t);
+
+// A patch for a string, which additionally supports:
+// - append(...) - Updates the patch to additionally append the given value.
+// - prepend(U&&) - Updates the patch to additionally prepend the given value.
+// - operators +, += - Alias to the appropriate append and prepend calls.
+op::StringPatch patchType(type::string_t);
+
+// TODO (afuller): Add more binary patch operations.
+BinaryPatch patchType(type::binary_t);
+
+OptionalBoolPatch optPatchType(type::bool_t);
+OptionalI16Patch optPatchType(type::byte_t);
+OptionalI16Patch optPatchType(type::i16_t);
+OptionalI32Patch optPatchType(type::i32_t);
+OptionalI64Patch optPatchType(type::i64_t);
+OptionalFloatPatch optPatchType(type::float_t);
+OptionalDoublePatch optPatchType(type::double_t);
 
 } // namespace detail
 
@@ -61,33 +84,6 @@ using patch_type = decltype(detail::patchType(Tag{}));
 
 template <typename Tag>
 using optional_patch_type = decltype(detail::optPatchType(Tag{}));
-
-// A patch for a boolean, which additionally supports:
-// - invert() - Inverts the patch, in place.
-// - operator!(BoolPatch) - Returns an inverted version of the given patch.
-using BoolPatch = patch_type<type::bool_t>;
-using OptionalBoolPatch = optional_patch_type<type::bool_t>;
-
-// Patches for number types, which additionally support:
-// - add(T value) - Update to the patch to additionally add the given value.
-// - subtract(T value) - Update to the patch to additionally subtract the given
-// value.
-// - operators -, -=, +, += - Alias to the appropriate add and subtract calls.
-using BytePatch = patch_type<type::byte_t>;
-using I16Patch = patch_type<type::i16_t>;
-using I32Patch = patch_type<type::i32_t>;
-using I64Patch = patch_type<type::i64_t>;
-using FloatPatch = patch_type<type::float_t>;
-using DoublePatch = patch_type<type::double_t>;
-
-// A patch for a string, which additionally supports:
-// - append(...) - Updates the patch to additionally append the given value.
-// - prepend(U&&) - Updates the patch to additionally prepend the given value.
-// - operators +, += - Alias to the appropriate append and prepend calls.
-using StringPatch = patch_type<type::string_t>;
-
-// TODO (afuller): Add more binary patch operations.
-using BinaryPatch = patch_type<type::binary_t>;
 
 } // namespace op
 } // namespace thrift

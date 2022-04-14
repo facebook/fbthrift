@@ -28,13 +28,12 @@ namespace apache::thrift {
 namespace {
 using namespace test::patch;
 
-using TestStructPatch = op::detail::StructPatch<MyStructValuePatch>;
 using ListPatch = std::decay_t<
-    decltype(std::declval<TestStructPatch>()->optListVal()->ensure())>;
+    decltype(std::declval<MyStructValuePatch>()->optListVal()->ensure())>;
 using SetPatch = std::decay_t<
-    decltype(std::declval<TestStructPatch>()->optSetVal()->ensure())>;
+    decltype(std::declval<MyStructValuePatch>()->optSetVal()->ensure())>;
 using MapPatch = std::decay_t<
-    decltype(std::declval<TestStructPatch>()->optMapVal()->ensure())>;
+    decltype(std::declval<MyStructValuePatch>()->optMapVal()->ensure())>;
 
 MyStruct testValue() {
   MyStruct val;
@@ -51,9 +50,9 @@ MyStruct testValue() {
   return val;
 }
 
-TestStructPatch testPatch() {
+MyStructValuePatch testPatch() {
   auto val = testValue();
-  TestStructPatch patch;
+  MyStructValuePatch patch;
   patch.patch()->boolVal() = !op::BoolPatch{};
   *patch->byteVal() = val.byteVal();
   *patch->i16Val() += 2;
@@ -66,9 +65,9 @@ TestStructPatch testPatch() {
   return patch;
 }
 
-TestStructPatch testOptPatch() {
+MyStructValuePatch testOptPatch() {
   auto val = testValue();
-  TestStructPatch patch;
+  MyStructValuePatch patch;
   patch.patch()->optBoolVal()->patch() = !op::BoolPatch{};
   patch->optByteVal()->patch() = val.byteVal();
   patch->optI16Val()->patch() += 2;
@@ -85,18 +84,18 @@ TestStructPatch testOptPatch() {
 
 TEST(StructPatchTest, Noop) {
   // Empty patch does nothing.
-  TestStructPatch patch;
+  MyStructValuePatch patch;
   test::expectPatch(patch, {}, {});
 }
 
 TEST(StructPatchTest, Assign) {
   // Assign in a single step.
-  auto patch = TestStructPatch::createAssign(testValue());
+  auto patch = MyStructValuePatch::createAssign(testValue());
   test::expectPatch(patch, {}, testValue());
 }
 
 TEST(StructPatchTest, AssignSplit) {
-  auto patch = TestStructPatch::createAssign(testValue());
+  auto patch = MyStructValuePatch::createAssign(testValue());
   // Break apart the assign patch and check the result;
   patch.patch();
   EXPECT_FALSE(patch.get().assign().has_value());
@@ -107,7 +106,7 @@ TEST(StructPatchTest, AssignSplit) {
 
 TEST(StructPatchTest, Clear) {
   // Clear patch, clears all fields (even ones with defaults)
-  test::expectPatch(TestStructPatch::createClear(), testValue(), {});
+  test::expectPatch(MyStructValuePatch::createClear(), testValue(), {});
   test::expectPatch(op::StringPatch::createClear(), {"hi"}, "");
 }
 
@@ -139,7 +138,7 @@ TEST(StructPatchTest, Patch) {
   auto patch = testPatch();
   test::expectPatch(patch, val, expected1, expected2);
 
-  patch.merge(TestStructPatch::createClear());
+  patch.merge(MyStructValuePatch::createClear());
   EXPECT_FALSE(patch.get().assign().has_value());
   EXPECT_EQ(patch.patch(), MyStructPatch{});
   EXPECT_TRUE(*patch.get().clear());
@@ -147,15 +146,15 @@ TEST(StructPatchTest, Patch) {
 }
 
 TEST(StructPatchTest, ClearAssign) {
-  auto patch = TestStructPatch::createClear();
-  patch.merge(TestStructPatch::createAssign(testValue()));
+  auto patch = MyStructValuePatch::createClear();
+  patch.merge(MyStructValuePatch::createAssign(testValue()));
   // Assign takes precedence, like usual.
   test::expectPatch(patch, {}, testValue());
 }
 
 TEST(StructPatchTest, AssignClear) {
-  auto patch = TestStructPatch::createAssign(testValue());
-  patch.merge(TestStructPatch::createClear());
+  auto patch = MyStructValuePatch::createAssign(testValue());
+  patch.merge(MyStructValuePatch::createClear());
   test::expectPatch(patch, testValue(), {});
 
   // Clear patch takes precedence (as it is smaller to encode and slightly
@@ -165,8 +164,8 @@ TEST(StructPatchTest, AssignClear) {
 }
 
 TEST(StructPatchTest, OptionalFields) {
-  TestStructPatch patch = testPatch();
-  TestStructPatch optPatch = testOptPatch();
+  MyStructValuePatch patch = testPatch();
+  MyStructValuePatch optPatch = testOptPatch();
 
   MyStruct actual;
   std::optional<std::string> optStr;
@@ -309,7 +308,7 @@ TEST(StructPatchTest, PrimitivesNotBoxed) {
 }
 
 TEST(StructPatchTest, FieldPatch) {
-  TestStructPatch patch;
+  MyStructValuePatch patch;
   patch->optListVal()->ensure() = {1, 2};
   MyStruct expected;
   expected.optListVal().ensure() = {1, 2};
@@ -374,12 +373,10 @@ TEST(StructPatchTest, MapPatch) {
 }
 
 TEST(UnionPatchTest, ClearAndAssign) {
-  const auto noop = *TestStructPatch()->unionVal();
-  using Patch = decltype(noop);
-
+  MyUnionValuePatch noop;
   MyUnion actual;
-  Patch assignEmpty = Patch::createAssign(actual);
-  EXPECT_EQ(assignEmpty.get(), Patch::createClear().get());
+  MyUnionValuePatch assignEmpty = MyUnionValuePatch::createAssign(actual);
+  EXPECT_EQ(assignEmpty.get(), MyUnionValuePatch::createClear().get());
   EXPECT_EQ(actual.getType(), MyUnion::__EMPTY__);
   EXPECT_EQ(*assignEmpty.get().clear(), true);
   EXPECT_EQ(assignEmpty.get().ensure()->getType(), MyUnion::__EMPTY__);
@@ -389,7 +386,7 @@ TEST(UnionPatchTest, ClearAndAssign) {
   test::expectPatch(assignEmpty, actual, {});
 
   actual.option1_ref() = "hi";
-  Patch assign = Patch::createAssign(actual);
+  MyUnionValuePatch assign = MyUnionValuePatch::createAssign(actual);
   EXPECT_EQ(actual.getType(), MyUnion::option1);
   test::expectPatch(noop, actual, actual);
   test::expectPatch(assignEmpty, actual, {});
@@ -403,7 +400,7 @@ TEST(UnionPatchTest, ClearAndAssign) {
 }
 
 TEST(UnionPatchTest, Ensure) {
-  auto patch = *TestStructPatch()->unionVal();
+  MyUnionValuePatch patch = *MyStructValuePatch()->unionVal();
   MyUnion expected, actual;
   patch.ensure().option1_ref() = "hi";
   expected.option1_ref() = "hi";
