@@ -189,6 +189,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     bool activeRequestTrackingDisabled{false};
     bool setPreprocess{false};
     bool setIsOverloaded{false};
+    bool resourcePoolEnabled{false};
   };
 
   /**

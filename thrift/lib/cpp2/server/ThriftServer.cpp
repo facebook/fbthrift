@@ -435,6 +435,7 @@ void ThriftServer::setup() {
       });
     } else {
       LOG(INFO) << "Using resource pools";
+      runtimeServerActions_.resourcePoolEnabled = true;
       DCHECK(!threadManager_);
       ensureResourcePools();
       // Keep concurrency controller in sync with max requests for now.
