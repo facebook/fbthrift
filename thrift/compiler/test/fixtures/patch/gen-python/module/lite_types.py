@@ -9,8 +9,6 @@ import thrift.python.types as _fbthrift_py3lite_types
 import thrift.python.exceptions as _fbthrift_py3lite_exceptions
 
 
-import facebook.thrift.annotation.meta.lite_types
-
 import patch.lite_types
 
 
@@ -75,84 +73,6 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyUnion()
-
-
-
-class MyUnionPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
-    _fbthrift_SPEC = (
-        (
-            1,  # id
-            True,  # isUnqualified
-            "option1",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.StringPatch),  # typeinfo
-            None,  # default value
-        ),
-        (
-            2,  # id
-            True,  # isUnqualified
-            "option2",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.I32Patch),  # typeinfo
-            None,  # default value
-        ),
-    )
-
-    @staticmethod
-    def __get_thrift_name__() -> str:
-        return "module.MyUnionPatch"
-
-    @staticmethod
-    def __get_thrift_uri__():
-        return "facebook.com/thrift/test/patch/MyUnionPatch"
-
-    @staticmethod
-    def __get_metadata__():
-        return _fbthrift_metadata__struct_MyUnionPatch()
-
-
-
-class MyUnionValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
-    _fbthrift_SPEC = (
-        (
-            2,  # id
-            True,  # isUnqualified
-            "clear",  # name
-            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
-            None,  # default value
-        ),
-        (
-            3,  # id
-            True,  # isUnqualified
-            "patch",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnionPatch),  # typeinfo
-            None,  # default value
-        ),
-        (
-            4,  # id
-            True,  # isUnqualified
-            "ensure",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnion),  # typeinfo
-            None,  # default value
-        ),
-        (
-            5,  # id
-            True,  # isUnqualified
-            "patchAfter",  # name
-            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnionPatch),  # typeinfo
-            None,  # default value
-        ),
-    )
-
-    @staticmethod
-    def __get_thrift_name__() -> str:
-        return "module.MyUnionValuePatch"
-
-    @staticmethod
-    def __get_thrift_uri__():
-        return "facebook.com/thrift/test/patch/MyUnionValuePatch"
-
-    @staticmethod
-    def __get_metadata__():
-        return _fbthrift_metadata__struct_MyUnionValuePatch()
 
 
 
@@ -456,6 +376,130 @@ class OptionalMyDataValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     @staticmethod
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalMyDataValuePatch()
+
+
+
+class MyUnionPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            True,  # isUnqualified
+            "option1",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.StringPatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            2,  # id
+            True,  # isUnqualified
+            "option2",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.I32Patch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyUnionPatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/MyUnionPatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyUnionPatch()
+
+
+
+class MyUnionValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnionPatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            True,  # isUnqualified
+            "ensure",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnion),  # typeinfo
+            None,  # default value
+        ),
+        (
+            5,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnionPatch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.MyUnionValuePatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/MyUnionValuePatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_MyUnionValuePatch()
+
+
+
+class OptionalMyUnionValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            2,  # id
+            True,  # isUnqualified
+            "clear",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            True,  # isUnqualified
+            "patch",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnionValuePatch),  # typeinfo
+            None,  # default value
+        ),
+        (
+            4,  # id
+            False,  # isUnqualified
+            "ensure",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnion),  # typeinfo
+            None,  # default value
+        ),
+        (
+            5,  # id
+            True,  # isUnqualified
+            "patchAfter",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnionValuePatch),  # typeinfo
+            None,  # default value
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.OptionalMyUnionValuePatch"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return "test.dev/fixtures/patch/OptionalMyUnionValuePatch"
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_OptionalMyUnionValuePatch()
 
 
 
@@ -1006,10 +1050,6 @@ def _fbthrift_metadata__struct_MyData():
     return module.lite_metadata.gen_metadata_struct_MyData()
 def _fbthrift_metadata__struct_MyUnion():
     return module.lite_metadata.gen_metadata_struct_MyUnion()
-def _fbthrift_metadata__struct_MyUnionPatch():
-    return module.lite_metadata.gen_metadata_struct_MyUnionPatch()
-def _fbthrift_metadata__struct_MyUnionValuePatch():
-    return module.lite_metadata.gen_metadata_struct_MyUnionValuePatch()
 def _fbthrift_metadata__struct_MyStruct():
     return module.lite_metadata.gen_metadata_struct_MyStruct()
 def _fbthrift_metadata__struct_MyDataPatch():
@@ -1018,6 +1058,12 @@ def _fbthrift_metadata__struct_MyDataValuePatch():
     return module.lite_metadata.gen_metadata_struct_MyDataValuePatch()
 def _fbthrift_metadata__struct_OptionalMyDataValuePatch():
     return module.lite_metadata.gen_metadata_struct_OptionalMyDataValuePatch()
+def _fbthrift_metadata__struct_MyUnionPatch():
+    return module.lite_metadata.gen_metadata_struct_MyUnionPatch()
+def _fbthrift_metadata__struct_MyUnionValuePatch():
+    return module.lite_metadata.gen_metadata_struct_MyUnionValuePatch()
+def _fbthrift_metadata__struct_OptionalMyUnionValuePatch():
+    return module.lite_metadata.gen_metadata_struct_OptionalMyUnionValuePatch()
 def _fbthrift_metadata__struct_MyStructPatch():
     return module.lite_metadata.gen_metadata_struct_MyStructPatch()
 def _fbthrift_metadata__struct_MyStructField21Patch():
@@ -1040,12 +1086,13 @@ def _fbthrift_metadata__struct_OptionalMyStructValuePatch():
 _fbthrift_all_structs = [
     MyData,
     MyUnion,
-    MyUnionPatch,
-    MyUnionValuePatch,
     MyStruct,
     MyDataPatch,
     MyDataValuePatch,
     OptionalMyDataValuePatch,
+    MyUnionPatch,
+    MyUnionValuePatch,
+    OptionalMyUnionValuePatch,
     MyStructPatch,
     MyStructField21Patch,
     OptionalMyStructField21Patch,

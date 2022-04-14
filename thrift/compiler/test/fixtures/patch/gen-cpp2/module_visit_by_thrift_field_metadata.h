@@ -44,40 +44,6 @@ struct VisitByFieldId<::cpp2::MyUnion> {
 };
 
 template <>
-struct VisitByFieldId<::cpp2::MyUnionPatch> {
-  template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (fieldId) {
-    case 1:
-      return f(0, static_cast<T&&>(t).option1_ref());
-    case 2:
-      return f(1, static_cast<T&&>(t).option2_ref());
-    default:
-      throwInvalidThriftId(fieldId, "::cpp2::MyUnionPatch");
-    }
-  }
-};
-
-template <>
-struct VisitByFieldId<::cpp2::MyUnionValuePatch> {
-  template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (fieldId) {
-    case 2:
-      return f(0, static_cast<T&&>(t).clear_ref());
-    case 3:
-      return f(1, static_cast<T&&>(t).patch_ref());
-    case 4:
-      return f(2, static_cast<T&&>(t).ensure_ref());
-    case 5:
-      return f(3, static_cast<T&&>(t).patchAfter_ref());
-    default:
-      throwInvalidThriftId(fieldId, "::cpp2::MyUnionValuePatch");
-    }
-  }
-};
-
-template <>
 struct VisitByFieldId<::cpp2::MyStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
@@ -183,6 +149,59 @@ struct VisitByFieldId<::cpp2::OptionalMyDataValuePatch> {
       return f(3, static_cast<T&&>(t).patchAfter_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::OptionalMyDataValuePatch");
+    }
+  }
+};
+
+template <>
+struct VisitByFieldId<::cpp2::MyUnionPatch> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 1:
+      return f(0, static_cast<T&&>(t).option1_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).option2_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::MyUnionPatch");
+    }
+  }
+};
+
+template <>
+struct VisitByFieldId<::cpp2::MyUnionValuePatch> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 2:
+      return f(0, static_cast<T&&>(t).clear_ref());
+    case 3:
+      return f(1, static_cast<T&&>(t).patch_ref());
+    case 4:
+      return f(2, static_cast<T&&>(t).ensure_ref());
+    case 5:
+      return f(3, static_cast<T&&>(t).patchAfter_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::MyUnionValuePatch");
+    }
+  }
+};
+
+template <>
+struct VisitByFieldId<::cpp2::OptionalMyUnionValuePatch> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 2:
+      return f(0, static_cast<T&&>(t).clear_ref());
+    case 3:
+      return f(1, static_cast<T&&>(t).patch_ref());
+    case 4:
+      return f(2, static_cast<T&&>(t).ensure_ref());
+    case 5:
+      return f(3, static_cast<T&&>(t).patchAfter_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::OptionalMyUnionValuePatch");
     }
   }
 };

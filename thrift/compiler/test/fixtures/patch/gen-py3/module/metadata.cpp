@@ -13,12 +13,13 @@ namespace cpp2 {
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::StructMetadata<MyData>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyUnion>::gen(metadata);
-  ::apache::thrift::detail::md::StructMetadata<MyUnionPatch>::gen(metadata);
-  ::apache::thrift::detail::md::StructMetadata<MyUnionValuePatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyDataPatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyDataValuePatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<OptionalMyDataValuePatch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<MyUnionPatch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<MyUnionValuePatch>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<OptionalMyUnionValuePatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStructPatch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStructField21Patch>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<OptionalMyStructField21Patch>::gen(metadata);

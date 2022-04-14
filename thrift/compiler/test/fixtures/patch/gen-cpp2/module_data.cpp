@@ -47,38 +47,6 @@ const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::MyUnion>::fields
   TType::T_I32,
 }};
 
-const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::MyUnionPatch>::fields_names = {{
-  "option1",
-  "option2",
-}};
-const std::array<int16_t, 2> TStructDataStorage<::cpp2::MyUnionPatch>::fields_ids = {{
-  1,
-  2,
-}};
-const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::MyUnionPatch>::fields_types = {{
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-}};
-
-const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::MyUnionValuePatch>::fields_names = {{
-  "clear",
-  "patch",
-  "ensure",
-  "patchAfter",
-}};
-const std::array<int16_t, 4> TStructDataStorage<::cpp2::MyUnionValuePatch>::fields_ids = {{
-  2,
-  3,
-  4,
-  5,
-}};
-const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::MyUnionValuePatch>::fields_types = {{
-  TType::T_BOOL,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-  TType::T_STRUCT,
-}};
-
 const std::array<folly::StringPiece, 24> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
   "boolVal",
   "byteVal",
@@ -200,6 +168,57 @@ const std::array<int16_t, 4> TStructDataStorage<::cpp2::OptionalMyDataValuePatch
   5,
 }};
 const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::OptionalMyDataValuePatch>::fields_types = {{
+  TType::T_BOOL,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
+
+const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::MyUnionPatch>::fields_names = {{
+  "option1",
+  "option2",
+}};
+const std::array<int16_t, 2> TStructDataStorage<::cpp2::MyUnionPatch>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::MyUnionPatch>::fields_types = {{
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
+
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::MyUnionValuePatch>::fields_names = {{
+  "clear",
+  "patch",
+  "ensure",
+  "patchAfter",
+}};
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::MyUnionValuePatch>::fields_ids = {{
+  2,
+  3,
+  4,
+  5,
+}};
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::MyUnionValuePatch>::fields_types = {{
+  TType::T_BOOL,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
+
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::OptionalMyUnionValuePatch>::fields_names = {{
+  "clear",
+  "patch",
+  "ensure",
+  "patchAfter",
+}};
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::OptionalMyUnionValuePatch>::fields_ids = {{
+  2,
+  3,
+  4,
+  5,
+}};
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::OptionalMyUnionValuePatch>::fields_types = {{
   TType::T_BOOL,
   TType::T_STRUCT,
   TType::T_STRUCT,

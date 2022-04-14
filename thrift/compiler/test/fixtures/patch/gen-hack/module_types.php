@@ -373,438 +373,6 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
 
 /**
  * Original thrift struct:-
- * MyUnionPatch
- */
-class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
-  use \ThriftSerializationTrait;
-
-  const dict<int, this::TFieldSpec> SPEC = dict[
-    1 => shape(
-      'var' => 'option1',
-      'type' => \TType::STRUCT,
-      'class' => StringPatch::class,
-    ),
-    2 => shape(
-      'var' => 'option2',
-      'type' => \TType::STRUCT,
-      'class' => I32Patch::class,
-    ),
-  ];
-  const dict<string, int> FIELDMAP = dict[
-    'option1' => 1,
-    'option2' => 2,
-  ];
-
-  const type TConstructorShape = shape(
-    ?'option1' => ?StringPatch,
-    ?'option2' => ?I32Patch,
-  );
-
-  const type TShape = shape(
-    ?'option1' => ?StringPatch::TShape,
-    ?'option2' => ?I32Patch::TShape,
-    ...
-  );
-  const int STRUCTURAL_ID = 5589256399990868404;
-  /**
-   * Original thrift field:-
-   * 1: struct patch.StringPatch option1
-   */
-  public ?StringPatch $option1;
-  /**
-   * Original thrift field:-
-   * 2: struct patch.I32Patch option2
-   */
-  public ?I32Patch $option2;
-
-  public function __construct(?StringPatch $option1 = null, ?I32Patch $option2 = null  )[] {
-    $this->option1 = $option1;
-    $this->option2 = $option2;
-  }
-
-  public static function withDefaultValues()[]: this {
-    return new static();
-  }
-
-  public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(
-      Shapes::idx($shape, 'option1'),
-      Shapes::idx($shape, 'option2'),
-    );
-  }
-
-  public function getName()[]: string {
-    return 'MyUnionPatch';
-  }
-
-  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
-      shape(
-        "name" => "module.MyUnionPatch",
-        "fields" => vec[
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
-                    shape(
-                      "name" => "patch.StringPatch",
-                    )
-                  ),
-                )
-              ),
-              "name" => "option1",
-            )
-          ),
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 2,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
-                    shape(
-                      "name" => "patch.I32Patch",
-                    )
-                  ),
-                )
-              ),
-              "name" => "option2",
-            )
-          ),
-        ],
-        "is_union" => false,
-      )
-    );
-  }
-
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
-    return shape(
-      'struct' => dict[
-        'facebook_thrift_annotation_SetGenerated' => facebook_thrift_annotation_SetGenerated::fromShape(
-          shape(
-          )
-        ),
-      ],
-      'fields' => dict[
-        'option1' => shape(
-          'field' => dict[],
-          'type' => dict[
-            'GenerateOptionalPatch' => GenerateOptionalPatch::fromShape(
-              shape(
-              )
-            ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
-              shape(
-              )
-            ),
-          ],
-        ),
-        'option2' => shape(
-          'field' => dict[],
-          'type' => dict[
-            'GenerateOptionalPatch' => GenerateOptionalPatch::fromShape(
-              shape(
-              )
-            ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
-              shape(
-              )
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      Shapes::idx($shape, 'option1') === null ? null : (StringPatch::__fromShape($shape['option1'])),
-      Shapes::idx($shape, 'option2') === null ? null : (I32Patch::__fromShape($shape['option2'])),
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'option1' => $this->option1?->__toShape(),
-      'option2' => $this->option2?->__toShape(),
-    );
-  }
-  public function getInstanceKey()[write_props]: string {
-    return \TCompactSerializer::serialize($this);
-  }
-
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-    if (idx($parsed, 'option1') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['option1']);
-      $_tmp1 = StringPatch::withDefaultValues();
-      $_tmp1->readFromJson($_tmp0);
-      $this->option1 = $_tmp1;
-    }    
-    if (idx($parsed, 'option2') !== null) {
-      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['option2']);
-      $_tmp3 = I32Patch::withDefaultValues();
-      $_tmp3->readFromJson($_tmp2);
-      $this->option2 = $_tmp3;
-    }    
-  }
-
-}
-
-/**
- * Original thrift struct:-
- * MyUnionValuePatch
- */
-class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
-  use \ThriftSerializationTrait;
-
-  const dict<int, this::TFieldSpec> SPEC = dict[
-    2 => shape(
-      'var' => 'clear',
-      'type' => \TType::BOOL,
-    ),
-    3 => shape(
-      'var' => 'patch',
-      'type' => \TType::STRUCT,
-      'class' => MyUnionPatch::class,
-    ),
-    4 => shape(
-      'var' => 'ensure',
-      'type' => \TType::STRUCT,
-      'class' => MyUnion::class,
-    ),
-    5 => shape(
-      'var' => 'patchAfter',
-      'type' => \TType::STRUCT,
-      'class' => MyUnionPatch::class,
-    ),
-  ];
-  const dict<string, int> FIELDMAP = dict[
-    'clear' => 2,
-    'patch' => 3,
-    'ensure' => 4,
-    'patchAfter' => 5,
-  ];
-
-  const type TConstructorShape = shape(
-    ?'clear' => ?bool,
-    ?'patch' => ?MyUnionPatch,
-    ?'ensure' => ?MyUnion,
-    ?'patchAfter' => ?MyUnionPatch,
-  );
-
-  const type TShape = shape(
-    'clear' => bool,
-    ?'patch' => ?MyUnionPatch::TShape,
-    ?'ensure' => ?MyUnion::TShape,
-    ?'patchAfter' => ?MyUnionPatch::TShape,
-    ...
-  );
-  const int STRUCTURAL_ID = 305167005019819383;
-  /**
-   * Original thrift field:-
-   * 2: bool clear
-   */
-  public bool $clear;
-  /**
-   * Original thrift field:-
-   * 3: struct module.MyUnionPatch patch
-   */
-  public ?MyUnionPatch $patch;
-  /**
-   * Original thrift field:-
-   * 4: struct module.MyUnion ensure
-   */
-  public ?MyUnion $ensure;
-  /**
-   * Original thrift field:-
-   * 5: struct module.MyUnionPatch patchAfter
-   */
-  public ?MyUnionPatch $patchAfter;
-
-  public function __construct(?bool $clear = null, ?MyUnionPatch $patch = null, ?MyUnion $ensure = null, ?MyUnionPatch $patchAfter = null  )[] {
-    $this->clear = $clear ?? false;
-    $this->patch = $patch;
-    $this->ensure = $ensure;
-    $this->patchAfter = $patchAfter;
-  }
-
-  public static function withDefaultValues()[]: this {
-    return new static();
-  }
-
-  public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(
-      Shapes::idx($shape, 'clear'),
-      Shapes::idx($shape, 'patch'),
-      Shapes::idx($shape, 'ensure'),
-      Shapes::idx($shape, 'patchAfter'),
-    );
-  }
-
-  public function getName()[]: string {
-    return 'MyUnionValuePatch';
-  }
-
-  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
-      shape(
-        "name" => "module.MyUnionValuePatch",
-        "fields" => vec[
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 2,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
-                )
-              ),
-              "name" => "clear",
-            )
-          ),
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 3,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
-                    shape(
-                      "name" => "module.MyUnionPatch",
-                    )
-                  ),
-                )
-              ),
-              "name" => "patch",
-            )
-          ),
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 4,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
-                    shape(
-                      "name" => "module.MyUnion",
-                    )
-                  ),
-                )
-              ),
-              "name" => "ensure",
-            )
-          ),
-          tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 5,
-              "type" => tmeta_ThriftType::fromShape(
-                shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
-                    shape(
-                      "name" => "module.MyUnionPatch",
-                    )
-                  ),
-                )
-              ),
-              "name" => "patchAfter",
-            )
-          ),
-        ],
-        "is_union" => false,
-      )
-    );
-  }
-
-  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
-    return shape(
-      'struct' => dict[
-        'facebook_thrift_annotation_SetGenerated' => facebook_thrift_annotation_SetGenerated::fromShape(
-          shape(
-          )
-        ),
-      ],
-      'fields' => dict[
-        'patch' => shape(
-          'field' => dict[],
-          'type' => dict[
-            'facebook_thrift_annotation_SetGenerated' => facebook_thrift_annotation_SetGenerated::fromShape(
-              shape(
-              )
-            ),
-          ],
-        ),
-        'patchAfter' => shape(
-          'field' => dict[],
-          'type' => dict[
-            'facebook_thrift_annotation_SetGenerated' => facebook_thrift_annotation_SetGenerated::fromShape(
-              shape(
-              )
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  public static function __fromShape(self::TShape $shape)[]: this {
-    return new static(
-      $shape['clear'],
-      Shapes::idx($shape, 'patch') === null ? null : (MyUnionPatch::__fromShape($shape['patch'])),
-      Shapes::idx($shape, 'ensure') === null ? null : (MyUnion::__fromShape($shape['ensure'])),
-      Shapes::idx($shape, 'patchAfter') === null ? null : (MyUnionPatch::__fromShape($shape['patchAfter'])),
-    );
-  }
-
-  public function __toShape()[]: self::TShape {
-    return shape(
-      'clear' => $this->clear,
-      'patch' => $this->patch?->__toShape(),
-      'ensure' => $this->ensure?->__toShape(),
-      'patchAfter' => $this->patchAfter?->__toShape(),
-    );
-  }
-  public function getInstanceKey()[write_props]: string {
-    return \TCompactSerializer::serialize($this);
-  }
-
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-    if (idx($parsed, 'clear') !== null) {
-      $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
-    }    
-    if (idx($parsed, 'patch') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
-      $_tmp1 = MyUnionPatch::withDefaultValues();
-      $_tmp1->readFromJson($_tmp0);
-      $this->patch = $_tmp1;
-    }    
-    if (idx($parsed, 'ensure') !== null) {
-      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['ensure']);
-      $_tmp3 = MyUnion::withDefaultValues();
-      $_tmp3->readFromJson($_tmp2);
-      $this->ensure = $_tmp3;
-    }    
-    if (idx($parsed, 'patchAfter') !== null) {
-      $_tmp4 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
-      $_tmp5 = MyUnionPatch::withDefaultValues();
-      $_tmp5->readFromJson($_tmp4);
-      $this->patchAfter = $_tmp5;
-    }    
-  }
-
-}
-
-/**
- * Original thrift struct:-
  * MyStruct
  */
 class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
@@ -2353,6 +1921,650 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
 
 /**
  * Original thrift struct:-
+ * MyUnionPatch
+ */
+class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'option1',
+      'type' => \TType::STRUCT,
+      'class' => StringPatch::class,
+    ),
+    2 => shape(
+      'var' => 'option2',
+      'type' => \TType::STRUCT,
+      'class' => I32Patch::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'option1' => 1,
+    'option2' => 2,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'option1' => ?StringPatch,
+    ?'option2' => ?I32Patch,
+  );
+
+  const type TShape = shape(
+    ?'option1' => ?StringPatch::TShape,
+    ?'option2' => ?I32Patch::TShape,
+    ...
+  );
+  const int STRUCTURAL_ID = 5589256399990868404;
+  /**
+   * Original thrift field:-
+   * 1: struct patch.StringPatch option1
+   */
+  public ?StringPatch $option1;
+  /**
+   * Original thrift field:-
+   * 2: struct patch.I32Patch option2
+   */
+  public ?I32Patch $option2;
+
+  public function __construct(?StringPatch $option1 = null, ?I32Patch $option2 = null  )[] {
+    $this->option1 = $option1;
+    $this->option2 = $option2;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'option1'),
+      Shapes::idx($shape, 'option2'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyUnionPatch';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyUnionPatch",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "patch.StringPatch",
+                    )
+                  ),
+                )
+              ),
+              "name" => "option1",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "patch.I32Patch",
+                    )
+                  ),
+                )
+              ),
+              "name" => "option2",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'option1' => shape(
+          'field' => dict[],
+          'type' => dict[
+            'GenerateOptionalPatch' => GenerateOptionalPatch::fromShape(
+              shape(
+              )
+            ),
+            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+              shape(
+              )
+            ),
+          ],
+        ),
+        'option2' => shape(
+          'field' => dict[],
+          'type' => dict[
+            'GenerateOptionalPatch' => GenerateOptionalPatch::fromShape(
+              shape(
+              )
+            ),
+            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+              shape(
+              )
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'option1') === null ? null : (StringPatch::__fromShape($shape['option1'])),
+      Shapes::idx($shape, 'option2') === null ? null : (I32Patch::__fromShape($shape['option2'])),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'option1' => $this->option1?->__toShape(),
+      'option2' => $this->option2?->__toShape(),
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'option1') !== null) {
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['option1']);
+      $_tmp1 = StringPatch::withDefaultValues();
+      $_tmp1->readFromJson($_tmp0);
+      $this->option1 = $_tmp1;
+    }    
+    if (idx($parsed, 'option2') !== null) {
+      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['option2']);
+      $_tmp3 = I32Patch::withDefaultValues();
+      $_tmp3->readFromJson($_tmp2);
+      $this->option2 = $_tmp3;
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * MyUnionValuePatch
+ */
+class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    2 => shape(
+      'var' => 'clear',
+      'type' => \TType::BOOL,
+    ),
+    3 => shape(
+      'var' => 'patch',
+      'type' => \TType::STRUCT,
+      'class' => MyUnionPatch::class,
+    ),
+    4 => shape(
+      'var' => 'ensure',
+      'type' => \TType::STRUCT,
+      'class' => MyUnion::class,
+    ),
+    5 => shape(
+      'var' => 'patchAfter',
+      'type' => \TType::STRUCT,
+      'class' => MyUnionPatch::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'clear' => 2,
+    'patch' => 3,
+    'ensure' => 4,
+    'patchAfter' => 5,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'clear' => ?bool,
+    ?'patch' => ?MyUnionPatch,
+    ?'ensure' => ?MyUnion,
+    ?'patchAfter' => ?MyUnionPatch,
+  );
+
+  const type TShape = shape(
+    'clear' => bool,
+    ?'patch' => ?MyUnionPatch::TShape,
+    ?'ensure' => ?MyUnion::TShape,
+    ?'patchAfter' => ?MyUnionPatch::TShape,
+    ...
+  );
+  const int STRUCTURAL_ID = 305167005019819383;
+  /**
+   * Clears any set value. Applies first.
+   * 
+   * Original thrift field:-
+   * 2: bool clear
+   */
+  public bool $clear;
+  /**
+   * Patches any set value. Applies second.
+   * 
+   * Original thrift field:-
+   * 3: struct module.MyUnionPatch patch
+   */
+  public ?MyUnionPatch $patch;
+  /**
+   * Assigns the value, if not already set. Applies third.
+   * 
+   * Original thrift field:-
+   * 4: struct module.MyUnion ensure
+   */
+  public ?MyUnion $ensure;
+  /**
+   * Patches any set value, including newly set values. Applies fourth.
+   * 
+   * Original thrift field:-
+   * 5: struct module.MyUnionPatch patchAfter
+   */
+  public ?MyUnionPatch $patchAfter;
+
+  public function __construct(?bool $clear = null, ?MyUnionPatch $patch = null, ?MyUnion $ensure = null, ?MyUnionPatch $patchAfter = null  )[] {
+    $this->clear = $clear ?? false;
+    $this->patch = $patch;
+    $this->ensure = $ensure;
+    $this->patchAfter = $patchAfter;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'clear'),
+      Shapes::idx($shape, 'patch'),
+      Shapes::idx($shape, 'ensure'),
+      Shapes::idx($shape, 'patchAfter'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyUnionValuePatch';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyUnionValuePatch",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "clear",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.MyUnionPatch",
+                    )
+                  ),
+                )
+              ),
+              "name" => "patch",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.MyUnion",
+                    )
+                  ),
+                )
+              ),
+              "name" => "ensure",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.MyUnionPatch",
+                    )
+                  ),
+                )
+              ),
+              "name" => "patchAfter",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['clear'],
+      Shapes::idx($shape, 'patch') === null ? null : (MyUnionPatch::__fromShape($shape['patch'])),
+      Shapes::idx($shape, 'ensure') === null ? null : (MyUnion::__fromShape($shape['ensure'])),
+      Shapes::idx($shape, 'patchAfter') === null ? null : (MyUnionPatch::__fromShape($shape['patchAfter'])),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'clear' => $this->clear,
+      'patch' => $this->patch?->__toShape(),
+      'ensure' => $this->ensure?->__toShape(),
+      'patchAfter' => $this->patchAfter?->__toShape(),
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'clear') !== null) {
+      $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
+    }    
+    if (idx($parsed, 'patch') !== null) {
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
+      $_tmp1 = MyUnionPatch::withDefaultValues();
+      $_tmp1->readFromJson($_tmp0);
+      $this->patch = $_tmp1;
+    }    
+    if (idx($parsed, 'ensure') !== null) {
+      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['ensure']);
+      $_tmp3 = MyUnion::withDefaultValues();
+      $_tmp3->readFromJson($_tmp2);
+      $this->ensure = $_tmp3;
+    }    
+    if (idx($parsed, 'patchAfter') !== null) {
+      $_tmp4 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
+      $_tmp5 = MyUnionPatch::withDefaultValues();
+      $_tmp5->readFromJson($_tmp4);
+      $this->patchAfter = $_tmp5;
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * OptionalMyUnionValuePatch
+ */
+class OptionalMyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    2 => shape(
+      'var' => 'clear',
+      'type' => \TType::BOOL,
+    ),
+    3 => shape(
+      'var' => 'patch',
+      'type' => \TType::STRUCT,
+      'class' => MyUnionValuePatch::class,
+    ),
+    4 => shape(
+      'var' => 'ensure',
+      'type' => \TType::STRUCT,
+      'class' => MyUnion::class,
+    ),
+    5 => shape(
+      'var' => 'patchAfter',
+      'type' => \TType::STRUCT,
+      'class' => MyUnionValuePatch::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'clear' => 2,
+    'patch' => 3,
+    'ensure' => 4,
+    'patchAfter' => 5,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'clear' => ?bool,
+    ?'patch' => ?MyUnionValuePatch,
+    ?'ensure' => ?MyUnion,
+    ?'patchAfter' => ?MyUnionValuePatch,
+  );
+
+  const type TShape = shape(
+    'clear' => bool,
+    ?'patch' => ?MyUnionValuePatch::TShape,
+    ?'ensure' => ?MyUnion::TShape,
+    ?'patchAfter' => ?MyUnionValuePatch::TShape,
+    ...
+  );
+  const int STRUCTURAL_ID = 3542537273181542021;
+  /**
+   * Clears any set value. Applies first.
+   * 
+   * Original thrift field:-
+   * 2: bool clear
+   */
+  public bool $clear;
+  /**
+   * Patches any set value. Applies second.
+   * 
+   * Original thrift field:-
+   * 3: struct module.MyUnionValuePatch patch
+   */
+  public ?MyUnionValuePatch $patch;
+  /**
+   * Assigns the value, if not already set. Applies third.
+   * 
+   * Original thrift field:-
+   * 4: struct module.MyUnion ensure
+   */
+  public ?MyUnion $ensure;
+  /**
+   * Patches any set value, including newly set values. Applies fourth.
+   * 
+   * Original thrift field:-
+   * 5: struct module.MyUnionValuePatch patchAfter
+   */
+  public ?MyUnionValuePatch $patchAfter;
+
+  public function __construct(?bool $clear = null, ?MyUnionValuePatch $patch = null, ?MyUnion $ensure = null, ?MyUnionValuePatch $patchAfter = null  )[] {
+    $this->clear = $clear ?? false;
+    $this->patch = $patch;
+    $this->ensure = $ensure;
+    $this->patchAfter = $patchAfter;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'clear'),
+      Shapes::idx($shape, 'patch'),
+      Shapes::idx($shape, 'ensure'),
+      Shapes::idx($shape, 'patchAfter'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'OptionalMyUnionValuePatch';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.OptionalMyUnionValuePatch",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "clear",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.MyUnionValuePatch",
+                    )
+                  ),
+                )
+              ),
+              "name" => "patch",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.MyUnion",
+                    )
+                  ),
+                )
+              ),
+              "name" => "ensure",
+              "is_optional" => true,
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.MyUnionValuePatch",
+                    )
+                  ),
+                )
+              ),
+              "name" => "patchAfter",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['clear'],
+      Shapes::idx($shape, 'patch') === null ? null : (MyUnionValuePatch::__fromShape($shape['patch'])),
+      Shapes::idx($shape, 'ensure') === null ? null : (MyUnion::__fromShape($shape['ensure'])),
+      Shapes::idx($shape, 'patchAfter') === null ? null : (MyUnionValuePatch::__fromShape($shape['patchAfter'])),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'clear' => $this->clear,
+      'patch' => $this->patch?->__toShape(),
+      'ensure' => $this->ensure?->__toShape(),
+      'patchAfter' => $this->patchAfter?->__toShape(),
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'clear') !== null) {
+      $this->clear = /* HH_FIXME[4110] */ $parsed['clear'];
+    }    
+    if (idx($parsed, 'patch') !== null) {
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['patch']);
+      $_tmp1 = MyUnionValuePatch::withDefaultValues();
+      $_tmp1->readFromJson($_tmp0);
+      $this->patch = $_tmp1;
+    }    
+    if (idx($parsed, 'ensure') !== null) {
+      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['ensure']);
+      $_tmp3 = MyUnion::withDefaultValues();
+      $_tmp3->readFromJson($_tmp2);
+      $this->ensure = $_tmp3;
+    }    
+    if (idx($parsed, 'patchAfter') !== null) {
+      $_tmp4 = json_encode(/* HH_FIXME[4110] */ $parsed['patchAfter']);
+      $_tmp5 = MyUnionValuePatch::withDefaultValues();
+      $_tmp5->readFromJson($_tmp4);
+      $this->patchAfter = $_tmp5;
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
  * MyStructPatch
  */
 class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
@@ -3234,15 +3446,6 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               )
             ),
             'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
-              shape(
-              )
-            ),
-          ],
-        ),
-        'unionVal' => shape(
-          'field' => dict[],
-          'type' => dict[
-            'facebook_thrift_annotation_SetGenerated' => facebook_thrift_annotation_SetGenerated::fromShape(
               shape(
               )
             ),

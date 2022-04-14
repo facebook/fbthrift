@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class MyUnionValuePatch implements TBase, java.io.Serializable, Cloneable {
-  private static final TStruct STRUCT_DESC = new TStruct("MyUnionValuePatch");
+public class OptionalMyUnionValuePatch implements TBase, java.io.Serializable, Cloneable {
+  private static final TStruct STRUCT_DESC = new TStruct("OptionalMyUnionValuePatch");
   private static final TField CLEAR_FIELD_DESC = new TField("clear", TType.BOOL, (short)2);
   private static final TField PATCH_FIELD_DESC = new TField("patch", TType.STRUCT, (short)3);
   private static final TField ENSURE_FIELD_DESC = new TField("ensure", TType.STRUCT, (short)4);
@@ -38,7 +38,7 @@ public class MyUnionValuePatch implements TBase, java.io.Serializable, Cloneable
   /**
    * Patches any set value. Applies second.
    */
-  public final MyUnionPatch patch;
+  public final MyUnionValuePatch patch;
   /**
    * Assigns the value, if not already set. Applies third.
    */
@@ -46,17 +46,17 @@ public class MyUnionValuePatch implements TBase, java.io.Serializable, Cloneable
   /**
    * Patches any set value, including newly set values. Applies fourth.
    */
-  public final MyUnionPatch patchAfter;
+  public final MyUnionValuePatch patchAfter;
   public static final int CLEAR = 2;
   public static final int PATCH = 3;
   public static final int ENSURE = 4;
   public static final int PATCHAFTER = 5;
 
-  public MyUnionValuePatch(
+  public OptionalMyUnionValuePatch(
       Boolean clear,
-      MyUnionPatch patch,
+      MyUnionValuePatch patch,
       MyUnion ensure,
-      MyUnionPatch patchAfter) {
+      MyUnionValuePatch patchAfter) {
     this.clear = clear;
     this.patch = patch;
     this.ensure = ensure;
@@ -66,7 +66,7 @@ public class MyUnionValuePatch implements TBase, java.io.Serializable, Cloneable
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public MyUnionValuePatch(MyUnionValuePatch other) {
+  public OptionalMyUnionValuePatch(OptionalMyUnionValuePatch other) {
     if (other.isSetClear()) {
       this.clear = TBaseHelper.deepCopy(other.clear);
     } else {
@@ -89,8 +89,8 @@ public class MyUnionValuePatch implements TBase, java.io.Serializable, Cloneable
     }
   }
 
-  public MyUnionValuePatch deepCopy() {
-    return new MyUnionValuePatch(this);
+  public OptionalMyUnionValuePatch deepCopy() {
+    return new OptionalMyUnionValuePatch(this);
   }
 
   /**
@@ -108,7 +108,7 @@ public class MyUnionValuePatch implements TBase, java.io.Serializable, Cloneable
   /**
    * Patches any set value. Applies second.
    */
-  public MyUnionPatch getPatch() {
+  public MyUnionValuePatch getPatch() {
     return this.patch;
   }
 
@@ -132,7 +132,7 @@ public class MyUnionValuePatch implements TBase, java.io.Serializable, Cloneable
   /**
    * Patches any set value, including newly set values. Applies fourth.
    */
-  public MyUnionPatch getPatchAfter() {
+  public MyUnionValuePatch getPatchAfter() {
     return this.patchAfter;
   }
 
@@ -147,9 +147,9 @@ public class MyUnionValuePatch implements TBase, java.io.Serializable, Cloneable
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof MyUnionValuePatch))
+    if (!(_that instanceof OptionalMyUnionValuePatch))
       return false;
-    MyUnionValuePatch that = (MyUnionValuePatch)_that;
+    OptionalMyUnionValuePatch that = (OptionalMyUnionValuePatch)_that;
 
     if (!TBaseHelper.equalsNobinary(this.isSetClear(), that.isSetClear(), this.clear, that.clear)) { return false; }
 
@@ -172,11 +172,11 @@ public class MyUnionValuePatch implements TBase, java.io.Serializable, Cloneable
     throw new TException("unimplemented in android immutable structure");
   }
 
-  public static MyUnionValuePatch deserialize(TProtocol iprot) throws TException {
+  public static OptionalMyUnionValuePatch deserialize(TProtocol iprot) throws TException {
     Boolean tmp_clear = null;
-    MyUnionPatch tmp_patch = null;
+    MyUnionValuePatch tmp_patch = null;
     MyUnion tmp_ensure = null;
-    MyUnionPatch tmp_patchAfter = null;
+    MyUnionValuePatch tmp_patchAfter = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -196,7 +196,7 @@ public class MyUnionValuePatch implements TBase, java.io.Serializable, Cloneable
           break;
         case PATCH:
           if (__field.type == TType.STRUCT) {
-            tmp_patch = MyUnionPatch.deserialize(iprot);
+            tmp_patch = MyUnionValuePatch.deserialize(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -211,7 +211,7 @@ public class MyUnionValuePatch implements TBase, java.io.Serializable, Cloneable
           break;
         case PATCHAFTER:
           if (__field.type == TType.STRUCT) {
-            tmp_patchAfter = MyUnionPatch.deserialize(iprot);
+            tmp_patchAfter = MyUnionValuePatch.deserialize(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
           }
@@ -224,8 +224,8 @@ public class MyUnionValuePatch implements TBase, java.io.Serializable, Cloneable
     }
     iprot.readStructEnd();
 
-    MyUnionValuePatch _that;
-    _that = new MyUnionValuePatch(
+    OptionalMyUnionValuePatch _that;
+    _that = new OptionalMyUnionValuePatch(
       tmp_clear
       ,tmp_patch
       ,tmp_ensure
@@ -250,9 +250,11 @@ public class MyUnionValuePatch implements TBase, java.io.Serializable, Cloneable
       oprot.writeFieldEnd();
     }
     if (this.ensure != null) {
-      oprot.writeFieldBegin(ENSURE_FIELD_DESC);
-      this.ensure.write(oprot);
-      oprot.writeFieldEnd();
+      if (isSetEnsure()) {
+        oprot.writeFieldBegin(ENSURE_FIELD_DESC);
+        this.ensure.write(oprot);
+        oprot.writeFieldEnd();
+      }
     }
     if (this.patchAfter != null) {
       oprot.writeFieldBegin(PATCH_AFTER_FIELD_DESC);

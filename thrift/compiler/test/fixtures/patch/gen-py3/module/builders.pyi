@@ -10,8 +10,6 @@ import typing as _typing
 import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.builder
 
-import facebook.thrift.annotation.meta.types as _facebook_thrift_annotation_meta_types
-import facebook.thrift.annotation.meta.builders as _facebook_thrift_annotation_meta_builders
 import patch.types as _patch_types
 import patch.builders as _patch_builders
 
@@ -28,22 +26,6 @@ class MyData_Builder(thrift.py3.builder.StructBuilder):
 class MyUnion_Builder(thrift.py3.builder.StructBuilder):
     option1: _typing.Optional[str]
     option2: _typing.Optional[int]
-
-    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
-
-
-class MyUnionPatch_Builder(thrift.py3.builder.StructBuilder):
-    option1: _typing.Any
-    option2: _typing.Any
-
-    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
-
-
-class MyUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):
-    clear: _typing.Optional[bool]
-    patch: _typing.Any
-    ensure: _typing.Any
-    patchAfter: _typing.Any
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
@@ -93,6 +75,31 @@ class MyDataValuePatch_Builder(thrift.py3.builder.StructBuilder):
 
 
 class OptionalMyDataValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Any
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class MyUnionPatch_Builder(thrift.py3.builder.StructBuilder):
+    option1: _typing.Any
+    option2: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class MyUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    clear: _typing.Optional[bool]
+    patch: _typing.Any
+    ensure: _typing.Any
+    patchAfter: _typing.Any
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class OptionalMyUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):
     clear: _typing.Optional[bool]
     patch: _typing.Any
     ensure: _typing.Any

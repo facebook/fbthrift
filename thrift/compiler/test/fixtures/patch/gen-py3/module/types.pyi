@@ -14,7 +14,6 @@ from typing_extensions import Final
 
 import sys
 import itertools
-import facebook.thrift.annotation.meta.types as _facebook_thrift_annotation_meta_types
 import patch.types as _patch_types
 
 
@@ -88,80 +87,6 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     def value(self) -> _typing.Union[None, str, int]: ...
     @__property__
     def type(self) -> "MyUnion.Type": ...
-
-
-class MyUnionPatch(thrift.py3.types.Struct, _typing.Hashable):
-    class __fbthrift_IsSet:
-        option1: bool
-        option2: bool
-        pass
-
-    option1: Final[_patch_types.StringPatch] = ...
-
-    option2: Final[_patch_types.I32Patch] = ...
-
-    def __init__(
-        self, *,
-        option1: _typing.Optional[_patch_types.StringPatch]=None,
-        option2: _typing.Optional[_patch_types.I32Patch]=None
-    ) -> None: ...
-
-    def __call__(
-        self, *,
-        option1: _typing.Union[_patch_types.StringPatch, __NotSet, None]=NOTSET,
-        option2: _typing.Union[_patch_types.I32Patch, __NotSet, None]=NOTSET
-    ) -> MyUnionPatch: ...
-
-    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyUnionPatch'], bytes]]: ...
-    def __hash__(self) -> int: ...
-    def __str__(self) -> str: ...
-    def __repr__(self) -> str: ...
-    def __lt__(self, other: 'MyUnionPatch') -> bool: ...
-    def __gt__(self, other: 'MyUnionPatch') -> bool: ...
-    def __le__(self, other: 'MyUnionPatch') -> bool: ...
-    def __ge__(self, other: 'MyUnionPatch') -> bool: ...
-
-
-class MyUnionValuePatch(thrift.py3.types.Struct, _typing.Hashable):
-    class __fbthrift_IsSet:
-        clear: bool
-        patch: bool
-        ensure: bool
-        patchAfter: bool
-        pass
-
-    clear: Final[bool] = ...
-
-    patch: Final[MyUnionPatch] = ...
-
-    ensure: Final[MyUnion] = ...
-
-    patchAfter: Final[MyUnionPatch] = ...
-
-    def __init__(
-        self, *,
-        clear: _typing.Optional[bool]=None,
-        patch: _typing.Optional[MyUnionPatch]=None,
-        ensure: _typing.Optional[MyUnion]=None,
-        patchAfter: _typing.Optional[MyUnionPatch]=None
-    ) -> None: ...
-
-    def __call__(
-        self, *,
-        clear: _typing.Union[bool, __NotSet, None]=NOTSET,
-        patch: _typing.Union[MyUnionPatch, __NotSet, None]=NOTSET,
-        ensure: _typing.Union[MyUnion, __NotSet, None]=NOTSET,
-        patchAfter: _typing.Union[MyUnionPatch, __NotSet, None]=NOTSET
-    ) -> MyUnionValuePatch: ...
-
-    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyUnionValuePatch'], bytes]]: ...
-    def __hash__(self) -> int: ...
-    def __str__(self) -> str: ...
-    def __repr__(self) -> str: ...
-    def __lt__(self, other: 'MyUnionValuePatch') -> bool: ...
-    def __gt__(self, other: 'MyUnionValuePatch') -> bool: ...
-    def __le__(self, other: 'MyUnionValuePatch') -> bool: ...
-    def __ge__(self, other: 'MyUnionValuePatch') -> bool: ...
 
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
@@ -270,30 +195,30 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        boolVal: _typing.Union[bool, __NotSet, None]=NOTSET,
-        byteVal: _typing.Union[int, __NotSet, None]=NOTSET,
-        i16Val: _typing.Union[int, __NotSet, None]=NOTSET,
-        i32Val: _typing.Union[int, __NotSet, None]=NOTSET,
-        i64Val: _typing.Union[int, __NotSet, None]=NOTSET,
-        floatVal: _typing.Union[float, __NotSet, None]=NOTSET,
-        doubleVal: _typing.Union[float, __NotSet, None]=NOTSET,
-        stringVal: _typing.Union[str, __NotSet, None]=NOTSET,
-        binaryVal: _typing.Union[bytes, __NotSet, None]=NOTSET,
-        structVal: _typing.Union[MyData, __NotSet, None]=NOTSET,
-        optBoolVal: _typing.Union[bool, __NotSet, None]=NOTSET,
-        optByteVal: _typing.Union[int, __NotSet, None]=NOTSET,
-        optI16Val: _typing.Union[int, __NotSet, None]=NOTSET,
-        optI32Val: _typing.Union[int, __NotSet, None]=NOTSET,
-        optI64Val: _typing.Union[int, __NotSet, None]=NOTSET,
-        optFloatVal: _typing.Union[float, __NotSet, None]=NOTSET,
-        optDoubleVal: _typing.Union[float, __NotSet, None]=NOTSET,
-        optStringVal: _typing.Union[str, __NotSet, None]=NOTSET,
-        optBinaryVal: _typing.Union[bytes, __NotSet, None]=NOTSET,
-        optStructVal: _typing.Union[MyData, __NotSet, None]=NOTSET,
-        optListVal: _typing.Union[_typing.Sequence[int], __NotSet, None]=NOTSET,
-        optSetVal: _typing.Union[_typing.AbstractSet[str], __NotSet, None]=NOTSET,
-        optMapVal: _typing.Union[_typing.Mapping[str, str], __NotSet, None]=NOTSET,
-        unionVal: _typing.Union[MyUnion, __NotSet, None]=NOTSET
+        boolVal: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        byteVal: _typing.Union[int, '__NotSet', None]=NOTSET,
+        i16Val: _typing.Union[int, '__NotSet', None]=NOTSET,
+        i32Val: _typing.Union[int, '__NotSet', None]=NOTSET,
+        i64Val: _typing.Union[int, '__NotSet', None]=NOTSET,
+        floatVal: _typing.Union[float, '__NotSet', None]=NOTSET,
+        doubleVal: _typing.Union[float, '__NotSet', None]=NOTSET,
+        stringVal: _typing.Union[str, '__NotSet', None]=NOTSET,
+        binaryVal: _typing.Union[bytes, '__NotSet', None]=NOTSET,
+        structVal: _typing.Union[MyData, '__NotSet', None]=NOTSET,
+        optBoolVal: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        optByteVal: _typing.Union[int, '__NotSet', None]=NOTSET,
+        optI16Val: _typing.Union[int, '__NotSet', None]=NOTSET,
+        optI32Val: _typing.Union[int, '__NotSet', None]=NOTSET,
+        optI64Val: _typing.Union[int, '__NotSet', None]=NOTSET,
+        optFloatVal: _typing.Union[float, '__NotSet', None]=NOTSET,
+        optDoubleVal: _typing.Union[float, '__NotSet', None]=NOTSET,
+        optStringVal: _typing.Union[str, '__NotSet', None]=NOTSET,
+        optBinaryVal: _typing.Union[bytes, '__NotSet', None]=NOTSET,
+        optStructVal: _typing.Union[MyData, '__NotSet', None]=NOTSET,
+        optListVal: _typing.Union[_typing.Sequence[int], '__NotSet', None]=NOTSET,
+        optSetVal: _typing.Union[_typing.AbstractSet[str], '__NotSet', None]=NOTSET,
+        optMapVal: _typing.Union[_typing.Mapping[str, str], '__NotSet', None]=NOTSET,
+        unionVal: _typing.Union[MyUnion, '__NotSet', None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...
@@ -417,6 +342,122 @@ class OptionalMyDataValuePatch(thrift.py3.types.Struct, _typing.Hashable):
     def __ge__(self, other: 'OptionalMyDataValuePatch') -> bool: ...
 
 
+class MyUnionPatch(thrift.py3.types.Struct, _typing.Hashable):
+    class __fbthrift_IsSet:
+        option1: bool
+        option2: bool
+        pass
+
+    option1: Final[_patch_types.StringPatch] = ...
+
+    option2: Final[_patch_types.I32Patch] = ...
+
+    def __init__(
+        self, *,
+        option1: _typing.Optional[_patch_types.StringPatch]=None,
+        option2: _typing.Optional[_patch_types.I32Patch]=None
+    ) -> None: ...
+
+    def __call__(
+        self, *,
+        option1: _typing.Union[_patch_types.StringPatch, '__NotSet', None]=NOTSET,
+        option2: _typing.Union[_patch_types.I32Patch, '__NotSet', None]=NOTSET
+    ) -> MyUnionPatch: ...
+
+    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyUnionPatch'], bytes]]: ...
+    def __hash__(self) -> int: ...
+    def __str__(self) -> str: ...
+    def __repr__(self) -> str: ...
+    def __lt__(self, other: 'MyUnionPatch') -> bool: ...
+    def __gt__(self, other: 'MyUnionPatch') -> bool: ...
+    def __le__(self, other: 'MyUnionPatch') -> bool: ...
+    def __ge__(self, other: 'MyUnionPatch') -> bool: ...
+
+
+class MyUnionValuePatch(thrift.py3.types.Struct, _typing.Hashable):
+    class __fbthrift_IsSet:
+        clear: bool
+        patch: bool
+        ensure: bool
+        patchAfter: bool
+        pass
+
+    clear: Final[bool] = ...
+
+    patch: Final[MyUnionPatch] = ...
+
+    ensure: Final[MyUnion] = ...
+
+    patchAfter: Final[MyUnionPatch] = ...
+
+    def __init__(
+        self, *,
+        clear: _typing.Optional[bool]=None,
+        patch: _typing.Optional[MyUnionPatch]=None,
+        ensure: _typing.Optional[MyUnion]=None,
+        patchAfter: _typing.Optional[MyUnionPatch]=None
+    ) -> None: ...
+
+    def __call__(
+        self, *,
+        clear: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        patch: _typing.Union[MyUnionPatch, '__NotSet', None]=NOTSET,
+        ensure: _typing.Union[MyUnion, '__NotSet', None]=NOTSET,
+        patchAfter: _typing.Union[MyUnionPatch, '__NotSet', None]=NOTSET
+    ) -> MyUnionValuePatch: ...
+
+    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyUnionValuePatch'], bytes]]: ...
+    def __hash__(self) -> int: ...
+    def __str__(self) -> str: ...
+    def __repr__(self) -> str: ...
+    def __lt__(self, other: 'MyUnionValuePatch') -> bool: ...
+    def __gt__(self, other: 'MyUnionValuePatch') -> bool: ...
+    def __le__(self, other: 'MyUnionValuePatch') -> bool: ...
+    def __ge__(self, other: 'MyUnionValuePatch') -> bool: ...
+
+
+class OptionalMyUnionValuePatch(thrift.py3.types.Struct, _typing.Hashable):
+    class __fbthrift_IsSet:
+        clear: bool
+        patch: bool
+        ensure: bool
+        patchAfter: bool
+        pass
+
+    clear: Final[bool] = ...
+
+    patch: Final[MyUnionValuePatch] = ...
+
+    ensure: Final[_typing.Optional[MyUnion]] = ...
+
+    patchAfter: Final[MyUnionValuePatch] = ...
+
+    def __init__(
+        self, *,
+        clear: _typing.Optional[bool]=None,
+        patch: _typing.Optional[MyUnionValuePatch]=None,
+        ensure: _typing.Optional[MyUnion]=None,
+        patchAfter: _typing.Optional[MyUnionValuePatch]=None
+    ) -> None: ...
+
+    def __call__(
+        self, *,
+        clear: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        patch: _typing.Union[MyUnionValuePatch, '__NotSet', None]=NOTSET,
+        ensure: _typing.Union[MyUnion, '__NotSet', None]=NOTSET,
+        patchAfter: _typing.Union[MyUnionValuePatch, '__NotSet', None]=NOTSET
+    ) -> OptionalMyUnionValuePatch: ...
+
+    def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['OptionalMyUnionValuePatch'], bytes]]: ...
+    def __hash__(self) -> int: ...
+    def __str__(self) -> str: ...
+    def __repr__(self) -> str: ...
+    def __lt__(self, other: 'OptionalMyUnionValuePatch') -> bool: ...
+    def __gt__(self, other: 'OptionalMyUnionValuePatch') -> bool: ...
+    def __le__(self, other: 'OptionalMyUnionValuePatch') -> bool: ...
+    def __ge__(self, other: 'OptionalMyUnionValuePatch') -> bool: ...
+
+
 class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         boolVal: bool
@@ -523,30 +564,30 @@ class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        boolVal: _typing.Union[_patch_types.BoolPatch, __NotSet, None]=NOTSET,
-        byteVal: _typing.Union[_patch_types.BytePatch, __NotSet, None]=NOTSET,
-        i16Val: _typing.Union[_patch_types.I16Patch, __NotSet, None]=NOTSET,
-        i32Val: _typing.Union[_patch_types.I32Patch, __NotSet, None]=NOTSET,
-        i64Val: _typing.Union[_patch_types.I64Patch, __NotSet, None]=NOTSET,
-        floatVal: _typing.Union[_patch_types.FloatPatch, __NotSet, None]=NOTSET,
-        doubleVal: _typing.Union[_patch_types.DoublePatch, __NotSet, None]=NOTSET,
-        stringVal: _typing.Union[_patch_types.StringPatch, __NotSet, None]=NOTSET,
-        binaryVal: _typing.Union[_patch_types.BinaryPatch, __NotSet, None]=NOTSET,
-        structVal: _typing.Union[MyDataValuePatch, __NotSet, None]=NOTSET,
-        optBoolVal: _typing.Union[_patch_types.OptionalBoolPatch, __NotSet, None]=NOTSET,
-        optByteVal: _typing.Union[_patch_types.OptionalBytePatch, __NotSet, None]=NOTSET,
-        optI16Val: _typing.Union[_patch_types.OptionalI16Patch, __NotSet, None]=NOTSET,
-        optI32Val: _typing.Union[_patch_types.OptionalI32Patch, __NotSet, None]=NOTSET,
-        optI64Val: _typing.Union[_patch_types.OptionalI64Patch, __NotSet, None]=NOTSET,
-        optFloatVal: _typing.Union[_patch_types.OptionalFloatPatch, __NotSet, None]=NOTSET,
-        optDoubleVal: _typing.Union[_patch_types.OptionalDoublePatch, __NotSet, None]=NOTSET,
-        optStringVal: _typing.Union[_patch_types.OptionalStringPatch, __NotSet, None]=NOTSET,
-        optBinaryVal: _typing.Union[_patch_types.OptionalBinaryPatch, __NotSet, None]=NOTSET,
-        optStructVal: _typing.Union[OptionalMyDataValuePatch, __NotSet, None]=NOTSET,
-        optListVal: _typing.Union[OptionalMyStructField21Patch, __NotSet, None]=NOTSET,
-        optSetVal: _typing.Union[OptionalMyStructField22Patch, __NotSet, None]=NOTSET,
-        optMapVal: _typing.Union[OptionalMyStructField23Patch, __NotSet, None]=NOTSET,
-        unionVal: _typing.Union[MyUnionValuePatch, __NotSet, None]=NOTSET
+        boolVal: _typing.Union[_patch_types.BoolPatch, '__NotSet', None]=NOTSET,
+        byteVal: _typing.Union[_patch_types.BytePatch, '__NotSet', None]=NOTSET,
+        i16Val: _typing.Union[_patch_types.I16Patch, '__NotSet', None]=NOTSET,
+        i32Val: _typing.Union[_patch_types.I32Patch, '__NotSet', None]=NOTSET,
+        i64Val: _typing.Union[_patch_types.I64Patch, '__NotSet', None]=NOTSET,
+        floatVal: _typing.Union[_patch_types.FloatPatch, '__NotSet', None]=NOTSET,
+        doubleVal: _typing.Union[_patch_types.DoublePatch, '__NotSet', None]=NOTSET,
+        stringVal: _typing.Union[_patch_types.StringPatch, '__NotSet', None]=NOTSET,
+        binaryVal: _typing.Union[_patch_types.BinaryPatch, '__NotSet', None]=NOTSET,
+        structVal: _typing.Union[MyDataValuePatch, '__NotSet', None]=NOTSET,
+        optBoolVal: _typing.Union[_patch_types.OptionalBoolPatch, '__NotSet', None]=NOTSET,
+        optByteVal: _typing.Union[_patch_types.OptionalBytePatch, '__NotSet', None]=NOTSET,
+        optI16Val: _typing.Union[_patch_types.OptionalI16Patch, '__NotSet', None]=NOTSET,
+        optI32Val: _typing.Union[_patch_types.OptionalI32Patch, '__NotSet', None]=NOTSET,
+        optI64Val: _typing.Union[_patch_types.OptionalI64Patch, '__NotSet', None]=NOTSET,
+        optFloatVal: _typing.Union[_patch_types.OptionalFloatPatch, '__NotSet', None]=NOTSET,
+        optDoubleVal: _typing.Union[_patch_types.OptionalDoublePatch, '__NotSet', None]=NOTSET,
+        optStringVal: _typing.Union[_patch_types.OptionalStringPatch, '__NotSet', None]=NOTSET,
+        optBinaryVal: _typing.Union[_patch_types.OptionalBinaryPatch, '__NotSet', None]=NOTSET,
+        optStructVal: _typing.Union[OptionalMyDataValuePatch, '__NotSet', None]=NOTSET,
+        optListVal: _typing.Union[OptionalMyStructField21Patch, '__NotSet', None]=NOTSET,
+        optSetVal: _typing.Union[OptionalMyStructField22Patch, '__NotSet', None]=NOTSET,
+        optMapVal: _typing.Union[OptionalMyStructField23Patch, '__NotSet', None]=NOTSET,
+        unionVal: _typing.Union[MyUnionValuePatch, '__NotSet', None]=NOTSET
     ) -> MyStructPatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStructPatch'], bytes]]: ...

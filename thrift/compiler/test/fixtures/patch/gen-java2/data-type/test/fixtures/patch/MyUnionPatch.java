@@ -92,7 +92,7 @@ public final class MyUnionPatch implements com.facebook.thrift.payload.ThriftSer
       THRIFT_NAMES_TO_IDS.put("option2", 2);
       FIELD_METADATA.put(2, OPTION2_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
-        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/test/patch/MyUnionPatch"), 
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyUnionPatch"), 
         MyUnionPatch.class, MyUnionPatch::read0));
     }
     

@@ -16,7 +16,6 @@ import sys
 if sys.version_info[0] >= 3:
   long = int
 
-import thrift.annotation.meta.ttypes
 import patch.ttypes
 
 
@@ -35,7 +34,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'MyData', 'MyUnion', 'MyUnionPatch', 'MyUnionValuePatch', 'MyStruct', 'MyDataPatch', 'MyDataValuePatch', 'OptionalMyDataValuePatch', 'MyStructPatch', 'MyStructField21Patch', 'OptionalMyStructField21Patch', 'MyStructField22Patch', 'OptionalMyStructField22Patch', 'MyStructField23Patch', 'OptionalMyStructField23Patch', 'MyStructValuePatch', 'OptionalMyStructValuePatch']
+__all__ = ['UTF8STRINGS', 'MyData', 'MyUnion', 'MyStruct', 'MyDataPatch', 'MyDataValuePatch', 'OptionalMyDataValuePatch', 'MyUnionPatch', 'MyUnionValuePatch', 'OptionalMyUnionValuePatch', 'MyStructPatch', 'MyStructField21Patch', 'OptionalMyStructField21Patch', 'MyStructField22Patch', 'OptionalMyStructField22Patch', 'MyStructField23Patch', 'OptionalMyStructField23Patch', 'MyStructValuePatch', 'OptionalMyStructValuePatch']
 
 class MyData:
   """
@@ -281,254 +280,6 @@ class MyUnion(object):
 
   def __ne__(self, other):
     return not (self == other)
-
-class MyUnionPatch:
-  """
-  Attributes:
-   - option1
-   - option2
-  """
-
-  thrift_spec = None
-  thrift_field_annotations = None
-  thrift_struct_annotations = None
-  __init__ = None
-  @staticmethod
-  def isUnion():
-    return False
-
-  def read(self, iprot):
-    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
-      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
-      return
-    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
-      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
-      return
-    iprot.readStructBegin()
-    while True:
-      (fname, ftype, fid) = iprot.readFieldBegin()
-      if ftype == TType.STOP:
-        break
-      if fid == 1:
-        if ftype == TType.STRUCT:
-          self.option1 = patch.ttypes.StringPatch()
-          self.option1.read(iprot)
-        else:
-          iprot.skip(ftype)
-      elif fid == 2:
-        if ftype == TType.STRUCT:
-          self.option2 = patch.ttypes.I32Patch()
-          self.option2.read(iprot)
-        else:
-          iprot.skip(ftype)
-      else:
-        iprot.skip(ftype)
-      iprot.readFieldEnd()
-    iprot.readStructEnd()
-
-  def write(self, oprot):
-    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
-      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
-      return
-    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
-      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
-      return
-    oprot.writeStructBegin('MyUnionPatch')
-    if self.option1 != None:
-      oprot.writeFieldBegin('option1', TType.STRUCT, 1)
-      self.option1.write(oprot)
-      oprot.writeFieldEnd()
-    if self.option2 != None:
-      oprot.writeFieldBegin('option2', TType.STRUCT, 2)
-      self.option2.write(oprot)
-      oprot.writeFieldEnd()
-    oprot.writeFieldStop()
-    oprot.writeStructEnd()
-
-  def readFromJson(self, json, is_text=True, **kwargs):
-    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
-    set_cls = kwargs.pop('custom_set_cls', set)
-    dict_cls = kwargs.pop('custom_dict_cls', dict)
-    if kwargs:
-        extra_kwargs = ', '.join(kwargs.keys())
-        raise ValueError(
-            'Unexpected keyword arguments: ' + extra_kwargs
-        )
-    json_obj = json
-    if is_text:
-      json_obj = loads(json)
-    if 'option1' in json_obj and json_obj['option1'] is not None:
-      self.option1 = patch.ttypes.StringPatch()
-      self.option1.readFromJson(json_obj['option1'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
-    if 'option2' in json_obj and json_obj['option2'] is not None:
-      self.option2 = patch.ttypes.I32Patch()
-      self.option2.readFromJson(json_obj['option2'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
-
-  def __repr__(self):
-    L = []
-    padding = ' ' * 4
-    if self.option1 is not None:
-      value = pprint.pformat(self.option1, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    option1=%s' % (value))
-    if self.option2 is not None:
-      value = pprint.pformat(self.option2, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    option2=%s' % (value))
-    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
-
-  def __eq__(self, other):
-    if not isinstance(other, self.__class__):
-      return False
-
-    return self.__dict__ == other.__dict__ 
-
-  def __ne__(self, other):
-    return not (self == other)
-
-  # Override the __hash__ function for Python3 - t10434117
-  __hash__ = object.__hash__
-
-class MyUnionValuePatch:
-  """
-  Attributes:
-   - clear
-   - patch
-   - ensure
-   - patchAfter
-  """
-
-  thrift_spec = None
-  thrift_field_annotations = None
-  thrift_struct_annotations = None
-  __init__ = None
-  @staticmethod
-  def isUnion():
-    return False
-
-  def read(self, iprot):
-    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
-      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
-      return
-    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
-      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
-      return
-    iprot.readStructBegin()
-    while True:
-      (fname, ftype, fid) = iprot.readFieldBegin()
-      if ftype == TType.STOP:
-        break
-      if fid == 2:
-        if ftype == TType.BOOL:
-          self.clear = iprot.readBool()
-        else:
-          iprot.skip(ftype)
-      elif fid == 3:
-        if ftype == TType.STRUCT:
-          self.patch = MyUnionPatch()
-          self.patch.read(iprot)
-        else:
-          iprot.skip(ftype)
-      elif fid == 4:
-        if ftype == TType.STRUCT:
-          self.ensure = MyUnion()
-          self.ensure.read(iprot)
-        else:
-          iprot.skip(ftype)
-      elif fid == 5:
-        if ftype == TType.STRUCT:
-          self.patchAfter = MyUnionPatch()
-          self.patchAfter.read(iprot)
-        else:
-          iprot.skip(ftype)
-      else:
-        iprot.skip(ftype)
-      iprot.readFieldEnd()
-    iprot.readStructEnd()
-
-  def write(self, oprot):
-    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
-      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
-      return
-    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
-      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
-      return
-    oprot.writeStructBegin('MyUnionValuePatch')
-    if self.clear != None:
-      oprot.writeFieldBegin('clear', TType.BOOL, 2)
-      oprot.writeBool(self.clear)
-      oprot.writeFieldEnd()
-    if self.patch != None:
-      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
-      self.patch.write(oprot)
-      oprot.writeFieldEnd()
-    if self.ensure != None:
-      oprot.writeFieldBegin('ensure', TType.STRUCT, 4)
-      self.ensure.write(oprot)
-      oprot.writeFieldEnd()
-    if self.patchAfter != None:
-      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
-      self.patchAfter.write(oprot)
-      oprot.writeFieldEnd()
-    oprot.writeFieldStop()
-    oprot.writeStructEnd()
-
-  def readFromJson(self, json, is_text=True, **kwargs):
-    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
-    set_cls = kwargs.pop('custom_set_cls', set)
-    dict_cls = kwargs.pop('custom_dict_cls', dict)
-    if kwargs:
-        extra_kwargs = ', '.join(kwargs.keys())
-        raise ValueError(
-            'Unexpected keyword arguments: ' + extra_kwargs
-        )
-    json_obj = json
-    if is_text:
-      json_obj = loads(json)
-    if 'clear' in json_obj and json_obj['clear'] is not None:
-      self.clear = json_obj['clear']
-    if 'patch' in json_obj and json_obj['patch'] is not None:
-      self.patch = MyUnionPatch()
-      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
-    if 'ensure' in json_obj and json_obj['ensure'] is not None:
-      self.ensure = MyUnion()
-      self.ensure.readFromJson(json_obj['ensure'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
-    if 'patchAfter' in json_obj and json_obj['patchAfter'] is not None:
-      self.patchAfter = MyUnionPatch()
-      self.patchAfter.readFromJson(json_obj['patchAfter'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
-
-  def __repr__(self):
-    L = []
-    padding = ' ' * 4
-    if self.clear is not None:
-      value = pprint.pformat(self.clear, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    clear=%s' % (value))
-    if self.patch is not None:
-      value = pprint.pformat(self.patch, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    patch=%s' % (value))
-    if self.ensure is not None:
-      value = pprint.pformat(self.ensure, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    ensure=%s' % (value))
-    if self.patchAfter is not None:
-      value = pprint.pformat(self.patchAfter, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    patchAfter=%s' % (value))
-    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
-
-  def __eq__(self, other):
-    if not isinstance(other, self.__class__):
-      return False
-
-    return self.__dict__ == other.__dict__ 
-
-  def __ne__(self, other):
-    return not (self == other)
-
-  # Override the __hash__ function for Python3 - t10434117
-  __hash__ = object.__hash__
 
 class MyStruct:
   """
@@ -1390,6 +1141,395 @@ class OptionalMyDataValuePatch:
       self.ensure.readFromJson(json_obj['ensure'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'patchAfter' in json_obj and json_obj['patchAfter'] is not None:
       self.patchAfter = MyDataValuePatch()
+      self.patchAfter.readFromJson(json_obj['patchAfter'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.clear is not None:
+      value = pprint.pformat(self.clear, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    clear=%s' % (value))
+    if self.patch is not None:
+      value = pprint.pformat(self.patch, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    patch=%s' % (value))
+    if self.ensure is not None:
+      value = pprint.pformat(self.ensure, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    ensure=%s' % (value))
+    if self.patchAfter is not None:
+      value = pprint.pformat(self.patchAfter, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    patchAfter=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
+class MyUnionPatch:
+  """
+  Attributes:
+   - option1
+   - option2
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRUCT:
+          self.option1 = patch.ttypes.StringPatch()
+          self.option1.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.STRUCT:
+          self.option2 = patch.ttypes.I32Patch()
+          self.option2.read(iprot)
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('MyUnionPatch')
+    if self.option1 != None:
+      oprot.writeFieldBegin('option1', TType.STRUCT, 1)
+      self.option1.write(oprot)
+      oprot.writeFieldEnd()
+    if self.option2 != None:
+      oprot.writeFieldBegin('option2', TType.STRUCT, 2)
+      self.option2.write(oprot)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'option1' in json_obj and json_obj['option1'] is not None:
+      self.option1 = patch.ttypes.StringPatch()
+      self.option1.readFromJson(json_obj['option1'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'option2' in json_obj and json_obj['option2'] is not None:
+      self.option2 = patch.ttypes.I32Patch()
+      self.option2.readFromJson(json_obj['option2'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.option1 is not None:
+      value = pprint.pformat(self.option1, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    option1=%s' % (value))
+    if self.option2 is not None:
+      value = pprint.pformat(self.option2, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    option2=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
+class MyUnionValuePatch:
+  """
+  Attributes:
+   - clear: Clears any set value. Applies first.
+   - patch: Patches any set value. Applies second.
+   - ensure: Assigns the value, if not already set. Applies third.
+   - patchAfter: Patches any set value, including newly set values. Applies fourth.
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 2:
+        if ftype == TType.BOOL:
+          self.clear = iprot.readBool()
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.STRUCT:
+          self.patch = MyUnionPatch()
+          self.patch.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 4:
+        if ftype == TType.STRUCT:
+          self.ensure = MyUnion()
+          self.ensure.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 5:
+        if ftype == TType.STRUCT:
+          self.patchAfter = MyUnionPatch()
+          self.patchAfter.read(iprot)
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('MyUnionValuePatch')
+    if self.clear != None:
+      oprot.writeFieldBegin('clear', TType.BOOL, 2)
+      oprot.writeBool(self.clear)
+      oprot.writeFieldEnd()
+    if self.patch != None:
+      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
+      self.patch.write(oprot)
+      oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.STRUCT, 4)
+      self.ensure.write(oprot)
+      oprot.writeFieldEnd()
+    if self.patchAfter != None:
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
+      self.patchAfter.write(oprot)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'clear' in json_obj and json_obj['clear'] is not None:
+      self.clear = json_obj['clear']
+    if 'patch' in json_obj and json_obj['patch'] is not None:
+      self.patch = MyUnionPatch()
+      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'ensure' in json_obj and json_obj['ensure'] is not None:
+      self.ensure = MyUnion()
+      self.ensure.readFromJson(json_obj['ensure'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'patchAfter' in json_obj and json_obj['patchAfter'] is not None:
+      self.patchAfter = MyUnionPatch()
+      self.patchAfter.readFromJson(json_obj['patchAfter'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.clear is not None:
+      value = pprint.pformat(self.clear, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    clear=%s' % (value))
+    if self.patch is not None:
+      value = pprint.pformat(self.patch, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    patch=%s' % (value))
+    if self.ensure is not None:
+      value = pprint.pformat(self.ensure, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    ensure=%s' % (value))
+    if self.patchAfter is not None:
+      value = pprint.pformat(self.patchAfter, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    patchAfter=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
+class OptionalMyUnionValuePatch:
+  """
+  Attributes:
+   - clear: Clears any set value. Applies first.
+   - patch: Patches any set value. Applies second.
+   - ensure: Assigns the value, if not already set. Applies third.
+   - patchAfter: Patches any set value, including newly set values. Applies fourth.
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 2:
+        if ftype == TType.BOOL:
+          self.clear = iprot.readBool()
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.STRUCT:
+          self.patch = MyUnionValuePatch()
+          self.patch.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 4:
+        if ftype == TType.STRUCT:
+          self.ensure = MyUnion()
+          self.ensure.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 5:
+        if ftype == TType.STRUCT:
+          self.patchAfter = MyUnionValuePatch()
+          self.patchAfter.read(iprot)
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('OptionalMyUnionValuePatch')
+    if self.clear != None:
+      oprot.writeFieldBegin('clear', TType.BOOL, 2)
+      oprot.writeBool(self.clear)
+      oprot.writeFieldEnd()
+    if self.patch != None:
+      oprot.writeFieldBegin('patch', TType.STRUCT, 3)
+      self.patch.write(oprot)
+      oprot.writeFieldEnd()
+    if self.ensure != None:
+      oprot.writeFieldBegin('ensure', TType.STRUCT, 4)
+      self.ensure.write(oprot)
+      oprot.writeFieldEnd()
+    if self.patchAfter != None:
+      oprot.writeFieldBegin('patchAfter', TType.STRUCT, 5)
+      self.patchAfter.write(oprot)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'clear' in json_obj and json_obj['clear'] is not None:
+      self.clear = json_obj['clear']
+    if 'patch' in json_obj and json_obj['patch'] is not None:
+      self.patch = MyUnionValuePatch()
+      self.patch.readFromJson(json_obj['patch'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'ensure' in json_obj and json_obj['ensure'] is not None:
+      self.ensure = MyUnion()
+      self.ensure.readFromJson(json_obj['ensure'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+    if 'patchAfter' in json_obj and json_obj['patchAfter'] is not None:
+      self.patchAfter = MyUnionValuePatch()
       self.patchAfter.readFromJson(json_obj['patchAfter'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
 
   def __repr__(self):
@@ -3235,69 +3375,6 @@ def MyUnion__init__(self, option1=None, option2=None,):
 
 MyUnion.__init__ = MyUnion__init__
 
-all_structs.append(MyUnionPatch)
-MyUnionPatch.thrift_spec = (
-  None, # 0
-  (1, TType.STRUCT, 'option1', [patch.ttypes.StringPatch, patch.ttypes.StringPatch.thrift_spec, False], None, 2, ), # 1
-  (2, TType.STRUCT, 'option2', [patch.ttypes.I32Patch, patch.ttypes.I32Patch.thrift_spec, False], None, 2, ), # 2
-)
-
-MyUnionPatch.thrift_struct_annotations = {
-  "cpp.adapter": "::apache::thrift::op::detail::StructuredPatchAdapter",
-  "thrift.uri": "facebook.com/thrift/test/patch/MyUnionPatch",
-}
-MyUnionPatch.thrift_field_annotations = {
-}
-
-def MyUnionPatch__init__(self, option1=None, option2=None,):
-  self.option1 = option1
-  self.option2 = option2
-
-MyUnionPatch.__init__ = MyUnionPatch__init__
-
-def MyUnionPatch__setstate__(self, state):
-  state.setdefault('option1', None)
-  state.setdefault('option2', None)
-  self.__dict__ = state
-
-MyUnionPatch.__getstate__ = lambda self: self.__dict__.copy()
-MyUnionPatch.__setstate__ = MyUnionPatch__setstate__
-
-all_structs.append(MyUnionValuePatch)
-MyUnionValuePatch.thrift_spec = (
-  None, # 0
-  None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'ensure', [MyUnion, MyUnion.thrift_spec, True], None, 2, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 2, ), # 5
-)
-
-MyUnionValuePatch.thrift_struct_annotations = {
-  "cpp.adapter": "::apache::thrift::op::detail::UnionPatchAdapter",
-  "thrift.uri": "facebook.com/thrift/test/patch/MyUnionValuePatch",
-}
-MyUnionValuePatch.thrift_field_annotations = {
-}
-
-def MyUnionValuePatch__init__(self, clear=None, patch=None, ensure=None, patchAfter=None,):
-  self.clear = clear
-  self.patch = patch
-  self.ensure = ensure
-  self.patchAfter = patchAfter
-
-MyUnionValuePatch.__init__ = MyUnionValuePatch__init__
-
-def MyUnionValuePatch__setstate__(self, state):
-  state.setdefault('clear', None)
-  state.setdefault('patch', None)
-  state.setdefault('ensure', None)
-  state.setdefault('patchAfter', None)
-  self.__dict__ = state
-
-MyUnionValuePatch.__getstate__ = lambda self: self.__dict__.copy()
-MyUnionValuePatch.__setstate__ = MyUnionValuePatch__setstate__
-
 all_structs.append(MyStruct)
 MyStruct.thrift_spec = (
   None, # 0
@@ -3492,6 +3569,104 @@ def OptionalMyDataValuePatch__setstate__(self, state):
 
 OptionalMyDataValuePatch.__getstate__ = lambda self: self.__dict__.copy()
 OptionalMyDataValuePatch.__setstate__ = OptionalMyDataValuePatch__setstate__
+
+all_structs.append(MyUnionPatch)
+MyUnionPatch.thrift_spec = (
+  None, # 0
+  (1, TType.STRUCT, 'option1', [patch.ttypes.StringPatch, patch.ttypes.StringPatch.thrift_spec, False], None, 2, ), # 1
+  (2, TType.STRUCT, 'option2', [patch.ttypes.I32Patch, patch.ttypes.I32Patch.thrift_spec, False], None, 2, ), # 2
+)
+
+MyUnionPatch.thrift_struct_annotations = {
+  "cpp.adapter": "::apache::thrift::op::detail::StructuredPatchAdapter",
+}
+MyUnionPatch.thrift_field_annotations = {
+}
+
+def MyUnionPatch__init__(self, option1=None, option2=None,):
+  self.option1 = option1
+  self.option2 = option2
+
+MyUnionPatch.__init__ = MyUnionPatch__init__
+
+def MyUnionPatch__setstate__(self, state):
+  state.setdefault('option1', None)
+  state.setdefault('option2', None)
+  self.__dict__ = state
+
+MyUnionPatch.__getstate__ = lambda self: self.__dict__.copy()
+MyUnionPatch.__setstate__ = MyUnionPatch__setstate__
+
+all_structs.append(MyUnionValuePatch)
+MyUnionValuePatch.thrift_spec = (
+  None, # 0
+  None, # 1
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (3, TType.STRUCT, 'patch', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 2, ), # 3
+  (4, TType.STRUCT, 'ensure', [MyUnion, MyUnion.thrift_spec, True], None, 2, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 2, ), # 5
+)
+
+MyUnionValuePatch.thrift_struct_annotations = {
+  "cpp.adapter": "::apache::thrift::op::detail::UnionPatchAdapter",
+}
+MyUnionValuePatch.thrift_field_annotations = {
+}
+
+def MyUnionValuePatch__init__(self, clear=None, patch=None, ensure=None, patchAfter=None,):
+  self.clear = clear
+  self.patch = patch
+  self.ensure = ensure
+  self.patchAfter = patchAfter
+
+MyUnionValuePatch.__init__ = MyUnionValuePatch__init__
+
+def MyUnionValuePatch__setstate__(self, state):
+  state.setdefault('clear', None)
+  state.setdefault('patch', None)
+  state.setdefault('ensure', None)
+  state.setdefault('patchAfter', None)
+  self.__dict__ = state
+
+MyUnionValuePatch.__getstate__ = lambda self: self.__dict__.copy()
+MyUnionValuePatch.__setstate__ = MyUnionValuePatch__setstate__
+
+all_structs.append(OptionalMyUnionValuePatch)
+OptionalMyUnionValuePatch.thrift_spec = (
+  None, # 0
+  None, # 1
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (3, TType.STRUCT, 'patch', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 2, ), # 3
+  (4, TType.STRUCT, 'ensure', [MyUnion, MyUnion.thrift_spec, True], None, 1, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 2, ), # 5
+)
+
+OptionalMyUnionValuePatch.thrift_struct_annotations = {
+  "cpp.adapter": "::apache::thrift::op::detail::OptionalPatchAdapter",
+}
+OptionalMyUnionValuePatch.thrift_field_annotations = {
+  4: {
+    "thrift.box": "",
+  },
+}
+
+def OptionalMyUnionValuePatch__init__(self, clear=None, patch=None, ensure=None, patchAfter=None,):
+  self.clear = clear
+  self.patch = patch
+  self.ensure = ensure
+  self.patchAfter = patchAfter
+
+OptionalMyUnionValuePatch.__init__ = OptionalMyUnionValuePatch__init__
+
+def OptionalMyUnionValuePatch__setstate__(self, state):
+  state.setdefault('clear', None)
+  state.setdefault('patch', None)
+  state.setdefault('ensure', None)
+  state.setdefault('patchAfter', None)
+  self.__dict__ = state
+
+OptionalMyUnionValuePatch.__getstate__ = lambda self: self.__dict__.copy()
+OptionalMyUnionValuePatch.__setstate__ = OptionalMyUnionValuePatch__setstate__
 
 all_structs.append(MyStructPatch)
 MyStructPatch.thrift_spec = (

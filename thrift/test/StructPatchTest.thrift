@@ -16,7 +16,6 @@
 
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/patch.thrift"
-include "thrift/annotation/meta.thrift"
 
 @patch.GeneratePatch
 package "facebook.com/thrift/test/patch"
@@ -32,26 +31,6 @@ union MyUnion {
   1: string option1;
   2: i32 option2;
 }
-
-@meta.SetGenerated
-struct MyUnionPatch {
-  1: patch.StringPatch option1;
-  2: patch.I32Patch option2;
-} (
-  cpp.adapter = "::apache::thrift::op::detail::StructuredPatchAdapter",
-  thrift.uri = "facebook.com/thrift/test/patch/MyUnionPatch",
-)
-
-@meta.SetGenerated
-struct MyUnionValuePatch {
-  2: bool clear;
-  3: MyUnionPatch patch;
-  4: MyUnion ensure;
-  5: MyUnionPatch patchAfter;
-} (
-  cpp.adapter = "::apache::thrift::op::detail::UnionPatchAdapter",
-  thrift.uri = "facebook.com/thrift/test/patch/MyUnionValuePatch",
-)
 
 struct MyStruct {
   1: bool boolVal;

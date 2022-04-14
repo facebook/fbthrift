@@ -79,6 +79,28 @@ class patch_generator {
   t_struct& add_struct_value_patch(
       const t_node& annot, t_struct& value_type, t_type_ref patch_type);
 
+  // Add a value patch representation for the given union and associate patch
+  // type, and return a reference to it.
+  //
+  // The resulting struct has the form:
+  //
+  //   struct UnionValuePatch<Value, Patch> {
+  //     // Clears any set value. Applies first.
+  //     bool clear;
+  //
+  //     // Patches any set value. Applies second.
+  //     Patch patch;
+  //
+  //     // Assigns the field, if not already set. Applies third.
+  //     Value ensure;
+  //
+  //     // Patches any set value, including newly set values. Applies fourth.
+  //     Patch patchAfter;
+  //   }
+  //
+  t_struct& add_union_value_patch(
+      const t_node& annot, t_union& value_type, t_type_ref patch_type);
+
   // Add an optional patch representation for the patch type, and return a
   // reference to it.
   //

@@ -10,7 +10,6 @@
 
 #include <thrift/lib/cpp2/type/Tag.h>
 
-#include "thrift/annotation/gen-cpp2/meta_types.h"
 #include "thrift/lib/thrift/gen-cpp2/patch_types.h"
 
 namespace apache {
@@ -20,12 +19,6 @@ struct data1;
 struct data2;
 struct option1;
 struct option2;
-struct option1;
-struct option2;
-struct clear;
-struct patch;
-struct ensure;
-struct patchAfter;
 struct boolVal;
 struct byteVal;
 struct i16Val;
@@ -55,6 +48,16 @@ struct data2;
 struct assign;
 struct clear;
 struct patch;
+struct clear;
+struct patch;
+struct ensure;
+struct patchAfter;
+struct option1;
+struct option2;
+struct clear;
+struct patch;
+struct ensure;
+struct patchAfter;
 struct clear;
 struct patch;
 struct ensure;
@@ -130,30 +133,6 @@ APACHE_THRIFT_DEFINE_ACCESSOR(option1);
 #ifndef APACHE_THRIFT_ACCESSOR_option2
 #define APACHE_THRIFT_ACCESSOR_option2
 APACHE_THRIFT_DEFINE_ACCESSOR(option2);
-#endif
-#ifndef APACHE_THRIFT_ACCESSOR_option1
-#define APACHE_THRIFT_ACCESSOR_option1
-APACHE_THRIFT_DEFINE_ACCESSOR(option1);
-#endif
-#ifndef APACHE_THRIFT_ACCESSOR_option2
-#define APACHE_THRIFT_ACCESSOR_option2
-APACHE_THRIFT_DEFINE_ACCESSOR(option2);
-#endif
-#ifndef APACHE_THRIFT_ACCESSOR_clear
-#define APACHE_THRIFT_ACCESSOR_clear
-APACHE_THRIFT_DEFINE_ACCESSOR(clear);
-#endif
-#ifndef APACHE_THRIFT_ACCESSOR_patch
-#define APACHE_THRIFT_ACCESSOR_patch
-APACHE_THRIFT_DEFINE_ACCESSOR(patch);
-#endif
-#ifndef APACHE_THRIFT_ACCESSOR_ensure
-#define APACHE_THRIFT_ACCESSOR_ensure
-APACHE_THRIFT_DEFINE_ACCESSOR(ensure);
-#endif
-#ifndef APACHE_THRIFT_ACCESSOR_patchAfter
-#define APACHE_THRIFT_ACCESSOR_patchAfter
-APACHE_THRIFT_DEFINE_ACCESSOR(patchAfter);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_boolVal
 #define APACHE_THRIFT_ACCESSOR_boolVal
@@ -270,6 +249,46 @@ APACHE_THRIFT_DEFINE_ACCESSOR(clear);
 #ifndef APACHE_THRIFT_ACCESSOR_patch
 #define APACHE_THRIFT_ACCESSOR_patch
 APACHE_THRIFT_DEFINE_ACCESSOR(patch);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_clear
+#define APACHE_THRIFT_ACCESSOR_clear
+APACHE_THRIFT_DEFINE_ACCESSOR(clear);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_patch
+#define APACHE_THRIFT_ACCESSOR_patch
+APACHE_THRIFT_DEFINE_ACCESSOR(patch);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_ensure
+#define APACHE_THRIFT_ACCESSOR_ensure
+APACHE_THRIFT_DEFINE_ACCESSOR(ensure);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_patchAfter
+#define APACHE_THRIFT_ACCESSOR_patchAfter
+APACHE_THRIFT_DEFINE_ACCESSOR(patchAfter);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_option1
+#define APACHE_THRIFT_ACCESSOR_option1
+APACHE_THRIFT_DEFINE_ACCESSOR(option1);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_option2
+#define APACHE_THRIFT_ACCESSOR_option2
+APACHE_THRIFT_DEFINE_ACCESSOR(option2);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_clear
+#define APACHE_THRIFT_ACCESSOR_clear
+APACHE_THRIFT_DEFINE_ACCESSOR(clear);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_patch
+#define APACHE_THRIFT_ACCESSOR_patch
+APACHE_THRIFT_DEFINE_ACCESSOR(patch);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_ensure
+#define APACHE_THRIFT_ACCESSOR_ensure
+APACHE_THRIFT_DEFINE_ACCESSOR(ensure);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_patchAfter
+#define APACHE_THRIFT_ACCESSOR_patchAfter
+APACHE_THRIFT_DEFINE_ACCESSOR(patchAfter);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_clear
 #define APACHE_THRIFT_ACCESSOR_clear
@@ -514,12 +533,13 @@ APACHE_THRIFT_DEFINE_ACCESSOR(patchAfter);
 namespace cpp2 {
 class MyData;
 class MyUnion;
-class MyUnionPatch;
-class MyUnionValuePatch;
 class MyStruct;
 class MyDataPatch;
 class MyDataValuePatch;
 class OptionalMyDataValuePatch;
+class MyUnionPatch;
+class MyUnionValuePatch;
+class OptionalMyUnionValuePatch;
 class MyStructField21Patch;
 class OptionalMyStructField21Patch;
 class MyStructField22Patch;
@@ -1027,464 +1047,6 @@ class MyUnion final  {
 
 template <class Protocol_>
 unsigned long MyUnion::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCursorPosition();
-  readNoXfer(iprot);
-  return iprot->getCursorPosition() - _xferStart;
-}
-
-} // cpp2
-namespace cpp2 {
-class MyUnionPatch final  {
- private:
-  friend struct ::apache::thrift::detail::st::struct_private_access;
-
-  //  used by a static_assert in the corresponding source
-  static constexpr bool __fbthrift_cpp2_gen_json = false;
-  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
-  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>>
-  >;
-
-  void __fbthrift_clear();
-  bool __fbthrift_is_empty() const;
-
- public:
-  using __fbthrift_cpp2_type = MyUnionPatch;
-  static constexpr bool __fbthrift_cpp2_is_union =
-    false;
-
-
- public:
-
-  MyUnionPatch() {
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_option1, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_option2, *this);
-  }
-  // FragileConstructor for use in initialization lists only.
-  [[deprecated("This constructor is deprecated")]]
-  MyUnionPatch(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct> option1__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct> option2__arg);
-
-  MyUnionPatch(MyUnionPatch&&) noexcept;
-  MyUnionPatch(const MyUnionPatch& src);
-
-
-  MyUnionPatch& operator=(MyUnionPatch&&) noexcept;
-  MyUnionPatch& operator=(const MyUnionPatch& src);
- private:
-  ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct> __fbthrift_field_option1;
- private:
-  ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct> __fbthrift_field_option2;
- private:
-  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
-
- public:
-
-  bool operator==(const MyUnionPatch&) const;
-  bool operator<(const MyUnionPatch&) const;
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> option1_ref() const& {
-    return {this->__fbthrift_field_option1, __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> option1_ref() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_option1), __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> option1_ref() & {
-    return {this->__fbthrift_field_option1, __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> option1_ref() && {
-    return {static_cast<T&&>(this->__fbthrift_field_option1), __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> option1() const& {
-    return {this->__fbthrift_field_option1, __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> option1() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_option1), __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> option1() & {
-    return {this->__fbthrift_field_option1, __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> option1() && {
-    return {static_cast<T&&>(this->__fbthrift_field_option1), __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> option2_ref() const& {
-    return {this->__fbthrift_field_option2, __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> option2_ref() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_option2), __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> option2_ref() & {
-    return {this->__fbthrift_field_option2, __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> option2_ref() && {
-    return {static_cast<T&&>(this->__fbthrift_field_option2), __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> option2() const& {
-    return {this->__fbthrift_field_option2, __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> option2() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_option2), __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> option2() & {
-    return {this->__fbthrift_field_option2, __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> option2() && {
-    return {static_cast<T&&>(this->__fbthrift_field_option2), __isset.at(1), __isset.bit(1)};
-  }
- private:
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<1>() &       { return option1_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() const&  { return option1_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).option1_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).option1_ref(); }
-  template<> decltype(auto) __fbthrift_get<2>() &       { return option2_ref(); }
-  template<> decltype(auto) __fbthrift_get<2>() const&  { return option2_ref(); }
-  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).option2_ref(); }
-  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).option2_ref(); }
-
- public:
-
-  template <class Protocol_>
-  unsigned long read(Protocol_* iprot);
-  template <class Protocol_>
-  uint32_t serializedSize(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t write(Protocol_* prot_) const;
-
- private:
-  template <class Protocol_>
-  void readNoXfer(Protocol_* iprot);
-
-  friend class ::apache::thrift::Cpp2Ops<MyUnionPatch>;
-  friend void swap(MyUnionPatch& a, MyUnionPatch& b);
-};
-
-template <class Protocol_>
-unsigned long MyUnionPatch::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCursorPosition();
-  readNoXfer(iprot);
-  return iprot->getCursorPosition() - _xferStart;
-}
-
-} // cpp2
-namespace cpp2 {
-class MyUnionValuePatch final  {
- private:
-  friend struct ::apache::thrift::detail::st::struct_private_access;
-
-  //  used by a static_assert in the corresponding source
-  static constexpr bool __fbthrift_cpp2_gen_json = false;
-  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
-  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
-  using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::union_t<::cpp2::MyUnion>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>>
-  >;
-
-  void __fbthrift_clear();
-  bool __fbthrift_is_empty() const;
-
- public:
-  using __fbthrift_cpp2_type = MyUnionValuePatch;
-  static constexpr bool __fbthrift_cpp2_is_union =
-    false;
-
-
- public:
-
-  MyUnionValuePatch() :
-      __fbthrift_field_clear() {
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructuredPatchAdapter, 3>(__fbthrift_field_patch, *this);
-    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructuredPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
-  }
-  // FragileConstructor for use in initialization lists only.
-  [[deprecated("This constructor is deprecated")]]
-  MyUnionValuePatch(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch> patch__arg, ::cpp2::MyUnion ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch> patchAfter__arg);
-
-  MyUnionValuePatch(MyUnionValuePatch&&) noexcept;
-  MyUnionValuePatch(const MyUnionValuePatch& src);
-
-
-  MyUnionValuePatch& operator=(MyUnionValuePatch&&) noexcept;
-  MyUnionValuePatch& operator=(const MyUnionValuePatch& src);
- private:
-  bool __fbthrift_field_clear;
- private:
-  ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch> __fbthrift_field_patch;
- private:
-  ::cpp2::MyUnion __fbthrift_field_ensure;
- private:
-  ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch> __fbthrift_field_patchAfter;
- private:
-  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
-
- public:
-
-  bool operator==(const MyUnionValuePatch&) const;
-  bool operator<(const MyUnionValuePatch&) const;
-
-  template <typename..., typename T = bool>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> clear_ref() const& {
-    return {this->__fbthrift_field_clear, __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = bool>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> clear_ref() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = bool>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> clear_ref() & {
-    return {this->__fbthrift_field_clear, __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = bool>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> clear_ref() && {
-    return {static_cast<T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = bool>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> clear() const& {
-    return {this->__fbthrift_field_clear, __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = bool>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> clear() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = bool>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> clear() & {
-    return {this->__fbthrift_field_clear, __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = bool>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> clear() && {
-    return {static_cast<T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch_ref() const& {
-    return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch_ref() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> patch_ref() & {
-    return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch_ref() && {
-    return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch() const& {
-    return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> patch() & {
-    return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch() && {
-    return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
-  }
-
-  template <typename..., typename T = ::cpp2::MyUnion>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> ensure_ref() const& {
-    return {this->__fbthrift_field_ensure, __isset.at(2), __isset.bit(2)};
-  }
-
-  template <typename..., typename T = ::cpp2::MyUnion>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> ensure_ref() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_ensure), __isset.at(2), __isset.bit(2)};
-  }
-
-  template <typename..., typename T = ::cpp2::MyUnion>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> ensure_ref() & {
-    return {this->__fbthrift_field_ensure, __isset.at(2), __isset.bit(2)};
-  }
-
-  template <typename..., typename T = ::cpp2::MyUnion>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> ensure_ref() && {
-    return {static_cast<T&&>(this->__fbthrift_field_ensure), __isset.at(2), __isset.bit(2)};
-  }
-
-  template <typename..., typename T = ::cpp2::MyUnion>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> ensure() const& {
-    return {this->__fbthrift_field_ensure, __isset.at(2), __isset.bit(2)};
-  }
-
-  template <typename..., typename T = ::cpp2::MyUnion>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> ensure() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_ensure), __isset.at(2), __isset.bit(2)};
-  }
-
-  template <typename..., typename T = ::cpp2::MyUnion>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> ensure() & {
-    return {this->__fbthrift_field_ensure, __isset.at(2), __isset.bit(2)};
-  }
-
-  template <typename..., typename T = ::cpp2::MyUnion>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> ensure() && {
-    return {static_cast<T&&>(this->__fbthrift_field_ensure), __isset.at(2), __isset.bit(2)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter_ref() const& {
-    return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter_ref() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter_ref() & {
-    return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter_ref() && {
-    return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter() const& {
-    return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter() const&& {
-    return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter() & {
-    return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
-  }
-
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter() && {
-    return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
-  }
- private:
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<2>() &       { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<2>() const&  { return clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).clear_ref(); }
-  template<> decltype(auto) __fbthrift_get<3>() &       { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() &       { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() const&  { return ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).ensure_ref(); }
-  template<> decltype(auto) __fbthrift_get<5>() &       { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<5>() const&  { return patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<5>() &&      { return std::move(*this).patchAfter_ref(); }
-  template<> decltype(auto) __fbthrift_get<5>() const&& { return std::move(*this).patchAfter_ref(); }
-
- public:
-
-  bool get_clear() const {
-    return __fbthrift_field_clear;
-  }
-
-  [[deprecated("Use `FOO.clear_ref() = BAR;` instead of `FOO.set_clear(BAR);`")]]
-  bool& set_clear(bool clear_) {
-    clear_ref() = clear_;
-    return __fbthrift_field_clear;
-  }
-  const ::cpp2::MyUnion& get_ensure() const&;
-  ::cpp2::MyUnion get_ensure() &&;
-
-  template <typename T_MyUnionValuePatch_ensure_struct_setter = ::cpp2::MyUnion>
-  [[deprecated("Use `FOO.ensure_ref() = BAR;` instead of `FOO.set_ensure(BAR);`")]]
-  ::cpp2::MyUnion& set_ensure(T_MyUnionValuePatch_ensure_struct_setter&& ensure_) {
-    ensure_ref() = std::forward<T_MyUnionValuePatch_ensure_struct_setter>(ensure_);
-    return __fbthrift_field_ensure;
-  }
-
-  template <class Protocol_>
-  unsigned long read(Protocol_* iprot);
-  template <class Protocol_>
-  uint32_t serializedSize(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t write(Protocol_* prot_) const;
-
- private:
-  template <class Protocol_>
-  void readNoXfer(Protocol_* iprot);
-
-  friend class ::apache::thrift::Cpp2Ops<MyUnionValuePatch>;
-  friend void swap(MyUnionValuePatch& a, MyUnionValuePatch& b);
-};
-
-template <class Protocol_>
-unsigned long MyUnionValuePatch::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -3666,6 +3228,741 @@ class OptionalMyDataValuePatch final  {
 
 template <class Protocol_>
 unsigned long OptionalMyDataValuePatch::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class MyUnionPatch final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
+  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  using __fbthrift_fields = ::apache::thrift::type::fields<
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>>
+  >;
+
+  void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
+
+ public:
+  using __fbthrift_cpp2_type = MyUnionPatch;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  MyUnionPatch() {
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StringPatchAdapter, 1>(__fbthrift_field_option1, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::NumberPatchAdapter, 2>(__fbthrift_field_option2, *this);
+  }
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  MyUnionPatch(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct> option1__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct> option2__arg);
+
+  MyUnionPatch(MyUnionPatch&&) noexcept;
+  MyUnionPatch(const MyUnionPatch& src);
+
+
+  MyUnionPatch& operator=(MyUnionPatch&&) noexcept;
+  MyUnionPatch& operator=(const MyUnionPatch& src);
+ private:
+  ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct> __fbthrift_field_option1;
+ private:
+  ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct> __fbthrift_field_option2;
+ private:
+  apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+
+ public:
+
+  bool operator==(const MyUnionPatch&) const;
+  bool operator<(const MyUnionPatch&) const;
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> option1_ref() const& {
+    return {this->__fbthrift_field_option1, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> option1_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_option1), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> option1_ref() & {
+    return {this->__fbthrift_field_option1, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> option1_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_option1), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> option1() const& {
+    return {this->__fbthrift_field_option1, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> option1() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_option1), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> option1() & {
+    return {this->__fbthrift_field_option1, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> option1() && {
+    return {static_cast<T&&>(this->__fbthrift_field_option1), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> option2_ref() const& {
+    return {this->__fbthrift_field_option2, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> option2_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_option2), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> option2_ref() & {
+    return {this->__fbthrift_field_option2, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> option2_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_option2), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> option2() const& {
+    return {this->__fbthrift_field_option2, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> option2() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_option2), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> option2() & {
+    return {this->__fbthrift_field_option2, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> option2() && {
+    return {static_cast<T&&>(this->__fbthrift_field_option2), __isset.at(1), __isset.bit(1)};
+  }
+ private:
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<1>() &       { return option1_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&  { return option1_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).option1_ref(); }
+  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).option1_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &       { return option2_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return option2_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).option2_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).option2_ref(); }
+
+ public:
+
+  template <class Protocol_>
+  unsigned long read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<MyUnionPatch>;
+  friend void swap(MyUnionPatch& a, MyUnionPatch& b);
+};
+
+template <class Protocol_>
+unsigned long MyUnionPatch::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class MyUnionValuePatch final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
+  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  using __fbthrift_fields = ::apache::thrift::type::fields<
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::union_t<::cpp2::MyUnion>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>>
+  >;
+
+  void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
+
+ public:
+  using __fbthrift_cpp2_type = MyUnionValuePatch;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  MyUnionValuePatch() :
+      __fbthrift_field_clear() {
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructuredPatchAdapter, 3>(__fbthrift_field_patch, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::StructuredPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+  }
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  MyUnionValuePatch(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch> patch__arg, ::cpp2::MyUnion ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch> patchAfter__arg);
+
+  MyUnionValuePatch(MyUnionValuePatch&&) noexcept;
+  MyUnionValuePatch(const MyUnionValuePatch& src);
+
+
+  MyUnionValuePatch& operator=(MyUnionValuePatch&&) noexcept;
+  MyUnionValuePatch& operator=(const MyUnionValuePatch& src);
+ private:
+  bool __fbthrift_field_clear;
+ private:
+  ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch> __fbthrift_field_patch;
+ private:
+  ::cpp2::MyUnion __fbthrift_field_ensure;
+ private:
+  ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch> __fbthrift_field_patchAfter;
+ private:
+  apache::thrift::detail::isset_bitset<4, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+
+ public:
+
+  bool operator==(const MyUnionValuePatch&) const;
+  bool operator<(const MyUnionValuePatch&) const;
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> clear_ref() const& {
+    return {this->__fbthrift_field_clear, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> clear_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> clear_ref() & {
+    return {this->__fbthrift_field_clear, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> clear_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> clear() const& {
+    return {this->__fbthrift_field_clear, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> clear() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> clear() & {
+    return {this->__fbthrift_field_clear, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> clear() && {
+    return {static_cast<T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch_ref() const& {
+    return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> patch_ref() & {
+    return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch() const& {
+    return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> patch() & {
+    return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch() && {
+    return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyUnion>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> ensure_ref() const& {
+    return {this->__fbthrift_field_ensure, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyUnion>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> ensure_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_ensure), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyUnion>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> ensure_ref() & {
+    return {this->__fbthrift_field_ensure, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyUnion>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> ensure_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_ensure), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyUnion>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> ensure() const& {
+    return {this->__fbthrift_field_ensure, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyUnion>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> ensure() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_ensure), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyUnion>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> ensure() & {
+    return {this->__fbthrift_field_ensure, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::cpp2::MyUnion>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> ensure() && {
+    return {static_cast<T&&>(this->__fbthrift_field_ensure), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter_ref() const& {
+    return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter_ref() & {
+    return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter() const& {
+    return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter() & {
+    return {this->__fbthrift_field_patchAfter, __isset.at(3), __isset.bit(3)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter() && {
+    return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(3), __isset.bit(3)};
+  }
+ private:
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<2>() &       { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &       { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &       { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&  { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &&      { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&& { return std::move(*this).patchAfter_ref(); }
+
+ public:
+
+  bool get_clear() const {
+    return __fbthrift_field_clear;
+  }
+
+  [[deprecated("Use `FOO.clear_ref() = BAR;` instead of `FOO.set_clear(BAR);`")]]
+  bool& set_clear(bool clear_) {
+    clear_ref() = clear_;
+    return __fbthrift_field_clear;
+  }
+  const ::cpp2::MyUnion& get_ensure() const&;
+  ::cpp2::MyUnion get_ensure() &&;
+
+  template <typename T_MyUnionValuePatch_ensure_struct_setter = ::cpp2::MyUnion>
+  [[deprecated("Use `FOO.ensure_ref() = BAR;` instead of `FOO.set_ensure(BAR);`")]]
+  ::cpp2::MyUnion& set_ensure(T_MyUnionValuePatch_ensure_struct_setter&& ensure_) {
+    ensure_ref() = std::forward<T_MyUnionValuePatch_ensure_struct_setter>(ensure_);
+    return __fbthrift_field_ensure;
+  }
+
+  template <class Protocol_>
+  unsigned long read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<MyUnionValuePatch>;
+  friend void swap(MyUnionValuePatch& a, MyUnionValuePatch& b);
+};
+
+template <class Protocol_>
+unsigned long MyUnionValuePatch::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class OptionalMyUnionValuePatch final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
+  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  using __fbthrift_fields = ::apache::thrift::type::fields<
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::union_t<::cpp2::MyUnion>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>>
+  >;
+
+  void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
+
+ public:
+  using __fbthrift_cpp2_type = OptionalMyUnionValuePatch;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  OptionalMyUnionValuePatch() :
+      __fbthrift_field_clear() {
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 3>(__fbthrift_field_patch, *this);
+    ::apache::thrift::adapt_detail::construct<::apache::thrift::op::detail::UnionPatchAdapter, 5>(__fbthrift_field_patchAfter, *this);
+  }
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  OptionalMyUnionValuePatch(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch> patch__arg, ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyUnion> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch> patchAfter__arg);
+
+  OptionalMyUnionValuePatch(OptionalMyUnionValuePatch&&) noexcept;
+  OptionalMyUnionValuePatch(const OptionalMyUnionValuePatch& src);
+
+
+  OptionalMyUnionValuePatch& operator=(OptionalMyUnionValuePatch&&) noexcept;
+  OptionalMyUnionValuePatch& operator=(const OptionalMyUnionValuePatch& src);
+ private:
+  bool __fbthrift_field_clear;
+ private:
+  ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch> __fbthrift_field_patch;
+ private:
+  ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyUnion> __fbthrift_field_ensure;
+ private:
+  ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch> __fbthrift_field_patchAfter;
+ private:
+  apache::thrift::detail::isset_bitset<3, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+
+ public:
+
+  bool operator==(const OptionalMyUnionValuePatch&) const;
+  bool operator<(const OptionalMyUnionValuePatch&) const;
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> clear_ref() const& {
+    return {this->__fbthrift_field_clear, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> clear_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> clear_ref() & {
+    return {this->__fbthrift_field_clear, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> clear_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> clear() const& {
+    return {this->__fbthrift_field_clear, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> clear() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> clear() & {
+    return {this->__fbthrift_field_clear, __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> clear() && {
+    return {static_cast<T&&>(this->__fbthrift_field_clear), __isset.at(0), __isset.bit(0)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch_ref() const& {
+    return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> patch_ref() & {
+    return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> patch() const& {
+    return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patch() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> patch() & {
+    return {this->__fbthrift_field_patch, __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> patch() && {
+    return {static_cast<T&&>(this->__fbthrift_field_patch), __isset.at(1), __isset.bit(1)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyUnion>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> ensure_ref() const& {
+    return ::apache::thrift::optional_boxed_field_ref<const T&>{this->__fbthrift_field_ensure};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyUnion>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> ensure_ref() const&& {
+    return ::apache::thrift::optional_boxed_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_ensure)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyUnion>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&> ensure_ref() & {
+    return ::apache::thrift::optional_boxed_field_ref<T&>{this->__fbthrift_field_ensure};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyUnion>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> ensure_ref() && {
+    return ::apache::thrift::optional_boxed_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_ensure)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyUnion>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&> ensure() const& {
+    return ::apache::thrift::optional_boxed_field_ref<const T&>{this->__fbthrift_field_ensure};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyUnion>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<const T&&> ensure() const&& {
+    return ::apache::thrift::optional_boxed_field_ref<const T&&>{static_cast<const T&&>(this->__fbthrift_field_ensure)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyUnion>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&> ensure() & {
+    return ::apache::thrift::optional_boxed_field_ref<T&>{this->__fbthrift_field_ensure};
+  }
+
+  template <typename..., typename T = ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyUnion>>
+  FOLLY_ERASE ::apache::thrift::optional_boxed_field_ref<T&&> ensure() && {
+    return ::apache::thrift::optional_boxed_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_ensure)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter_ref() const& {
+    return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter_ref() & {
+    return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> patchAfter() const& {
+    return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> patchAfter() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> patchAfter() & {
+    return {this->__fbthrift_field_patchAfter, __isset.at(2), __isset.bit(2)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatch>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> patchAfter() && {
+    return {static_cast<T&&>(this->__fbthrift_field_patchAfter), __isset.at(2), __isset.bit(2)};
+  }
+ private:
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
+  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template<> decltype(auto) __fbthrift_get<2>() &       { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&  { return clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).clear_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &       { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&  { return patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).patch_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &       { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&  { return ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).ensure_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &       { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&  { return patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() &&      { return std::move(*this).patchAfter_ref(); }
+  template<> decltype(auto) __fbthrift_get<5>() const&& { return std::move(*this).patchAfter_ref(); }
+
+ public:
+
+  bool get_clear() const {
+    return __fbthrift_field_clear;
+  }
+
+  [[deprecated("Use `FOO.clear_ref() = BAR;` instead of `FOO.set_clear(BAR);`")]]
+  bool& set_clear(bool clear_) {
+    clear_ref() = clear_;
+    return __fbthrift_field_clear;
+  }
+
+  template <class Protocol_>
+  unsigned long read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<OptionalMyUnionValuePatch>;
+  friend void swap(OptionalMyUnionValuePatch& a, OptionalMyUnionValuePatch& b);
+};
+
+template <class Protocol_>
+unsigned long OptionalMyUnionValuePatch::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

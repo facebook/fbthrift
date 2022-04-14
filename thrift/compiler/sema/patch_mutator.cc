@@ -179,12 +179,18 @@ struct PatchGen : StructGen {
         "Clears a value. Applies first.",
         field(kClearId, t_base_type::t_bool(), "clear"));
   }
+  t_field& clearOpt() {
+    return doc("Clears any set value. Applies first.", clear());
+  }
 
   // {kPatchId}: {patch_type} patch;
   t_field& patch(t_type_ref patch_type) {
     return doc(
         "Patches a value. Applies second.",
         field(kPatchId, patch_type, "patch"));
+  }
+  t_field& patchOpt(t_type_ref patch_type) {
+    return doc("Patches any set value. Applies second.", patch(patch_type));
   }
 
   // {kEnsureId}: {type} ensure;
@@ -278,12 +284,27 @@ void generate_struct_patch(
   }
 }
 
+void generate_union_patch(
+    diagnostic_context& ctx, mutator_context& mctx, t_union& node) {
+  if (auto* annot = inherit_annotation_or_null(ctx, node, kGeneratePatchUri)) {
+    auto& generator = patch_generator::get_for(ctx, mctx);
+
+    // Add a 'structured patch' and 'union value patch' using it.
+    auto& struct_patch = generator.add_structured_patch(*annot, node);
+    auto& patch = generator.add_union_value_patch(*annot, node, struct_patch);
+
+    // Add an 'optional patch' based on the added patch type.
+    generator.add_optional_patch(*annot, node, patch);
+  }
+}
+
 } // namespace
 
 void add_patch_mutators(ast_mutators& mutators) {
   auto& mutator = mutators[standard_mutator_stage::plugin];
   mutator.add_struct_visitor(&generate_struct_patch);
   mutator.add_struct_visitor(&generate_optional_patch);
+  mutator.add_union_visitor(&generate_union_patch);
 }
 
 patch_generator& patch_generator::get_for(
@@ -297,11 +318,24 @@ patch_generator& patch_generator::get_for(
 t_struct& patch_generator::add_optional_patch(
     const t_node& annot, t_type_ref value_type, t_struct& patch_type) {
   PatchGen gen{{annot, gen_prefix_struct(annot, patch_type, "Optional")}};
-  doc("Clears any set value. Applies first.", gen.clear());
-  doc("Patches any set value. Applies second.", gen.patch(patch_type));
+  gen.clearOpt();
+  gen.patchOpt(patch_type);
   box(gen.ensure(value_type));
   gen.patchAfter(patch_type);
   gen.set_adapter("OptionalPatchAdapter");
+  return gen;
+}
+
+t_struct& patch_generator::add_union_value_patch(
+    const t_node& annot, t_union& value_type, t_type_ref patch_type) {
+  PatchGen gen{{annot, gen_suffix_struct(annot, value_type, "ValuePatch")}};
+  // TODO(afuller): Add 'assign`.
+  gen.clearOpt();
+  gen.patchOpt(patch_type);
+  gen.ensure(value_type);
+  // TODO(afuller): Add 'maybeEnsure'.
+  gen.patchAfter(patch_type);
+  gen.set_adapter("UnionPatchAdapter");
   return gen;
 }
 

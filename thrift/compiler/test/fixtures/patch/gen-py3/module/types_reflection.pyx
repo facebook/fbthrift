@@ -14,7 +14,6 @@ from thrift.py3.reflection cimport (
     Qualifier as __Qualifier,
 )
 
-cimport facebook.thrift.annotation.meta.types as _facebook_thrift_annotation_meta_types
 cimport patch.types as _patch_types
 
 cimport module.types as _module_types
@@ -87,104 +86,6 @@ cdef __StructSpec get_reflection__MyUnion():
             name="option2",
             type=int,
             kind=__NumberType.I32,
-            qualifier=__Qualifier.UNQUALIFIED,
-            default=None,
-            annotations={
-            },
-        ),
-    )
-    return spec
-cdef __StructSpec get_reflection__MyUnionPatch():
-    cdef _module_types.MyUnionPatch defaults = _module_types.MyUnionPatch._fbthrift_create(
-        constant_shared_ptr[_module_types.cMyUnionPatch](
-            default_inst[_module_types.cMyUnionPatch]()
-        )
-    )
-    cdef __StructSpec spec = __StructSpec._fbthrift_create(
-        name="MyUnionPatch",
-        kind=__StructType.STRUCT,
-        annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::StructuredPatchAdapter""",            """thrift.uri""": """facebook.com/thrift/test/patch/MyUnionPatch""",        },
-    )
-    spec.add_field(
-        __FieldSpec._fbthrift_create(
-            id=1,
-            name="option1",
-            type=_patch_types.StringPatch,
-            kind=__NumberType.NOT_A_NUMBER,
-            qualifier=__Qualifier.UNQUALIFIED,
-            default=None,
-            annotations={
-            },
-        ),
-    )
-    spec.add_field(
-        __FieldSpec._fbthrift_create(
-            id=2,
-            name="option2",
-            type=_patch_types.I32Patch,
-            kind=__NumberType.NOT_A_NUMBER,
-            qualifier=__Qualifier.UNQUALIFIED,
-            default=None,
-            annotations={
-            },
-        ),
-    )
-    return spec
-cdef __StructSpec get_reflection__MyUnionValuePatch():
-    cdef _module_types.MyUnionValuePatch defaults = _module_types.MyUnionValuePatch._fbthrift_create(
-        constant_shared_ptr[_module_types.cMyUnionValuePatch](
-            default_inst[_module_types.cMyUnionValuePatch]()
-        )
-    )
-    cdef __StructSpec spec = __StructSpec._fbthrift_create(
-        name="MyUnionValuePatch",
-        kind=__StructType.STRUCT,
-        annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::UnionPatchAdapter""",            """thrift.uri""": """facebook.com/thrift/test/patch/MyUnionValuePatch""",        },
-    )
-    spec.add_field(
-        __FieldSpec._fbthrift_create(
-            id=2,
-            name="clear",
-            type=bool,
-            kind=__NumberType.NOT_A_NUMBER,
-            qualifier=__Qualifier.UNQUALIFIED,
-            default=None,
-            annotations={
-            },
-        ),
-    )
-    spec.add_field(
-        __FieldSpec._fbthrift_create(
-            id=3,
-            name="patch",
-            type=_module_types.MyUnionPatch,
-            kind=__NumberType.NOT_A_NUMBER,
-            qualifier=__Qualifier.UNQUALIFIED,
-            default=None,
-            annotations={
-            },
-        ),
-    )
-    spec.add_field(
-        __FieldSpec._fbthrift_create(
-            id=4,
-            name="ensure",
-            type=_module_types.MyUnion,
-            kind=__NumberType.NOT_A_NUMBER,
-            qualifier=__Qualifier.UNQUALIFIED,
-            default=None,
-            annotations={
-            },
-        ),
-    )
-    spec.add_field(
-        __FieldSpec._fbthrift_create(
-            id=5,
-            name="patchAfter",
-            type=_module_types.MyUnionPatch,
-            kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
@@ -632,6 +533,165 @@ cdef __StructSpec get_reflection__OptionalMyDataValuePatch():
             id=5,
             name="patchAfter",
             type=_module_types.MyDataValuePatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
+cdef __StructSpec get_reflection__MyUnionPatch():
+    cdef _module_types.MyUnionPatch defaults = _module_types.MyUnionPatch._fbthrift_create(
+        constant_shared_ptr[_module_types.cMyUnionPatch](
+            default_inst[_module_types.cMyUnionPatch]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="MyUnionPatch",
+        kind=__StructType.STRUCT,
+        annotations={
+            """cpp.adapter""": """::apache::thrift::op::detail::StructuredPatchAdapter""",        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=1,
+            name="option1",
+            type=_patch_types.StringPatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="option2",
+            type=_patch_types.I32Patch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
+cdef __StructSpec get_reflection__MyUnionValuePatch():
+    cdef _module_types.MyUnionValuePatch defaults = _module_types.MyUnionValuePatch._fbthrift_create(
+        constant_shared_ptr[_module_types.cMyUnionValuePatch](
+            default_inst[_module_types.cMyUnionValuePatch]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="MyUnionValuePatch",
+        kind=__StructType.STRUCT,
+        annotations={
+            """cpp.adapter""": """::apache::thrift::op::detail::UnionPatchAdapter""",        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="clear",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=3,
+            name="patch",
+            type=_module_types.MyUnionPatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=4,
+            name="ensure",
+            type=_module_types.MyUnion,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=5,
+            name="patchAfter",
+            type=_module_types.MyUnionPatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
+cdef __StructSpec get_reflection__OptionalMyUnionValuePatch():
+    cdef _module_types.OptionalMyUnionValuePatch defaults = _module_types.OptionalMyUnionValuePatch._fbthrift_create(
+        constant_shared_ptr[_module_types.cOptionalMyUnionValuePatch](
+            default_inst[_module_types.cOptionalMyUnionValuePatch]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="OptionalMyUnionValuePatch",
+        kind=__StructType.STRUCT,
+        annotations={
+            """cpp.adapter""": """::apache::thrift::op::detail::OptionalPatchAdapter""",        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=2,
+            name="clear",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=3,
+            name="patch",
+            type=_module_types.MyUnionValuePatch,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=4,
+            name="ensure",
+            type=_module_types.MyUnion,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """thrift.box""": "1",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=5,
+            name="patchAfter",
+            type=_module_types.MyUnionValuePatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,

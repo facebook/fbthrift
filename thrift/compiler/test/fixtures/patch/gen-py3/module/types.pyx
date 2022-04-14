@@ -53,8 +53,6 @@ import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
 import weakref as __weakref
 import builtins as _builtins
-cimport facebook.thrift.annotation.meta.types as _facebook_thrift_annotation_meta_types
-import facebook.thrift.annotation.meta.types as _facebook_thrift_annotation_meta_types
 cimport patch.types as _patch_types
 import patch.types as _patch_types
 
@@ -343,248 +341,6 @@ cdef class MyUnion(thrift.py3.types.Union):
             needed = serializer.cdeserialize[cMyUnion](buf, self._cpp_obj.get(), proto)
         # force a cache reload since the underlying data's changed
         self._load_cache()
-        return needed
-
-
-@__cython.auto_pickle(False)
-cdef class MyUnionPatch(thrift.py3.types.Struct):
-    def __init__(MyUnionPatch self, **kwargs):
-        self._cpp_obj = make_shared[cMyUnionPatch]()
-        self._fields_setter = _fbthrift_types_fields.__MyUnionPatch_FieldsSetter._fbthrift_create(self._cpp_obj.get())
-        super().__init__(**kwargs)
-
-    def __call__(MyUnionPatch self, **kwargs):
-        if not kwargs:
-            return self
-        cdef MyUnionPatch __fbthrift_inst = MyUnionPatch.__new__(MyUnionPatch)
-        __fbthrift_inst._cpp_obj = make_shared[cMyUnionPatch](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyUnionPatch_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
-        for __fbthrift_name, _fbthrift_value in kwargs.items():
-            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
-        return __fbthrift_inst
-
-    cdef void _fbthrift_set_field(self, str name, object value) except *:
-        self._fields_setter.set_field(name.encode("utf-8"), value)
-
-    cdef object _fbthrift_isset(self):
-        return thrift.py3.types._IsSet("MyUnionPatch", {
-          "option1": deref(self._cpp_obj).option1_ref().has_value(),
-          "option2": deref(self._cpp_obj).option2_ref().has_value(),
-        })
-
-    @staticmethod
-    cdef _fbthrift_create(shared_ptr[cMyUnionPatch] cpp_obj):
-        __fbthrift_inst = <MyUnionPatch>MyUnionPatch.__new__(MyUnionPatch)
-        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
-        return __fbthrift_inst
-
-    cdef inline option1_impl(self):
-
-        if self.__fbthrift_cached_option1 is None:
-            self.__fbthrift_cached_option1 = _patch_types.StringPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).option1_ref().ref(), self._cpp_obj))
-        return self.__fbthrift_cached_option1
-
-    @property
-    def option1(self):
-        return self.option1_impl()
-
-    cdef inline option2_impl(self):
-
-        if self.__fbthrift_cached_option2 is None:
-            self.__fbthrift_cached_option2 = _patch_types.I32Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).option2_ref().ref(), self._cpp_obj))
-        return self.__fbthrift_cached_option2
-
-    @property
-    def option2(self):
-        return self.option2_impl()
-
-
-    def __hash__(MyUnionPatch self):
-        return super().__hash__()
-
-    def __repr__(MyUnionPatch self):
-        return super().__repr__()
-
-    def __str__(MyUnionPatch self):
-        return super().__str__()
-
-
-    def __copy__(MyUnionPatch self):
-        cdef shared_ptr[cMyUnionPatch] cpp_obj = make_shared[cMyUnionPatch](
-            deref(self._cpp_obj)
-        )
-        return MyUnionPatch._fbthrift_create(cmove(cpp_obj))
-
-    def __richcmp__(self, other, int op):
-        r = self._fbthrift_cmp_sametype(other, op)
-        return __richcmp[cMyUnionPatch](
-            self._cpp_obj,
-            (<MyUnionPatch>other)._cpp_obj,
-            op,
-        ) if r is None else r
-
-    @staticmethod
-    def __get_reflection__():
-        return _types_reflection.get_reflection__MyUnionPatch()
-
-    @staticmethod
-    def __get_metadata__():
-        cdef __fbthrift_cThriftMetadata meta
-        StructMetadata[cMyUnionPatch].gen(meta)
-        return __MetadataBox.box(cmove(meta))
-
-    @staticmethod
-    def __get_thrift_name__():
-        return "module.MyUnionPatch"
-
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cMyUnionPatch](idx)
-
-    def __cinit__(self):
-        self._fbthrift_struct_size = 2
-
-    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyUnionPatch self, __Protocol proto):
-        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
-        with nogil:
-            data = cmove(serializer.cserialize[cMyUnionPatch](self._cpp_obj.get(), proto))
-        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
-
-    cdef cuint32_t _fbthrift_deserialize(MyUnionPatch self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
-        cdef cuint32_t needed
-        self._cpp_obj = make_shared[cMyUnionPatch]()
-        with nogil:
-            needed = serializer.cdeserialize[cMyUnionPatch](buf, self._cpp_obj.get(), proto)
-        return needed
-
-
-@__cython.auto_pickle(False)
-cdef class MyUnionValuePatch(thrift.py3.types.Struct):
-    def __init__(MyUnionValuePatch self, **kwargs):
-        self._cpp_obj = make_shared[cMyUnionValuePatch]()
-        self._fields_setter = _fbthrift_types_fields.__MyUnionValuePatch_FieldsSetter._fbthrift_create(self._cpp_obj.get())
-        super().__init__(**kwargs)
-
-    def __call__(MyUnionValuePatch self, **kwargs):
-        if not kwargs:
-            return self
-        cdef MyUnionValuePatch __fbthrift_inst = MyUnionValuePatch.__new__(MyUnionValuePatch)
-        __fbthrift_inst._cpp_obj = make_shared[cMyUnionValuePatch](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyUnionValuePatch_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
-        for __fbthrift_name, _fbthrift_value in kwargs.items():
-            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
-        return __fbthrift_inst
-
-    cdef void _fbthrift_set_field(self, str name, object value) except *:
-        self._fields_setter.set_field(name.encode("utf-8"), value)
-
-    cdef object _fbthrift_isset(self):
-        return thrift.py3.types._IsSet("MyUnionValuePatch", {
-          "clear": deref(self._cpp_obj).clear_ref().has_value(),
-          "patch": deref(self._cpp_obj).patch_ref().has_value(),
-          "ensure": deref(self._cpp_obj).ensure_ref().has_value(),
-          "patchAfter": deref(self._cpp_obj).patchAfter_ref().has_value(),
-        })
-
-    @staticmethod
-    cdef _fbthrift_create(shared_ptr[cMyUnionValuePatch] cpp_obj):
-        __fbthrift_inst = <MyUnionValuePatch>MyUnionValuePatch.__new__(MyUnionValuePatch)
-        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
-        return __fbthrift_inst
-
-    cdef inline clear_impl(self):
-
-        return <pbool> deref(self._cpp_obj).clear_ref().value()
-
-    @property
-    def clear(self):
-        return self.clear_impl()
-
-    cdef inline patch_impl(self):
-
-        if self.__fbthrift_cached_patch is None:
-            self.__fbthrift_cached_patch = MyUnionPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).patch_ref().ref(), self._cpp_obj))
-        return self.__fbthrift_cached_patch
-
-    @property
-    def patch(self):
-        return self.patch_impl()
-
-    cdef inline ensure_impl(self):
-
-        if self.__fbthrift_cached_ensure is None:
-            self.__fbthrift_cached_ensure = MyUnion._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).ensure_ref().ref(), self._cpp_obj))
-        return self.__fbthrift_cached_ensure
-
-    @property
-    def ensure(self):
-        return self.ensure_impl()
-
-    cdef inline patchAfter_impl(self):
-
-        if self.__fbthrift_cached_patchAfter is None:
-            self.__fbthrift_cached_patchAfter = MyUnionPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).patchAfter_ref().ref(), self._cpp_obj))
-        return self.__fbthrift_cached_patchAfter
-
-    @property
-    def patchAfter(self):
-        return self.patchAfter_impl()
-
-
-    def __hash__(MyUnionValuePatch self):
-        return super().__hash__()
-
-    def __repr__(MyUnionValuePatch self):
-        return super().__repr__()
-
-    def __str__(MyUnionValuePatch self):
-        return super().__str__()
-
-
-    def __copy__(MyUnionValuePatch self):
-        cdef shared_ptr[cMyUnionValuePatch] cpp_obj = make_shared[cMyUnionValuePatch](
-            deref(self._cpp_obj)
-        )
-        return MyUnionValuePatch._fbthrift_create(cmove(cpp_obj))
-
-    def __richcmp__(self, other, int op):
-        r = self._fbthrift_cmp_sametype(other, op)
-        return __richcmp[cMyUnionValuePatch](
-            self._cpp_obj,
-            (<MyUnionValuePatch>other)._cpp_obj,
-            op,
-        ) if r is None else r
-
-    @staticmethod
-    def __get_reflection__():
-        return _types_reflection.get_reflection__MyUnionValuePatch()
-
-    @staticmethod
-    def __get_metadata__():
-        cdef __fbthrift_cThriftMetadata meta
-        StructMetadata[cMyUnionValuePatch].gen(meta)
-        return __MetadataBox.box(cmove(meta))
-
-    @staticmethod
-    def __get_thrift_name__():
-        return "module.MyUnionValuePatch"
-
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cMyUnionValuePatch](idx)
-
-    def __cinit__(self):
-        self._fbthrift_struct_size = 4
-
-    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyUnionValuePatch self, __Protocol proto):
-        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
-        with nogil:
-            data = cmove(serializer.cserialize[cMyUnionValuePatch](self._cpp_obj.get(), proto))
-        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
-
-    cdef cuint32_t _fbthrift_deserialize(MyUnionValuePatch self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
-        cdef cuint32_t needed
-        self._cpp_obj = make_shared[cMyUnionValuePatch]()
-        with nogil:
-            needed = serializer.cdeserialize[cMyUnionValuePatch](buf, self._cpp_obj.get(), proto)
         return needed
 
 
@@ -1294,6 +1050,381 @@ cdef class OptionalMyDataValuePatch(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cOptionalMyDataValuePatch]()
         with nogil:
             needed = serializer.cdeserialize[cOptionalMyDataValuePatch](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
+@__cython.auto_pickle(False)
+cdef class MyUnionPatch(thrift.py3.types.Struct):
+    def __init__(MyUnionPatch self, **kwargs):
+        self._cpp_obj = make_shared[cMyUnionPatch]()
+        self._fields_setter = _fbthrift_types_fields.__MyUnionPatch_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(MyUnionPatch self, **kwargs):
+        if not kwargs:
+            return self
+        cdef MyUnionPatch __fbthrift_inst = MyUnionPatch.__new__(MyUnionPatch)
+        __fbthrift_inst._cpp_obj = make_shared[cMyUnionPatch](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyUnionPatch_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("MyUnionPatch", {
+          "option1": deref(self._cpp_obj).option1_ref().has_value(),
+          "option2": deref(self._cpp_obj).option2_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyUnionPatch] cpp_obj):
+        __fbthrift_inst = <MyUnionPatch>MyUnionPatch.__new__(MyUnionPatch)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+    cdef inline option1_impl(self):
+
+        if self.__fbthrift_cached_option1 is None:
+            self.__fbthrift_cached_option1 = _patch_types.StringPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).option1_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_option1
+
+    @property
+    def option1(self):
+        return self.option1_impl()
+
+    cdef inline option2_impl(self):
+
+        if self.__fbthrift_cached_option2 is None:
+            self.__fbthrift_cached_option2 = _patch_types.I32Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).option2_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_option2
+
+    @property
+    def option2(self):
+        return self.option2_impl()
+
+
+    def __hash__(MyUnionPatch self):
+        return super().__hash__()
+
+    def __repr__(MyUnionPatch self):
+        return super().__repr__()
+
+    def __str__(MyUnionPatch self):
+        return super().__str__()
+
+
+    def __copy__(MyUnionPatch self):
+        cdef shared_ptr[cMyUnionPatch] cpp_obj = make_shared[cMyUnionPatch](
+            deref(self._cpp_obj)
+        )
+        return MyUnionPatch._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cMyUnionPatch](
+            self._cpp_obj,
+            (<MyUnionPatch>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__MyUnionPatch()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyUnionPatch].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyUnionPatch"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyUnionPatch](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 2
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyUnionPatch self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cMyUnionPatch](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(MyUnionPatch self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cMyUnionPatch]()
+        with nogil:
+            needed = serializer.cdeserialize[cMyUnionPatch](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
+@__cython.auto_pickle(False)
+cdef class MyUnionValuePatch(thrift.py3.types.Struct):
+    def __init__(MyUnionValuePatch self, **kwargs):
+        self._cpp_obj = make_shared[cMyUnionValuePatch]()
+        self._fields_setter = _fbthrift_types_fields.__MyUnionValuePatch_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(MyUnionValuePatch self, **kwargs):
+        if not kwargs:
+            return self
+        cdef MyUnionValuePatch __fbthrift_inst = MyUnionValuePatch.__new__(MyUnionValuePatch)
+        __fbthrift_inst._cpp_obj = make_shared[cMyUnionValuePatch](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyUnionValuePatch_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("MyUnionValuePatch", {
+          "clear": deref(self._cpp_obj).clear_ref().has_value(),
+          "patch": deref(self._cpp_obj).patch_ref().has_value(),
+          "ensure": deref(self._cpp_obj).ensure_ref().has_value(),
+          "patchAfter": deref(self._cpp_obj).patchAfter_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cMyUnionValuePatch] cpp_obj):
+        __fbthrift_inst = <MyUnionValuePatch>MyUnionValuePatch.__new__(MyUnionValuePatch)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+    cdef inline clear_impl(self):
+
+        return <pbool> deref(self._cpp_obj).clear_ref().value()
+
+    @property
+    def clear(self):
+        return self.clear_impl()
+
+    cdef inline patch_impl(self):
+
+        if self.__fbthrift_cached_patch is None:
+            self.__fbthrift_cached_patch = MyUnionPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).patch_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_patch
+
+    @property
+    def patch(self):
+        return self.patch_impl()
+
+    cdef inline ensure_impl(self):
+
+        if self.__fbthrift_cached_ensure is None:
+            self.__fbthrift_cached_ensure = MyUnion._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).ensure_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_ensure
+
+    @property
+    def ensure(self):
+        return self.ensure_impl()
+
+    cdef inline patchAfter_impl(self):
+
+        if self.__fbthrift_cached_patchAfter is None:
+            self.__fbthrift_cached_patchAfter = MyUnionPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).patchAfter_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_patchAfter
+
+    @property
+    def patchAfter(self):
+        return self.patchAfter_impl()
+
+
+    def __hash__(MyUnionValuePatch self):
+        return super().__hash__()
+
+    def __repr__(MyUnionValuePatch self):
+        return super().__repr__()
+
+    def __str__(MyUnionValuePatch self):
+        return super().__str__()
+
+
+    def __copy__(MyUnionValuePatch self):
+        cdef shared_ptr[cMyUnionValuePatch] cpp_obj = make_shared[cMyUnionValuePatch](
+            deref(self._cpp_obj)
+        )
+        return MyUnionValuePatch._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cMyUnionValuePatch](
+            self._cpp_obj,
+            (<MyUnionValuePatch>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__MyUnionValuePatch()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyUnionValuePatch].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyUnionValuePatch"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyUnionValuePatch](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 4
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyUnionValuePatch self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cMyUnionValuePatch](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(MyUnionValuePatch self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cMyUnionValuePatch]()
+        with nogil:
+            needed = serializer.cdeserialize[cMyUnionValuePatch](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
+@__cython.auto_pickle(False)
+cdef class OptionalMyUnionValuePatch(thrift.py3.types.Struct):
+    def __init__(OptionalMyUnionValuePatch self, **kwargs):
+        self._cpp_obj = make_shared[cOptionalMyUnionValuePatch]()
+        self._fields_setter = _fbthrift_types_fields.__OptionalMyUnionValuePatch_FieldsSetter._fbthrift_create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(OptionalMyUnionValuePatch self, **kwargs):
+        if not kwargs:
+            return self
+        cdef OptionalMyUnionValuePatch __fbthrift_inst = OptionalMyUnionValuePatch.__new__(OptionalMyUnionValuePatch)
+        __fbthrift_inst._cpp_obj = make_shared[cOptionalMyUnionValuePatch](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__OptionalMyUnionValuePatch_FieldsSetter._fbthrift_create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("OptionalMyUnionValuePatch", {
+          "clear": deref(self._cpp_obj).clear_ref().has_value(),
+          "patch": deref(self._cpp_obj).patch_ref().has_value(),
+          "ensure": deref(self._cpp_obj).ensure_ref().has_value(),
+          "patchAfter": deref(self._cpp_obj).patchAfter_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cOptionalMyUnionValuePatch] cpp_obj):
+        __fbthrift_inst = <OptionalMyUnionValuePatch>OptionalMyUnionValuePatch.__new__(OptionalMyUnionValuePatch)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+    cdef inline clear_impl(self):
+
+        return <pbool> deref(self._cpp_obj).clear_ref().value()
+
+    @property
+    def clear(self):
+        return self.clear_impl()
+
+    cdef inline patch_impl(self):
+
+        if self.__fbthrift_cached_patch is None:
+            self.__fbthrift_cached_patch = MyUnionValuePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).patch_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_patch
+
+    @property
+    def patch(self):
+        return self.patch_impl()
+
+    cdef inline ensure_impl(self):
+        if not deref(self._cpp_obj).ensure_ref().has_value():
+            return None
+
+        if self.__fbthrift_cached_ensure is None:
+            self.__fbthrift_cached_ensure = MyUnion._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).ensure_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_ensure
+
+    @property
+    def ensure(self):
+        return self.ensure_impl()
+
+    cdef inline patchAfter_impl(self):
+
+        if self.__fbthrift_cached_patchAfter is None:
+            self.__fbthrift_cached_patchAfter = MyUnionValuePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).patchAfter_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_patchAfter
+
+    @property
+    def patchAfter(self):
+        return self.patchAfter_impl()
+
+
+    def __hash__(OptionalMyUnionValuePatch self):
+        return super().__hash__()
+
+    def __repr__(OptionalMyUnionValuePatch self):
+        return super().__repr__()
+
+    def __str__(OptionalMyUnionValuePatch self):
+        return super().__str__()
+
+
+    def __copy__(OptionalMyUnionValuePatch self):
+        cdef shared_ptr[cOptionalMyUnionValuePatch] cpp_obj = make_shared[cOptionalMyUnionValuePatch](
+            deref(self._cpp_obj)
+        )
+        return OptionalMyUnionValuePatch._fbthrift_create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cOptionalMyUnionValuePatch](
+            self._cpp_obj,
+            (<OptionalMyUnionValuePatch>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__OptionalMyUnionValuePatch()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cOptionalMyUnionValuePatch].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.OptionalMyUnionValuePatch"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cOptionalMyUnionValuePatch](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 4
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(OptionalMyUnionValuePatch self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cOptionalMyUnionValuePatch](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(OptionalMyUnionValuePatch self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cOptionalMyUnionValuePatch]()
+        with nogil:
+            needed = serializer.cdeserialize[cOptionalMyUnionValuePatch](buf, self._cpp_obj.get(), proto)
         return needed
 
 

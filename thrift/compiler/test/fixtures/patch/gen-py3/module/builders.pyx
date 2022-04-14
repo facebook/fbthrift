@@ -18,22 +18,6 @@ cdef class MyUnion_Builder(thrift.py3.builder.StructBuilder):
         yield "option1", self.option1
         yield "option2", self.option2
 
-cdef class MyUnionPatch_Builder(thrift.py3.builder.StructBuilder):
-    _struct_type = _module_types.MyUnionPatch
-
-    def __iter__(self):
-        yield "option1", self.option1
-        yield "option2", self.option2
-
-cdef class MyUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):
-    _struct_type = _module_types.MyUnionValuePatch
-
-    def __iter__(self):
-        yield "clear", self.clear
-        yield "patch", self.patch
-        yield "ensure", self.ensure
-        yield "patchAfter", self.patchAfter
-
 cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.MyStruct
 
@@ -80,6 +64,31 @@ cdef class MyDataValuePatch_Builder(thrift.py3.builder.StructBuilder):
 
 cdef class OptionalMyDataValuePatch_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.OptionalMyDataValuePatch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
+cdef class MyUnionPatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.MyUnionPatch
+
+    def __iter__(self):
+        yield "option1", self.option1
+        yield "option2", self.option2
+
+cdef class MyUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.MyUnionValuePatch
+
+    def __iter__(self):
+        yield "clear", self.clear
+        yield "patch", self.patch
+        yield "ensure", self.ensure
+        yield "patchAfter", self.patchAfter
+
+cdef class OptionalMyUnionValuePatch_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.OptionalMyUnionValuePatch
 
     def __iter__(self):
         yield "clear", self.clear
