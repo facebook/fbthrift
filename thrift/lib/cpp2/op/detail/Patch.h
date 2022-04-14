@@ -30,13 +30,6 @@ namespace thrift {
 namespace op {
 namespace detail {
 
-class bad_optional_patch_access : public std::bad_optional_access {
- public:
-  const char* what() const noexcept override {
-    return "Patch guarantees optional value is unset.";
-  }
-};
-
 // A patch for an 'optional' value.
 //
 // Patch must have the following fields:
@@ -46,96 +39,71 @@ class bad_optional_patch_access : public std::bad_optional_access {
 //   P patchAfter;
 // Where P is the patch type for a non-optional value.
 template <typename Patch>
-class OptionalPatch : public BasePatch<Patch, OptionalPatch<Patch>> {
-  using Base = BasePatch<Patch, OptionalPatch>;
+class OptionalPatch : public BaseEnsurePatch<Patch, OptionalPatch<Patch>> {
+  using Base = BaseEnsurePatch<Patch, OptionalPatch>;
+  using T = typename Base::value_type;
+  using P = typename Base::value_patch_type;
 
  public:
-  using value_type = std::decay_t<decltype(*std::declval<Patch>().ensure())>;
-  using value_patch_type =
-      std::decay_t<decltype(*std::declval<Patch>().patch())>;
   using Base::Base;
   using Base::operator=;
   using Base::apply;
   using Base::assign;
+  using Base::clear;
+  using Base::patch;
 
-  // Unset all values.
-  void clear() { resetAnd().clear() = true; }
-
-  // Patch set values.
-  value_patch_type& patch() {
-    if (patch_.ensure().has_value()) {
-      return *patch_.patchAfter();
-    }
-    if (*patch_.clear()) {
-      folly::throw_exception<bad_optional_patch_access>();
-    }
-    return *patch_.patch();
-  }
-  value_patch_type& operator*() { return patch(); }
-  value_patch_type* operator->() { return &patch(); }
-
-  // Ensure unset values, are set to the default, and return
-  // the patch for all set value.
-  value_patch_type& ensure() {
-    patch_.ensure().ensure();
-    return *patch_.patchAfter();
-  }
-
-  // Ensure any unset values, are set to the given value, and return
-  // the patch for all set value.
-  template <typename U>
-  value_patch_type& ensure(U&& val) {
-    if (!patch_.ensure().has_value()) {
-      patch_.ensure().emplace(std::forward<U>(val));
-    }
-    return *patch_.patchAfter();
-  }
-
-  // Ensure the value is set, then assign the value.
+  // Set to the given value.
   template <typename U>
   if_not_opt_type<std::decay_t<U>> assign(U&& val) {
-    ensure().assign(std::forward<U>(val));
+    clearAnd().ensure().emplace(std::forward<U>(val));
   }
-  // Patch the set state of the optional value.
   template <typename U>
   if_opt_type<std::decay_t<U>> assign(U&& val) {
+    clear();
     if (val.has_value()) {
-      assign(*std::forward<U>(val));
-    } else {
-      clear();
+      ensure(*std::forward<U>(val));
     }
   }
 #ifdef THRIFT_HAS_OPTIONAL
   void assign(std::nullopt_t) { clear(); }
-  OptionalPatch& operator=(std::nullopt_t) {
-    clear();
-    return *this;
-  }
+  OptionalPatch& operator=(std::nullopt_t) { return (clear(), *this); }
 #endif
-  OptionalPatch& operator=(const value_type& val) {
-    assign(val);
-    return *this;
-  }
-  OptionalPatch& operator=(value_type&& val) {
-    assign(std::move(val));
-    return *this;
-  }
   template <typename U>
   if_opt_type<std::decay_t<U>, OptionalPatch&> operator=(U&& val) {
     assign(std::forward<U>(val));
     return *this;
   }
 
-  bool empty() const {
-    return !*patch_.clear() && patch_.patch()->empty() &&
-        !patch_.ensure().has_value() && patch_.patchAfter()->empty();
+  // Ensure value is set, initalizing to the default if required.
+  FOLLY_NODISCARD static OptionalPatch createEnsure() {
+    OptionalPatch patch;
+    patch.ensure();
+    return patch;
   }
+  template <typename U = T>
+  FOLLY_NODISCARD static OptionalPatch createEnsure(U&& _default) {
+    OptionalPatch patch;
+    patch.ensure(std::forward<U>(_default));
+    return patch;
+  }
+  P& ensure() { return *ensureAnd().patchAfter(); }
+  P& ensure(const T& val) { return *ensureAnd(val).patchAfter(); }
+  P& ensure(T&& val) { return *ensureAnd(std::move(val)).patchAfter(); }
+  P& operator*() { return patch(); }
+  P* operator->() { return &patch(); }
 
-  void apply(value_type& val) const {
-    // A non-optional value cannot be unset (or ensured).
-    patch_.patch()->apply(val);
+  bool empty() const { return emptyEnsure(); }
+
+  void apply(T& val) const {
+    if (*patch_.clear()) {
+      if (!patch_.ensure().has_value()) { // Cannot represent 'unset'.
+        folly::throw_exception<op::bad_patch_access>();
+      }
+      val = *patch_.ensure();
+    }
     patch_.patchAfter()->apply(val);
   }
+
   template <typename U>
   if_opt_type<std::decay_t<U>> apply(U&& val) const {
     // Clear first.
@@ -154,47 +122,17 @@ class OptionalPatch : public BasePatch<Patch, OptionalPatch<Patch>> {
 
   template <typename U>
   void merge(U&& next) {
-    if (*next.get().clear()) {
-      // It's a complete replacement, but we only need to copy the applicable
-      // parts.
-      if (!next.get().ensure().has_value()) {
-        clear();
-        return;
-      }
-
-      // We can ignore next.patch, but need ensure and patchAfter.
-      patch_.clear() = true;
-      patch_.patch()->reset();
-      patch_.ensure() = *std::forward<U>(next).get().ensure();
-      patch_.patchAfter() = *std::forward<U>(next).get().patchAfter();
-      return;
-    }
-
-    if (patch_.ensure().has_value()) {
-      // All values will be set before next, so ignore next.ensure.
-      // Consume next.patch and next.patchAfter.
-      auto temp = *std::forward<U>(next).get().patch();
-      temp.merge(*std::forward<U>(next).get().patchAfter());
-      patch_.patchAfter()->merge(std::move(temp));
-      return;
-    }
-
-    // At this point both this.ensure and next.clear are known to be empty.
-    // Merge anything (oddly) in patchAfter into patch.
-    patch_.patch()->merge(std::move(*patch_.patchAfter()));
-    // Merge in next.patch into patch.
-    patch_.patch()->merge(*std::forward<U>(next).get().patch());
-    // Consume next.ensure, if any.
-    if (next.get().ensure().has_value()) {
-      patch_.ensure() = *std::forward<U>(next).get().ensure();
-    }
-    // Consume next.patchAfter.
-    patch_.patchAfter() = *std::forward<U>(next).get().patchAfter();
+    mergeEnsure(std::forward<U>(next));
   }
 
  private:
+  using Base::clearAnd;
+  using Base::emptyEnsure;
+  using Base::ensureAnd;
+  using Base::mergeEnsure;
   using Base::patch_;
-  using Base::resetAnd;
+
+  Patch& ensureAnd() { return (patch_.ensure().ensure(), patch_); }
 };
 
 template <template <typename> class PatchType>

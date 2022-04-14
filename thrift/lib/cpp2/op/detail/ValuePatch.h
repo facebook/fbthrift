@@ -186,8 +186,8 @@ class NumberPatch : public BaseValuePatch<Patch, NumberPatch<Patch>> {
 //   T append;
 //   T prepend;
 template <typename Patch>
-class StringPatch : public BaseClearablePatch<Patch, StringPatch<Patch>> {
-  using Base = BaseClearablePatch<Patch, StringPatch>;
+class StringPatch : public BaseClearValuePatch<Patch, StringPatch<Patch>> {
+  using Base = BaseClearValuePatch<Patch, StringPatch>;
   using T = typename Base::value_type;
 
  public:

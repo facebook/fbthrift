@@ -39,8 +39,8 @@ void erase_all(C1& container, const C2& values) {
 //   list<T> append;
 //   list<T> prepend;
 template <typename Patch>
-class ListPatch : public BaseClearablePatch<Patch, ListPatch<Patch>> {
-  using Base = BaseClearablePatch<Patch, ListPatch>;
+class ListPatch : public BaseClearValuePatch<Patch, ListPatch<Patch>> {
+  using Base = BaseClearValuePatch<Patch, ListPatch>;
   using T = typename Base::value_type;
 
  public:
@@ -136,8 +136,8 @@ class ListPatch : public BaseClearablePatch<Patch, ListPatch<Patch>> {
 //   set<T> add;
 //   set<T> remove;
 template <typename Patch>
-class SetPatch : public BaseClearablePatch<Patch, SetPatch<Patch>> {
-  using Base = BaseClearablePatch<Patch, SetPatch>;
+class SetPatch : public BaseClearValuePatch<Patch, SetPatch<Patch>> {
+  using Base = BaseClearValuePatch<Patch, SetPatch>;
   using T = typename Base::value_type;
 
  public:
@@ -231,8 +231,8 @@ class SetPatch : public BaseClearablePatch<Patch, SetPatch<Patch>> {
 //   bool clear;
 //   map<K, V> put;
 template <typename Patch>
-class MapPatch : public BaseClearablePatch<Patch, MapPatch<Patch>> {
-  using Base = BaseClearablePatch<Patch, MapPatch>;
+class MapPatch : public BaseClearValuePatch<Patch, MapPatch<Patch>> {
+  using Base = BaseClearValuePatch<Patch, MapPatch>;
   using T = typename Base::value_type;
 
  public:

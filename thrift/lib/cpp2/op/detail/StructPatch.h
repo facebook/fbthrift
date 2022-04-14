@@ -63,8 +63,8 @@ struct FieldPatch<type::fields<FieldTags...>> {
 //   bool clear;
 //   P patch;
 template <typename Patch>
-class StructPatch : public BaseClearablePatch<Patch, StructPatch<Patch>> {
-  using Base = BaseClearablePatch<Patch, StructPatch>;
+class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
+  using Base = BaseClearValuePatch<Patch, StructPatch>;
   using T = typename Base::value_type;
 
  public:

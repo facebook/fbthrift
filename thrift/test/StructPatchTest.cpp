@@ -254,22 +254,26 @@ TEST(StructPatchTest, OptionalPatch) {
   op::OptionalBoolPatch restorePatch;
   restorePatch = fields.optBoolVal();
 
-  // = -> ensure + assign.
-  patch = true;
-  test::expectPatch(patch, false, true);
-  test::expectPatch(patch, actual, true);
-  patch.apply(fields.optBoolVal());
-  patch.apply(actual);
-  EXPECT_EQ(fields.optBoolVal(), true);
-  EXPECT_EQ(actual, true);
+  {
+    SCOPED_TRACE("= -> clear + ensure");
+    patch = true;
+    test::expectPatch(patch, false, true);
+    test::expectPatch(patch, actual, true);
+    patch.apply(fields.optBoolVal());
+    patch.apply(actual);
+    EXPECT_EQ(fields.optBoolVal(), true);
+    EXPECT_EQ(actual, true);
+  }
 
-  // Restore the original state.
-  test::expectPatch(restorePatch, actual, std::nullopt);
-  restorePatch.apply(fields.optBoolVal());
-  restorePatch.apply(actual);
-  EXPECT_FALSE(fields.optBoolVal().has_value());
-  EXPECT_FALSE(actual.has_value());
-  patch.reset();
+  { // Restore the original state.
+    SCOPED_TRACE("restore");
+    test::expectPatch(restorePatch, actual, std::nullopt);
+    restorePatch.apply(fields.optBoolVal());
+    restorePatch.apply(actual);
+    EXPECT_FALSE(fields.optBoolVal().has_value());
+    EXPECT_FALSE(actual.has_value());
+    patch.reset();
+  }
 
   // Complex patch:
   // set -> invert -> invert
@@ -292,7 +296,7 @@ TEST(StructPatchTest, OptionalPatch_BadAccess) {
   patch.clear();
   // The field is guaranteed to be empty, so throw a bad optional access
   // exception.
-  EXPECT_THROW(patch.patch(), std::bad_optional_access);
+  EXPECT_THROW(patch.patch() = true, op::bad_patch_access);
 
   // If the patch is ensured, patch access no longer throws.
   patch.ensure();

@@ -16,15 +16,24 @@
 
 #pragma once
 
+#include <stdexcept>
 #include <type_traits>
 
 #include <folly/Portability.h>
+#include <folly/Traits.h>
 #include <thrift/lib/cpp2/FieldRef.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 
 namespace apache {
 namespace thrift {
 namespace op {
+
+class bad_patch_access : public std::runtime_error {
+ public:
+  bad_patch_access() noexcept
+      : std::runtime_error("Patch guarantees value is unset.") {}
+};
+
 namespace detail {
 
 // Helpers for detecting compatible optional types.
@@ -44,6 +53,11 @@ using if_opt_type = std::enable_if_t<is_optional_type<T>::value, R>;
 template <typename T, typename R = void>
 using if_not_opt_type = std::enable_if_t<!is_optional_type<T>::value, R>;
 
+template <typename T>
+if_opt_type<T, bool> has_value(const T& opt) {
+  return opt.has_value();
+}
+
 // Base class for all patch types.
 // - Patch: The Thrift struct representation for the patch.
 // - Derived: The leaf type deriving from this class.
@@ -57,8 +71,8 @@ class BasePatch {
   explicit BasePatch(underlying_type&& patch) noexcept
       : patch_(std::move(patch)) {}
 
-  const underlying_type& get() const& { return patch_; }
-  underlying_type&& get() && { return std::move(patch_); }
+  FOLLY_NODISCARD const underlying_type& get() const& { return patch_; }
+  FOLLY_NODISCARD underlying_type&& get() && { return std::move(patch_); }
 
   void reset() { op::clear<type::struct_t<Patch>>(patch_); }
 
@@ -98,14 +112,15 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
   using Base = BasePatch<Patch, Derived>;
 
  public:
-  using value_type = std::decay_t<decltype(*std::declval<Patch>().assign())>;
+  using value_type =
+      folly::remove_cvref_t<decltype(*std::declval<Patch>().assign())>;
   using Base::apply;
   using Base::assign;
   using Base::operator=;
   using Base::Base;
 
   template <typename U = value_type>
-  static Derived createAssign(U&& val) {
+  FOLLY_NODISCARD static Derived createAssign(U&& val) {
     Derived patch;
     patch.assign(std::forward<U>(val));
     return patch;
@@ -115,7 +130,7 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
   void assign(value_type&& val) { resetAnd().assign().emplace(std::move(val)); }
 
   template <typename U>
-  if_opt_type<std::decay_t<U>> apply(U&& field) const {
+  if_opt_type<folly::remove_cvref_t<U>> apply(U&& field) const {
     if (field.has_value()) {
       derived().apply(*std::forward<U>(field));
     }
@@ -134,7 +149,7 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
 
   ~BaseValuePatch() = default; // abstract base class
 
-  value_type& assignOr(value_type& value) noexcept {
+  FOLLY_NODISCARD value_type& assignOr(value_type& value) noexcept {
     return patch_.assign().has_value() ? *patch_.assign() : value;
   }
 
@@ -166,7 +181,7 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
 //   optional T assign;
 //   bool clear;
 template <typename Patch, typename Derived>
-class BaseClearablePatch : public BaseValuePatch<Patch, Derived> {
+class BaseClearValuePatch : public BaseValuePatch<Patch, Derived> {
   using Base = BaseValuePatch<Patch, Derived>;
   using T = typename Base::value_type;
 
@@ -174,7 +189,7 @@ class BaseClearablePatch : public BaseValuePatch<Patch, Derived> {
   using Base::Base;
   using Base::operator=;
 
-  static Derived createClear() {
+  FOLLY_NODISCARD static Derived createClear() {
     Derived patch;
     patch.clear();
     return patch;
@@ -188,7 +203,7 @@ class BaseClearablePatch : public BaseValuePatch<Patch, Derived> {
   using Base::patch_;
   using Base::resetAnd;
 
-  ~BaseClearablePatch() = default;
+  ~BaseClearValuePatch() = default;
 
   template <typename U>
   bool mergeAssignAndClear(U&& next) {
@@ -202,6 +217,114 @@ class BaseClearablePatch : public BaseValuePatch<Patch, Derived> {
       return true;
     }
     return mergeAssign(std::forward<U>(next));
+  }
+};
+
+// Patch must have the following fields:
+//   bool clear;
+//   P patch;
+//   (optional) T ensure;
+//   P patchAfter;
+template <typename Patch, typename Derived>
+class BaseEnsurePatch : public BasePatch<Patch, Derived> {
+  using Base = BasePatch<Patch, Derived>;
+
+ public:
+  using value_type =
+      folly::remove_cvref_t<decltype(*std::declval<Patch>().ensure())>;
+  using value_patch_type =
+      folly::remove_cvref_t<decltype(*std::declval<Patch>().patch())>;
+  using Base::assign;
+  using Base::operator=;
+  using Base::Base;
+
+  // Ensure the value is set to the given value.
+  template <typename U = value_type>
+  FOLLY_NODISCARD static Derived createAssign(U&& val) {
+    Derived patch;
+    patch.assign(std::forward<U>(val));
+    return patch;
+  }
+  void assign(const value_type& val) { clearAnd().ensure().emplace(val); }
+  void assign(value_type&& val) { clearAnd().ensure().emplace(std::move(val)); }
+  Derived& operator=(const value_type& val) { return (assign(val), derived()); }
+  Derived& operator=(value_type&& val) {
+    assign(std::move(val));
+    return derived();
+  }
+
+  // Unset any value.
+  FOLLY_NODISCARD static Derived createClear() {
+    Derived patch;
+    patch.clear();
+    return patch;
+  }
+  void clear() { resetAnd().clear() = true; }
+
+  // Patch any set value.
+  FOLLY_NODISCARD value_patch_type& patch() {
+    if (has_value(patch_.ensure())) {
+      return *patch_.patchAfter();
+    } else if (*patch_.clear()) {
+      folly::throw_exception<bad_patch_access>();
+    }
+    return *patch_.patch();
+  }
+
+ protected:
+  using Base::derived;
+  using Base::patch_;
+  using Base::resetAnd;
+
+  ~BaseEnsurePatch() = default;
+
+  Patch& clearAnd() { return (clear(), patch_); }
+  template <typename U = value_type>
+  Patch& ensureAnd(U&& _default) {
+    if (!patch_.ensure().has_value()) {
+      patch_.ensure().emplace(std::forward<U>(_default));
+    }
+    return patch_;
+  }
+
+  bool emptyEnsure() const {
+    return !*patch_.clear() && patch_.patch()->empty() &&
+        !patch_.ensure().has_value() && patch_.patchAfter()->empty();
+  }
+
+  template <typename U>
+  bool mergeEnsure(U&& next) {
+    if (*next.get().clear()) {
+      if (next.get().ensure().has_value()) {
+        patch_.clear() = true;
+        patch_.patch()->reset(); // We can ignore next.patch.
+        patch_.ensure() = *std::forward<U>(next).get().ensure();
+        patch_.patchAfter() = *std::forward<U>(next).get().patchAfter();
+      } else {
+        clear(); // We can ignore everything else.
+      }
+      return true; // It's a complete replacement.
+    }
+
+    if (patch_.ensure().has_value()) {
+      // All values will be set before next, so ignore next.ensure.
+      // Consume next.patch and next.patchAfter.
+      auto temp = *std::forward<U>(next).get().patch();
+      temp.merge(*std::forward<U>(next).get().patchAfter());
+      patch_.patchAfter()->merge(std::move(temp));
+    } else { // Both this.ensure and next.clear are known to be empty.
+      // Merge anything (oddly) in patchAfter into patch.
+      patch_.patch()->merge(std::move(*patch_.patchAfter()));
+      // Merge in next.patch into patch.
+      patch_.patch()->merge(*std::forward<U>(next).get().patch());
+      // Consume next.ensure, if any.
+      if (next.get().ensure().has_value()) {
+        patch_.ensure() = *std::forward<U>(next).get().ensure();
+      }
+      // Consume next.patchAfter.
+      patch_.patchAfter() = *std::forward<U>(next).get().patchAfter();
+    }
+    return false;
   }
 };
 
