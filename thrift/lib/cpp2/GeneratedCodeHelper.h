@@ -917,9 +917,8 @@ void recursiveProcess(
  * See ServerInterface::GeneratedMethodMetadata.
  */
 template <class ProtocolReader, class Processor>
-void nonRecursiveProcess(
+void nonRecursiveProcessForInteraction(
     Processor* processor,
-    ServerInterface* si,
     ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
     const apache::thrift::AsyncProcessor::MethodMetadata& untypedMethodMetadata,
@@ -932,16 +931,24 @@ void nonRecursiveProcess(
       AsyncProcessorHelper::expectMetadataOfType<Metadata>(
           untypedMethodMetadata);
 
-  if (untypedMethodMetadata.interactionType ==
+  DCHECK(
+      untypedMethodMetadata.interactionType ==
           AsyncProcessor::MethodMetadata::InteractionType::INTERACTION_V1 ||
-      ctx->getInteractionId()) {
-    auto pfn = getProcessFuncFromProtocol(
-        folly::tag<ProtocolReader>, methodMetadata.processFuncs);
-    (processor->*pfn)(
-        std::move(req), std::move(serializedRequest), ctx, eb, tm);
-    return;
-  }
+      ctx->getInteractionId());
+  auto pfn = getProcessFuncFromProtocol(
+      folly::tag<ProtocolReader>, methodMetadata.processFuncs);
+  (processor->*pfn)(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+}
 
+inline void processViaExecuteRequest(
+    AsyncProcessor* processor,
+    ServerInterface* si,
+    ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    const apache::thrift::AsyncProcessor::MethodMetadata& untypedMethodMetadata,
+    protocol::PROTOCOL_TYPES protType,
+    Cpp2RequestContext* ctx,
+    concurrency::ThreadManager* tm) {
   DCHECK(
       untypedMethodMetadata.executorType !=
       AsyncProcessor::MethodMetadata::ExecutorType::UNKNOWN);
@@ -951,38 +958,73 @@ void nonRecursiveProcess(
   DCHECK(untypedMethodMetadata.rpcKind);
   DCHECK(untypedMethodMetadata.priority);
 
-  auto efn = getExecuteFuncFromProtocol(
-      folly::tag<ProtocolReader>, methodMetadata.processFuncs);
-
   if (!apache::thrift::GeneratedAsyncProcessor::validateRpcKind(
           req, *untypedMethodMetadata.rpcKind)) {
     return;
   }
 
+  folly::Executor::KeepAlive<> executor;
+
   if (untypedMethodMetadata.executorType ==
-      AsyncProcessor::MethodMetadata::ExecutorType::ANY) {
+          AsyncProcessor::MethodMetadata::ExecutorType::ANY &&
+      tm) {
     auto scope =
         si->getRequestExecutionScope(ctx, *untypedMethodMetadata.priority);
     ctx->setRequestExecutionScope(std::move(scope));
-    apache::thrift::GeneratedAsyncProcessor::processInThread(
-        std::move(req),
-        std::move(serializedRequest),
-        ctx,
-        eb,
-        tm,
-        *untypedMethodMetadata.rpcKind,
-        efn,
-        processor);
-    return;
+    executor = tm->getKeepAlive(
+        std::move(scope), concurrency::ThreadManager::Source::INTERNAL);
   }
-  if (*untypedMethodMetadata.rpcKind != RpcKind::SINGLE_REQUEST_NO_RESPONSE &&
-      !req->getShouldStartProcessing()) {
-    apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
-    return;
+
+  auto task = [serverRequest =
+                   ServerRequest{
+                       std::move(req),
+                       std::move(serializedRequest),
+                       ctx,
+                       protType,
+                       {},
+                       {},
+                       {},
+                       {}},
+               oneway =
+                   (*untypedMethodMetadata.rpcKind ==
+                    RpcKind::SINGLE_REQUEST_NO_RESPONSE),
+               processor,
+               executor = std::move(executor),
+               &untypedMethodMetadata](bool runInline) mutable {
+    if (!runInline) {
+      if (serverRequest.requestContext()
+              ->getTimestamps()
+              .getSamplingStatus()
+              .isEnabled()) {
+        // Since this request was queued, reset the processBegin
+        // time to the actual start time, and not the queue time.
+        serverRequest.requestContext()->getTimestamps().processBegin =
+            std::chrono::steady_clock::now();
+      }
+    }
+    if (!oneway && !serverRequest.request()->getShouldStartProcessing()) {
+      HandlerCallbackBase::releaseRequest(
+          detail::ServerRequestHelper::request(std::move(serverRequest)),
+          detail::ServerRequestHelper::eventBase(serverRequest));
+      return;
+    }
+
+    detail::ServerRequestHelper::setExecutor(
+        serverRequest, std::move(executor));
+
+    processor->executeRequest(std::move(serverRequest), untypedMethodMetadata);
+  };
+
+  if (untypedMethodMetadata.executorType ==
+          AsyncProcessor::MethodMetadata::ExecutorType::ANY &&
+      tm) {
+    tm->getKeepAlive(
+          ctx->getRequestExecutionScope(),
+          concurrency::ThreadManager::Source::UPSTREAM)
+        ->add([task = std::move(task)]() mutable { task(false); });
+  } else {
+    task(true);
   }
-  apache::thrift::ServerRequest serverRequest{
-      std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
-  (processor->*efn)(std::move(serverRequest));
 }
 
 // Generated AsyncProcessor::processSerializedCompressedRequestWithMetadata just
@@ -998,11 +1040,28 @@ void process(
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm) {
+  using Metadata = ServerInterface::GeneratedMethodMetadata<Processor>;
+  static_assert(std::is_final_v<Metadata>);
+  AsyncProcessorHelper::expectMetadataOfType<Metadata>(methodMetadata);
+
+  if (methodMetadata.interactionType !=
+          AsyncProcessor::MethodMetadata::InteractionType::INTERACTION_V1 &&
+      !ctx->getInteractionId()) {
+    return processViaExecuteRequest(
+        processor,
+        si,
+        std::move(req),
+        std::move(serializedRequest),
+        methodMetadata,
+        protType,
+        ctx,
+        tm);
+  }
+
   switch (protType) {
     case protocol::T_BINARY_PROTOCOL: {
-      return nonRecursiveProcess<BinaryProtocolReader>(
+      return nonRecursiveProcessForInteraction<BinaryProtocolReader>(
           processor,
-          si,
           std::move(req),
           std::move(serializedRequest),
           methodMetadata,
@@ -1011,9 +1070,8 @@ void process(
           tm);
     }
     case protocol::T_COMPACT_PROTOCOL: {
-      return nonRecursiveProcess<CompactProtocolReader>(
+      return nonRecursiveProcessForInteraction<CompactProtocolReader>(
           processor,
-          si,
           std::move(req),
           std::move(serializedRequest),
           methodMetadata,
@@ -1027,7 +1085,8 @@ void process(
   }
 }
 
-// Generated AsyncProcessor::processSerializedCompressedRequest just calls this
+// Generated AsyncProcessor::processSerializedCompressedRequest just calls
+// this
 template <class Processor>
 void process(
     Processor* processor,

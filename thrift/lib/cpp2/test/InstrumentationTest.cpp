@@ -76,33 +76,6 @@ class InstrumentationTestProcessor
   explicit InstrumentationTestProcessor(InstrumentationTestServiceSvIf* iface)
       : InstrumentationTestServiceAsyncProcessor(iface) {}
 
-  /**
-   * Intercepts and clones incoming payload buffers, then passes them down to
-   * method handlers.
-   */
-  void processSerializedCompressedRequestWithMetadata(
-      ResponseChannelRequest::UniquePtr req,
-      apache::thrift::SerializedCompressedRequest&& serializedRequest,
-      const MethodMetadata& methodMetadata,
-      apache::thrift::protocol::PROTOCOL_TYPES protType,
-      apache::thrift::Cpp2RequestContext* context,
-      folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm) override {
-    folly::RequestContext::get()->setContextData(
-        InstrumentationRequestPayload::getRequestToken(),
-        std::make_unique<InstrumentationRequestPayload>(
-            serializedRequest.clone().uncompress().buffer));
-    InstrumentationTestServiceAsyncProcessor::
-        processSerializedCompressedRequestWithMetadata(
-            std::move(req),
-            std::move(serializedRequest),
-            methodMetadata,
-            protType,
-            context,
-            eb,
-            tm);
-  }
-
   void executeRequest(
       ServerRequest&& request, const MethodMetadata& methodMetadata) override {
     folly::RequestContext::get()->setContextData(
