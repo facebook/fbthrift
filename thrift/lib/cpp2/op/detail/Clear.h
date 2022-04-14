@@ -18,6 +18,7 @@
 
 #include <cmath>
 
+#include <folly/Overload.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/op/Compare.h>
 #include <thrift/lib/cpp2/type/Tag.h>
@@ -59,15 +60,14 @@ struct Clear {
   static_assert(type::is_concrete_v<Tag>, "");
   template <typename T>
   void operator()(T& value) const {
-    if constexpr (type::is_a_v<Tag, type::structured_c>) {
-      apache::thrift::clear(value);
-    } else if constexpr (type::is_a_v<Tag, type::container_c>) {
-      value.clear();
-    } else {
-      // All unstructured types can be cleared by assigning to the intrinsic
-      // default.
-      value = getIntrinsicDefault<T>(Tag{});
-    }
+    folly::overload(
+        [](auto& v, type::structured_c) { apache::thrift::clear(v); },
+        [](auto& v, type::container_c) { v.clear(); },
+        [](auto& v, type::all_c) {
+          // All unstructured types can be cleared by assigning to the intrinsic
+          // default.
+          v = getIntrinsicDefault<T>(Tag{});
+        })(value, Tag{});
   }
 };
 
@@ -81,19 +81,20 @@ struct Empty {
   static_assert(type::is_concrete_v<Tag>, "");
   template <typename T = type::native_type<Tag>>
   constexpr bool operator()(const T& value) const {
-    if constexpr (type::is_a_v<Tag, type::string_c>) {
-      return StringTraits<T>::isEmpty(value);
-    } else if constexpr (type::is_a_v<Tag, type::container_c>) {
-      return value.empty();
-    } else if constexpr (type::is_a_v<Tag, type::union_c>) {
-      return value.getType() == T::__EMPTY__;
-    } else if constexpr (type::is_a_v<Tag, type::struct_except_c>) {
-      return apache::thrift::empty(value);
-    }
-
-    // All unstructured values are 'empty' if they are identical to their
-    // intrinsic default.
-    return op::identical<Tag>(value, getIntrinsicDefault<T>(Tag{}));
+    return folly::overload(
+        [](const auto& v, type::string_c) {
+          return StringTraits<T>::isEmpty(v);
+        },
+        [](const auto& v, type::container_c) { return v.empty(); },
+        [](const auto& v, type::union_c) { return v.getType() == v.__EMPTY__; },
+        [](const auto& v, type::struct_except_c) {
+          return apache::thrift::empty(v);
+        },
+        [](const auto& v, type::all_c) {
+          // All unstructured values are 'empty' if they are identical to their
+          // intrinsic default.
+          return op::identical<Tag>(v, getIntrinsicDefault<T>(Tag{}));
+        })(value, Tag{});
   }
 };
 

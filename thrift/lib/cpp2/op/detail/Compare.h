@@ -20,6 +20,7 @@
 #include <unordered_map>
 
 #include <folly/CPortability.h>
+#include <folly/Overload.h>
 #include <thrift/lib/cpp2/op/Hash.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
@@ -35,12 +36,23 @@ struct EqualTo {
   static_assert(type::is_concrete_v<Tag>, "");
   template <typename T1 = type::native_type<Tag>, typename T2 = T1>
   constexpr bool operator()(const T1& lhs, const T2& rhs) const {
-    if constexpr (type::is_a_v<Tag, type::string_c>) {
-      return StringTraits<T1>::isEqual(lhs, rhs);
-    } else {
-      // Use the native c++ operator by default.
-      return lhs == rhs;
-    }
+    return folly::overload(
+        [](const auto& v1, const auto& v2, type::string_c) {
+          return StringTraits<T1>::isEqual(v1, v2);
+        },
+        [](const auto& v1, const auto& v2, type::all_c) { return v1 == v2; })(
+        lhs, rhs, Tag{});
+  }
+
+ private:
+  template <typename T1 = type::native_type<Tag>, typename T2 = T1>
+  constexpr bool equalTo(const T1& lhs, const T2& rhs, type::string_c) const {
+    return StringTraits<T1>::isEqual(lhs, rhs);
+  }
+
+  template <typename T1 = type::native_type<Tag>, typename T2 = T1>
+  constexpr bool equalTo(const T1& lhs, const T2& rhs, type::all_c) const {
+    return lhs == rhs;
   }
 };
 
