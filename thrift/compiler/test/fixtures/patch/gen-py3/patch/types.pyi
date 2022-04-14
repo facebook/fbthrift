@@ -83,8 +83,8 @@ class BoolPatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        assign: _typing.Union[bool, __NotSet, None]=NOTSET,
-        invert: _typing.Union[bool, __NotSet, None]=NOTSET
+        assign: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        invert: _typing.Union[bool, '__NotSet', None]=NOTSET
     ) -> BoolPatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['BoolPatch'], bytes]]: ...
@@ -115,8 +115,8 @@ class BytePatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        assign: _typing.Union[int, __NotSet, None]=NOTSET,
-        add: _typing.Union[int, __NotSet, None]=NOTSET
+        assign: _typing.Union[int, '__NotSet', None]=NOTSET,
+        add: _typing.Union[int, '__NotSet', None]=NOTSET
     ) -> BytePatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['BytePatch'], bytes]]: ...
@@ -147,8 +147,8 @@ class I16Patch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        assign: _typing.Union[int, __NotSet, None]=NOTSET,
-        add: _typing.Union[int, __NotSet, None]=NOTSET
+        assign: _typing.Union[int, '__NotSet', None]=NOTSET,
+        add: _typing.Union[int, '__NotSet', None]=NOTSET
     ) -> I16Patch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['I16Patch'], bytes]]: ...
@@ -179,8 +179,8 @@ class I32Patch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        assign: _typing.Union[int, __NotSet, None]=NOTSET,
-        add: _typing.Union[int, __NotSet, None]=NOTSET
+        assign: _typing.Union[int, '__NotSet', None]=NOTSET,
+        add: _typing.Union[int, '__NotSet', None]=NOTSET
     ) -> I32Patch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['I32Patch'], bytes]]: ...
@@ -211,8 +211,8 @@ class I64Patch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        assign: _typing.Union[int, __NotSet, None]=NOTSET,
-        add: _typing.Union[int, __NotSet, None]=NOTSET
+        assign: _typing.Union[int, '__NotSet', None]=NOTSET,
+        add: _typing.Union[int, '__NotSet', None]=NOTSET
     ) -> I64Patch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['I64Patch'], bytes]]: ...
@@ -243,8 +243,8 @@ class FloatPatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        assign: _typing.Union[float, __NotSet, None]=NOTSET,
-        add: _typing.Union[float, __NotSet, None]=NOTSET
+        assign: _typing.Union[float, '__NotSet', None]=NOTSET,
+        add: _typing.Union[float, '__NotSet', None]=NOTSET
     ) -> FloatPatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['FloatPatch'], bytes]]: ...
@@ -275,8 +275,8 @@ class DoublePatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        assign: _typing.Union[float, __NotSet, None]=NOTSET,
-        add: _typing.Union[float, __NotSet, None]=NOTSET
+        assign: _typing.Union[float, '__NotSet', None]=NOTSET,
+        add: _typing.Union[float, '__NotSet', None]=NOTSET
     ) -> DoublePatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['DoublePatch'], bytes]]: ...
@@ -315,10 +315,10 @@ class StringPatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        assign: _typing.Union[str, __NotSet, None]=NOTSET,
-        clear: _typing.Union[bool, __NotSet, None]=NOTSET,
-        prepend: _typing.Union[str, __NotSet, None]=NOTSET,
-        append: _typing.Union[str, __NotSet, None]=NOTSET
+        assign: _typing.Union[str, '__NotSet', None]=NOTSET,
+        clear: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        prepend: _typing.Union[str, '__NotSet', None]=NOTSET,
+        append: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> StringPatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StringPatch'], bytes]]: ...
@@ -345,7 +345,7 @@ class BinaryPatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        assign: _typing.Union[bytes, __NotSet, None]=NOTSET
+        assign: _typing.Union[bytes, '__NotSet', None]=NOTSET
     ) -> BinaryPatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['BinaryPatch'], bytes]]: ...
@@ -384,10 +384,10 @@ class OptionalBoolPatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        clear: _typing.Union[bool, __NotSet, None]=NOTSET,
-        patch: _typing.Union[BoolPatch, __NotSet, None]=NOTSET,
-        ensure: _typing.Union[bool, __NotSet, None]=NOTSET,
-        patchAfter: _typing.Union[BoolPatch, __NotSet, None]=NOTSET
+        clear: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        patch: _typing.Union[BoolPatch, '__NotSet', None]=NOTSET,
+        ensure: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        patchAfter: _typing.Union[BoolPatch, '__NotSet', None]=NOTSET
     ) -> OptionalBoolPatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['OptionalBoolPatch'], bytes]]: ...
@@ -426,10 +426,10 @@ class OptionalBytePatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        clear: _typing.Union[bool, __NotSet, None]=NOTSET,
-        patch: _typing.Union[BytePatch, __NotSet, None]=NOTSET,
-        ensure: _typing.Union[int, __NotSet, None]=NOTSET,
-        patchAfter: _typing.Union[BytePatch, __NotSet, None]=NOTSET
+        clear: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        patch: _typing.Union[BytePatch, '__NotSet', None]=NOTSET,
+        ensure: _typing.Union[int, '__NotSet', None]=NOTSET,
+        patchAfter: _typing.Union[BytePatch, '__NotSet', None]=NOTSET
     ) -> OptionalBytePatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['OptionalBytePatch'], bytes]]: ...
@@ -468,10 +468,10 @@ class OptionalI16Patch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        clear: _typing.Union[bool, __NotSet, None]=NOTSET,
-        patch: _typing.Union[I16Patch, __NotSet, None]=NOTSET,
-        ensure: _typing.Union[int, __NotSet, None]=NOTSET,
-        patchAfter: _typing.Union[I16Patch, __NotSet, None]=NOTSET
+        clear: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        patch: _typing.Union[I16Patch, '__NotSet', None]=NOTSET,
+        ensure: _typing.Union[int, '__NotSet', None]=NOTSET,
+        patchAfter: _typing.Union[I16Patch, '__NotSet', None]=NOTSET
     ) -> OptionalI16Patch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['OptionalI16Patch'], bytes]]: ...
@@ -510,10 +510,10 @@ class OptionalI32Patch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        clear: _typing.Union[bool, __NotSet, None]=NOTSET,
-        patch: _typing.Union[I32Patch, __NotSet, None]=NOTSET,
-        ensure: _typing.Union[int, __NotSet, None]=NOTSET,
-        patchAfter: _typing.Union[I32Patch, __NotSet, None]=NOTSET
+        clear: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        patch: _typing.Union[I32Patch, '__NotSet', None]=NOTSET,
+        ensure: _typing.Union[int, '__NotSet', None]=NOTSET,
+        patchAfter: _typing.Union[I32Patch, '__NotSet', None]=NOTSET
     ) -> OptionalI32Patch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['OptionalI32Patch'], bytes]]: ...
@@ -552,10 +552,10 @@ class OptionalI64Patch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        clear: _typing.Union[bool, __NotSet, None]=NOTSET,
-        patch: _typing.Union[I64Patch, __NotSet, None]=NOTSET,
-        ensure: _typing.Union[int, __NotSet, None]=NOTSET,
-        patchAfter: _typing.Union[I64Patch, __NotSet, None]=NOTSET
+        clear: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        patch: _typing.Union[I64Patch, '__NotSet', None]=NOTSET,
+        ensure: _typing.Union[int, '__NotSet', None]=NOTSET,
+        patchAfter: _typing.Union[I64Patch, '__NotSet', None]=NOTSET
     ) -> OptionalI64Patch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['OptionalI64Patch'], bytes]]: ...
@@ -594,10 +594,10 @@ class OptionalFloatPatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        clear: _typing.Union[bool, __NotSet, None]=NOTSET,
-        patch: _typing.Union[FloatPatch, __NotSet, None]=NOTSET,
-        ensure: _typing.Union[float, __NotSet, None]=NOTSET,
-        patchAfter: _typing.Union[FloatPatch, __NotSet, None]=NOTSET
+        clear: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        patch: _typing.Union[FloatPatch, '__NotSet', None]=NOTSET,
+        ensure: _typing.Union[float, '__NotSet', None]=NOTSET,
+        patchAfter: _typing.Union[FloatPatch, '__NotSet', None]=NOTSET
     ) -> OptionalFloatPatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['OptionalFloatPatch'], bytes]]: ...
@@ -636,10 +636,10 @@ class OptionalDoublePatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        clear: _typing.Union[bool, __NotSet, None]=NOTSET,
-        patch: _typing.Union[DoublePatch, __NotSet, None]=NOTSET,
-        ensure: _typing.Union[float, __NotSet, None]=NOTSET,
-        patchAfter: _typing.Union[DoublePatch, __NotSet, None]=NOTSET
+        clear: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        patch: _typing.Union[DoublePatch, '__NotSet', None]=NOTSET,
+        ensure: _typing.Union[float, '__NotSet', None]=NOTSET,
+        patchAfter: _typing.Union[DoublePatch, '__NotSet', None]=NOTSET
     ) -> OptionalDoublePatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['OptionalDoublePatch'], bytes]]: ...
@@ -678,10 +678,10 @@ class OptionalStringPatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        clear: _typing.Union[bool, __NotSet, None]=NOTSET,
-        patch: _typing.Union[StringPatch, __NotSet, None]=NOTSET,
-        ensure: _typing.Union[str, __NotSet, None]=NOTSET,
-        patchAfter: _typing.Union[StringPatch, __NotSet, None]=NOTSET
+        clear: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        patch: _typing.Union[StringPatch, '__NotSet', None]=NOTSET,
+        ensure: _typing.Union[str, '__NotSet', None]=NOTSET,
+        patchAfter: _typing.Union[StringPatch, '__NotSet', None]=NOTSET
     ) -> OptionalStringPatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['OptionalStringPatch'], bytes]]: ...
@@ -720,10 +720,10 @@ class OptionalBinaryPatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        clear: _typing.Union[bool, __NotSet, None]=NOTSET,
-        patch: _typing.Union[BinaryPatch, __NotSet, None]=NOTSET,
-        ensure: _typing.Union[bytes, __NotSet, None]=NOTSET,
-        patchAfter: _typing.Union[BinaryPatch, __NotSet, None]=NOTSET
+        clear: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        patch: _typing.Union[BinaryPatch, '__NotSet', None]=NOTSET,
+        ensure: _typing.Union[bytes, '__NotSet', None]=NOTSET,
+        patchAfter: _typing.Union[BinaryPatch, '__NotSet', None]=NOTSET
     ) -> OptionalBinaryPatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['OptionalBinaryPatch'], bytes]]: ...

@@ -42,9 +42,9 @@ class Fields(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        injected_field: _typing.Union[str, __NotSet, None]=NOTSET,
-        injected_structured_annotation_field: _typing.Union[str, __NotSet, None]=NOTSET,
-        injected_unstructured_annotation_field: _typing.Union[str, __NotSet, None]=NOTSET
+        injected_field: _typing.Union[str, '__NotSet', None]=NOTSET,
+        injected_structured_annotation_field: _typing.Union[str, '__NotSet', None]=NOTSET,
+        injected_unstructured_annotation_field: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> Fields: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Fields'], bytes]]: ...

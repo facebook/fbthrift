@@ -39,8 +39,8 @@ class A(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        b: _typing.Union[_typing.Sequence[_typing.Sequence[_c_types.C]], __NotSet, None]=NOTSET,
-        other: _typing.Union[_typing.Sequence[_c_types.C], __NotSet, None]=NOTSET
+        b: _typing.Union[_typing.Sequence[_typing.Sequence[_c_types.C]], '__NotSet', None]=NOTSET,
+        other: _typing.Union[_typing.Sequence[_c_types.C], '__NotSet', None]=NOTSET
     ) -> A: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['A'], bytes]]: ...

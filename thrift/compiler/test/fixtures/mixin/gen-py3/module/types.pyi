@@ -33,7 +33,7 @@ class Mixin1(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        field1: _typing.Union[str, __NotSet, None]=NOTSET
+        field1: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> Mixin1: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Mixin1'], bytes]]: ...
@@ -66,8 +66,8 @@ class Mixin2(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        m1: _typing.Union[Mixin1, __NotSet, None]=NOTSET,
-        field2: _typing.Union[str, __NotSet, None]=NOTSET
+        m1: _typing.Union[Mixin1, '__NotSet', None]=NOTSET,
+        field2: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> Mixin2: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Mixin2'], bytes]]: ...
@@ -94,7 +94,7 @@ class Mixin3Base(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        field3: _typing.Union[str, __NotSet, None]=NOTSET
+        field3: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> Mixin3Base: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Mixin3Base'], bytes]]: ...
@@ -137,9 +137,9 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        field4: _typing.Union[str, __NotSet, None]=NOTSET,
-        m2: _typing.Union[Mixin2, __NotSet, None]=NOTSET,
-        m3: _typing.Union[Mixin3Base, __NotSet, None]=NOTSET
+        field4: _typing.Union[str, '__NotSet', None]=NOTSET,
+        m2: _typing.Union[Mixin2, '__NotSet', None]=NOTSET,
+        m3: _typing.Union[Mixin3Base, '__NotSet', None]=NOTSET
     ) -> Foo: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Foo'], bytes]]: ...

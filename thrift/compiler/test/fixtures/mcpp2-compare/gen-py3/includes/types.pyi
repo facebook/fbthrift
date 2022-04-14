@@ -38,7 +38,7 @@ class AStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        FieldA: _typing.Union[int, __NotSet, None]=NOTSET
+        FieldA: _typing.Union[int, '__NotSet', None]=NOTSET
     ) -> AStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['AStruct'], bytes]]: ...
@@ -64,7 +64,7 @@ class AStructB(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        FieldA: _typing.Union[AStruct, __NotSet, None]=NOTSET
+        FieldA: _typing.Union[AStruct, '__NotSet', None]=NOTSET
     ) -> AStructB: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['AStructB'], bytes]]: ...

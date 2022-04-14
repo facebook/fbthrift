@@ -67,14 +67,14 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        MyIntField: _typing.Union[int, __NotSet, None]=NOTSET,
-        MyStringField: _typing.Union[str, __NotSet, None]=NOTSET,
-        MyDataField: _typing.Union[MyDataItem, __NotSet, None]=NOTSET,
-        myEnum: _typing.Union[MyEnum, __NotSet, None]=NOTSET,
-        oneway: _typing.Union[bool, __NotSet, None]=NOTSET,
-        readonly: _typing.Union[bool, __NotSet, None]=NOTSET,
-        idempotent: _typing.Union[bool, __NotSet, None]=NOTSET,
-        floatSet: _typing.Union[_typing.AbstractSet[float], __NotSet, None]=NOTSET
+        MyIntField: _typing.Union[int, '__NotSet', None]=NOTSET,
+        MyStringField: _typing.Union[str, '__NotSet', None]=NOTSET,
+        MyDataField: _typing.Union[MyDataItem, '__NotSet', None]=NOTSET,
+        myEnum: _typing.Union[MyEnum, '__NotSet', None]=NOTSET,
+        oneway: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        readonly: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        idempotent: _typing.Union[bool, '__NotSet', None]=NOTSET,
+        floatSet: _typing.Union[_typing.AbstractSet[float], '__NotSet', None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...

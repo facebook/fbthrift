@@ -38,8 +38,8 @@ class Included(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        MyIntField: _typing.Union[int, __NotSet, None]=NOTSET,
-        MyTransitiveField: _typing.Union[_transitive_types.Foo, __NotSet, None]=NOTSET
+        MyIntField: _typing.Union[int, '__NotSet', None]=NOTSET,
+        MyTransitiveField: _typing.Union[_transitive_types.Foo, '__NotSet', None]=NOTSET
     ) -> Included: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Included'], bytes]]: ...

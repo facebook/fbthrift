@@ -33,7 +33,7 @@ class HsFoo(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        MyInt: _typing.Union[int, __NotSet, None]=NOTSET
+        MyInt: _typing.Union[int, '__NotSet', None]=NOTSET
     ) -> HsFoo: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['HsFoo'], bytes]]: ...

@@ -39,7 +39,7 @@ class MyStructNestedAnnotation(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        name: _typing.Union[str, __NotSet, None]=NOTSET
+        name: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> MyStructNestedAnnotation: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStructNestedAnnotation'], bytes]]: ...
@@ -142,15 +142,15 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        major: _typing.Union[int, __NotSet, None]=NOTSET,
-        package: _typing.Union[str, __NotSet, None]=NOTSET,
-        annotation_with_quote: _typing.Union[str, __NotSet, None]=NOTSET,
-        class_: _typing.Union[str, __NotSet, None]=NOTSET,
-        annotation_with_trailing_comma: _typing.Union[str, __NotSet, None]=NOTSET,
-        empty_annotations: _typing.Union[str, __NotSet, None]=NOTSET,
-        my_enum: _typing.Union[MyEnum, __NotSet, None]=NOTSET,
-        cpp_type_annotation: _typing.Union[_typing.Sequence[str], __NotSet, None]=NOTSET,
-        my_union: _typing.Union[MyUnion, __NotSet, None]=NOTSET
+        major: _typing.Union[int, '__NotSet', None]=NOTSET,
+        package: _typing.Union[str, '__NotSet', None]=NOTSET,
+        annotation_with_quote: _typing.Union[str, '__NotSet', None]=NOTSET,
+        class_: _typing.Union[str, '__NotSet', None]=NOTSET,
+        annotation_with_trailing_comma: _typing.Union[str, '__NotSet', None]=NOTSET,
+        empty_annotations: _typing.Union[str, '__NotSet', None]=NOTSET,
+        my_enum: _typing.Union[MyEnum, '__NotSet', None]=NOTSET,
+        cpp_type_annotation: _typing.Union[_typing.Sequence[str], '__NotSet', None]=NOTSET,
+        my_union: _typing.Union[MyUnion, '__NotSet', None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...
@@ -181,8 +181,8 @@ class SecretStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        id: _typing.Union[int, __NotSet, None]=NOTSET,
-        password: _typing.Union[str, __NotSet, None]=NOTSET
+        id: _typing.Union[int, '__NotSet', None]=NOTSET,
+        password: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> SecretStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['SecretStruct'], bytes]]: ...

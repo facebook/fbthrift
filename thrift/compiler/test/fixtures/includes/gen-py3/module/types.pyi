@@ -42,9 +42,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        MyIncludedField: _typing.Union[_includes_types.Included, __NotSet, None]=NOTSET,
-        MyOtherIncludedField: _typing.Union[_includes_types.Included, __NotSet, None]=NOTSET,
-        MyIncludedInt: _typing.Union[int, __NotSet, None]=NOTSET
+        MyIncludedField: _typing.Union[_includes_types.Included, '__NotSet', None]=NOTSET,
+        MyOtherIncludedField: _typing.Union[_includes_types.Included, '__NotSet', None]=NOTSET,
+        MyIncludedInt: _typing.Union[int, '__NotSet', None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...

@@ -33,7 +33,7 @@ class C(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        i: _typing.Union[int, __NotSet, None]=NOTSET
+        i: _typing.Union[int, '__NotSet', None]=NOTSET
     ) -> C: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['C'], bytes]]: ...

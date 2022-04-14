@@ -78,7 +78,7 @@ class {{struct:name}}({{> types/python_struct_class}}, _typing.Hashable):
     {{#struct:plain?}}
     def __call__(
         self, {{#struct:py3_fields?}}*{{/struct:py3_fields?}}{{#struct:py3_fields}},
-        {{field:py_name}}: _typing.Union[{{#field:type}}{{> types/pep484_type}}{{/field:type}}, __NotSet, None]=NOTSET{{/struct:py3_fields}}
+        {{field:py_name}}: _typing.Union[{{#field:type}}{{> types/pep484_type}}{{/field:type}}, '__NotSet', None]=NOTSET{{/struct:py3_fields}}
     ) -> {{struct:name}}: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['{{struct:name}}'], bytes]]: ...

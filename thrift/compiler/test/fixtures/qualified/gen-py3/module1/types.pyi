@@ -43,8 +43,8 @@ class Struct(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        first: _typing.Union[int, __NotSet, None]=NOTSET,
-        second: _typing.Union[str, __NotSet, None]=NOTSET
+        first: _typing.Union[int, '__NotSet', None]=NOTSET,
+        second: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> Struct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Struct'], bytes]]: ...

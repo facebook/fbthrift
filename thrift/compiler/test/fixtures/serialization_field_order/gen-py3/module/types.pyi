@@ -42,9 +42,9 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        field1: _typing.Union[int, __NotSet, None]=NOTSET,
-        field2: _typing.Union[int, __NotSet, None]=NOTSET,
-        field3: _typing.Union[int, __NotSet, None]=NOTSET
+        field1: _typing.Union[int, '__NotSet', None]=NOTSET,
+        field2: _typing.Union[int, '__NotSet', None]=NOTSET,
+        field3: _typing.Union[int, '__NotSet', None]=NOTSET
     ) -> Foo: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Foo'], bytes]]: ...
@@ -79,9 +79,9 @@ class Foo2(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        field1: _typing.Union[int, __NotSet, None]=NOTSET,
-        field2: _typing.Union[int, __NotSet, None]=NOTSET,
-        field3: _typing.Union[int, __NotSet, None]=NOTSET
+        field1: _typing.Union[int, '__NotSet', None]=NOTSET,
+        field2: _typing.Union[int, '__NotSet', None]=NOTSET,
+        field3: _typing.Union[int, '__NotSet', None]=NOTSET
     ) -> Foo2: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Foo2'], bytes]]: ...

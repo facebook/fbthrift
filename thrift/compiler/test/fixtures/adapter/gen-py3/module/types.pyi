@@ -68,15 +68,15 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        intField: _typing.Union[int, __NotSet, None]=NOTSET,
-        optionalIntField: _typing.Union[int, __NotSet, None]=NOTSET,
-        intFieldWithDefault: _typing.Union[int, __NotSet, None]=NOTSET,
-        setField: _typing.Union[_typing.AbstractSet[str], __NotSet, None]=NOTSET,
-        optionalSetField: _typing.Union[_typing.AbstractSet[str], __NotSet, None]=NOTSET,
-        mapField: _typing.Union[_typing.Mapping[str, _typing.Sequence[str]], __NotSet, None]=NOTSET,
-        optionalMapField: _typing.Union[_typing.Mapping[str, _typing.Sequence[str]], __NotSet, None]=NOTSET,
-        binaryField: _typing.Union[bytes, __NotSet, None]=NOTSET,
-        longField: _typing.Union[int, __NotSet, None]=NOTSET
+        intField: _typing.Union[int, '__NotSet', None]=NOTSET,
+        optionalIntField: _typing.Union[int, '__NotSet', None]=NOTSET,
+        intFieldWithDefault: _typing.Union[int, '__NotSet', None]=NOTSET,
+        setField: _typing.Union[_typing.AbstractSet[str], '__NotSet', None]=NOTSET,
+        optionalSetField: _typing.Union[_typing.AbstractSet[str], '__NotSet', None]=NOTSET,
+        mapField: _typing.Union[_typing.Mapping[str, _typing.Sequence[str]], '__NotSet', None]=NOTSET,
+        optionalMapField: _typing.Union[_typing.Mapping[str, _typing.Sequence[str]], '__NotSet', None]=NOTSET,
+        binaryField: _typing.Union[bytes, '__NotSet', None]=NOTSET,
+        longField: _typing.Union[int, '__NotSet', None]=NOTSET
     ) -> Foo: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Foo'], bytes]]: ...
@@ -167,12 +167,12 @@ class Bar(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        structField: _typing.Union[Foo, __NotSet, None]=NOTSET,
-        optionalStructField: _typing.Union[Foo, __NotSet, None]=NOTSET,
-        structListField: _typing.Union[_typing.Sequence[Foo], __NotSet, None]=NOTSET,
-        optionalStructListField: _typing.Union[_typing.Sequence[Foo], __NotSet, None]=NOTSET,
-        unionField: _typing.Union[Baz, __NotSet, None]=NOTSET,
-        optionalUnionField: _typing.Union[Baz, __NotSet, None]=NOTSET
+        structField: _typing.Union[Foo, '__NotSet', None]=NOTSET,
+        optionalStructField: _typing.Union[Foo, '__NotSet', None]=NOTSET,
+        structListField: _typing.Union[_typing.Sequence[Foo], '__NotSet', None]=NOTSET,
+        optionalStructListField: _typing.Union[_typing.Sequence[Foo], '__NotSet', None]=NOTSET,
+        unionField: _typing.Union[Baz, '__NotSet', None]=NOTSET,
+        optionalUnionField: _typing.Union[Baz, '__NotSet', None]=NOTSET
     ) -> Bar: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Bar'], bytes]]: ...
@@ -205,10 +205,10 @@ class StructWithFieldAdapter(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        field: _typing.Union[int, __NotSet, None]=NOTSET,
-        shared_field: _typing.Union[int, __NotSet, None]=NOTSET,
-        opt_shared_field: _typing.Union[int, __NotSet, None]=NOTSET,
-        opt_boxed_field: _typing.Union[int, __NotSet, None]=NOTSET
+        field: _typing.Union[int, '__NotSet', None]=NOTSET,
+        shared_field: _typing.Union[int, '__NotSet', None]=NOTSET,
+        opt_shared_field: _typing.Union[int, '__NotSet', None]=NOTSET,
+        opt_boxed_field: _typing.Union[int, '__NotSet', None]=NOTSET
     ) -> StructWithFieldAdapter: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['StructWithFieldAdapter'], bytes]]: ...

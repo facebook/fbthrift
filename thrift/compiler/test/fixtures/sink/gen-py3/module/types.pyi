@@ -33,7 +33,7 @@ class InitialResponse(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        content: _typing.Union[str, __NotSet, None]=NOTSET
+        content: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> InitialResponse: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['InitialResponse'], bytes]]: ...
@@ -60,7 +60,7 @@ class FinalResponse(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        content: _typing.Union[str, __NotSet, None]=NOTSET
+        content: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> FinalResponse: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['FinalResponse'], bytes]]: ...
@@ -87,7 +87,7 @@ class SinkPayload(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        content: _typing.Union[str, __NotSet, None]=NOTSET
+        content: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> SinkPayload: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['SinkPayload'], bytes]]: ...
@@ -114,7 +114,7 @@ class CompatibleWithKeywordSink(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        sink: _typing.Union[str, __NotSet, None]=NOTSET
+        sink: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> CompatibleWithKeywordSink: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['CompatibleWithKeywordSink'], bytes]]: ...

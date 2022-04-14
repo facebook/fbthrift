@@ -34,7 +34,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        field: _typing.Union[str, __NotSet, None]=NOTSET
+        field: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...
@@ -73,10 +73,10 @@ class Combo(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        listOfOurMyStructLists: _typing.Union[_typing.Sequence[_typing.Sequence[MyStruct]], __NotSet, None]=NOTSET,
-        theirMyStructList: _typing.Union[_typing.Sequence[_module_types.MyStruct], __NotSet, None]=NOTSET,
-        ourMyStructList: _typing.Union[_typing.Sequence[MyStruct], __NotSet, None]=NOTSET,
-        listOfTheirMyStructList: _typing.Union[_typing.Sequence[_typing.Sequence[_module_types.MyStruct]], __NotSet, None]=NOTSET
+        listOfOurMyStructLists: _typing.Union[_typing.Sequence[_typing.Sequence[MyStruct]], '__NotSet', None]=NOTSET,
+        theirMyStructList: _typing.Union[_typing.Sequence[_module_types.MyStruct], '__NotSet', None]=NOTSET,
+        ourMyStructList: _typing.Union[_typing.Sequence[MyStruct], '__NotSet', None]=NOTSET,
+        listOfTheirMyStructList: _typing.Union[_typing.Sequence[_typing.Sequence[_module_types.MyStruct]], '__NotSet', None]=NOTSET
     ) -> Combo: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Combo'], bytes]]: ...

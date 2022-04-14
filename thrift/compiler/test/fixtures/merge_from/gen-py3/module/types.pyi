@@ -35,7 +35,7 @@ class Fields(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        injected_field: _typing.Union[str, __NotSet, None]=NOTSET
+        injected_field: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> Fields: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Fields'], bytes]]: ...
@@ -62,7 +62,7 @@ class FieldsInjectedToEmptyStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        injected_field: _typing.Union[str, __NotSet, None]=NOTSET
+        injected_field: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> FieldsInjectedToEmptyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['FieldsInjectedToEmptyStruct'], bytes]]: ...
@@ -93,8 +93,8 @@ class FieldsInjectedToStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        string_field: _typing.Union[str, __NotSet, None]=NOTSET,
-        injected_field: _typing.Union[str, __NotSet, None]=NOTSET
+        string_field: _typing.Union[str, '__NotSet', None]=NOTSET,
+        injected_field: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> FieldsInjectedToStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['FieldsInjectedToStruct'], bytes]]: ...
@@ -133,10 +133,10 @@ class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct, _typing.Hashable
 
     def __call__(
         self, *,
-        string_field: _typing.Union[str, __NotSet, None]=NOTSET,
-        injected_field: _typing.Union[str, __NotSet, None]=NOTSET,
-        injected_structured_annotation_field: _typing.Union[str, __NotSet, None]=NOTSET,
-        injected_unstructured_annotation_field: _typing.Union[str, __NotSet, None]=NOTSET
+        string_field: _typing.Union[str, '__NotSet', None]=NOTSET,
+        injected_field: _typing.Union[str, '__NotSet', None]=NOTSET,
+        injected_structured_annotation_field: _typing.Union[str, '__NotSet', None]=NOTSET,
+        injected_unstructured_annotation_field: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> FieldsInjectedWithIncludedStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['FieldsInjectedWithIncludedStruct'], bytes]]: ...
