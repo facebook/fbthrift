@@ -43,7 +43,7 @@ void testContains() {
       is_concrete_v<Tag> &&
       // TODO(afuller): Support concrete named types.
       !named_types::contains<Tag>()) {
-    EXPECT_EQ(Types::contains(AnyType::create<Tag>()), Expected);
+    EXPECT_EQ(Types::contains(AnyType::create<Tag>().base_type()), Expected);
   }
 }
 

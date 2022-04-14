@@ -23,6 +23,7 @@
 #include <folly/lang/Exception.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 #include <thrift/lib/cpp2/op/Compare.h>
+#include <thrift/lib/cpp2/type/AnyType.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache {

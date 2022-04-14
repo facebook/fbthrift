@@ -25,7 +25,6 @@
 #include <fatal/type/sort.h>
 #include <folly/Traits.h>
 #include <thrift/lib/cpp2/Adapt.h>
-#include <thrift/lib/cpp2/type/AnyType.h>
 #include <thrift/lib/cpp2/type/BaseType.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 
@@ -69,10 +68,6 @@ struct types {
   template <typename Tag>
   static constexpr bool contains() {
     return contains(base_type_v<Tag>);
-  }
-
-  static bool contains(const AnyType& type) {
-    return contains(type.base_type());
   }
 
   // The Ith type.
