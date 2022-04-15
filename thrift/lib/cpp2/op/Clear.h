@@ -39,7 +39,7 @@ namespace op {
 //   isEmpty<set<i32_t>>({}) -> true
 //   isEmpty<set<i32_t>>({0}) -> false
 template <typename Tag>
-constexpr detail::Empty<Tag> isEmpty;
+constexpr detail::Empty<Tag> isEmpty{};
 
 // Returns the 'intrinsic' default for the given type.
 //
@@ -60,7 +60,7 @@ constexpr decltype(auto) getIntrinsicDefault() {
 //   clear<i32_t>(myInt) // sets myInt = 0.
 //   clear<set<i32_t>>(myIntSet) // calls myIntSet.clear()
 template <typename Tag>
-constexpr detail::Clear<Tag> clear;
+constexpr detail::Clear<Tag> clear{};
 
 } // namespace op
 } // namespace thrift

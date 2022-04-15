@@ -33,7 +33,7 @@ using Hash = detail::Hash<Tag>;
 //   hash<i32_t>(myInt) // returns hash of myInt.
 //   hash<set<i32_t>>(myIntSet) // returns hash of myIntSet
 template <typename Tag>
-constexpr Hash<Tag> hash;
+constexpr Hash<Tag> hash{};
 
 } // namespace op
 } // namespace thrift
