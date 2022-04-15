@@ -724,7 +724,7 @@ void ThriftServer::ensureResourcePools() {
           {"HIGH", "H", -7, 2, std::nullopt, concurrency::HIGH},
           {"IMPORTANT", "I", -7, 2, std::nullopt, concurrency::IMPORTANT},
           {"NORMAL",
-           "",
+           "N",
            0,
            getNumCPUWorkerThreads(),
            ResourcePoolHandle::defaultAsync(),
@@ -748,7 +748,7 @@ void ThriftServer::ensureResourcePools() {
     case ThreadManagerType::SIMPLE: {
       pools.push_back(Pool{
           "NORMAL",
-          "",
+          "N",
           0,
           getNumCPUWorkerThreads(),
           ResourcePoolHandle::defaultAsync(),

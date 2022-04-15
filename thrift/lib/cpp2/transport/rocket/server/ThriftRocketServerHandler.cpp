@@ -629,6 +629,13 @@ void ThriftRocketServerHandler::handleRequestCommon(
           return;
         }
 
+        auto priority = cpp2ReqCtx->getCallPriority();
+        if (priority == concurrency::N_PRIORITIES) {
+          priority = serviceRequestInfo->priority;
+        }
+        cpp2ReqCtx->setRequestExecutionScope(
+            concurrency::PriorityThreadManager::ExecutionScope(priority));
+
         ServerRequest serverRequest(
             std::move(request),
             std::move(serializedCompressedRequest),
@@ -666,11 +673,18 @@ void ThriftRocketServerHandler::handleRequestCommon(
                 &poolResult);
         DCHECK(serverConfigs_->resourcePoolSet().hasResourcePool(
             *resourcePoolHandle));
-        auto& resourcePool =
-            serverConfigs_->resourcePoolSet().resourcePool(*resourcePoolHandle);
+        auto* resourcePool = &serverConfigs_->resourcePoolSet().resourcePool(
+            *resourcePoolHandle);
+        // Allow the priority to override the default resource pool
+        if (priority != concurrency::NORMAL &&
+            resourcePoolHandle->get().index() ==
+                ResourcePoolHandle::kDefaultAsync) {
+          resourcePool = &serverConfigs_->resourcePoolSet()
+                              .resourcePoolByPriority_deprecated(priority);
+        }
         apache::thrift::detail::ServerRequestHelper::setExecutor(
-            serverRequest, resourcePool.executor().value_or(nullptr));
-        auto result = resourcePool.accept(std::move(serverRequest));
+            serverRequest, resourcePool->executor().value_or(nullptr));
+        auto result = resourcePool->accept(std::move(serverRequest));
         if (result) {
           auto errorCode = kQueueOverloadedErrorCode;
           serverRequest.request()->sendErrorWrapped(

@@ -653,6 +653,14 @@ void Cpp2Connection::requestReceived(
               serviceRequestInfo = &serviceRequestInfoMap_->get().at(
                   reqContext->getMethodName());
             }
+
+            auto priority = reqContext->getCallPriority();
+            if (priority == concurrency::N_PRIORITIES) {
+              priority = serviceRequestInfo->priority;
+            }
+            reqContext->setRequestExecutionScope(
+                concurrency::PriorityThreadManager::ExecutionScope(priority));
+
             ServerRequest serverRequest(
                 std::move(req),
                 SerializedCompressedRequest(std::move(serializedRequest)),
@@ -685,12 +693,20 @@ void Cpp2Connection::requestReceived(
                     &poolResult);
             DCHECK(
                 server->resourcePoolSet().hasResourcePool(*resourcePoolHandle));
-            auto& resourcePool =
-                server->resourcePoolSet().resourcePool(*resourcePoolHandle);
+            auto* resourcePool =
+                &server->resourcePoolSet().resourcePool(*resourcePoolHandle);
+            // Allow the priority to override the default resource pool
+            if (priority != concurrency::NORMAL &&
+                resourcePoolHandle->get().index() ==
+                    ResourcePoolHandle::kDefaultAsync) {
+              resourcePool =
+                  &server->resourcePoolSet().resourcePoolByPriority_deprecated(
+                      priority);
+            }
             apache::thrift::detail::ServerRequestHelper::setExecutor(
-                serverRequest, resourcePool.executor().value_or(nullptr));
+                serverRequest, resourcePool->executor().value_or(nullptr));
 
-            auto result = resourcePool.accept(std::move(serverRequest));
+            auto result = resourcePool->accept(std::move(serverRequest));
             if (result) {
               auto errorCode = kQueueOverloadedErrorCode;
               serverRequest.request()->sendErrorWrapped(

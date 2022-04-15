@@ -1142,19 +1142,15 @@ TEST_P(HeaderOrRocket, Priority) {
     explicit TestInterface(int& callCount) : callCount_(callCount) {}
     void priorityHigh() override {
       callCount_++;
-      if (!useResourcePoolsFlagsSet(/* no IDL priority with resource pools*/)) {
-        EXPECT_EQ(
-            getConnectionContext()->getRequestExecutionScope().getPriority(),
-            PRIORITY::HIGH);
-      }
+      EXPECT_EQ(
+          getConnectionContext()->getRequestExecutionScope().getPriority(),
+          PRIORITY::HIGH);
     }
     void priorityBestEffort() override {
       callCount_++;
-      if (!useResourcePoolsFlagsSet(/* no IDL priority with resource pools*/)) {
-        EXPECT_EQ(
-            getConnectionContext()->getRequestExecutionScope().getPriority(),
-            PRIORITY::BEST_EFFORT);
-      }
+      EXPECT_EQ(
+          getConnectionContext()->getRequestExecutionScope().getPriority(),
+          PRIORITY::BEST_EFFORT);
     }
   };
 
@@ -1304,42 +1300,56 @@ TEST_P(
 }
 
 TEST_P(HeaderOrRocket, ThreadManagerAdapterManyPools) {
-  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* ThreadManager features*/);
   int callCount{0};
   class TestInterface : public TestServiceSvIf {
     int& callCount_;
+    std::array<std::array<std::string, 3>, 2> prefixes = {
+        {{"tm-1-", "tm-4-", "cpu0"}, {"tm.H", "tm.BE", "tm.N"}}};
 
    public:
     explicit TestInterface(int& callCount) : callCount_(callCount) {}
     void priorityHigh() override {
       callCount_++;
-      EXPECT_THAT(*folly::getCurrentThreadName(), testing::StartsWith("tm-1-"));
+      EXPECT_THAT(
+          *folly::getCurrentThreadName(),
+          testing::StartsWith(prefixes[useResourcePools() ? 1 : 0][0]));
     }
     void priorityBestEffort() override {
       callCount_++;
-      EXPECT_THAT(*folly::getCurrentThreadName(), testing::StartsWith("tm-4-"));
+      EXPECT_THAT(
+          *folly::getCurrentThreadName(),
+          testing::StartsWith(prefixes[useResourcePools() ? 1 : 0][1]));
     }
     void voidResponse() override {
       callCount_++;
-      EXPECT_EQ("cpu0", *folly::getCurrentThreadName());
+      EXPECT_THAT(
+          *folly::getCurrentThreadName(),
+          testing::StartsWith(prefixes[useResourcePools() ? 1 : 0][2]));
     }
   };
 
   ScopedServerInterfaceThread runner(
       std::make_shared<TestInterface>(callCount), "::1", 0, [](auto& ts) {
-        auto tm = std::shared_ptr<ThreadManagerExecutorAdapter>(
-            new ThreadManagerExecutorAdapter(
-                {nullptr,
-                 nullptr,
-                 nullptr,
-                 std::make_shared<folly::CPUThreadPoolExecutor>(
-                     1, std::make_shared<folly::NamedThreadFactory>("cpu")),
-                 nullptr}));
-        tm->setNamePrefix("tm");
-        tm->threadFactory(
-            std::make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED));
-        tm->start();
-        ts.setThreadManager(tm);
+        if (!useResourcePools()) {
+          auto tm = std::shared_ptr<ThreadManagerExecutorAdapter>(
+              new ThreadManagerExecutorAdapter(
+                  {nullptr,
+                   nullptr,
+                   nullptr,
+                   std::make_shared<folly::CPUThreadPoolExecutor>(
+                       1, std::make_shared<folly::NamedThreadFactory>("cpu")),
+                   nullptr}));
+          tm->setNamePrefix("tm");
+          tm->threadFactory(std::make_shared<PosixThreadFactory>(
+              PosixThreadFactory::ATTACHED));
+          tm->start();
+          ts.setThreadManager(tm);
+        } else {
+          ts.setCPUWorkerThreadName("tm");
+          ts.setThreadManagerType(
+              apache::thrift::BaseThriftServer::ThreadManagerType::PRIORITY);
+          // Just allow the defaults to happen
+        }
       });
   folly::EventBase base;
   auto client = makeClient(runner, &base);
@@ -1350,38 +1360,51 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterManyPools) {
 }
 
 TEST_P(HeaderOrRocket, ThreadManagerAdapterSinglePool) {
-  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* ThreadManager features */);
   int callCount{0};
   class TestInterface : public TestServiceSvIf {
     int& callCount_;
+    std::array<std::string, 2> threadNames{{"cpu0", "cpu.N0"}};
 
    public:
     explicit TestInterface(int& callCount) : callCount_(callCount) {}
     void priorityHigh() override {
       callCount_++;
-      EXPECT_EQ("cpu0", *folly::getCurrentThreadName());
+      EXPECT_EQ(
+          threadNames[useResourcePools() ? 1 : 0],
+          *folly::getCurrentThreadName());
     }
     void priorityBestEffort() override {
       callCount_++;
-      EXPECT_EQ("cpu0", *folly::getCurrentThreadName());
+      EXPECT_EQ(
+          threadNames[useResourcePools() ? 1 : 0],
+          *folly::getCurrentThreadName());
     }
     void voidResponse() override {
       callCount_++;
-      EXPECT_EQ("cpu0", *folly::getCurrentThreadName());
+      EXPECT_EQ(
+          threadNames[useResourcePools() ? 1 : 0],
+          *folly::getCurrentThreadName());
     }
   };
 
   ScopedServerInterfaceThread runner(
       std::make_shared<TestInterface>(callCount), "::1", 0, [](auto& ts) {
-        auto tm = std::shared_ptr<ThreadManagerExecutorAdapter>(
-            new ThreadManagerExecutorAdapter(
-                std::make_shared<folly::CPUThreadPoolExecutor>(
-                    1, std::make_shared<folly::NamedThreadFactory>("cpu"))));
-        tm->setNamePrefix("tm");
-        tm->threadFactory(
-            std::make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED));
-        tm->start();
-        ts.setThreadManager(tm);
+        if (!useResourcePools()) {
+          auto tm = std::shared_ptr<ThreadManagerExecutorAdapter>(
+              new ThreadManagerExecutorAdapter(
+                  std::make_shared<folly::CPUThreadPoolExecutor>(
+                      1, std::make_shared<folly::NamedThreadFactory>("cpu"))));
+          tm->setNamePrefix("tm");
+          tm->threadFactory(std::make_shared<PosixThreadFactory>(
+              PosixThreadFactory::ATTACHED));
+          tm->start();
+          ts.setThreadManager(tm);
+        } else {
+          ts.setThreadManagerType(
+              apache::thrift::BaseThriftServer::ThreadManagerType::SIMPLE);
+          ts.setCPUWorkerThreadName("cpu");
+          ts.setNumCPUWorkerThreads(1);
+        }
       });
   folly::EventBase base;
   auto client = makeClient(runner, &base);
