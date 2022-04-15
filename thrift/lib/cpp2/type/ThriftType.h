@@ -35,7 +35,10 @@ namespace type {
 //     is_concrete_v<list<byte_t>> -> true
 //     is_concrete_v<list<struct_c>> -> false
 template <typename Tag>
-constexpr bool is_concrete_v = false;
+struct is_concrete : std::false_type {};
+
+template <typename Tag>
+constexpr bool is_concrete_v = is_concrete<Tag>::value;
 
 // If a given Thrift type tag is wellformed.
 //
@@ -47,7 +50,10 @@ constexpr bool is_concrete_v = false;
 //     is_thrift_type_tag_v<list<byte_t>> -> true
 //     is_thrift_type_tag_v<list<struct_c>> -> true
 template <typename Tag>
-constexpr bool is_thrift_type_tag_v = is_concrete_v<Tag>;
+struct is_thrift_type_tag : is_concrete<Tag> {};
+
+template <typename Tag>
+constexpr bool is_thrift_type_tag_v = is_thrift_type_tag<Tag>::value;
 
 // If a given Thrift type tag is not concrete.
 //
@@ -59,7 +65,11 @@ constexpr bool is_thrift_type_tag_v = is_concrete_v<Tag>;
 //     is_abstract_v<list<byte_t>> -> false
 //     is_abstract_v<list<struct_c>> -> true
 template <typename Tag>
-constexpr bool is_abstract_v = is_thrift_type_tag_v<Tag> && !is_concrete_v<Tag>;
+struct is_abstract : std::false_type {};
+
+template <typename Tag>
+constexpr bool is_abstract_v =
+    is_thrift_type_tag<Tag>::value && !is_concrete<Tag>::value;
 
 namespace detail {
 template <typename Tag>
@@ -120,102 +130,100 @@ struct is_a {
 // Implemnation details
 
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<void_t> = true;
+struct is_concrete<void_t> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<bool_t> = true;
+struct is_concrete<bool_t> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<byte_t> = true;
+struct is_concrete<byte_t> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<i16_t> = true;
+struct is_concrete<i16_t> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<i32_t> = true;
+struct is_concrete<i32_t> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<i64_t> = true;
+struct is_concrete<i64_t> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<float_t> = true;
+struct is_concrete<float_t> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<double_t> = true;
+struct is_concrete<double_t> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<string_t> = true;
+struct is_concrete<string_t> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<binary_t> = true;
+struct is_concrete<binary_t> : std::true_type {};
 
 template <typename T>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<enum_t<T>> = true;
+struct is_concrete<enum_t<T>> : std::true_type {};
 template <typename T>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<struct_t<T>> = true;
+struct is_concrete<struct_t<T>> : std::true_type {};
 template <typename T>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<union_t<T>> = true;
+struct is_concrete<union_t<T>> : std::true_type {};
 template <typename T>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<exception_t<T>> = true;
+struct is_concrete<exception_t<T>> : std::true_type {};
 
 template <typename ValTag>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<list<ValTag>> =
-    is_concrete_v<ValTag>;
-
+struct is_concrete<list<ValTag>> : folly::bool_constant<is_concrete_v<ValTag>> {
+};
 template <typename KeyTag>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<set<KeyTag>> =
-    is_concrete_v<KeyTag>;
+struct is_concrete<set<KeyTag>> : folly::bool_constant<is_concrete_v<KeyTag>> {
+};
 template <typename KeyTag, typename ValTag>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<map<KeyTag, ValTag>> =
-    is_concrete_v<KeyTag>&& is_concrete_v<ValTag>;
+struct is_concrete<map<KeyTag, ValTag>>
+    : folly::bool_constant<is_concrete_v<KeyTag> && is_concrete_v<ValTag>> {};
 
 template <typename Adapter, typename Tag>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<adapted<Adapter, Tag>> =
-    is_concrete_v<Tag>;
+struct is_concrete<adapted<Adapter, Tag>>
+    : folly::bool_constant<is_concrete_v<Tag>> {};
 template <typename T, typename Tag>
-FOLLY_INLINE_VARIABLE constexpr bool is_concrete_v<cpp_type<T, Tag>> =
-    is_concrete_v<Tag>;
+struct is_concrete<cpp_type<T, Tag>>
+    : folly::bool_constant<is_concrete_v<Tag>> {};
 
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<all_c> = true;
+struct is_thrift_type_tag<all_c> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<number_c> = true;
+struct is_thrift_type_tag<number_c> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<integral_c> = true;
+struct is_thrift_type_tag<integral_c> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<floating_point_c> =
-    true;
+struct is_thrift_type_tag<floating_point_c> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<enum_c> = true;
+struct is_thrift_type_tag<enum_c> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<string_c> = true;
+struct is_thrift_type_tag<string_c> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<structured_c> = true;
+struct is_thrift_type_tag<structured_c> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<struct_except_c> =
-    true;
+struct is_thrift_type_tag<struct_except_c> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<struct_c> = true;
+struct is_thrift_type_tag<struct_c> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<union_c> = true;
+struct is_thrift_type_tag<union_c> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<exception_c> = true;
+struct is_thrift_type_tag<exception_c> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<container_c> = true;
+struct is_thrift_type_tag<container_c> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<list_c> = true;
+struct is_thrift_type_tag<list_c> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<set_c> = true;
+struct is_thrift_type_tag<set_c> : std::true_type {};
 template <>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<map_c> = true;
+struct is_thrift_type_tag<map_c> : std::true_type {};
 
 template <typename ValTag>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<list<ValTag>> =
-    is_thrift_type_tag_v<ValTag>;
+struct is_thrift_type_tag<list<ValTag>>
+    : folly::bool_constant<is_thrift_type_tag_v<ValTag>> {};
 template <typename KeyTag>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<set<KeyTag>> =
-    is_thrift_type_tag_v<KeyTag>;
+struct is_thrift_type_tag<set<KeyTag>>
+    : folly::bool_constant<is_thrift_type_tag_v<KeyTag>> {};
 template <typename KeyTag, typename ValTag>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<map<KeyTag, ValTag>> =
-    is_thrift_type_tag_v<KeyTag>&& is_thrift_type_tag_v<ValTag>;
+struct is_thrift_type_tag<map<KeyTag, ValTag>>
+    : folly::bool_constant<
+          is_thrift_type_tag_v<KeyTag> && is_thrift_type_tag_v<ValTag>> {};
 
 template <typename Adapter, typename Tag>
-FOLLY_INLINE_VARIABLE constexpr bool
-    is_thrift_type_tag_v<adapted<Adapter, Tag>> = is_thrift_type_tag_v<Tag>;
+struct is_thrift_type_tag<adapted<Adapter, Tag>>
+    : folly::bool_constant<is_thrift_type_tag_v<Tag>> {};
 template <typename T, typename Tag>
-FOLLY_INLINE_VARIABLE constexpr bool is_thrift_type_tag_v<cpp_type<T, Tag>> =
-    is_thrift_type_tag_v<Tag>;
+struct is_thrift_type_tag<cpp_type<T, Tag>>
+    : folly::bool_constant<is_thrift_type_tag_v<Tag>> {};
 
 template <typename V1, typename V2>
 FOLLY_INLINE_VARIABLE constexpr bool is_a_v<list<V1>, list<V2>> =
