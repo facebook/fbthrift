@@ -15,10 +15,10 @@
 import unittest
 
 from thrift.py.client.sync_client_factory import get_client
-
-# @manual=//thrift/lib/python/client/test:test_service-py
 from thrift.py.test import TestService
 from thrift.python.test.test_server import server_in_another_process
+from thrift.Thrift import TApplicationException
+from thrift.transport.TTransport import TTransportException
 
 
 class SyncClientTests(unittest.TestCase):
@@ -93,3 +93,16 @@ class SyncClientTests(unittest.TestCase):
                     pass
             with self.assertRaises(RuntimeError):
                 client.add(1, 2)
+
+    def test_unexpected_exception(self) -> None:
+        with server_in_another_process() as path:
+            with get_client(TestService.Client, path=path) as client:
+                with self.assertRaisesRegex(TApplicationException, "Surprise!") as ex:
+                    client.surprise()
+                self.assertEqual(TApplicationException.UNKNOWN, ex.exception.type)
+
+    def test_transport_error(self) -> None:
+        with get_client(TestService.Client, path="/no/where") as client:
+            with self.assertRaises(TTransportException) as ex:
+                client.add(1, 2)
+            self.assertEqual(TTransportException.UNKNOWN, ex.exception.type)

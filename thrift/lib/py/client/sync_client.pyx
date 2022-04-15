@@ -24,6 +24,7 @@ from libcpp.string cimport string
 from libcpp.utility cimport move as cmove
 from thrift.protocol import TBinaryProtocol, TCompactProtocol
 from thrift.py.client.common import Protocol
+from thrift.py.client.exceptions cimport create_py_exception
 from thrift.python.client.request_channel cimport RequestChannel
 from thrift.util.Serializer import serialize, deserialize
 from thrift.Thrift import TApplicationException
@@ -87,8 +88,7 @@ cdef class SyncClient:
                 self._last_resp_headers = resp.headers
                 return response
             elif resp.buf.hasError():
-                # TODO: return correct exception type
-                raise TApplicationException(TApplicationException.UNKNOWN)
+                raise create_py_exception(resp.buf.error())
             else:
                 raise TApplicationException(TApplicationException.MISSING_RESULT)
 
