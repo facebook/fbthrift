@@ -18,6 +18,7 @@ TChunk = TypeVar("TChunk")
 TFinalResponse = TypeVar("TFinalResponse")
 
 class ClientSink(Generic[TFinalResponse]):
+    def __init__(self) -> None: ...
     async def sink(
         self, iterator: AsyncIterator[TChunk]
     ) -> Generic[TFinalResponse]: ...

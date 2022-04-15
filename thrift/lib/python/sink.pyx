@@ -33,6 +33,9 @@ cdef class ClientSink:
     inst._cpp_obj = make_shared[cClientSink[unique_ptr[cIOBuf], unique_ptr[cIOBuf]]](move(client))
     return inst
 
+  def __init__(self):
+    self._cpp_obj = make_shared[cClientSink[unique_ptr[cIOBuf], unique_ptr[cIOBuf]]]()
+
   async def sink(self, iterator):
     # TODO: (pyamane) This is here just to validate the types are correct for now
     dereference(self._cpp_obj).sink(
