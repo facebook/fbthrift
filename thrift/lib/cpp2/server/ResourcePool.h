@@ -111,7 +111,8 @@ class ResourcePoolSet {
       ResourcePoolHandle const& handle,
       std::unique_ptr<RequestPileInterface>&& requestPile,
       std::shared_ptr<folly::ThreadPoolExecutor> executor,
-      std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController);
+      std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController,
+      std::optional<concurrency::PRIORITY> priorityHint = std::nullopt);
 
   // Add a ResourcePool to the set by name and return a ResourcePoolHandle that
   // can be used to obtain it. This can only be called before lock() is called.
@@ -119,7 +120,8 @@ class ResourcePoolSet {
       std::string_view poolName,
       std::unique_ptr<RequestPileInterface>&& requestPile,
       std::shared_ptr<folly::ThreadPoolExecutor> executor,
-      std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController);
+      std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController,
+      std::optional<concurrency::PRIORITY> priorityHint = std::nullopt);
 
   // Lock the ResourcePoolSet and make it read only. The thrift server
   // infrastructure will call this at the correct time during setup.
@@ -147,6 +149,10 @@ class ResourcePoolSet {
   // the ResourcePoolSet.
   ResourcePool& resourcePool(const ResourcePoolHandle& handle) const;
 
+  // This is provided to aid migration. It should not be used in new code.
+  [[deprecated("Use resourcePool instead")]] ResourcePool&
+  resourcePoolByPriority_deprecated(concurrency::PRIORITY priority) const;
+
   // Returns true if the ResourcePoolSet is empty.
   bool empty() const;
 
@@ -156,10 +162,13 @@ class ResourcePoolSet {
   void stopAndJoin();
 
  private:
+  void calculatePriorityMapping();
   using ResourcePools = std::vector<std::unique_ptr<ResourcePool>>;
   ResourcePools resourcePools_;
   mutable std::mutex mutex_;
   bool locked_{false};
+  std::vector<std::optional<concurrency::PRIORITY>> priorities_;
+  std::array<std::size_t, concurrency::N_PRIORITIES> poolByPriority_;
 };
 
 } // namespace apache::thrift

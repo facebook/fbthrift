@@ -700,9 +700,10 @@ void ThriftServer::ensureResourcePools() {
   struct Pool {
     std::string_view name;
     std::string_view suffix;
-    int priority;
+    int nicePriority;
     size_t numThreads;
     std::optional<ResourcePoolHandle> handle;
+    concurrency::PRIORITY priority;
   };
 
   std::vector<Pool> pools;
@@ -714,15 +715,21 @@ void ThriftServer::ensureResourcePools() {
       // numbers are what thrift currently derives for a nice range of 19 to
       // -20.
       Pool priorityPools[] = {
-          {"HIGH_IMPORTANT", "HI", -13, 2, std::nullopt},
-          {"HIGH", "H", -7, 2, std::nullopt},
-          {"IMPORTANT", "I", -7, 2, std::nullopt},
+          {"HIGH_IMPORTANT",
+           "HI",
+           -13,
+           2,
+           std::nullopt,
+           concurrency::HIGH_IMPORTANT},
+          {"HIGH", "H", -7, 2, std::nullopt, concurrency::HIGH},
+          {"IMPORTANT", "I", -7, 2, std::nullopt, concurrency::IMPORTANT},
           {"NORMAL",
            "",
            0,
            getNumCPUWorkerThreads(),
-           ResourcePoolHandle::defaultAsync()},
-          {"BEST_EFFORT", "BE", 6, 2, std::nullopt}};
+           ResourcePoolHandle::defaultAsync(),
+           concurrency::NORMAL},
+          {"BEST_EFFORT", "BE", 6, 2, std::nullopt, concurrency::BEST_EFFORT}};
       if (std::any_of(
               std::begin(threadManagerPoolSizes_),
               std::end(threadManagerPoolSizes_),
@@ -744,7 +751,8 @@ void ThriftServer::ensureResourcePools() {
           "",
           0,
           getNumCPUWorkerThreads(),
-          ResourcePoolHandle::defaultAsync()});
+          ResourcePoolHandle::defaultAsync(),
+          concurrency::NORMAL});
       break;
     }
   }
@@ -752,7 +760,7 @@ void ThriftServer::ensureResourcePools() {
     std::string name =
         fmt::format("{}.{}", getCPUWorkerThreadName(), pool.suffix);
     auto factory = std::make_shared<folly::PriorityThreadFactory>(
-        std::make_shared<folly::NamedThreadFactory>(name), pool.priority);
+        std::make_shared<folly::NamedThreadFactory>(name), pool.nicePriority);
     auto executor = std::make_shared<folly::CPUThreadPoolExecutor>(
         pool.numThreads, std::move(factory));
     apache::thrift::RoundRobinRequestPile::Options options;
@@ -766,13 +774,15 @@ void ThriftServer::ensureResourcePools() {
           ResourcePoolHandle::defaultAsync(),
           std::move(requestPile),
           executor,
-          std::move(concurrencyController));
+          std::move(concurrencyController),
+          pool.priority);
     } else {
       resourcePoolSet().addResourcePool(
           pool.name,
           std::move(requestPile),
           executor,
-          std::move(concurrencyController));
+          std::move(concurrencyController),
+          pool.priority);
     }
   }
   resourcePoolSet().lock();

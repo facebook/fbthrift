@@ -76,7 +76,8 @@ void ResourcePoolSet::setResourcePool(
     ResourcePoolHandle const& handle,
     std::unique_ptr<RequestPileInterface>&& requestPile,
     std::shared_ptr<folly::ThreadPoolExecutor> executor,
-    std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController) {
+    std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController,
+    std::optional<concurrency::PRIORITY> priorityHint_deprecated) {
   std::lock_guard<std::mutex> lock(mutex_);
   if (locked_) {
     throw std::logic_error("Cannot setResourcePool() after lock()");
@@ -92,13 +93,17 @@ void ResourcePoolSet::setResourcePool(
       std::move(concurrencyController),
       handle.name()}};
   resourcePools_.at(handle.index()) = std::move(pool);
+
+  priorities_.resize(std::max(priorities_.size(), handle.index() + 1));
+  priorities_.at(handle.index()) = priorityHint_deprecated;
 }
 
 ResourcePoolHandle ResourcePoolSet::addResourcePool(
     std::string_view poolName,
     std::unique_ptr<RequestPileInterface>&& requestPile,
     std::shared_ptr<folly::ThreadPoolExecutor> executor,
-    std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController) {
+    std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController,
+    std::optional<concurrency::PRIORITY> priorityHint_deprecated) {
   std::lock_guard<std::mutex> lock(mutex_);
   if (locked_) {
     throw std::logic_error("Cannot addResourcePool() after lock()");
@@ -113,12 +118,18 @@ ResourcePoolHandle ResourcePoolSet::addResourcePool(
   resourcePools_.resize(std::max(
       resourcePools_.size(), ResourcePoolHandle::kMaxReservedHandle + 1));
   resourcePools_.emplace_back(std::move(pool));
+
+  priorities_.resize(
+      std::max(priorities_.size(), ResourcePoolHandle::kMaxReservedHandle + 1));
+  priorities_.emplace_back(priorityHint_deprecated);
+
   return ResourcePoolHandle::makeHandle(poolName, resourcePools_.size() - 1);
 }
 
 void ResourcePoolSet::lock() {
   std::lock_guard<std::mutex> lock(mutex_);
   locked_ = true;
+  calculatePriorityMapping();
 }
 
 size_t ResourcePoolSet::numQueued() const {
@@ -177,6 +188,15 @@ ResourcePool& ResourcePoolSet::resourcePool(
   return *resourcePools_[handle.index()];
 }
 
+ResourcePool& ResourcePoolSet::resourcePoolByPriority_deprecated(
+    concurrency::PRIORITY priority) const {
+  auto guard = locked_ ? std::unique_lock<std::mutex>()
+                       : std::unique_lock<std::mutex>(mutex_);
+  DCHECK_LT(poolByPriority_[priority], resourcePools_.size());
+  DCHECK(resourcePools_[poolByPriority_[priority]]);
+  return *resourcePools_[poolByPriority_[priority]];
+}
+
 bool ResourcePoolSet::empty() const {
   auto guard = locked_ ? std::unique_lock<std::mutex>()
                        : std::unique_lock<std::mutex>(mutex_);
@@ -202,6 +222,46 @@ void ResourcePoolSet::stopAndJoin() {
       if (auto ex = resourcePool->executor()) {
         ex.value()->join();
       }
+    }
+  }
+}
+
+void ResourcePoolSet::calculatePriorityMapping() {
+  // Calculate the best resource pool to return for each concurrency::PRIORITY
+  // value
+
+  // Fill with sentinel.
+  auto sentinel = resourcePools_.size();
+  std::fill_n(std::begin(poolByPriority_), poolByPriority_.size(), sentinel);
+
+  // First put any resource pool with a priority hint into the approriate slot.
+  DCHECK_EQ(priorities_.size(), resourcePools_.size());
+  for (std::size_t i = 0; i < resourcePools_.size(); ++i) {
+    if (priorities_[i]) {
+      poolByPriority_[priorities_[i].value()] = i;
+    }
+  }
+
+  // Check that NORMAL is filled - if not fill it with default async
+  if (poolByPriority_[concurrency::NORMAL] == sentinel) {
+    if (hasResourcePool(ResourcePoolHandle::defaultAsync())) {
+      poolByPriority_[concurrency::NORMAL] =
+          ResourcePoolHandle::defaultAsync().index();
+    }
+  }
+
+  // Then fill out the rest of the slots moving away from NORMAL, copying the
+  // nearest assigned value into empty slots.
+  for (std::size_t i = concurrency::NORMAL; i < (concurrency::N_PRIORITIES - 1);
+       ++i) {
+    if (poolByPriority_[i + 1] == sentinel) {
+      poolByPriority_[i + 1] = poolByPriority_[i];
+    }
+  }
+
+  for (std::size_t i = concurrency::NORMAL; i > 0; i--) {
+    if (poolByPriority_[i - 1] == sentinel) {
+      poolByPriority_[i - 1] = poolByPriority_[i];
     }
   }
 }
