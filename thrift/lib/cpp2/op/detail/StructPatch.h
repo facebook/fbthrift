@@ -212,20 +212,7 @@ class UnionPatch : public BaseEnsurePatch<Patch, UnionPatch<Patch>> {
   P& ensure(const T& val) { return *ensureAnd(val).patchAfter(); }
   P& ensure(T&& val) { return *ensureAnd(std::move(val)).patchAfter(); }
 
-  void apply(T& val) const {
-    if (*patch_.clear()) {
-      thrift::clear(val);
-    } else {
-      // TODO(afuller): Add op::get support to unions.
-      // patch_.patch()->apply(val);
-    }
-    if (patch_.ensure()->getType() != T::__EMPTY__ &&
-        patch_.ensure()->getType() != val.getType()) {
-      val = *patch_.ensure();
-    }
-    // TODO(afuller): Add op::get support to unions.
-    // patch_.patchAfter()->apply(val);
-  }
+  void apply(T& val) const { applyEnsure(val); }
 
   template <typename U>
   void merge(U&& next) {
@@ -233,6 +220,7 @@ class UnionPatch : public BaseEnsurePatch<Patch, UnionPatch<Patch>> {
   }
 
  private:
+  using Base::applyEnsure;
   using Base::ensureAnd;
   using Base::mergeEnsure;
   using Base::patch_;

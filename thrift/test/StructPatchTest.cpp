@@ -400,7 +400,7 @@ TEST(UnionPatchTest, ClearAndAssign) {
 }
 
 TEST(UnionPatchTest, Ensure) {
-  MyUnionValuePatch patch = *MyStructValuePatch()->unionVal();
+  MyUnionValuePatch patch;
   MyUnion expected, actual;
   patch.ensure().option1_ref() = "hi";
   expected.option1_ref() = "hi";
@@ -422,6 +422,27 @@ TEST(UnionPatchTest, Ensure) {
   test::expectPatch(patch, actual, expected);
   patch.apply(actual);
   EXPECT_EQ(actual.getType(), MyUnion::option1);
+}
+
+TEST(UnionPatchTest, Patch) {
+  MyUnionValuePatch patch;
+  *patch.patch()->option1() = "Hi";
+  patch.ensure().option1_ref() = "Bye";
+  *patch.patch()->option1() += " World!";
+
+  MyUnion hi, bye;
+  hi.option1_ref() = "Hi World!";
+  bye.option1_ref() = "Bye World!";
+
+  test::expectPatch(patch, {}, bye, hi);
+
+  MyUnion op1;
+  op1.option1_ref() = "Yo";
+  test::expectPatch(patch, op1, hi, hi);
+
+  MyUnion op2;
+  op2.option2_ref() = 42;
+  test::expectPatch(patch, bye, hi);
 }
 
 } // namespace

@@ -106,18 +106,7 @@ class OptionalPatch : public BaseEnsurePatch<Patch, OptionalPatch<Patch>> {
 
   template <typename U>
   if_opt_type<std::decay_t<U>> apply(U&& val) const {
-    // Clear first.
-    if (*patch_.clear()) {
-      val.reset();
-    }
-    // Apply the first patch.
-    patch_.patch()->apply(val);
-    // Ensure the value if needed.
-    if (patch_.ensure().has_value() && !val.has_value()) {
-      val.emplace(*patch_.ensure());
-    }
-    // Apply the second patch.
-    patch_.patchAfter()->apply(val);
+    applyEnsure(val);
   }
 
   template <typename U>
@@ -126,6 +115,7 @@ class OptionalPatch : public BaseEnsurePatch<Patch, OptionalPatch<Patch>> {
   }
 
  private:
+  using Base::applyEnsure;
   using Base::clearAnd;
   using Base::emptyEnsure;
   using Base::ensureAnd;

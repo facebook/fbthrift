@@ -43,6 +43,8 @@ template <typename T>
 struct is_optional_type<optional_field_ref<T>> : std::true_type {};
 template <typename T>
 struct is_optional_type<optional_boxed_field_ref<T>> : std::true_type {};
+template <typename T>
+struct is_optional_type<union_field_ref<T>> : std::true_type {};
 #ifdef THRIFT_HAS_OPTIONAL
 template <typename T>
 struct is_optional_type<std::optional<T>> : std::true_type {};
@@ -54,8 +56,28 @@ template <typename T, typename R = void>
 using if_not_opt_type = std::enable_if_t<!is_optional_type<T>::value, R>;
 
 template <typename T>
-if_opt_type<T, bool> has_value(const T& opt) {
+if_opt_type<T, bool> hasValue(const T& opt) {
   return opt.has_value();
+}
+template <typename T>
+bool hasValue(field_ref<T> unn) {
+  return unn->getType() != std::decay_t<T>::__EMPTY__;
+}
+template <typename T>
+if_opt_type<T> clearValue(T& opt) {
+  opt.reset();
+}
+template <typename T>
+if_not_opt_type<T> clearValue(T& unn) {
+  thrift::clear(unn);
+}
+template <typename T, typename U>
+if_opt_type<T, bool> sameType(const T& opt1, const U& opt2) {
+  return opt1.has_value() == opt2.has_value();
+}
+template <typename T, typename U>
+bool sameType(field_ref<T> unn1, const U& unn2) {
+  return unn1->getType() == unn2.getType();
 }
 
 // Base class for all patch types.
@@ -150,11 +172,11 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
   ~BaseValuePatch() = default; // abstract base class
 
   FOLLY_NODISCARD value_type& assignOr(value_type& value) noexcept {
-    return patch_.assign().has_value() ? *patch_.assign() : value;
+    return hasValue(patch_.assign()) ? *patch_.assign() : value;
   }
 
   bool applyAssign(value_type& val) const {
-    if (patch_.assign().has_value()) {
+    if (hasValue(patch_.assign())) {
       val = *patch_.assign();
       return true;
     }
@@ -163,11 +185,11 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
 
   template <typename U>
   bool mergeAssign(U&& next) {
-    if (next.get().assign().has_value()) {
+    if (hasValue(next.get().assign())) {
       patch_ = std::forward<U>(next).get();
       return true;
     }
-    if (patch_.assign().has_value()) {
+    if (hasValue(patch_.assign())) {
       next.apply(*patch_.assign());
       return true;
     }
@@ -211,7 +233,7 @@ class BaseClearValuePatch : public BaseValuePatch<Patch, Derived> {
     // cases. For example a struct with non-terse, non-optional fields with
     // custom defaults and missmatched schemas... it's also smaller, so prefer
     // it.
-    if (*next.get().clear() && !next.get().assign().has_value()) {
+    if (*next.get().clear() && !hasValue(next.get().assign())) {
       // Next patch completely replaces this one.
       patch_ = std::forward<U>(next).get();
       return true;
@@ -263,7 +285,7 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
 
   // Patch any set value.
   FOLLY_NODISCARD value_patch_type& patch() {
-    if (has_value(patch_.ensure())) {
+    if (hasValue(patch_.ensure())) {
       return *patch_.patchAfter();
     } else if (*patch_.clear()) {
       folly::throw_exception<bad_patch_access>();
@@ -281,7 +303,7 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
   Patch& clearAnd() { return (clear(), patch_); }
   template <typename U = value_type>
   Patch& ensureAnd(U&& _default) {
-    if (!patch_.ensure().has_value()) {
+    if (!hasValue(patch_.ensure())) {
       patch_.ensure().emplace(std::forward<U>(_default));
     }
     return patch_;
@@ -289,13 +311,13 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
 
   bool emptyEnsure() const {
     return !*patch_.clear() && patch_.patch()->empty() &&
-        !patch_.ensure().has_value() && patch_.patchAfter()->empty();
+        !hasValue(patch_.ensure()) && patch_.patchAfter()->empty();
   }
 
   template <typename U>
   bool mergeEnsure(U&& next) {
     if (*next.get().clear()) {
-      if (next.get().ensure().has_value()) {
+      if (hasValue(next.get().ensure())) {
         patch_.clear() = true;
         patch_.patch()->reset(); // We can ignore next.patch.
         patch_.ensure() = *std::forward<U>(next).get().ensure();
@@ -306,11 +328,11 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
       return true; // It's a complete replacement.
     }
 
-    if (patch_.ensure().has_value()) {
-      // All values will be set before next, so ignore next.ensure.
-      // Consume next.patch and next.patchAfter.
-      auto temp = *std::forward<U>(next).get().patch();
-      temp.merge(*std::forward<U>(next).get().patchAfter());
+    if (hasValue(patch_.ensure())) {
+      // All values will be set before next, so ignore next.ensure and
+      // merge next.patch and next.patchAfter into this.patchAfter.
+      auto temp = *std::forward<U>(next).get().patchAfter();
+      patch_.patchAfter()->merge(*std::forward<U>(next).get().patch());
       patch_.patchAfter()->merge(std::move(temp));
     } else { // Both this.ensure and next.clear are known to be empty.
       // Merge anything (oddly) in patchAfter into patch.
@@ -318,13 +340,29 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
       // Merge in next.patch into patch.
       patch_.patch()->merge(*std::forward<U>(next).get().patch());
       // Consume next.ensure, if any.
-      if (next.get().ensure().has_value()) {
+      if (hasValue(next.get().ensure())) {
         patch_.ensure() = *std::forward<U>(next).get().ensure();
       }
       // Consume next.patchAfter.
       patch_.patchAfter() = *std::forward<U>(next).get().patchAfter();
     }
     return false;
+  }
+
+  template <typename U>
+  void applyEnsure(U& val) const {
+    // Clear or patch.
+    if (*patch_.clear()) {
+      clearValue(val);
+    } else {
+      patch_.patch()->apply(val);
+    }
+    // Ensure if needed.
+    if (hasValue(patch_.ensure()) && !sameType(patch_.ensure(), val)) {
+      val = *patch_.ensure();
+    }
+    // Apply the patch after ensure.
+    patch_.patchAfter()->apply(val);
   }
 };
 
