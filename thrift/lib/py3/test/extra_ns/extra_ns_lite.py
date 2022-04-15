@@ -15,8 +15,8 @@
 
 import unittest
 
-from b.lite_types import TypedefB
-from c.lite_types import StructC
+from b.thrift_types import TypedefB
+from c.thrift_types import StructC
 
 
 class ExtraNamespaceTests(unittest.TestCase):

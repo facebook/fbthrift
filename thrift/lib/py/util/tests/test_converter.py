@@ -15,7 +15,7 @@
 
 import unittest
 
-import convertible.lite_types as lite_types
+import convertible.thrift_types as lite_types
 import convertible.ttypes as ttypes
 import convertible.types as types
 from thrift.util.converter import to_py_struct

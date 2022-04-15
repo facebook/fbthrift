@@ -22,11 +22,11 @@ from thrift.python.exceptions import (
     TransportError,
     TransportErrorType,
 )
-from thrift.python.leaf.lite_clients import LeafService
+from thrift.python.leaf.thrift_clients import LeafService
 from thrift.python.serializer import Protocol
-from thrift.python.test.lite_clients import EchoService, TestService
-from thrift.python.test.lite_types import ArithmeticException, EmptyException
 from thrift.python.test.test_server import server_in_event_loop
+from thrift.python.test.thrift_clients import EchoService, TestService
+from thrift.python.test.thrift_types import ArithmeticException, EmptyException
 
 
 TEST_HEADER_KEY = "headerKey"

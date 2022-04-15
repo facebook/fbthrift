@@ -25,7 +25,7 @@ from typing import (
     overload,
 )
 
-from apache.thrift.metadata.lite_types import (
+from apache.thrift.metadata.thrift_types import (
     ThriftType,
     ThriftMetadata,
     ThriftField,

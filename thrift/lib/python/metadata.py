@@ -16,7 +16,7 @@ import enum
 from types import MappingProxyType
 from typing import Union, Mapping, Iterator, Optional, Tuple, Sequence, cast, Type
 
-from apache.thrift.metadata.lite_types import (
+from apache.thrift.metadata.thrift_types import (
     ThriftMetadata,
     ThriftStruct,
     ThriftException,
