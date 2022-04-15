@@ -17,7 +17,7 @@ import java.util.*;
 
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("SinkService")
-public interface SinkService extends java.io.Closeable {
+public interface SinkService extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
     static SinkService createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -67,7 +67,7 @@ public interface SinkService extends java.io.Closeable {
     }
 
     @com.facebook.swift.service.ThriftService("SinkService")
-    public interface Async extends java.io.Closeable {
+    public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static SinkService.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -122,7 +122,7 @@ public interface SinkService extends java.io.Closeable {
     @java.lang.Override void close();
 
     @com.facebook.swift.service.ThriftService("SinkService")
-    interface Reactive extends reactor.core.Disposable {
+    interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static SinkService.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,

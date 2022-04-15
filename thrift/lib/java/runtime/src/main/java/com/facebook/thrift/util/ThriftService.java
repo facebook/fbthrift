@@ -16,4 +16,4 @@
 
 package com.facebook.thrift.util;
 
-public interface AsyncService extends ThriftService {}
+public interface ThriftService {}

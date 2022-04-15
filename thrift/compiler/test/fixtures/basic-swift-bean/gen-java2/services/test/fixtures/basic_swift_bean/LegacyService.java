@@ -17,7 +17,7 @@ import java.util.*;
 
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("LegacyService")
-public interface LegacyService extends java.io.Closeable {
+public interface LegacyService extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
     static LegacyService createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -67,7 +67,7 @@ public interface LegacyService extends java.io.Closeable {
     }
 
     @com.facebook.swift.service.ThriftService("LegacyService")
-    public interface Async extends java.io.Closeable {
+    public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static LegacyService.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -159,7 +159,7 @@ public interface LegacyService extends java.io.Closeable {
     }
 
     @com.facebook.swift.service.ThriftService("LegacyService")
-    interface Reactive extends reactor.core.Disposable {
+    interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static LegacyService.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,

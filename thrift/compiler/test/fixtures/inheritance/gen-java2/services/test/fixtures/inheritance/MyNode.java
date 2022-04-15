@@ -17,7 +17,7 @@ import java.util.*;
 
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("MyNode")
-public interface MyNode extends java.io.Closeable, test.fixtures.inheritance.MyRoot {
+public interface MyNode extends java.io.Closeable, com.facebook.thrift.util.BlockingService, test.fixtures.inheritance.MyRoot {
     static MyNode createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -67,7 +67,7 @@ public interface MyNode extends java.io.Closeable, test.fixtures.inheritance.MyR
     }
 
     @com.facebook.swift.service.ThriftService("MyNode")
-    public interface Async extends java.io.Closeable, test.fixtures.inheritance.MyRoot.Async {
+    public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService, test.fixtures.inheritance.MyRoot.Async {
         static MyNode.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -147,7 +147,7 @@ public interface MyNode extends java.io.Closeable, test.fixtures.inheritance.MyR
     }
 
     @com.facebook.swift.service.ThriftService("MyNode")
-    interface Reactive extends reactor.core.Disposable, test.fixtures.inheritance.MyRoot.Reactive {
+    interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService, test.fixtures.inheritance.MyRoot.Reactive {
         static MyNode.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,

@@ -17,7 +17,7 @@ import java.util.*;
 
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("MyServicePrioChild")
-public interface MyServicePrioChild extends java.io.Closeable, test.fixtures.basicannotations.MyServicePrioParent {
+public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thrift.util.BlockingService, test.fixtures.basicannotations.MyServicePrioParent {
     static MyServicePrioChild createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -67,7 +67,7 @@ public interface MyServicePrioChild extends java.io.Closeable, test.fixtures.bas
     }
 
     @com.facebook.swift.service.ThriftService("MyServicePrioChild")
-    public interface Async extends java.io.Closeable, test.fixtures.basicannotations.MyServicePrioParent.Async {
+    public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService, test.fixtures.basicannotations.MyServicePrioParent.Async {
         static MyServicePrioChild.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -147,7 +147,7 @@ public interface MyServicePrioChild extends java.io.Closeable, test.fixtures.bas
     }
 
     @com.facebook.swift.service.ThriftService("MyServicePrioChild")
-    interface Reactive extends reactor.core.Disposable, test.fixtures.basicannotations.MyServicePrioParent.Reactive {
+    interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService, test.fixtures.basicannotations.MyServicePrioParent.Reactive {
         static MyServicePrioChild.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,

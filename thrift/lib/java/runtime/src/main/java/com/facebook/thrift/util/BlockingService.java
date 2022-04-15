@@ -16,4 +16,4 @@
 
 package com.facebook.thrift.util;
 
-public interface BlockingService {}
+public interface BlockingService extends ThriftService {}

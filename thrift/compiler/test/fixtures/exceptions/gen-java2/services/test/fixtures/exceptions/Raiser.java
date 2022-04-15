@@ -17,7 +17,7 @@ import java.util.*;
 
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("Raiser")
-public interface Raiser extends java.io.Closeable {
+public interface Raiser extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
     static Raiser createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -67,7 +67,7 @@ public interface Raiser extends java.io.Closeable {
     }
 
     @com.facebook.swift.service.ThriftService("Raiser")
-    public interface Async extends java.io.Closeable {
+    public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static Raiser.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -245,7 +245,7 @@ public interface Raiser extends java.io.Closeable {
     }
 
     @com.facebook.swift.service.ThriftService("Raiser")
-    interface Reactive extends reactor.core.Disposable {
+    interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static Raiser.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,

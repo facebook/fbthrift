@@ -18,9 +18,12 @@ package com.facebook.thrift.util;
 
 import static org.apache.thrift.Constants.K_ROCKET_PROTOCOL_KEY;
 
+import com.facebook.thrift.client.RpcClient;
+import com.facebook.thrift.client.RpcClientFactory;
 import com.facebook.thrift.client.ThriftClientConfig;
 import com.facebook.thrift.legacy.codec.LegacyTransportType;
 import com.facebook.thrift.metadata.ThriftTransportType;
+import com.facebook.thrift.model.ProtocolId;
 import com.facebook.thrift.model.StreamResponse;
 import com.facebook.thrift.payload.ClientRequestPayload;
 import com.facebook.thrift.payload.ClientResponsePayload;
@@ -50,6 +53,9 @@ import io.rsocket.core.RSocketConnector;
 import io.rsocket.frame.decoder.PayloadDecoder;
 import io.rsocket.util.ByteBufPayload;
 import java.io.FileInputStream;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.Map;
@@ -67,6 +73,7 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TType;
 import org.apache.thrift.transport.TTransportException;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
 
 public final class RpcClientUtils {
 
@@ -385,5 +392,79 @@ public final class RpcClientUtils {
     return RSocketConnector.create()
         .setupPayload(setupPayload)
         .payloadDecoder(PayloadDecoder.ZERO_COPY);
+  }
+
+  public static MethodHandle clientCreationMethodHandle(
+      Class<? extends ThriftService> clientInterface,
+      Mono<RpcClient> rpcClientMono,
+      ProtocolId protocolId,
+      Map<String, String> headers,
+      Map<String, String> persistentHeaders) {
+    MethodHandles.Lookup lookup = MethodHandles.lookup();
+    try {
+      return lookup.findStatic(
+          clientInterface,
+          "newInstance",
+          MethodType.methodType(
+              ThriftService.class, Mono.class, ProtocolId.class, Map.class, Map.class));
+    } catch (Exception e) {
+      throw Exceptions.propagate(e);
+    }
+  }
+
+  public static MethodHandle clientCreationMethodHandle(
+      Class<? extends ThriftService> clientInterface,
+      RpcClientFactory rpcClientFactory,
+      SocketAddress socketAddress,
+      ProtocolId protocolId,
+      Map<String, String> headers,
+      Map<String, String> persistentHeaders) {
+    MethodHandles.Lookup lookup = MethodHandles.lookup();
+    try {
+      return lookup.findStatic(
+          clientInterface,
+          "newClient",
+          MethodType.methodType(
+              ThriftService.class,
+              RpcClientFactory.class,
+              SocketAddress.class,
+              ProtocolId.class,
+              Map.class,
+              Map.class));
+    } catch (Exception e) {
+      throw Exceptions.propagate(e);
+    }
+  }
+
+  public static MethodHandle clientCreationMethodHandle(
+      Class<? extends ThriftService> clientInterface,
+      Mono<RpcClient> rpcClientMono,
+      ProtocolId protocolId) {
+    MethodHandles.Lookup lookup = MethodHandles.lookup();
+    try {
+      return lookup.findStatic(
+          clientInterface,
+          "newClient",
+          MethodType.methodType(ThriftService.class, Mono.class, ProtocolId.class));
+    } catch (Exception e) {
+      throw Exceptions.propagate(e);
+    }
+  }
+
+  public static MethodHandle clientCreationMethodHandle(
+      Class<? extends ThriftService> clientInterface,
+      RpcClientFactory rpcClientFactory,
+      SocketAddress socketAddress,
+      ProtocolId protocolId) {
+    MethodHandles.Lookup lookup = MethodHandles.lookup();
+    try {
+      return lookup.findStatic(
+          clientInterface,
+          "newClient",
+          MethodType.methodType(
+              ThriftService.class, RpcClientFactory.class, SocketAddress.class, ProtocolId.class));
+    } catch (Exception e) {
+      throw Exceptions.propagate(e);
+    }
   }
 }

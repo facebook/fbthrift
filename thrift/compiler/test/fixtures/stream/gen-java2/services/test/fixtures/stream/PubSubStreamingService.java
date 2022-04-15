@@ -17,7 +17,7 @@ import java.util.*;
 
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("PubSubStreamingService")
-public interface PubSubStreamingService extends java.io.Closeable {
+public interface PubSubStreamingService extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
     static PubSubStreamingService createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -67,7 +67,7 @@ public interface PubSubStreamingService extends java.io.Closeable {
     }
 
     @com.facebook.swift.service.ThriftService("PubSubStreamingService")
-    public interface Async extends java.io.Closeable {
+    public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static PubSubStreamingService.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -122,7 +122,7 @@ public interface PubSubStreamingService extends java.io.Closeable {
     @java.lang.Override void close();
 
     @com.facebook.swift.service.ThriftService("PubSubStreamingService")
-    interface Reactive extends reactor.core.Disposable {
+    interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static PubSubStreamingService.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,

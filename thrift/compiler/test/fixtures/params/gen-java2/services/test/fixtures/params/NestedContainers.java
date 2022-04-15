@@ -17,7 +17,7 @@ import java.util.*;
 
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("NestedContainers")
-public interface NestedContainers extends java.io.Closeable {
+public interface NestedContainers extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
     static NestedContainers createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -67,7 +67,7 @@ public interface NestedContainers extends java.io.Closeable {
     }
 
     @com.facebook.swift.service.ThriftService("NestedContainers")
-    public interface Async extends java.io.Closeable {
+    public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static NestedContainers.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -281,7 +281,7 @@ public interface NestedContainers extends java.io.Closeable {
     }
 
     @com.facebook.swift.service.ThriftService("NestedContainers")
-    interface Reactive extends reactor.core.Disposable {
+    interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static NestedContainers.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,

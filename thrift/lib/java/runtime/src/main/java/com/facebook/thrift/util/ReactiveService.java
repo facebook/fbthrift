@@ -16,4 +16,4 @@
 
 package com.facebook.thrift.util;
 
-public interface ReactiveService {}
+public interface ReactiveService extends ThriftService {}
