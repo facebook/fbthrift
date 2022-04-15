@@ -57,7 +57,8 @@ public class TestBlockingBehavior {
                 .setDisableSSL(true)
                 .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)));
 
-    client = BlockingTestService.createReactiveClient(rpcClientFactory, address, ProtocolId.BINARY);
+    client =
+        BlockingTestService.Reactive.createClient(rpcClientFactory, address, ProtocolId.BINARY);
   }
 
   @Test
