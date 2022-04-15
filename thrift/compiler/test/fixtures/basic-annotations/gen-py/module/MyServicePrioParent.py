@@ -451,7 +451,10 @@ class Client(Iface):
   def ping(self, ):
     if (self._fbthrift_cpp_transport):
       args = ping_args()
-      return self._fbthrift_cpp_transport._send_request("MyServicePrioParent", "ping", args, ping_result).success
+      result = self._fbthrift_cpp_transport._send_request("MyServicePrioParent", "ping", args, ping_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_ping()
     self.recv_ping()
 
@@ -477,7 +480,10 @@ class Client(Iface):
   def pong(self, ):
     if (self._fbthrift_cpp_transport):
       args = pong_args()
-      return self._fbthrift_cpp_transport._send_request("MyServicePrioParent", "pong", args, pong_result).success
+      result = self._fbthrift_cpp_transport._send_request("MyServicePrioParent", "pong", args, pong_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_pong()
     self.recv_pong()
 

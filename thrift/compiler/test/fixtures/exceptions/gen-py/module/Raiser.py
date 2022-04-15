@@ -836,7 +836,10 @@ class Client(Iface):
   def doBland(self, ):
     if (self._fbthrift_cpp_transport):
       args = doBland_args()
-      return self._fbthrift_cpp_transport._send_request("Raiser", "doBland", args, doBland_result).success
+      result = self._fbthrift_cpp_transport._send_request("Raiser", "doBland", args, doBland_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_doBland()
     self.recv_doBland()
 
@@ -862,7 +865,16 @@ class Client(Iface):
   def doRaise(self, ):
     if (self._fbthrift_cpp_transport):
       args = doRaise_args()
-      return self._fbthrift_cpp_transport._send_request("Raiser", "doRaise", args, doRaise_result).success
+      result = self._fbthrift_cpp_transport._send_request("Raiser", "doRaise", args, doRaise_result)
+      if result.success is not None:
+        return result.success
+      if result.b is not None:
+        raise result.b
+      if result.f is not None:
+        raise result.f
+      if result.s is not None:
+        raise result.s
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_doRaise()
     self.recv_doRaise()
 
@@ -894,7 +906,10 @@ class Client(Iface):
   def get200(self, ):
     if (self._fbthrift_cpp_transport):
       args = get200_args()
-      return self._fbthrift_cpp_transport._send_request("Raiser", "get200", args, get200_result).success
+      result = self._fbthrift_cpp_transport._send_request("Raiser", "get200", args, get200_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_get200()
     return self.recv_get200()
 
@@ -922,7 +937,16 @@ class Client(Iface):
   def get500(self, ):
     if (self._fbthrift_cpp_transport):
       args = get500_args()
-      return self._fbthrift_cpp_transport._send_request("Raiser", "get500", args, get500_result).success
+      result = self._fbthrift_cpp_transport._send_request("Raiser", "get500", args, get500_result)
+      if result.success is not None:
+        return result.success
+      if result.f is not None:
+        raise result.f
+      if result.b is not None:
+        raise result.b
+      if result.s is not None:
+        raise result.s
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_get500()
     return self.recv_get500()
 

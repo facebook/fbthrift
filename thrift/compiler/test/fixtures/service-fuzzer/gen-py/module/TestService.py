@@ -646,7 +646,10 @@ class Client(Iface):
       args.int14 = int14
       args.int15 = int15
       args.int16 = int16
-      return self._fbthrift_cpp_transport._send_request("TestService", "init", args, init_result).success
+      result = self._fbthrift_cpp_transport._send_request("TestService", "init", args, init_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_init(int1, int2, int3, int4, int5, int6, int7, int8, int9, int10, int11, int12, int13, int14, int15, int16)
     return self.recv_init()
 

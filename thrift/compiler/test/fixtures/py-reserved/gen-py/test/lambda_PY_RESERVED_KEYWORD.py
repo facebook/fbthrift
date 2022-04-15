@@ -558,7 +558,10 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = global_args()
       args.raise_PY_RESERVED_KEYWORD = raise_PY_RESERVED_KEYWORD
-      return self._fbthrift_cpp_transport._send_request("lambda", "global", args, global_result).success
+      result = self._fbthrift_cpp_transport._send_request("lambda", "global", args, global_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_global_PY_RESERVED_KEYWORD(raise_PY_RESERVED_KEYWORD)
     return self.recv_global_PY_RESERVED_KEYWORD()
 
@@ -587,7 +590,10 @@ class Client(Iface):
   def import_PY_RESERVED_KEYWORD(self, ):
     if (self._fbthrift_cpp_transport):
       args = import_args()
-      return self._fbthrift_cpp_transport._send_request("lambda", "import", args, import_result).success
+      result = self._fbthrift_cpp_transport._send_request("lambda", "import", args, import_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_import_PY_RESERVED_KEYWORD()
     return self.recv_import_PY_RESERVED_KEYWORD()
 

@@ -328,7 +328,10 @@ class Client(Iface):
   def bar(self, ):
     if (self._fbthrift_cpp_transport):
       args = bar_args()
-      return self._fbthrift_cpp_transport._send_request("BadService", "bar", args, bar_result).success
+      result = self._fbthrift_cpp_transport._send_request("BadService", "bar", args, bar_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_bar()
     return self.recv_bar()
 

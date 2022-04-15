@@ -1502,7 +1502,12 @@ class Client(Iface):
   def ping(self, ):
     if (self._fbthrift_cpp_transport):
       args = ping_args()
-      return self._fbthrift_cpp_transport._send_request("MyService", "ping", args, ping_result).success
+      result = self._fbthrift_cpp_transport._send_request("MyService", "ping", args, ping_result)
+      if result.success is not None:
+        return result.success
+      if result.myExcept is not None:
+        raise result.myExcept
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_ping()
     self.recv_ping()
 
@@ -1530,7 +1535,10 @@ class Client(Iface):
   def getRandomData(self, ):
     if (self._fbthrift_cpp_transport):
       args = getRandomData_args()
-      return self._fbthrift_cpp_transport._send_request("MyService", "getRandomData", args, getRandomData_result).success
+      result = self._fbthrift_cpp_transport._send_request("MyService", "getRandomData", args, getRandomData_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_getRandomData()
     return self.recv_getRandomData()
 
@@ -1563,7 +1571,10 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = hasDataById_args()
       args.id = id
-      return self._fbthrift_cpp_transport._send_request("MyService", "hasDataById", args, hasDataById_result).success
+      result = self._fbthrift_cpp_transport._send_request("MyService", "hasDataById", args, hasDataById_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_hasDataById(id)
     return self.recv_hasDataById()
 
@@ -1597,7 +1608,10 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = getDataById_args()
       args.id = id
-      return self._fbthrift_cpp_transport._send_request("MyService", "getDataById", args, getDataById_result).success
+      result = self._fbthrift_cpp_transport._send_request("MyService", "getDataById", args, getDataById_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_getDataById(id)
     return self.recv_getDataById()
 
@@ -1633,7 +1647,10 @@ class Client(Iface):
       args = putDataById_args()
       args.id = id
       args.data = data
-      return self._fbthrift_cpp_transport._send_request("MyService", "putDataById", args, putDataById_result).success
+      result = self._fbthrift_cpp_transport._send_request("MyService", "putDataById", args, putDataById_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_putDataById(id, data)
     self.recv_putDataById()
 
@@ -1668,7 +1685,10 @@ class Client(Iface):
       args = lobDataById_args()
       args.id = id
       args.data = data
-      return self._fbthrift_cpp_transport._send_request("MyService", "lobDataById", args, lobDataById_result).success
+      result = self._fbthrift_cpp_transport._send_request("MyService", "lobDataById", args, lobDataById_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_lobDataById(id, data)
 
   def send_lobDataById(self, id=None, data=None):
@@ -1682,7 +1702,10 @@ class Client(Iface):
   def doNothing(self, ):
     if (self._fbthrift_cpp_transport):
       args = doNothing_args()
-      return self._fbthrift_cpp_transport._send_request("MyService", "doNothing", args, doNothing_result).success
+      result = self._fbthrift_cpp_transport._send_request("MyService", "doNothing", args, doNothing_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_doNothing()
     self.recv_doNothing()
 

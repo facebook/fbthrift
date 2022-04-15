@@ -421,7 +421,10 @@ class Client(Iface):
       args.arg1 = arg1
       args.arg2 = arg2
       args.arg3 = arg3
-      return self._fbthrift_cpp_transport._send_request("Service", "func", args, func_result).success
+      result = self._fbthrift_cpp_transport._send_request("Service", "func", args, func_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_func(arg1, arg2, arg3)
     return self.recv_func()
 

@@ -597,7 +597,10 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = bounce_map_args()
       args.m = m
-      return self._fbthrift_cpp_transport._send_request("SomeService", "bounce_map", args, bounce_map_result).success
+      result = self._fbthrift_cpp_transport._send_request("SomeService", "bounce_map", args, bounce_map_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_bounce_map(m)
     return self.recv_bounce_map()
 
@@ -631,7 +634,10 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = binary_keyed_map_args()
       args.r = r
-      return self._fbthrift_cpp_transport._send_request("SomeService", "binary_keyed_map", args, binary_keyed_map_result).success
+      result = self._fbthrift_cpp_transport._send_request("SomeService", "binary_keyed_map", args, binary_keyed_map_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_binary_keyed_map(r)
     return self.recv_binary_keyed_map()
 

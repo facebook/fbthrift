@@ -635,7 +635,10 @@ class Client(Iface):
   def sleep(self, ):
     if (self._fbthrift_cpp_transport):
       args = sleep_args()
-      return self._fbthrift_cpp_transport._send_request("TestService", "sleep", args, sleep_result).success
+      result = self._fbthrift_cpp_transport._send_request("TestService", "sleep", args, sleep_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_sleep()
     self.recv_sleep()
 
@@ -666,7 +669,10 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = isPrime_args()
       args.num = num
-      return self._fbthrift_cpp_transport._send_request("TestService", "isPrime", args, isPrime_result).success
+      result = self._fbthrift_cpp_transport._send_request("TestService", "isPrime", args, isPrime_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_isPrime(num)
     return self.recv_isPrime()
 
@@ -695,7 +701,10 @@ class Client(Iface):
   def getResult(self, ):
     if (self._fbthrift_cpp_transport):
       args = getResult_args()
-      return self._fbthrift_cpp_transport._send_request("TestService", "getResult", args, getResult_result).success
+      result = self._fbthrift_cpp_transport._send_request("TestService", "getResult", args, getResult_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_getResult()
     return self.recv_getResult()
 

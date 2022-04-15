@@ -331,7 +331,10 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = init_args()
       args.int1 = int1
-      return self._fbthrift_cpp_transport._send_request("TestService", "init", args, init_result).success
+      result = self._fbthrift_cpp_transport._send_request("TestService", "init", args, init_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_init(int1)
     return self.recv_init()
 

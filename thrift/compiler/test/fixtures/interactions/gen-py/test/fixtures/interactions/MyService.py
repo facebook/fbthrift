@@ -680,7 +680,10 @@ class Client(Iface):
   def foo(self, ):
     if (self._fbthrift_cpp_transport):
       args = foo_args()
-      return self._fbthrift_cpp_transport._send_request("MyService", "foo", args, foo_result).success
+      result = self._fbthrift_cpp_transport._send_request("MyService", "foo", args, foo_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_foo()
     self.recv_foo()
 
@@ -711,7 +714,10 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = interact_args()
       args.arg = arg
-      return self._fbthrift_cpp_transport._send_request("MyService", "interact", args, interact_result).success
+      result = self._fbthrift_cpp_transport._send_request("MyService", "interact", args, interact_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_interact(arg)
     self.recv_interact()
 
@@ -738,7 +744,10 @@ class Client(Iface):
   def interactFast(self, ):
     if (self._fbthrift_cpp_transport):
       args = interactFast_args()
-      return self._fbthrift_cpp_transport._send_request("MyService", "interactFast", args, interactFast_result).success
+      result = self._fbthrift_cpp_transport._send_request("MyService", "interactFast", args, interactFast_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_interactFast()
     return self.recv_interactFast()
 

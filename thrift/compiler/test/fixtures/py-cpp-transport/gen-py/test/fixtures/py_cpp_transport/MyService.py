@@ -457,7 +457,10 @@ class Client(Iface):
   def ping(self, ):
     if (self._fbthrift_cpp_transport):
       args = ping_args()
-      return self._fbthrift_cpp_transport._send_request("MyService", "ping", args, ping_result).success
+      result = self._fbthrift_cpp_transport._send_request("MyService", "ping", args, ping_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_ping()
     self.recv_ping()
 
@@ -488,7 +491,10 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = echo_args()
       args.input = input
-      return self._fbthrift_cpp_transport._send_request("MyService", "echo", args, echo_result).success
+      result = self._fbthrift_cpp_transport._send_request("MyService", "echo", args, echo_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_echo(input)
     return self.recv_echo()
 

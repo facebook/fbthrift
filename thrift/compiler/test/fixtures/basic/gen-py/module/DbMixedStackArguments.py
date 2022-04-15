@@ -600,7 +600,10 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = getDataByKey0_args()
       args.key = key
-      return self._fbthrift_cpp_transport._send_request("DbMixedStackArguments", "getDataByKey0", args, getDataByKey0_result).success
+      result = self._fbthrift_cpp_transport._send_request("DbMixedStackArguments", "getDataByKey0", args, getDataByKey0_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_getDataByKey0(key)
     return self.recv_getDataByKey0()
 
@@ -634,7 +637,10 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = getDataByKey1_args()
       args.key = key
-      return self._fbthrift_cpp_transport._send_request("DbMixedStackArguments", "getDataByKey1", args, getDataByKey1_result).success
+      result = self._fbthrift_cpp_transport._send_request("DbMixedStackArguments", "getDataByKey1", args, getDataByKey1_result)
+      if result.success is not None:
+        return result.success
+      raise TApplicationException(TApplicationException.MISSING_RESULT)
     self.send_getDataByKey1(key)
     return self.recv_getDataByKey1()
 
