@@ -88,8 +88,8 @@ public class MyNodeRpcServerHandler  extends test.fixtures.inheritance.MyRootRpc
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .doMid()
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .doMid())
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -122,7 +122,7 @@ public class MyNodeRpcServerHandler  extends test.fixtures.inheritance.MyRootRpc
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
           }
 
           return _internalResponse;

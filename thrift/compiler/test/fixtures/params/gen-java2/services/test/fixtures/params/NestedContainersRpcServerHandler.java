@@ -107,8 +107,8 @@ public class NestedContainersRpcServerHandler
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .mapList(foo)
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .mapList(foo))
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -141,7 +141,7 @@ public class NestedContainersRpcServerHandler
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
           }
 
           return _internalResponse;
@@ -193,8 +193,8 @@ public class NestedContainersRpcServerHandler
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .mapSet(foo)
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .mapSet(foo))
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -227,7 +227,7 @@ public class NestedContainersRpcServerHandler
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
           }
 
           return _internalResponse;
@@ -279,8 +279,8 @@ public class NestedContainersRpcServerHandler
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .listMap(foo)
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .listMap(foo))
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -313,7 +313,7 @@ public class NestedContainersRpcServerHandler
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
           }
 
           return _internalResponse;
@@ -365,8 +365,8 @@ public class NestedContainersRpcServerHandler
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .listSet(foo)
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .listSet(foo))
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -399,7 +399,7 @@ public class NestedContainersRpcServerHandler
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
           }
 
           return _internalResponse;
@@ -451,8 +451,8 @@ public class NestedContainersRpcServerHandler
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .turtles(foo)
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .turtles(foo))
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -485,7 +485,7 @@ public class NestedContainersRpcServerHandler
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
           }
 
           return _internalResponse;

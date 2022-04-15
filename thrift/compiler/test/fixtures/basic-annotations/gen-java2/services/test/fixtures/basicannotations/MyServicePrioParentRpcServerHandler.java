@@ -92,8 +92,8 @@ public class MyServicePrioParentRpcServerHandler
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .ping()
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .ping())
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -126,7 +126,7 @@ public class MyServicePrioParentRpcServerHandler
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
           }
 
           return _internalResponse;
@@ -175,8 +175,8 @@ public class MyServicePrioParentRpcServerHandler
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .pong()
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .pong())
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -209,7 +209,7 @@ public class MyServicePrioParentRpcServerHandler
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
           }
 
           return _internalResponse;

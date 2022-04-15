@@ -100,8 +100,8 @@ public class RaiserRpcServerHandler
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .doBland()
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .doBland())
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -134,7 +134,7 @@ public class RaiserRpcServerHandler
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
           }
 
           return _internalResponse;
@@ -208,8 +208,8 @@ public class RaiserRpcServerHandler
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .doRaise()
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .doRaise())
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -271,7 +271,7 @@ public class RaiserRpcServerHandler
                 }
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
           }
 
           return _internalResponse;
@@ -324,8 +324,8 @@ oprot.writeString(_iter0);
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .get200()
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .get200())
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -357,7 +357,7 @@ oprot.writeString(_iter0);
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
           }
 
           return _internalResponse;
@@ -435,8 +435,8 @@ oprot.writeString(_iter0);
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .get500()
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .get500())
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -497,7 +497,7 @@ oprot.writeString(_iter0);
                 }
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
           }
 
           return _internalResponse;
