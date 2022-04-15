@@ -97,17 +97,6 @@ struct ProtocolWriteTestCase {
   string expected;
 };
 
-#ifdef __cpp_char8_t
-using u8_char_type = char8_t;
-#else
-using u8_char_type = char;
-#endif
-
-template <size_t N>
-string from_u8_string(const u8_char_type (&str)[N]) {
-  return string(str, str + (N - 1));
-}
-
 } // namespace
 
 TEST_F(JSONProtocolTest, writeBool_false) {
@@ -480,16 +469,14 @@ TEST_F(JSONProtocolTest, readString_raw) {
 
 TEST_F(JSONProtocolTest, readString_utf8) {
   auto input = R"("\u263A")";
-  auto expected = from_u8_string(u8"\u263A");
-  EXPECT_EQ(expected, reading_cpp2<string>(input, [](R& p) {
+  EXPECT_EQ("\u263A", reading_cpp2<string>(input, [](R& p) {
               return returning([&](string& _) { p.readString(_); });
             }));
 }
 
 TEST_F(JSONProtocolTest, readString_utf8_surrogate_pair) {
   auto input = R"("\uD989\uDE3A")";
-  auto expected = from_u8_string(u8"\U0007263A");
-  EXPECT_EQ(expected, reading_cpp2<string>(input, [](R& p) {
+  EXPECT_EQ("\U0007263A", reading_cpp2<string>(input, [](R& p) {
               return returning([&](string& _) { p.readString(_); });
             }));
 }
