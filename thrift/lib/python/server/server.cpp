@@ -18,7 +18,7 @@
 #include <thrift/lib/python/server/server_api.h> // @manual
 
 namespace thrift {
-namespace py3lite {
+namespace python {
 
 namespace {
 
@@ -30,7 +30,7 @@ void do_import() {
 
 } // namespace
 
-void Py3LiteAsyncProcessor::handlePythonServerCallback(
+void PythonAsyncProcessor::handlePythonServerCallback(
     apache::thrift::ProtocolType protocol,
     apache::thrift::Cpp2RequestContext* context,
     folly::Promise<std::unique_ptr<folly::IOBuf>> promise,
@@ -45,7 +45,7 @@ void Py3LiteAsyncProcessor::handlePythonServerCallback(
       protocol);
 }
 
-void Py3LiteAsyncProcessor::handlePythonServerCallbackOneway(
+void PythonAsyncProcessor::handlePythonServerCallbackOneway(
     apache::thrift::ProtocolType protocol,
     apache::thrift::Cpp2RequestContext* context,
     folly::Promise<folly::Unit> promise,
@@ -60,5 +60,5 @@ void Py3LiteAsyncProcessor::handlePythonServerCallbackOneway(
       protocol);
 }
 
-} // namespace py3lite
+} // namespace python
 } // namespace thrift

@@ -27,7 +27,7 @@
 #include <thrift/lib/cpp2/gen/service_tcc.h>
 
 namespace thrift {
-namespace py3lite {
+namespace python {
 
 constexpr size_t kMaxUexwSize = 1024;
 
@@ -59,9 +59,9 @@ class PythonUserException : public std::exception {
   std::unique_ptr<folly::IOBuf> buf_;
 };
 
-class Py3LiteAsyncProcessor : public apache::thrift::AsyncProcessor {
+class PythonAsyncProcessor : public apache::thrift::AsyncProcessor {
  public:
-  Py3LiteAsyncProcessor(
+  PythonAsyncProcessor(
       const std::map<std::string, PyObject*>& functions,
       folly::Executor::KeepAlive<> executor,
       std::string serviceName)
@@ -69,7 +69,7 @@ class Py3LiteAsyncProcessor : public apache::thrift::AsyncProcessor {
         executor(std::move(executor)),
         serviceName_(std::move(serviceName)) {}
 
-  using ProcessFunc = void (Py3LiteAsyncProcessor::*)(
+  using ProcessFunc = void (PythonAsyncProcessor::*)(
       apache::thrift::ResponseChannelRequest::UniquePtr,
       apache::thrift::SerializedCompressedRequest&&,
       apache::thrift::Cpp2RequestContext* context,
@@ -79,9 +79,9 @@ class Py3LiteAsyncProcessor : public apache::thrift::AsyncProcessor {
     ProcessFunc compact;
     ProcessFunc binary;
   };
-  struct Py3LiteMetadata final
+  struct PythonMetadata final
       : public apache::thrift::AsyncProcessorFactory::MethodMetadata {
-    explicit Py3LiteMetadata(ProcessFuncs funcs) : processFuncs(funcs) {}
+    explicit PythonMetadata(ProcessFuncs funcs) : processFuncs(funcs) {}
 
     ProcessFuncs processFuncs;
   };
@@ -119,7 +119,7 @@ class Py3LiteAsyncProcessor : public apache::thrift::AsyncProcessor {
       apache::thrift::concurrency::ThreadManager* tm) override {
     const auto& methodMetadata =
         apache::thrift::AsyncProcessorHelper::expectMetadataOfType<
-            Py3LiteMetadata>(untypedMethodMetadata);
+            PythonMetadata>(untypedMethodMetadata);
     ProcessFunc pfn;
     switch (protType) {
       case apache::thrift::protocol::T_BINARY_PROTOCOL: {
@@ -220,11 +220,11 @@ class Py3LiteAsyncProcessor : public apache::thrift::AsyncProcessor {
         });
   }
 
-  static const Py3LiteAsyncProcessor::ProcessFuncs getSingleFunc() {
+  static const PythonAsyncProcessor::ProcessFuncs getSingleFunc() {
     return singleFunc_;
   }
 
-  static const Py3LiteAsyncProcessor::ProcessFuncs getOnewayFunc() {
+  static const PythonAsyncProcessor::ProcessFuncs getOnewayFunc() {
     return onewayFunc_;
   }
 
@@ -232,18 +232,18 @@ class Py3LiteAsyncProcessor : public apache::thrift::AsyncProcessor {
   const std::map<std::string, PyObject*>& functions_;
   folly::Executor::KeepAlive<> executor;
   std::string serviceName_;
-  static inline const Py3LiteAsyncProcessor::ProcessFuncs singleFunc_{
-      &Py3LiteAsyncProcessor::genericProcessor<
+  static inline const PythonAsyncProcessor::ProcessFuncs singleFunc_{
+      &PythonAsyncProcessor::genericProcessor<
           apache::thrift::CompactProtocolReader,
           apache::thrift::CompactProtocolWriter>,
-      &Py3LiteAsyncProcessor::genericProcessor<
+      &PythonAsyncProcessor::genericProcessor<
           apache::thrift::BinaryProtocolReader,
           apache::thrift::BinaryProtocolWriter>};
-  static inline const Py3LiteAsyncProcessor::ProcessFuncs onewayFunc_{
-      &Py3LiteAsyncProcessor::onewayProcessor<
+  static inline const PythonAsyncProcessor::ProcessFuncs onewayFunc_{
+      &PythonAsyncProcessor::onewayProcessor<
           apache::thrift::CompactProtocolReader,
           apache::thrift::CompactProtocolWriter>,
-      &Py3LiteAsyncProcessor::onewayProcessor<
+      &PythonAsyncProcessor::onewayProcessor<
           apache::thrift::BinaryProtocolReader,
           apache::thrift::BinaryProtocolWriter>};
 
@@ -298,7 +298,7 @@ class Py3LiteAsyncProcessor : public apache::thrift::AsyncProcessor {
             }
 
             // TODO: (ffrancet) error kind overrides currently usupported,
-            // by py3lite, add kHeaderExMeta header support when it is
+            // by python, add kHeaderExMeta header support when it is
             header->setHeader(
                 std::string(apache::thrift::detail::kHeaderUex), e.type());
             const std::string reason = e.reason();
@@ -328,10 +328,10 @@ class Py3LiteAsyncProcessor : public apache::thrift::AsyncProcessor {
   }
 };
 
-class Py3LiteAsyncProcessorFactory
+class PythonAsyncProcessorFactory
     : public apache::thrift::AsyncProcessorFactory {
  public:
-  Py3LiteAsyncProcessorFactory(
+  PythonAsyncProcessorFactory(
       std::map<std::string, PyObject*> functions,
       std::unordered_set<std::string> oneways,
       folly::Executor::KeepAlive<> executor,
@@ -342,7 +342,7 @@ class Py3LiteAsyncProcessorFactory
         serviceName_(std::move(serviceName)) {}
 
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
-    return std::make_unique<Py3LiteAsyncProcessor>(
+    return std::make_unique<PythonAsyncProcessor>(
         functions_, executor, serviceName_);
   }
 
@@ -354,11 +354,11 @@ class Py3LiteAsyncProcessorFactory
   CreateMethodMetadataResult createMethodMetadata() override {
     AsyncProcessorFactory::MethodMetadataMap result;
     const auto processFunc =
-        std::make_shared<Py3LiteAsyncProcessor::Py3LiteMetadata>(
-            Py3LiteAsyncProcessor::getSingleFunc());
+        std::make_shared<PythonAsyncProcessor::PythonMetadata>(
+            PythonAsyncProcessor::getSingleFunc());
     const auto onewayFunc =
-        std::make_shared<Py3LiteAsyncProcessor::Py3LiteMetadata>(
-            Py3LiteAsyncProcessor::getOnewayFunc());
+        std::make_shared<PythonAsyncProcessor::PythonMetadata>(
+            PythonAsyncProcessor::getOnewayFunc());
 
     for (const auto& [methodName, _] : functions_) {
       const auto& func = oneways_.find(methodName) != oneways_.end()
@@ -377,5 +377,5 @@ class Py3LiteAsyncProcessorFactory
   std::string serviceName_;
 };
 
-} // namespace py3lite
+} // namespace python
 } // namespace thrift

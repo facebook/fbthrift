@@ -18,10 +18,10 @@ from folly.iobuf cimport cIOBuf
 from thrift.py3.server cimport cAsyncProcessorFactory, AsyncProcessorFactory, ThriftServer as ThriftServer_py3
 from thrift.py3.exceptions cimport cException
 
-cdef extern from "thrift/lib/python/server/server.h" namespace "::thrift::py3lite":
-    cdef cppclass cPy3LiteAsyncProcessorFactory "::thrift::py3lite::Py3LiteAsyncProcessorFactory"(cAsyncProcessorFactory):
-        cPy3LiteAsyncProcessorFactory()
-    cdef cppclass cPythonUserException "::thrift::py3lite::PythonUserException"(cException):
+cdef extern from "thrift/lib/python/server/server.h" namespace "::thrift::python":
+    cdef cppclass cPythonAsyncProcessorFactory "::thrift::python::PythonAsyncProcessorFactory"(cAsyncProcessorFactory):
+        cPythonAsyncProcessorFactory()
+    cdef cppclass cPythonUserException "::thrift::python::PythonUserException"(cException):
         cPythonUserException(string, string, unique_ptr[cIOBuf] buf) except +
 
 cdef extern from "thrift/lib/cpp2/async/RpcTypes.h" namespace "::apache::thrift":
@@ -31,9 +31,9 @@ cdef extern from "thrift/lib/cpp2/async/RpcTypes.h" namespace "::apache::thrift"
 cdef class ServiceInterface:
     pass
 
-cdef class Py3LiteAsyncProcessorFactory(AsyncProcessorFactory):
+cdef class PythonAsyncProcessorFactory(AsyncProcessorFactory):
     @staticmethod
-    cdef Py3LiteAsyncProcessorFactory create(dict funcMap, bytes serviceName)
+    cdef PythonAsyncProcessorFactory create(dict funcMap, bytes serviceName)
 
 cdef class PythonUserException(Exception):
     cdef unique_ptr[cPythonUserException] _cpp_obj
