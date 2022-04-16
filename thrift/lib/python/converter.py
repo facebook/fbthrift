@@ -29,7 +29,7 @@ T = typing.TypeVar("T", bound=typing.Union[Struct, Union])
 
 
 # pyre-ignore[2]: thrift-py structs doesn't have a base class
-def to_py3lite_struct(cls: typing.Type[T], obj: typing.Any) -> T:
+def to_python_struct(cls: typing.Type[T], obj: typing.Any) -> T:
     if isinstance(obj, py3_Struct):
         return deserialize(
             cls,
@@ -41,3 +41,8 @@ def to_py3lite_struct(cls: typing.Type[T], obj: typing.Any) -> T:
         py_serialize(TBinaryProtocolFactory(), obj),
         protocol=Protocol.BINARY,
     )
+
+
+# pyre-ignore[2]: thrift-py structs doesn't have a base class
+def to_py3lite_struct(cls: typing.Type[T], obj: typing.Any) -> T:
+    return to_python_struct(cls, obj)

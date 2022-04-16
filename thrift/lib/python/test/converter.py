@@ -17,12 +17,12 @@ import unittest
 import convertible.thrift_types as thrift_types
 import convertible.ttypes as ttypes
 import convertible.types as types
-from thrift.python.converter import to_py3lite_struct
+from thrift.python.converter import to_python_struct
 
 
-class Py3toPy3liteConverterTest(unittest.TestCase):
+class Py3toPythonConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
-        simple = to_py3lite_struct(
+        simple = to_python_struct(
             thrift_types.Simple,
             types.Simple(
                 intField=42,
@@ -43,7 +43,7 @@ class Py3toPy3liteConverterTest(unittest.TestCase):
         self.assertEqual(simple.name_, "myname")
 
     def test_nested(self) -> None:
-        nested = to_py3lite_struct(
+        nested = to_python_struct(
             thrift_types.Nested,
             types.Nested(
                 simpleField=types.Simple(
@@ -97,26 +97,24 @@ class Py3toPy3liteConverterTest(unittest.TestCase):
         )
 
     def test_simple_union(self) -> None:
-        simple_union = to_py3lite_struct(thrift_types.Union, types.Union(intField=42))
+        simple_union = to_python_struct(thrift_types.Union, types.Union(intField=42))
         self.assertEqual(simple_union.type, thrift_types.Union.Type.intField)
         self.assertEqual(simple_union.value, 42)
 
     def test_union_with_py3_name_annotation(self) -> None:
-        simple_union = to_py3lite_struct(
-            thrift_types.Union, types.Union(name_="myname")
-        )
+        simple_union = to_python_struct(thrift_types.Union, types.Union(name_="myname"))
         self.assertEqual(simple_union.type, thrift_types.Union.Type.name_)
         self.assertEqual(simple_union.value, "myname")
 
     def test_union_with_containers(self) -> None:
-        union_with_list = to_py3lite_struct(
+        union_with_list = to_python_struct(
             thrift_types.Union, types.Union(intList=[1, 2, 3])
         )
         self.assertEqual(union_with_list.type, thrift_types.Union.Type.intList)
         self.assertEqual(union_with_list.value, [1, 2, 3])
 
     def test_complex_union(self) -> None:
-        complex_union = to_py3lite_struct(
+        complex_union = to_python_struct(
             thrift_types.Union,
             types.Union(
                 simple_=types.Simple(
@@ -135,7 +133,7 @@ class Py3toPy3liteConverterTest(unittest.TestCase):
 
 class PytoPy3liteConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
-        simple = to_py3lite_struct(
+        simple = to_python_struct(
             thrift_types.Simple,
             ttypes.Simple(
                 intField=42,
@@ -156,7 +154,7 @@ class PytoPy3liteConverterTest(unittest.TestCase):
         self.assertEqual(simple.name_, "myname")
 
     def test_nested(self) -> None:
-        nested = to_py3lite_struct(
+        nested = to_python_struct(
             thrift_types.Nested,
             ttypes.Nested(
                 simpleField=ttypes.Simple(
@@ -210,26 +208,24 @@ class PytoPy3liteConverterTest(unittest.TestCase):
         )
 
     def test_simple_union(self) -> None:
-        simple_union = to_py3lite_struct(thrift_types.Union, ttypes.Union(intField=42))
+        simple_union = to_python_struct(thrift_types.Union, ttypes.Union(intField=42))
         self.assertEqual(simple_union.type, thrift_types.Union.Type.intField)
         self.assertEqual(simple_union.value, 42)
 
     def test_union_with_py3_name_annotation(self) -> None:
-        simple_union = to_py3lite_struct(
-            thrift_types.Union, ttypes.Union(name="myname")
-        )
+        simple_union = to_python_struct(thrift_types.Union, ttypes.Union(name="myname"))
         self.assertEqual(simple_union.type, thrift_types.Union.Type.name_)
         self.assertEqual(simple_union.value, "myname")
 
     def test_union_with_containers(self) -> None:
-        union_with_list = to_py3lite_struct(
+        union_with_list = to_python_struct(
             thrift_types.Union, ttypes.Union(intList=[1, 2, 3])
         )
         self.assertEqual(union_with_list.type, thrift_types.Union.Type.intList)
         self.assertEqual(union_with_list.value, [1, 2, 3])
 
     def test_complex_union(self) -> None:
-        complex_union = to_py3lite_struct(
+        complex_union = to_python_struct(
             thrift_types.Union,
             ttypes.Union(
                 simpleField=ttypes.Simple(

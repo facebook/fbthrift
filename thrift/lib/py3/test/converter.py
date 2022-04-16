@@ -142,7 +142,7 @@ class PyToPy3ConverterTest(unittest.TestCase):
         self.assertFalse(Struct.isset(converted).sillyColor)
 
 
-class Py3litetoPy3ConverterTest(unittest.TestCase):
+class PythontoPy3ConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
         simple = to_py3_struct(
             types.Simple,
