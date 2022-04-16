@@ -57,7 +57,6 @@ class AnyRegistry:
         return False
 
     def register_module(self, module: types.ModuleType) -> None:
-        # pyre-ignore[16]
         for cls in module._fbthrift_all_structs:
             self.register_type(cls)
 

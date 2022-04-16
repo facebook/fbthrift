@@ -35,7 +35,6 @@ class TransportErrorType(Enum):
 
 class TransportOptions(Flag):
     CHANNEL_IS_VALID: TransportOptions = ...
-    # pyre-fixme[15]: `value` overrides attribute defined in `Flag` inconsistently.
     value: int
 
 class ApplicationErrorType(Enum):
