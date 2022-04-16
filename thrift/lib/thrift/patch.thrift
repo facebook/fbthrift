@@ -18,6 +18,7 @@ include "thrift/annotation/thrift.thrift"
 include "thrift/annotation/scope.thrift"
 cpp_include "thrift/lib/cpp2/op/detail/Patch.h"
 
+@thrift.TerseWrite
 package "facebook.com/thrift/op"
 
 namespace cpp2 apache.thrift.op

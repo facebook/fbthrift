@@ -214,7 +214,7 @@ class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'invert' => bool,
     ...
   );
-  const int STRUCTURAL_ID = 3875050023329461666;
+  const int STRUCTURAL_ID = 1475054624686789997;
   /**
    * Original thrift field:-
    * 1: bool assign
@@ -363,7 +363,7 @@ class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'add' => int,
     ...
   );
-  const int STRUCTURAL_ID = 4364926226693714377;
+  const int STRUCTURAL_ID = 2534945701469748168;
   /**
    * Original thrift field:-
    * 1: byte assign
@@ -522,7 +522,7 @@ class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'add' => int,
     ...
   );
-  const int STRUCTURAL_ID = 7982053966984816637;
+  const int STRUCTURAL_ID = 8154674017249397960;
   /**
    * Original thrift field:-
    * 1: i16 assign
@@ -681,7 +681,7 @@ class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'add' => int,
     ...
   );
-  const int STRUCTURAL_ID = 1442315754779904080;
+  const int STRUCTURAL_ID = 3666727223051674106;
   /**
    * Original thrift field:-
    * 1: i32 assign
@@ -840,7 +840,7 @@ class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'add' => int,
     ...
   );
-  const int STRUCTURAL_ID = 6712631685845531374;
+  const int STRUCTURAL_ID = 236777599420554215;
   /**
    * Original thrift field:-
    * 1: i64 assign
@@ -989,7 +989,7 @@ class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'add' => float,
     ...
   );
-  const int STRUCTURAL_ID = 8559016797145234950;
+  const int STRUCTURAL_ID = 5324520522184470232;
   /**
    * Original thrift field:-
    * 1: float assign
@@ -1138,7 +1138,7 @@ class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'add' => float,
     ...
   );
-  const int STRUCTURAL_ID = 2907066783911210347;
+  const int STRUCTURAL_ID = 145038779515762670;
   /**
    * Original thrift field:-
    * 1: double assign
@@ -1301,7 +1301,7 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'append' => string,
     ...
   );
-  const int STRUCTURAL_ID = 232939075192446478;
+  const int STRUCTURAL_ID = 5445604532652463635;
   /**
    * Original thrift field:-
    * 1: string assign

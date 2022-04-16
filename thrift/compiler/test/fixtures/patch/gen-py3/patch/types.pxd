@@ -96,7 +96,6 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" name
         bint operator<=(cBoolPatch&)
         bint operator>=(cBoolPatch&)
         __optional_field_ref[cbool] assign_ref()
-        __field_ref[cbool] invert_ref()
 
 
     cdef cppclass cBytePatch "::apache::thrift::op::BytePatch":
@@ -109,7 +108,6 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" name
         bint operator<=(cBytePatch&)
         bint operator>=(cBytePatch&)
         __optional_field_ref[cint8_t] assign_ref()
-        __field_ref[cint8_t] add_ref()
 
 
     cdef cppclass cI16Patch "::apache::thrift::op::I16Patch":
@@ -122,7 +120,6 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" name
         bint operator<=(cI16Patch&)
         bint operator>=(cI16Patch&)
         __optional_field_ref[cint16_t] assign_ref()
-        __field_ref[cint16_t] add_ref()
 
 
     cdef cppclass cI32Patch "::apache::thrift::op::I32Patch":
@@ -135,7 +132,6 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" name
         bint operator<=(cI32Patch&)
         bint operator>=(cI32Patch&)
         __optional_field_ref[cint32_t] assign_ref()
-        __field_ref[cint32_t] add_ref()
 
 
     cdef cppclass cI64Patch "::apache::thrift::op::I64Patch":
@@ -148,7 +144,6 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" name
         bint operator<=(cI64Patch&)
         bint operator>=(cI64Patch&)
         __optional_field_ref[cint64_t] assign_ref()
-        __field_ref[cint64_t] add_ref()
 
 
     cdef cppclass cFloatPatch "::apache::thrift::op::FloatPatch":
@@ -161,7 +156,6 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" name
         bint operator<=(cFloatPatch&)
         bint operator>=(cFloatPatch&)
         __optional_field_ref[float] assign_ref()
-        __field_ref[float] add_ref()
 
 
     cdef cppclass cDoublePatch "::apache::thrift::op::DoublePatch":
@@ -174,7 +168,6 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" name
         bint operator<=(cDoublePatch&)
         bint operator>=(cDoublePatch&)
         __optional_field_ref[double] assign_ref()
-        __field_ref[double] add_ref()
 
 
     cdef cppclass cStringPatch "::apache::thrift::op::StringPatch":
@@ -187,9 +180,6 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/patch_types_custom_protocol.h" name
         bint operator<=(cStringPatch&)
         bint operator>=(cStringPatch&)
         __optional_field_ref[string] assign_ref()
-        __field_ref[cbool] clear_ref()
-        __field_ref[string] prepend_ref()
-        __field_ref[string] append_ref()
 
 
     cdef cppclass cBinaryPatch "::apache::thrift::op::BinaryPatch":
