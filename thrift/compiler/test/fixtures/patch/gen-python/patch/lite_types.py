@@ -74,7 +74,7 @@ class BoolPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/BoolPatch"
 
     @staticmethod
     def __get_metadata__():
@@ -106,7 +106,7 @@ class BytePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/BytePatch"
 
     @staticmethod
     def __get_metadata__():
@@ -138,7 +138,7 @@ class I16Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/I16Patch"
 
     @staticmethod
     def __get_metadata__():
@@ -170,7 +170,7 @@ class I32Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/I32Patch"
 
     @staticmethod
     def __get_metadata__():
@@ -202,7 +202,7 @@ class I64Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/I64Patch"
 
     @staticmethod
     def __get_metadata__():
@@ -234,7 +234,7 @@ class FloatPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/FloatPatch"
 
     @staticmethod
     def __get_metadata__():
@@ -266,7 +266,7 @@ class DoublePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/DoublePatch"
 
     @staticmethod
     def __get_metadata__():
@@ -312,7 +312,7 @@ class StringPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/StringPatch"
 
     @staticmethod
     def __get_metadata__():
@@ -337,7 +337,7 @@ class BinaryPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/BinaryPatch"
 
     @staticmethod
     def __get_metadata__():
@@ -383,7 +383,7 @@ class OptionalBoolPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/OptionalBoolPatch"
 
     @staticmethod
     def __get_metadata__():
@@ -429,7 +429,7 @@ class OptionalBytePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/OptionalBytePatch"
 
     @staticmethod
     def __get_metadata__():
@@ -475,7 +475,7 @@ class OptionalI16Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/OptionalI16Patch"
 
     @staticmethod
     def __get_metadata__():
@@ -521,7 +521,7 @@ class OptionalI32Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/OptionalI32Patch"
 
     @staticmethod
     def __get_metadata__():
@@ -567,7 +567,7 @@ class OptionalI64Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/OptionalI64Patch"
 
     @staticmethod
     def __get_metadata__():
@@ -613,7 +613,7 @@ class OptionalFloatPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/OptionalFloatPatch"
 
     @staticmethod
     def __get_metadata__():
@@ -659,7 +659,7 @@ class OptionalDoublePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/OptionalDoublePatch"
 
     @staticmethod
     def __get_metadata__():
@@ -705,7 +705,7 @@ class OptionalStringPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/OptionalStringPatch"
 
     @staticmethod
     def __get_metadata__():
@@ -751,7 +751,7 @@ class OptionalBinaryPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/op/OptionalBinaryPatch"
 
     @staticmethod
     def __get_metadata__():

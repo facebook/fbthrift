@@ -2388,7 +2388,6 @@ GeneratePatch.thrift_spec = (
 )
 
 GeneratePatch.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/op/GeneratePatch",
 }
 GeneratePatch.thrift_field_annotations = {
 }
@@ -2398,7 +2397,6 @@ GenerateOptionalPatch.thrift_spec = (
 )
 
 GenerateOptionalPatch.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/op/GenerateOptionalPatch",
 }
 GenerateOptionalPatch.thrift_field_annotations = {
 }

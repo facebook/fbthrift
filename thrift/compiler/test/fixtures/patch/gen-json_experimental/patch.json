@@ -11,13 +11,13 @@
         "name" : "GeneratePatch",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 30
+        "lineno" : 32
       },
       "GenerateOptionalPatch" : {
         "name" : "GenerateOptionalPatch",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 34
+        "lineno" : 36
       },
       "BoolPatch" : {
         "name" : "BoolPatch",

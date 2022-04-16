@@ -18,6 +18,8 @@ include "thrift/annotation/thrift.thrift"
 include "thrift/annotation/scope.thrift"
 cpp_include "thrift/lib/cpp2/op/detail/Patch.h"
 
+package "facebook.com/thrift/op"
+
 namespace cpp2 apache.thrift.op
 namespace java.swift com.facebook.thrift.op
 namespace java2 com.facebook.thrift.op
@@ -27,13 +29,11 @@ namespace java2 com.facebook.thrift.op
 @scope.Struct
 @scope.Program
 @thrift.Experimental
-struct GeneratePatch {} (thrift.uri = "facebook.com/thrift/op/GeneratePatch")
+struct GeneratePatch {}
 
 @scope.Struct
 @thrift.Experimental
-struct GenerateOptionalPatch {} (
-  thrift.uri = "facebook.com/thrift/op/GenerateOptionalPatch",
-)
+struct GenerateOptionalPatch {}
 
 // A patch for a boolean value.
 @GenerateOptionalPatch

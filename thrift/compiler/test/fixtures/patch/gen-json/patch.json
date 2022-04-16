@@ -3,7 +3,7 @@
   "thrift_module" : "patch",
   "structs" : {
     "GeneratePatch" : {
-      "lineno" : 30,
+      "lineno" : 32,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -11,17 +11,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 27,
+          "line" : 29,
           "column" : 1
         },
         "end" : {
-          "line" : 30,
-          "column" : 78
+          "line" : 32,
+          "column" : 24
         }
       }
     },
     "GenerateOptionalPatch" : {
-      "lineno" : 34,
+      "lineno" : 36,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -29,12 +29,12 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 32,
+          "line" : 34,
           "column" : 1
         },
         "end" : {
           "line" : 36,
-          "column" : 2
+          "column" : 32
         }
       }
     },

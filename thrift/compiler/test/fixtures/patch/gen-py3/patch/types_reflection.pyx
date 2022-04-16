@@ -35,7 +35,7 @@ cdef __StructSpec get_reflection__GeneratePatch():
         name="GeneratePatch",
         kind=__StructType.STRUCT,
         annotations={
-            """thrift.uri""": """facebook.com/thrift/op/GeneratePatch""",        },
+        },
     )
     return spec
 cdef __StructSpec get_reflection__GenerateOptionalPatch():
@@ -48,7 +48,7 @@ cdef __StructSpec get_reflection__GenerateOptionalPatch():
         name="GenerateOptionalPatch",
         kind=__StructType.STRUCT,
         annotations={
-            """thrift.uri""": """facebook.com/thrift/op/GenerateOptionalPatch""",        },
+        },
     )
     return spec
 cdef __StructSpec get_reflection__BoolPatch():
