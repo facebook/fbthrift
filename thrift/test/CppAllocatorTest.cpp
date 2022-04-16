@@ -26,6 +26,13 @@ using namespace apache::thrift::test;
 static const char* kTooLong =
     "This is too long for the small string optimization";
 
+// Workaround an ambiguity when comparing allocators with different value types
+// which was introduced in C++20.
+template <typename T>
+static ScopedStatefulAlloc<> get_allocator(const T& container) {
+  return ScopedStatefulAlloc<>(container.get_allocator());
+}
+
 TEST(CppAllocatorTest, AlwaysThrowAllocator) {
   ScopedAlwaysThrowAlloc<> alloc;
   AlwaysThrowParent s(alloc);
@@ -71,9 +78,9 @@ TEST(CppAllocatorTest, Deserialize) {
   ScopedStatefulAlloc<> alloc(42);
   HasContainerFields s2(alloc);
   EXPECT_EQ(s2.get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_list_ref()->get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_set_ref()->get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_map_ref()->get_allocator(), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_list_ref()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_set_ref()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map_ref()), alloc);
 
   serializer::deserialize(str, s2);
   EXPECT_EQ(s2.aa_list_ref(), (StatefulAllocVector<int32_t>{1, 2, 3}));
@@ -83,9 +90,9 @@ TEST(CppAllocatorTest, Deserialize) {
       (StatefulAllocMap<int32_t, int32_t>{{1, 1}, {2, 2}, {3, 3}}));
 
   EXPECT_EQ(s2.get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_list_ref()->get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_set_ref()->get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_map_ref()->get_allocator(), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_list_ref()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_set_ref()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map_ref()), alloc);
 }
 
 TEST(CppAllocatorTest, UsesTypedef) {
@@ -107,14 +114,14 @@ TEST(CppAllocatorTest, DeserializeNested) {
   HasNestedContainerFields s2(alloc);
 
   EXPECT_EQ(s2.get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_map_of_map_ref()->get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_map_of_set_ref()->get_allocator(), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map_of_map_ref()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map_of_set_ref()), alloc);
 
   serializer::deserialize(str, s2);
-  EXPECT_EQ(s2.aa_map_of_map_ref()->get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_map_of_map_ref()->at(42).get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_map_of_set_ref()->get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_map_of_set_ref()->at(42).get_allocator(), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map_of_map_ref()), alloc);
+  EXPECT_EQ(get_allocator(s2.aa_map_of_map_ref()->at(42)), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map_of_set_ref()), alloc);
+  EXPECT_EQ(get_allocator(s2.aa_map_of_set_ref()->at(42)), alloc);
 }
 
 TEST(CppAllocatorTest, DeserializeSortedUniqueConstructible) {
@@ -129,8 +136,8 @@ TEST(CppAllocatorTest, DeserializeSortedUniqueConstructible) {
   ScopedStatefulAlloc<> alloc(42);
   HasSortedUniqueConstructibleFields s2(alloc);
   EXPECT_EQ(s2.get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_set_ref()->get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_map_ref()->get_allocator(), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_set_ref()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map_ref()), alloc);
 
   serializer::deserialize(str, s2);
   EXPECT_EQ(s2.aa_set_ref(), (StatefulAllocSortedVectorSet<int32_t>{1, 2, 3}));
@@ -139,8 +146,8 @@ TEST(CppAllocatorTest, DeserializeSortedUniqueConstructible) {
       (StatefulAllocSortedVectorMap<int32_t, int32_t>{{1, 1}, {2, 2}, {3, 3}}));
 
   EXPECT_EQ(s2.get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_set_ref()->get_allocator(), alloc);
-  EXPECT_EQ(s2.aa_map_ref()->get_allocator(), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_set_ref()), alloc);
+  EXPECT_EQ(get_allocator(*s2.aa_map_ref()), alloc);
 }
 
 TEST(CppAllocatorTest, CountingAllocator) {

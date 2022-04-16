@@ -121,8 +121,8 @@ struct DummyIndexWriter {
 
   void recordFieldStart() {}
 
-  template <class TypeClass, class Type>
-  void recordFieldEnd(TypeClass, Type&&, int16_t) {}
+  template <typename Type, typename TypeClass>
+  void recordFieldEnd(TypeClass, int16_t) {}
 
   void finalize() {}
 };
@@ -145,8 +145,8 @@ class IndexWriterImpl {
 
   void recordFieldStart() { fieldStart_ = writtenBytes_; }
 
-  template <class TypeClass, class Type>
-  void recordFieldEnd(TypeClass, Type&&, int16_t id) {
+  template <typename Type, typename TypeClass>
+  void recordFieldEnd(TypeClass, int16_t id) {
     if (!std::is_same<TypeClass, type_class::integral>{} &&
         !fixed_cost_skip_v<
             typename Protocol::ProtocolReader,

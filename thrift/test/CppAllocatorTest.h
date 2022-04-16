@@ -102,13 +102,13 @@ struct StatefulAlloc : private std::allocator<T> {
 
   template <class U>
   friend bool operator==(
-      StatefulAlloc<T> const& a, StatefulAlloc<U> const& b) noexcept {
+      const StatefulAlloc<T>& a, const StatefulAlloc<U>& b) noexcept {
     return a.state_ == b.state_;
   }
 
   template <class U>
   friend bool operator!=(
-      StatefulAlloc<T> const& a, StatefulAlloc<U> const& b) noexcept {
+      const StatefulAlloc<T>& a, const StatefulAlloc<U>& b) noexcept {
     return a.state_ != b.state_;
   }
 };

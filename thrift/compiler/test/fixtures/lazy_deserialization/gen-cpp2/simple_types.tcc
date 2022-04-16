@@ -594,7 +594,7 @@ uint32_t LazyFoo::write(Protocol_* prot_) const {
     std::as_const(*this).__fbthrift_read_field_field3();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::write(*prot_, this->__fbthrift_field_field3);
     written_lazy_field_field3:
-    indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>{}, this->__fbthrift_field_field3, 3);
+    indexWriter.template recordFieldEnd<decltype(this->__fbthrift_field_field3)>(::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>{}, 3);
     xfer += prot_->writeFieldEnd();
   }
   {
@@ -614,7 +614,7 @@ uint32_t LazyFoo::write(Protocol_* prot_) const {
     std::as_const(*this).__fbthrift_read_field_field4();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, this->__fbthrift_field_field4);
     written_lazy_field_field4:
-    indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, this->__fbthrift_field_field4, 4);
+    indexWriter.template recordFieldEnd<decltype(this->__fbthrift_field_field4)>(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, 4);
     xfer += prot_->writeFieldEnd();
   }
   indexWriter.finalize();
@@ -1163,7 +1163,7 @@ uint32_t OptionalLazyFoo::write(Protocol_* prot_) const {
     std::as_const(*this).__fbthrift_read_field_field3();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::write(*prot_, this->__fbthrift_field_field3);
     written_lazy_field_field3:
-    indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>{}, this->__fbthrift_field_field3, 3);
+    indexWriter.template recordFieldEnd<decltype(this->__fbthrift_field_field3)>(::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>{}, 3);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
@@ -1185,7 +1185,7 @@ uint32_t OptionalLazyFoo::write(Protocol_* prot_) const {
     std::as_const(*this).__fbthrift_read_field_field4();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, this->__fbthrift_field_field4);
     written_lazy_field_field4:
-    indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, this->__fbthrift_field_field4, 4);
+    indexWriter.template recordFieldEnd<decltype(this->__fbthrift_field_field4)>(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, 4);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
@@ -1534,7 +1534,7 @@ uint32_t LazyCppRef::write(Protocol_* prot_) const {
     std::as_const(*this).__fbthrift_read_field_field1();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, *this->__fbthrift_field_field1);
     written_lazy_field_field1:
-    indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, *this->__fbthrift_field_field1, 1);
+    indexWriter.template recordFieldEnd<decltype(*this->__fbthrift_field_field1)>(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, 1);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
@@ -1557,7 +1557,7 @@ uint32_t LazyCppRef::write(Protocol_* prot_) const {
     std::as_const(*this).__fbthrift_read_field_field2();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, *this->__fbthrift_field_field2);
     written_lazy_field_field2:
-    indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, *this->__fbthrift_field_field2, 2);
+    indexWriter.template recordFieldEnd<decltype(*this->__fbthrift_field_field2)>(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, 2);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
@@ -1580,7 +1580,7 @@ uint32_t LazyCppRef::write(Protocol_* prot_) const {
     std::as_const(*this).__fbthrift_read_field_field3();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, *this->__fbthrift_field_field3);
     written_lazy_field_field3:
-    indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, *this->__fbthrift_field_field3, 3);
+    indexWriter.template recordFieldEnd<decltype(*this->__fbthrift_field_field3)>(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, 3);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
@@ -1607,7 +1607,7 @@ uint32_t LazyCppRef::write(Protocol_* prot_) const {
       xfer += prot_->writeListEnd();
     }
     written_lazy_field_field4:
-    indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, *this->__fbthrift_field_field4, 4);
+    indexWriter.template recordFieldEnd<decltype(*this->__fbthrift_field_field4)>(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, 4);
     xfer += prot_->writeFieldEnd();
   }
   indexWriter.finalize();
