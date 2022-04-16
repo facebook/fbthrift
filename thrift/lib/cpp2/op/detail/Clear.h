@@ -86,8 +86,7 @@ struct Empty {
           return StringTraits<T>::isEmpty(v);
         },
         [](const auto& v, type::container_c) { return v.empty(); },
-        [](const auto& v, type::union_c) { return v.getType() == v.__EMPTY__; },
-        [](const auto& v, type::struct_except_c) {
+        [](const auto& v, type::structured_c) {
           return apache::thrift::empty(v);
         },
         [](const auto& v, type::all_c) {

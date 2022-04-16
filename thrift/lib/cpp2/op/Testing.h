@@ -107,6 +107,8 @@ void expectPatch(
   }
   { // Reset should be a noop patch.
     patch.reset();
+    // TODO(afuller): Make patch fields terse.
+    // EXPECT_TRUE(empty(patch.get()));
     auto actual3 = actual;
     patch.apply(actual3);
     EXPECT_EQ(actual3, actual);

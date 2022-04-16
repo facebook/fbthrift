@@ -60,8 +60,8 @@ if_opt_type<T, bool> hasValue(const T& opt) {
   return opt.has_value();
 }
 template <typename T>
-bool hasValue(field_ref<T> unn) {
-  return unn->getType() != std::decay_t<T>::__EMPTY__;
+bool hasValue(field_ref<T> val) {
+  return !thrift::empty(*val);
 }
 template <typename T>
 if_opt_type<T> clearValue(T& opt) {
