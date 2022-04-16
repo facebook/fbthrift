@@ -1178,7 +1178,7 @@ uint32_t EmptiableTerseStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("map_field", apache::thrift::protocol::T_MAP, 13);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<::std::int16_t, ::std::int16_t>>::serializedSize<false>(*prot_, this->__fbthrift_field_map_field);
   }
-  if (!apache::thrift::empty(this->__fbthrift_field_struct_field)) {
+  if (!::apache::thrift::empty(this->__fbthrift_field_struct_field)) {
     xfer += prot_->serializedFieldSize("struct_field", apache::thrift::protocol::T_STRUCT, 14);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::apache::thrift::test::MyStruct>::serializedSize<false>(*prot_, this->__fbthrift_field_struct_field);
   }
@@ -1242,7 +1242,7 @@ uint32_t EmptiableTerseStruct::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("map_field", apache::thrift::protocol::T_MAP, 13);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<::std::int16_t, ::std::int16_t>>::serializedSize<false>(*prot_, this->__fbthrift_field_map_field);
   }
-  if (!apache::thrift::empty(this->__fbthrift_field_struct_field)) {
+  if (!::apache::thrift::empty(this->__fbthrift_field_struct_field)) {
     xfer += prot_->serializedFieldSize("struct_field", apache::thrift::protocol::T_STRUCT, 14);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::structure, ::apache::thrift::test::MyStruct>::serializedSize<true>(*prot_, this->__fbthrift_field_struct_field);
   }
@@ -1372,7 +1372,7 @@ uint32_t EmptiableTerseStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!apache::thrift::empty(this->__fbthrift_field_struct_field)) {
+  if (!::apache::thrift::empty(this->__fbthrift_field_struct_field)) {
     constexpr int16_t kPrevFieldId = 13;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRUCT, 14, kPrevFieldId>(*prot_, "struct_field", previousFieldHasValue);
     previousFieldHasValue = true;

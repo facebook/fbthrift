@@ -550,7 +550,7 @@ bool EmptiableTerseStruct::__fbthrift_is_empty() const {
  !(!this->__fbthrift_field_list_field.empty()) &&
  !(!this->__fbthrift_field_set_field.empty()) &&
  !(!this->__fbthrift_field_map_field.empty()) &&
- !(!apache::thrift::empty(this->__fbthrift_field_struct_field));
+ !(!::apache::thrift::empty(this->__fbthrift_field_struct_field));
 }
 
 bool EmptiableTerseStruct::operator==(const EmptiableTerseStruct& rhs) const {

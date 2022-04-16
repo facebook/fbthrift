@@ -109,6 +109,7 @@ struct StructGen {
     generated.append_field(
         std::make_unique<t_field>(type, std::move(name), id));
     t_field& result = generated.fields().back();
+    result.set_qualifier(t_field_qualifier::terse);
     result.set_lineno(annot.lineno());
     return result;
   }

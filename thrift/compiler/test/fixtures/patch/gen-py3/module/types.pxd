@@ -126,8 +126,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyDataPatch&)
         bint operator<=(cMyDataPatch&)
         bint operator>=(cMyDataPatch&)
-        __field_ref[_patch_types.cStringPatch] data1_ref()
-        __field_ref[_patch_types.cI32Patch] data2_ref()
 
 
     cdef cppclass cMyDataValuePatch "::cpp2::MyDataValuePatch":
@@ -140,8 +138,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyDataValuePatch&)
         bint operator>=(cMyDataValuePatch&)
         __optional_field_ref[cMyData] assign_ref()
-        __field_ref[cbool] clear_ref()
-        __field_ref[cMyDataPatch] patch_ref()
 
 
     cdef cppclass cOptionalMyDataValuePatch "::cpp2::OptionalMyDataValuePatch":
@@ -153,10 +149,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cOptionalMyDataValuePatch&)
         bint operator<=(cOptionalMyDataValuePatch&)
         bint operator>=(cOptionalMyDataValuePatch&)
-        __field_ref[cbool] clear_ref()
-        __field_ref[cMyDataValuePatch] patch_ref()
         __optional_field_ref[cMyData] ensure_ref()
-        __field_ref[cMyDataValuePatch] patchAfter_ref()
 
 
     cdef cppclass cMyUnionPatch "::cpp2::MyUnionPatch":
@@ -168,8 +161,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyUnionPatch&)
         bint operator<=(cMyUnionPatch&)
         bint operator>=(cMyUnionPatch&)
-        __field_ref[_patch_types.cStringPatch] option1_ref()
-        __field_ref[_patch_types.cI32Patch] option2_ref()
 
 
     cdef cppclass cMyUnionValuePatch "::cpp2::MyUnionValuePatch":
@@ -181,10 +172,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyUnionValuePatch&)
         bint operator<=(cMyUnionValuePatch&)
         bint operator>=(cMyUnionValuePatch&)
-        __field_ref[cbool] clear_ref()
-        __field_ref[cMyUnionPatch] patch_ref()
-        __field_ref[cMyUnion] ensure_ref()
-        __field_ref[cMyUnionPatch] patchAfter_ref()
 
 
     cdef cppclass cOptionalMyUnionValuePatch "::cpp2::OptionalMyUnionValuePatch":
@@ -196,10 +183,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cOptionalMyUnionValuePatch&)
         bint operator<=(cOptionalMyUnionValuePatch&)
         bint operator>=(cOptionalMyUnionValuePatch&)
-        __field_ref[cbool] clear_ref()
-        __field_ref[cMyUnionValuePatch] patch_ref()
         __optional_field_ref[cMyUnion] ensure_ref()
-        __field_ref[cMyUnionValuePatch] patchAfter_ref()
 
 
     cdef cppclass cMyStructPatch "::cpp2::MyStructPatch":
@@ -211,30 +195,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyStructPatch&)
         bint operator<=(cMyStructPatch&)
         bint operator>=(cMyStructPatch&)
-        __field_ref[_patch_types.cBoolPatch] boolVal_ref()
-        __field_ref[_patch_types.cBytePatch] byteVal_ref()
-        __field_ref[_patch_types.cI16Patch] i16Val_ref()
-        __field_ref[_patch_types.cI32Patch] i32Val_ref()
-        __field_ref[_patch_types.cI64Patch] i64Val_ref()
-        __field_ref[_patch_types.cFloatPatch] floatVal_ref()
-        __field_ref[_patch_types.cDoublePatch] doubleVal_ref()
-        __field_ref[_patch_types.cStringPatch] stringVal_ref()
-        __field_ref[_patch_types.cBinaryPatch] binaryVal_ref()
-        __field_ref[cMyDataValuePatch] structVal_ref()
-        __field_ref[_patch_types.cOptionalBoolPatch] optBoolVal_ref()
-        __field_ref[_patch_types.cOptionalBytePatch] optByteVal_ref()
-        __field_ref[_patch_types.cOptionalI16Patch] optI16Val_ref()
-        __field_ref[_patch_types.cOptionalI32Patch] optI32Val_ref()
-        __field_ref[_patch_types.cOptionalI64Patch] optI64Val_ref()
-        __field_ref[_patch_types.cOptionalFloatPatch] optFloatVal_ref()
-        __field_ref[_patch_types.cOptionalDoublePatch] optDoubleVal_ref()
-        __field_ref[_patch_types.cOptionalStringPatch] optStringVal_ref()
-        __field_ref[_patch_types.cOptionalBinaryPatch] optBinaryVal_ref()
-        __field_ref[cOptionalMyDataValuePatch] optStructVal_ref()
-        __field_ref[cOptionalMyStructField21Patch] optListVal_ref()
-        __field_ref[cOptionalMyStructField22Patch] optSetVal_ref()
-        __field_ref[cOptionalMyStructField23Patch] optMapVal_ref()
-        __field_ref[cMyUnionValuePatch] unionVal_ref()
 
 
     cdef cppclass cMyStructField21Patch "::cpp2::MyStructField21Patch":
@@ -247,9 +207,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyStructField21Patch&)
         bint operator>=(cMyStructField21Patch&)
         __optional_field_ref[vector[cint16_t]] assign_ref()
-        __field_ref[cbool] clear_ref()
-        __field_ref[vector[cint16_t]] prepend_ref()
-        __field_ref[vector[cint16_t]] append_ref()
 
 
     cdef cppclass cOptionalMyStructField21Patch "::cpp2::OptionalMyStructField21Patch":
@@ -261,10 +218,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cOptionalMyStructField21Patch&)
         bint operator<=(cOptionalMyStructField21Patch&)
         bint operator>=(cOptionalMyStructField21Patch&)
-        __field_ref[cbool] clear_ref()
-        __field_ref[cMyStructField21Patch] patch_ref()
         __optional_field_ref[vector[cint16_t]] ensure_ref()
-        __field_ref[cMyStructField21Patch] patchAfter_ref()
 
 
     cdef cppclass cMyStructField22Patch "::cpp2::MyStructField22Patch":
@@ -277,9 +231,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyStructField22Patch&)
         bint operator>=(cMyStructField22Patch&)
         __optional_field_ref[cset[string]] assign_ref()
-        __field_ref[cbool] clear_ref()
-        __field_ref[cset[string]] remove_ref()
-        __field_ref[cset[string]] add_ref()
 
 
     cdef cppclass cOptionalMyStructField22Patch "::cpp2::OptionalMyStructField22Patch":
@@ -291,10 +242,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cOptionalMyStructField22Patch&)
         bint operator<=(cOptionalMyStructField22Patch&)
         bint operator>=(cOptionalMyStructField22Patch&)
-        __field_ref[cbool] clear_ref()
-        __field_ref[cMyStructField22Patch] patch_ref()
         __optional_field_ref[cset[string]] ensure_ref()
-        __field_ref[cMyStructField22Patch] patchAfter_ref()
 
 
     cdef cppclass cMyStructField23Patch "::cpp2::MyStructField23Patch":
@@ -307,8 +255,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyStructField23Patch&)
         bint operator>=(cMyStructField23Patch&)
         __optional_field_ref[cmap[string,string]] assign_ref()
-        __field_ref[cbool] clear_ref()
-        __field_ref[cmap[string,string]] put_ref()
 
 
     cdef cppclass cOptionalMyStructField23Patch "::cpp2::OptionalMyStructField23Patch":
@@ -320,10 +266,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cOptionalMyStructField23Patch&)
         bint operator<=(cOptionalMyStructField23Patch&)
         bint operator>=(cOptionalMyStructField23Patch&)
-        __field_ref[cbool] clear_ref()
-        __field_ref[cMyStructField23Patch] patch_ref()
         __optional_field_ref[cmap[string,string]] ensure_ref()
-        __field_ref[cMyStructField23Patch] patchAfter_ref()
 
 
     cdef cppclass cMyStructValuePatch "::cpp2::MyStructValuePatch":
@@ -336,8 +279,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyStructValuePatch&)
         bint operator>=(cMyStructValuePatch&)
         __optional_field_ref[cMyStruct] assign_ref()
-        __field_ref[cbool] clear_ref()
-        __field_ref[cMyStructPatch] patch_ref()
 
 
     cdef cppclass cOptionalMyStructValuePatch "::cpp2::OptionalMyStructValuePatch":
@@ -349,10 +290,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cOptionalMyStructValuePatch&)
         bint operator<=(cOptionalMyStructValuePatch&)
         bint operator>=(cOptionalMyStructValuePatch&)
-        __field_ref[cbool] clear_ref()
-        __field_ref[cMyStructValuePatch] patch_ref()
         __optional_field_ref[cMyStruct] ensure_ref()
-        __field_ref[cMyStructValuePatch] patchAfter_ref()
 
 
 

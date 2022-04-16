@@ -26,8 +26,8 @@ public final class MyDataValuePatch implements com.facebook.thrift.payload.Thrif
     @ThriftConstructor
     public MyDataValuePatch(
         @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL) final test.fixtures.patch.MyData assign,
-        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.MyDataPatch patch
+        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=) final boolean clear,
+        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=) final test.fixtures.patch.MyDataPatch patch
     ) {
         this.assign = assign;
         this.clear = clear;
@@ -55,7 +55,7 @@ public final class MyDataValuePatch implements com.facebook.thrift.payload.Thrif
     
         public test.fixtures.patch.MyData getAssign() { return assign; }
     
-            @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=)
         public Builder setClear(boolean clear) {
             this.clear = clear;
             return this;
@@ -63,7 +63,7 @@ public final class MyDataValuePatch implements com.facebook.thrift.payload.Thrif
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=)
         public Builder setPatch(test.fixtures.patch.MyDataPatch patch) {
             this.patch = patch;
             return this;
@@ -120,12 +120,12 @@ public final class MyDataValuePatch implements com.facebook.thrift.payload.Thrif
     
     
     
-    @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=)
     public boolean isClear() { return clear; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=)
     public test.fixtures.patch.MyDataPatch getPatch() { return patch; }
     
     @java.lang.Override

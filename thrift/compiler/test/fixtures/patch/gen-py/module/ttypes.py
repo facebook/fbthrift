@@ -3477,8 +3477,8 @@ MyStruct.__setstate__ = MyStruct__setstate__
 all_structs.append(MyDataPatch)
 MyDataPatch.thrift_spec = (
   None, # 0
-  (1, TType.STRUCT, 'data1', [patch.ttypes.StringPatch, patch.ttypes.StringPatch.thrift_spec, False], None, 2, ), # 1
-  (2, TType.STRUCT, 'data2', [patch.ttypes.I32Patch, patch.ttypes.I32Patch.thrift_spec, False], None, 2, ), # 2
+  (1, TType.STRUCT, 'data1', [patch.ttypes.StringPatch, patch.ttypes.StringPatch.thrift_spec, False], None, 3, ), # 1
+  (2, TType.STRUCT, 'data2', [patch.ttypes.I32Patch, patch.ttypes.I32Patch.thrift_spec, False], None, 3, ), # 2
 )
 
 MyDataPatch.thrift_struct_annotations = {
@@ -3507,8 +3507,8 @@ all_structs.append(MyDataValuePatch)
 MyDataValuePatch.thrift_spec = (
   None, # 0
   (1, TType.STRUCT, 'assign', [MyData, MyData.thrift_spec, False], None, 1, ), # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyDataPatch, MyDataPatch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [MyDataPatch, MyDataPatch.thrift_spec, False], None, 3, ), # 3
 )
 
 MyDataValuePatch.thrift_struct_annotations = {
@@ -3542,10 +3542,10 @@ all_structs.append(OptionalMyDataValuePatch)
 OptionalMyDataValuePatch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 3, ), # 3
   (4, TType.STRUCT, 'ensure', [MyData, MyData.thrift_spec, False], None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalMyDataValuePatch.thrift_struct_annotations = {
@@ -3580,8 +3580,8 @@ OptionalMyDataValuePatch.__setstate__ = OptionalMyDataValuePatch__setstate__
 all_structs.append(MyUnionPatch)
 MyUnionPatch.thrift_spec = (
   None, # 0
-  (1, TType.STRUCT, 'option1', [patch.ttypes.StringPatch, patch.ttypes.StringPatch.thrift_spec, False], None, 2, ), # 1
-  (2, TType.STRUCT, 'option2', [patch.ttypes.I32Patch, patch.ttypes.I32Patch.thrift_spec, False], None, 2, ), # 2
+  (1, TType.STRUCT, 'option1', [patch.ttypes.StringPatch, patch.ttypes.StringPatch.thrift_spec, False], None, 3, ), # 1
+  (2, TType.STRUCT, 'option2', [patch.ttypes.I32Patch, patch.ttypes.I32Patch.thrift_spec, False], None, 3, ), # 2
 )
 
 MyUnionPatch.thrift_struct_annotations = {
@@ -3610,10 +3610,10 @@ all_structs.append(MyUnionValuePatch)
 MyUnionValuePatch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'ensure', [MyUnion, MyUnion.thrift_spec, True], None, 2, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 2, ), # 5
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 3, ), # 3
+  (4, TType.STRUCT, 'ensure', [MyUnion, MyUnion.thrift_spec, True], None, 3, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 3, ), # 5
 )
 
 MyUnionValuePatch.thrift_struct_annotations = {
@@ -3646,10 +3646,10 @@ all_structs.append(OptionalMyUnionValuePatch)
 OptionalMyUnionValuePatch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 3, ), # 3
   (4, TType.STRUCT, 'ensure', [MyUnion, MyUnion.thrift_spec, True], None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalMyUnionValuePatch.thrift_struct_annotations = {
@@ -3684,36 +3684,36 @@ OptionalMyUnionValuePatch.__setstate__ = OptionalMyUnionValuePatch__setstate__
 all_structs.append(MyStructPatch)
 MyStructPatch.thrift_spec = (
   None, # 0
-  (1, TType.STRUCT, 'boolVal', [patch.ttypes.BoolPatch, patch.ttypes.BoolPatch.thrift_spec, False], None, 2, ), # 1
-  (2, TType.STRUCT, 'byteVal', [patch.ttypes.BytePatch, patch.ttypes.BytePatch.thrift_spec, False], None, 2, ), # 2
-  (3, TType.STRUCT, 'i16Val', [patch.ttypes.I16Patch, patch.ttypes.I16Patch.thrift_spec, False], None, 2, ), # 3
-  (4, TType.STRUCT, 'i32Val', [patch.ttypes.I32Patch, patch.ttypes.I32Patch.thrift_spec, False], None, 2, ), # 4
-  (5, TType.STRUCT, 'i64Val', [patch.ttypes.I64Patch, patch.ttypes.I64Patch.thrift_spec, False], None, 2, ), # 5
-  (6, TType.STRUCT, 'floatVal', [patch.ttypes.FloatPatch, patch.ttypes.FloatPatch.thrift_spec, False], None, 2, ), # 6
-  (7, TType.STRUCT, 'doubleVal', [patch.ttypes.DoublePatch, patch.ttypes.DoublePatch.thrift_spec, False], None, 2, ), # 7
-  (8, TType.STRUCT, 'stringVal', [patch.ttypes.StringPatch, patch.ttypes.StringPatch.thrift_spec, False], None, 2, ), # 8
-  (9, TType.STRUCT, 'binaryVal', [patch.ttypes.BinaryPatch, patch.ttypes.BinaryPatch.thrift_spec, False], None, 2, ), # 9
-  (10, TType.STRUCT, 'structVal', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 10
-  (11, TType.STRUCT, 'optBoolVal', [patch.ttypes.OptionalBoolPatch, patch.ttypes.OptionalBoolPatch.thrift_spec, False], None, 2, ), # 11
-  (12, TType.STRUCT, 'optByteVal', [patch.ttypes.OptionalBytePatch, patch.ttypes.OptionalBytePatch.thrift_spec, False], None, 2, ), # 12
-  (13, TType.STRUCT, 'optI16Val', [patch.ttypes.OptionalI16Patch, patch.ttypes.OptionalI16Patch.thrift_spec, False], None, 2, ), # 13
-  (14, TType.STRUCT, 'optI32Val', [patch.ttypes.OptionalI32Patch, patch.ttypes.OptionalI32Patch.thrift_spec, False], None, 2, ), # 14
-  (15, TType.STRUCT, 'optI64Val', [patch.ttypes.OptionalI64Patch, patch.ttypes.OptionalI64Patch.thrift_spec, False], None, 2, ), # 15
-  (16, TType.STRUCT, 'optFloatVal', [patch.ttypes.OptionalFloatPatch, patch.ttypes.OptionalFloatPatch.thrift_spec, False], None, 2, ), # 16
-  (17, TType.STRUCT, 'optDoubleVal', [patch.ttypes.OptionalDoublePatch, patch.ttypes.OptionalDoublePatch.thrift_spec, False], None, 2, ), # 17
-  (18, TType.STRUCT, 'optStringVal', [patch.ttypes.OptionalStringPatch, patch.ttypes.OptionalStringPatch.thrift_spec, False], None, 2, ), # 18
-  (19, TType.STRUCT, 'optBinaryVal', [patch.ttypes.OptionalBinaryPatch, patch.ttypes.OptionalBinaryPatch.thrift_spec, False], None, 2, ), # 19
-  (20, TType.STRUCT, 'optStructVal', [OptionalMyDataValuePatch, OptionalMyDataValuePatch.thrift_spec, False], None, 2, ), # 20
-  (21, TType.STRUCT, 'optListVal', [OptionalMyStructField21Patch, OptionalMyStructField21Patch.thrift_spec, False], None, 2, ), # 21
-  (22, TType.STRUCT, 'optSetVal', [OptionalMyStructField22Patch, OptionalMyStructField22Patch.thrift_spec, False], None, 2, ), # 22
-  (23, TType.STRUCT, 'optMapVal', [OptionalMyStructField23Patch, OptionalMyStructField23Patch.thrift_spec, False], None, 2, ), # 23
+  (1, TType.STRUCT, 'boolVal', [patch.ttypes.BoolPatch, patch.ttypes.BoolPatch.thrift_spec, False], None, 3, ), # 1
+  (2, TType.STRUCT, 'byteVal', [patch.ttypes.BytePatch, patch.ttypes.BytePatch.thrift_spec, False], None, 3, ), # 2
+  (3, TType.STRUCT, 'i16Val', [patch.ttypes.I16Patch, patch.ttypes.I16Patch.thrift_spec, False], None, 3, ), # 3
+  (4, TType.STRUCT, 'i32Val', [patch.ttypes.I32Patch, patch.ttypes.I32Patch.thrift_spec, False], None, 3, ), # 4
+  (5, TType.STRUCT, 'i64Val', [patch.ttypes.I64Patch, patch.ttypes.I64Patch.thrift_spec, False], None, 3, ), # 5
+  (6, TType.STRUCT, 'floatVal', [patch.ttypes.FloatPatch, patch.ttypes.FloatPatch.thrift_spec, False], None, 3, ), # 6
+  (7, TType.STRUCT, 'doubleVal', [patch.ttypes.DoublePatch, patch.ttypes.DoublePatch.thrift_spec, False], None, 3, ), # 7
+  (8, TType.STRUCT, 'stringVal', [patch.ttypes.StringPatch, patch.ttypes.StringPatch.thrift_spec, False], None, 3, ), # 8
+  (9, TType.STRUCT, 'binaryVal', [patch.ttypes.BinaryPatch, patch.ttypes.BinaryPatch.thrift_spec, False], None, 3, ), # 9
+  (10, TType.STRUCT, 'structVal', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 3, ), # 10
+  (11, TType.STRUCT, 'optBoolVal', [patch.ttypes.OptionalBoolPatch, patch.ttypes.OptionalBoolPatch.thrift_spec, False], None, 3, ), # 11
+  (12, TType.STRUCT, 'optByteVal', [patch.ttypes.OptionalBytePatch, patch.ttypes.OptionalBytePatch.thrift_spec, False], None, 3, ), # 12
+  (13, TType.STRUCT, 'optI16Val', [patch.ttypes.OptionalI16Patch, patch.ttypes.OptionalI16Patch.thrift_spec, False], None, 3, ), # 13
+  (14, TType.STRUCT, 'optI32Val', [patch.ttypes.OptionalI32Patch, patch.ttypes.OptionalI32Patch.thrift_spec, False], None, 3, ), # 14
+  (15, TType.STRUCT, 'optI64Val', [patch.ttypes.OptionalI64Patch, patch.ttypes.OptionalI64Patch.thrift_spec, False], None, 3, ), # 15
+  (16, TType.STRUCT, 'optFloatVal', [patch.ttypes.OptionalFloatPatch, patch.ttypes.OptionalFloatPatch.thrift_spec, False], None, 3, ), # 16
+  (17, TType.STRUCT, 'optDoubleVal', [patch.ttypes.OptionalDoublePatch, patch.ttypes.OptionalDoublePatch.thrift_spec, False], None, 3, ), # 17
+  (18, TType.STRUCT, 'optStringVal', [patch.ttypes.OptionalStringPatch, patch.ttypes.OptionalStringPatch.thrift_spec, False], None, 3, ), # 18
+  (19, TType.STRUCT, 'optBinaryVal', [patch.ttypes.OptionalBinaryPatch, patch.ttypes.OptionalBinaryPatch.thrift_spec, False], None, 3, ), # 19
+  (20, TType.STRUCT, 'optStructVal', [OptionalMyDataValuePatch, OptionalMyDataValuePatch.thrift_spec, False], None, 3, ), # 20
+  (21, TType.STRUCT, 'optListVal', [OptionalMyStructField21Patch, OptionalMyStructField21Patch.thrift_spec, False], None, 3, ), # 21
+  (22, TType.STRUCT, 'optSetVal', [OptionalMyStructField22Patch, OptionalMyStructField22Patch.thrift_spec, False], None, 3, ), # 22
+  (23, TType.STRUCT, 'optMapVal', [OptionalMyStructField23Patch, OptionalMyStructField23Patch.thrift_spec, False], None, 3, ), # 23
   None, # 24
   None, # 25
   None, # 26
   None, # 27
   None, # 28
   None, # 29
-  (30, TType.STRUCT, 'unionVal', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 2, ), # 30
+  (30, TType.STRUCT, 'unionVal', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 3, ), # 30
 )
 
 MyStructPatch.thrift_struct_annotations = {
@@ -3786,10 +3786,10 @@ all_structs.append(MyStructField21Patch)
 MyStructField21Patch.thrift_spec = (
   None, # 0
   (1, TType.LIST, 'assign', (TType.I16,None), None, 1, ), # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
   None, # 3
-  (4, TType.LIST, 'prepend', (TType.I16,None), None, 2, ), # 4
-  (5, TType.LIST, 'append', (TType.I16,None), None, 2, ), # 5
+  (4, TType.LIST, 'prepend', (TType.I16,None), None, 3, ), # 4
+  (5, TType.LIST, 'append', (TType.I16,None), None, 3, ), # 5
 )
 
 MyStructField21Patch.thrift_struct_annotations = {
@@ -3822,10 +3822,10 @@ all_structs.append(OptionalMyStructField21Patch)
 OptionalMyStructField21Patch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 3, ), # 3
   (4, TType.LIST, 'ensure', (TType.I16,None), None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalMyStructField21Patch.thrift_struct_annotations = {
@@ -3858,10 +3858,10 @@ all_structs.append(MyStructField22Patch)
 MyStructField22Patch.thrift_spec = (
   None, # 0
   (1, TType.SET, 'assign', (TType.STRING,True), None, 1, ), # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
   None, # 3
-  (4, TType.SET, 'remove', (TType.STRING,True), None, 2, ), # 4
-  (5, TType.SET, 'add', (TType.STRING,True), None, 2, ), # 5
+  (4, TType.SET, 'remove', (TType.STRING,True), None, 3, ), # 4
+  (5, TType.SET, 'add', (TType.STRING,True), None, 3, ), # 5
 )
 
 MyStructField22Patch.thrift_struct_annotations = {
@@ -3894,10 +3894,10 @@ all_structs.append(OptionalMyStructField22Patch)
 OptionalMyStructField22Patch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 3, ), # 3
   (4, TType.SET, 'ensure', (TType.STRING,True), None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalMyStructField22Patch.thrift_struct_annotations = {
@@ -3930,12 +3930,12 @@ all_structs.append(MyStructField23Patch)
 MyStructField23Patch.thrift_spec = (
   None, # 0
   (1, TType.MAP, 'assign', (TType.STRING,True,TType.STRING,True), None, 1, ), # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
   None, # 3
   None, # 4
   None, # 5
   None, # 6
-  (7, TType.MAP, 'put', (TType.STRING,True,TType.STRING,True), None, 2, ), # 7
+  (7, TType.MAP, 'put', (TType.STRING,True,TType.STRING,True), None, 3, ), # 7
 )
 
 MyStructField23Patch.thrift_struct_annotations = {
@@ -3966,10 +3966,10 @@ all_structs.append(OptionalMyStructField23Patch)
 OptionalMyStructField23Patch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 3, ), # 3
   (4, TType.MAP, 'ensure', (TType.STRING,True,TType.STRING,True), None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalMyStructField23Patch.thrift_struct_annotations = {
@@ -4002,8 +4002,8 @@ all_structs.append(MyStructValuePatch)
 MyStructValuePatch.thrift_spec = (
   None, # 0
   (1, TType.STRUCT, 'assign', [MyStruct, MyStruct.thrift_spec, False], None, 1, ), # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructPatch, MyStructPatch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [MyStructPatch, MyStructPatch.thrift_spec, False], None, 3, ), # 3
 )
 
 MyStructValuePatch.thrift_struct_annotations = {
@@ -4037,10 +4037,10 @@ all_structs.append(OptionalMyStructValuePatch)
 OptionalMyStructValuePatch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructValuePatch, MyStructValuePatch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [MyStructValuePatch, MyStructValuePatch.thrift_spec, False], None, 3, ), # 3
   (4, TType.STRUCT, 'ensure', [MyStruct, MyStruct.thrift_spec, False], None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyStructValuePatch, MyStructValuePatch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [MyStructValuePatch, MyStructValuePatch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalMyStructValuePatch.thrift_struct_annotations = {

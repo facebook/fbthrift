@@ -26,8 +26,8 @@ public final class MyStructField23Patch implements com.facebook.thrift.payload.T
     @ThriftConstructor
     public MyStructField23Patch(
         @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL) final Map<String, String> assign,
-        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=7, name="put", requiredness=Requiredness.NONE) final Map<String, String> put
+        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=) final boolean clear,
+        @com.facebook.swift.codec.ThriftField(value=7, name="put", requiredness=) final Map<String, String> put
     ) {
         this.assign = assign;
         this.clear = clear;
@@ -55,7 +55,7 @@ public final class MyStructField23Patch implements com.facebook.thrift.payload.T
     
         public Map<String, String> getAssign() { return assign; }
     
-            @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=)
         public Builder setClear(boolean clear) {
             this.clear = clear;
             return this;
@@ -63,7 +63,7 @@ public final class MyStructField23Patch implements com.facebook.thrift.payload.T
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=7, name="put", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=7, name="put", requiredness=)
         public Builder setPut(Map<String, String> put) {
             this.put = put;
             return this;
@@ -122,12 +122,12 @@ public final class MyStructField23Patch implements com.facebook.thrift.payload.T
     
     
     
-    @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=)
     public boolean isClear() { return clear; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=7, name="put", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=7, name="put", requiredness=)
     public Map<String, String> getPut() { return put; }
     
     @java.lang.Override

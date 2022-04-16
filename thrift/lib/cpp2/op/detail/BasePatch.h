@@ -64,6 +64,10 @@ bool hasValue(field_ref<T> val) {
   return !thrift::empty(*val);
 }
 template <typename T>
+bool hasValue(terse_field_ref<T> val) {
+  return !thrift::empty(*val);
+}
+template <typename T>
 if_opt_type<T> clearValue(T& opt) {
   opt.reset();
 }
@@ -79,6 +83,10 @@ template <typename T, typename U>
 bool sameType(field_ref<T> unn1, const U& unn2) {
   return unn1->getType() == unn2.getType();
 }
+template <typename T, typename U>
+bool sameType(terse_field_ref<T> unn1, const U& unn2) {
+  return unn1->getType() == unn2.getType();
+}
 
 // Base class for all patch types.
 // - Patch: The Thrift struct representation for the patch.
@@ -86,6 +94,7 @@ bool sameType(field_ref<T> unn1, const U& unn2) {
 template <typename Patch, typename Derived>
 class BasePatch {
  public:
+  using underlying_tag = type::struct_t<Patch>;
   using underlying_type = Patch;
 
   BasePatch() = default;
@@ -96,7 +105,8 @@ class BasePatch {
   FOLLY_NODISCARD const underlying_type& get() const& { return patch_; }
   FOLLY_NODISCARD underlying_type&& get() && { return std::move(patch_); }
 
-  void reset() { op::clear<type::struct_t<Patch>>(patch_); }
+  void reset() { op::clear<underlying_tag>(patch_); }
+  bool empty() const { return op::isEmpty<underlying_tag>(patch_); }
 
   // Automatically dereference non-optional fields.
   template <typename U>
@@ -104,11 +114,24 @@ class BasePatch {
     derived().apply(*field);
   }
   template <typename U>
+  void apply(terse_field_ref<U> field) const {
+    derived().apply(*field);
+  }
+  template <typename U>
   void assign(field_ref<U> val) {
     derived().assign(std::forward<U>(*val));
   }
   template <typename U>
+  void assign(terse_field_ref<U> val) {
+    derived().assign(std::forward<U>(*val));
+  }
+  template <typename U>
   Derived& operator=(field_ref<U> field) {
+    derived().assign(std::forward<U>(*field));
+    return derived();
+  }
+  template <typename U>
+  Derived& operator=(terse_field_ref<U> field) {
     derived().assign(std::forward<U>(*field));
     return derived();
   }

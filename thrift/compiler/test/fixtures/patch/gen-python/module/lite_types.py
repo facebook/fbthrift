@@ -268,14 +268,14 @@ class MyDataPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "data1",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.StringPatch),  # typeinfo
             None,  # default value
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "data2",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.I32Patch),  # typeinfo
             None,  # default value
@@ -307,14 +307,14 @@ class MyDataValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "clear",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patch",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataPatch),  # typeinfo
             None,  # default value
@@ -339,14 +339,14 @@ class OptionalMyDataValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "clear",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patch",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataValuePatch),  # typeinfo
             None,  # default value
@@ -360,7 +360,7 @@ class OptionalMyDataValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataValuePatch),  # typeinfo
             None,  # default value
@@ -385,14 +385,14 @@ class MyUnionPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "option1",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.StringPatch),  # typeinfo
             None,  # default value
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "option2",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.I32Patch),  # typeinfo
             None,  # default value
@@ -417,28 +417,28 @@ class MyUnionValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "clear",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patch",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnionPatch),  # typeinfo
             None,  # default value
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "ensure",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnion),  # typeinfo
             None,  # default value
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnionPatch),  # typeinfo
             None,  # default value
@@ -463,14 +463,14 @@ class OptionalMyUnionValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "clear",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patch",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnionValuePatch),  # typeinfo
             None,  # default value
@@ -484,7 +484,7 @@ class OptionalMyUnionValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnionValuePatch),  # typeinfo
             None,  # default value
@@ -509,168 +509,168 @@ class MyStructPatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "boolVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.BoolPatch),  # typeinfo
             None,  # default value
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "byteVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.BytePatch),  # typeinfo
             None,  # default value
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "i16Val",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.I16Patch),  # typeinfo
             None,  # default value
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "i32Val",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.I32Patch),  # typeinfo
             None,  # default value
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "i64Val",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.I64Patch),  # typeinfo
             None,  # default value
         ),
         (
             6,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "floatVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.FloatPatch),  # typeinfo
             None,  # default value
         ),
         (
             7,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "doubleVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.DoublePatch),  # typeinfo
             None,  # default value
         ),
         (
             8,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "stringVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.StringPatch),  # typeinfo
             None,  # default value
         ),
         (
             9,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "binaryVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.BinaryPatch),  # typeinfo
             None,  # default value
         ),
         (
             10,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "structVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataValuePatch),  # typeinfo
             None,  # default value
         ),
         (
             11,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "optBoolVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalBoolPatch),  # typeinfo
             None,  # default value
         ),
         (
             12,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "optByteVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalBytePatch),  # typeinfo
             None,  # default value
         ),
         (
             13,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "optI16Val",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalI16Patch),  # typeinfo
             None,  # default value
         ),
         (
             14,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "optI32Val",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalI32Patch),  # typeinfo
             None,  # default value
         ),
         (
             15,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "optI64Val",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalI64Patch),  # typeinfo
             None,  # default value
         ),
         (
             16,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "optFloatVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalFloatPatch),  # typeinfo
             None,  # default value
         ),
         (
             17,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "optDoubleVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalDoublePatch),  # typeinfo
             None,  # default value
         ),
         (
             18,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "optStringVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalStringPatch),  # typeinfo
             None,  # default value
         ),
         (
             19,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "optBinaryVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(patch.lite_types.OptionalBinaryPatch),  # typeinfo
             None,  # default value
         ),
         (
             20,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "optStructVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(OptionalMyDataValuePatch),  # typeinfo
             None,  # default value
         ),
         (
             21,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "optListVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(OptionalMyStructField21Patch),  # typeinfo
             None,  # default value
         ),
         (
             22,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "optSetVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(OptionalMyStructField22Patch),  # typeinfo
             None,  # default value
         ),
         (
             23,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "optMapVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(OptionalMyStructField23Patch),  # typeinfo
             None,  # default value
         ),
         (
             30,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "unionVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnionValuePatch),  # typeinfo
             None,  # default value
@@ -702,21 +702,21 @@ class MyStructField21Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "clear",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "prepend",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
             None,  # default value
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "append",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
             None,  # default value
@@ -741,14 +741,14 @@ class OptionalMyStructField21Patch(metaclass=_fbthrift_py3lite_types.StructMeta)
     _fbthrift_SPEC = (
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "clear",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patch",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructField21Patch),  # typeinfo
             None,  # default value
@@ -762,7 +762,7 @@ class OptionalMyStructField21Patch(metaclass=_fbthrift_py3lite_types.StructMeta)
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructField21Patch),  # typeinfo
             None,  # default value
@@ -794,21 +794,21 @@ class MyStructField22Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "clear",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "remove",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "add",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
@@ -833,14 +833,14 @@ class OptionalMyStructField22Patch(metaclass=_fbthrift_py3lite_types.StructMeta)
     _fbthrift_SPEC = (
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "clear",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patch",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructField22Patch),  # typeinfo
             None,  # default value
@@ -854,7 +854,7 @@ class OptionalMyStructField22Patch(metaclass=_fbthrift_py3lite_types.StructMeta)
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructField22Patch),  # typeinfo
             None,  # default value
@@ -886,14 +886,14 @@ class MyStructField23Patch(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "clear",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
         (
             7,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "put",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
@@ -918,14 +918,14 @@ class OptionalMyStructField23Patch(metaclass=_fbthrift_py3lite_types.StructMeta)
     _fbthrift_SPEC = (
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "clear",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patch",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructField23Patch),  # typeinfo
             None,  # default value
@@ -939,7 +939,7 @@ class OptionalMyStructField23Patch(metaclass=_fbthrift_py3lite_types.StructMeta)
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructField23Patch),  # typeinfo
             None,  # default value
@@ -971,14 +971,14 @@ class MyStructValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "clear",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patch",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructPatch),  # typeinfo
             None,  # default value
@@ -1003,14 +1003,14 @@ class OptionalMyStructValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "clear",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patch",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructValuePatch),  # typeinfo
             None,  # default value
@@ -1024,7 +1024,7 @@ class OptionalMyStructValuePatch(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "patchAfter",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStructValuePatch),  # typeinfo
             None,  # default value

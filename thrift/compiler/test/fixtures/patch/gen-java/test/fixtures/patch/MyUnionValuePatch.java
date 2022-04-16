@@ -25,10 +25,10 @@ public final class MyUnionValuePatch implements com.facebook.thrift.payload.Thri
 
     @ThriftConstructor
     public MyUnionValuePatch(
-        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.MyUnionPatch patch,
-        @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.NONE) final test.fixtures.patch.MyUnion ensure,
-        @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE) final test.fixtures.patch.MyUnionPatch patchAfter
+        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=) final boolean clear,
+        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=) final test.fixtures.patch.MyUnionPatch patch,
+        @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=) final test.fixtures.patch.MyUnion ensure,
+        @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=) final test.fixtures.patch.MyUnionPatch patchAfter
     ) {
         this.clear = clear;
         this.patch = patch;
@@ -51,7 +51,7 @@ public final class MyUnionValuePatch implements com.facebook.thrift.payload.Thri
         private test.fixtures.patch.MyUnion ensure = null;
         private test.fixtures.patch.MyUnionPatch patchAfter = null;
     
-        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=)
         public Builder setClear(boolean clear) {
             this.clear = clear;
             return this;
@@ -59,7 +59,7 @@ public final class MyUnionValuePatch implements com.facebook.thrift.payload.Thri
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=)
         public Builder setPatch(test.fixtures.patch.MyUnionPatch patch) {
             this.patch = patch;
             return this;
@@ -67,7 +67,7 @@ public final class MyUnionValuePatch implements com.facebook.thrift.payload.Thri
     
         public test.fixtures.patch.MyUnionPatch getPatch() { return patch; }
     
-            @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=)
         public Builder setEnsure(test.fixtures.patch.MyUnion ensure) {
             this.ensure = ensure;
             return this;
@@ -75,7 +75,7 @@ public final class MyUnionValuePatch implements com.facebook.thrift.payload.Thri
     
         public test.fixtures.patch.MyUnion getEnsure() { return ensure; }
     
-            @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=)
         public Builder setPatchAfter(test.fixtures.patch.MyUnionPatch patchAfter) {
             this.patchAfter = patchAfter;
             return this;
@@ -135,22 +135,22 @@ public final class MyUnionValuePatch implements com.facebook.thrift.payload.Thri
     }
     
     
-    @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=)
     public boolean isClear() { return clear; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=)
     public test.fixtures.patch.MyUnionPatch getPatch() { return patch; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=)
     public test.fixtures.patch.MyUnion getEnsure() { return ensure; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=)
     public test.fixtures.patch.MyUnionPatch getPatchAfter() { return patchAfter; }
     
     @java.lang.Override

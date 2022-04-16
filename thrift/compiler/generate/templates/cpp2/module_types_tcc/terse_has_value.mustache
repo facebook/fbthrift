@@ -22,7 +22,7 @@
   %><%#field:cpp_ref?%> && <%/field:cpp_ref?%>!<% > field/member%><%#field:cpp_ref?%>-><%/field:cpp_ref?%><%^field:cpp_ref?%>.<%/field:cpp_ref?%>empty()<%!
 %><%/type:resolves_to_container?%><%!
 %><%#type:struct?%><%!
-  %><%#field:cpp_ref?%> && <%/field:cpp_ref?%>!apache::thrift::empty(<%#field:cpp_ref?%>*<%/field:cpp_ref?%><% > field/member%>)<%!
+  %><%#field:cpp_ref?%> && <%/field:cpp_ref?%>!::apache::thrift::empty(<% > module_types_tcc/pm_value%>)<%!
 %><%/type:struct?%><%!
 %><%#type:raw_string_or_binary?%><%!
   %><%#field:cpp_ref?%> && <%/field:cpp_ref?%>!apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEmpty(<% >  module_types_tcc/field_ref %>)<%!

@@ -879,6 +879,7 @@ class mstch_field : public mstch_base {
             {"field:type", &mstch_field::type},
             {"field:index", &mstch_field::index},
             {"field:required?", &mstch_field::is_required},
+            {"field:terse?", &mstch_field::is_terse},
             {"field:optional?", &mstch_field::is_optional},
             {"field:opt_in_req_out?", &mstch_field::is_optInReqOut},
             {"field:annotations", &mstch_field::annotations},
@@ -891,6 +892,9 @@ class mstch_field : public mstch_base {
   mstch::node value();
   mstch::node type();
   mstch::node index() { return std::to_string(index_); }
+  mstch::node is_terse() {
+    return field_->qualifier() == t_field_qualifier::terse;
+  }
   mstch::node is_required() {
     return field_->get_req() == t_field::e_req::required;
   }

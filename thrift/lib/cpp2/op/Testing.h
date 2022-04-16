@@ -96,6 +96,9 @@ void expectPatch(
     auto actual1 = actual;
     patch.apply(actual1);
     EXPECT_EQ(actual1, expected1);
+    if (actual1 != expected1) {
+      EXPECT_FALSE(patch.empty());
+    }
     patch.apply(actual1);
     EXPECT_EQ(actual1, expected2);
   }
@@ -107,8 +110,7 @@ void expectPatch(
   }
   { // Reset should be a noop patch.
     patch.reset();
-    // TODO(afuller): Make patch fields terse.
-    // EXPECT_TRUE(empty(patch.get()));
+    EXPECT_TRUE(patch.empty());
     auto actual3 = actual;
     patch.apply(actual3);
     EXPECT_EQ(actual3, actual);

@@ -25,8 +25,8 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
 
     @ThriftConstructor
     public MyDataPatch(
-        @com.facebook.swift.codec.ThriftField(value=1, name="data1", requiredness=Requiredness.NONE) final com.facebook.thrift.op.StringPatch data1,
-        @com.facebook.swift.codec.ThriftField(value=2, name="data2", requiredness=Requiredness.NONE) final com.facebook.thrift.op.I32Patch data2
+        @com.facebook.swift.codec.ThriftField(value=1, name="data1", requiredness=) final com.facebook.thrift.op.StringPatch data1,
+        @com.facebook.swift.codec.ThriftField(value=2, name="data2", requiredness=) final com.facebook.thrift.op.I32Patch data2
     ) {
         this.data1 = data1;
         this.data2 = data2;
@@ -43,7 +43,7 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
         private com.facebook.thrift.op.StringPatch data1 = null;
         private com.facebook.thrift.op.I32Patch data2 = null;
     
-        @com.facebook.swift.codec.ThriftField(value=1, name="data1", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="data1", requiredness=)
         public Builder setData1(com.facebook.thrift.op.StringPatch data1) {
             this.data1 = data1;
             return this;
@@ -51,7 +51,7 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
     
         public com.facebook.thrift.op.StringPatch getData1() { return data1; }
     
-            @com.facebook.swift.codec.ThriftField(value=2, name="data2", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="data2", requiredness=)
         public Builder setData2(com.facebook.thrift.op.I32Patch data2) {
             this.data2 = data2;
             return this;
@@ -97,12 +97,12 @@ public final class MyDataPatch implements com.facebook.thrift.payload.ThriftSeri
     }
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=1, name="data1", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="data1", requiredness=)
     public com.facebook.thrift.op.StringPatch getData1() { return data1; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=2, name="data2", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="data2", requiredness=)
     public com.facebook.thrift.op.I32Patch getData2() { return data2; }
     
     @java.lang.Override

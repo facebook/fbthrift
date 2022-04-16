@@ -2670,10 +2670,10 @@ all_structs.append(OptionalBoolPatch)
 OptionalBoolPatch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [BoolPatch, BoolPatch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [BoolPatch, BoolPatch.thrift_spec, False], None, 3, ), # 3
   (4, TType.BOOL, 'ensure', None, None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [BoolPatch, BoolPatch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [BoolPatch, BoolPatch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalBoolPatch.thrift_struct_annotations = {
@@ -2706,10 +2706,10 @@ all_structs.append(OptionalBytePatch)
 OptionalBytePatch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [BytePatch, BytePatch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [BytePatch, BytePatch.thrift_spec, False], None, 3, ), # 3
   (4, TType.BYTE, 'ensure', None, None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [BytePatch, BytePatch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [BytePatch, BytePatch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalBytePatch.thrift_struct_annotations = {
@@ -2742,10 +2742,10 @@ all_structs.append(OptionalI16Patch)
 OptionalI16Patch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [I16Patch, I16Patch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [I16Patch, I16Patch.thrift_spec, False], None, 3, ), # 3
   (4, TType.I16, 'ensure', None, None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [I16Patch, I16Patch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [I16Patch, I16Patch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalI16Patch.thrift_struct_annotations = {
@@ -2778,10 +2778,10 @@ all_structs.append(OptionalI32Patch)
 OptionalI32Patch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [I32Patch, I32Patch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [I32Patch, I32Patch.thrift_spec, False], None, 3, ), # 3
   (4, TType.I32, 'ensure', None, None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [I32Patch, I32Patch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [I32Patch, I32Patch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalI32Patch.thrift_struct_annotations = {
@@ -2814,10 +2814,10 @@ all_structs.append(OptionalI64Patch)
 OptionalI64Patch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [I64Patch, I64Patch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [I64Patch, I64Patch.thrift_spec, False], None, 3, ), # 3
   (4, TType.I64, 'ensure', None, None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [I64Patch, I64Patch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [I64Patch, I64Patch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalI64Patch.thrift_struct_annotations = {
@@ -2850,10 +2850,10 @@ all_structs.append(OptionalFloatPatch)
 OptionalFloatPatch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [FloatPatch, FloatPatch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [FloatPatch, FloatPatch.thrift_spec, False], None, 3, ), # 3
   (4, TType.FLOAT, 'ensure', None, None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [FloatPatch, FloatPatch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [FloatPatch, FloatPatch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalFloatPatch.thrift_struct_annotations = {
@@ -2886,10 +2886,10 @@ all_structs.append(OptionalDoublePatch)
 OptionalDoublePatch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [DoublePatch, DoublePatch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [DoublePatch, DoublePatch.thrift_spec, False], None, 3, ), # 3
   (4, TType.DOUBLE, 'ensure', None, None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [DoublePatch, DoublePatch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [DoublePatch, DoublePatch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalDoublePatch.thrift_struct_annotations = {
@@ -2922,10 +2922,10 @@ all_structs.append(OptionalStringPatch)
 OptionalStringPatch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [StringPatch, StringPatch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [StringPatch, StringPatch.thrift_spec, False], None, 3, ), # 3
   (4, TType.STRING, 'ensure', True, None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [StringPatch, StringPatch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [StringPatch, StringPatch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalStringPatch.thrift_struct_annotations = {
@@ -2958,10 +2958,10 @@ all_structs.append(OptionalBinaryPatch)
 OptionalBinaryPatch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
-  (3, TType.STRUCT, 'patch', [BinaryPatch, BinaryPatch.thrift_spec, False], None, 2, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (3, TType.STRUCT, 'patch', [BinaryPatch, BinaryPatch.thrift_spec, False], None, 3, ), # 3
   (4, TType.STRING, 'ensure', False, None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [BinaryPatch, BinaryPatch.thrift_spec, False], None, 2, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [BinaryPatch, BinaryPatch.thrift_spec, False], None, 3, ), # 5
 )
 
 OptionalBinaryPatch.thrift_struct_annotations = {
