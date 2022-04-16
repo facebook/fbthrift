@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/patch.thrift"
 
+@thrift.TerseWrite
 @patch.GeneratePatch
 package "test.dev/fixtures/patch"
 

@@ -90,11 +90,8 @@ void mutate_terse_write_annotation_field(
 
 // Only an unqualified field is eligible for terse write.
 void mutate_terse_write_annotation_struct(
-    diagnostic_context&, mutator_context&, t_struct& node) {
-  const t_const* terse_write_annotation =
-      node.find_structured_annotation_or_null(kTerseWriteUri);
-
-  if (terse_write_annotation) {
+    diagnostic_context& ctx, mutator_context&, t_struct& node) {
+  if (ctx.program().inherit_annotation_or_null(node, kTerseWriteUri)) {
     for (auto& field : node.fields()) {
       if (field.qualifier() == t_field_qualifier::unspecified) {
         field.set_qualifier(t_field_qualifier::terse);

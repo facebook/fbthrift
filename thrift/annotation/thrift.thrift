@@ -45,6 +45,7 @@ struct Experimental {}
 @scope.Definition
 struct Deprecated {}
 
+@scope.Program
 @scope.Field
 @scope.Struct
 @Experimental

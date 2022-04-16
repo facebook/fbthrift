@@ -38,6 +38,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 from folly.optional cimport cOptional as __cOptional
+cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
 cimport patch.types as _patch_types
 
 cimport module.types_fields as _fbthrift_types_fields
@@ -70,8 +71,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyData&)
         bint operator<=(cMyData&)
         bint operator>=(cMyData&)
-        __field_ref[string] data1_ref()
-        __field_ref[cint32_t] data2_ref()
 
     cdef enum cMyUnion__type "::cpp2::MyUnion::Type":
         cMyUnion__type___EMPTY__ "::cpp2::MyUnion::Type::__EMPTY__",
@@ -103,16 +102,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
-        __field_ref[cbool] boolVal_ref()
-        __field_ref[cint8_t] byteVal_ref()
-        __field_ref[cint16_t] i16Val_ref()
-        __field_ref[cint32_t] i32Val_ref()
-        __field_ref[cint64_t] i64Val_ref()
-        __field_ref[float] floatVal_ref()
-        __field_ref[double] doubleVal_ref()
-        __field_ref[string] stringVal_ref()
-        __field_ref[_folly_IOBuf] binaryVal_ref()
-        __field_ref[cMyData] structVal_ref()
         __optional_field_ref[cbool] optBoolVal_ref()
         __optional_field_ref[cint8_t] optByteVal_ref()
         __optional_field_ref[cint16_t] optI16Val_ref()
@@ -126,7 +115,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[vector[cint16_t]] optListVal_ref()
         __optional_field_ref[cset[string]] optSetVal_ref()
         __optional_field_ref[cmap[string,string]] optMapVal_ref()
-        __field_ref[cMyUnion] unionVal_ref()
 
 
     cdef cppclass cMyDataPatch "::cpp2::MyDataPatch":

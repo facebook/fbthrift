@@ -10,7 +10,8 @@ import (
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
-	patch0 "patch"
+	thrift0 "thrift/annotation/thrift"
+	patch1 "patch"
 
 )
 
@@ -21,7 +22,8 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
-var _ = patch0.GoUnusedProtection__
+var _ = thrift0.GoUnusedProtection__
+var _ = patch1.GoUnusedProtection__
 var GoUnusedProtection__ int;
 
 // Attributes:
@@ -1216,13 +1218,13 @@ func (p *MyStruct)  ReadField21(iprot thrift.Protocol) error {
   tSlice := make([]int16, 0, size)
   p.OptListVal =  tSlice
   for i := 0; i < size; i ++ {
-    var _elem1 int16
+    var _elem2 int16
     if v, err := iprot.ReadI16(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem1 = v
+      _elem2 = v
     }
-    p.OptListVal = append(p.OptListVal, _elem1)
+    p.OptListVal = append(p.OptListVal, _elem2)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -1238,13 +1240,13 @@ func (p *MyStruct)  ReadField22(iprot thrift.Protocol) error {
   tSet := make([]string, 0, size)
   p.OptSetVal =  tSet
   for i := 0; i < size; i ++ {
-    var _elem2 string
+    var _elem3 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem2 = v
+      _elem3 = v
     }
-    p.OptSetVal = append(p.OptSetVal, _elem2)
+    p.OptSetVal = append(p.OptSetVal, _elem3)
   }
   if err := iprot.ReadSetEnd(); err != nil {
     return thrift.PrependError("error reading set end: ", err)
@@ -1260,19 +1262,19 @@ func (p *MyStruct)  ReadField23(iprot thrift.Protocol) error {
   tMap := make(map[string]string, size)
   p.OptMapVal =  tMap
   for i := 0; i < size; i ++ {
-    var _key3 string
+    var _key4 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _key3 = v
+      _key4 = v
     }
-    var _val4 string
+    var _val5 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _val4 = v
+      _val5 = v
     }
-    p.OptMapVal[_key3] = _val4
+    p.OptMapVal[_key4] = _val5
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -1715,26 +1717,26 @@ func (p *MyStruct) String() string {
 //  - Data1
 //  - Data2
 type MyDataPatch struct {
-  Data1 *patch0.StringPatch `thrift:"data1,1" db:"data1" json:"data1"`
-  Data2 *patch0.I32Patch `thrift:"data2,2" db:"data2" json:"data2"`
+  Data1 *patch1.StringPatch `thrift:"data1,1" db:"data1" json:"data1"`
+  Data2 *patch1.I32Patch `thrift:"data2,2" db:"data2" json:"data2"`
 }
 
 func NewMyDataPatch() *MyDataPatch {
   return &MyDataPatch{
-    Data1: patch0.NewStringPatch(),
-    Data2: patch0.NewI32Patch(),
+    Data1: patch1.NewStringPatch(),
+    Data2: patch1.NewI32Patch(),
   }
 }
 
-var MyDataPatch_Data1_DEFAULT *patch0.StringPatch
-func (p *MyDataPatch) GetData1() *patch0.StringPatch {
+var MyDataPatch_Data1_DEFAULT *patch1.StringPatch
+func (p *MyDataPatch) GetData1() *patch1.StringPatch {
   if !p.IsSetData1() {
     return MyDataPatch_Data1_DEFAULT
   }
 return p.Data1
 }
-var MyDataPatch_Data2_DEFAULT *patch0.I32Patch
-func (p *MyDataPatch) GetData2() *patch0.I32Patch {
+var MyDataPatch_Data2_DEFAULT *patch1.I32Patch
+func (p *MyDataPatch) GetData2() *patch1.I32Patch {
   if !p.IsSetData2() {
     return MyDataPatch_Data2_DEFAULT
   }
@@ -1765,22 +1767,22 @@ func (p MyDataPatchBuilder) Emit() *MyDataPatch{
   }
 }
 
-func (m *MyDataPatchBuilder) Data1(data1 *patch0.StringPatch) *MyDataPatchBuilder {
+func (m *MyDataPatchBuilder) Data1(data1 *patch1.StringPatch) *MyDataPatchBuilder {
   m.obj.Data1 = data1
   return m
 }
 
-func (m *MyDataPatchBuilder) Data2(data2 *patch0.I32Patch) *MyDataPatchBuilder {
+func (m *MyDataPatchBuilder) Data2(data2 *patch1.I32Patch) *MyDataPatchBuilder {
   m.obj.Data2 = data2
   return m
 }
 
-func (m *MyDataPatch) SetData1(data1 *patch0.StringPatch) *MyDataPatch {
+func (m *MyDataPatch) SetData1(data1 *patch1.StringPatch) *MyDataPatch {
   m.Data1 = data1
   return m
 }
 
-func (m *MyDataPatch) SetData2(data2 *patch0.I32Patch) *MyDataPatch {
+func (m *MyDataPatch) SetData2(data2 *patch1.I32Patch) *MyDataPatch {
   m.Data2 = data2
   return m
 }
@@ -1822,7 +1824,7 @@ func (p *MyDataPatch) Read(iprot thrift.Protocol) error {
 }
 
 func (p *MyDataPatch)  ReadField1(iprot thrift.Protocol) error {
-  p.Data1 = patch0.NewStringPatch()
+  p.Data1 = patch1.NewStringPatch()
   if err := p.Data1.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Data1), err)
   }
@@ -1830,7 +1832,7 @@ func (p *MyDataPatch)  ReadField1(iprot thrift.Protocol) error {
 }
 
 func (p *MyDataPatch)  ReadField2(iprot thrift.Protocol) error {
-  p.Data2 = patch0.NewI32Patch()
+  p.Data2 = patch1.NewI32Patch()
   if err := p.Data2.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Data2), err)
   }
@@ -2397,26 +2399,26 @@ func (p *OptionalMyDataValuePatch) String() string {
 //  - Option1
 //  - Option2
 type MyUnionPatch struct {
-  Option1 *patch0.StringPatch `thrift:"option1,1" db:"option1" json:"option1"`
-  Option2 *patch0.I32Patch `thrift:"option2,2" db:"option2" json:"option2"`
+  Option1 *patch1.StringPatch `thrift:"option1,1" db:"option1" json:"option1"`
+  Option2 *patch1.I32Patch `thrift:"option2,2" db:"option2" json:"option2"`
 }
 
 func NewMyUnionPatch() *MyUnionPatch {
   return &MyUnionPatch{
-    Option1: patch0.NewStringPatch(),
-    Option2: patch0.NewI32Patch(),
+    Option1: patch1.NewStringPatch(),
+    Option2: patch1.NewI32Patch(),
   }
 }
 
-var MyUnionPatch_Option1_DEFAULT *patch0.StringPatch
-func (p *MyUnionPatch) GetOption1() *patch0.StringPatch {
+var MyUnionPatch_Option1_DEFAULT *patch1.StringPatch
+func (p *MyUnionPatch) GetOption1() *patch1.StringPatch {
   if !p.IsSetOption1() {
     return MyUnionPatch_Option1_DEFAULT
   }
 return p.Option1
 }
-var MyUnionPatch_Option2_DEFAULT *patch0.I32Patch
-func (p *MyUnionPatch) GetOption2() *patch0.I32Patch {
+var MyUnionPatch_Option2_DEFAULT *patch1.I32Patch
+func (p *MyUnionPatch) GetOption2() *patch1.I32Patch {
   if !p.IsSetOption2() {
     return MyUnionPatch_Option2_DEFAULT
   }
@@ -2447,22 +2449,22 @@ func (p MyUnionPatchBuilder) Emit() *MyUnionPatch{
   }
 }
 
-func (m *MyUnionPatchBuilder) Option1(option1 *patch0.StringPatch) *MyUnionPatchBuilder {
+func (m *MyUnionPatchBuilder) Option1(option1 *patch1.StringPatch) *MyUnionPatchBuilder {
   m.obj.Option1 = option1
   return m
 }
 
-func (m *MyUnionPatchBuilder) Option2(option2 *patch0.I32Patch) *MyUnionPatchBuilder {
+func (m *MyUnionPatchBuilder) Option2(option2 *patch1.I32Patch) *MyUnionPatchBuilder {
   m.obj.Option2 = option2
   return m
 }
 
-func (m *MyUnionPatch) SetOption1(option1 *patch0.StringPatch) *MyUnionPatch {
+func (m *MyUnionPatch) SetOption1(option1 *patch1.StringPatch) *MyUnionPatch {
   m.Option1 = option1
   return m
 }
 
-func (m *MyUnionPatch) SetOption2(option2 *patch0.I32Patch) *MyUnionPatch {
+func (m *MyUnionPatch) SetOption2(option2 *patch1.I32Patch) *MyUnionPatch {
   m.Option2 = option2
   return m
 }
@@ -2504,7 +2506,7 @@ func (p *MyUnionPatch) Read(iprot thrift.Protocol) error {
 }
 
 func (p *MyUnionPatch)  ReadField1(iprot thrift.Protocol) error {
-  p.Option1 = patch0.NewStringPatch()
+  p.Option1 = patch1.NewStringPatch()
   if err := p.Option1.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Option1), err)
   }
@@ -2512,7 +2514,7 @@ func (p *MyUnionPatch)  ReadField1(iprot thrift.Protocol) error {
 }
 
 func (p *MyUnionPatch)  ReadField2(iprot thrift.Protocol) error {
-  p.Option2 = patch0.NewI32Patch()
+  p.Option2 = patch1.NewI32Patch()
   if err := p.Option2.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Option2), err)
   }
@@ -3155,25 +3157,25 @@ func (p *OptionalMyUnionValuePatch) String() string {
 //  - OptMapVal
 //  - UnionVal
 type MyStructPatch struct {
-  BoolVal *patch0.BoolPatch `thrift:"boolVal,1" db:"boolVal" json:"boolVal"`
-  ByteVal *patch0.BytePatch `thrift:"byteVal,2" db:"byteVal" json:"byteVal"`
-  I16Val *patch0.I16Patch `thrift:"i16Val,3" db:"i16Val" json:"i16Val"`
-  I32Val *patch0.I32Patch `thrift:"i32Val,4" db:"i32Val" json:"i32Val"`
-  I64Val *patch0.I64Patch `thrift:"i64Val,5" db:"i64Val" json:"i64Val"`
-  FloatVal *patch0.FloatPatch `thrift:"floatVal,6" db:"floatVal" json:"floatVal"`
-  DoubleVal *patch0.DoublePatch `thrift:"doubleVal,7" db:"doubleVal" json:"doubleVal"`
-  StringVal *patch0.StringPatch `thrift:"stringVal,8" db:"stringVal" json:"stringVal"`
-  BinaryVal *patch0.BinaryPatch `thrift:"binaryVal,9" db:"binaryVal" json:"binaryVal"`
+  BoolVal *patch1.BoolPatch `thrift:"boolVal,1" db:"boolVal" json:"boolVal"`
+  ByteVal *patch1.BytePatch `thrift:"byteVal,2" db:"byteVal" json:"byteVal"`
+  I16Val *patch1.I16Patch `thrift:"i16Val,3" db:"i16Val" json:"i16Val"`
+  I32Val *patch1.I32Patch `thrift:"i32Val,4" db:"i32Val" json:"i32Val"`
+  I64Val *patch1.I64Patch `thrift:"i64Val,5" db:"i64Val" json:"i64Val"`
+  FloatVal *patch1.FloatPatch `thrift:"floatVal,6" db:"floatVal" json:"floatVal"`
+  DoubleVal *patch1.DoublePatch `thrift:"doubleVal,7" db:"doubleVal" json:"doubleVal"`
+  StringVal *patch1.StringPatch `thrift:"stringVal,8" db:"stringVal" json:"stringVal"`
+  BinaryVal *patch1.BinaryPatch `thrift:"binaryVal,9" db:"binaryVal" json:"binaryVal"`
   StructVal *MyDataValuePatch `thrift:"structVal,10" db:"structVal" json:"structVal"`
-  OptBoolVal *patch0.OptionalBoolPatch `thrift:"optBoolVal,11" db:"optBoolVal" json:"optBoolVal"`
-  OptByteVal *patch0.OptionalBytePatch `thrift:"optByteVal,12" db:"optByteVal" json:"optByteVal"`
-  OptI16Val *patch0.OptionalI16Patch `thrift:"optI16Val,13" db:"optI16Val" json:"optI16Val"`
-  OptI32Val *patch0.OptionalI32Patch `thrift:"optI32Val,14" db:"optI32Val" json:"optI32Val"`
-  OptI64Val *patch0.OptionalI64Patch `thrift:"optI64Val,15" db:"optI64Val" json:"optI64Val"`
-  OptFloatVal *patch0.OptionalFloatPatch `thrift:"optFloatVal,16" db:"optFloatVal" json:"optFloatVal"`
-  OptDoubleVal *patch0.OptionalDoublePatch `thrift:"optDoubleVal,17" db:"optDoubleVal" json:"optDoubleVal"`
-  OptStringVal *patch0.OptionalStringPatch `thrift:"optStringVal,18" db:"optStringVal" json:"optStringVal"`
-  OptBinaryVal *patch0.OptionalBinaryPatch `thrift:"optBinaryVal,19" db:"optBinaryVal" json:"optBinaryVal"`
+  OptBoolVal *patch1.OptionalBoolPatch `thrift:"optBoolVal,11" db:"optBoolVal" json:"optBoolVal"`
+  OptByteVal *patch1.OptionalBytePatch `thrift:"optByteVal,12" db:"optByteVal" json:"optByteVal"`
+  OptI16Val *patch1.OptionalI16Patch `thrift:"optI16Val,13" db:"optI16Val" json:"optI16Val"`
+  OptI32Val *patch1.OptionalI32Patch `thrift:"optI32Val,14" db:"optI32Val" json:"optI32Val"`
+  OptI64Val *patch1.OptionalI64Patch `thrift:"optI64Val,15" db:"optI64Val" json:"optI64Val"`
+  OptFloatVal *patch1.OptionalFloatPatch `thrift:"optFloatVal,16" db:"optFloatVal" json:"optFloatVal"`
+  OptDoubleVal *patch1.OptionalDoublePatch `thrift:"optDoubleVal,17" db:"optDoubleVal" json:"optDoubleVal"`
+  OptStringVal *patch1.OptionalStringPatch `thrift:"optStringVal,18" db:"optStringVal" json:"optStringVal"`
+  OptBinaryVal *patch1.OptionalBinaryPatch `thrift:"optBinaryVal,19" db:"optBinaryVal" json:"optBinaryVal"`
   OptStructVal *OptionalMyDataValuePatch `thrift:"optStructVal,20" db:"optStructVal" json:"optStructVal"`
   OptListVal *OptionalMyStructField21Patch `thrift:"optListVal,21" db:"optListVal" json:"optListVal"`
   OptSetVal *OptionalMyStructField22Patch `thrift:"optSetVal,22" db:"optSetVal" json:"optSetVal"`
@@ -3184,25 +3186,25 @@ type MyStructPatch struct {
 
 func NewMyStructPatch() *MyStructPatch {
   return &MyStructPatch{
-    BoolVal: patch0.NewBoolPatch(),
-    ByteVal: patch0.NewBytePatch(),
-    I16Val: patch0.NewI16Patch(),
-    I32Val: patch0.NewI32Patch(),
-    I64Val: patch0.NewI64Patch(),
-    FloatVal: patch0.NewFloatPatch(),
-    DoubleVal: patch0.NewDoublePatch(),
-    StringVal: patch0.NewStringPatch(),
-    BinaryVal: patch0.NewBinaryPatch(),
+    BoolVal: patch1.NewBoolPatch(),
+    ByteVal: patch1.NewBytePatch(),
+    I16Val: patch1.NewI16Patch(),
+    I32Val: patch1.NewI32Patch(),
+    I64Val: patch1.NewI64Patch(),
+    FloatVal: patch1.NewFloatPatch(),
+    DoubleVal: patch1.NewDoublePatch(),
+    StringVal: patch1.NewStringPatch(),
+    BinaryVal: patch1.NewBinaryPatch(),
     StructVal: NewMyDataValuePatch(),
-    OptBoolVal: patch0.NewOptionalBoolPatch(),
-    OptByteVal: patch0.NewOptionalBytePatch(),
-    OptI16Val: patch0.NewOptionalI16Patch(),
-    OptI32Val: patch0.NewOptionalI32Patch(),
-    OptI64Val: patch0.NewOptionalI64Patch(),
-    OptFloatVal: patch0.NewOptionalFloatPatch(),
-    OptDoubleVal: patch0.NewOptionalDoublePatch(),
-    OptStringVal: patch0.NewOptionalStringPatch(),
-    OptBinaryVal: patch0.NewOptionalBinaryPatch(),
+    OptBoolVal: patch1.NewOptionalBoolPatch(),
+    OptByteVal: patch1.NewOptionalBytePatch(),
+    OptI16Val: patch1.NewOptionalI16Patch(),
+    OptI32Val: patch1.NewOptionalI32Patch(),
+    OptI64Val: patch1.NewOptionalI64Patch(),
+    OptFloatVal: patch1.NewOptionalFloatPatch(),
+    OptDoubleVal: patch1.NewOptionalDoublePatch(),
+    OptStringVal: patch1.NewOptionalStringPatch(),
+    OptBinaryVal: patch1.NewOptionalBinaryPatch(),
     OptStructVal: NewOptionalMyDataValuePatch(),
     OptListVal: NewOptionalMyStructField21Patch(),
     OptSetVal: NewOptionalMyStructField22Patch(),
@@ -3211,64 +3213,64 @@ func NewMyStructPatch() *MyStructPatch {
   }
 }
 
-var MyStructPatch_BoolVal_DEFAULT *patch0.BoolPatch
-func (p *MyStructPatch) GetBoolVal() *patch0.BoolPatch {
+var MyStructPatch_BoolVal_DEFAULT *patch1.BoolPatch
+func (p *MyStructPatch) GetBoolVal() *patch1.BoolPatch {
   if !p.IsSetBoolVal() {
     return MyStructPatch_BoolVal_DEFAULT
   }
 return p.BoolVal
 }
-var MyStructPatch_ByteVal_DEFAULT *patch0.BytePatch
-func (p *MyStructPatch) GetByteVal() *patch0.BytePatch {
+var MyStructPatch_ByteVal_DEFAULT *patch1.BytePatch
+func (p *MyStructPatch) GetByteVal() *patch1.BytePatch {
   if !p.IsSetByteVal() {
     return MyStructPatch_ByteVal_DEFAULT
   }
 return p.ByteVal
 }
-var MyStructPatch_I16Val_DEFAULT *patch0.I16Patch
-func (p *MyStructPatch) GetI16Val() *patch0.I16Patch {
+var MyStructPatch_I16Val_DEFAULT *patch1.I16Patch
+func (p *MyStructPatch) GetI16Val() *patch1.I16Patch {
   if !p.IsSetI16Val() {
     return MyStructPatch_I16Val_DEFAULT
   }
 return p.I16Val
 }
-var MyStructPatch_I32Val_DEFAULT *patch0.I32Patch
-func (p *MyStructPatch) GetI32Val() *patch0.I32Patch {
+var MyStructPatch_I32Val_DEFAULT *patch1.I32Patch
+func (p *MyStructPatch) GetI32Val() *patch1.I32Patch {
   if !p.IsSetI32Val() {
     return MyStructPatch_I32Val_DEFAULT
   }
 return p.I32Val
 }
-var MyStructPatch_I64Val_DEFAULT *patch0.I64Patch
-func (p *MyStructPatch) GetI64Val() *patch0.I64Patch {
+var MyStructPatch_I64Val_DEFAULT *patch1.I64Patch
+func (p *MyStructPatch) GetI64Val() *patch1.I64Patch {
   if !p.IsSetI64Val() {
     return MyStructPatch_I64Val_DEFAULT
   }
 return p.I64Val
 }
-var MyStructPatch_FloatVal_DEFAULT *patch0.FloatPatch
-func (p *MyStructPatch) GetFloatVal() *patch0.FloatPatch {
+var MyStructPatch_FloatVal_DEFAULT *patch1.FloatPatch
+func (p *MyStructPatch) GetFloatVal() *patch1.FloatPatch {
   if !p.IsSetFloatVal() {
     return MyStructPatch_FloatVal_DEFAULT
   }
 return p.FloatVal
 }
-var MyStructPatch_DoubleVal_DEFAULT *patch0.DoublePatch
-func (p *MyStructPatch) GetDoubleVal() *patch0.DoublePatch {
+var MyStructPatch_DoubleVal_DEFAULT *patch1.DoublePatch
+func (p *MyStructPatch) GetDoubleVal() *patch1.DoublePatch {
   if !p.IsSetDoubleVal() {
     return MyStructPatch_DoubleVal_DEFAULT
   }
 return p.DoubleVal
 }
-var MyStructPatch_StringVal_DEFAULT *patch0.StringPatch
-func (p *MyStructPatch) GetStringVal() *patch0.StringPatch {
+var MyStructPatch_StringVal_DEFAULT *patch1.StringPatch
+func (p *MyStructPatch) GetStringVal() *patch1.StringPatch {
   if !p.IsSetStringVal() {
     return MyStructPatch_StringVal_DEFAULT
   }
 return p.StringVal
 }
-var MyStructPatch_BinaryVal_DEFAULT *patch0.BinaryPatch
-func (p *MyStructPatch) GetBinaryVal() *patch0.BinaryPatch {
+var MyStructPatch_BinaryVal_DEFAULT *patch1.BinaryPatch
+func (p *MyStructPatch) GetBinaryVal() *patch1.BinaryPatch {
   if !p.IsSetBinaryVal() {
     return MyStructPatch_BinaryVal_DEFAULT
   }
@@ -3281,64 +3283,64 @@ func (p *MyStructPatch) GetStructVal() *MyDataValuePatch {
   }
 return p.StructVal
 }
-var MyStructPatch_OptBoolVal_DEFAULT *patch0.OptionalBoolPatch
-func (p *MyStructPatch) GetOptBoolVal() *patch0.OptionalBoolPatch {
+var MyStructPatch_OptBoolVal_DEFAULT *patch1.OptionalBoolPatch
+func (p *MyStructPatch) GetOptBoolVal() *patch1.OptionalBoolPatch {
   if !p.IsSetOptBoolVal() {
     return MyStructPatch_OptBoolVal_DEFAULT
   }
 return p.OptBoolVal
 }
-var MyStructPatch_OptByteVal_DEFAULT *patch0.OptionalBytePatch
-func (p *MyStructPatch) GetOptByteVal() *patch0.OptionalBytePatch {
+var MyStructPatch_OptByteVal_DEFAULT *patch1.OptionalBytePatch
+func (p *MyStructPatch) GetOptByteVal() *patch1.OptionalBytePatch {
   if !p.IsSetOptByteVal() {
     return MyStructPatch_OptByteVal_DEFAULT
   }
 return p.OptByteVal
 }
-var MyStructPatch_OptI16Val_DEFAULT *patch0.OptionalI16Patch
-func (p *MyStructPatch) GetOptI16Val() *patch0.OptionalI16Patch {
+var MyStructPatch_OptI16Val_DEFAULT *patch1.OptionalI16Patch
+func (p *MyStructPatch) GetOptI16Val() *patch1.OptionalI16Patch {
   if !p.IsSetOptI16Val() {
     return MyStructPatch_OptI16Val_DEFAULT
   }
 return p.OptI16Val
 }
-var MyStructPatch_OptI32Val_DEFAULT *patch0.OptionalI32Patch
-func (p *MyStructPatch) GetOptI32Val() *patch0.OptionalI32Patch {
+var MyStructPatch_OptI32Val_DEFAULT *patch1.OptionalI32Patch
+func (p *MyStructPatch) GetOptI32Val() *patch1.OptionalI32Patch {
   if !p.IsSetOptI32Val() {
     return MyStructPatch_OptI32Val_DEFAULT
   }
 return p.OptI32Val
 }
-var MyStructPatch_OptI64Val_DEFAULT *patch0.OptionalI64Patch
-func (p *MyStructPatch) GetOptI64Val() *patch0.OptionalI64Patch {
+var MyStructPatch_OptI64Val_DEFAULT *patch1.OptionalI64Patch
+func (p *MyStructPatch) GetOptI64Val() *patch1.OptionalI64Patch {
   if !p.IsSetOptI64Val() {
     return MyStructPatch_OptI64Val_DEFAULT
   }
 return p.OptI64Val
 }
-var MyStructPatch_OptFloatVal_DEFAULT *patch0.OptionalFloatPatch
-func (p *MyStructPatch) GetOptFloatVal() *patch0.OptionalFloatPatch {
+var MyStructPatch_OptFloatVal_DEFAULT *patch1.OptionalFloatPatch
+func (p *MyStructPatch) GetOptFloatVal() *patch1.OptionalFloatPatch {
   if !p.IsSetOptFloatVal() {
     return MyStructPatch_OptFloatVal_DEFAULT
   }
 return p.OptFloatVal
 }
-var MyStructPatch_OptDoubleVal_DEFAULT *patch0.OptionalDoublePatch
-func (p *MyStructPatch) GetOptDoubleVal() *patch0.OptionalDoublePatch {
+var MyStructPatch_OptDoubleVal_DEFAULT *patch1.OptionalDoublePatch
+func (p *MyStructPatch) GetOptDoubleVal() *patch1.OptionalDoublePatch {
   if !p.IsSetOptDoubleVal() {
     return MyStructPatch_OptDoubleVal_DEFAULT
   }
 return p.OptDoubleVal
 }
-var MyStructPatch_OptStringVal_DEFAULT *patch0.OptionalStringPatch
-func (p *MyStructPatch) GetOptStringVal() *patch0.OptionalStringPatch {
+var MyStructPatch_OptStringVal_DEFAULT *patch1.OptionalStringPatch
+func (p *MyStructPatch) GetOptStringVal() *patch1.OptionalStringPatch {
   if !p.IsSetOptStringVal() {
     return MyStructPatch_OptStringVal_DEFAULT
   }
 return p.OptStringVal
 }
-var MyStructPatch_OptBinaryVal_DEFAULT *patch0.OptionalBinaryPatch
-func (p *MyStructPatch) GetOptBinaryVal() *patch0.OptionalBinaryPatch {
+var MyStructPatch_OptBinaryVal_DEFAULT *patch1.OptionalBinaryPatch
+func (p *MyStructPatch) GetOptBinaryVal() *patch1.OptionalBinaryPatch {
   if !p.IsSetOptBinaryVal() {
     return MyStructPatch_OptBinaryVal_DEFAULT
   }
@@ -3514,47 +3516,47 @@ func (p MyStructPatchBuilder) Emit() *MyStructPatch{
   }
 }
 
-func (m *MyStructPatchBuilder) BoolVal(boolVal *patch0.BoolPatch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) BoolVal(boolVal *patch1.BoolPatch) *MyStructPatchBuilder {
   m.obj.BoolVal = boolVal
   return m
 }
 
-func (m *MyStructPatchBuilder) ByteVal(byteVal *patch0.BytePatch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) ByteVal(byteVal *patch1.BytePatch) *MyStructPatchBuilder {
   m.obj.ByteVal = byteVal
   return m
 }
 
-func (m *MyStructPatchBuilder) I16Val(i16Val *patch0.I16Patch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) I16Val(i16Val *patch1.I16Patch) *MyStructPatchBuilder {
   m.obj.I16Val = i16Val
   return m
 }
 
-func (m *MyStructPatchBuilder) I32Val(i32Val *patch0.I32Patch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) I32Val(i32Val *patch1.I32Patch) *MyStructPatchBuilder {
   m.obj.I32Val = i32Val
   return m
 }
 
-func (m *MyStructPatchBuilder) I64Val(i64Val *patch0.I64Patch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) I64Val(i64Val *patch1.I64Patch) *MyStructPatchBuilder {
   m.obj.I64Val = i64Val
   return m
 }
 
-func (m *MyStructPatchBuilder) FloatVal(floatVal *patch0.FloatPatch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) FloatVal(floatVal *patch1.FloatPatch) *MyStructPatchBuilder {
   m.obj.FloatVal = floatVal
   return m
 }
 
-func (m *MyStructPatchBuilder) DoubleVal(doubleVal *patch0.DoublePatch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) DoubleVal(doubleVal *patch1.DoublePatch) *MyStructPatchBuilder {
   m.obj.DoubleVal = doubleVal
   return m
 }
 
-func (m *MyStructPatchBuilder) StringVal(stringVal *patch0.StringPatch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) StringVal(stringVal *patch1.StringPatch) *MyStructPatchBuilder {
   m.obj.StringVal = stringVal
   return m
 }
 
-func (m *MyStructPatchBuilder) BinaryVal(binaryVal *patch0.BinaryPatch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) BinaryVal(binaryVal *patch1.BinaryPatch) *MyStructPatchBuilder {
   m.obj.BinaryVal = binaryVal
   return m
 }
@@ -3564,47 +3566,47 @@ func (m *MyStructPatchBuilder) StructVal(structVal *MyDataValuePatch) *MyStructP
   return m
 }
 
-func (m *MyStructPatchBuilder) OptBoolVal(optBoolVal *patch0.OptionalBoolPatch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) OptBoolVal(optBoolVal *patch1.OptionalBoolPatch) *MyStructPatchBuilder {
   m.obj.OptBoolVal = optBoolVal
   return m
 }
 
-func (m *MyStructPatchBuilder) OptByteVal(optByteVal *patch0.OptionalBytePatch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) OptByteVal(optByteVal *patch1.OptionalBytePatch) *MyStructPatchBuilder {
   m.obj.OptByteVal = optByteVal
   return m
 }
 
-func (m *MyStructPatchBuilder) OptI16Val(optI16Val *patch0.OptionalI16Patch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) OptI16Val(optI16Val *patch1.OptionalI16Patch) *MyStructPatchBuilder {
   m.obj.OptI16Val = optI16Val
   return m
 }
 
-func (m *MyStructPatchBuilder) OptI32Val(optI32Val *patch0.OptionalI32Patch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) OptI32Val(optI32Val *patch1.OptionalI32Patch) *MyStructPatchBuilder {
   m.obj.OptI32Val = optI32Val
   return m
 }
 
-func (m *MyStructPatchBuilder) OptI64Val(optI64Val *patch0.OptionalI64Patch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) OptI64Val(optI64Val *patch1.OptionalI64Patch) *MyStructPatchBuilder {
   m.obj.OptI64Val = optI64Val
   return m
 }
 
-func (m *MyStructPatchBuilder) OptFloatVal(optFloatVal *patch0.OptionalFloatPatch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) OptFloatVal(optFloatVal *patch1.OptionalFloatPatch) *MyStructPatchBuilder {
   m.obj.OptFloatVal = optFloatVal
   return m
 }
 
-func (m *MyStructPatchBuilder) OptDoubleVal(optDoubleVal *patch0.OptionalDoublePatch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) OptDoubleVal(optDoubleVal *patch1.OptionalDoublePatch) *MyStructPatchBuilder {
   m.obj.OptDoubleVal = optDoubleVal
   return m
 }
 
-func (m *MyStructPatchBuilder) OptStringVal(optStringVal *patch0.OptionalStringPatch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) OptStringVal(optStringVal *patch1.OptionalStringPatch) *MyStructPatchBuilder {
   m.obj.OptStringVal = optStringVal
   return m
 }
 
-func (m *MyStructPatchBuilder) OptBinaryVal(optBinaryVal *patch0.OptionalBinaryPatch) *MyStructPatchBuilder {
+func (m *MyStructPatchBuilder) OptBinaryVal(optBinaryVal *patch1.OptionalBinaryPatch) *MyStructPatchBuilder {
   m.obj.OptBinaryVal = optBinaryVal
   return m
 }
@@ -3634,47 +3636,47 @@ func (m *MyStructPatchBuilder) UnionVal(unionVal *MyUnionValuePatch) *MyStructPa
   return m
 }
 
-func (m *MyStructPatch) SetBoolVal(boolVal *patch0.BoolPatch) *MyStructPatch {
+func (m *MyStructPatch) SetBoolVal(boolVal *patch1.BoolPatch) *MyStructPatch {
   m.BoolVal = boolVal
   return m
 }
 
-func (m *MyStructPatch) SetByteVal(byteVal *patch0.BytePatch) *MyStructPatch {
+func (m *MyStructPatch) SetByteVal(byteVal *patch1.BytePatch) *MyStructPatch {
   m.ByteVal = byteVal
   return m
 }
 
-func (m *MyStructPatch) SetI16Val(i16Val *patch0.I16Patch) *MyStructPatch {
+func (m *MyStructPatch) SetI16Val(i16Val *patch1.I16Patch) *MyStructPatch {
   m.I16Val = i16Val
   return m
 }
 
-func (m *MyStructPatch) SetI32Val(i32Val *patch0.I32Patch) *MyStructPatch {
+func (m *MyStructPatch) SetI32Val(i32Val *patch1.I32Patch) *MyStructPatch {
   m.I32Val = i32Val
   return m
 }
 
-func (m *MyStructPatch) SetI64Val(i64Val *patch0.I64Patch) *MyStructPatch {
+func (m *MyStructPatch) SetI64Val(i64Val *patch1.I64Patch) *MyStructPatch {
   m.I64Val = i64Val
   return m
 }
 
-func (m *MyStructPatch) SetFloatVal(floatVal *patch0.FloatPatch) *MyStructPatch {
+func (m *MyStructPatch) SetFloatVal(floatVal *patch1.FloatPatch) *MyStructPatch {
   m.FloatVal = floatVal
   return m
 }
 
-func (m *MyStructPatch) SetDoubleVal(doubleVal *patch0.DoublePatch) *MyStructPatch {
+func (m *MyStructPatch) SetDoubleVal(doubleVal *patch1.DoublePatch) *MyStructPatch {
   m.DoubleVal = doubleVal
   return m
 }
 
-func (m *MyStructPatch) SetStringVal(stringVal *patch0.StringPatch) *MyStructPatch {
+func (m *MyStructPatch) SetStringVal(stringVal *patch1.StringPatch) *MyStructPatch {
   m.StringVal = stringVal
   return m
 }
 
-func (m *MyStructPatch) SetBinaryVal(binaryVal *patch0.BinaryPatch) *MyStructPatch {
+func (m *MyStructPatch) SetBinaryVal(binaryVal *patch1.BinaryPatch) *MyStructPatch {
   m.BinaryVal = binaryVal
   return m
 }
@@ -3684,47 +3686,47 @@ func (m *MyStructPatch) SetStructVal(structVal *MyDataValuePatch) *MyStructPatch
   return m
 }
 
-func (m *MyStructPatch) SetOptBoolVal(optBoolVal *patch0.OptionalBoolPatch) *MyStructPatch {
+func (m *MyStructPatch) SetOptBoolVal(optBoolVal *patch1.OptionalBoolPatch) *MyStructPatch {
   m.OptBoolVal = optBoolVal
   return m
 }
 
-func (m *MyStructPatch) SetOptByteVal(optByteVal *patch0.OptionalBytePatch) *MyStructPatch {
+func (m *MyStructPatch) SetOptByteVal(optByteVal *patch1.OptionalBytePatch) *MyStructPatch {
   m.OptByteVal = optByteVal
   return m
 }
 
-func (m *MyStructPatch) SetOptI16Val(optI16Val *patch0.OptionalI16Patch) *MyStructPatch {
+func (m *MyStructPatch) SetOptI16Val(optI16Val *patch1.OptionalI16Patch) *MyStructPatch {
   m.OptI16Val = optI16Val
   return m
 }
 
-func (m *MyStructPatch) SetOptI32Val(optI32Val *patch0.OptionalI32Patch) *MyStructPatch {
+func (m *MyStructPatch) SetOptI32Val(optI32Val *patch1.OptionalI32Patch) *MyStructPatch {
   m.OptI32Val = optI32Val
   return m
 }
 
-func (m *MyStructPatch) SetOptI64Val(optI64Val *patch0.OptionalI64Patch) *MyStructPatch {
+func (m *MyStructPatch) SetOptI64Val(optI64Val *patch1.OptionalI64Patch) *MyStructPatch {
   m.OptI64Val = optI64Val
   return m
 }
 
-func (m *MyStructPatch) SetOptFloatVal(optFloatVal *patch0.OptionalFloatPatch) *MyStructPatch {
+func (m *MyStructPatch) SetOptFloatVal(optFloatVal *patch1.OptionalFloatPatch) *MyStructPatch {
   m.OptFloatVal = optFloatVal
   return m
 }
 
-func (m *MyStructPatch) SetOptDoubleVal(optDoubleVal *patch0.OptionalDoublePatch) *MyStructPatch {
+func (m *MyStructPatch) SetOptDoubleVal(optDoubleVal *patch1.OptionalDoublePatch) *MyStructPatch {
   m.OptDoubleVal = optDoubleVal
   return m
 }
 
-func (m *MyStructPatch) SetOptStringVal(optStringVal *patch0.OptionalStringPatch) *MyStructPatch {
+func (m *MyStructPatch) SetOptStringVal(optStringVal *patch1.OptionalStringPatch) *MyStructPatch {
   m.OptStringVal = optStringVal
   return m
 }
 
-func (m *MyStructPatch) SetOptBinaryVal(optBinaryVal *patch0.OptionalBinaryPatch) *MyStructPatch {
+func (m *MyStructPatch) SetOptBinaryVal(optBinaryVal *patch1.OptionalBinaryPatch) *MyStructPatch {
   m.OptBinaryVal = optBinaryVal
   return m
 }
@@ -3879,7 +3881,7 @@ func (p *MyStructPatch) Read(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField1(iprot thrift.Protocol) error {
-  p.BoolVal = patch0.NewBoolPatch()
+  p.BoolVal = patch1.NewBoolPatch()
   if err := p.BoolVal.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.BoolVal), err)
   }
@@ -3887,7 +3889,7 @@ func (p *MyStructPatch)  ReadField1(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField2(iprot thrift.Protocol) error {
-  p.ByteVal = patch0.NewBytePatch()
+  p.ByteVal = patch1.NewBytePatch()
   if err := p.ByteVal.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.ByteVal), err)
   }
@@ -3895,7 +3897,7 @@ func (p *MyStructPatch)  ReadField2(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField3(iprot thrift.Protocol) error {
-  p.I16Val = patch0.NewI16Patch()
+  p.I16Val = patch1.NewI16Patch()
   if err := p.I16Val.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.I16Val), err)
   }
@@ -3903,7 +3905,7 @@ func (p *MyStructPatch)  ReadField3(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField4(iprot thrift.Protocol) error {
-  p.I32Val = patch0.NewI32Patch()
+  p.I32Val = patch1.NewI32Patch()
   if err := p.I32Val.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.I32Val), err)
   }
@@ -3911,7 +3913,7 @@ func (p *MyStructPatch)  ReadField4(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField5(iprot thrift.Protocol) error {
-  p.I64Val = patch0.NewI64Patch()
+  p.I64Val = patch1.NewI64Patch()
   if err := p.I64Val.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.I64Val), err)
   }
@@ -3919,7 +3921,7 @@ func (p *MyStructPatch)  ReadField5(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField6(iprot thrift.Protocol) error {
-  p.FloatVal = patch0.NewFloatPatch()
+  p.FloatVal = patch1.NewFloatPatch()
   if err := p.FloatVal.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.FloatVal), err)
   }
@@ -3927,7 +3929,7 @@ func (p *MyStructPatch)  ReadField6(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField7(iprot thrift.Protocol) error {
-  p.DoubleVal = patch0.NewDoublePatch()
+  p.DoubleVal = patch1.NewDoublePatch()
   if err := p.DoubleVal.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.DoubleVal), err)
   }
@@ -3935,7 +3937,7 @@ func (p *MyStructPatch)  ReadField7(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField8(iprot thrift.Protocol) error {
-  p.StringVal = patch0.NewStringPatch()
+  p.StringVal = patch1.NewStringPatch()
   if err := p.StringVal.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.StringVal), err)
   }
@@ -3943,7 +3945,7 @@ func (p *MyStructPatch)  ReadField8(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField9(iprot thrift.Protocol) error {
-  p.BinaryVal = patch0.NewBinaryPatch()
+  p.BinaryVal = patch1.NewBinaryPatch()
   if err := p.BinaryVal.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.BinaryVal), err)
   }
@@ -3959,7 +3961,7 @@ func (p *MyStructPatch)  ReadField10(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField11(iprot thrift.Protocol) error {
-  p.OptBoolVal = patch0.NewOptionalBoolPatch()
+  p.OptBoolVal = patch1.NewOptionalBoolPatch()
   if err := p.OptBoolVal.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.OptBoolVal), err)
   }
@@ -3967,7 +3969,7 @@ func (p *MyStructPatch)  ReadField11(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField12(iprot thrift.Protocol) error {
-  p.OptByteVal = patch0.NewOptionalBytePatch()
+  p.OptByteVal = patch1.NewOptionalBytePatch()
   if err := p.OptByteVal.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.OptByteVal), err)
   }
@@ -3975,7 +3977,7 @@ func (p *MyStructPatch)  ReadField12(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField13(iprot thrift.Protocol) error {
-  p.OptI16Val = patch0.NewOptionalI16Patch()
+  p.OptI16Val = patch1.NewOptionalI16Patch()
   if err := p.OptI16Val.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.OptI16Val), err)
   }
@@ -3983,7 +3985,7 @@ func (p *MyStructPatch)  ReadField13(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField14(iprot thrift.Protocol) error {
-  p.OptI32Val = patch0.NewOptionalI32Patch()
+  p.OptI32Val = patch1.NewOptionalI32Patch()
   if err := p.OptI32Val.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.OptI32Val), err)
   }
@@ -3991,7 +3993,7 @@ func (p *MyStructPatch)  ReadField14(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField15(iprot thrift.Protocol) error {
-  p.OptI64Val = patch0.NewOptionalI64Patch()
+  p.OptI64Val = patch1.NewOptionalI64Patch()
   if err := p.OptI64Val.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.OptI64Val), err)
   }
@@ -3999,7 +4001,7 @@ func (p *MyStructPatch)  ReadField15(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField16(iprot thrift.Protocol) error {
-  p.OptFloatVal = patch0.NewOptionalFloatPatch()
+  p.OptFloatVal = patch1.NewOptionalFloatPatch()
   if err := p.OptFloatVal.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.OptFloatVal), err)
   }
@@ -4007,7 +4009,7 @@ func (p *MyStructPatch)  ReadField16(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField17(iprot thrift.Protocol) error {
-  p.OptDoubleVal = patch0.NewOptionalDoublePatch()
+  p.OptDoubleVal = patch1.NewOptionalDoublePatch()
   if err := p.OptDoubleVal.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.OptDoubleVal), err)
   }
@@ -4015,7 +4017,7 @@ func (p *MyStructPatch)  ReadField17(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField18(iprot thrift.Protocol) error {
-  p.OptStringVal = patch0.NewOptionalStringPatch()
+  p.OptStringVal = patch1.NewOptionalStringPatch()
   if err := p.OptStringVal.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.OptStringVal), err)
   }
@@ -4023,7 +4025,7 @@ func (p *MyStructPatch)  ReadField18(iprot thrift.Protocol) error {
 }
 
 func (p *MyStructPatch)  ReadField19(iprot thrift.Protocol) error {
-  p.OptBinaryVal = patch0.NewOptionalBinaryPatch()
+  p.OptBinaryVal = patch1.NewOptionalBinaryPatch()
   if err := p.OptBinaryVal.Read(iprot); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.OptBinaryVal), err)
   }
@@ -4669,13 +4671,13 @@ func (p *MyStructField21Patch)  ReadField1(iprot thrift.Protocol) error {
   tSlice := make([]int16, 0, size)
   p.Assign =  tSlice
   for i := 0; i < size; i ++ {
-    var _elem5 int16
+    var _elem6 int16
     if v, err := iprot.ReadI16(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem5 = v
+      _elem6 = v
     }
-    p.Assign = append(p.Assign, _elem5)
+    p.Assign = append(p.Assign, _elem6)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -4700,13 +4702,13 @@ func (p *MyStructField21Patch)  ReadField4(iprot thrift.Protocol) error {
   tSlice := make([]int16, 0, size)
   p.Prepend =  tSlice
   for i := 0; i < size; i ++ {
-    var _elem6 int16
+    var _elem7 int16
     if v, err := iprot.ReadI16(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem6 = v
+      _elem7 = v
     }
-    p.Prepend = append(p.Prepend, _elem6)
+    p.Prepend = append(p.Prepend, _elem7)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -4722,13 +4724,13 @@ func (p *MyStructField21Patch)  ReadField5(iprot thrift.Protocol) error {
   tSlice := make([]int16, 0, size)
   p.Append =  tSlice
   for i := 0; i < size; i ++ {
-    var _elem7 int16
+    var _elem8 int16
     if v, err := iprot.ReadI16(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem7 = v
+      _elem8 = v
     }
-    p.Append = append(p.Append, _elem7)
+    p.Append = append(p.Append, _elem8)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -5011,13 +5013,13 @@ func (p *OptionalMyStructField21Patch)  ReadField4(iprot thrift.Protocol) error 
   tSlice := make([]int16, 0, size)
   p.Ensure =  tSlice
   for i := 0; i < size; i ++ {
-    var _elem8 int16
+    var _elem9 int16
     if v, err := iprot.ReadI16(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem8 = v
+      _elem9 = v
     }
-    p.Ensure = append(p.Ensure, _elem8)
+    p.Ensure = append(p.Ensure, _elem9)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -5270,13 +5272,13 @@ func (p *MyStructField22Patch)  ReadField1(iprot thrift.Protocol) error {
   tSet := make([]string, 0, size)
   p.Assign =  tSet
   for i := 0; i < size; i ++ {
-    var _elem9 string
+    var _elem10 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem9 = v
+      _elem10 = v
     }
-    p.Assign = append(p.Assign, _elem9)
+    p.Assign = append(p.Assign, _elem10)
   }
   if err := iprot.ReadSetEnd(); err != nil {
     return thrift.PrependError("error reading set end: ", err)
@@ -5301,13 +5303,13 @@ func (p *MyStructField22Patch)  ReadField4(iprot thrift.Protocol) error {
   tSet := make([]string, 0, size)
   p.Remove =  tSet
   for i := 0; i < size; i ++ {
-    var _elem10 string
+    var _elem11 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem10 = v
+      _elem11 = v
     }
-    p.Remove = append(p.Remove, _elem10)
+    p.Remove = append(p.Remove, _elem11)
   }
   if err := iprot.ReadSetEnd(); err != nil {
     return thrift.PrependError("error reading set end: ", err)
@@ -5323,13 +5325,13 @@ func (p *MyStructField22Patch)  ReadField5(iprot thrift.Protocol) error {
   tSet := make([]string, 0, size)
   p.Add =  tSet
   for i := 0; i < size; i ++ {
-    var _elem11 string
+    var _elem12 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem11 = v
+      _elem12 = v
     }
-    p.Add = append(p.Add, _elem11)
+    p.Add = append(p.Add, _elem12)
   }
   if err := iprot.ReadSetEnd(); err != nil {
     return thrift.PrependError("error reading set end: ", err)
@@ -5633,13 +5635,13 @@ func (p *OptionalMyStructField22Patch)  ReadField4(iprot thrift.Protocol) error 
   tSet := make([]string, 0, size)
   p.Ensure =  tSet
   for i := 0; i < size; i ++ {
-    var _elem12 string
+    var _elem13 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _elem12 = v
+      _elem13 = v
     }
-    p.Ensure = append(p.Ensure, _elem12)
+    p.Ensure = append(p.Ensure, _elem13)
   }
   if err := iprot.ReadSetEnd(); err != nil {
     return thrift.PrependError("error reading set end: ", err)
@@ -5878,19 +5880,19 @@ func (p *MyStructField23Patch)  ReadField1(iprot thrift.Protocol) error {
   tMap := make(map[string]string, size)
   p.Assign =  tMap
   for i := 0; i < size; i ++ {
-    var _key13 string
+    var _key14 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _key13 = v
+      _key14 = v
     }
-    var _val14 string
+    var _val15 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _val14 = v
+      _val15 = v
     }
-    p.Assign[_key13] = _val14
+    p.Assign[_key14] = _val15
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -5915,19 +5917,19 @@ func (p *MyStructField23Patch)  ReadField7(iprot thrift.Protocol) error {
   tMap := make(map[string]string, size)
   p.Put =  tMap
   for i := 0; i < size; i ++ {
-    var _key15 string
+    var _key16 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _key15 = v
+      _key16 = v
     }
-    var _val16 string
+    var _val17 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _val16 = v
+      _val17 = v
     }
-    p.Put[_key15] = _val16
+    p.Put[_key16] = _val17
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -6194,19 +6196,19 @@ func (p *OptionalMyStructField23Patch)  ReadField4(iprot thrift.Protocol) error 
   tMap := make(map[string]string, size)
   p.Ensure =  tMap
   for i := 0; i < size; i ++ {
-    var _key17 string
+    var _key18 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _key17 = v
+      _key18 = v
     }
-    var _val18 string
+    var _val19 string
     if v, err := iprot.ReadString(); err != nil {
       return thrift.PrependError("error reading field 0: ", err)
     } else {
-      _val18 = v
+      _val19 = v
     }
-    p.Ensure[_key17] = _val18
+    p.Ensure[_key18] = _val19
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)

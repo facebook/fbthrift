@@ -43,14 +43,12 @@ MyData::MyData(const MyData&) = default;
 MyData& MyData::operator=(const MyData&) = default;
 MyData::MyData(MyData&& other) noexcept  :
     __fbthrift_field_data1(std::move(other.__fbthrift_field_data1)),
-    __fbthrift_field_data2(std::move(other.__fbthrift_field_data2)),
-    __isset(other.__isset) {
+    __fbthrift_field_data2(std::move(other.__fbthrift_field_data2)) {
 }
 
 MyData& MyData::operator=(FOLLY_MAYBE_UNUSED MyData&& other) noexcept {
     this->__fbthrift_field_data1 = std::move(other.__fbthrift_field_data1);
     this->__fbthrift_field_data2 = std::move(other.__fbthrift_field_data2);
-    __isset = other.__isset;
     return *this;
 }
 
@@ -58,8 +56,6 @@ MyData& MyData::operator=(FOLLY_MAYBE_UNUSED MyData&& other) noexcept {
 MyData::MyData(apache::thrift::FragileConstructor, ::std::string data1__arg, ::std::int32_t data2__arg) :
     __fbthrift_field_data1(std::move(data1__arg)),
     __fbthrift_field_data2(std::move(data2__arg)) {
-  __isset.set(folly::index_constant<0>(), true);
-  __isset.set(folly::index_constant<1>(), true);
 }
 
 
@@ -67,11 +63,11 @@ void MyData::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_data1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->__fbthrift_field_data2 = ::std::int32_t();
-  __isset = {};
 }
 
 bool MyData::__fbthrift_is_empty() const {
-  return false;
+  return !(!apache::thrift::StringTraits<std::string>::isEmpty(this->__fbthrift_field_data1)) &&
+ !(this->__fbthrift_field_data2 != ::std::int32_t());
 }
 
 bool MyData::operator==(const MyData& rhs) const {
@@ -105,7 +101,6 @@ void swap(MyData& a, MyData& b) {
   using ::std::swap;
   swap(a.data1_ref().value(), b.data1_ref().value());
   swap(a.data2_ref().value(), b.data2_ref().value());
-  swap(a.__isset, b.__isset);
 }
 
 template void MyData::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -376,17 +371,6 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, bool boolVal__arg, ::std:
   __isset.set(folly::index_constant<10>(), true);
   __isset.set(folly::index_constant<11>(), true);
   __isset.set(folly::index_constant<12>(), true);
-  __isset.set(folly::index_constant<13>(), true);
-  __isset.set(folly::index_constant<14>(), true);
-  __isset.set(folly::index_constant<15>(), true);
-  __isset.set(folly::index_constant<16>(), true);
-  __isset.set(folly::index_constant<17>(), true);
-  __isset.set(folly::index_constant<18>(), true);
-  __isset.set(folly::index_constant<19>(), true);
-  __isset.set(folly::index_constant<20>(), true);
-  __isset.set(folly::index_constant<21>(), true);
-  __isset.set(folly::index_constant<22>(), true);
-  __isset.set(folly::index_constant<23>(), true);
 }
 
 
@@ -420,7 +404,30 @@ void MyStruct::__fbthrift_clear() {
 }
 
 bool MyStruct::__fbthrift_is_empty() const {
-  return false;
+  return !(this->__fbthrift_field_boolVal != bool()) &&
+ !(this->__fbthrift_field_byteVal != ::std::int8_t()) &&
+ !(this->__fbthrift_field_i16Val != ::std::int16_t()) &&
+ !(this->__fbthrift_field_i32Val != ::std::int32_t()) &&
+ !(this->__fbthrift_field_i64Val != ::std::int64_t()) &&
+ !(this->__fbthrift_field_floatVal != float()) &&
+ !(this->__fbthrift_field_doubleVal != double()) &&
+ !(!apache::thrift::StringTraits<std::string>::isEmpty(this->__fbthrift_field_stringVal)) &&
+ !(!apache::thrift::StringTraits<::folly::IOBuf>::isEmpty(this->__fbthrift_field_binaryVal)) &&
+ !(!apache::thrift::empty(this->__fbthrift_field_structVal)) &&
+ !(this->__isset.get(0)) &&
+ !(this->__isset.get(1)) &&
+ !(this->__isset.get(2)) &&
+ !(this->__isset.get(3)) &&
+ !(this->__isset.get(4)) &&
+ !(this->__isset.get(5)) &&
+ !(this->__isset.get(6)) &&
+ !(this->__isset.get(7)) &&
+ !(this->__isset.get(8)) &&
+ !(this->__isset.get(9)) &&
+ !(this->__isset.get(10)) &&
+ !(this->__isset.get(11)) &&
+ !(this->__isset.get(12)) &&
+ !(!apache::thrift::empty(this->__fbthrift_field_unionVal));
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {

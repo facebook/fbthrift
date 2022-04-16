@@ -340,6 +340,10 @@ class facebook_thrift_annotation_thrift_TerseWrite implements \IThriftSyncStruct
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
+        'facebook_thrift_annotation_Program' => facebook_thrift_annotation_Program::fromShape(
+          shape(
+          )
+        ),
         'facebook_thrift_annotation_Field' => facebook_thrift_annotation_Field::fromShape(
           shape(
           )

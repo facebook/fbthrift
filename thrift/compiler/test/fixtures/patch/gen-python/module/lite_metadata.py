@@ -7,6 +7,8 @@
 import apache.thrift.metadata.lite_types as _fbthrift_metadata
 
 
+import facebook.thrift.annotation.thrift.lite_metadata
+
 import patch.lite_metadata
 
 # TODO (ffrancet): This general pattern can be optimized by using tuples and dicts

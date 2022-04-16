@@ -9,6 +9,8 @@ import thrift.python.types as _fbthrift_py3lite_types
 import thrift.python.exceptions as _fbthrift_py3lite_exceptions
 
 
+import facebook.thrift.annotation.thrift.lite_types
+
 import patch.lite_types
 
 
@@ -16,14 +18,14 @@ class MyData(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "data1",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "data2",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -80,70 +82,70 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "boolVal",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "byteVal",  # name
             _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
             None,  # default value
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "i16Val",  # name
             _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
             None,  # default value
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "i32Val",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "i64Val",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
         ),
         (
             6,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "floatVal",  # name
             _fbthrift_py3lite_types.typeinfo_float,  # typeinfo
             None,  # default value
         ),
         (
             7,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "doubleVal",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             None,  # default value
         ),
         (
             8,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "stringVal",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
         ),
         (
             9,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "binaryVal",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value
         ),
         (
             10,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "structVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyData),  # typeinfo
             None,  # default value
@@ -241,7 +243,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             30,  # id
-            True,  # isUnqualified
+            False,  # isUnqualified
             "unionVal",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnion),  # typeinfo
             None,  # default value

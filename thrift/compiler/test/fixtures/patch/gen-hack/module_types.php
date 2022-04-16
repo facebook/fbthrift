@@ -38,7 +38,7 @@ class MyData implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'data2' => int,
     ...
   );
-  const int STRUCTURAL_ID = 5866554621888573217;
+  const int STRUCTURAL_ID = 5497211930825790974;
   /**
    * Original thrift field:-
    * 1: string data1
@@ -579,7 +579,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'unionVal' => ?MyUnion::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 1665323209308312891;
+  const int STRUCTURAL_ID = 4304632649704893106;
   /**
    * Original thrift field:-
    * 1: bool boolVal

@@ -16,6 +16,7 @@ import sys
 if sys.version_info[0] >= 3:
   long = int
 
+import thrift.annotation.thrift.ttypes
 import patch.ttypes
 
 
@@ -3326,8 +3327,8 @@ class OptionalMyStructValuePatch:
 all_structs.append(MyData)
 MyData.thrift_spec = (
   None, # 0
-  (1, TType.STRING, 'data1', True, None, 2, ), # 1
-  (2, TType.I32, 'data2', None, None, 2, ), # 2
+  (1, TType.STRING, 'data1', True, None, 3, ), # 1
+  (2, TType.I32, 'data2', None, None, 3, ), # 2
 )
 
 MyData.thrift_struct_annotations = {
@@ -3378,16 +3379,16 @@ MyUnion.__init__ = MyUnion__init__
 all_structs.append(MyStruct)
 MyStruct.thrift_spec = (
   None, # 0
-  (1, TType.BOOL, 'boolVal', None, None, 2, ), # 1
-  (2, TType.BYTE, 'byteVal', None, None, 2, ), # 2
-  (3, TType.I16, 'i16Val', None, None, 2, ), # 3
-  (4, TType.I32, 'i32Val', None, None, 2, ), # 4
-  (5, TType.I64, 'i64Val', None, None, 2, ), # 5
-  (6, TType.FLOAT, 'floatVal', None, None, 2, ), # 6
-  (7, TType.DOUBLE, 'doubleVal', None, None, 2, ), # 7
-  (8, TType.STRING, 'stringVal', True, None, 2, ), # 8
-  (9, TType.STRING, 'binaryVal', False, None, 2, ), # 9
-  (10, TType.STRUCT, 'structVal', [MyData, MyData.thrift_spec, False], None, 2, ), # 10
+  (1, TType.BOOL, 'boolVal', None, None, 3, ), # 1
+  (2, TType.BYTE, 'byteVal', None, None, 3, ), # 2
+  (3, TType.I16, 'i16Val', None, None, 3, ), # 3
+  (4, TType.I32, 'i32Val', None, None, 3, ), # 4
+  (5, TType.I64, 'i64Val', None, None, 3, ), # 5
+  (6, TType.FLOAT, 'floatVal', None, None, 3, ), # 6
+  (7, TType.DOUBLE, 'doubleVal', None, None, 3, ), # 7
+  (8, TType.STRING, 'stringVal', True, None, 3, ), # 8
+  (9, TType.STRING, 'binaryVal', False, None, 3, ), # 9
+  (10, TType.STRUCT, 'structVal', [MyData, MyData.thrift_spec, False], None, 3, ), # 10
   (11, TType.BOOL, 'optBoolVal', None, None, 1, ), # 11
   (12, TType.BYTE, 'optByteVal', None, None, 1, ), # 12
   (13, TType.I16, 'optI16Val', None, None, 1, ), # 13
@@ -3407,7 +3408,7 @@ MyStruct.thrift_spec = (
   None, # 27
   None, # 28
   None, # 29
-  (30, TType.STRUCT, 'unionVal', [MyUnion, MyUnion.thrift_spec, True], None, 2, ), # 30
+  (30, TType.STRUCT, 'unionVal', [MyUnion, MyUnion.thrift_spec, True], None, 3, ), # 30
 )
 
 MyStruct.thrift_struct_annotations = {
