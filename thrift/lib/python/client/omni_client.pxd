@@ -29,12 +29,12 @@ cdef extern from "thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h" namespace "::a
         SINGLE_REQUEST_STREAMING_RESPONSE = 4,
         SINK = 6,
 
-cdef extern from "thrift/lib/python/client/OmniClient.h" namespace "::thrift::py3lite::client":
-    cdef cppclass cOmniClientResponseWithHeaders "::thrift::py3lite::client::OmniClientResponseWithHeaders":
+cdef extern from "thrift/lib/python/client/OmniClient.h" namespace "::thrift::python::client":
+    cdef cppclass cOmniClientResponseWithHeaders "::thrift::python::client::OmniClientResponseWithHeaders":
         cExpected[unique_ptr[cIOBuf], cFollyExceptionWrapper] buf
         cmap[string, string] headers
 
-    cdef cppclass cOmniClient "::thrift::py3lite::client::OmniClient":
+    cdef cppclass cOmniClient "::thrift::python::client::OmniClient":
         cOmniClient(cRequestChannel_ptr channel, const string& serviceName)
         cOmniClientResponseWithHeaders sync_send(
             const string& serviceName,

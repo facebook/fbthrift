@@ -31,7 +31,7 @@
 #include <thrift/lib/cpp2/async/RpcOptions.h>
 
 namespace thrift {
-namespace py3lite {
+namespace python {
 namespace client {
 
 using namespace apache::thrift;
@@ -285,5 +285,5 @@ uint16_t OmniClient::getChannelProtocolId() {
 }
 
 } // namespace client
-} // namespace py3lite
+} // namespace python
 } // namespace thrift

@@ -27,7 +27,7 @@
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace thrift {
-namespace py3lite {
+namespace python {
 namespace client {
 
 using RequestChannel_ptr = std::unique_ptr<
@@ -112,5 +112,5 @@ class OmniClient : public apache::thrift::TClientBase {
 };
 
 } // namespace client
-} // namespace py3lite
+} // namespace python
 } // namespace thrift

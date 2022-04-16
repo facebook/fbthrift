@@ -24,7 +24,7 @@ TSyncClient = TypeVar("TSyncClient", bound=SyncClient)
 
 class Client(Generic[TAsyncClient, TSyncClient], ABC):
     """
-    Base class of all thrift-py3lite clients.
+    Base class of all thrift-python clients.
     """
 
     Async: Type[TAsyncClient]

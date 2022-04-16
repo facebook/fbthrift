@@ -20,7 +20,7 @@
 #include <thrift/lib/python/client/RequestChannel.h>
 
 namespace thrift {
-namespace py3lite {
+namespace python {
 namespace client {
 
 ConnectHandler::ConnectHandler(
@@ -135,5 +135,5 @@ RequestChannel_ptr sync_createThriftChannelTCP(
 }
 
 } // namespace client
-} // namespace py3lite
+} // namespace python
 } // namespace thrift

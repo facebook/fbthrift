@@ -25,8 +25,8 @@ cdef extern from "thrift/lib/cpp/transport/THeader.h":
         THRIFT_HTTP_CLIENT_TYPE,
 
 
-cdef extern from "thrift/lib/python/client/RequestChannel.h" namespace "::thrift::py3lite::client":
-    cdef cppclass cRequestChannel_ptr "::thrift::py3lite::client::RequestChannel_ptr":
+cdef extern from "thrift/lib/python/client/RequestChannel.h" namespace "::thrift::python::client":
+    cdef cppclass cRequestChannel_ptr "::thrift::python::client::RequestChannel_ptr":
         pass
 
     cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelTCP(

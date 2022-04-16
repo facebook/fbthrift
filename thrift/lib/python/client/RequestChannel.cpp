@@ -23,7 +23,7 @@
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 
 namespace thrift {
-namespace py3lite {
+namespace python {
 namespace client {
 
 using namespace apache::thrift;
@@ -115,5 +115,5 @@ RequestChannel_ptr sync_createThriftChannelUnix(
 }
 
 } // namespace client
-} // namespace py3lite
+} // namespace python
 } // namespace thrift

@@ -46,7 +46,7 @@ cdef extern from "folly/io/async/SSLContext.h":
         void authenticate(bint checkPeerCert, bint checkPeerName)
 
 
-cdef extern from "thrift/lib/python/client/ssl.h" namespace "::thrift::py3lite::client":
+cdef extern from "thrift/lib/python/client/ssl.h" namespace "::thrift::python::client":
     cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelTCP(
         shared_ptr[cSSLContext]& ctx,
         const string& host,

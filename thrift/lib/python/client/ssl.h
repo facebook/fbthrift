@@ -23,7 +23,7 @@
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
 namespace thrift {
-namespace py3lite {
+namespace python {
 namespace client {
 
 using RequestChannel_ptr = std::unique_ptr<
@@ -92,5 +92,5 @@ RequestChannel_ptr sync_createThriftChannelTCP(
     const std::string& endpoint);
 
 } // namespace client
-} // namespace py3lite
+} // namespace python
 } // namespace thrift

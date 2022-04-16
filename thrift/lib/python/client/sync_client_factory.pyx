@@ -46,7 +46,7 @@ def get_client(
     double ssl_timeout=1,
 ):
     if not issubclass(clientKlass, Client):
-        raise TypeError(f"{clientKlass} is not a py3lite client class")
+        raise TypeError(f"{clientKlass} is not a python client class")
 
     endpoint = b''
     if client_type == ClientType.THRIFT_HTTP_CLIENT_TYPE:

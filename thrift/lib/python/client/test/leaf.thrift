@@ -16,7 +16,7 @@
 
 include "thrift/lib/python/client/test/test.thrift"
 
-namespace cpp2 thrift.py3lite.test
+namespace cpp2 thrift.python.test
 namespace py3 thrift.python
 
 service LeafService extends test.EchoService {
