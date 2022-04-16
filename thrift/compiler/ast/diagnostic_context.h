@@ -112,9 +112,9 @@ class diagnostic_context : public diagnostics_engine,
   }
 
   // The program currently being analyzed.
-  // TODO(afuller): Consider having every t_node know what program it was
-  // defined in instead.
-  const t_program* program() {
+  // TODO(afuller): Migrate all usage to const_visitor_context::program() and
+  // remove this.
+  const t_program* program_top() {
     assert(!programs_.empty());
     return programs_.top();
   }
@@ -139,7 +139,7 @@ class diagnostic_context : public diagnostics_engine,
     report(
         {level,
          std::move(text),
-         program()->path(),
+         program_top()->path(),
          lineno,
          std::move(token),
          std::move(name)});
@@ -154,7 +154,7 @@ class diagnostic_context : public diagnostics_engine,
       With&& with) {
     report(
         level,
-        program()->path(),
+        program_top()->path(),
         lineno,
         std::move(token),
         std::move(name),
@@ -166,7 +166,7 @@ class diagnostic_context : public diagnostics_engine,
       diagnostic_level level, int lineno, std::string token, With&& with) {
     report(
         level,
-        program()->path(),
+        program_top()->path(),
         lineno,
         std::move(token),
         "",

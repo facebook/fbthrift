@@ -29,15 +29,6 @@ constexpr auto kGeneratePatchUri = "facebook.com/thrift/op/GeneratePatch";
 constexpr auto kGenerateOptionalPatchUri =
     "facebook.com/thrift/op/GenerateOptionalPatch";
 
-const t_const* inherit_annotation_or_null(
-    diagnostic_context& ctx, const t_named& node, const char* uri) {
-  if (const t_program* program = dynamic_cast<const t_program*>(ctx.root())) {
-    return program->inherit_annotation_or_null(node, uri);
-  }
-  ctx.failure("Could not resolve program.");
-  return nullptr;
-}
-
 // TODO(afuller): Index all types by uri, and find them that way.
 const char* getPatchTypeName(t_base_type::type base_type) {
   switch (base_type) {
@@ -265,7 +256,8 @@ void generate_optional_patch(
 // annotation.
 void generate_struct_patch(
     diagnostic_context& ctx, mutator_context& mctx, t_struct& node) {
-  if (auto* annot = inherit_annotation_or_null(ctx, node, kGeneratePatchUri)) {
+  if (auto* annot =
+          ctx.program().inherit_annotation_or_null(node, kGeneratePatchUri)) {
     auto& generator = patch_generator::get_for(ctx, mctx);
 
     // Add a 'structured patch' and 'struct value patch' using it.
@@ -279,7 +271,8 @@ void generate_struct_patch(
 
 void generate_union_patch(
     diagnostic_context& ctx, mutator_context& mctx, t_union& node) {
-  if (auto* annot = inherit_annotation_or_null(ctx, node, kGeneratePatchUri)) {
+  if (auto* annot =
+          ctx.program().inherit_annotation_or_null(node, kGeneratePatchUri)) {
     auto& generator = patch_generator::get_for(ctx, mctx);
 
     // Add a 'structured patch' and 'union value patch' using it.

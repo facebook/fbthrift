@@ -315,6 +315,7 @@ class basic_ast_visitor {
 template <bool is_const, typename N = t_node>
 class basic_visitor_context {
   using node_type = ast_detail::node_type<is_const, N>;
+  using program_type = ast_detail::node_type<is_const, t_program>;
 
  public:
   // The first node visited.
@@ -332,6 +333,13 @@ class basic_visitor_context {
   // The parent of the current node, or nullptr.
   node_type* parent() const noexcept {
     return context_.size() < 2 ? nullptr : context_[context_.size() - 2];
+  }
+
+  program_type& program() const {
+    if (program_type* program = dynamic_cast<program_type*>(root())) {
+      return *program;
+    }
+    throw std::runtime_error("Could not resolve program.");
   }
 
   void begin_visit(node_type& node) { context_.emplace_back(&node); }

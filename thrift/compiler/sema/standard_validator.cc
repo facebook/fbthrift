@@ -89,7 +89,7 @@ void report_redef_failure(
     const t_node& child,
     const t_node& existing) {
   report_redef_failure(
-      ctx, kind, name, ctx.program()->path(), parent, child, existing);
+      ctx, kind, name, ctx.program().path(), parent, child, existing);
 }
 
 // Helper for checking for the redefinition of a name in the context of a node.
