@@ -299,6 +299,18 @@ class t_program : public t_named {
     add_exception(std::move(tx));
   }
   const std::vector<t_exception*>& xceptions() const { return exceptions(); }
+
+  // Looks for an annotation on the given node, then if not found, and the node
+  // is not generated, looks for the same annotation on the program.
+  const t_const* inherit_annotation_or_null(
+      const t_named& node, const char* uri) const {
+    if (const t_const* annot = node.find_structured_annotation_or_null(uri)) {
+      return annot;
+    } else if (node.generated()) { // Generated nodes do not inherit.
+      return nullptr;
+    }
+    return find_structured_annotation_or_null(uri);
+  }
 };
 
 } // namespace compiler

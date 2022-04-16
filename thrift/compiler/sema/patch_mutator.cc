@@ -30,18 +30,9 @@ constexpr auto kGenerateOptionalPatchUri =
     "facebook.com/thrift/op/GenerateOptionalPatch";
 
 const t_const* inherit_annotation_or_null(
-    const t_program& program, const t_named& node, const char* uri) {
-  if (const t_const* annot = node.find_structured_annotation_or_null(uri)) {
-    return annot;
-  } else if (node.generated()) { // Generated nodes do not inherit.
-    return nullptr;
-  }
-  return program.find_structured_annotation_or_null(uri);
-}
-const t_const* inherit_annotation_or_null(
     diagnostic_context& ctx, const t_named& node, const char* uri) {
   if (const t_program* program = dynamic_cast<const t_program*>(ctx.root())) {
-    return inherit_annotation_or_null(*program, node, uri);
+    return program->inherit_annotation_or_null(node, uri);
   }
   ctx.failure("Could not resolve program.");
   return nullptr;
