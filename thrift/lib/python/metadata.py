@@ -562,7 +562,7 @@ def gen_metadata(
     if not issubclass(
         cls, (Struct, ThriftUnion, GeneratedError, ServiceInterface, Enum, Client)
     ):
-        raise TypeError(f"{cls!r} is not a thrift-py3lite type.")
+        raise TypeError(f"{cls!r} is not a thrift-python type.")
 
     meta: ThriftMetadata = cls.__get_metadata__()
     name: str = cls.__get_thrift_name__()
@@ -578,4 +578,4 @@ def gen_metadata(
     elif issubclass(cls, Enum):
         return meta.enums[name]
     else:
-        raise TypeError(f"unsupported thrift-py3lite type: {cls!r}.")
+        raise TypeError(f"unsupported thrift-python type: {cls!r}.")

@@ -24,7 +24,7 @@
 #include <folly/ExceptionWrapper.h>
 
 namespace thrift {
-namespace py3lite {
+namespace python {
 namespace exception {
 
 template <class T>
@@ -35,5 +35,5 @@ std::unique_ptr<T> try_make_unique_exception(
 }
 
 } // namespace exception
-} // namespace py3lite
+} // namespace python
 } // namespace thrift

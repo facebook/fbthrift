@@ -26,7 +26,7 @@
 #if FOLLY_HAS_COROUTINES
 
 namespace thrift {
-namespace py3lite {
+namespace python {
 
 void cancelPythonIterator(PyObject*);
 
@@ -72,12 +72,12 @@ folly::coro::AsyncGenerator<TChunk&&> toAsyncGenerator(
         }
       });
 }
-} // namespace py3lite
+} // namespace python
 } // namespace thrift
 
 #else /* !FOLLY_HAS_COROUTINES */
 #error  Thrift sink type support needs C++ coroutines, which are not currently available. \
         Use a modern compiler and pass appropriate options to enable C++ coroutine support, \
-        or consider passing the Thrift compiler the mstch_py3lite:no_sink (TODO: (pyamane) implement this) \
+        or consider passing the Thrift compiler the mstch_python:no_sink (TODO: (pyamane) implement this) \
         option in order to ignore sink type fields when generating code.
 #endif

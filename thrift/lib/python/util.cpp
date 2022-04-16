@@ -24,7 +24,7 @@
 #if FOLLY_HAS_COROUTINES
 
 namespace thrift {
-namespace py3lite {
+namespace python {
 
 namespace {
 
@@ -41,6 +41,6 @@ void cancelPythonIterator(PyObject* iter) {
   cancelAsyncGenerator(iter);
 }
 
-} // namespace py3lite
+} // namespace python
 } // namespace thrift
 #endif
