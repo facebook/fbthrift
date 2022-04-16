@@ -221,6 +221,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_metadata(t_program const* program);
   void generate_structs(t_program const* program);
   void generate_service(t_service const* service);
+  void generate_aliased_services(const std::vector<t_service*>& services);
 
   std::shared_ptr<cpp2_generator_context> context_;
   std::unordered_map<std::string, int32_t> client_name_to_split_count_;
@@ -2174,6 +2175,7 @@ void t_mstch_cpp2_generator::generate_program() {
   for (const auto* service : program->services()) {
     generate_service(service);
   }
+  generate_aliased_services(program->services());
   generate_metadata(program);
   generate_visitation(program);
 }
@@ -2346,6 +2348,23 @@ void t_mstch_cpp2_generator::generate_service(t_service const* service) {
   cache_->parsed_options_.erase("parent_service_name");
   cache_->parsed_options_.erase("parent_service_cpp_name");
   cache_->parsed_options_.erase("parent_service_qualified_name");
+}
+
+void t_mstch_cpp2_generator::generate_aliased_services(
+    const std::vector<t_service*>& services) {
+  mstch::array service_contexts;
+  service_contexts.reserve(services.size());
+  for (t_service const* service : services) {
+    auto service_context = generators_->service_generator_->generate_cached(
+        get_program(), service, generators_, cache_);
+    service_contexts.push_back(std::move(service_context));
+  }
+  mstch::map context{
+      {"services", std::move(service_contexts)},
+  };
+  const auto& module_name = get_program()->name();
+  render_to_file(context, "module_handlers.h", module_name + "_handlers.h");
+  render_to_file(context, "module_clients.h", module_name + "_clients.h");
 }
 
 std::string t_mstch_cpp2_generator::get_cpp2_namespace(
