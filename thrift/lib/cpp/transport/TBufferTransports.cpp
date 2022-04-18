@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -416,8 +416,7 @@ void TMemoryBuffer::ensureCanWrite(uint32_t len) {
   }
 
   // Allocate into a new pointer so we don't bork ours if it fails.
-  void* new_buffer = nullptr;
-  ptrdiff_t offset = 0;
+  uint8_t* new_buffer = nullptr;
   if (copy) {
     /* This is not a memory leak, because an observed buffer still owns the
      * previous buffer pointer.
@@ -428,7 +427,7 @@ void TMemoryBuffer::ensureCanWrite(uint32_t len) {
      * setIdleWriteBufferLimit, and setIdleReadBufferLimit.
      * This will likely solve the issue.
      */
-    new_buffer = std::malloc(new_size);
+    new_buffer = static_cast<uint8_t*>(std::malloc(new_size));
     if (new_buffer == nullptr) {
       throw std::bad_alloc();
     }
@@ -440,7 +439,7 @@ void TMemoryBuffer::ensureCanWrite(uint32_t len) {
       memmove(buffer_, rBase_, wBase_ - rBase_);
     }
     if (new_size > bufferSize_) {
-      new_buffer = std::realloc(buffer_, new_size);
+      new_buffer = static_cast<uint8_t*>(std::realloc(buffer_, new_size));
       if (new_buffer == nullptr) {
         throw std::bad_alloc();
       }
@@ -449,13 +448,14 @@ void TMemoryBuffer::ensureCanWrite(uint32_t len) {
       new_buffer = buffer_;
     }
   }
-  offset = (uint8_t*)new_buffer - rBase_;
+  ptrdiff_t rBoundOffset = rBound_ - rBase_;
+  ptrdiff_t wBaseOffset = wBase_ - rBase_;
   bufferSize_ = new_size;
 
-  buffer_ = (uint8_t*)new_buffer;
-  rBase_ += offset;
-  rBound_ += offset;
-  wBase_ += offset;
+  buffer_ = new_buffer;
+  rBase_ = new_buffer;
+  rBound_ = new_buffer + rBoundOffset;
+  wBase_ = new_buffer + wBaseOffset;
   wBound_ = buffer_ + bufferSize_;
 }
 
