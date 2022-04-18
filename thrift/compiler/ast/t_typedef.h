@@ -20,6 +20,7 @@
 #include <string>
 
 #include <thrift/compiler/ast/alias_span.h>
+#include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_type.h>
 
@@ -67,6 +68,11 @@ class t_typedef : public t_type {
         get_first_annotation_or_null(type, name),
         std::forward<D>(default_value));
   }
+
+  // Finds the first matching structured annoation in the typedef's hierarchy.
+  // Return null if not found.
+  static const t_const* get_first_structured_annotation_or_null(
+      const t_type* type, const char* name);
 
   std::string get_full_name() const override {
     // TODO(afuller): Just return name() as, unlike a t_placeholder_typedef, the

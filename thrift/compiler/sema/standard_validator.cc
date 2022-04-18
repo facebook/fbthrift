@@ -33,6 +33,7 @@
 #include <thrift/compiler/ast/t_structured.h>
 #include <thrift/compiler/ast/t_throws.h>
 #include <thrift/compiler/ast/t_type.h>
+#include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/gen/cpp/reference_type.h>
 #include <thrift/compiler/lib/cpp2/util.h>
@@ -460,7 +461,7 @@ void validate_ref_annotation(diagnostic_context& ctx, const t_field& node) {
   }
 }
 
-void validate_adapter_annotation(diagnostic_context& ctx, const t_field& node) {
+void validate_adapter_annotation(diagnostic_context& ctx, const t_named& node) {
   const t_const* adapter_annotation = nullptr;
   for (const t_const* annotation : node.structured_annotations()) {
     if (annotation->type()->uri() == kCppAdapterUri) {
@@ -478,12 +479,32 @@ void validate_adapter_annotation(diagnostic_context& ctx, const t_field& node) {
     }
   }
 
-  if (adapter_annotation &&
-      t_typedef::get_first_annotation_or_null(&*node.type(), {"cpp.adapter"})) {
-    ctx.failure([&](auto& o) {
-      o << "`@cpp.Adapter` cannot be combined with `cpp_adapter` in `"
-        << node.name() << "`.";
-    });
+  if (!adapter_annotation) {
+    return;
+  }
+
+  // Do not allow composing with unstructured adapter annotation on a field.
+  if (const auto* field = dynamic_cast<const t_field*>(&node)) {
+    if (t_typedef::get_first_annotation_or_null(
+            &*field->type(), {"cpp.adapter"})) {
+      ctx.failure([&](auto& o) {
+        o << "`@cpp.Adapter` cannot be combined with `cpp_adapter` in `"
+          << node.name() << "`.";
+      });
+    }
+  }
+
+  // TODO (dokwon): Do not allow composing unstructured adapter annotation on
+  // typedef as well.
+  // Do not allow composing two structured adapter annotation on typedef.
+  if (const auto* typedf = dynamic_cast<const t_typedef*>(&node)) {
+    if (t_typedef::get_first_structured_annotation_or_null(
+            &*typedf->type(), kCppAdapterUri)) {
+      ctx.failure([&](auto& o) {
+        o << "The @cpp.Adapter annotation cannot be annotated more than once in all typedef levels in `"
+          << node.name() << "`.";
+      });
+    }
   }
 }
 
@@ -698,7 +719,6 @@ ast_validator standard_validator() {
   validator.add_field_visitor(&validate_ref_field_attributes);
   validator.add_field_visitor(&validate_field_default_value);
   validator.add_field_visitor(&validate_ref_annotation);
-  validator.add_field_visitor(&validate_adapter_annotation);
   validator.add_field_visitor(&validate_ref_unique_and_box_annotation);
 
   validator.add_enum_visitor(&validate_enum_value_name_uniqueness);
@@ -707,6 +727,7 @@ ast_validator standard_validator() {
 
   validator.add_definition_visitor(&validate_structured_annotation);
   validator.add_definition_visitor(&validate_annotation_scopes);
+  validator.add_definition_visitor(&validate_adapter_annotation);
 
   validator.add_const_visitor(&validate_const_type_and_value);
   validator.add_program_visitor(&validate_uri_uniqueness);

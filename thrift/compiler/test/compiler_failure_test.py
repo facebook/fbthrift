@@ -911,6 +911,51 @@ class CompilerFailureTest(unittest.TestCase):
             "Please use @thrift.Box annotation instead in `my_field5` with @cpp.Adapter.\n",
         )
 
+    def test_typedef_adapter(self):
+        write_file(
+            "thrift/annotation/cpp.thrift",
+            textwrap.dedent(
+                """\
+                struct Adapter {
+                    1: string name;
+                } (thrift.uri = "facebook.com/thrift/annotation/cpp/Adapter")
+                """
+            ),
+        )
+
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                include "thrift/annotation/cpp.thrift"
+
+                @cpp.Adapter{}
+                typedef i32 MyI32
+
+                @cpp.Adapter{name="MyAdapter"}
+                typedef i64 MyI64
+
+                @cpp.Adapter{name="MyAdapter"}
+                typedef MyI64 DoubleMyI64
+
+                struct MyStruct {
+                    1: MyI64 my_field;
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:4] `@cpp.Adapter` cannot be used without "
+            "`name` specified in `MyI32`.\n"
+            "[FAILURE:foo.thrift:10] The @cpp.Adapter annotation cannot be annotated more "
+            "than once in all typedef levels in `DoubleMyI64`.\n",
+        )
+
     def test_mixin_nonstruct_members(self):
         write_file(
             "foo.thrift",
