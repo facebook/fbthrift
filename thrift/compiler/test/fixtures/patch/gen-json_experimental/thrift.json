@@ -58,6 +58,12 @@
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 64
+      },
+      "v1" : {
+        "name" : "v1",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 70
       }
       },
   "source_path" : "thrift/annotation/thrift",

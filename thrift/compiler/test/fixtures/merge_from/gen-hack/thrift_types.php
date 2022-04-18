@@ -426,3 +426,68 @@ class facebook_thrift_annotation_thrift_SerializeInFieldIdOrder implements \IThr
 
 }
 
+/**
+ * Original thrift struct:-
+ * v1
+ */
+class facebook_thrift_annotation_thrift_v1 implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'v1';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "thrift.v1",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[
+        'facebook_thrift_annotation_thrift_TerseWrite' => facebook_thrift_annotation_thrift_TerseWrite::fromShape(
+          shape(
+          )
+        ),
+        'facebook_thrift_annotation_FbthriftInternalScopeTransitive' => facebook_thrift_annotation_FbthriftInternalScopeTransitive::fromShape(
+          shape(
+          )
+        ),
+      ],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+}
+

@@ -64,3 +64,7 @@ struct Box {} (thrift.uri = "facebook.com/thrift/annotation/thrift/Box")
 struct SerializeInFieldIdOrder {} (
   thrift.uri = "facebook.com/thrift/annotation/thrift/SerializeInFieldIdOrder",
 )
+
+@TerseWrite
+@scope.FbthriftInternalScopeTransitive
+struct v1 {}
