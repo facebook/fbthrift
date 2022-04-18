@@ -988,7 +988,7 @@ inline void processViaExecuteRequest(
                oneway =
                    (*untypedMethodMetadata.rpcKind ==
                     RpcKind::SINGLE_REQUEST_NO_RESPONSE),
-               processor,
+               processor = processor,
                executor = std::move(executor),
                &untypedMethodMetadata](bool runInline) mutable {
     if (!runInline) {
