@@ -3,11 +3,11 @@ Facebook Thrift
 
 [![Support Ukraine](https://img.shields.io/badge/Support-Ukraine-FFD500?style=flat&labelColor=005BBB)](https://opensource.fb.com/support-ukraine)
 [![Linux Build Status](https://github.com/facebook/fbthrift/workflows/linux/badge.svg)](
-  https://github.com/facebook/fbthrift/actions?query=workflow%3Alinux)
+  https://github.com/facebook/fbthrift/actions/workflows/linux.yml)
 [![macOS Build Status](https://github.com/facebook/fbthrift/workflows/mac/badge.svg)](
-  https://github.com/facebook/fbthrift/actions?query=workflow%3Amac)
+  https://github.com/facebook/fbthrift/actions/workflows/mac.yml)
 [![Windows Build Status](https://github.com/facebook/fbthrift/workflows/windows/badge.svg)](
-  https://github.com/facebook/fbthrift/actions?query=workflow%3Awindows)
+  https://github.com/facebook/fbthrift/actions/workflows/windows.yml)
 <img src="./thrift/doc/logo.svg" alt="Facebook Thrift Logo Full Color" align="right" width="20%"/>
 
 Thrift is a serialization and RPC framework for service communication. Thrift enables these features in all major languages, and there is strong support for C++, Python, Hack, and Java. Most services at Facebook are written using Thrift for RPC, and some storage systems use Thrift for serializing records on disk.
