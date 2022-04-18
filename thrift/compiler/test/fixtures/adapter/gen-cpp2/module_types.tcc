@@ -222,7 +222,7 @@ _readField_adaptedLongField:
   {
     ::std::int64_t tvalue;
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, tvalue, _readState);
-    this->__fbthrift_field_adaptedLongField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter2, 10>(::std::move(tvalue), *this);
+    this->__fbthrift_field_adaptedLongField = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter2, 10>(my::Adapter1::fromThrift(::std::move(tvalue)), *this);
     
   }
  this->__isset.set(9, true);
@@ -383,7 +383,7 @@ uint32_t Foo::serializedSize(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("adaptedLongField", apache::thrift::protocol::T_I64, 10);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, my::Adapter2::toThrift(this->__fbthrift_field_adaptedLongField));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, my::Adapter1::toThrift(my::Adapter2::toThrift(this->__fbthrift_field_adaptedLongField)));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -431,7 +431,7 @@ uint32_t Foo::serializedSizeZC(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("adaptedLongField", apache::thrift::protocol::T_I64, 10);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, my::Adapter2::toThrift(this->__fbthrift_field_adaptedLongField));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, my::Adapter1::toThrift(my::Adapter2::toThrift(this->__fbthrift_field_adaptedLongField)));
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -515,7 +515,7 @@ uint32_t Foo::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 9;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 10, kPrevFieldId>(*prot_, "adaptedLongField", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, my::Adapter2::toThrift(this->__fbthrift_field_adaptedLongField));
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, my::Adapter1::toThrift(my::Adapter2::toThrift(this->__fbthrift_field_adaptedLongField)));
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

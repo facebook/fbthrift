@@ -47,8 +47,8 @@
 <%/field:terse?%><%/field:required?%><%/field:cpp_ref?%>
 <%/field:type%><%/struct:fields%>
 <%#struct:fields%>
-<%#field:cpp_adapter%>
-  <%#field:opt_cpp_ref?%>if (<%field:cpp_storage_name%>) <%/field:opt_cpp_ref?%>::apache::thrift::adapt_detail::construct<<%field:cpp_adapter%>, <%field:key%>>(<%#field:cpp_ref?%>*<%/field:cpp_ref?%><%field:cpp_storage_name%>, *this);
-<%/field:cpp_adapter%>
+<%#field:cpp_first_adapter%>
+  <%#field:opt_cpp_ref?%>if (<%field:cpp_storage_name%>) <%/field:opt_cpp_ref?%>::apache::thrift::adapt_detail::construct<<%field:cpp_first_adapter%>, <%field:key%>>(<%#field:cpp_ref?%>*<%/field:cpp_ref?%><%field:cpp_storage_name%>, *this);
+<%/field:cpp_first_adapter%>
 <%/struct:fields%>
 }

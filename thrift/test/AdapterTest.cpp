@@ -697,4 +697,22 @@ TEST(AdaptTest, AdapterWithContext) {
   EXPECT_EQ(*obj2.string_data()->meta, "foo");
 }
 
+TEST(AdaptTest, ComposedAdapter) {
+  auto obj = basic::AdaptTestStruct();
+
+  obj.double_wrapped_bool() = {Wrapper<bool>{true}};
+  obj.double_wrapped_integer()->value = Wrapper<int32_t>{42};
+  obj.meta() = "foo";
+
+  EXPECT_EQ(*obj.double_wrapped_integer()->meta, "foo");
+
+  auto serialized = CompactSerializer::serialize<std::string>(obj);
+  auto obj2 = basic::AdaptTestStruct();
+  CompactSerializer::deserialize(serialized, obj2);
+
+  EXPECT_EQ(obj2.double_wrapped_bool()->value.value, true);
+  EXPECT_EQ(obj2.double_wrapped_integer()->value.value, 42);
+  EXPECT_EQ(*obj2.double_wrapped_integer()->meta, "foo");
+}
+
 } // namespace apache::thrift::test

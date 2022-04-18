@@ -30,21 +30,6 @@ namespace thrift {
 namespace compiler {
 namespace gen {
 namespace cpp {
-namespace {
-
-const std::string* find_structured_adapter_annotation(const t_named& node) {
-  if (const t_const* annotation = node.find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/cpp/Adapter")) {
-    for (const auto& item : annotation->value()->get_map()) {
-      if (item.first->get_string() == "name") {
-        return &item.second->get_string();
-      }
-    }
-  }
-  return nullptr;
-}
-
-} // namespace
 
 const std::string& type_resolver::get_type_name(
     const t_field& field, const t_structured& parent) {

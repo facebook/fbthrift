@@ -16,9 +16,9 @@
 
   // The default value for a field.
   // TODO(afuller): Merge with other impls and move to a shared location.
-%><%#field:cpp_adapter%><%!
-  %>::apache::thrift::adapt_detail::fromThriftField<<%field:cpp_adapter%>, <%field:key%>>(<%!
-%><%/field:cpp_adapter%><%!
+%><%#field:cpp_first_adapter%><%!
+  %>::apache::thrift::adapt_detail::fromThriftField<<%field:cpp_first_adapter%>, <%field:key%>>(<%!
+%><%/field:cpp_first_adapter%><%!
 %><%#field:value%><%!
     %><%#type:enum?%><% > common/const_value%><%/type:enum?%><%!
     %><%^type:enum?%><% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%><%/type:enum?%><%!
@@ -32,6 +32,6 @@
     %><%^type:cpp_indirection?%><%type:cpp_standard_type%>()<%/type:cpp_indirection?%><%!
   %><%/type:string_or_binary?%><%!
 %><%/field:value%><%!
-%><%#field:cpp_adapter%><%!
+%><%#field:cpp_first_adapter%><%!
   %>, *this)<%!
-%><%/field:cpp_adapter%>
+%><%/field:cpp_first_adapter%>

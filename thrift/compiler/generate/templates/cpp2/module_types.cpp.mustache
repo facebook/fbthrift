@@ -262,10 +262,10 @@ static_assert(
 <% > common/namespace_cpp2_begin%> namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 <%#program:structs%><%#struct:fields%>
-<%#field:cpp_adapter%><%#field:type%>
+<%#field:cpp_first_adapter%><%#field:type%>
   ::apache::thrift::adapt_detail::validateFieldAdapter<<%!
-      %><%field:cpp_adapter%>, <%field:key%>, <%type:cpp_standard_type%>, <%struct:cpp_fullname%>>();
-<%/field:type%><%/field:cpp_adapter%>
+      %><%field:cpp_first_adapter%>, <%field:key%>, <%type:cpp_standard_type%>, <%struct:cpp_fullname%>>();
+<%/field:type%><%/field:cpp_first_adapter%>
 <%/struct:fields%><%/program:structs%>
 <%#program:typedefs%><%#typedef:type%>
 <%#type:cpp_adapter%>

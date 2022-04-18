@@ -66,6 +66,12 @@ struct AdaptTestStruct {
   6: IndirectionString indirectionString;
   @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
   7: string string_data;
+
+  @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+  8: AdaptedBool double_wrapped_bool;
+
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  9: AdaptedInteger double_wrapped_integer;
 }
 
 enum AdaptedEnum {

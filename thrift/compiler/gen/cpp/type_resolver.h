@@ -107,6 +107,18 @@ class type_resolver {
   static const std::string* find_adapter(const t_type& node) {
     return node.find_annotation_or_null("cpp.adapter");
   }
+  static const std::string* find_structured_adapter_annotation(
+      const t_named& node) {
+    if (const t_const* annotation = node.find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/cpp/Adapter")) {
+      for (const auto& item : annotation->value()->get_map()) {
+        if (item.first->get_string() == "name") {
+          return &item.second->get_string();
+        }
+      }
+    }
+    return nullptr;
+  }
   static const std::string* find_first_type(const t_type& node) {
     return t_typedef::get_first_annotation_or_null(
         &node, {"cpp.type", "cpp2.type"});
