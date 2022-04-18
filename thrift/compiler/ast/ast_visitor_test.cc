@@ -122,7 +122,7 @@ class OverloadedVisitor {
  public:
   explicit OverloadedVisitor(MockAstVisitor* mock) : mock_(mock) {}
 
-  void operator()(const t_program& node) { mock_->visit_program(&node); }
+  void operator()(const t_program&) {}
 
   void operator()(const t_service& node) { mock_->visit_service(&node); }
   void operator()(const t_interaction& node) {
@@ -174,6 +174,7 @@ class AstVisitorTest : public ::testing::Test {
 
     // Add baseline expectations.
     EXPECT_CALL(this->mock_, visit_program(&this->program_));
+    EXPECT_CALL(this->mock_, visit_definition(&this->program_));
   }
 
   void TearDown() override { visitor_(program_); }

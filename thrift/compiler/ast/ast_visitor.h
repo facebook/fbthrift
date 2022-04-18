@@ -119,6 +119,7 @@ class basic_ast_visitor {
     add_function_visitor(visitor);
     add_field_visitor(visitor);
     add_enum_value_visitor(visitor);
+    add_program_visitor(std::forward<V>(visitor));
   }
 
   template <typename V>
