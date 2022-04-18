@@ -105,6 +105,10 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'longField',
       'type' => \TType::I64,
     ),
+    10 => shape(
+      'var' => 'adaptedLongField',
+      'type' => \TType::I64,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'intField' => 1,
@@ -116,6 +120,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'optionalMapField' => 7,
     'binaryField' => 8,
     'longField' => 9,
+    'adaptedLongField' => 10,
   ];
 
   const type TConstructorShape = shape(
@@ -128,6 +133,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'optionalMapField' => ?\Adapter3::THackType,
     ?'binaryField' => ?\Adapter1::THackType,
     ?'longField' => ?int,
+    ?'adaptedLongField' => ?int,
   );
 
   const type TShape = shape(
@@ -140,8 +146,9 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'optionalMapField' => ?\Adapter3::THackType,
     'binaryField' => \Adapter1::THackType,
     'longField' => int,
+    'adaptedLongField' => int,
   );
-  const int STRUCTURAL_ID = 5175647014973364666;
+  const int STRUCTURAL_ID = 7050414363219672634;
   /**
    * Original thrift field:-
    * 1: i32 intField
@@ -187,8 +194,13 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * 9: i64 longField
    */
   public int $longField;
+  /**
+   * Original thrift field:-
+   * 10: i64 adaptedLongField
+   */
+  public int $adaptedLongField;
 
-  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter1::THackType $optionalIntField = null, ?\Adapter1::THackType $intFieldWithDefault = null, ?\Adapter2::THackType $setField = null, ?\Adapter2::THackType $optionalSetField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter3::THackType $optionalMapField = null, ?\Adapter1::THackType $binaryField = null, ?int $longField = null  )[] {
+  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter1::THackType $optionalIntField = null, ?\Adapter1::THackType $intFieldWithDefault = null, ?\Adapter2::THackType $setField = null, ?\Adapter2::THackType $optionalSetField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter3::THackType $optionalMapField = null, ?\Adapter1::THackType $binaryField = null, ?int $longField = null, ?int $adaptedLongField = null  )[] {
     $this->intField = $intField ?? \Adapter1::fromThrift(0);
     $this->optionalIntField = $optionalIntField;
     $this->intFieldWithDefault = $intFieldWithDefault ?? \Adapter1::fromThrift(13);
@@ -198,6 +210,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     $this->optionalMapField = $optionalMapField;
     $this->binaryField = $binaryField ?? \Adapter1::fromThrift('');
     $this->longField = $longField ?? 0;
+    $this->adaptedLongField = $adaptedLongField ?? 0;
   }
 
   public static function withDefaultValues()[]: this {
@@ -215,6 +228,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       Shapes::idx($shape, 'optionalMapField'),
       Shapes::idx($shape, 'binaryField'),
       Shapes::idx($shape, 'longField'),
+      Shapes::idx($shape, 'adaptedLongField'),
     );
   }
 
@@ -450,6 +464,26 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "name" => "longField",
             )
           ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 10,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.MyI64",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "adaptedLongField",
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -462,6 +496,22 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'fields' => dict[
         'longField' => shape(
           'field' => dict[],
+          'type' => dict[
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter1",
+              )
+            ),
+          ],
+        ),
+        'adaptedLongField' => shape(
+          'field' => dict[
+            'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter2",
+              )
+            ),
+          ],
           'type' => dict[
             'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
               shape(
@@ -489,6 +539,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       )),
       $shape['binaryField'],
       $shape['longField'],
+      $shape['adaptedLongField'],
     );
   }
 
@@ -510,6 +561,7 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
         |> $$ === null ? null : dict($$),
       'binaryField' => $this->binaryField,
       'longField' => $this->longField,
+      'adaptedLongField' => $this->adaptedLongField,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -606,6 +658,9 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }    
     if (idx($parsed, 'longField') !== null) {
       $this->longField = /* HH_FIXME[4110] */ $parsed['longField'];
+    }    
+    if (idx($parsed, 'adaptedLongField') !== null) {
+      $this->adaptedLongField = /* HH_FIXME[4110] */ $parsed['adaptedLongField'];
     }    
   }
 

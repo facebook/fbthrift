@@ -87,6 +87,8 @@ struct Foo {
     py.adapter = 'my.Adapter1',
   ) binaryField;
   9: MyI64 longField;
+  @cpp.Adapter{name = "my::Adapter2"}
+  10: MyI64 adaptedLongField;
 }
 
 union Baz {

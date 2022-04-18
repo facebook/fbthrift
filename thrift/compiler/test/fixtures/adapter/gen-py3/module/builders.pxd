@@ -29,6 +29,7 @@ cdef class Foo_Builder(thrift.py3.builder.StructBuilder):
     cdef public dict optionalMapField
     cdef public bytes binaryField
     cdef public pint longField
+    cdef public pint adaptedLongField
 
 
 cdef class Baz_Builder(thrift.py3.builder.StructBuilder):

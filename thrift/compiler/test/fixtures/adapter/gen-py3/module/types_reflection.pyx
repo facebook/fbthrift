@@ -146,6 +146,18 @@ cdef __StructSpec get_reflection__Foo():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=10,
+            name="adaptedLongField",
+            type=int,
+            kind=__NumberType.I64,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__Baz():
     cdef __StructSpec spec = __StructSpec._fbthrift_create(

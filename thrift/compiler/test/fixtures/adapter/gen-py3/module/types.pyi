@@ -33,6 +33,7 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
         optionalMapField: bool
         binaryField: bool
         longField: bool
+        adaptedLongField: bool
         pass
 
     intField: Final[int] = ...
@@ -53,6 +54,8 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
 
     longField: Final[int] = ...
 
+    adaptedLongField: Final[int] = ...
+
     def __init__(
         self, *,
         intField: _typing.Optional[int]=None,
@@ -63,7 +66,8 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
         mapField: _typing.Optional[_typing.Mapping[str, _typing.Sequence[str]]]=None,
         optionalMapField: _typing.Optional[_typing.Mapping[str, _typing.Sequence[str]]]=None,
         binaryField: _typing.Optional[bytes]=None,
-        longField: _typing.Optional[int]=None
+        longField: _typing.Optional[int]=None,
+        adaptedLongField: _typing.Optional[int]=None
     ) -> None: ...
 
     def __call__(
@@ -76,7 +80,8 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
         mapField: _typing.Union[_typing.Mapping[str, _typing.Sequence[str]], '__NotSet', None]=NOTSET,
         optionalMapField: _typing.Union[_typing.Mapping[str, _typing.Sequence[str]], '__NotSet', None]=NOTSET,
         binaryField: _typing.Union[bytes, '__NotSet', None]=NOTSET,
-        longField: _typing.Union[int, '__NotSet', None]=NOTSET
+        longField: _typing.Union[int, '__NotSet', None]=NOTSET,
+        adaptedLongField: _typing.Union[int, '__NotSet', None]=NOTSET
     ) -> Foo: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Foo'], bytes]]: ...

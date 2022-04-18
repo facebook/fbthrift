@@ -17,6 +17,7 @@ cdef class Foo_Builder(thrift.py3.builder.StructBuilder):
         yield "optionalMapField", self.optionalMapField
         yield "binaryField", self.binaryField
         yield "longField", self.longField
+        yield "adaptedLongField", self.adaptedLongField
 
 cdef class Baz_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.Baz

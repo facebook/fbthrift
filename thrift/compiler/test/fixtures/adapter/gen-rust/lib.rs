@@ -33,6 +33,7 @@ pub mod types {
         pub optionalMapField: ::std::option::Option<::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter>>,
         pub binaryField: ::std::vec::Vec<::std::primitive::u8>,
         pub longField: crate::types::MyI64,
+        pub adaptedLongField: crate::types::MyI64,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -98,6 +99,7 @@ pub mod types {
                 optionalMapField: ::std::option::Option::None,
                 binaryField: ::std::default::Default::default(),
                 longField: ::std::default::Default::default(),
+                adaptedLongField: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -116,6 +118,7 @@ pub mod types {
                 .field("optionalMapField", &self.optionalMapField)
                 .field("binaryField", &self.binaryField)
                 .field("longField", &self.longField)
+                .field("adaptedLongField", &self.adaptedLongField)
                 .finish()
         }
     }
@@ -166,6 +169,9 @@ pub mod types {
             p.write_field_begin("longField", ::fbthrift::TType::I64, 9);
             ::fbthrift::Serialize::write(&self.longField, p);
             p.write_field_end();
+            p.write_field_begin("adaptedLongField", ::fbthrift::TType::I64, 10);
+            ::fbthrift::Serialize::write(&self.adaptedLongField, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -177,6 +183,7 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("adaptedLongField", ::fbthrift::TType::I64, 10),
                 ::fbthrift::Field::new("binaryField", ::fbthrift::TType::String, 8),
                 ::fbthrift::Field::new("intField", ::fbthrift::TType::I32, 1),
                 ::fbthrift::Field::new("intFieldWithDefault", ::fbthrift::TType::I32, 3),
@@ -196,6 +203,7 @@ pub mod types {
             let mut field_optionalMapField = ::std::option::Option::None;
             let mut field_binaryField = ::std::option::Option::None;
             let mut field_longField = ::std::option::Option::None;
+            let mut field_adaptedLongField = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -210,6 +218,7 @@ pub mod types {
                     (::fbthrift::TType::Map, 7) => field_optionalMapField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::String, 8) => field_binaryField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::I64, 9) => field_longField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I64, 10) => field_adaptedLongField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -225,6 +234,7 @@ pub mod types {
                 optionalMapField: field_optionalMapField,
                 binaryField: field_binaryField.unwrap_or_default(),
                 longField: field_longField.unwrap_or_default(),
+                adaptedLongField: field_adaptedLongField.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }

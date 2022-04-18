@@ -52,6 +52,7 @@ class Foo:
    - optionalMapField
    - binaryField
    - longField
+   - adaptedLongField
   """
 
   thrift_spec = None
@@ -203,6 +204,11 @@ class Foo:
           self.longField = iprot.readI64()
         else:
           iprot.skip(ftype)
+      elif fid == 10:
+        if ftype == TType.I64:
+          self.adaptedLongField = iprot.readI64()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -272,6 +278,10 @@ class Foo:
       oprot.writeFieldBegin('longField', TType.I64, 9)
       oprot.writeI64(self.longField)
       oprot.writeFieldEnd()
+    if self.adaptedLongField != None:
+      oprot.writeFieldBegin('adaptedLongField', TType.I64, 10)
+      oprot.writeI64(self.adaptedLongField)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -327,6 +337,8 @@ class Foo:
       self.binaryField = json_obj['binaryField']
     if 'longField' in json_obj and json_obj['longField'] is not None:
       self.longField = long(json_obj['longField'])
+    if 'adaptedLongField' in json_obj and json_obj['adaptedLongField'] is not None:
+      self.adaptedLongField = long(json_obj['adaptedLongField'])
 
   def __repr__(self):
     L = []
@@ -367,6 +379,10 @@ class Foo:
       value = pprint.pformat(self.longField, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    longField=%s' % (value))
+    if self.adaptedLongField is not None:
+      value = pprint.pformat(self.adaptedLongField, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    adaptedLongField=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -1055,6 +1071,7 @@ Foo.thrift_spec = (
   (7, TType.MAP, 'optionalMapField', (TType.STRING,True,TType.LIST,(TType.STRING,True)), None, 1, ), # 7
   (8, TType.STRING, 'binaryField', False, None, 2, ), # 8
   (9, TType.I64, 'longField', None, None, 2, ), # 9
+  (10, TType.I64, 'adaptedLongField', None, None, 2, ), # 10
 )
 
 Foo.thrift_struct_annotations = {
@@ -1062,7 +1079,7 @@ Foo.thrift_struct_annotations = {
 Foo.thrift_field_annotations = {
 }
 
-def Foo__init__(self, intField=None, optionalIntField=None, intFieldWithDefault=Foo.thrift_spec[3][4], setField=None, optionalSetField=None, mapField=None, optionalMapField=None, binaryField=None, longField=None,):
+def Foo__init__(self, intField=None, optionalIntField=None, intFieldWithDefault=Foo.thrift_spec[3][4], setField=None, optionalSetField=None, mapField=None, optionalMapField=None, binaryField=None, longField=None, adaptedLongField=None,):
   self.intField = intField
   self.optionalIntField = optionalIntField
   self.intFieldWithDefault = intFieldWithDefault
@@ -1072,6 +1089,7 @@ def Foo__init__(self, intField=None, optionalIntField=None, intFieldWithDefault=
   self.optionalMapField = optionalMapField
   self.binaryField = binaryField
   self.longField = longField
+  self.adaptedLongField = adaptedLongField
 
 Foo.__init__ = Foo__init__
 
@@ -1085,6 +1103,7 @@ def Foo__setstate__(self, state):
   state.setdefault('optionalMapField', None)
   state.setdefault('binaryField', None)
   state.setdefault('longField', None)
+  state.setdefault('adaptedLongField', None)
   self.__dict__ = state
 
 Foo.__getstate__ = lambda self: self.__dict__.copy()

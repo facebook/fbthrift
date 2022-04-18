@@ -35,6 +35,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
   private static final TField OPTIONAL_MAP_FIELD_FIELD_DESC = new TField("optionalMapField", TType.MAP, (short)7);
   private static final TField BINARY_FIELD_FIELD_DESC = new TField("binaryField", TType.STRING, (short)8);
   private static final TField LONG_FIELD_FIELD_DESC = new TField("longField", TType.I64, (short)9);
+  private static final TField ADAPTED_LONG_FIELD_FIELD_DESC = new TField("adaptedLongField", TType.I64, (short)10);
 
   public final Integer intField;
   public final Integer optionalIntField;
@@ -45,6 +46,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
   public final Map<String,List<String>> optionalMapField;
   public final byte[] binaryField;
   public final Long longField;
+  public final Long adaptedLongField;
   public static final int INTFIELD = 1;
   public static final int OPTIONALINTFIELD = 2;
   public static final int INTFIELDWITHDEFAULT = 3;
@@ -54,6 +56,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
   public static final int OPTIONALMAPFIELD = 7;
   public static final int BINARYFIELD = 8;
   public static final int LONGFIELD = 9;
+  public static final int ADAPTEDLONGFIELD = 10;
 
   public Foo(
       Integer intField,
@@ -64,7 +67,8 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
       Map<String,List<String>> mapField,
       Map<String,List<String>> optionalMapField,
       byte[] binaryField,
-      Long longField) {
+      Long longField,
+      Long adaptedLongField) {
     this.intField = intField;
     this.optionalIntField = optionalIntField;
     this.intFieldWithDefault = intFieldWithDefault;
@@ -74,6 +78,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
     this.optionalMapField = optionalMapField;
     this.binaryField = binaryField;
     this.longField = longField;
+    this.adaptedLongField = adaptedLongField;
   }
 
   /**
@@ -124,6 +129,11 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
       this.longField = TBaseHelper.deepCopy(other.longField);
     } else {
       this.longField = null;
+    }
+    if (other.isSetAdaptedLongField()) {
+      this.adaptedLongField = TBaseHelper.deepCopy(other.adaptedLongField);
+    } else {
+      this.adaptedLongField = null;
     }
   }
 
@@ -212,6 +222,15 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
     return this.longField != null;
   }
 
+  public Long getAdaptedLongField() {
+    return this.adaptedLongField;
+  }
+
+  // Returns true if field adaptedLongField is set (has been assigned a value) and false otherwise
+  public boolean isSetAdaptedLongField() {
+    return this.adaptedLongField != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -240,12 +259,14 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetLongField(), that.isSetLongField(), this.longField, that.longField)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetAdaptedLongField(), that.isSetAdaptedLongField(), this.adaptedLongField, that.adaptedLongField)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {intField, optionalIntField, intFieldWithDefault, setField, optionalSetField, mapField, optionalMapField, binaryField, longField});
+    return Arrays.deepHashCode(new Object[] {intField, optionalIntField, intFieldWithDefault, setField, optionalSetField, mapField, optionalMapField, binaryField, longField, adaptedLongField});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -263,6 +284,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
     Map<String,List<String>> tmp_optionalMapField = null;
     byte[] tmp_binaryField = null;
     Long tmp_longField = null;
+    Long tmp_adaptedLongField = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -412,6 +434,13 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case ADAPTEDLONGFIELD:
+          if (__field.type == TType.I64) {
+            tmp_adaptedLongField = iprot.readI64();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -431,6 +460,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
       ,tmp_optionalMapField
       ,tmp_binaryField
       ,tmp_longField
+      ,tmp_adaptedLongField
     );
     _that.validate();
     return _that;
@@ -527,6 +557,11 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
     if (this.longField != null) {
       oprot.writeFieldBegin(LONG_FIELD_FIELD_DESC);
       oprot.writeI64(this.longField);
+      oprot.writeFieldEnd();
+    }
+    if (this.adaptedLongField != null) {
+      oprot.writeFieldBegin(ADAPTED_LONG_FIELD_FIELD_DESC);
+      oprot.writeI64(this.adaptedLongField);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

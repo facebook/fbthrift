@@ -129,6 +129,7 @@ cdef class Foo(thrift.py3.types.Struct):
           "optionalMapField": deref(self._cpp_obj).optionalMapField_ref().has_value(),
           "binaryField": deref(self._cpp_obj).binaryField_ref().has_value(),
           "longField": deref(self._cpp_obj).longField_ref().has_value(),
+          "adaptedLongField": deref(self._cpp_obj).adaptedLongField_ref().has_value(),
         })
 
     @staticmethod
@@ -223,6 +224,14 @@ cdef class Foo(thrift.py3.types.Struct):
     def longField(self):
         return self.longField_impl()
 
+    cdef inline adaptedLongField_impl(self):
+
+        return deref(self._cpp_obj).adaptedLongField_ref().value()
+
+    @property
+    def adaptedLongField(self):
+        return self.adaptedLongField_impl()
+
 
     def __hash__(Foo self):
         return super().__hash__()
@@ -268,7 +277,7 @@ cdef class Foo(thrift.py3.types.Struct):
         return __get_field_name_by_index[cFoo](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 9
+        self._fbthrift_struct_size = 10
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Foo self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

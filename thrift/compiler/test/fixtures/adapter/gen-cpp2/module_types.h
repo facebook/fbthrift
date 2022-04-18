@@ -27,6 +27,7 @@ struct mapField;
 struct optionalMapField;
 struct binaryField;
 struct longField;
+struct adaptedLongField;
 struct intField;
 struct setField;
 struct mapField;
@@ -79,6 +80,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(binaryField);
 #ifndef APACHE_THRIFT_ACCESSOR_longField
 #define APACHE_THRIFT_ACCESSOR_longField
 APACHE_THRIFT_DEFINE_ACCESSOR(longField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_adaptedLongField
+#define APACHE_THRIFT_ACCESSOR_adaptedLongField
+APACHE_THRIFT_DEFINE_ACCESSOR(adaptedLongField);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_intField
 #define APACHE_THRIFT_ACCESSOR_intField
@@ -198,7 +203,7 @@ class Foo final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> optionalIntField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intFieldWithDefault__arg, ::cpp2::SetWithAdapter setField__arg, ::cpp2::SetWithAdapter optionalSetField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> mapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> optionalMapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> binaryField__arg, ::cpp2::MyI64 longField__arg);
+  Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> optionalIntField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intFieldWithDefault__arg, ::cpp2::SetWithAdapter setField__arg, ::cpp2::SetWithAdapter optionalSetField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> mapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> optionalMapField__arg, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> binaryField__arg, ::cpp2::MyI64 longField__arg, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter2, 10, ::cpp2::MyI64, Foo> adaptedLongField__arg);
 
   Foo(Foo&&) noexcept;
   Foo(const Foo& src);
@@ -228,7 +233,9 @@ class Foo final  {
  private:
   ::cpp2::MyI64 __fbthrift_field_longField;
  private:
-  apache::thrift::detail::isset_bitset<9, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+  ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter2, 10, ::cpp2::MyI64, Foo> __fbthrift_field_adaptedLongField;
+ private:
+  apache::thrift::detail::isset_bitset<10, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -593,6 +600,46 @@ class Foo final  {
   template <typename..., typename T = ::cpp2::MyI64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> longField() && {
     return {static_cast<T&&>(this->__fbthrift_field_longField), __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter2, 10, ::cpp2::MyI64, Foo>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> adaptedLongField_ref() const& {
+    return {this->__fbthrift_field_adaptedLongField, __isset.at(9), __isset.bit(9)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter2, 10, ::cpp2::MyI64, Foo>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> adaptedLongField_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_adaptedLongField), __isset.at(9), __isset.bit(9)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter2, 10, ::cpp2::MyI64, Foo>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> adaptedLongField_ref() & {
+    return {this->__fbthrift_field_adaptedLongField, __isset.at(9), __isset.bit(9)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter2, 10, ::cpp2::MyI64, Foo>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> adaptedLongField_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_adaptedLongField), __isset.at(9), __isset.bit(9)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter2, 10, ::cpp2::MyI64, Foo>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> adaptedLongField() const& {
+    return {this->__fbthrift_field_adaptedLongField, __isset.at(9), __isset.bit(9)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter2, 10, ::cpp2::MyI64, Foo>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> adaptedLongField() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_adaptedLongField), __isset.at(9), __isset.bit(9)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter2, 10, ::cpp2::MyI64, Foo>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> adaptedLongField() & {
+    return {this->__fbthrift_field_adaptedLongField, __isset.at(9), __isset.bit(9)};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter2, 10, ::cpp2::MyI64, Foo>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> adaptedLongField() && {
+    return {static_cast<T&&>(this->__fbthrift_field_adaptedLongField), __isset.at(9), __isset.bit(9)};
   }
 
   template <class Protocol_>
