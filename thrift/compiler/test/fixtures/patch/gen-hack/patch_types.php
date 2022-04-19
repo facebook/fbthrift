@@ -10,6 +10,7 @@
  * Original thrift struct:-
  * GeneratePatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/GeneratePatch'))>>
 class GeneratePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -100,6 +101,7 @@ class GeneratePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * GenerateOptionalPatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/GenerateOptionalPatch'))>>
 class GenerateOptionalPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -186,6 +188,7 @@ class GenerateOptionalPatch implements \IThriftSyncStruct, \IThriftShapishSyncSt
  * Original thrift struct:-
  * BoolPatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/BoolPatch'))>>
 class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -335,6 +338,7 @@ class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * BytePatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/BytePatch'))>>
 class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -494,6 +498,7 @@ class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * I16Patch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/I16Patch'))>>
 class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -653,6 +658,7 @@ class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * I32Patch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/I32Patch'))>>
 class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -812,6 +818,7 @@ class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * I64Patch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/I64Patch'))>>
 class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -961,6 +968,7 @@ class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * FloatPatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/FloatPatch'))>>
 class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -1110,6 +1118,7 @@ class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * DoublePatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/DoublePatch'))>>
 class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -1259,6 +1268,7 @@ class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * StringPatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/StringPatch'))>>
 class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -1468,6 +1478,7 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * BinaryPatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/BinaryPatch'))>>
 class BinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -1587,6 +1598,7 @@ class BinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * OptionalBoolPatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/OptionalBoolPatch'))>>
 class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -1837,6 +1849,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
  * Original thrift struct:-
  * OptionalBytePatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/OptionalBytePatch'))>>
 class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -2092,6 +2105,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
  * Original thrift struct:-
  * OptionalI16Patch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/OptionalI16Patch'))>>
 class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -2347,6 +2361,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
  * Original thrift struct:-
  * OptionalI32Patch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/OptionalI32Patch'))>>
 class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -2602,6 +2617,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
  * Original thrift struct:-
  * OptionalI64Patch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/OptionalI64Patch'))>>
 class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -2852,6 +2868,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
  * Original thrift struct:-
  * OptionalFloatPatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/OptionalFloatPatch'))>>
 class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -3102,6 +3119,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
  * Original thrift struct:-
  * OptionalDoublePatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/OptionalDoublePatch'))>>
 class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -3352,6 +3370,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
  * Original thrift struct:-
  * OptionalStringPatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/OptionalStringPatch'))>>
 class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -3602,6 +3621,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
  * Original thrift struct:-
  * OptionalBinaryPatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/op/OptionalBinaryPatch'))>>
 class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 

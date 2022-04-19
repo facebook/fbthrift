@@ -354,6 +354,7 @@ class t_hack_generator : public t_oop_generator {
       t_name_generator& namer,
       std::string val);
 
+  void generate_all_hack_attributes(std::ofstream& out, const t_type* type);
   void generate_adapter_type_checks(
       std::ofstream& out, const t_struct* tstruct);
 
@@ -1296,10 +1297,7 @@ void t_hack_generator::generate_enum(const t_enum* tenum) {
   } else {
     hack_enum = true;
     typehint = hack_name(tenum, true);
-    if (std::string const* attributes =
-            tenum->find_annotation_or_null("hack.attributes")) {
-      f_types_ << "<<" << *attributes << ">>\n";
-    }
+    generate_all_hack_attributes(f_types_, tenum);
     f_types_ << "enum " << hack_name(tenum, true) << ": int"
              << (enum_transparenttype_ ? " as int" : "") << " {\n";
   }
@@ -4277,6 +4275,40 @@ std::string t_hack_generator::render_structured_annotations(
   return out.str();
 }
 
+/**
+ * Combines the user-provided Hack attributes with those intrinsic to the
+ * Thrift compiler.
+ */
+void t_hack_generator::generate_all_hack_attributes(
+    std::ofstream& out, const t_type* type) {
+  std::vector<std::string> attributes_parts;
+
+  const std::string& uri = type->uri();
+  if (!uri.empty()) {
+    attributes_parts.emplace_back(
+        "\\ThriftTypeInfo(shape('uri' => '" + uri + "'))");
+  }
+
+  if (std::string const* attributes =
+          type->find_annotation_or_null("hack.attributes")) {
+    attributes_parts.emplace_back(*attributes);
+  }
+
+  if (attributes_parts.empty()) {
+    return;
+  }
+
+  out << "<<";
+
+  auto delim = "";
+  for (const auto& part : attributes_parts) {
+    out << delim << part;
+    delim = ",";
+  }
+
+  out << ">>\n";
+}
+
 void t_hack_generator::generate_adapter_type_checks(
     std::ofstream& out, const t_struct* tstruct) {
   // Adapter name -> original type of the field that the adapter is for.
@@ -4322,10 +4354,7 @@ void t_hack_generator::_generate_php_struct_definition(
       (type == ThriftStructType::EXCEPTION || !generateAsTrait)) {
     generate_php_docstring(out, tstruct, type == ThriftStructType::EXCEPTION);
   }
-  if (std::string const* attributes =
-          tstruct->find_annotation_or_null("hack.attributes")) {
-    f_types_ << "<<" << *attributes << ">>\n";
-  }
+  generate_all_hack_attributes(f_types_, tstruct);
   out << (generateAsTrait ? "trait " : "class ")
       << hack_name(name, tstruct->program(), true);
   if (generateAsTrait) {

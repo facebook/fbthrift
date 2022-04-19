@@ -10,6 +10,7 @@
  * Original thrift struct:-
  * Adapter
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/python/Adapter'))>>
 class facebook_thrift_annotation_python_Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 

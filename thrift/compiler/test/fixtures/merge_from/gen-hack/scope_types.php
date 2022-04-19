@@ -10,6 +10,7 @@
  * Original thrift struct:-
  * Program
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Program'))>>
 class facebook_thrift_annotation_Program implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -66,6 +67,7 @@ class facebook_thrift_annotation_Program implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Struct
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Struct'))>>
 class facebook_thrift_annotation_Struct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -122,6 +124,7 @@ class facebook_thrift_annotation_Struct implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Union
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Union'))>>
 class facebook_thrift_annotation_Union implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -178,6 +181,7 @@ class facebook_thrift_annotation_Union implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Exception
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Exception'))>>
 class facebook_thrift_annotation_Exception implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -234,6 +238,7 @@ class facebook_thrift_annotation_Exception implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Field
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Field'))>>
 class facebook_thrift_annotation_Field implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -290,6 +295,7 @@ class facebook_thrift_annotation_Field implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Typedef
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Typedef'))>>
 class facebook_thrift_annotation_Typedef implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -346,6 +352,7 @@ class facebook_thrift_annotation_Typedef implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Service
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Service'))>>
 class facebook_thrift_annotation_Service implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -402,6 +409,7 @@ class facebook_thrift_annotation_Service implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Interaction
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Interaction'))>>
 class facebook_thrift_annotation_Interaction implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -458,6 +466,7 @@ class facebook_thrift_annotation_Interaction implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Function
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Function'))>>
 class facebook_thrift_annotation_Function implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -514,6 +523,7 @@ class facebook_thrift_annotation_Function implements \IThriftSyncStruct {
  * Original thrift struct:-
  * EnumValue
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/EnumValue'))>>
 class facebook_thrift_annotation_EnumValue implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -570,6 +580,7 @@ class facebook_thrift_annotation_EnumValue implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Const
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Const'))>>
 class facebook_thrift_annotation_Const implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -682,6 +693,7 @@ class facebook_thrift_annotation_FbthriftInternalEnum implements \IThriftSyncStr
  * Original thrift struct:-
  * FbthriftInternalScopeTransitive
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Transitive'))>>
 class facebook_thrift_annotation_FbthriftInternalScopeTransitive implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 

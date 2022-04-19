@@ -10,6 +10,7 @@
  * Original thrift enum:-
  * MyEnum
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic-structured-annotations/MyEnum'))>>
 enum MyEnum: int {
   UNKNOWN = 0;
   ONE = 1;
@@ -61,6 +62,7 @@ class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
  * Original thrift struct:-
  * structured_annotation_inline
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic-structured-annotations/structured_annotation_inline'))>>
 class structured_annotation_inline implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -167,6 +169,7 @@ class structured_annotation_inline implements \IThriftSyncStruct {
  * Original thrift struct:-
  * structured_annotation_with_default
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic-structured-annotations/structured_annotation_with_default'))>>
 class structured_annotation_with_default implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -249,6 +252,7 @@ class structured_annotation_with_default implements \IThriftSyncStruct {
  * Original thrift struct:-
  * structured_annotation_recursive
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic-structured-annotations/structured_annotation_recursive'))>>
 class structured_annotation_recursive implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -407,6 +411,7 @@ class structured_annotation_recursive implements \IThriftSyncStruct {
  * Original thrift struct:-
  * structured_annotation_forward
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic-structured-annotations/structured_annotation_forward'))>>
 class structured_annotation_forward implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -489,6 +494,7 @@ class structured_annotation_forward implements \IThriftSyncStruct {
  * Original thrift struct:-
  * structured_annotation_nested
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic-structured-annotations/structured_annotation_nested'))>>
 class structured_annotation_nested implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -600,6 +606,7 @@ class structured_annotation_nested implements \IThriftSyncStruct {
  * Original thrift struct:-
  * MyStruct
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic-structured-annotations/MyStruct'))>>
 class MyStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -849,6 +856,7 @@ class MyStruct implements \IThriftSyncStruct {
  * Original thrift exception:-
  * MyException
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic-structured-annotations/MyException'))>>
 class MyException extends \TException implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -952,6 +960,7 @@ enum MyUnionEnum: int {
  * Original thrift struct:-
  * MyUnion
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic-structured-annotations/MyUnion'))>>
 class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum> {
   use \ThriftUnionSerializationTrait;
 

@@ -313,7 +313,7 @@ class MyException extends \TException implements \IThriftSyncStruct {
  * Original thrift struct:-
  * MyStruct
  */
-<<\SomeClass(\AnotherClass::class)>>
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct')),\SomeClass(\AnotherClass::class)>>
 class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 

@@ -43,6 +43,7 @@ class facebook_thrift_annotation_cpp_RefType_TEnumStaticMetadata implements \ITh
  * Original thrift struct:-
  * Ref
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/cpp/Ref'))>>
 class facebook_thrift_annotation_cpp_Ref implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -160,6 +161,7 @@ class facebook_thrift_annotation_cpp_Ref implements \IThriftSyncStruct, \IThrift
  * Original thrift struct:-
  * Lazy
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/cpp/Lazy'))>>
 class facebook_thrift_annotation_cpp_Lazy implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -273,6 +275,7 @@ class facebook_thrift_annotation_cpp_Lazy implements \IThriftSyncStruct, \IThrif
  * Original thrift struct:-
  * DisableLazyChecksum
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/cpp/DisableLazyChecksum'))>>
 class facebook_thrift_annotation_cpp_DisableLazyChecksum implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -354,6 +357,7 @@ class facebook_thrift_annotation_cpp_DisableLazyChecksum implements \IThriftSync
  * Original thrift struct:-
  * Adapter
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/cpp/Adapter'))>>
 class facebook_thrift_annotation_cpp_Adapter implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -471,6 +475,7 @@ class facebook_thrift_annotation_cpp_Adapter implements \IThriftSyncStruct, \ITh
  * Original thrift struct:-
  * PackIsset
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/cpp/PackIsset'))>>
 class facebook_thrift_annotation_cpp_PackIsset implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -584,6 +589,7 @@ class facebook_thrift_annotation_cpp_PackIsset implements \IThriftSyncStruct, \I
  * Original thrift struct:-
  * MinimizePadding
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/cpp/MinimizePadding'))>>
 class facebook_thrift_annotation_cpp_MinimizePadding implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 

@@ -10,6 +10,7 @@
  * Original thrift struct:-
  * Transitive
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Transitive'))>>
 class facebook_thrift_annotation_Transitive implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -99,6 +100,7 @@ class facebook_thrift_annotation_Transitive implements \IThriftSyncStruct, \IThr
  * Original thrift struct:-
  * MergeFrom
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/meta/MergeFrom'))>>
 class facebook_thrift_annotation_MergeFrom implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -224,6 +226,7 @@ class facebook_thrift_annotation_MergeFrom implements \IThriftSyncStruct, \IThri
  * Original thrift struct:-
  * SetGenerated
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/meta/SetGenerated'))>>
 class facebook_thrift_annotation_SetGenerated implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 

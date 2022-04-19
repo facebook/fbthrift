@@ -12,6 +12,7 @@ namespace facebook\thrift\annotation;
  * Original thrift struct:-
  * FieldWrapper
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/FieldWrapper'))>>
 class FieldWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -136,6 +137,7 @@ class FieldWrapper implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * SkipCodegen
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/hack/SkipCodegen'))>>
 class SkipCodegen implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 

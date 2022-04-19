@@ -10,6 +10,7 @@
  * Original thrift enum:-
  * MyEnum
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/MyEnum'))>>
 enum MyEnum: int {
   MyValue1 = 0;
   MyValue2 = 1;
@@ -41,6 +42,7 @@ class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
  * Original thrift struct:-
  * MyStruct
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/MyStruct'))>>
 class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -351,6 +353,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * MyDataItem
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/MyDataItem'))>>
 class MyDataItem implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -435,6 +438,7 @@ enum MyUnionEnum: int {
  * Original thrift struct:-
  * MyUnion
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/MyUnion'))>>
 class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThriftShapishSyncStruct {
   use \ThriftUnionSerializationTrait;
 

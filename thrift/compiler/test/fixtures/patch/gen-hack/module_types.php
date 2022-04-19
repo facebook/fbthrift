@@ -10,6 +10,7 @@
  * Original thrift struct:-
  * MyData
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/MyData'))>>
 class MyData implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -160,6 +161,7 @@ enum MyUnionEnum: int {
  * Original thrift struct:-
  * MyUnion
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/MyUnion'))>>
 class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThriftShapishSyncStruct {
   use \ThriftUnionSerializationTrait;
 
@@ -375,6 +377,7 @@ class MyUnion implements \IThriftSyncStruct, \IThriftUnion<MyUnionEnum>, \IThrif
  * Original thrift struct:-
  * MyStruct
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/MyStruct'))>>
 class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -1318,6 +1321,7 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * MyDataPatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/MyDataPatch'))>>
 class MyDataPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -1499,6 +1503,7 @@ class MyDataPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * MyDataValuePatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/MyDataValuePatch'))>>
 class MyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -1691,6 +1696,7 @@ class MyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
  * Original thrift struct:-
  * OptionalMyDataValuePatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/OptionalMyDataValuePatch'))>>
 class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -1923,6 +1929,7 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
  * Original thrift struct:-
  * MyUnionPatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/MyUnionPatch'))>>
 class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -2104,6 +2111,7 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * MyUnionValuePatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/MyUnionValuePatch'))>>
 class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -2335,6 +2343,7 @@ class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
  * Original thrift struct:-
  * OptionalMyUnionValuePatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/OptionalMyUnionValuePatch'))>>
 class OptionalMyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -2567,6 +2576,7 @@ class OptionalMyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSy
  * Original thrift struct:-
  * MyStructPatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/MyStructPatch'))>>
 class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -3675,6 +3685,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
  * Original thrift struct:-
  * MyStructField21Patch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/MyStructField21Patch'))>>
 class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -3959,6 +3970,7 @@ class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
  * Original thrift struct:-
  * OptionalMyStructField21Patch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/OptionalMyStructField21Patch'))>>
 class OptionalMyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -4209,6 +4221,7 @@ class OptionalMyStructField21Patch implements \IThriftSyncStruct, \IThriftShapis
  * Original thrift struct:-
  * MyStructField22Patch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/MyStructField22Patch'))>>
 class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -4478,6 +4491,7 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
  * Original thrift struct:-
  * OptionalMyStructField22Patch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/OptionalMyStructField22Patch'))>>
 class OptionalMyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -4723,6 +4737,7 @@ class OptionalMyStructField22Patch implements \IThriftSyncStruct, \IThriftShapis
  * Original thrift struct:-
  * MyStructField23Patch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/MyStructField23Patch'))>>
 class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -4958,6 +4973,7 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
  * Original thrift struct:-
  * OptionalMyStructField23Patch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/OptionalMyStructField23Patch'))>>
 class OptionalMyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -5212,6 +5228,7 @@ class OptionalMyStructField23Patch implements \IThriftSyncStruct, \IThriftShapis
  * Original thrift struct:-
  * MyStructValuePatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/MyStructValuePatch'))>>
 class MyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -5404,6 +5421,7 @@ class MyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
  * Original thrift struct:-
  * OptionalMyStructValuePatch
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/patch/OptionalMyStructValuePatch'))>>
 class OptionalMyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
