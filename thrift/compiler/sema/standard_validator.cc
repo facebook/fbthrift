@@ -508,20 +508,17 @@ void validate_adapter_annotation(diagnostic_context& ctx, const t_named& node) {
   }
 }
 
-void validate_box_annotation(diagnostic_context& ctx, const t_field& node) {
-  if (node.has_annotation({"cpp.box", "thrift.box"})) {
-    ctx.warning([&](auto& o) {
-      o << "Cpp.box and thrift.box are deprecated. Please use @thrift.Box annotation instead in `"
-        << node.name() << "`.";
-    });
+void validate_box_annotation(
+    diagnostic_context& ctx, const t_structured& node) {
+  if (node.generated()) {
+    return;
   }
-}
-void validate_box_annotation_in_struct(
-    diagnostic_context& ctx, const t_struct& node) {
-  if (node.is_struct()) {
-    for (const t_field& f : node.fields()) {
-      validate_box_annotation(ctx, f);
-    }
+
+  for (const auto& field : node.fields()) {
+    ctx.warning_if(field.has_annotation({"cpp.box", "thrift.box"}), [&](auto& o) {
+      o << "Cpp.box and thrift.box are deprecated. Please use @thrift.Box annotation instead in `"
+        << field.name() << "`.";
+    });
   }
 }
 
@@ -709,8 +706,7 @@ ast_validator standard_validator() {
   validator.add_structured_definition_visitor(&validate_field_names_uniqueness);
   validator.add_structured_definition_visitor(
       &validate_compatibility_with_lazy_field);
-  validator.add_structured_definition_visitor(
-      &validate_box_annotation_in_struct);
+  validator.add_structured_definition_visitor(&validate_box_annotation);
   validator.add_union_visitor(&validate_union_field_attributes);
   validator.add_exception_visitor(&validate_exception_php_annotations);
   validator.add_field_visitor(&validate_field_id);
