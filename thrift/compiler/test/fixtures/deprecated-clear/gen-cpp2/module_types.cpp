@@ -315,7 +315,6 @@ template uint32_t StructWithDefaultStruct::serializedSize<>(apache::thrift::Comp
 template uint32_t StructWithDefaultStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}} // apache::thrift::test
 
 namespace apache { namespace thrift { namespace test { namespace {

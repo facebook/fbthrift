@@ -123,7 +123,7 @@ void skip_n(Protocol_& prot, uint32_t n, std::initializer_list<WireType> types);
  *
  * Templatized to avoid having to make virtual function calls. Protocols with
  * their own opinions about skipping implementation can specialize, although
- * currently only Nimble does.
+ * currently none do.
  */
 template <class Protocol_, class WireType>
 void skip(Protocol_& prot, WireType arg_type) {

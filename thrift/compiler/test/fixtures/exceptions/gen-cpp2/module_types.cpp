@@ -107,7 +107,6 @@ template uint32_t Fiery::serializedSize<>(apache::thrift::CompactProtocolWriter 
 template uint32_t Fiery::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -208,7 +207,6 @@ template void Serious::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Serious::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Serious::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Serious::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2
@@ -325,7 +323,6 @@ template uint32_t ComplexFieldNames::serializedSize<>(apache::thrift::CompactPro
 template uint32_t ComplexFieldNames::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -438,7 +435,6 @@ template void CustomFieldNames::readNoXfer<>(apache::thrift::CompactProtocolRead
 template uint32_t CustomFieldNames::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t CustomFieldNames::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t CustomFieldNames::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2
@@ -556,7 +552,6 @@ template uint32_t ExceptionWithPrimitiveField::serializedSize<>(apache::thrift::
 template uint32_t ExceptionWithPrimitiveField::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -636,7 +631,6 @@ template void Banal::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Banal::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Banal::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Banal::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2

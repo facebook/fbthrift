@@ -102,7 +102,6 @@ template uint32_t Mixin1::serializedSize<>(apache::thrift::CompactProtocolWriter
 template uint32_t Mixin1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -221,13 +220,6 @@ static_assert(
         ::cpp2::Mixin1>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        Mixin2,
-        ::apache::thrift::type_class::structure,
-        ::cpp2::Mixin1>,
-    "inconsistent use of nimble option");
-
 } // cpp2
 
 namespace apache {
@@ -318,7 +310,6 @@ template void Mixin3Base::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Mixin3Base::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Mixin3Base::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Mixin3Base::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2
@@ -464,19 +455,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::cpp2::Mixin3>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        Foo,
-        ::apache::thrift::type_class::structure,
-        ::cpp2::Mixin2>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        Foo,
-        ::apache::thrift::type_class::structure,
-        ::cpp2::Mixin3>,
-    "inconsistent use of nimble option");
 
 } // cpp2
 

@@ -141,7 +141,6 @@ template uint32_t Default::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t Default::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -271,7 +270,6 @@ template void NonAtomic::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t NonAtomic::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t NonAtomic::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NonAtomic::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2
@@ -405,7 +403,6 @@ template uint32_t Atomic::serializedSize<>(apache::thrift::CompactProtocolWriter
 template uint32_t Atomic::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -535,7 +532,6 @@ template void AtomicFoo::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t AtomicFoo::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t AtomicFoo::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t AtomicFoo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2

@@ -59,12 +59,6 @@ extern template uint32_t <%struct:cpp_name%>::write<>(apache::thrift::SimpleJSON
 extern template uint32_t <%struct:cpp_name%>::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 extern template uint32_t <%struct:cpp_name%>::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 <%/program:json?%>
-<%#program:nimble?%>
-extern template void <%struct:cpp_name%>::readNoXfer<>(apache::thrift::NimbleProtocolReader*);
-extern template uint32_t <%struct:cpp_name%>::write<>(apache::thrift::NimbleProtocolWriter*) const;
-extern template uint32_t <%struct:cpp_name%>::serializedSize<>(apache::thrift::NimbleProtocolWriter const*) const;
-extern template uint32_t <%struct:cpp_name%>::serializedSizeZC<>(apache::thrift::NimbleProtocolWriter const*) const;
-<%/program:nimble?%>
 
 <% > common/namespace_cpp2_end%>
 

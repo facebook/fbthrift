@@ -239,19 +239,6 @@ static_assert(
         ::some::ns::IncludedB>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ModuleA,
-        ::apache::thrift::type_class::structure,
-        ::some::ns::IncludedA>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ModuleA,
-        ::apache::thrift::type_class::structure,
-        ::some::ns::IncludedB>,
-    "inconsistent use of nimble option");
-
 }} // some::ns
 
 namespace apache {
@@ -339,7 +326,6 @@ template void ModuleB::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t ModuleB::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t ModuleB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ModuleB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }} // some::ns

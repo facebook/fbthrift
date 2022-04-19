@@ -233,7 +233,6 @@ template uint32_t union1::serializedSize<>(apache::thrift::CompactProtocolWriter
 template uint32_t union1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }} // test_cpp2::cpp_reflection
 
 namespace apache {
@@ -351,7 +350,6 @@ template void union2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t union2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t union2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t union2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }} // test_cpp2::cpp_reflection
@@ -473,7 +471,6 @@ template uint32_t union3::serializedSize<>(apache::thrift::CompactProtocolWriter
 template uint32_t union3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }} // test_cpp2::cpp_reflection
 
 namespace apache {
@@ -576,7 +573,6 @@ template void structA::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t structA::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t structA::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t structA::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }} // test_cpp2::cpp_reflection
@@ -711,13 +707,6 @@ static_assert(
         ::test_cpp2::cpp_reflection::structA>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        unionA,
-        ::apache::thrift::type_class::structure,
-        ::test_cpp2::cpp_reflection::structA>,
-    "inconsistent use of nimble option");
-
 }} // test_cpp2::cpp_reflection
 
 namespace apache {
@@ -805,7 +794,6 @@ template void structB::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t structB::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t structB::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t structB::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }} // test_cpp2::cpp_reflection
@@ -1517,73 +1505,6 @@ static_assert(
         ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        structC,
-        ::apache::thrift::type_class::variant,
-        ::test_cpp2::cpp_reflection::union1>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        structC,
-        ::apache::thrift::type_class::variant,
-        ::test_cpp2::cpp_reflection::unionA>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        structC,
-        ::apache::thrift::type_class::variant,
-        ::test_cpp2::cpp_reflection::unionA>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        structC,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector<::test_cpp2::cpp_reflection::structA>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        structC,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set<::test_cpp2::cpp_reflection::structB>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        structC,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        structC,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::structure>,
-        ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        structC,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        structC,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::integral>,
-        ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        structC,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::enumeration>,
-        ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        structC,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>,
-        ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB>>,
-    "inconsistent use of nimble option");
-
 }} // test_cpp2::cpp_reflection
 
 namespace apache {
@@ -1770,19 +1691,6 @@ static_assert(
         ::apache::thrift::type_class::variant,
         ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct1,
-        ::apache::thrift::type_class::variant,
-        ::test_cpp2::cpp_reflection::union1>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct1,
-        ::apache::thrift::type_class::variant,
-        ::test_cpp2::cpp_reflection::union2>,
-    "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
 
@@ -1998,25 +1906,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::test_cpp2::cpp_reflection::struct1>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct2,
-        ::apache::thrift::type_class::variant,
-        ::test_cpp2::cpp_reflection::union1>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct2,
-        ::apache::thrift::type_class::variant,
-        ::test_cpp2::cpp_reflection::union2>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct2,
-        ::apache::thrift::type_class::structure,
-        ::test_cpp2::cpp_reflection::struct1>,
-    "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
 
@@ -2483,55 +2372,6 @@ static_assert(
         ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct3,
-        ::apache::thrift::type_class::variant,
-        ::test_cpp2::cpp_reflection::union1>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct3,
-        ::apache::thrift::type_class::variant,
-        ::test_cpp2::cpp_reflection::union2>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct3,
-        ::apache::thrift::type_class::structure,
-        ::test_cpp2::cpp_reflection::struct1>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct3,
-        ::apache::thrift::type_class::variant,
-        ::test_cpp2::cpp_reflection::union2>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct3,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector<::test_cpp2::cpp_reflection::structA>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct3,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set<::test_cpp2::cpp_reflection::structB>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct3,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct3,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>,
-    "inconsistent use of nimble option");
-
 }} // test_cpp2::cpp_reflection
 
 namespace apache {
@@ -2678,13 +2518,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::test_cpp2::cpp_reflection::structA>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct4,
-        ::apache::thrift::type_class::structure,
-        ::test_cpp2::cpp_reflection::structA>,
-    "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
 
@@ -2861,19 +2694,6 @@ static_assert(
         ::test_cpp2::cpp_reflection::structB>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct5,
-        ::apache::thrift::type_class::structure,
-        ::test_cpp2::cpp_reflection::structA>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        struct5,
-        ::apache::thrift::type_class::structure,
-        ::test_cpp2::cpp_reflection::structB>,
-    "inconsistent use of nimble option");
-
 }} // test_cpp2::cpp_reflection
 
 namespace apache {
@@ -2964,7 +2784,6 @@ template void struct_binary::readNoXfer<>(apache::thrift::CompactProtocolReader*
 template uint32_t struct_binary::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t struct_binary::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct_binary::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }} // test_cpp2::cpp_reflection
@@ -3094,19 +2913,6 @@ static_assert(
         ::test_cpp2::cpp_reflection::dep_C_struct>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        dep_A_struct,
-        ::apache::thrift::type_class::structure,
-        ::test_cpp2::cpp_reflection::dep_B_struct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        dep_A_struct,
-        ::apache::thrift::type_class::structure,
-        ::test_cpp2::cpp_reflection::dep_C_struct>,
-    "inconsistent use of nimble option");
-
 }} // test_cpp2::cpp_reflection
 
 namespace apache {
@@ -3234,19 +3040,6 @@ static_assert(
         ::test_cpp2::cpp_reflection::dep_C_struct>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        dep_B_struct,
-        ::apache::thrift::type_class::structure,
-        ::test_cpp2::cpp_reflection::dep_B_struct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        dep_B_struct,
-        ::apache::thrift::type_class::structure,
-        ::test_cpp2::cpp_reflection::dep_C_struct>,
-    "inconsistent use of nimble option");
-
 }} // test_cpp2::cpp_reflection
 
 namespace apache {
@@ -3324,7 +3117,6 @@ template void annotated::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t annotated::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t annotated::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t annotated::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }} // test_cpp2::cpp_reflection
@@ -3612,7 +3404,6 @@ template void union_with_special_names::readNoXfer<>(apache::thrift::CompactProt
 template uint32_t union_with_special_names::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t union_with_special_names::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t union_with_special_names::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }} // test_cpp2::cpp_reflection
@@ -3964,7 +3755,6 @@ template uint32_t struct_with_special_names::serializedSize<>(apache::thrift::Co
 template uint32_t struct_with_special_names::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }} // test_cpp2::cpp_reflection
 
 namespace apache {
@@ -4115,7 +3905,6 @@ template uint32_t struct_with_indirections::serializedSize<>(apache::thrift::Com
 template uint32_t struct_with_indirections::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }} // test_cpp2::cpp_reflection
 
 namespace apache {
@@ -4206,7 +3995,6 @@ template void StructWithFieldAdapter::readNoXfer<>(apache::thrift::CompactProtoc
 template uint32_t StructWithFieldAdapter::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t StructWithFieldAdapter::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t StructWithFieldAdapter::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }} // test_cpp2::cpp_reflection

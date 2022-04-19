@@ -172,7 +172,6 @@ template uint32_t SomeStruct::serializedSize<>(apache::thrift::CompactProtocolWr
 template uint32_t SomeStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace cpp2 { namespace {

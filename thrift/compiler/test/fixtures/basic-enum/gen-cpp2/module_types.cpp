@@ -177,7 +177,6 @@ template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWrit
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}} // test::fixtures::enumstrict
 
 namespace test { namespace fixtures { namespace enumstrict { namespace {

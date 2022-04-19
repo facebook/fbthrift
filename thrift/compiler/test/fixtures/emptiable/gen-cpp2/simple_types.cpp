@@ -104,7 +104,6 @@ template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWrit
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}} // apache::thrift::test
 
 namespace apache {
@@ -417,13 +416,6 @@ static_assert(
         ::apache::thrift::test::MyStruct>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        EmptiableStruct,
-        ::apache::thrift::type_class::structure,
-        ::apache::thrift::test::MyStruct>,
-    "inconsistent use of nimble option");
-
 }}} // apache::thrift::test
 
 namespace apache {
@@ -717,13 +709,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::apache::thrift::test::MyStruct>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        EmptiableTerseStruct,
-        ::apache::thrift::type_class::structure,
-        ::apache::thrift::test::MyStruct>,
-    "inconsistent use of nimble option");
 
 }}} // apache::thrift::test
 
@@ -1023,13 +1008,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::apache::thrift::test::MyStruct>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        NotEmptiableStruct,
-        ::apache::thrift::type_class::structure,
-        ::apache::thrift::test::MyStruct>,
-    "inconsistent use of nimble option");
 
 }}} // apache::thrift::test
 

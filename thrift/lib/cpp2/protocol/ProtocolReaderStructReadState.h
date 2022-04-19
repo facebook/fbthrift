@@ -81,8 +81,7 @@ struct ProtocolReaderStructReadState {
   /*
    * This is used in generated deserialization code only. When deserializing
    * fields in "non-advanceToNextField" case, we delegate the type check to
-   * each protocol since some protocol (such as NimbleProtocol) may not encode
-   * type information.
+   * each protocol since some protocol may not encode type information.
    */
   FOLLY_ALWAYS_INLINE bool isCompatibleWithType(
       Protocol* /*iprot*/, TType expectedFieldType) {

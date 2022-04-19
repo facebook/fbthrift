@@ -154,19 +154,6 @@ static_assert(
         ::cpp2::Included>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyStruct,
-        ::apache::thrift::type_class::structure,
-        ::cpp2::Included>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyStruct,
-        ::apache::thrift::type_class::structure,
-        ::cpp2::Included>,
-    "inconsistent use of nimble option");
-
 } // cpp2
 
 namespace cpp2 { namespace {

@@ -114,8 +114,6 @@ add_library(
   protocol/Serializer.cpp
   protocol/TableBasedSerializer.cpp
   protocol/VirtualProtocol.cpp
-  protocol/nimble/DecodeNimbleBlock.cpp
-  protocol/nimble/EncodeNimbleBlock.cpp
 
   ../cpp/protocol/TDebugProtocol.cpp
   ../cpp/protocol/TJSONProtocol.cpp

@@ -93,7 +93,6 @@ template uint32_t ReflectionStruct::serializedSize<>(apache::thrift::SimpleJSONP
 template uint32_t ReflectionStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace cpp2 { namespace {

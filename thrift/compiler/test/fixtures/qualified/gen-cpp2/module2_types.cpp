@@ -142,19 +142,6 @@ static_assert(
         ::module1::Struct>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        Struct,
-        ::apache::thrift::type_class::structure,
-        ::module0::Struct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        Struct,
-        ::apache::thrift::type_class::structure,
-        ::module1::Struct>,
-    "inconsistent use of nimble option");
-
 } // module2
 
 namespace apache {
@@ -272,13 +259,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::module2::Struct>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        BigStruct,
-        ::apache::thrift::type_class::structure,
-        ::module2::Struct>,
-    "inconsistent use of nimble option");
 
 } // module2
 

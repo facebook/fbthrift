@@ -103,13 +103,6 @@ static_assert(
         ::matching_module_name::OtherStruct>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyStruct,
-        ::apache::thrift::type_class::structure,
-        ::matching_module_name::OtherStruct>,
-    "inconsistent use of nimble option");
-
 } // matching_module_name
 
 namespace matching_module_name { namespace {

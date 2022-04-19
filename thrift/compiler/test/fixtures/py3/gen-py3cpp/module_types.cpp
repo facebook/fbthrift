@@ -161,7 +161,6 @@ template uint32_t SimpleException::serializedSize<>(apache::thrift::CompactProto
 template uint32_t SimpleException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }} // py3::simple
 
 namespace apache {
@@ -262,7 +261,6 @@ template void OptionalRefStruct::readNoXfer<>(apache::thrift::CompactProtocolRea
 template uint32_t OptionalRefStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t OptionalRefStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t OptionalRefStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }} // py3::simple
@@ -439,7 +437,6 @@ template void SimpleStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*)
 template uint32_t SimpleStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t SimpleStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t SimpleStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }} // py3::simple
@@ -666,19 +663,6 @@ static_assert(
         ::py3::simple::SimpleStruct>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexStruct,
-        ::apache::thrift::type_class::structure,
-        ::py3::simple::SimpleStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexStruct,
-        ::apache::thrift::type_class::structure,
-        ::py3::simple::SimpleStruct>,
-    "inconsistent use of nimble option");
-
 }} // py3::simple
 
 namespace apache {
@@ -751,7 +735,6 @@ template void BinaryUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t BinaryUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t BinaryUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t BinaryUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }} // py3::simple
@@ -841,13 +824,6 @@ static_assert(
         ::apache::thrift::type_class::variant,
         ::py3::simple::BinaryUnion>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        BinaryUnionStruct,
-        ::apache::thrift::type_class::variant,
-        ::py3::simple::BinaryUnion>,
-    "inconsistent use of nimble option");
 
 }} // py3::simple
 

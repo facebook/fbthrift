@@ -119,7 +119,6 @@ template uint32_t AStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWr
 template uint32_t AStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 
-
 }}} // a::different::ns
 
 namespace apache {
@@ -217,13 +216,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::a::different::ns::AStruct>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AStructB,
-        ::apache::thrift::type_class::structure,
-        ::a::different::ns::AStruct>,
-    "inconsistent use of nimble option");
 
 }}} // a::different::ns
 

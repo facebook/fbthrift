@@ -259,20 +259,13 @@ void translate_field_name(
 namespace {
 
 //  gen_check_get_json
-//  gen_check_get_nimble
 //
 //  Metafunctions for getting the member types named, respectively,
 //    * __fbthrift_cpp2_gen_json
-//    * __fbthrift_cpp2_gen_nimble
 struct gen_check_get_json {
   template <typename Type>
   using apply =
       decltype(struct_private_access::__fbthrift_cpp2_gen_json<Type>());
-};
-struct gen_check_get_nimble {
-  template <typename Type>
-  using apply =
-      decltype(struct_private_access::__fbthrift_cpp2_gen_nimble<Type>());
 };
 
 //  gen_check_get
@@ -282,7 +275,6 @@ struct gen_check_get_nimble {
 //
 //  Get is one of the getters above:
 //    * gen_check_get_json
-//    * gen_check_get_nimble
 //
 //  When Get::apply<Type>:
 //    * fails to apply (because cpp.type is in use), treat as true
@@ -309,7 +301,6 @@ constexpr bool gen_check_get = gen_check_get_<void, Get, Type>;
 //
 //  Get is one of the getters above:
 //    * gen_check_get_json
-//    * gen_check_get_nimble
 template <typename TypeClass>
 struct gen_check_rec {
   template <typename Get, typename Type>
@@ -355,7 +346,6 @@ struct gen_check_rec<type_class::variant> : gen_check_rec_structure_variant {};
 //
 //  Get is one of the getters above:
 //    * gen_check_get_json
-//    * gen_check_get_nimble
 template <
     typename Get,
     typename Type,
@@ -365,20 +355,15 @@ constexpr bool gen_check = !gen_check_get<Get, Type> ||
     gen_check_rec<FieldTypeClass>::template apply<Get, FieldType>;
 
 //  gen_check_json
-//  gen_check_nimble
 //
 //  Aliases to gen_check partially instantiated with one of the getters above:
 //    * gen_check_get_json
-//    * gen_check_get_nimble
 //
 //  Used by a generated static_assert to enforce consistency over transitive
-//  dependencies in the use of extern-template instantiations over json/nimble.
+//  dependencies in the use of extern-template instantiations over json.
 template <typename Type, typename FieldTypeClass, typename FieldType>
 constexpr bool gen_check_json =
     gen_check<gen_check_get_json, Type, FieldTypeClass, FieldType>;
-template <typename Type, typename FieldTypeClass, typename FieldType>
-constexpr bool gen_check_nimble =
-    gen_check<gen_check_get_nimble, Type, FieldTypeClass, FieldType>;
 
 } // namespace
 

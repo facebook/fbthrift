@@ -131,7 +131,6 @@ template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWrit
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -234,7 +233,6 @@ template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -335,7 +333,6 @@ template void MyException::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t MyException::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t MyException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2

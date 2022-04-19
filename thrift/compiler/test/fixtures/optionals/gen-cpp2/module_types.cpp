@@ -145,7 +145,6 @@ template uint32_t Color::serializedSize<>(apache::thrift::CompactProtocolWriter 
 template uint32_t Color::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -306,13 +305,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::cpp2::Color>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        Vehicle,
-        ::apache::thrift::type_class::structure,
-        ::cpp2::Color>,
-    "inconsistent use of nimble option");
 
 } // cpp2
 
@@ -567,19 +559,6 @@ static_assert(
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
         ::std::vector<::cpp2::Vehicle>>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        Person,
-        ::apache::thrift::type_class::structure,
-        ::cpp2::Color>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        Person,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector<::cpp2::Vehicle>>,
-    "inconsistent use of nimble option");
 
 } // cpp2
 

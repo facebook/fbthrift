@@ -109,7 +109,6 @@ template uint32_t Foo::serializedSize<>(apache::thrift::CompactProtocolWriter co
 template uint32_t Foo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -207,7 +206,6 @@ template void Foo2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Foo2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Foo2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Foo2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2

@@ -128,7 +128,6 @@ template uint32_t MyStructNestedAnnotation::serializedSize<>(apache::thrift::Com
 template uint32_t MyStructNestedAnnotation::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -220,7 +219,6 @@ template uint32_t YourUnion::serializedSize<>(apache::thrift::CompactProtocolWri
 template uint32_t YourUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -300,7 +298,6 @@ template void YourException::readNoXfer<>(apache::thrift::CompactProtocolReader*
 template uint32_t YourException::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t YourException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t YourException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2
@@ -549,13 +546,6 @@ static_assert(
         ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion>>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        YourStruct,
-        ::apache::thrift::type_class::variant,
-        ::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion>>,
-    "inconsistent use of nimble option");
-
 } // cpp2
 
 namespace apache {
@@ -658,7 +648,6 @@ template void SecretStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*)
 template uint32_t SecretStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t SecretStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t SecretStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2

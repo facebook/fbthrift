@@ -171,12 +171,6 @@ template uint32_t <%struct:cpp_name%>::write<>(apache::thrift::SimpleJSONProtoco
 template uint32_t <%struct:cpp_name%>::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t <%struct:cpp_name%>::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 <%/program:json?%>
-<%#program:nimble?%>
-template void <%struct:cpp_name%>::readNoXfer<>(apache::thrift::NimbleProtocolReader*);
-template uint32_t <%struct:cpp_name%>::write<>(apache::thrift::NimbleProtocolWriter*) const;
-template uint32_t <%struct:cpp_name%>::serializedSize<>(apache::thrift::NimbleProtocolWriter const*) const;
-template uint32_t <%struct:cpp_name%>::serializedSizeZC<>(apache::thrift::NimbleProtocolWriter const*) const;
-<%/program:nimble?%>
 
 <%#program:tablebased?%>
 <%#struct:union?%>
@@ -234,21 +228,6 @@ static_assert(
         <%type:type_class%>,
         <%type:cpp_type%>>,
     "inconsistent use of json option");
-<%/type:transitively_refers_to_struct?%>
-<%/field:type%>
-<%/struct:fields%>
-
-<%! If this struct is generated with extern template instances for nimble
-    protocol, enforce that all its dependencies are too. %>
-<%#struct:fields%>
-<%#field:type%>
-<%#type:transitively_refers_to_struct?%>
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        <%struct:cpp_name%>,
-        <%type:type_class%>,
-        <%type:cpp_type%>>,
-    "inconsistent use of nimble option");
 <%/type:transitively_refers_to_struct?%>
 <%/field:type%>
 <%/struct:fields%>

@@ -296,7 +296,6 @@ constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_Trivia
   }}
 };
 
-
 }}} // test::fixtures::tablebased
 
 namespace test { namespace fixtures { namespace tablebased {
@@ -574,13 +573,6 @@ static_assert(
         ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ContainerStruct,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>>,
-    "inconsistent use of nimble option");
-
 }}} // test::fixtures::tablebased
 
 namespace apache { namespace thrift {
@@ -697,19 +689,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::test::fixtures::tablebased::TrivialTypesStruct>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ExampleUnion,
-        ::apache::thrift::type_class::structure,
-        ::test::fixtures::tablebased::ContainerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ExampleUnion,
-        ::apache::thrift::type_class::structure,
-        ::test::fixtures::tablebased::TrivialTypesStruct>,
-    "inconsistent use of nimble option");
 
 }}} // test::fixtures::tablebased
 

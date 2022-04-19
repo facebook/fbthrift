@@ -170,7 +170,6 @@ template uint32_t Foo::serializedSize<>(apache::thrift::CompactProtocolWriter co
 template uint32_t Foo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}} // apache::thrift::test
 
 namespace apache {
@@ -456,7 +455,6 @@ template uint32_t LazyFoo::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t LazyFoo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}} // apache::thrift::test
 
 namespace apache {
@@ -618,7 +616,6 @@ template void OptionalFoo::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t OptionalFoo::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t OptionalFoo::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t OptionalFoo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}} // apache::thrift::test
@@ -905,7 +902,6 @@ template void OptionalLazyFoo::readNoXfer<>(apache::thrift::CompactProtocolReade
 template uint32_t OptionalLazyFoo::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t OptionalLazyFoo::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t OptionalLazyFoo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}} // apache::thrift::test
@@ -1277,7 +1273,6 @@ template uint32_t LazyCppRef::serializedSize<>(apache::thrift::CompactProtocolWr
 template uint32_t LazyCppRef::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}} // apache::thrift::test
 
 namespace apache {
@@ -1475,7 +1470,6 @@ template void IndexedFoo::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t IndexedFoo::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t IndexedFoo::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t IndexedFoo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}} // apache::thrift::test
@@ -1677,7 +1671,6 @@ template uint32_t OptionalIndexedFoo::serializedSize<>(apache::thrift::CompactPr
 template uint32_t OptionalIndexedFoo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}} // apache::thrift::test
 
 namespace apache {
@@ -1744,7 +1737,6 @@ template void Empty::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Empty::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Empty::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}} // apache::thrift::test

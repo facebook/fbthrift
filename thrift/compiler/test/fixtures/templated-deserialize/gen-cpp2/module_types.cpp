@@ -125,7 +125,6 @@ template uint32_t SmallStruct::serializedSize<>(apache::thrift::CompactProtocolW
 template uint32_t SmallStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -664,31 +663,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::cpp2::SmallStruct>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::structure,
-        ::cpp2::SmallStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::structure,
-        ::cpp2::SmallStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::structure,
-        ::cpp2::SmallStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::structure,
-        ::cpp2::SmallStruct>,
-    "inconsistent use of nimble option");
 
 } // cpp2
 

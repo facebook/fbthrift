@@ -102,7 +102,6 @@ template uint32_t InitialResponse::serializedSize<>(apache::thrift::CompactProto
 template uint32_t InitialResponse::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -193,7 +192,6 @@ template void FinalResponse::readNoXfer<>(apache::thrift::CompactProtocolReader*
 template uint32_t FinalResponse::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t FinalResponse::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t FinalResponse::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2
@@ -288,7 +286,6 @@ template uint32_t SinkPayload::serializedSize<>(apache::thrift::CompactProtocolW
 template uint32_t SinkPayload::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -379,7 +376,6 @@ template void CompatibleWithKeywordSink::readNoXfer<>(apache::thrift::CompactPro
 template uint32_t CompatibleWithKeywordSink::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t CompatibleWithKeywordSink::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t CompatibleWithKeywordSink::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2
@@ -480,7 +476,6 @@ template uint32_t InitialException::serializedSize<>(apache::thrift::CompactProt
 template uint32_t InitialException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -577,7 +572,6 @@ template void SinkException1::readNoXfer<>(apache::thrift::CompactProtocolReader
 template uint32_t SinkException1::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t SinkException1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t SinkException1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2
@@ -677,7 +671,6 @@ template void SinkException2::readNoXfer<>(apache::thrift::CompactProtocolReader
 template uint32_t SinkException2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t SinkException2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t SinkException2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2

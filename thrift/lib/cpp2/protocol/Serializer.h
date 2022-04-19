@@ -17,6 +17,7 @@
 #ifndef CPP2_SERIALIZER_H
 #define CPP2_SERIALIZER_H
 
+#include <folly/GLog.h>
 #include <folly/io/IOBuf.h>
 #include <folly/lang/Pretty.h>
 #include <thrift/lib/cpp/TApplicationException.h>
@@ -25,7 +26,6 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/JSONProtocol.h>
-#include <thrift/lib/cpp2/protocol/NimbleProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 
@@ -219,32 +219,12 @@ struct Serializer {
   }
 };
 
-// template specialization for NimbleProtocol
-template <>
-struct Serializer<NimbleProtocolReader, NimbleProtocolWriter> {
-  template <class T>
-  static size_t deserialize(const folly::IOBuf* buf, T& obj) {
-    NimbleProtocolReader reader;
-    reader.setInput(folly::io::Cursor{buf});
-    obj.read(&reader);
-    return 0;
-  }
-
-  template <class T>
-  static void serialize(const T& obj, folly::IOBufQueue* out) {
-    NimbleProtocolWriter writer;
-    obj.write(&writer);
-    out->append(writer.finalize());
-  }
-};
-
 typedef Serializer<CompactProtocolReader, CompactProtocolWriter>
     CompactSerializer;
 typedef Serializer<BinaryProtocolReader, BinaryProtocolWriter> BinarySerializer;
 typedef Serializer<JSONProtocolReader, JSONProtocolWriter> JSONSerializer;
 typedef Serializer<SimpleJSONProtocolReader, SimpleJSONProtocolWriter>
     SimpleJSONSerializer;
-typedef Serializer<NimbleProtocolReader, NimbleProtocolWriter> NimbleSerializer;
 
 // Serialization code specific to handling errors
 template <typename ProtIn, typename ProtOut, bool includeEnvelope = true>

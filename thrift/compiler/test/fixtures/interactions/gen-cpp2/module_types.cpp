@@ -108,7 +108,6 @@ template uint32_t CustomException::serializedSize<>(apache::thrift::CompactProto
 template uint32_t CustomException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace cpp2 { namespace {

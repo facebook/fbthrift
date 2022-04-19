@@ -186,7 +186,6 @@ template uint32_t Empty::serializedSize<>(apache::thrift::SimpleJSONProtocolWrit
 template uint32_t Empty::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 
-
 }}} // some::valid::ns
 
 namespace apache {
@@ -258,7 +257,6 @@ template void ASimpleStruct::readNoXfer<>(apache::thrift::SimpleJSONProtocolRead
 template uint32_t ASimpleStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t ASimpleStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t ASimpleStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
-
 
 
 }}} // some::valid::ns
@@ -342,7 +340,6 @@ template void ASimpleStructNoexcept::readNoXfer<>(apache::thrift::SimpleJSONProt
 template uint32_t ASimpleStructNoexcept::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t ASimpleStructNoexcept::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t ASimpleStructNoexcept::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
-
 
 
 }}} // some::valid::ns
@@ -624,7 +621,6 @@ template uint32_t MyStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolW
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 
-
 }}} // some::valid::ns
 
 namespace apache {
@@ -732,7 +728,6 @@ template void SimpleUnion::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader
 template uint32_t SimpleUnion::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t SimpleUnion::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
-
 
 
 }}} // some::valid::ns
@@ -1107,55 +1102,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::MyStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set<::some::valid::ns::MyStruct>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::variant,
-        ::some::valid::ns::SimpleUnion>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::variant,
-        ::some::valid::ns::SimpleUnion>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector<::some::valid::ns::SimpleUnion>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-        ::some::valid::ns::unionTypeDef>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::MyStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexUnion,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::MyStruct>,
-    "inconsistent use of nimble option");
 
 }}} // some::valid::ns
 
@@ -1608,31 +1554,6 @@ static_assert(
         ::some::valid::ns::unionTypeDef>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnException,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::MyStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnException,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set<::some::valid::ns::MyStruct>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnException,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector<::some::valid::ns::SimpleUnion>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnException,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-        ::some::valid::ns::unionTypeDef>,
-    "inconsistent use of nimble option");
-
 }}} // some::valid::ns
 
 namespace apache {
@@ -1758,7 +1679,6 @@ template void AnotherException::readNoXfer<>(apache::thrift::SimpleJSONProtocolR
 template uint32_t AnotherException::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t AnotherException::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t AnotherException::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
-
 
 
 }}} // some::valid::ns
@@ -2633,67 +2553,6 @@ static_assert(
         ::some::valid::ns::unionTypeDef>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>,
-        ::some::valid::ns::complexStructTypeDef>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::MyStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::MyStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::MyStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set<::some::valid::ns::MyStruct>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::variant,
-        ::some::valid::ns::ComplexUnion>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::variant,
-        ::some::valid::ns::ComplexUnion>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::variant,
-        ::some::valid::ns::ComplexUnion>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector<::some::valid::ns::ComplexUnion>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        containerStruct,
-        ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-        ::some::valid::ns::unionTypeDef>,
-    "inconsistent use of nimble option");
-
 }}} // some::valid::ns
 
 namespace apache {
@@ -2872,25 +2731,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::some::valid::ns::AStruct>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyIncludedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::AStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyIncludedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::AStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyIncludedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::AStruct>,
-    "inconsistent use of nimble option");
 
 }}} // some::valid::ns
 
@@ -3473,97 +3313,6 @@ static_assert(
         ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::some::valid::ns::UnorderedMapStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        AnnotatedStruct,
-        ::apache::thrift::type_class::structure,
-        ::some::valid::ns::containerStruct>,
-    "inconsistent use of nimble option");
-
 }}} // some::valid::ns
 
 namespace apache {
@@ -3701,7 +3450,6 @@ template uint32_t ComplexContainerStruct::serializedSize<>(apache::thrift::Simpl
 template uint32_t ComplexContainerStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 
-
 }}} // some::valid::ns
 
 namespace apache {
@@ -3794,7 +3542,6 @@ template void FloatStruct::readNoXfer<>(apache::thrift::SimpleJSONProtocolReader
 template uint32_t FloatStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t FloatStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t FloatStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
-
 
 
 }}} // some::valid::ns
@@ -3906,7 +3653,6 @@ template uint32_t FloatUnion::serializedSize<>(apache::thrift::SimpleJSONProtoco
 template uint32_t FloatUnion::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 
-
 }}} // some::valid::ns
 
 namespace apache {
@@ -3985,7 +3731,6 @@ template void AllRequiredNoExceptMoveCtrStruct::readNoXfer<>(apache::thrift::Sim
 template uint32_t AllRequiredNoExceptMoveCtrStruct::write<>(apache::thrift::SimpleJSONProtocolWriter*) const;
 template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSize<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
-
 
 
 }}} // some::valid::ns

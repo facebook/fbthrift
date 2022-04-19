@@ -206,7 +206,6 @@ template uint32_t decorated_struct::serializedSize<>(apache::thrift::CompactProt
 template uint32_t decorated_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}}} // apache::thrift::fixtures::types
 
 namespace apache {
@@ -422,7 +421,6 @@ template uint32_t ContainerStruct::serializedSize<>(apache::thrift::CompactProto
 template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}}} // apache::thrift::fixtures::types
 
 namespace apache {
@@ -523,7 +521,6 @@ template uint32_t CppTypeStruct::serializedSize<>(apache::thrift::CompactProtoco
 template uint32_t CppTypeStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}}} // apache::thrift::fixtures::types
 
 namespace apache {
@@ -614,7 +611,6 @@ template void VirtualStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*
 template uint32_t VirtualStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t VirtualStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t VirtualStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}}} // apache::thrift::fixtures::types
@@ -721,7 +717,6 @@ template uint32_t MyStructWithForwardRefEnum::serializedSize<>(apache::thrift::C
 template uint32_t MyStructWithForwardRefEnum::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}}} // apache::thrift::fixtures::types
 
 namespace apache {
@@ -809,7 +804,6 @@ template void TrivialNumeric::readNoXfer<>(apache::thrift::CompactProtocolReader
 template uint32_t TrivialNumeric::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t TrivialNumeric::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t TrivialNumeric::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}}} // apache::thrift::fixtures::types
@@ -914,13 +908,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::apache::thrift::fixtures::types::TrivialNumeric>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        TrivialNestedWithDefault,
-        ::apache::thrift::type_class::structure,
-        ::apache::thrift::fixtures::types::TrivialNumeric>,
-    "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
 
@@ -1032,7 +1019,6 @@ template void ComplexString::readNoXfer<>(apache::thrift::CompactProtocolReader*
 template uint32_t ComplexString::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t ComplexString::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ComplexString::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}}} // apache::thrift::fixtures::types
@@ -1152,13 +1138,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::apache::thrift::fixtures::types::ComplexString>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ComplexNestedWithDefault,
-        ::apache::thrift::type_class::structure,
-        ::apache::thrift::fixtures::types::ComplexString>,
-    "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
 
@@ -1291,7 +1270,6 @@ template uint32_t MinPadding::serializedSize<>(apache::thrift::CompactProtocolWr
 template uint32_t MinPadding::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}}} // apache::thrift::fixtures::types
 
 namespace apache {
@@ -1346,7 +1324,6 @@ template void MyDataItem::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t MyDataItem::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}}} // apache::thrift::fixtures::types
@@ -1454,13 +1431,6 @@ static_assert(
         ::apache::thrift::fixtures::types::MyDataItem>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyStruct,
-        ::apache::thrift::type_class::structure,
-        ::apache::thrift::fixtures::types::MyDataItem>,
-    "inconsistent use of nimble option");
-
 }}}} // apache::thrift::fixtures::types
 
 namespace apache {
@@ -1538,7 +1508,6 @@ template void Renaming::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Renaming::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Renaming::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Renaming::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}}} // apache::thrift::fixtures::types
@@ -1638,7 +1607,6 @@ template void AnnotatedTypes::readNoXfer<>(apache::thrift::CompactProtocolReader
 template uint32_t AnnotatedTypes::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t AnnotatedTypes::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t AnnotatedTypes::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}}} // apache::thrift::fixtures::types
@@ -1746,13 +1714,6 @@ static_assert(
         ::apache::thrift::type_class::structure,
         ::apache::thrift::fixtures::types::ForwardUsageRoot>,
     "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ForwardUsageStruct,
-        ::apache::thrift::type_class::structure,
-        ::apache::thrift::fixtures::types::ForwardUsageRoot>,
-    "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
 
@@ -1890,19 +1851,6 @@ static_assert(
         ::apache::thrift::fixtures::types::ForwardUsageByRef>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ForwardUsageRoot,
-        ::apache::thrift::type_class::structure,
-        ::apache::thrift::fixtures::types::ForwardUsageStruct>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ForwardUsageRoot,
-        ::apache::thrift::type_class::structure,
-        ::apache::thrift::fixtures::types::ForwardUsageByRef>,
-    "inconsistent use of nimble option");
-
 }}}} // apache::thrift::fixtures::types
 
 namespace apache {
@@ -2009,13 +1957,6 @@ static_assert(
         ::apache::thrift::fixtures::types::ForwardUsageRoot>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        ForwardUsageByRef,
-        ::apache::thrift::type_class::structure,
-        ::apache::thrift::fixtures::types::ForwardUsageRoot>,
-    "inconsistent use of nimble option");
-
 }}}} // apache::thrift::fixtures::types
 
 namespace apache {
@@ -2082,7 +2023,6 @@ template void NoexceptMoveEmpty::readNoXfer<>(apache::thrift::CompactProtocolRea
 template uint32_t NoexceptMoveEmpty::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t NoexceptMoveEmpty::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NoexceptMoveEmpty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}}} // apache::thrift::fixtures::types
@@ -2162,7 +2102,6 @@ template void NoexceptMoveSimpleStruct::readNoXfer<>(apache::thrift::CompactProt
 template uint32_t NoexceptMoveSimpleStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t NoexceptMoveSimpleStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NoexceptMoveSimpleStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}}} // apache::thrift::fixtures::types
@@ -2379,7 +2318,6 @@ template uint32_t NoexceptMoveComplexStruct::serializedSize<>(apache::thrift::Co
 template uint32_t NoexceptMoveComplexStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}}} // apache::thrift::fixtures::types
 
 namespace apache {
@@ -2483,7 +2421,6 @@ template void NoExceptMoveUnion::readNoXfer<>(apache::thrift::CompactProtocolRea
 template uint32_t NoExceptMoveUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t NoExceptMoveUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t NoExceptMoveUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}}} // apache::thrift::fixtures::types
@@ -2701,7 +2638,6 @@ template uint32_t AllocatorAware::serializedSize<>(apache::thrift::CompactProtoc
 template uint32_t AllocatorAware::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}}} // apache::thrift::fixtures::types
 
 namespace apache {
@@ -2792,7 +2728,6 @@ template void AllocatorAware2::readNoXfer<>(apache::thrift::CompactProtocolReade
 template uint32_t AllocatorAware2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t AllocatorAware2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t AllocatorAware2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}}} // apache::thrift::fixtures::types
@@ -2911,7 +2846,6 @@ template uint32_t TypedefStruct::serializedSize<>(apache::thrift::CompactProtoco
 template uint32_t TypedefStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 }}}} // apache::thrift::fixtures::types
 
 namespace apache {
@@ -2989,7 +2923,6 @@ template void StructWithDoubleUnderscores::readNoXfer<>(apache::thrift::CompactP
 template uint32_t StructWithDoubleUnderscores::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t StructWithDoubleUnderscores::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t StructWithDoubleUnderscores::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 }}}} // apache::thrift::fixtures::types

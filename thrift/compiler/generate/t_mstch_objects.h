@@ -1401,7 +1401,6 @@ class mstch_program : public mstch_base {
         });
     register_has_option("program:frozen?", "frozen");
     register_has_option("program:json?", "json");
-    register_has_option("program:nimble?", "nimble");
     register_has_option("program:any?", "any");
     register_has_option(
         "program:unstructured_annotations_in_metadata?",

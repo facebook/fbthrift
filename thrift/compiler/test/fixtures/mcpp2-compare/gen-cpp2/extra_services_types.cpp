@@ -318,7 +318,6 @@ template uint32_t containerStruct2::serializedSize<>(apache::thrift::SimpleJSONP
 template uint32_t containerStruct2::serializedSizeZC<>(apache::thrift::SimpleJSONProtocolWriter const*) const;
 
 
-
 }} // extra::svc
 
 namespace extra { namespace svc { namespace {

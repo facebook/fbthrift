@@ -257,9 +257,5 @@ extern template void BasicTypes::readNoXfer<>(apache::thrift::CompactProtocolRea
 extern template uint32_t BasicTypes::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t BasicTypes::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t BasicTypes::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template void BasicTypes::readNoXfer<>(apache::thrift::NimbleProtocolReader*);
-extern template uint32_t BasicTypes::write<>(apache::thrift::NimbleProtocolWriter*) const;
-extern template uint32_t BasicTypes::serializedSize<>(apache::thrift::NimbleProtocolWriter const*) const;
-extern template uint32_t BasicTypes::serializedSizeZC<>(apache::thrift::NimbleProtocolWriter const*) const;
 
 } // cpp2

@@ -251,7 +251,6 @@ template uint32_t Foo::serializedSize<>(apache::thrift::CompactProtocolWriter co
 template uint32_t Foo::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-
 } // cpp2
 
 namespace apache {
@@ -353,7 +352,6 @@ template void Baz::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t Baz::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Baz::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Baz::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2
@@ -564,31 +562,6 @@ static_assert(
         ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>>,
     "inconsistent use of json option");
 
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        Bar,
-        ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        Bar,
-        ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        Bar,
-        ::apache::thrift::type_class::variant,
-        ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>>,
-    "inconsistent use of nimble option");
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        Bar,
-        ::apache::thrift::type_class::variant,
-        ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>>,
-    "inconsistent use of nimble option");
-
 } // cpp2
 
 namespace apache {
@@ -736,7 +709,6 @@ template void StructWithFieldAdapter::readNoXfer<>(apache::thrift::CompactProtoc
 template uint32_t StructWithFieldAdapter::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t StructWithFieldAdapter::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t StructWithFieldAdapter::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
 
 
 } // cpp2

@@ -116,7 +116,6 @@ X(Binary)
 X(Compact)
 X(SimpleJSON)
 X(JSON)
-X(Nimble)
 X(Frozen)
 
 int main(int argc, char** argv) {
