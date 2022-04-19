@@ -92,56 +92,55 @@ class JSONProtocolWriterCommon {
   }
 
   //  These writers are common to both json and simple-json protocols.
-  inline uint32_t writeMessageBegin(
+  uint32_t writeMessageBegin(
       const std::string& name, MessageType messageType, int32_t seqid);
-  inline uint32_t writeMessageEnd();
-  inline uint32_t writeByte(int8_t byte);
-  inline uint32_t writeI16(int16_t i16);
-  inline uint32_t writeI32(int32_t i32);
-  inline uint32_t writeI64(int64_t i64);
-  inline uint32_t writeDouble(double dub);
-  inline uint32_t writeFloat(float flt);
-  inline uint32_t writeString(folly::StringPiece str);
-  inline uint32_t writeBinary(folly::StringPiece str);
-  inline uint32_t writeBinary(folly::ByteRange v);
-  inline uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
-  inline uint32_t writeBinary(const folly::IOBuf& str);
+  uint32_t writeMessageEnd();
+  uint32_t writeByte(int8_t byte);
+  uint32_t writeI16(int16_t i16);
+  uint32_t writeI32(int32_t i32);
+  uint32_t writeI64(int64_t i64);
+  uint32_t writeDouble(double dub);
+  uint32_t writeFloat(float flt);
+  uint32_t writeString(folly::StringPiece str);
+  uint32_t writeBinary(folly::StringPiece str);
+  uint32_t writeBinary(folly::ByteRange v);
+  uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
+  uint32_t writeBinary(const folly::IOBuf& str);
 
   //  These sizes are common to both json and simple-json protocols.
-  inline uint32_t serializedSizeByte(int8_t = 0) const;
-  inline uint32_t serializedSizeI16(int16_t = 0) const;
-  inline uint32_t serializedSizeI32(int32_t = 0) const;
-  inline uint32_t serializedSizeI64(int64_t = 0) const;
-  inline uint32_t serializedSizeDouble(double = 0.0) const;
-  inline uint32_t serializedSizeFloat(float = 0) const;
-  inline uint32_t serializedSizeString(folly::StringPiece) const;
-  inline uint32_t serializedSizeBinary(folly::StringPiece str) const;
-  inline uint32_t serializedSizeBinary(folly::ByteRange v) const;
-  inline uint32_t serializedSizeBinary(
-      const std::unique_ptr<folly::IOBuf>& v) const;
-  inline uint32_t serializedSizeBinary(const folly::IOBuf& v) const;
-  inline uint32_t serializedSizeZCBinary(folly::StringPiece str) const;
-  inline uint32_t serializedSizeZCBinary(folly::ByteRange v) const;
-  inline uint32_t serializedSizeZCBinary(
+  uint32_t serializedSizeByte(int8_t = 0) const;
+  uint32_t serializedSizeI16(int16_t = 0) const;
+  uint32_t serializedSizeI32(int32_t = 0) const;
+  uint32_t serializedSizeI64(int64_t = 0) const;
+  uint32_t serializedSizeDouble(double = 0.0) const;
+  uint32_t serializedSizeFloat(float = 0) const;
+  uint32_t serializedSizeString(folly::StringPiece) const;
+  uint32_t serializedSizeBinary(folly::StringPiece str) const;
+  uint32_t serializedSizeBinary(folly::ByteRange v) const;
+  uint32_t serializedSizeBinary(const std::unique_ptr<folly::IOBuf>& v) const;
+  uint32_t serializedSizeBinary(const folly::IOBuf& v) const;
+  uint32_t serializedSizeZCBinary(folly::StringPiece str) const;
+  uint32_t serializedSizeZCBinary(folly::ByteRange v) const;
+  uint32_t serializedSizeZCBinary(
       const std::unique_ptr<folly::IOBuf>& /*v*/) const;
-  inline uint32_t serializedSizeZCBinary(const folly::IOBuf& /*v*/) const;
+  uint32_t serializedSizeZCBinary(const folly::IOBuf& /*v*/) const;
 
  protected:
   enum class ContextType { MAP, ARRAY };
-  inline uint32_t beginContext(ContextType);
-  inline uint32_t endContext();
-  inline uint32_t writeContext();
-  inline uint32_t writeJSONEscapeChar(uint8_t ch);
-  inline uint32_t writeJSONChar(uint8_t ch);
-  inline uint32_t writeJSONString(folly::StringPiece);
-  inline uint32_t writeJSONBase64(folly::ByteRange);
-  inline uint32_t writeJSONBool(bool val);
-  inline uint32_t writeJSONInt(int64_t num);
+  uint32_t beginContext(ContextType);
+  uint32_t endContext();
+  uint32_t writeContext();
+  uint32_t writeJSONEscapeChar(uint8_t ch);
+  uint32_t writeJSONChar(uint8_t ch);
+  uint32_t writeJSONString(folly::StringPiece);
+  uint32_t writeJSONBase64(folly::ByteRange);
+  uint32_t writeJSONBool(bool val);
+  uint32_t writeJSONInt(int64_t num);
   template <typename T>
   uint32_t writeJSONDouble(T dbl);
 
   static const uint8_t kJSONCharTable[0x30];
-  static inline uint8_t hexChar(uint8_t val);
+  static uint8_t hexChar(uint8_t val);
 
   void base64_encode(const uint8_t* in, uint32_t len, uint8_t* buf) {
     protocol::base64_encode(in, len, buf);
@@ -181,21 +180,21 @@ class JSONProtocolReaderCommon {
   void setInput(const folly::io::Cursor& cursor) { in_ = cursor; }
   void setInput(const folly::IOBuf* buf) { in_.reset(buf); }
 
-  inline void readMessageBegin(
+  void readMessageBegin(
       std::string& name, MessageType& messageType, int32_t& seqid);
-  inline void readMessageEnd();
-  inline void readByte(int8_t& byte);
-  inline void readI16(int16_t& i16);
-  inline void readI32(int32_t& i32);
-  inline void readI64(int64_t& i64);
-  inline void readDouble(double& dub);
-  inline void readFloat(float& flt);
+  void readMessageEnd();
+  void readByte(int8_t& byte);
+  void readI16(int16_t& i16);
+  void readI32(int32_t& i32);
+  void readI64(int64_t& i64);
+  void readDouble(double& dub);
+  void readFloat(float& flt);
   template <typename StrType>
-  inline void readString(StrType& str);
+  void readString(StrType& str);
   template <typename StrType>
-  inline void readBinary(StrType& str);
-  inline void readBinary(std::unique_ptr<folly::IOBuf>& str);
-  inline void readBinary(folly::IOBuf& str);
+  void readBinary(StrType& str);
+  void readBinary(std::unique_ptr<folly::IOBuf>& str);
+  void readBinary(folly::IOBuf& str);
 
   const folly::io::Cursor& getCursor() const { return in_; }
 
@@ -209,48 +208,47 @@ class JSONProtocolReaderCommon {
 
   // skip over whitespace so that we can peek, and store number of bytes
   // skipped
-  inline void skipWhitespace();
+  void skipWhitespace();
   // skip over whitespace *and* return the number whitespace bytes skipped
-  inline uint32_t readWhitespace();
-  inline uint32_t ensureCharNoWhitespace(char expected);
-  inline uint32_t ensureChar(char expected);
+  uint32_t readWhitespace();
+  uint32_t ensureCharNoWhitespace(char expected);
+  uint32_t ensureChar(char expected);
   // this is similar to skipWhitespace and readWhitespace.  The skip-version
   // skips over context so that we can peek, and stores the number of bytes
   // skipped.  The read-version calls the skip-version, and returns the number
   // of bytes skipped.  Calling skip a second (or third...) time in a row
   // without calling read has no effect.
-  inline void ensureAndSkipContext();
-  inline void ensureAndReadContext(bool& keyish);
-  inline void beginContext(ContextType type);
-  inline void ensureAndBeginContext(ContextType type);
-  inline void endContext();
+  void ensureAndSkipContext();
+  void ensureAndReadContext(bool& keyish);
+  void beginContext(ContextType type);
+  void ensureAndBeginContext(ContextType type);
+  void endContext();
 
   template <typename T>
   static T castIntegral(folly::StringPiece val);
   template <typename T>
   void readInContext(T& val);
-  inline void readJSONKey(bool& key);
+  void readJSONKey(bool& key);
   template <typename T>
   void readJSONKey(T& key);
   template <typename T>
   void readJSONIntegral(T& val);
-  inline void readNumericalChars(std::string& val);
-  inline void readJSONVal(int8_t& val);
-  inline void readJSONVal(int16_t& val);
-  inline void readJSONVal(int32_t& val);
-  inline void readJSONVal(int64_t& val);
+  void readNumericalChars(std::string& val);
+  void readJSONVal(int8_t& val);
+  void readJSONVal(int16_t& val);
+  void readJSONVal(int32_t& val);
+  void readJSONVal(int64_t& val);
   template <typename Floating>
-  inline typename std::enable_if<std::is_floating_point<Floating>::value>::type
+  typename std::enable_if<std::is_floating_point<Floating>::value>::type
   readJSONVal(Floating& val);
   template <typename Str>
-  inline typename std::enable_if<
-      apache::thrift::detail::is_string<Str>::value>::type
+  typename std::enable_if<apache::thrift::detail::is_string<Str>::value>::type
   readJSONVal(Str& val);
-  inline bool JSONtoBool(const std::string& s);
-  inline void readJSONVal(bool& val);
-  inline void readJSONNull();
-  inline void readJSONKeyword(std::string& kw);
-  inline void readJSONEscapeChar(uint8_t& out);
+  bool JSONtoBool(const std::string& s);
+  void readJSONVal(bool& val);
+  void readJSONNull();
+  void readJSONKeyword(std::string& kw);
+  void readJSONEscapeChar(uint8_t& out);
   template <typename StrType>
   void readJSONString(StrType& val);
   template <typename StrType>
@@ -262,7 +260,7 @@ class JSONProtocolReaderCommon {
   static constexpr folly::StringPiece kEscapeChars() { return "\"\\/bfnrt"; }
 
   static const uint8_t kEscapeCharVals[8];
-  static inline uint8_t hexVal(uint8_t ch);
+  static uint8_t hexVal(uint8_t ch);
 
   void base64_decode(uint8_t* buf, uint32_t len) {
     protocol::base64_decode(buf, len);
@@ -272,7 +270,7 @@ class JSONProtocolReaderCommon {
   uint32_t readWhile(const Predicate& pred, std::string& out);
 
   // Returns next character, or \0 if at the end.
-  inline int8_t peekCharSafe();
+  int8_t peekCharSafe();
 
   [[noreturn]] static void throwBadVersion();
   [[noreturn]] static void throwUnrecognizableAsBoolean(std::string const& s);
