@@ -19,15 +19,9 @@ package com.facebook.thrift.util.resources;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.SingleThreadEventLoop;
-import io.netty.channel.epoll.Epoll;
-import io.netty.channel.epoll.EpollEventLoopGroup;
-import io.netty.channel.kqueue.KQueue;
-import io.netty.channel.kqueue.KQueueEventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.util.HashedWheelTimer;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.concurrent.EventExecutor;
-import io.netty.util.concurrent.FastThreadLocalThread;
 import io.rsocket.Closeable;
 import java.util.Map;
 import java.util.concurrent.ThreadFactory;
@@ -35,7 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoProcessor;
-import reactor.core.scheduler.NonBlocking;
 
 class ResourcesHolder implements Closeable {
   private static final Logger LOGGER = LoggerFactory.getLogger(ResourcesHolder.class);
@@ -67,7 +60,9 @@ class ResourcesHolder implements Closeable {
 
   public ResourcesHolder() {
     this.timer = createHashedWheelTimer();
-    this.eventLoopGroup = createEventLoopGroup();
+    this.eventLoopGroup =
+        com.facebook.thrift.util.NettyUtil.createEventLoopGroup(
+            numThreadsForEventLoop, "thrift-eventloop");
     this.offLoopScheduler = createOffLoopScheduler();
     boolean separateOffLoopScheduler =
         System.getProperty("thrift.separate-offloop-scheduler", "false").equalsIgnoreCase("true");
@@ -110,19 +105,6 @@ class ResourcesHolder implements Closeable {
 
   private void shutdownHashedWheelTimer() {
     timer.stop();
-  }
-
-  private EventLoopGroup createEventLoopGroup() {
-    EventLoopGroup eventLoop;
-    if (Epoll.isAvailable()) {
-      eventLoop = new EpollEventLoopGroup(numThreadsForEventLoop, daemonThreadFactory());
-    } else if (KQueue.isAvailable()) {
-      eventLoop = new KQueueEventLoopGroup(numThreadsForEventLoop, daemonThreadFactory());
-    } else {
-      eventLoop = new NioEventLoopGroup(numThreadsForEventLoop, daemonThreadFactory());
-    }
-    LOGGER.info("Using '{}' with '{}' threads.", eventLoop.getClass(), numThreadsForEventLoop);
-    return eventLoop;
   }
 
   private void shutdownEventLoopGroup() {
@@ -180,16 +162,6 @@ class ResourcesHolder implements Closeable {
     return offLoopScheduler.getStats();
   }
 
-  private static ThreadFactory daemonThreadFactory() {
-    return new ThreadFactoryBuilder()
-        .setNameFormat("thrift-eventloop-%d")
-        .setDaemon(true)
-        .setUncaughtExceptionHandler(
-            (t, e) -> LOGGER.error("uncaught exception on thread {}", t.getName(), e))
-        .setThreadFactory(ThriftEventLoopThread::new)
-        .build();
-  }
-
   @Override
   public Mono<Void> onClose() {
     return onClose;
@@ -203,19 +175,6 @@ class ResourcesHolder implements Closeable {
       shutdownOffLoopScheduler();
     } finally {
       onClose.onComplete();
-    }
-  }
-
-  /**
-   * Thread used by Thrift for a Netty Eventloop. It immplements {@link FastThreadLocalThread} which
-   * is special thread local used by Netty 4 esp for ByteBufs. It also is marked with {@
-   * NonBlocking} interface from reactor-core. This means that if someone tries to call
-   * block()/blockFirst()/blockLast() methods, which could block the eventloop, it cause an
-   * exception to thrown preventing this.
-   */
-  private static class ThriftEventLoopThread extends FastThreadLocalThread implements NonBlocking {
-    ThriftEventLoopThread(Runnable r) {
-      super(r);
     }
   }
 }
