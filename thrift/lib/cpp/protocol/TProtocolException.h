@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ class FOLLY_EXPORT TProtocolException
   TProtocolException(TProtocolExceptionType type, const std::string& message)
       : apache::thrift::TLibraryException(message), type_(type) {}
 
-  ~TProtocolException() throw() override {}
+  ~TProtocolException() noexcept override {}
 
   /**
    * Returns an error code that provides information about the type of error
@@ -72,7 +72,7 @@ class FOLLY_EXPORT TProtocolException
    */
   TProtocolExceptionType getType() const { return type_; }
 
-  const char* what() const throw() override {
+  const char* what() const noexcept override {
     if (message_.empty()) {
       switch (type_) {
         case UNKNOWN:

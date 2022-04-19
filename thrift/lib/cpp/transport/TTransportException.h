@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ class FOLLY_EXPORT TTransportException
       : TTransportException(
             TTransportExceptionType(ex.getType()), ex.what(), ex.getErrno()) {}
 
-  ~TTransportException() throw() override {}
+  ~TTransportException() noexcept override {}
 
   /**
    * Returns an error code that provides information about the type of error
@@ -108,7 +108,7 @@ class FOLLY_EXPORT TTransportException
    *
    * @return Error code
    */
-  TTransportExceptionType getType() const throw() { return type_; }
+  TTransportExceptionType getType() const noexcept { return type_; }
 
   enum Options {
     // Channel is still valid (this is a high-level error, not a TCP level
@@ -119,7 +119,7 @@ class FOLLY_EXPORT TTransportException
   int getOptions() const { return options_; }
   void setOptions(int options) { options_ = options; }
 
-  const char* what() const throw() override {
+  const char* what() const noexcept override {
     if (message_.empty()) {
       switch (type_) {
         case UNKNOWN:

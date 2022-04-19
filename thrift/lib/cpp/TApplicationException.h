@@ -70,7 +70,7 @@ class FOLLY_EXPORT TApplicationException : public TException {
       TApplicationExceptionType type, const std::string& message)
       : message_(message), type_(type) {}
 
-  ~TApplicationException() throw() override {}
+  ~TApplicationException() noexcept override {}
 
   const std::string& getMessage() const { return message_; }
 
@@ -86,7 +86,7 @@ class FOLLY_EXPORT TApplicationException : public TException {
 
   void setType(TApplicationExceptionType type) { type_ = type; }
 
-  const char* what() const throw() override {
+  const char* what() const noexcept override {
     if (message_.empty()) {
       switch (type_) {
         case UNKNOWN:

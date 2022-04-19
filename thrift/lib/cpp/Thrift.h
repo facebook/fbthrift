@@ -199,9 +199,9 @@ class FOLLY_EXPORT TLibraryException : public TException {
 
   TLibraryException(const char* message, int errnoValue);
 
-  ~TLibraryException() throw() override {}
+  ~TLibraryException() noexcept override {}
 
-  const char* what() const throw() override {
+  const char* what() const noexcept override {
     if (message_.empty()) {
       return "Default TLibraryException.";
     } else {
