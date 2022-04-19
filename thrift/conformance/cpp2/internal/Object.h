@@ -136,7 +136,7 @@ class ObjectWriter : public BaseObjectAdapter {
       const char* /*name*/, TType /*fieldType*/, int16_t fieldId) {
     auto result = cur(Value::objectValue)
                       .mutable_objectValue()
-                      .members_ref()
+                      .members()
                       ->emplace(fieldId, Value());
     assert(result.second);
     cur_.push(&result.first->second);
@@ -378,7 +378,7 @@ Value parseValue(Protocol& prot, TType arg_type) {
           break;
         }
         auto val = parseValue(prot, ftype);
-        objectValue.members_ref()->emplace(fid, val);
+        objectValue.members()->emplace(fid, val);
         prot.readFieldEnd();
       }
       prot.readStructEnd();
@@ -507,7 +507,7 @@ void serializeValue(Protocol& prot, const Value& value) {
     case Value::Type::objectValue: {
       prot.writeStructBegin("");
       for (auto const& [fieldID, fieldVal] :
-           *value.objectValue_ref()->members_ref()) {
+           *value.objectValue_ref()->members()) {
         auto fieldType = getTType(fieldVal);
         prot.writeFieldBegin("", fieldType, fieldID);
         serializeValue(prot, fieldVal);
