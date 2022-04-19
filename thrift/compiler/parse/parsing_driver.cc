@@ -107,14 +107,10 @@ std::unique_ptr<t_program_bundle> parsing_driver::parse() {
 }
 
 void parsing_driver::parse_file() {
-  // Get scope file path
-  const std::string& path = program->path();
-
   // Skip on already parsed files
-  if (already_parsed_paths_.count(path)) {
+  const std::string& path = program->path();
+  if (!already_parsed_paths_.insert(path).second) {
     return;
-  } else {
-    already_parsed_paths_.insert(path);
   }
 
   try {
@@ -122,18 +118,16 @@ void parsing_driver::parse_file() {
         std::make_unique<lexer>(lexer::from_file(*lex_handler_, ctx_, path));
     reset_locations();
   } catch (std::runtime_error const& ex) {
-    failure(ex.what());
+    end_parsing(ex.what());
   }
 
   // Create new scope and scan for includes
   verbose("Scanning {} for includes\n", path);
   mode = parsing_mode::INCLUDES;
   try {
-    if (parser_->parse() != 0) {
-      failure("Parser error during include pass.");
-    }
+    end_parsing_if(parser_->parse() != 0, "Parser error during include pass.");
   } catch (const std::string& x) {
-    failure(x);
+    end_parsing(x);
   }
 
   // Recursively parse all the include programs
@@ -147,12 +141,11 @@ void parsing_driver::parse_file() {
     circular_deps_.insert(path);
 
     // Fail on circular dependencies
-    if (circular_deps_.count(included_program->path())) {
-      failure([&](auto& o) {
-        o << "Circular dependency found: file `" << included_program->path()
-          << "` is already parsed.";
-      });
-    }
+    end_parsing_if(
+        circular_deps_.count(included_program->path()), [&](auto& o) {
+          o << "Circular dependency found: file `" << included_program->path()
+            << "` is already parsed.";
+        });
 
     // This must be after the previous circular include check, since the emitted
     // error message above is supposed to reference the parent file name.
@@ -174,7 +167,7 @@ void parsing_driver::parse_file() {
         std::make_unique<lexer>(lexer::from_file(*lex_handler_, ctx_, path));
     reset_locations();
   } catch (std::runtime_error const& ex) {
-    failure(ex.what());
+    end_parsing(ex.what());
   }
 
   // Compute locations in the program mode.
@@ -188,17 +181,16 @@ void parsing_driver::parse_file() {
   mode = parsing_mode::PROGRAM;
   verbose("Parsing {} for types\n", path);
   try {
-    if (parser_->parse() != 0) {
-      failure("Parser error during types pass.");
-    }
+    end_parsing_if(parser_->parse() != 0, "Parser error during types pass.");
   } catch (const std::string& x) {
-    failure(x);
+    end_parsing(x);
   }
 
   for (auto td : program->placeholder_typedefs()) {
     if (!td->resolve()) {
-      failure(
-          [&](auto& o) { o << "Type `" << td->name() << "` not defined."; });
+      ctx_.failure(*td, [&](auto& o) {
+        o << "Type `" << td->name() << "` not defined.";
+      });
     }
   }
 }
@@ -227,7 +219,7 @@ std::string parsing_driver::find_include_file(const std::string& filename) {
     try {
       return boost::filesystem::canonical(path).string();
     } catch (const boost::filesystem::filesystem_error& e) {
-      failure([&](auto& o) {
+      end_parsing([&](auto& o) {
         o << "Could not find file: " << filename << ". Error: " << e.what();
       });
     }
@@ -251,7 +243,8 @@ std::string parsing_driver::find_include_file(const std::string& filename) {
     }
   }
   // File was not found
-  failure([&](auto& o) { o << "Could not find include file " << filename; });
+  end_parsing(
+      [&](auto& o) { o << "Could not find include file " << filename; });
 }
 
 void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
@@ -596,12 +589,10 @@ t_type_ref parsing_driver::new_type_ref(
   if (type == nullptr) {
     // TODO(afuller): Remove this special case for const, which requires a
     // specific declaration order.
-    if (is_const) {
-      failure([&](auto& o) {
-        o << "The type '" << name << "' is not defined yet. Types must be "
-          << "defined before the usage in constant values.";
-      });
-    }
+    failure_if(is_const, [&](auto& o) {
+      o << "The type '" << name << "' is not defined yet. Types must be "
+        << "defined before the usage in constant values.";
+    });
     // TODO(afuller): Why are interactions special? They should just be another
     // declared type.
     type = scope_cache->find_interaction(name);
@@ -692,15 +683,10 @@ void parsing_driver::set_package(std::string name) {
   if (mode != parsing_mode::PROGRAM) {
     return;
   }
-  if (!program->package().empty()) {
-    failure("Package already specified.");
-  }
-  try {
-    program->set_package(t_package{name});
-  } catch (const std::invalid_argument& e) {
-    failure(e.what());
-  }
+  failure_if(!program->package().empty(), "Package already specified.");
+  try_or_failure([&] { program->set_package(t_package{std::move(name)}); });
 }
+
 const t_type* parsing_driver::add_unnamed_typedef(
     std::unique_ptr<t_typedef> node,
     std::unique_ptr<t_annotations> annotations) {
@@ -714,6 +700,7 @@ const t_type* parsing_driver::add_placeholder_typedef(
     std::unique_ptr<t_placeholder_typedef> node,
     std::unique_ptr<t_annotations> annotations) {
   const t_type* result(node.get());
+  node->set_lineno(lexer_->lineno());
   set_annotations(node.get(), std::move(annotations));
   program->add_placeholder_typedef(std::move(node));
   return result;
@@ -807,15 +794,15 @@ std::unique_ptr<t_const_value> parsing_driver::to_const_value(
 int64_t parsing_driver::to_int(uint64_t val, bool negative) {
   constexpr uint64_t i64max = std::numeric_limits<int64_t>::max();
   if (negative) {
-    if (val > i64max + 1) { // Can store one more negative number.
-      failure(
-          [&](auto& o) { o << "This integer is too small: -" << val << "\n"; });
-    }
+    failure_if(val > i64max + 1, [&](auto& o) {
+      o << "This integer is too small: -" << val << "\n";
+    });
     return -val;
   }
-  if (val > i64max) {
-    failure([&](auto& o) { o << "This integer is too big: " << val << "\n"; });
-  }
+
+  failure_if(val > i64max, [&](auto& o) {
+    o << "This integer is too big: " << val << "\n";
+  });
   return val;
 }
 
@@ -838,18 +825,18 @@ t_doc parsing_driver::strip_doctext(const char* text) {
 }
 
 const t_service* parsing_driver::find_service(const std::string& name) {
-  if (mode != parsing_mode::PROGRAM) {
-    return nullptr;
+  if (mode == parsing_mode::PROGRAM) {
+    if (auto* result = scope_cache->find_service(name)) {
+      return result;
+    }
+    if (auto* result = scope_cache->find_service(scoped_name(name))) {
+      return result;
+    }
+    failure([&](auto& o) {
+      o << "Service \"" << name << "\" has not been defined.";
+    });
   }
-  if (auto* result = scope_cache->find_service(name)) {
-    return result;
-  }
-  if (auto* result = scope_cache->find_service(scoped_name(name))) {
-    return result;
-  }
-  failure([&](auto& o) {
-    o << "Service \"" << name << "\" has not been defined.";
-  });
+  return nullptr;
 }
 
 const t_const* parsing_driver::find_const(const std::string& name) {
@@ -895,10 +882,10 @@ void parsing_driver::set_parsed_definition() {
 }
 
 void parsing_driver::validate_header_location() {
-  if (programs_that_parsed_definition_.find(program->path()) !=
-      programs_that_parsed_definition_.end()) {
-    failure("Headers must be specified before definitions.");
-  }
+  failure_if(
+      programs_that_parsed_definition_.find(program->path()) !=
+          programs_that_parsed_definition_.end(),
+      "Headers must be specified before definitions.");
 }
 
 void parsing_driver::validate_header_annotations(
@@ -906,15 +893,13 @@ void parsing_driver::validate_header_annotations(
     std::unique_ptr<t_annotations> annotations) {
   // Ideally the failures below have to be handled by a grammar, but it's not
   // expressive enough to avoid conflicts when doing so.
-  if (statement_attrs) {
-    bool has_annotations = statement_attrs->struct_annotations.get() != nullptr;
-    if (has_annotations) {
-      failure("Structured annotations are not supported for a given entity.");
-    }
-  }
-  if (annotations) {
-    failure("Annotations are not supported for a given entity.");
-  }
+  failure_if(
+      statement_attrs != nullptr &&
+          statement_attrs->struct_annotations.get() != nullptr,
+      "Structured annotations are not supported for a given entity.");
+  failure_if(
+      annotations != nullptr,
+      "Annotations are not supported for a given entity.");
 }
 
 void parsing_driver::set_program_annotations(

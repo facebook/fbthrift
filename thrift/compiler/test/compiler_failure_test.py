@@ -708,7 +708,7 @@ class CompilerFailureTest(unittest.TestCase):
 
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err, "[FAILURE:foo.thrift:4] Type `Random.Type` not defined.\n"
+            err, "[FAILURE:foo.thrift:2] Type `Random.Type` not defined.\n"
         )
 
     def test_field_names_uniqueness(self):
