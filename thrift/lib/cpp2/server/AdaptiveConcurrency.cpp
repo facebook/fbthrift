@@ -52,6 +52,9 @@ AdaptiveConcurrencyController::AdaptiveConcurrencyController(
       concurrencyLimit_(config().minConcurrency) {
   rttRecalcStart_ = config().isEnabled() ? Clock::now() : kZero;
   enablingCallback_ = config_.addCallback([this](auto snapshot) {
+    if (this->configUpdateCallback_) {
+      this->configUpdateCallback_(snapshot);
+    }
     rttRecalcStart_ = snapshot->isEnabled() ? Clock::now() : kZero;
     // reset all the state
     maxRequests_.store(0, std::memory_order_relaxed);
@@ -220,6 +223,12 @@ size_t AdaptiveConcurrencyController::getMinConcurrency() const {
 
 size_t AdaptiveConcurrencyController::getConcurrency() const {
   return concurrencyLimit_.load(std::memory_order_relaxed);
+}
+
+void AdaptiveConcurrencyController::setConfigUpdateCallback(
+    std::function<void(folly::observer::Snapshot<Config>)> callback) {
+  callback(*config_);
+  configUpdateCallback_ = std::move(callback);
 }
 
 } // namespace thrift

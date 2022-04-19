@@ -224,6 +224,12 @@ ThriftServer::ThriftServer()
   setMonitoringInterface(std::move(extraInterfaces.monitoring));
   setStatusInterface(std::move(extraInterfaces.status));
   setControlInterface(std::move(extraInterfaces.control));
+  getAdaptiveConcurrencyController().setConfigUpdateCallback(
+      [this](auto snapshot) {
+        if (snapshot->isEnabled()) {
+          THRIFT_SERVER_EVENT(ACC_enabled).log(*this);
+        }
+      });
 }
 
 ThriftServer::ThriftServer(

@@ -119,6 +119,9 @@ class AdaptiveConcurrencyController {
   // to minConcurrency when controller is in the rtt calibration state.
   size_t getConcurrency() const;
 
+  void setConfigUpdateCallback(
+      std::function<void(folly::observer::Snapshot<Config>)> callback);
+
  private:
   // testing helpers
   friend class AdaptiveConcurrencyTestHelper;
@@ -148,6 +151,7 @@ class AdaptiveConcurrencyController {
   folly::observer::Observer<Config> config_;
   folly::observer::Observer<uint32_t> maxRequestsLimit_;
   folly::observer::CallbackHandle enablingCallback_;
+  std::function<void(folly::observer::Snapshot<Config>)> configUpdateCallback_;
 
   std::atomic<Duration> targetRtt_{Duration{}};
   std::atomic<Duration> minRtt_{Duration{}};
