@@ -18,14 +18,16 @@ from typing import Generic, Type, TypeVar
 from thrift.python.client.async_client import AsyncClient
 from thrift.python.client.sync_client import SyncClient
 
-TAsyncClient = TypeVar("TAsyncClient", bound=AsyncClient)
-TSyncClient = TypeVar("TSyncClient", bound=SyncClient)
+TAsyncClient = TypeVar("TAsyncClient", bound=AsyncClient, covariant=True)
+TSyncClient = TypeVar("TSyncClient", bound=SyncClient, covariant=True)
 
 
 class Client(Generic[TAsyncClient, TSyncClient], ABC):
-    """
-    Base class of all thrift-python clients.
-    """
-
     Async: Type[TAsyncClient]
     Sync: Type[TSyncClient]
+
+
+"""
+Base class of all thrift-python clients.
+"""
+TClient = Client[AsyncClient, SyncClient]
