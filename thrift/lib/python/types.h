@@ -223,6 +223,24 @@ extern const detail::TypeInfo iobufTypeInfo;
 
 detail::OptionalThriftValue getStruct(const void* object);
 inline void* setContainer(void* object) {
+  PyObject** pyObjPtr = toPyObjectPtr(object);
+  if (!*pyObjPtr) {
+    *pyObjPtr = PyTuple_New(0);
+    if (!*pyObjPtr) {
+      THRIFT_PY3_CHECK_ERROR();
+    }
+  }
+  return object;
+}
+
+inline void* setFrozenSet(void* object) {
+  PyObject** pyObjPtr = toPyObjectPtr(object);
+  if (!*pyObjPtr) {
+    *pyObjPtr = PyFrozenSet_New(nullptr);
+    if (!*pyObjPtr) {
+      THRIFT_PY3_CHECK_ERROR();
+    }
+  }
   return object;
 }
 
@@ -242,11 +260,16 @@ class ListTypeInfo {
       const void* object,
       size_t (*writer)(const void* /*context*/, const void* /*val*/));
 
+  static void consumeElem(
+      const void* context,
+      void* object,
+      void (*reader)(const void* /*context*/, void* /*val*/));
+
   explicit ListTypeInfo(const detail::TypeInfo* valInfo)
       : ext_{
             /* .valInfo */ valInfo,
             /* .size */ size,
-            /* .consumeElem */ nullptr,
+            /* .consumeElem */ consumeElem,
             /* .readList */ read,
             /* .writeList */ write,
         },
@@ -280,18 +303,23 @@ class SetTypeInfo {
       bool protocolSortKeys,
       size_t (*writer)(const void* /*context*/, const void* /*val*/));
 
+  static void consumeElem(
+      const void* context,
+      void* object,
+      void (*reader)(const void* /*context*/, void* /*val*/));
+
   explicit SetTypeInfo(const detail::TypeInfo* valInfo)
       : ext_{
             /* .valInfo */ valInfo,
             /* .size */ size,
-            /* .consumeElem */ nullptr,
+            /* .consumeElem */ consumeElem,
             /* .readSet */ read,
             /* .writeSet */ write,
         },
         typeinfo_{
             protocol::TType::T_SET,
             getStruct,
-            reinterpret_cast<detail::VoidFuncPtr>(setContainer),
+            reinterpret_cast<detail::VoidFuncPtr>(setFrozenSet),
             &ext_,
         } {}
   const detail::TypeInfo* get() const { return &typeinfo_; }
@@ -320,13 +348,19 @@ class MapTypeInfo {
       size_t (*writer)(
           const void* context, const void* keyElem, const void* valueElem));
 
+  static void consumeElem(
+      const void* context,
+      void* object,
+      void (*keyReader)(const void* /*context*/, void* /*val*/),
+      void (*valueReader)(const void* /*context*/, void* /*val*/));
+
   explicit MapTypeInfo(
       const detail::TypeInfo* keyInfo, const detail::TypeInfo* valInfo)
       : ext_{
             /* .keyInfo */ keyInfo,
             /* .valInfo */ valInfo,
             /* .size */ size,
-            /* .consumeElem */ nullptr,
+            /* .consumeElem */ consumeElem,
             /* .readSet */ read,
             /* .writeSet */ write,
         },

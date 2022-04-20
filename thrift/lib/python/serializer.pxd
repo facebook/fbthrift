@@ -23,6 +23,7 @@ cdef extern from "<thrift/lib/cpp/protocol/TProtocolTypes.h>" namespace "apache:
     cpdef enum Protocol "apache::thrift::protocol::PROTOCOL_TYPES":
         BINARY "apache::thrift::protocol::T_BINARY_PROTOCOL"
         COMPACT "apache::thrift::protocol::T_COMPACT_PROTOCOL"
+        JSON "apache::thrift::protocol::T_SIMPLE_JSON_PROTOCOL"
 
 
 cdef extern from "<thrift/lib/python/Serializer.h>" namespace "::apache::thrift::python":

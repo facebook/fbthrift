@@ -212,7 +212,7 @@ void read(
           break;
         case StringFieldType::StringView: {
           std::string temp;
-          iprot->readBinary(temp);
+          iprot->readString(temp);
           reinterpret_cast<void (*)(void*, const std::string&)>(typeInfo.set)(
               object, temp);
           break;
@@ -430,7 +430,7 @@ size_t write(Protocol_* iprot, const TypeInfo& typeInfo, ThriftValue value) {
           return iprot->writeString(
               *static_cast<const std::string*>(value.object));
         case StringFieldType::StringView:
-          return iprot->writeBinary(
+          return iprot->writeString(
               static_cast<const folly::StringPiece>(value.stringViewValue));
         case StringFieldType::Binary:
           return iprot->writeBinary(

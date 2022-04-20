@@ -311,6 +311,23 @@ struct ComplexRef {
   11: optional ComplexRef recursive (thrift.box);
 }
 
+struct Complex {
+  1: bool val_bool;
+  2: i32 val_i32;
+  3: i64 val_i64;
+  4: string val_string;
+  5: binary val_binary;
+  6: binary (py3.iobuf) val_iobuf;
+  7: Color val_enum;
+  8: ComplexUnion val_union;
+  9: list<i64> val_list;
+  // @lint-ignore THRIFTCHECKS
+  10: set<easy> val_set;
+  11: map<string, binary> val_map;
+  // @lint-ignore THRIFTCHECKS
+  12: map<string, list<set<easy>>> val_complex_map;
+}
+
 struct StructuredAnnotation {
   2: map<double, i64> first;
   3: i64 second;

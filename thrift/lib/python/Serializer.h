@@ -22,6 +22,7 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 #include <thrift/lib/python/types.h>
 
 namespace apache {
@@ -60,6 +61,8 @@ std::unique_ptr<folly::IOBuf> serialize(
       return serialize<CompactProtocolWriter>(dynamicStructInfo, object);
     case PROTOCOL_TYPES::T_BINARY_PROTOCOL:
       return serialize<BinaryProtocolWriter>(dynamicStructInfo, object);
+    case PROTOCOL_TYPES::T_SIMPLE_JSON_PROTOCOL:
+      return serialize<SimpleJSONProtocolWriter>(dynamicStructInfo, object);
     default:
       throw TProtocolException(
           TProtocolException::NOT_IMPLEMENTED, "protocol not supported yet");
@@ -76,6 +79,9 @@ size_t deserialize(
       return deserialize<CompactProtocolReader>(dynamicStructInfo, buf, object);
     case PROTOCOL_TYPES::T_BINARY_PROTOCOL:
       return deserialize<BinaryProtocolReader>(dynamicStructInfo, buf, object);
+    case PROTOCOL_TYPES::T_SIMPLE_JSON_PROTOCOL:
+      return deserialize<SimpleJSONProtocolReader>(
+          dynamicStructInfo, buf, object);
     default:
       throw TProtocolException(
           TProtocolException::NOT_IMPLEMENTED, "protocol not supported yet");

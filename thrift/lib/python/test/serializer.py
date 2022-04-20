@@ -17,11 +17,15 @@ import asyncio
 import unittest
 from typing import Mapping
 
+from folly.iobuf import IOBuf
 from testing.thrift_types import (
+    Complex,
     Integers,
     StringBucket,
     easy,
     hard,
+    Color,
+    ComplexUnion,
 )
 from thrift.python.exceptions import Error
 from thrift.python.serializer import Protocol
@@ -76,54 +80,44 @@ class SerializerTests(unittest.TestCase):
         with self.assertRaises(Error):
             deserialize(easy, b"\x02\xDE\xAD\xBE\xEF", protocol=Protocol.BINARY)
 
-    def thrift_serialization_round_robin(
-        self, control: StructOrUnion, fixtures: Mapping[Protocol, bytes]
-    ) -> None:
+    def thrift_serialization_round_trip(self, control: StructOrUnion) -> None:
         for proto in Protocol:
             encoded = serialize(control, protocol=proto)
             self.assertIsInstance(encoded, bytes)
             decoded = deserialize(type(control), encoded, protocol=proto)
             self.assertIsInstance(decoded, type(control))
             self.assertEqual(control, decoded)
-            self.assertEqual((proto, encoded), (proto, fixtures.get(proto)))
 
     def test_serialize_easy_struct(self) -> None:
         control = easy(val=5, val_list=[1, 2, 3, 4])
-        fixtures: Mapping[Protocol, bytes] = {
-            Protocol.COMPACT: b"\x15\n\x19E\x02\x04\x06\x08,\x00\x00",
-            Protocol.BINARY: b"\x08\x00\x01\x00\x00\x00\x05\x0f\x00\x02\x08\x00\x00\x00"
-            b"\x04\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x03\x00"
-            b"\x00\x00\x04\x0c\x00\x04\x00\x00",
-            # Protocol.JSON: b'{"val":5,"val_list":[1,2,3,4],"an_int":{}}',
-        }
-        self.thrift_serialization_round_robin(control, fixtures)
+        self.thrift_serialization_round_trip(control)
 
     def test_serialize_hard_struct(self) -> None:
         control = hard(
             val=0, val_list=[1, 2, 3, 4], name="foo", an_int=Integers(tiny=1)
         )
-        fixtures: Mapping[Protocol, bytes] = {
-            Protocol.COMPACT: b"\x15\x00\x19E\x02\x04\x06\x08\x18\x03foo\x1c\x13\x01"
-            b"\x00\x18\x0csome default\x00",
-            Protocol.BINARY: b"\x08\x00\x01\x00\x00\x00\x00\x0f\x00\x02\x08\x00\x00\x00"
-            b"\x04\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x03\x00"
-            b"\x00\x00\x04\x0b\x00\x03\x00\x00\x00\x03foo\x0c\x00\x04"
-            b"\x03\x00\x01\x01\x00\x0b\x00\x05\x00\x00\x00\x0csome def"
-            b"ault\x00",
-            # Protocol.JSON: b'{"val":0,"val_list":[1,2,3,4],"name":"foo","an_int":{"tiny'
-            # b'":1},"other":"some default"}',
-        }
-        self.thrift_serialization_round_robin(control, fixtures)
+        self.thrift_serialization_round_trip(control)
 
     def test_serialize_Integers_union(self) -> None:
         control = Integers(medium=1337)
-        fixtures: Mapping[Protocol, bytes] = {
-            Protocol.COMPACT: b"5\xf2\x14\x00",
-            Protocol.BINARY: b"\x08\x00\x03\x00\x00\x059\x00",
-            # Protocol.JSON: b'{"medium":1337}',
-        }
 
-        self.thrift_serialization_round_robin(control, fixtures)
+        self.thrift_serialization_round_trip(control)
+
+    def test_serialize_Complex(self) -> None:
+        control = Complex(
+            val_bool=True,
+            val_i32=42,
+            val_i64=1 << 33,
+            val_string="hello\u4e16\u754c",
+            val_binary=b"\xe5\x92\x8c\xe5\b9\xb3",
+            val_iobuf=IOBuf(b"\xe5\x9b\x9b\xe5\x8d\x81\xe4\xba\x8c"),
+            val_enum=Color.green,
+            val_union=ComplexUnion(double_val=1.234),
+            val_set={easy(val=42)},
+            val_map={"foo": b"foovalue"},
+            val_complex_map={"bar": [{easy(val=42), easy(val_list=[1, 2, 3])}]},
+        )
+        self.thrift_serialization_round_trip(control)
 
     def test_deserialize_with_length(self) -> None:
         control = easy(val=5, val_list=[1, 2, 3, 4, 5])

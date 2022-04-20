@@ -19,6 +19,7 @@
 
 #include <folly/Indestructible.h>
 #include <folly/Range.h>
+#include <folly/ScopeGuard.h>
 #include <folly/lang/New.h>
 
 namespace apache {
@@ -352,6 +353,21 @@ size_t ListTypeInfo::write(
   return written;
 }
 
+void ListTypeInfo::consumeElem(
+    const void* context,
+    void* object,
+    void (*reader)(const void* /*context*/, void* /*val*/)) {
+  PyObject* elem = nullptr;
+  reader(context, &elem);
+  PyObject** pyObjPtr = toPyObjectPtr(object);
+  auto currentSize = PyTuple_GET_SIZE(*pyObjPtr);
+  if (_PyTuple_Resize(pyObjPtr, currentSize + 1) == -1) {
+    THRIFT_PY3_CHECK_ERROR();
+  };
+
+  PyTuple_SET_ITEM(*pyObjPtr, currentSize, elem);
+}
+
 void SetTypeInfo::read(
     const void* context,
     void* object,
@@ -402,6 +418,29 @@ size_t SetTypeInfo::write(
     Py_DECREF(elem);
   }
   return written;
+}
+
+void SetTypeInfo::consumeElem(
+    const void* context,
+    void* object,
+    void (*reader)(const void* /*context*/, void* /*val*/)) {
+  PyObject** pyObjPtr = toPyObjectPtr(object);
+  DCHECK_NOTNULL(*pyObjPtr);
+  PyObject* elem = nullptr;
+  reader(context, &elem);
+  // This is nasty hack since Cython generated code will incr the refcnt
+  // so PySet_Add will fail. Need to temporarily decrref.
+  auto guard = folly::makeGuard([pyObjPtr] { Py_INCREF(*pyObjPtr); });
+  if (Py_REFCNT(*pyObjPtr) == 2) {
+    Py_DECREF(*pyObjPtr);
+  } else {
+    guard.dismiss();
+  }
+  DCHECK(Py_REFCNT(*pyObjPtr) == 1);
+  DCHECK_NOTNULL(elem);
+  if (PySet_Add(*pyObjPtr, elem) == -1) {
+    THRIFT_PY3_CHECK_ERROR();
+  }
 }
 
 void MapTypeInfo::read(
@@ -463,6 +502,30 @@ size_t MapTypeInfo::write(
   return written;
 }
 
+void MapTypeInfo::consumeElem(
+    const void* context,
+    void* object,
+    void (*keyReader)(const void* context, void* key),
+    void (*valueReader)(const void* context, void* val)) {
+  PyObject** pyObjPtr = toPyObjectPtr(object);
+  CHECK_NOTNULL(*pyObjPtr);
+  PyObject* mkey = nullptr;
+  keyReader(context, &mkey);
+  PyObject* mval = nullptr;
+  valueReader(context, &mval);
+  UniquePyObjectPtr elem{PyTuple_New(2)};
+  if (!elem) {
+    THRIFT_PY3_CHECK_ERROR();
+  }
+  PyTuple_SET_ITEM(elem.get(), 0, mkey);
+  PyTuple_SET_ITEM(elem.get(), 1, mval);
+  auto currentSize = PyTuple_GET_SIZE(*pyObjPtr);
+  if (_PyTuple_Resize(pyObjPtr, currentSize + 1) == -1) {
+    THRIFT_PY3_CHECK_ERROR();
+  };
+  PyTuple_SET_ITEM(*pyObjPtr, currentSize, elem.release());
+}
+
 DynamicStructInfo::DynamicStructInfo(
     const char* name, int16_t numFields, bool isUnion)
     : name_{name} {
@@ -511,7 +574,7 @@ void DynamicStructInfo::addFieldInfo(
 }
 
 void DynamicStructInfo::addFieldValue(int16_t index, PyObject* fieldValue) {
-  DCHECK(fieldValue != nullptr);
+  DCHECK_NOTNULL(fieldValue);
   if (fieldValue == Py_None) {
     return;
   }
