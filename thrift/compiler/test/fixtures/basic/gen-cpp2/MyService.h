@@ -40,6 +40,10 @@ class ServiceHandler<::cpp2::MyService> : public apache::thrift::ServerInterface
  public:
   std::string_view getGeneratedName() const override { return "MyService"; }
 
+  static const char* __fbthrift_cpp2_gen_thrift_uri() {
+    return "test.dev/fixtures/basic/MyService";
+  }
+
   typedef ::cpp2::MyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
