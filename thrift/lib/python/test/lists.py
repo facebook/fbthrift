@@ -22,6 +22,7 @@ from testing.thrift_types import (
     StrList2D,
     easy,
     int_list,
+    EasyList,
 )
 
 
@@ -139,3 +140,21 @@ class ListTests(unittest.TestCase):
         y = list(x)
         self.assertEqual(x.count(2), y.count(2))
         self.assertEqual(x.count(5), y.count(5))
+
+    def test_struct_list(self) -> None:
+        a = EasyList([easy()])
+        b = EasyList([easy(val=0)])
+        c = EasyList([easy(val=1)])
+        d = EasyList([easy(val_list=[])])
+        e = EasyList([easy(val_list=[1])])
+        self.assertEqual(a, b)
+        self.assertEqual(a, d)
+        self.assertNotEqual(a, c)
+        self.assertLess(a, c)
+        self.assertGreater(c, e)
+        self.assertLess(d, e)
+        self.assertGreater(e, d)
+        self.assertLessEqual(a, b)
+        self.assertGreaterEqual(a, d)
+        self.assertLessEqual(a, c)
+        self.assertGreaterEqual(c, e)

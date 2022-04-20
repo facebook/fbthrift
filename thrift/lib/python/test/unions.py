@@ -18,6 +18,7 @@ import unittest
 from testing.thrift_types import (
     Integers,
     ReservedUnion,
+    ComplexUnion,
 )
 from thrift.python.serializer import (
     deserialize,
@@ -113,3 +114,21 @@ class UnionTests(unittest.TestCase):
         self.assertEqual(x.type, ReservedUnion.Type.ok)
         self.assertEqual(x.value, "bar")
         self.assertEqual(x.ok, "bar")
+
+    def test_union_ordering(self) -> None:
+        x = Integers(tiny=4)
+        y = ComplexUnion(tiny=1)
+        with self.assertRaises(TypeError):
+            # flake8: noqa: B015 intentionally introduced for test
+            x < y
+        # same type, compare value
+        y = Integers(tiny=2)
+        self.assertGreater(x, y)
+        self.assertLess(y, x)
+        # different type
+        y = Integers(small=2)
+        self.assertLess(x, y)
+        self.assertGreater(y, x)
+        # equality
+        y = Integers(tiny=4)
+        self.assertEqual(x, y)

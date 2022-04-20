@@ -17,7 +17,7 @@ import copy
 import unittest
 from typing import AbstractSet, Sequence, Tuple
 
-from testing.thrift_types import SetI32, SetI32Lists, SetSetI32Lists
+from testing.thrift_types import SetI32, SetI32Lists, SetSetI32Lists, EasySet, easy
 
 
 class SetTests(unittest.TestCase):
@@ -152,3 +152,23 @@ class SetTests(unittest.TestCase):
         hash(z)
         for sub_set in z:
             hash(sub_set)
+
+    def test_struct_set(self) -> None:
+        a = EasySet({easy()})
+        b = EasySet({easy(val=0)})
+        c = EasySet({easy(val=1)})
+        d = EasySet({easy(val_list=[])})
+        f = EasySet({easy(), easy(val_list=[1])})
+        self.assertEqual(a, b)
+        self.assertEqual(a, d)
+        self.assertNotEqual(a, c)
+        self.assertEqual(a & b, {easy()})
+        self.assertEqual(a | b, {easy()})
+        self.assertEqual(a - b, set())
+        self.assertEqual(a ^ b, set())
+        self.assertLess(a, f)
+        self.assertGreater(f, a)
+        self.assertLessEqual(a, b)
+        self.assertLessEqual(a, f)
+        self.assertGreaterEqual(a, d)
+        self.assertGreaterEqual(f, a)

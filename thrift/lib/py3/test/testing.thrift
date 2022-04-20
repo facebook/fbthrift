@@ -39,6 +39,9 @@ typedef i64 TimeStamp
 typedef byte Byte
 typedef float Float
 typedef double Double
+typedef list<easy> EasyList
+typedef set<easy> EasySet
+typedef map<string, easy> StrEasyMap
 // @lint-ignore THRIFTFORMAT (for autodeps)
 typedef map<string, string> (
   cpp.type = "folly::F14FastMap<std::string, folly::fbstring>",

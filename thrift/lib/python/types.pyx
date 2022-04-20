@@ -404,23 +404,34 @@ cdef class Struct(StructOrUnion):
     def __eq__(Struct self, other):
         if type(other) != type(self):
             return False
-        cdef StructInfo info = self._fbthrift_struct_info
-        for name in info.name_to_index:
-            if getattr(self, name) != getattr(other, name):
+        for name, value in self:
+            if value != getattr(other, name):
                 return False
         return True
 
     def __lt__(self, other):
         if type(self) != type(other):
             return NotImplemented
-        ret = (<Struct>self)._fbthrift_data[1:] < (<Struct>other)._fbthrift_data[1:]
-        return ret
+        for name, value in self:
+            other_value = getattr(other, name)
+            if value == other_value:
+                continue
+            return value < other_value
+        return False
 
     def __le__(self, other):
-        return self < other or self == other
+        if type(self) != type(other):
+            return NotImplemented
+        for name, value in self:
+            other_value = getattr(other, name)
+            if value == other_value:
+                continue
+            return value < other_value
+        return True
 
     def __hash__(Struct self):
-        return hash(self._fbthrift_data)
+        value_tuple = tuple(v for _, v in self)
+        return hash(value_tuple) if value_tuple else type(self)
 
     def __iter__(self):
         cdef StructInfo info = self._fbthrift_struct_info
@@ -566,19 +577,20 @@ cdef class Union(StructOrUnion):
     def __eq__(Union self, other):
         if type(other) != type(self):
             return False
-        return self._fbthrift_data == (<Union>other)._fbthrift_data
+        return self.type == other.type and self.value == other.value
 
     def __lt__(self, other):
         if type(self) != type(other):
             return NotImplemented
-        ret = (<Union>self)._fbthrift_data < (<Union>other)._fbthrift_data
-        return ret
+        return (self.type.value, self.value) < (other.type.value, other.value)
 
     def __le__(self, other):
-        return self < other or self == other
+        if type(self) != type(other):
+            return NotImplemented
+        return (self.type.value, self.value) <= (other.type.value, other.value)
 
     def __hash__(self):
-        return hash(self._fbthrift_data)
+        return hash((self.type, self.value))
 
     def __repr__(self):
         return f"{type(self).__name__}(type={self.type.name}, value={self.value!r})"
@@ -720,7 +732,7 @@ cdef class List:
         self._fbthrift_data = tuple(val_info.to_internal_data(v) for v in values)
 
     def __hash__(self):
-        return hash(self._fbthrift_data)
+        return hash(tuple(self))
 
     def __add__(List self, other):
         return list(itertools.chain(self, other))
@@ -826,63 +838,36 @@ cdef class Set:
         self._fbthrift_data = frozenset(val_info.to_internal_data(v) for v in values)
 
     def __hash__(self):
-        return hash(self._fbthrift_data)
+        return hash(tuple(self))
 
     def __and__(Set self, other):
-        if isinstance(other, Set):
-            return frozenset(
-                self._fbthrift_val_info.to_python_value(v)
-                for v in self._fbthrift_data & (<Set>other)._fbthrift_data
-            )
         return frozenset(self) & other
 
     def __rand__(Set self, other):
         return other & frozenset(self)
 
     def __sub__(Set self, other):
-        if isinstance(other, Set):
-            return frozenset(
-                self._fbthrift_val_info.to_python_value(v)
-                for v in self._fbthrift_data - (<Set>other)._fbthrift_data
-            )
         return frozenset(self) - other
 
     def __rsub__(Set self, other):
         return other - frozenset(self)
 
     def __or__(Set self, other):
-        if isinstance(other, Set):
-            return frozenset(
-                self._fbthrift_val_info.to_python_value(v)
-                for v in self._fbthrift_data | (<Set>other)._fbthrift_data
-            )
         return frozenset(self) | other
 
     def __ror__(Set self, other):
         return other | frozenset(self)
 
     def __xor__(Set self, other):
-        if isinstance(other, Set):
-            return frozenset(
-                self._fbthrift_val_info.to_python_value(v)
-                for v in self._fbthrift_data ^ (<Set>other)._fbthrift_data
-            )
         return frozenset(self) ^ other
 
     def __rxor__(Set self, other):
         return other ^ frozenset(self)
 
     def __eq__(Set self, other):
-        if isinstance(other, Set):
-            return self._fbthrift_data == (<Set>other)._fbthrift_data
         return frozenset(self) == other
 
-    def __ne__(Set self, other):
-        return not self == other
-
     def __lt__(Set self, other):
-        if isinstance(other, Set):
-            return self._fbthrift_data < (<Set>other)._fbthrift_data
         return frozenset(self) < other
 
     def __gt__(Set self, other):
@@ -973,11 +958,9 @@ cdef class Map:
         }
 
     def __hash__(self):
-        return hash(tuple(self._fbthrift_data.items()))
+        return hash(tuple(self.items()))
 
     def __eq__(Map self, other):
-        if isinstance(other, Map):
-            return self._fbthrift_data == (<Map>other)._fbthrift_data
         if not isinstance(other, Mapping):
             return False
         if len(self) != len(other):
@@ -988,9 +971,6 @@ cdef class Map:
             if other[key] != self[key]:
                 return False
         return True
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
 
     def __repr__(self):
         if not self:

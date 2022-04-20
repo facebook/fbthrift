@@ -22,6 +22,8 @@ from testing.thrift_types import (
     StrIntMap,
     StrStrIntListMapMap,
     StrStrMap,
+    StrEasyMap,
+    easy,
 )
 
 
@@ -118,3 +120,12 @@ class MapTests(unittest.TestCase):
         self.assertEqual(list(x.values()), list(tx.values()))
         self.assertEqual(list(x.keys()), list(tx.keys()))
         self.assertEqual(list(x.items()), list(tx.items()))
+
+    def test_struct_in_map(self) -> None:
+        a = StrEasyMap({"a": easy()})
+        b = StrEasyMap({"a": easy(val=0)})
+        c = StrEasyMap({"a": easy(val=1)})
+        d = StrEasyMap({"a": easy(val_list=[])})
+        self.assertEqual(a, b)
+        self.assertEqual(a, d)
+        self.assertNotEqual(a, c)
