@@ -63,7 +63,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_noReturn(apache::thrift::Respo
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_noReturn<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 
@@ -548,7 +548,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_stringReturn(apache::thrift::R
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_stringReturn<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 
@@ -966,7 +966,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_enumReturn(apache::thrift::Res
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_enumReturn<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 
@@ -1039,7 +1039,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_list_EnumReturn(apache::thrift
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_list_EnumReturn<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 
@@ -1250,7 +1250,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_unionReturn(apache::thrift::Re
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_unionReturn<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 
@@ -1392,7 +1392,7 @@ void ReturnServiceAsyncProcessor::setUpAndProcess_readDataEb(apache::thrift::Res
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_readDataEb<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 

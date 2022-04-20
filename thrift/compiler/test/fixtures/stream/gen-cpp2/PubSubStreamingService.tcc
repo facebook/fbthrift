@@ -410,7 +410,7 @@ void PubSubStreamingServiceAsyncProcessor::setUpAndProcess_returnstreamFast(apac
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_returnstreamFast<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 

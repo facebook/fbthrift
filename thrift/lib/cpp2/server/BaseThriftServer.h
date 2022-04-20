@@ -99,9 +99,8 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
     return {svIf_.get()};
   }
 
-  std::optional<std::reference_wrapper<ServiceRequestInfoMap const>>
-  getServiceRequestInfoMap() const override {
-    return svIf_->getServiceRequestInfoMap();
+  CreateMethodMetadataResult createMethodMetadata() override {
+    return svIf_->createMethodMetadata();
   }
 
  private:

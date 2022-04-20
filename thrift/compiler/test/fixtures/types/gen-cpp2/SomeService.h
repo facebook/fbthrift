@@ -43,7 +43,9 @@ class ServiceHandler<::apache::thrift::fixtures::types::SomeService> : public ap
   typedef ::apache::thrift::fixtures::types::SomeServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
+ private:
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
+ public:
 
   virtual void bounce_map(::apache::thrift::fixtures::types::SomeMap& /*_return*/, std::unique_ptr<::apache::thrift::fixtures::types::SomeMap> /*m*/);
   virtual folly::Future<std::unique_ptr<::apache::thrift::fixtures::types::SomeMap>> future_bounce_map(std::unique_ptr<::apache::thrift::fixtures::types::SomeMap> p_m);

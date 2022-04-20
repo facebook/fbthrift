@@ -647,39 +647,39 @@ void ThriftServer::setupThreadManager() {
 }
 
 void ThriftServer::runtimeResourcePoolsChecks() {
-  // Check whether there are any interactions
-  auto serviceRequestInfoMap =
-      getDecoratedProcessorFactory().getServiceRequestInfoMap();
-  if (serviceRequestInfoMap) {
-    for (auto const& request : serviceRequestInfoMap.value().get()) {
-      if (request.second.interactionName) {
-        // We've found an interaction in this service. Mark it is incompatible
-        // with resource pools
-        LOG(INFO) << "Resource pools disabled. Interaction "
-                  << request.second.interactionName.value() << " on request "
-                  << request.first;
-        runtimeServerActions_.interactionInService = true;
-        runtimeDisableResourcePools();
-        break;
-      }
-    }
-  }
-
-  if (!serviceRequestInfoMap) {
-    // Disable resource pools if there is no service request info
-    LOG(INFO) << "Resource pools disabled. No service request info";
-    runtimeServerActions_.noServiceRequestInfo = true;
-    runtimeDisableResourcePools();
-  }
-
   // Check whether there are any wildcard services.
   auto methodMetadata = getDecoratedProcessorFactory().createMethodMetadata();
-  if (!std::holds_alternative<AsyncProcessorFactory::MethodMetadataMap>(
-          methodMetadata)) {
+  auto* methodMetadataMap =
+      std::get_if<AsyncProcessorFactory::MethodMetadataMap>(&methodMetadata);
+  if (!methodMetadataMap) {
     // Only accept services with full method metadata
     LOG(INFO) << "Resource pools disabled. Wildcard methods";
     runtimeServerActions_.wildcardMethods = true;
     runtimeDisableResourcePools();
+  } else {
+    for (const auto& methodToMetadataPtr : *methodMetadataMap) {
+      const auto& metadata = *methodToMetadataPtr.second;
+      if (metadata.executorType ==
+              AsyncProcessorFactory::MethodMetadata::ExecutorType::UNKNOWN ||
+          metadata.interactionType ==
+              AsyncProcessorFactory::MethodMetadata::InteractionType::UNKNOWN ||
+          !metadata.rpcKind || !metadata.priority) {
+        // Disable resource pools if there is no service request info
+        LOG(INFO) << "Resource pools disabled. Incomplete metadata";
+        runtimeServerActions_.noServiceRequestInfo = true;
+        runtimeDisableResourcePools();
+      }
+      if (metadata.interactionType ==
+          AsyncProcessorFactory::MethodMetadata::InteractionType::
+              INTERACTION_V1) {
+        // We've found an interaction in this service. Mark it is incompatible
+        // with resource pools
+        LOG(INFO) << "Resource pools disabled. Interaction on request "
+                  << methodToMetadataPtr.first;
+        runtimeServerActions_.interactionInService = true;
+        runtimeDisableResourcePools();
+      }
+    }
   }
 
   if (isActiveRequestsTrackingDisabled()) {

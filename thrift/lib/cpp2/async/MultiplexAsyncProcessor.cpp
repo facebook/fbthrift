@@ -51,7 +51,9 @@ struct MetadataImpl final : public AsyncProcessorFactory::MethodMetadata {
   explicit MetadataImpl(
       std::size_t sourceIndex,
       std::shared_ptr<const AsyncProcessorFactory::MethodMetadata>&& inner)
-      : sourceIndex(sourceIndex), inner(std::move(inner)) {}
+      : MethodMetadata(*inner),
+        sourceIndex(sourceIndex),
+        inner(std::move(inner)) {}
 };
 
 MultiplexAsyncProcessorFactory::CompositionMetadata computeCompositionMetadata(
@@ -359,13 +361,6 @@ MultiplexAsyncProcessorFactory::MultiplexAsyncProcessorFactory(
           flattenProcessorFactories(std::move(processorFactories))),
       compositionMetadata_(computeCompositionMetadata(processorFactories_)) {
   CHECK(!processorFactories_.empty());
-  for (auto& processorFactory : processorFactories_) {
-    auto requestInfoMap = processorFactory->getServiceRequestInfoMap();
-    if (requestInfoMap) {
-      serviceRequestInfoMap_.insert(
-          requestInfoMap->get().begin(), requestInfoMap->get().end());
-    }
-  }
 }
 
 /* static */
@@ -453,14 +448,6 @@ MultiplexAsyncProcessorFactory::CompositionMetadata::wildcardIndex() const {
       firstWildcardLike,
       [](std::monostate) -> Result { return std::nullopt; },
       [](auto&& wildcard) -> Result { return wildcard.index; });
-}
-
-std::optional<std::reference_wrapper<ServiceRequestInfoMap const>>
-MultiplexAsyncProcessorFactory::getServiceRequestInfoMap() const {
-  if (serviceRequestInfoMap_.size()) {
-    return std::cref(serviceRequestInfoMap_);
-  }
-  return std::nullopt;
 }
 
 } // namespace apache::thrift

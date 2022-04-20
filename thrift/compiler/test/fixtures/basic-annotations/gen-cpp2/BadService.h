@@ -44,7 +44,9 @@ class ServiceHandler<::cpp2::GoodService> : public apache::thrift::ServerInterfa
   typedef ::cpp2::GoodServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
+ private:
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
+ public:
 class BadInteractionServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
   public:
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
@@ -61,9 +63,6 @@ class BadInteractionIf : public apache::thrift::Tile, public apache::thrift::Ser
     std::terminate();
   }
   CreateMethodMetadataResult createMethodMetadata() override {
-    std::terminate();
-  }
-  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override {
     std::terminate();
   }
   virtual void foo();

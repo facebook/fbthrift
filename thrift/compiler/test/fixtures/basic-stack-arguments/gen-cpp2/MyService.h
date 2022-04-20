@@ -42,7 +42,9 @@ class ServiceHandler<::cpp2::MyService> : public apache::thrift::ServerInterface
   typedef ::cpp2::MyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
+ private:
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
+ public:
 
   virtual bool hasDataById(::std::int64_t /*id*/);
   virtual folly::Future<bool> future_hasDataById(::std::int64_t p_id);

@@ -21,6 +21,7 @@
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
+#include <folly/test/TestUtils.h>
 
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/PluggableFunction.h>
@@ -196,6 +197,10 @@ TEST_P(AsyncProcessorMethodResolutionTestP, MistypedMetadataDeathTest) {
     // Opt-mode causes UB instead of dying
     return;
   }
+  SKIP_IF(useResourcePoolsFlagsSet())
+      << "No metadata check with resource pools";
+  folly::SingletonVault::singleton()->destroyInstances();
+  folly::SingletonVault::singleton()->reenableInstances();
   auto runTest = [&](auto&& callback) {
     auto service =
         std::make_shared<ChildHandlerWithMetadata>([](auto defaultResult) {

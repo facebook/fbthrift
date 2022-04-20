@@ -28,7 +28,7 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_hasDataById(apache::thrift::Re
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_hasDataById<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 
@@ -103,7 +103,7 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_getDataById(apache::thrift::Re
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_getDataById<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 
@@ -178,7 +178,7 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_putDataById(apache::thrift::Re
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_putDataById<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 
@@ -249,7 +249,7 @@ void MyServiceFastAsyncProcessor::setUpAndProcess_lobDataById(apache::thrift::Re
     return;
   }
   (void)tm;
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_lobDataById<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 

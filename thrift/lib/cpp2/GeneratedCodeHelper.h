@@ -983,7 +983,6 @@ inline void processViaExecuteRequest(
                        protType,
                        {},
                        {},
-                       {},
                        {}},
                oneway =
                    (*untypedMethodMetadata.rpcKind ==

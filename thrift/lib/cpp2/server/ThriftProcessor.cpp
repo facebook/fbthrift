@@ -120,15 +120,9 @@ void ThriftProcessor::onThriftRequest(
       [&](const PerServiceMetadata::MetadataFound& found) {
         if (!server_.resourcePoolSet().empty()) {
           // We need to process this using request pools
-          const ServiceRequestInfo* serviceRequestInfo{nullptr};
-          if (auto requestInfo = processorFactory.getServiceRequestInfoMap()) {
-            serviceRequestInfo =
-                &requestInfo->get().at(request->getMethodName());
-          }
-
           auto priority = reqContext->getCallPriority();
           if (priority == concurrency::N_PRIORITIES) {
-            priority = serviceRequestInfo->priority;
+            priority = found.metadata.priority.value_or(concurrency::NORMAL);
           }
           reqContext->setRequestExecutionScope(
               concurrency::PriorityThreadManager::ExecutionScope(priority));
@@ -140,8 +134,7 @@ void ThriftProcessor::onThriftRequest(
               protoId,
               folly::RequestContext::saveContext(),
               processor_.get(),
-              &found.metadata,
-              serviceRequestInfo);
+              &found.metadata);
 
           auto poolResult = AsyncProcessorHelper::selectResourcePool(
               serverRequest, found.metadata);

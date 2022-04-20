@@ -29,8 +29,5 @@ class <%service:cpp_name%>If : public apache::thrift::<%#interaction:serial?%>Se
   CreateMethodMetadataResult createMethodMetadata() override {
     std::terminate();
   }
-  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override {
-    std::terminate();
-  }
 <% > service_h/service_interface_functions%>
 };

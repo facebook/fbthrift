@@ -79,7 +79,7 @@ void ParamServiceAsyncProcessor::setUpAndProcess_void_ret_i16_param(apache::thri
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_void_ret_i16_param<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 
@@ -1000,7 +1000,7 @@ void ParamServiceAsyncProcessor::setUpAndProcess_i64_ret_i32_i32_i32_i32_i32_par
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 
@@ -1582,7 +1582,7 @@ void ParamServiceAsyncProcessor::setUpAndProcess_listtypedef_ret_typedef_param(a
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_listtypedef_ret_typedef_param<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 
@@ -1872,7 +1872,7 @@ void ParamServiceAsyncProcessor::setUpAndProcess_struct_ret_i16_param(apache::th
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_struct_ret_i16_param<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 

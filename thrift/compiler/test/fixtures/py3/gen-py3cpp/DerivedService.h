@@ -43,7 +43,9 @@ class ServiceHandler<::py3::simple::DerivedService> : virtual public ::py3::simp
   typedef ::py3::simple::DerivedServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
+ private:
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
+ public:
 
   virtual ::std::int32_t get_six();
   virtual folly::Future<::std::int32_t> future_get_six();

@@ -44,7 +44,9 @@ class ServiceHandler<::cpp2::MyService> : public apache::thrift::ServerInterface
   typedef ::cpp2::MyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
+ private:
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
+ public:
 class MyInteractionServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
   public:
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
@@ -61,9 +63,6 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
     std::terminate();
   }
   CreateMethodMetadataResult createMethodMetadata() override {
-    std::terminate();
-  }
-  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override {
     std::terminate();
   }
   virtual ::std::int32_t frobnicate();
@@ -117,9 +116,6 @@ class MyInteractionFastIf : public apache::thrift::EventBaseTile, public apache:
   CreateMethodMetadataResult createMethodMetadata() override {
     std::terminate();
   }
-  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override {
-    std::terminate();
-  }
   virtual void async_eb_frobnicate(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback);
   virtual void async_eb_ping(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback);
   virtual void async_eb_truthify(std::unique_ptr<apache::thrift::HandlerCallback<::apache::thrift::ServerStream<bool>>> callback);
@@ -141,9 +137,6 @@ class SerialInteractionIf : public apache::thrift::SerialInteractionTile, public
     std::terminate();
   }
   CreateMethodMetadataResult createMethodMetadata() override {
-    std::terminate();
-  }
-  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override {
     std::terminate();
   }
   virtual void frobnicate();

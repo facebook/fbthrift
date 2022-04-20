@@ -45,7 +45,9 @@ class ServiceHandler<::test_cpp2::cpp_reflection::service3> : public apache::thr
   typedef ::test_cpp2::cpp_reflection::service3AsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
+ private:
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
+ public:
 
   virtual void methodA();
   virtual folly::Future<folly::Unit> future_methodA();

@@ -238,7 +238,7 @@ void MyServiceAsyncProcessor::setUpAndProcess_getDataById(apache::thrift::Respon
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_getDataById<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 

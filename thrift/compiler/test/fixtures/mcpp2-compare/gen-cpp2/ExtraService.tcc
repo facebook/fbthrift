@@ -103,7 +103,7 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_throws_function(apache::thrift:
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_throws_function<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 
@@ -485,7 +485,7 @@ void ExtraServiceAsyncProcessor::setUpAndProcess_oneway_void_ret_map_setlist_par
     return;
   }
   (void)tm;
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_oneway_void_ret_map_setlist_param<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 

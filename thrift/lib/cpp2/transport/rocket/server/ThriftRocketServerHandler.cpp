@@ -188,7 +188,6 @@ void ThriftRocketServerHandler::handleSetupFrame(
         processorFactory_ = std::addressof(processorInfo->processorFactory_);
         serviceMetadata_ =
             std::addressof(worker_->getMetadataForService(*processorFactory_));
-        serviceRequestInfoMap_ = processorFactory_->getServiceRequestInfoMap();
         valid &= !!(processor_ = processorFactory_->getProcessor());
         // Allow no thread manager if resource pools in use
         valid &=
@@ -212,7 +211,6 @@ void ThriftRocketServerHandler::handleSetupFrame(
         std::addressof(worker_->getServer()->getDecoratedProcessorFactory());
     serviceMetadata_ =
         std::addressof(worker_->getMetadataForService(*processorFactory_));
-    serviceRequestInfoMap_ = processorFactory_->getServiceRequestInfoMap();
     processor_ = processorFactory_->getProcessor();
     if (worker_->getServer()->resourcePoolSet().empty()) {
       threadManager_ = worker_->getServer()->getThreadManager();
@@ -618,11 +616,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
             &methodMetadataResult);
         LIKELY(found != nullptr)) {
       if (!worker_->getServer()->resourcePoolSet().empty()) {
-        const ServiceRequestInfo* serviceRequestInfo = serviceRequestInfoMap_
-            ? folly::get_ptr(
-                  serviceRequestInfoMap_->get(), request->getMethodName())
-            : nullptr;
-        if (!serviceRequestInfo) {
+        if (!found->metadata.rpcKind) {
           std::string_view methodName = request->getMethodName();
           AsyncProcessorHelper::sendUnknownMethodError(
               std::move(request), methodName);
@@ -631,7 +625,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
         auto priority = cpp2ReqCtx->getCallPriority();
         if (priority == concurrency::N_PRIORITIES) {
-          priority = serviceRequestInfo->priority;
+          priority = found->metadata.priority.value_or(concurrency::NORMAL);
         }
         cpp2ReqCtx->setRequestExecutionScope(
             concurrency::PriorityThreadManager::ExecutionScope(priority));
@@ -643,13 +637,11 @@ void ThriftRocketServerHandler::handleRequestCommon(
             protocolId,
             folly::RequestContext::saveContext(),
             processor_.get(),
-            &found->metadata,
-            serviceRequestInfo);
+            &found->metadata);
 
         // Once we remove the old code we'll move validateRpcKind to a helper.
         if (!GeneratedAsyncProcessor::validateRpcKind(
-                serverRequest.request(),
-                serverRequest.requestInfo()->rpcKind)) {
+                serverRequest.request(), *found->metadata.rpcKind)) {
           return;
         }
 

@@ -40,7 +40,9 @@ class ServiceHandler<<%service:qualified_name%>> : <%#service:extends%>virtual p
   typedef <%service:qualified_name%>AsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
+ private:
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
+ public:
 <%#service:interactions%>
 <% > service_h/interaction_service_interface%>
 <%/service:interactions%>

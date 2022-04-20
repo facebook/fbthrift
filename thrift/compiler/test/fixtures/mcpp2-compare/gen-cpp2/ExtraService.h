@@ -44,7 +44,9 @@ class ServiceHandler<::extra::svc::ExtraService> : virtual public ::some::valid:
   typedef ::extra::svc::ExtraServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
+ private:
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
+ public:
 
   virtual bool simple_function();
   virtual folly::Future<bool> future_simple_function();

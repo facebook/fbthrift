@@ -241,15 +241,6 @@ class AsyncProcessorFactory {
     return nullptr;
   }
 
-  // Override this in either generated code or implementation to provide
-  // requestInfo if it is available. A pure proxy thrift server which is
-  // not aware of the IDL of the service it is forwarding can omit overriding
-  // this.
-  virtual std::optional<std::reference_wrapper<ServiceRequestInfoMap const>>
-  getServiceRequestInfoMap() const {
-    return std::nullopt;
-  }
-
   virtual ~AsyncProcessorFactory() = default;
 };
 
@@ -404,16 +395,14 @@ class ServerRequest {
       protocol::PROTOCOL_TYPES protocol,
       std::shared_ptr<folly::RequestContext> follyRequestContext,
       AsyncProcessor* asyncProcessor,
-      AsyncProcessor::MethodMetadata const* methodMetadata,
-      ServiceRequestInfo const* serviceRequestInfo)
+      AsyncProcessor::MethodMetadata const* methodMetadata)
       : request_(std::move(request)),
         serializedRequest_(std::move(serializedRequest)),
         ctx_(ctx),
         protocol_(protocol),
         follyRequestContext_(follyRequestContext),
         asyncProcessor_(asyncProcessor),
-        methodMetadata_(methodMetadata),
-        serviceRequestInfo_(serviceRequestInfo) {}
+        methodMetadata_(methodMetadata) {}
 
   // The public accessors are available to user code that receives the
   // ServerRequest through various customization points.
@@ -434,8 +423,6 @@ class ServerRequest {
   const std::shared_ptr<folly::RequestContext>& follyRequestContext() const {
     return follyRequestContext_;
   }
-
-  const ServiceRequestInfo* requestInfo() const { return serviceRequestInfo_; }
 
   // Set this if the request pile should be notified (via
   // RequestPileInterfaceo::onRequestFinished) when the request is completed.
@@ -532,7 +519,6 @@ class ServerRequest {
   std::shared_ptr<folly::RequestContext> follyRequestContext_;
   AsyncProcessor* asyncProcessor_;
   AsyncProcessor::MethodMetadata const* methodMetadata_;
-  ServiceRequestInfo const* serviceRequestInfo_;
   RequestPileInterface* notifyRequestPile_{nullptr};
   RequestPileInterface::UserData notifyRequestPileUserData_;
   ConcurrencyControllerInterface* notifyConcurrencyController_{nullptr};
@@ -721,15 +707,7 @@ class EventTask : public concurrency::Runnable, public InteractionTask {
       folly::Executor::KeepAlive<> executor,
       Cpp2RequestContext* ctx,
       bool oneway)
-      : req_(
-            std::move(req),
-            std::move(serializedRequest),
-            ctx,
-            {},
-            {},
-            {},
-            {},
-            {}),
+      : req_(std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}),
         oneway_(oneway) {
     detail::ServerRequestHelper::setExecutor(req_, std::move(executor));
   }

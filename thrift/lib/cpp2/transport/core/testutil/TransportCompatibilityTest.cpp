@@ -1301,9 +1301,8 @@ void TransportCompatibilityTest::TestCustomAsyncProcessor() {
       return underlyingFac_->getServiceHandlers();
     }
 
-    std::optional<std::reference_wrapper<ServiceRequestInfoMap const>>
-    getServiceRequestInfoMap() const override {
-      return underlyingFac_->getServiceRequestInfoMap();
+    CreateMethodMetadataResult createMethodMetadata() override {
+      return underlyingFac_->createMethodMetadata();
     }
 
    private:

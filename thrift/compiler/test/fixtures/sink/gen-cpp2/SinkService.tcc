@@ -588,7 +588,7 @@ void SinkServiceAsyncProcessor::setUpAndProcess_methodFast(apache::thrift::Respo
     apache::thrift::HandlerCallbackBase::releaseRequest(std::move(req), eb);
     return;
   }
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_methodFast<ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
 }
 

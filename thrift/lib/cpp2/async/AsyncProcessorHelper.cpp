@@ -64,16 +64,14 @@ namespace apache::thrift {
 }
 
 /* static */ SelectPoolResult AsyncProcessorHelper::selectResourcePool(
-    const ServerRequest& request,
-    const AsyncProcessorFactory::MethodMetadata&) {
-  if (auto requestInfo = request.requestInfo()) {
-    if (requestInfo->isSync) {
+    const ServerRequest&,
+    const AsyncProcessorFactory::MethodMetadata& methodMetadata) {
+  switch (methodMetadata.executorType) {
+    case AsyncProcessorFactory::MethodMetadata::ExecutorType::EVB:
       return std::ref(ResourcePoolHandle::defaultSync());
-    } else {
+    default:
       return std::ref(ResourcePoolHandle::defaultAsync());
-    }
   }
-  return std::ref(ResourcePoolHandle::defaultAsync());
 }
 
 } // namespace apache::thrift

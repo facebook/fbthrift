@@ -44,7 +44,9 @@ class ServiceHandler<::some::valid::ns::EmptyService> : public apache::thrift::S
   typedef ::some::valid::ns::EmptyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
-  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const override;
+ private:
+  std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
+ public:
 
  private:
   static ::some::valid::ns::EmptyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;

@@ -119,7 +119,6 @@ Cpp2Connection::Cpp2Connection(
     const std::shared_ptr<HeaderServerChannel>& serverChannel)
     : processorFactory_(worker->getServer()->getDecoratedProcessorFactory()),
       serviceMetadata_(worker->getMetadataForService(processorFactory_)),
-      serviceRequestInfoMap_(processorFactory_.getServiceRequestInfoMap()),
       processor_(processorFactory_.getProcessor()),
       duplexChannel_(
           worker->getServer()->isDuplex()
@@ -648,15 +647,9 @@ void Cpp2Connection::requestReceived(
           logSetupConnectionEventsOnce(setupLoggingFlag_, context_);
           if (!worker_->getServer()->resourcePoolSet().empty()) {
             // We need to process this using request pools
-            const ServiceRequestInfo* serviceRequestInfo{nullptr};
-            if (serviceRequestInfoMap_) {
-              serviceRequestInfo = &serviceRequestInfoMap_->get().at(
-                  reqContext->getMethodName());
-            }
-
             auto priority = reqContext->getCallPriority();
             if (priority == concurrency::N_PRIORITIES) {
-              priority = serviceRequestInfo->priority;
+              priority = found.metadata.priority.value_or(concurrency::NORMAL);
             }
             reqContext->setRequestExecutionScope(
                 concurrency::PriorityThreadManager::ExecutionScope(priority));
@@ -668,8 +661,7 @@ void Cpp2Connection::requestReceived(
                 protoId,
                 folly::RequestContext::saveContext(),
                 processor_.get(),
-                &found.metadata,
-                serviceRequestInfo);
+                &found.metadata);
 
             auto poolResult = AsyncProcessorHelper::selectResourcePool(
                 serverRequest, found.metadata);

@@ -39,7 +39,7 @@ void <%service:parent_service_cpp_name%>AsyncProcessor::setUpAndProcess_<%#servi
     return;
   }
   <%/function:oneway?%>
-  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}, {}};
+  apache::thrift::ServerRequest serverRequest{std::move(req), std::move(serializedRequest), ctx, {}, {}, {}, {}};
   executeRequest_<%#service:interaction?%><%service:cpp_name%>_<%/service:interaction?%><%function:cpp_name%><ProtocolIn_, ProtocolOut_>(std::move(serverRequest));
   <%/function:in_or_creates_interaction?%>
 <%/function:eb%>

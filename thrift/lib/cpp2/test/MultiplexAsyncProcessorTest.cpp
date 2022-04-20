@@ -16,6 +16,7 @@
 
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
+#include <folly/test/TestUtils.h>
 
 #include <folly/Conv.h>
 #include <folly/Overload.h>
@@ -465,6 +466,8 @@ TEST_F(MultiplexAsyncProcessorServerTest, BasicWildcard) {
 }
 
 TEST_F(MultiplexAsyncProcessorServerTest, WildcardSwallows) {
+  SKIP_IF(useResourcePoolsFlagsSet())
+      << "Wildcard methods are not supported by resource pools";
   auto runner = runMultiplexedServices(
       {std::make_shared<WildcardThrowsInternalError<FirstHandler>>(
            "WildcardSwallows"),
@@ -572,6 +575,8 @@ TEST_F(MultiplexAsyncProcessorServerTest, RequestContext) {
 }
 
 TEST_F(MultiplexAsyncProcessorServerTest, RequestContextWildcard) {
+  SKIP_IF(useResourcePoolsFlagsSet())
+      << "Wildcard methods are not supported by resource pools";
   auto runner = runMultiplexedServices(
       {std::make_shared<
            WithRequestContextData<WildcardThrowsInternalError<RctxFirst>, 1>>(
