@@ -797,14 +797,14 @@ std::unique_ptr<t_const_value> parsing_driver::to_const_value(
 int64_t parsing_driver::to_int(uint64_t val, bool negative) {
   constexpr uint64_t i64max = std::numeric_limits<int64_t>::max();
   if (negative) {
-    failure_if(val > i64max + 1, [&](auto& o) {
-      o << "This integer is too small: -" << val << "\n";
+    failure_if(mode == parsing_mode::PROGRAM && val > i64max + 1, [&](auto& o) {
+      o << "This integer is too small: -" << val;
     });
     return -val;
   }
 
-  failure_if(val > i64max, [&](auto& o) {
-    o << "This integer is too big: " << val << "\n";
+  failure_if(mode == parsing_mode::PROGRAM && val > i64max, [&](auto& o) {
+    o << "This integer is too big: " << val;
   });
   return val;
 }

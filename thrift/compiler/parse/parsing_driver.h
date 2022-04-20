@@ -237,8 +237,6 @@ class parsing_driver {
   template <typename... Args>
   void failure(Args&&... args) {
     ctx_.failure(get_lineno(), get_text(), std::forward<Args>(args)...);
-    // TODO(afuller): Continue parsing.
-    end_parsing();
   }
 
   template <typename... Args>
@@ -475,7 +473,9 @@ class parsing_driver {
   T narrow_int(int64_t int_const, const char* name) {
     using limits = std::numeric_limits<T>;
     failure_if(
-        int_const < limits::min() || int_const > limits::max(), [&](auto& o) {
+        mode == parsing_mode::PROGRAM &&
+            (int_const < limits::min() || int_const > limits::max()),
+        [&](auto& o) {
           o << "Integer constant (" << int_const << ") outside the range of "
             << name << " ([" << limits::min() << ", " << limits::max() << "]).";
         });

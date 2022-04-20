@@ -220,7 +220,7 @@ parser::symbol_type lexer::make_int_constant(int offset, int base) {
   uint64_t val = strtoull(text.c_str() + offset, nullptr, base);
   if (errno == ERANGE) {
     return report_error(
-        [&](auto& o) { o << "This integer is too big: " << text << "\n"; });
+        [&](auto& o) { o << "This integer is too big: " << text; });
   }
   return parser::make_tok_int_constant(val, make_location());
 }
@@ -231,15 +231,14 @@ parser::symbol_type lexer::make_float_constant() {
   double val = strtod(text.c_str(), nullptr);
   if (errno == ERANGE) {
     if (val == 0) {
-      return report_error([&](auto& o) {
-        o << "This number is too infinitesimal: " << text << "\n";
-      });
+      return report_error(
+          [&](auto& o) { o << "This number is too infinitesimal: " << text; });
     } else if (val == HUGE_VAL) {
       return report_error(
-          [&](auto& o) { o << "This number is too big: " << text << "\n"; });
+          [&](auto& o) { o << "This number is too big: " << text; });
     } else if (val == -HUGE_VAL) {
       return report_error(
-          [&](auto& o) { o << "This number is too small: " << text << "\n"; });
+          [&](auto& o) { o << "This number is too small: " << text; });
     }
     // Allow subnormals.
   }

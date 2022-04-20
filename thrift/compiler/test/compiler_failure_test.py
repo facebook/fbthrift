@@ -273,13 +273,17 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("overflow.thrift")
         self.assertEqual(
             err,
-            "[FAILURE:overflow.thrift:4] Integer constant (32768) outside the range of field ids ([-32768, 32767]).\n",
+            "[FAILURE:overflow.thrift:4] Integer constant (32768) outside the range of field ids ([-32768, 32767]).\n"
+            "[WARNING:overflow.thrift:2] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
+            "[WARNING:overflow.thrift:4] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must positive or -2.\n",
         )
         self.assertEqual(ret, 1)
         ret, out, err = self.run_thrift("underflow.thrift")
         self.assertEqual(
             err,
-            "[FAILURE:underflow.thrift:4] Integer constant (-32769) outside the range of field ids ([-32768, 32767]).\n",
+            "[FAILURE:underflow.thrift:4] Integer constant (-32769) outside the range of field ids ([-32768, 32767]).\n"
+            "[WARNING:underflow.thrift:2] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
+            '[FAILURE:underflow.thrift:4] Field identifier 32767 for "f6" has already been used.\n',
         )
         self.assertEqual(ret, 1)
 
@@ -389,96 +393,75 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift:3] Integer constant (-2147483649) outside the range of enum values ([-2147483648, 2147483647]).\n",
         )
 
-    def test_integer_overflow(self):
-        for value in [
-            "9223372036854775808",  # max int64 +1
-            "18446744073709551615",  # max uint64
-            "18446744073709551616",  # max uint64 + 1
-        ]:
-            write_file(
-                "foo.thrift",
-                textwrap.dedent(
-                    f"""\
-                    const i64 overflowInt = {value};
+    def assertConstError(self, type, value, expected):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                f"""\
+                    const {type} overflowInt = {value};
                     """
-                ),
-            )
-            ret, out, err = self.run_thrift("foo.thrift")
-            self.assertEqual(ret, 1)
-            self.assertEqual(
-                err, f"[FAILURE:foo.thrift:1] This integer is too big: {value}\n\n"
-            )
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1, err)
+        self.assertEqual(err, expected)
+
+    def test_integer_overflow(self):
+        self.assertConstError(
+            "i64",
+            "9223372036854775808",  # max int64 + 1
+            "[FAILURE:foo.thrift:1] This integer is too big: 9223372036854775808\n"
+            '[WARNING:foo.thrift:1] 64-bit constant "-9223372036854775808" may not work in all languages.\n',
+        )
+        self.assertConstError(
+            "i64",
+            "18446744073709551615",  # max uint64
+            "[FAILURE:foo.thrift:1] This integer is too big: 18446744073709551615\n",
+        )
+        self.assertConstError(
+            "i64",
+            "18446744073709551616",  # max uint64 + 1
+            "[FAILURE:foo.thrift:1] This integer is too big: 18446744073709551616\n",
+        )
 
     def test_double_overflow(self):
-        def test_num(value):
-            write_file(
-                "foo.thrift",
-                textwrap.dedent(
-                    f"""\
-                    const double overflowDub = {value};
-                    """
-                ),
-            )
-            return self.run_thrift("foo.thrift")
-
         for value in [
             "1.7976931348623159e+308",
             "1.7976931348623158e+309",
         ]:
-            ret, out, err = test_num(value)
-            self.assertEqual(ret, 1)
-            self.assertEqual(
-                err, f"[FAILURE:foo.thrift:1] This number is too big: {value}\n\n"
+            self.assertConstError(
+                "double",
+                f"{value}",
+                f"[FAILURE:foo.thrift:1] This number is too big: {value}\n",
             )
-            ret, out, err = test_num("-" + value)
-            self.assertEqual(ret, 1)
-            self.assertEqual(
-                err, f"[FAILURE:foo.thrift:1] This number is too big: {value}\n\n"
+            self.assertConstError(
+                "double",
+                f"-{value}",
+                f"[FAILURE:foo.thrift:1] This number is too big: {value}\n",
             )
 
     def test_integer_underflow(self):
-        write_file(
-            "foo.thrift",
-            textwrap.dedent(
-                """\
-                const i64 underflowInt = -9223372036854775809;
-                """
-            ),
-        )
-        ret, out, err = self.run_thrift("foo.thrift")
-        self.assertEqual(ret, 1)
-        self.assertEqual(
-            err,
-            "[FAILURE:foo.thrift:1] This integer is too small: -9223372036854775809\n\n",
+        self.assertConstError(
+            "i64",
+            "-9223372036854775809",
+            "[FAILURE:foo.thrift:1] This integer is too small: -9223372036854775809\n"
+            '[WARNING:foo.thrift:1] 64-bit constant "9223372036854775807" may not work in all languages.\n',
         )
 
     def test_double_underflow(self):
-        def test_num(value):
-            write_file(
-                "foo.thrift",
-                textwrap.dedent(
-                    f"""\
-                    const double underflowDub = {value};
-                    """
-                ),
-            )
-            return self.run_thrift("foo.thrift")
-
         for value in [
             "4.9406564584124654e-325",
             "1e-324",
         ]:
-            ret, out, err = test_num(value)
-            self.assertEqual(ret, 1)
-            self.assertEqual(
-                err,
-                f"[FAILURE:foo.thrift:1] This number is too infinitesimal: {value}\n\n",
+            self.assertConstError(
+                "double",
+                f"{value}",
+                f"[FAILURE:foo.thrift:1] This number is too infinitesimal: {value}\n",
             )
-            ret, out, err = test_num("-" + value)
-            self.assertEqual(ret, 1)
-            self.assertEqual(
-                err,
-                f"[FAILURE:foo.thrift:1] This number is too infinitesimal: {value}\n\n",
+            self.assertConstError(
+                "double",
+                f"-{value}",
+                f"[FAILURE:foo.thrift:1] This number is too infinitesimal: {value}\n",
             )
 
     def test_const_wrong_type(self):
