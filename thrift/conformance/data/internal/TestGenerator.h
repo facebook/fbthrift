@@ -19,9 +19,21 @@
 #include <initializer_list>
 #include <set>
 
+#include <boost/mp11.hpp>
+
 #include <thrift/conformance/cpp2/Protocol.h>
 
 namespace apache::thrift::conformance::data::detail {
+
+using PrimaryTypeTags = boost::mp11::mp_list<
+    type::bool_t,
+    type::byte_t,
+    type::i16_t,
+    type::i32_t,
+    type::float_t,
+    type::double_t,
+    type::string_t,
+    type::binary_t>;
 
 template <typename C>
 std::set<Protocol> toProtocols(const C& protocolCtorArgs) {

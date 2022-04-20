@@ -16,12 +16,15 @@
 
 #include <thrift/conformance/data/TestGenerator.h>
 
+#include <boost/mp11.hpp>
 #include <fmt/core.h>
 
 #include <thrift/conformance/cpp2/Object.h>
 #include <thrift/conformance/data/ValueGenerator.h>
 #include <thrift/lib/cpp2/type/Name.h>
 #include <thrift/test/testset/Testset.h>
+
+namespace mp11 = boost::mp11;
 
 namespace apache::thrift::conformance::data {
 
@@ -58,27 +61,15 @@ Test createRoundTripTest(
   return test;
 }
 
-} // namespace
-
 void addRoundTripToSuite(
     const AnyRegistry& registry, const Protocol& protocol, TestSuite& suite) {
-  suite.tests_ref()->emplace_back(
-      createRoundTripTest<type::bool_t>(registry, protocol));
-  suite.tests_ref()->emplace_back(
-      createRoundTripTest<type::byte_t>(registry, protocol));
-  suite.tests_ref()->emplace_back(
-      createRoundTripTest<type::i16_t>(registry, protocol));
-  suite.tests_ref()->emplace_back(
-      createRoundTripTest<type::i32_t>(registry, protocol));
-  suite.tests_ref()->emplace_back(
-      createRoundTripTest<type::float_t>(registry, protocol));
-  suite.tests_ref()->emplace_back(
-      createRoundTripTest<type::double_t>(registry, protocol));
-  suite.tests_ref()->emplace_back(
-      createRoundTripTest<type::string_t>(registry, protocol));
-  suite.tests_ref()->emplace_back(
-      createRoundTripTest<type::binary_t>(registry, protocol));
+  mp11::mp_for_each<detail::PrimaryTypeTags>([&](auto tt) {
+    suite.tests_ref()->emplace_back(
+        createRoundTripTest<decltype(tt)>(registry, protocol));
+  });
 }
+
+} // namespace
 
 TestSuite createRoundTripSuite(
     const std::set<Protocol>& protocols, const AnyRegistry& registry) {

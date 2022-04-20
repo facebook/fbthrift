@@ -130,21 +130,11 @@ Test createCompatibilityTest(const Protocol& protocol) {
 }
 } // namespace
 
-using PrimaryTypeTags = mp11::mp_list<
-    type::bool_t,
-    type::byte_t,
-    type::i16_t,
-    type::i32_t,
-    type::float_t,
-    type::double_t,
-    type::string_t,
-    type::binary_t>;
-
 TestSuite createCompatibilitySuite() {
   TestSuite suite;
   suite.name() = "CompatibilityTest";
   for (const auto& protocol : detail::toProtocols(detail::kDefaultProtocols)) {
-    mp11::mp_for_each<PrimaryTypeTags>([&](auto t) {
+    mp11::mp_for_each<detail::PrimaryTypeTags>([&](auto t) {
       suite.tests()->emplace_back(
           createCompatibilityTest<decltype(t)>(protocol));
     });
