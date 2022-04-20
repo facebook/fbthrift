@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
+#include <algorithm>
 #include <iterator>
 #include <string>
+#include <unordered_map>
 #include <utility>
+#include <vector>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/replace.hpp>
@@ -351,12 +354,20 @@ class mstch_python_program : public mstch_program {
   mstch::node is_types_file() { return has_option("is_types_file"); }
 
   mstch::node include_namespaces() {
+    std::vector<const Namespace*> namespaces;
+    for (const auto& it : include_namespaces_) {
+      namespaces.push_back(&it.second);
+    }
+    std::sort(
+        namespaces.begin(), namespaces.end(), [](const auto* m, const auto* n) {
+          return m->ns < n->ns;
+        });
     mstch::array a;
-    for (auto& it : include_namespaces_) {
+    for (const auto& it : namespaces) {
       a.push_back(mstch::map{
-          {"included_module_path", it.second.ns},
-          {"has_services?", it.second.has_services},
-          {"has_types?", it.second.has_types}});
+          {"included_module_path", it->ns},
+          {"has_services?", it->has_services},
+          {"has_types?", it->has_types}});
     }
     return a;
   }
@@ -505,7 +516,7 @@ class mstch_python_program : public mstch_program {
     }
   }
 
-  std::map<std::string, Namespace> include_namespaces_;
+  std::unordered_map<std::string, Namespace> include_namespaces_;
   std::unordered_set<const t_type*> seen_types_;
 };
 
