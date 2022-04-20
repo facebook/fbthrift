@@ -16,6 +16,7 @@
 
 package com.facebook.thrift.util;
 
+import static com.facebook.thrift.util.PlatformUtils.getOS;
 import static org.apache.thrift.Constants.K_ROCKET_PROTOCOL_KEY;
 
 import com.facebook.thrift.client.RpcClient;
@@ -36,9 +37,11 @@ import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollDomainSocketChannel;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollSocketChannel;
+import io.netty.channel.kqueue.KQueue;
 import io.netty.channel.kqueue.KQueueDomainSocketChannel;
 import io.netty.channel.kqueue.KQueueEventLoopGroup;
 import io.netty.channel.kqueue.KQueueSocketChannel;
@@ -101,9 +104,21 @@ public final class RpcClientUtils {
     if (socketAddress instanceof DomainSocketAddress) {
       if (group instanceof EpollEventLoopGroup) {
         return EpollDomainSocketChannel.class;
+      } else if (getOS() == PlatformUtils.OS.LINUX) {
+        throw new UnsupportedOperationException(
+            String.format(
+                "Unsupported combination of EventLoopGroup-{%s} & SocketAddress-{%s}. Likely due to system support for Epoll unavailable.",
+                group.getClass(), socketAddress.getClass()),
+            Epoll.unavailabilityCause());
       }
       if (group instanceof KQueueEventLoopGroup) {
         return KQueueDomainSocketChannel.class;
+      } else if (getOS() == PlatformUtils.OS.MAC) {
+        throw new UnsupportedOperationException(
+            String.format(
+                "Unsupported combination of EventLoopGroup-{%s} & SocketAddress-{%s}. Likely due to system support for Kqueue unavailable.",
+                group.getClass(), socketAddress.getClass()),
+            KQueue.unavailabilityCause());
       }
     }
     throw new UnsupportedOperationException(
