@@ -70,7 +70,7 @@ class BinaryProtocolWriter {
    * or until the output is reset with setOutput/Input(NULL), or
    * set to some other buffer.
    */
-  inline void setOutput(
+  void setOutput(
       IOBufQueue* queue,
       size_t maxGrowth = std::numeric_limits<size_t>::max()) {
     // Allocate 16KB at a time; leave some room for the IOBuf overhead
@@ -78,36 +78,35 @@ class BinaryProtocolWriter {
     out_.reset(queue, std::min(maxGrowth, kDesiredGrowth));
   }
 
-  inline void setOutput(QueueAppender&& output) { out_ = std::move(output); }
+  void setOutput(QueueAppender&& output) { out_ = std::move(output); }
 
-  inline uint32_t writeMessageBegin(
+  uint32_t writeMessageBegin(
       folly::StringPiece name, MessageType messageType, int32_t seqid);
-  inline uint32_t writeMessageEnd();
-  inline uint32_t writeStructBegin(const char* name);
-  inline uint32_t writeStructEnd();
-  inline uint32_t writeFieldBegin(
-      const char* name, TType fieldType, int16_t fieldId);
-  inline uint32_t writeFieldEnd();
-  inline uint32_t writeFieldStop();
-  inline uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size);
-  inline uint32_t writeMapEnd();
-  inline uint32_t writeListBegin(TType elemType, uint32_t size);
-  inline uint32_t writeListEnd();
-  inline uint32_t writeSetBegin(TType elemType, uint32_t size);
-  inline uint32_t writeSetEnd();
-  inline uint32_t writeBool(bool value);
-  inline uint32_t writeByte(int8_t byte);
-  inline uint32_t writeI16(int16_t i16);
-  inline uint32_t writeI32(int32_t i32);
-  inline uint32_t writeI64(int64_t i64);
-  inline uint32_t writeDouble(double dub);
-  inline uint32_t writeFloat(float flt);
-  inline uint32_t writeString(folly::StringPiece str);
-  inline uint32_t writeBinary(folly::StringPiece str);
-  inline uint32_t writeBinary(folly::ByteRange str);
-  inline uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
-  inline uint32_t writeBinary(const folly::IOBuf& str);
-  inline uint32_t writeRaw(const IOBuf& buf);
+  uint32_t writeMessageEnd();
+  uint32_t writeStructBegin(const char* name);
+  uint32_t writeStructEnd();
+  uint32_t writeFieldBegin(const char* name, TType fieldType, int16_t fieldId);
+  uint32_t writeFieldEnd();
+  uint32_t writeFieldStop();
+  uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size);
+  uint32_t writeMapEnd();
+  uint32_t writeListBegin(TType elemType, uint32_t size);
+  uint32_t writeListEnd();
+  uint32_t writeSetBegin(TType elemType, uint32_t size);
+  uint32_t writeSetEnd();
+  uint32_t writeBool(bool value);
+  uint32_t writeByte(int8_t byte);
+  uint32_t writeI16(int16_t i16);
+  uint32_t writeI32(int32_t i32);
+  uint32_t writeI64(int64_t i64);
+  uint32_t writeDouble(double dub);
+  uint32_t writeFloat(float flt);
+  uint32_t writeString(folly::StringPiece str);
+  uint32_t writeBinary(folly::StringPiece str);
+  uint32_t writeBinary(folly::ByteRange str);
+  uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
+  uint32_t writeBinary(const folly::IOBuf& str);
+  uint32_t writeRaw(const IOBuf& buf);
 
   /**
    * Functions that return the [estimated] serialized size
@@ -120,41 +119,39 @@ class BinaryProtocolWriter {
    *   there are IOBuf fields, and their sizes aren't too small to be packed),
    *   and won't count in the ZC estimate.
    */
-  inline uint32_t serializedMessageSize(folly::StringPiece name) const;
-  inline uint32_t serializedFieldSize(
+  uint32_t serializedMessageSize(folly::StringPiece name) const;
+  uint32_t serializedFieldSize(
       const char* name, TType fieldType, int16_t fieldId) const;
-  inline uint32_t serializedStructSize(const char* name) const;
-  inline uint32_t serializedSizeMapBegin(
+  uint32_t serializedStructSize(const char* name) const;
+  uint32_t serializedSizeMapBegin(
       TType keyType, TType valType, uint32_t size) const;
-  inline uint32_t serializedSizeMapEnd() const;
-  inline uint32_t serializedSizeListBegin(TType elemType, uint32_t size) const;
-  inline uint32_t serializedSizeListEnd() const;
-  inline uint32_t serializedSizeSetBegin(TType elemType, uint32_t size) const;
-  inline uint32_t serializedSizeSetEnd() const;
-  inline uint32_t serializedSizeStop() const;
-  inline uint32_t serializedSizeBool(bool = false) const;
-  inline uint32_t serializedSizeByte(int8_t = 0) const;
-  inline uint32_t serializedSizeI16(int16_t = 0) const;
-  inline uint32_t serializedSizeI32(int32_t = 0) const;
-  inline uint32_t serializedSizeI64(int64_t = 0) const;
-  inline uint32_t serializedSizeDouble(double = 0.0) const;
-  inline uint32_t serializedSizeFloat(float = 0) const;
-  inline uint32_t serializedSizeString(folly::StringPiece str) const;
-  inline uint32_t serializedSizeBinary(folly::StringPiece str) const;
-  inline uint32_t serializedSizeBinary(folly::ByteRange) const;
-  inline uint32_t serializedSizeBinary(
-      std::unique_ptr<folly::IOBuf> const& v) const;
-  inline uint32_t serializedSizeBinary(folly::IOBuf const& v) const;
-  inline uint32_t serializedSizeZCBinary(folly::StringPiece str) const;
-  inline uint32_t serializedSizeZCBinary(folly::ByteRange v) const;
-  inline uint32_t serializedSizeZCBinary(
-      std::unique_ptr<folly::IOBuf> const&) const;
-  inline uint32_t serializedSizeZCBinary(folly::IOBuf const& /*v*/) const;
+  uint32_t serializedSizeMapEnd() const;
+  uint32_t serializedSizeListBegin(TType elemType, uint32_t size) const;
+  uint32_t serializedSizeListEnd() const;
+  uint32_t serializedSizeSetBegin(TType elemType, uint32_t size) const;
+  uint32_t serializedSizeSetEnd() const;
+  uint32_t serializedSizeStop() const;
+  uint32_t serializedSizeBool(bool = false) const;
+  uint32_t serializedSizeByte(int8_t = 0) const;
+  uint32_t serializedSizeI16(int16_t = 0) const;
+  uint32_t serializedSizeI32(int32_t = 0) const;
+  uint32_t serializedSizeI64(int64_t = 0) const;
+  uint32_t serializedSizeDouble(double = 0.0) const;
+  uint32_t serializedSizeFloat(float = 0) const;
+  uint32_t serializedSizeString(folly::StringPiece str) const;
+  uint32_t serializedSizeBinary(folly::StringPiece str) const;
+  uint32_t serializedSizeBinary(folly::ByteRange) const;
+  uint32_t serializedSizeBinary(std::unique_ptr<folly::IOBuf> const& v) const;
+  uint32_t serializedSizeBinary(folly::IOBuf const& v) const;
+  uint32_t serializedSizeZCBinary(folly::StringPiece str) const;
+  uint32_t serializedSizeZCBinary(folly::ByteRange v) const;
+  uint32_t serializedSizeZCBinary(std::unique_ptr<folly::IOBuf> const&) const;
+  uint32_t serializedSizeZCBinary(folly::IOBuf const& /*v*/) const;
 
-  inline void rewriteDouble(double dub, int64_t offset);
+  void rewriteDouble(double dub, int64_t offset);
 
   // Get last n bytes we just wrote
-  inline folly::io::Cursor tail(size_t n);
+  folly::io::Cursor tail(size_t n);
 
  private:
   template <bool kWriteSize>
@@ -226,34 +223,33 @@ class BinaryProtocolReader {
   /**
    * Reading functions
    */
-  inline void readMessageBegin(
+  void readMessageBegin(
       std::string& name, MessageType& messageType, int32_t& seqid);
-  inline void readMessageEnd();
-  inline void readStructBegin(std::string& name);
-  inline void readStructEnd();
-  inline void readFieldBegin(
-      std::string& name, TType& fieldType, int16_t& fieldId);
-  inline void readFieldEnd();
-  inline void readMapBegin(TType& keyType, TType& valType, uint32_t& size);
-  inline void readMapEnd();
-  inline void readListBegin(TType& elemType, uint32_t& size);
-  inline void readListEnd();
-  inline void readSetBegin(TType& elemType, uint32_t& size);
-  inline void readSetEnd();
-  inline void readBool(bool& value);
-  inline void readBool(std::vector<bool>::reference value);
-  inline void readByte(int8_t& byte);
-  inline void readI16(int16_t& i16);
-  inline void readI32(int32_t& i32);
-  inline void readI64(int64_t& i64);
-  inline void readDouble(double& dub);
-  inline void readFloat(float& flt);
+  void readMessageEnd();
+  void readStructBegin(std::string& name);
+  void readStructEnd();
+  void readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
+  void readFieldEnd();
+  void readMapBegin(TType& keyType, TType& valType, uint32_t& size);
+  void readMapEnd();
+  void readListBegin(TType& elemType, uint32_t& size);
+  void readListEnd();
+  void readSetBegin(TType& elemType, uint32_t& size);
+  void readSetEnd();
+  void readBool(bool& value);
+  void readBool(std::vector<bool>::reference value);
+  void readByte(int8_t& byte);
+  void readI16(int16_t& i16);
+  void readI32(int32_t& i32);
+  void readI64(int64_t& i64);
+  void readDouble(double& dub);
+  void readFloat(float& flt);
   template <typename StrType>
-  inline void readString(StrType& str);
+  void readString(StrType& str);
   template <typename StrType>
-  inline void readBinary(StrType& str);
-  inline void readBinary(std::unique_ptr<folly::IOBuf>& str);
-  inline void readBinary(folly::IOBuf& str);
+  void readBinary(StrType& str);
+  void readBinary(std::unique_ptr<folly::IOBuf>& str);
+  void readBinary(folly::IOBuf& str);
   bool peekMap() { return false; }
   bool peekSet() { return false; }
   bool peekList() { return false; }
@@ -270,15 +266,15 @@ class BinaryProtocolReader {
 
  protected:
   template <typename StrType>
-  inline void readStringBody(StrType& str, int32_t sz);
+  void readStringBody(StrType& str, int32_t sz);
 
   FOLLY_ALWAYS_INLINE bool advanceToNextField(
       int16_t nextFieldId, TType nextFieldType, StructReadState& state);
 
-  inline void readFieldBeginWithState(StructReadState& state);
+  void readFieldBeginWithState(StructReadState& state);
 
-  inline void checkStringSize(int32_t size);
-  inline void checkContainerSize(int32_t size);
+  void checkStringSize(int32_t size);
+  void checkContainerSize(int32_t size);
 
   [[noreturn]] static void throwBadVersionIdentifier(int32_t sz);
   [[noreturn]] static void throwMissingVersionIdentifier(int32_t sz);
@@ -301,7 +297,7 @@ class BinaryProtocolReader {
   friend class BinaryProtocolReaderWithRefill;
 
  private:
-  inline bool readBoolSafe();
+  bool readBoolSafe();
 };
 
 struct BinaryProtocolReader::StructReadState {
