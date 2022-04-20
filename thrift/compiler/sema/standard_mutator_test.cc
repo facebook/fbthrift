@@ -31,7 +31,6 @@ class StandardMutatorTest : public ::testing::Test {
       diagnostic_params params = diagnostic_params::keep_all()) {
     diagnostic_results results;
     diagnostic_context ctx{results, std::move(params)};
-    ctx.start_program(program.get());
     t_program_bundle program_bundle{std::move(program)};
     standard_mutators()(ctx, program_bundle);
     return std::move(results).diagnostics();

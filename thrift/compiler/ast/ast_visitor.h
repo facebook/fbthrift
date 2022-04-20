@@ -319,6 +319,8 @@ class basic_visitor_context {
   using program_type = ast_detail::node_type<is_const, t_program>;
 
  public:
+  bool visiting() const noexcept { return !context_.empty(); }
+
   // The first node visited.
   node_type* root() const noexcept {
     assert(!context_.empty());
@@ -344,7 +346,11 @@ class basic_visitor_context {
   }
 
   void begin_visit(node_type& node) { context_.emplace_back(&node); }
-  void end_visit(node_type&) { context_.pop_back(); }
+  void end_visit(node_type& node) {
+    (void)(node);
+    assert(&node == context_.back());
+    context_.pop_back();
+  }
 
  private:
   std::vector<node_type*> context_;

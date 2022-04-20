@@ -48,7 +48,6 @@ class StandardValidatorTest : public ::testing::Test {
       diagnostic_params params = diagnostic_params::keep_all()) {
     diagnostic_results results;
     diagnostic_context ctx{results, std::move(params)};
-    ctx.start_program(&program_);
     standard_validator()(ctx, program_);
     return std::move(results).diagnostics();
   }

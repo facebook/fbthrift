@@ -32,8 +32,8 @@ class DiagnosticContextTest : public ::testing::Test {
  public:
   DiagnosticContextTest() : ctx_{results_}, program_{"path/to/file.thrift"} {}
 
-  void SetUp() override { ctx_.start_program(&program_); }
-  void TearDown() override { ctx_.end_program(&program_); }
+  void SetUp() override { ctx_.begin_visit(program_); }
+  void TearDown() override { ctx_.end_visit(program_); }
 
  protected:
   diagnostic_results results_;

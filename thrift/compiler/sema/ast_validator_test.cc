@@ -52,7 +52,6 @@ TEST_F(AstValidatorTest, Output) {
   t_program program("path/to/program.thrift");
   diagnostic_results results;
   diagnostic_context ctx{results, diagnostic_params::keep_all()};
-  ctx.start_program(&program);
   validator(ctx, program);
   EXPECT_THAT(
       results.diagnostics(),

@@ -111,19 +111,6 @@ class diagnostic_context : public diagnostics_engine,
         [](const diagnostic&) {}, diagnostic_params::only_failures());
   }
 
-  // The program currently being analyzed.
-  // TODO(afuller): Migrate all usage to const_visitor_context::program() and
-  // remove this.
-  const t_program* program_top() {
-    assert(!programs_.empty());
-    return programs_.top();
-  }
-  void start_program(const t_program* program) {
-    assert(program != nullptr);
-    programs_.push(program);
-  }
-  void end_program(const t_program*) { programs_.pop(); }
-
   // A cache for traversal-specific metadata.
   node_metadata_cache& cache() { return cache_; }
 
@@ -139,7 +126,7 @@ class diagnostic_context : public diagnostics_engine,
     report(
         {level,
          std::move(text),
-         program_top()->path(),
+         program().path(),
          lineno,
          std::move(token),
          std::move(name)});
@@ -154,7 +141,7 @@ class diagnostic_context : public diagnostics_engine,
       With&& with) {
     report(
         level,
-        program_top()->path(),
+        program().path(),
         lineno,
         std::move(token),
         std::move(name),
@@ -166,7 +153,7 @@ class diagnostic_context : public diagnostics_engine,
       diagnostic_level level, int lineno, std::string token, With&& with) {
     report(
         level,
-        program_top()->path(),
+        program().path(),
         lineno,
         std::move(token),
         "",
@@ -304,7 +291,6 @@ class diagnostic_context : public diagnostics_engine,
 
  private:
   node_metadata_cache cache_;
-  std::stack<const t_program*> programs_;
 
   template <typename E, typename F, typename... Args>
   bool try_or_report_impl(F&& func, Args&&... args) {

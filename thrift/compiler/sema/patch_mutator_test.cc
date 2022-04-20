@@ -28,7 +28,6 @@ class PatchGeneratorTest : public ::testing::Test {
   PatchGeneratorTest() : ctx_(results_) {}
 
   void SetUp() override {
-    ctx_.start_program(&program_);
     ctx_.begin_visit(program_);
     gen_ = std::make_unique<patch_generator>(ctx_, program_);
   }

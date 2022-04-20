@@ -70,10 +70,9 @@ parsing_driver::parsing_driver(
       doctext_lineno(0),
       mode(parsing_mode::INCLUDES),
       ctx_(ctx) {
-  auto root_program = std::make_unique<t_program>(path);
-  ctx_.start_program(program = root_program.get());
-  program_bundle = std::make_unique<t_program_bundle>(std::move(root_program));
-
+  program_bundle =
+      std::make_unique<t_program_bundle>(std::make_unique<t_program>(path));
+  program = program_bundle->root_program();
   scope_cache = program->scope();
 }
 
@@ -113,6 +112,8 @@ void parsing_driver::parse_file() {
     return;
   }
 
+  assert(!ctx_.visiting());
+  ctx_.begin_visit(*program);
   try {
     lexer_ =
         std::make_unique<lexer>(lexer::from_file(*lex_handler_, ctx_, path));
@@ -150,9 +151,10 @@ void parsing_driver::parse_file() {
     // This must be after the previous circular include check, since the emitted
     // error message above is supposed to reference the parent file name.
     params.allow_neg_field_keys = true;
-    ctx_.start_program(program = included_program);
+    ctx_.end_visit(*old_program);
+    program = included_program;
     parse_file();
-    ctx_.end_program(program);
+    ctx_.begin_visit(*old_program);
 
     size_t num_removed = circular_deps_.erase(path);
     (void)num_removed;
@@ -193,6 +195,7 @@ void parsing_driver::parse_file() {
       });
     }
   }
+  ctx_.end_visit(*program);
 }
 
 [[noreturn]] void parsing_driver::end_parsing() {
