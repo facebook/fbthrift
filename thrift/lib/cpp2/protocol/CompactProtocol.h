@@ -92,38 +92,38 @@ class CompactProtocolWriter {
 
   inline void setOutput(QueueAppender&& output) { out_ = std::move(output); }
 
-  inline uint32_t writeMessageBegin(
+  uint32_t writeMessageBegin(
       folly::StringPiece name, MessageType messageType, int32_t seqid);
-  inline uint32_t writeMessageEnd();
-  inline uint32_t writeStructBegin(const char* name);
-  inline uint32_t writeStructEnd();
+  uint32_t writeMessageEnd();
+  uint32_t writeStructBegin(const char* name);
+  uint32_t writeStructEnd();
   inline uint32_t writeFieldBegin(
       const char* name, TType fieldType, int16_t fieldId) {
     return writeFieldBegin(name, fieldType, fieldId, lastFieldId_);
   }
   FOLLY_ALWAYS_INLINE uint32_t writeFieldBegin(
       const char* name, TType fieldType, int16_t fieldId, int16_t previousId);
-  inline uint32_t writeFieldEnd();
-  inline uint32_t writeFieldStop();
-  inline uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size);
-  inline uint32_t writeMapEnd();
-  inline uint32_t writeListBegin(TType elemType, uint32_t size);
-  inline uint32_t writeListEnd();
-  inline uint32_t writeSetBegin(TType elemType, uint32_t size);
-  inline uint32_t writeSetEnd();
-  inline uint32_t writeBool(bool value);
-  inline uint32_t writeByte(int8_t byte);
-  inline uint32_t writeI16(int16_t i16);
-  inline uint32_t writeI32(int32_t i32);
-  inline uint32_t writeI64(int64_t i64);
-  inline uint32_t writeDouble(double dub);
-  inline uint32_t writeFloat(float flt);
-  inline uint32_t writeString(folly::StringPiece str);
-  inline uint32_t writeBinary(folly::StringPiece str);
-  inline uint32_t writeBinary(folly::ByteRange str);
-  inline uint32_t writeBinary(const std::unique_ptr<IOBuf>& str);
-  inline uint32_t writeBinary(const IOBuf& str);
-  inline uint32_t writeRaw(const IOBuf& buf);
+  uint32_t writeFieldEnd();
+  uint32_t writeFieldStop();
+  uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size);
+  uint32_t writeMapEnd();
+  uint32_t writeListBegin(TType elemType, uint32_t size);
+  uint32_t writeListEnd();
+  uint32_t writeSetBegin(TType elemType, uint32_t size);
+  uint32_t writeSetEnd();
+  uint32_t writeBool(bool value);
+  uint32_t writeByte(int8_t byte);
+  uint32_t writeI16(int16_t i16);
+  uint32_t writeI32(int32_t i32);
+  uint32_t writeI64(int64_t i64);
+  uint32_t writeDouble(double dub);
+  uint32_t writeFloat(float flt);
+  uint32_t writeString(folly::StringPiece str);
+  uint32_t writeBinary(folly::StringPiece str);
+  uint32_t writeBinary(folly::ByteRange str);
+  uint32_t writeBinary(const std::unique_ptr<IOBuf>& str);
+  uint32_t writeBinary(const IOBuf& str);
+  uint32_t writeRaw(const IOBuf& buf);
 
   /**
    * Functions that return the serialized size
@@ -140,40 +140,39 @@ class CompactProtocolWriter {
    *    Note that we still may not pre-allocate ideally for the IOBuf case,
    *    since the IOBuf might be in the middle of the serialized stream.
    */
-  inline uint32_t serializedMessageSize(folly::StringPiece name) const;
-  inline uint32_t serializedFieldSize(
+  uint32_t serializedMessageSize(folly::StringPiece name) const;
+  uint32_t serializedFieldSize(
       const char* name, TType fieldType, int16_t fieldId) const;
-  inline uint32_t serializedStructSize(const char* name) const;
+  uint32_t serializedStructSize(const char* name) const;
   inline uint32_t serializedSizeMapBegin(
       TType keyType, TType valType, uint32_t size) const;
-  inline uint32_t serializedSizeMapEnd() const;
-  inline uint32_t serializedSizeListBegin(TType elemType, uint32_t size) const;
-  inline uint32_t serializedSizeListEnd() const;
-  inline uint32_t serializedSizeSetBegin(TType elemType, uint32_t size) const;
-  inline uint32_t serializedSizeSetEnd() const;
-  inline uint32_t serializedSizeStop() const;
-  inline uint32_t serializedSizeBool(bool = false) const;
-  inline uint32_t serializedSizeByte(int8_t = 0) const;
-  inline uint32_t serializedSizeI16(int16_t = 0) const;
-  inline uint32_t serializedSizeI32(int32_t = 0) const;
-  inline uint32_t serializedSizeI64(int64_t = 0) const;
-  inline uint32_t serializedSizeDouble(double = 0.0) const;
-  inline uint32_t serializedSizeFloat(float = 0) const;
-  inline uint32_t serializedSizeString(folly::StringPiece str) const;
-  inline uint32_t serializedSizeBinary(folly::StringPiece str) const;
-  inline uint32_t serializedSizeBinary(folly::ByteRange v) const;
-  inline uint32_t serializedSizeBinary(std::unique_ptr<IOBuf> const& v) const;
-  inline uint32_t serializedSizeBinary(IOBuf const& v) const;
-  inline uint32_t serializedSizeZCBinary(folly::StringPiece str) const;
-  inline uint32_t serializedSizeZCBinary(folly::ByteRange v) const;
-  inline uint32_t serializedSizeZCBinary(
-      std::unique_ptr<IOBuf> const& /*v*/) const;
-  inline uint32_t serializedSizeZCBinary(IOBuf const& /*v*/) const;
+  uint32_t serializedSizeMapEnd() const;
+  uint32_t serializedSizeListBegin(TType elemType, uint32_t size) const;
+  uint32_t serializedSizeListEnd() const;
+  uint32_t serializedSizeSetBegin(TType elemType, uint32_t size) const;
+  uint32_t serializedSizeSetEnd() const;
+  uint32_t serializedSizeStop() const;
+  uint32_t serializedSizeBool(bool = false) const;
+  uint32_t serializedSizeByte(int8_t = 0) const;
+  uint32_t serializedSizeI16(int16_t = 0) const;
+  uint32_t serializedSizeI32(int32_t = 0) const;
+  uint32_t serializedSizeI64(int64_t = 0) const;
+  uint32_t serializedSizeDouble(double = 0.0) const;
+  uint32_t serializedSizeFloat(float = 0) const;
+  uint32_t serializedSizeString(folly::StringPiece str) const;
+  uint32_t serializedSizeBinary(folly::StringPiece str) const;
+  uint32_t serializedSizeBinary(folly::ByteRange v) const;
+  uint32_t serializedSizeBinary(std::unique_ptr<IOBuf> const& v) const;
+  uint32_t serializedSizeBinary(IOBuf const& v) const;
+  uint32_t serializedSizeZCBinary(folly::StringPiece str) const;
+  uint32_t serializedSizeZCBinary(folly::ByteRange v) const;
+  uint32_t serializedSizeZCBinary(std::unique_ptr<IOBuf> const& /*v*/) const;
+  uint32_t serializedSizeZCBinary(IOBuf const& /*v*/) const;
 
-  inline void rewriteDouble(double dub, int64_t offset);
+  void rewriteDouble(double dub, int64_t offset);
 
   // Get last n bytes we just wrote
-  inline folly::io::Cursor tail(size_t n);
+  folly::io::Cursor tail(size_t n);
 
  protected:
   /**
@@ -195,11 +194,11 @@ class CompactProtocolWriter {
   std::stack<int16_t, folly::small_vector<int16_t, 10>> lastField_;
   int16_t lastFieldId_{-1};
 
-  inline uint32_t writeCollectionBegin(int8_t elemType, int32_t size);
+  uint32_t writeCollectionBegin(int8_t elemType, int32_t size);
   template <bool kWriteSize>
   FOLLY_ERASE uint32_t writeBinaryImpl(const folly::IOBuf& str);
 
-  inline uint32_t writeFieldBeginInternal(
+  uint32_t writeFieldBeginInternal(
       const char* name,
       const TType fieldType,
       const int16_t fieldId,
@@ -264,34 +263,33 @@ class CompactProtocolReader {
   /**
    * Reading functions
    */
-  inline void readMessageBegin(
+  void readMessageBegin(
       std::string& name, MessageType& messageType, int32_t& seqid);
-  inline void readMessageEnd();
-  inline void readStructBegin(std::string& name);
-  inline void readStructEnd();
-  inline void readFieldBegin(
-      std::string& name, TType& fieldType, int16_t& fieldId);
-  inline void readFieldEnd();
-  inline void readMapBegin(TType& keyType, TType& valType, uint32_t& size);
-  inline void readMapEnd();
-  inline void readListBegin(TType& elemType, uint32_t& size);
-  inline void readListEnd();
-  inline void readSetBegin(TType& elemType, uint32_t& size);
-  inline void readSetEnd();
-  inline void readBool(bool& value);
-  inline void readBool(std::vector<bool>::reference value);
-  inline void readByte(int8_t& byte);
-  inline void readI16(int16_t& i16);
-  inline void readI32(int32_t& i32);
-  inline void readI64(int64_t& i64);
-  inline void readDouble(double& dub);
-  inline void readFloat(float& flt);
+  void readMessageEnd();
+  void readStructBegin(std::string& name);
+  void readStructEnd();
+  void readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
+  void readFieldEnd();
+  void readMapBegin(TType& keyType, TType& valType, uint32_t& size);
+  void readMapEnd();
+  void readListBegin(TType& elemType, uint32_t& size);
+  void readListEnd();
+  void readSetBegin(TType& elemType, uint32_t& size);
+  void readSetEnd();
+  void readBool(bool& value);
+  void readBool(std::vector<bool>::reference value);
+  void readByte(int8_t& byte);
+  void readI16(int16_t& i16);
+  void readI32(int32_t& i32);
+  void readI64(int64_t& i64);
+  void readDouble(double& dub);
+  void readFloat(float& flt);
   template <typename StrType>
-  inline void readString(StrType& str);
+  void readString(StrType& str);
   template <typename StrType>
-  inline void readBinary(StrType& str);
-  inline void readBinary(std::unique_ptr<IOBuf>& str);
-  inline void readBinary(IOBuf& str);
+  void readBinary(StrType& str);
+  void readBinary(std::unique_ptr<IOBuf>& str);
+  void readBinary(IOBuf& str);
 
   static constexpr std::size_t fixedSizeInContainer(TType type);
   void skipBytes(size_t bytes) { in_.skip(bytes); }
@@ -313,16 +311,16 @@ class CompactProtocolReader {
    */
   Cursor in_;
 
-  inline void readStringSize(int32_t& size);
+  void readStringSize(int32_t& size);
 
  private:
   template <typename StrType>
-  inline void readStringBody(StrType& str, int32_t size);
+  void readStringBody(StrType& str, int32_t size);
 
-  inline TType getType(int8_t type);
+  TType getType(int8_t type);
 
-  inline void readStructBeginWithState(StructReadState& state);
-  inline void readFieldBeginWithState(StructReadState& state);
+  void readStructBeginWithState(StructReadState& state);
+  void readFieldBeginWithState(StructReadState& state);
   FOLLY_NOINLINE void readFieldBeginWithStateMediumSlow(
       StructReadState& state, int16_t prevFieldId);
   FOLLY_ALWAYS_INLINE void readFieldBeginWithStateImpl(
