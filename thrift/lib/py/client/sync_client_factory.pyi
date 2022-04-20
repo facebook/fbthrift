@@ -16,7 +16,7 @@ import ipaddress
 import os
 import typing
 
-from thrift.py.client.common import ClientType, Protocol
+from thrift.py.client.common import ClientType, Protocol, SSLContext
 
 TClient = typing.TypeVar("TClient")
 Path = typing.Union[str, bytes, os.PathLike[str], os.PathLike[bytes]]
@@ -32,4 +32,6 @@ def get_client(
     timeout: float = ...,
     client_type: ClientType = ...,
     protocol: Protocol = ...,
+    ssl_context: typing.Optional[SSLContext] = ...,
+    ssl_timeout: float = ...,
 ) -> TClient: ...

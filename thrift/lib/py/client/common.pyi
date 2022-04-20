@@ -15,6 +15,10 @@
 import enum
 
 from thrift.python.client.request_channel import RequestChannel as RequestChannel
+from thrift.python.client.ssl import (
+    SSLContext as SSLContext,
+    SSLVerifyOption as SSLVerifyOption,
+)
 
 class Protocol(enum.Enum):
     BINARY: Protocol = ...

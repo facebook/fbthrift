@@ -16,6 +16,7 @@ cdef extern from "thrift/lib/cpp/transport/THeader.h":
     cpdef enum ClientType "CLIENT_TYPE":
         THRIFT_HEADER_CLIENT_TYPE
         THRIFT_ROCKET_CLIENT_TYPE
+        THRIFT_HTTP_CLIENT_TYPE
 
 cdef extern from "<thrift/lib/cpp/protocol/TProtocolTypes.h>" namespace "apache::thrift::protocol":
     cpdef enum Protocol "apache::thrift::protocol::PROTOCOL_TYPES":

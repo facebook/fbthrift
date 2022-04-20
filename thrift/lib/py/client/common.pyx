@@ -13,3 +13,4 @@
 # limitations under the License.
 
 from thrift.python.client.request_channel import RequestChannel
+from thrift.python.client.ssl import SSLContext, SSLVerifyOption
