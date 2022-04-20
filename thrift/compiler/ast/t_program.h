@@ -73,9 +73,8 @@ class t_program : public t_named {
    *
    * @param path - A *.thrift file path.
    */
-  explicit t_program(std::string path) : path_(std::move(path)) {
-    set_name(compute_name_from_file_path(path_));
-  }
+  explicit t_program(std::string path)
+      : t_program(std::move(path), std::make_shared<t_scope>()) {}
 
   void set_package(t_package package) { package_ = std::move(package); }
   const t_package package() const { return package_; }
@@ -268,8 +267,13 @@ class t_program : public t_named {
   std::string include_prefix_;
   std::map<std::string, std::string> namespaces_;
   std::vector<std::string> cpp_includes_;
-  std::unique_ptr<t_scope> scope_{new t_scope{}};
+  std::shared_ptr<t_scope> scope_;
   std::vector<size_t> line_to_offset_{0};
+
+  t_program(std::string path, std::shared_ptr<t_scope> scope)
+      : path_(std::move(path)), scope_(std::move(scope)) {
+    set_name(compute_name_from_file_path(path_));
+  }
 
   // TODO(afuller): Remove everything below this comment. It is only provided
   // for backwards compatibility.

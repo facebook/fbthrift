@@ -16,21 +16,12 @@
 
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/patch.thrift"
+include "thrift/test/StructPatchTestInclude.thrift"
 
 @patch.GeneratePatch
 package "facebook.com/thrift/test/patch"
 
 namespace cpp2 apache.thrift.test.patch
-
-struct MyData {
-  1: string data1;
-  2: i32 data2;
-}
-
-union MyUnion {
-  1: string option1;
-  2: i32 option2;
-}
 
 struct MyStruct {
   1: bool boolVal;
@@ -42,7 +33,7 @@ struct MyStruct {
   7: double doubleVal;
   8: string stringVal;
   9: binary (cpp.type = "::folly::IOBuf") binaryVal;
-  10: MyData structVal;
+  10: StructPatchTestInclude.MyData structVal;
 
   11: optional bool optBoolVal;
   12: optional byte optByteVal;
@@ -53,11 +44,11 @@ struct MyStruct {
   17: optional double optDoubleVal;
   18: optional string optStringVal;
   19: optional binary (cpp.type = "::folly::IOBuf") optBinaryVal;
-  20: optional MyData optStructVal;
+  20: optional StructPatchTestInclude.MyData optStructVal;
 
   21: optional list<i16> optListVal;
   22: optional set<string> optSetVal;
   23: optional map<string, string> optMapVal;
 
-  30: MyUnion unionVal;
+  30: StructPatchTestInclude.MyUnion unionVal;
 }

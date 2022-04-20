@@ -60,7 +60,7 @@ const std::string& t_program::get_namespace(const std::string& language) const {
 
 std::unique_ptr<t_program> t_program::add_include(
     std::string path, std::string include_site, int lineno) {
-  auto program = std::make_unique<t_program>(path);
+  auto program = std::unique_ptr<t_program>(new t_program(path, scope_));
 
   std::string include_prefix;
   const auto last_slash = include_site.find_last_of("/\\");
