@@ -101,8 +101,8 @@ oprot.writeI32(_iter0);
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .func(arg1, arg2, arg3)
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .func(arg1, arg2, arg3))
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -133,6 +133,10 @@ oprot.writeI32(_iter0);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
+          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+          }
+
           return _internalResponse;
   }
 

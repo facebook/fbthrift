@@ -26,24 +26,36 @@ public class MyServiceBlockingReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> query(final test.fixtures.includes.MyStruct s, final test.fixtures.includes.includes.Included i) {
-        return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+        reactor.core.publisher.Mono<Void> _m = reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
                 try {
                     _delegate.query(s, i);
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            });
+
+        if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+        }
+
+        return _m;
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> hasArgDocs(final test.fixtures.includes.MyStruct s, final test.fixtures.includes.includes.Included i) {
-        return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+        reactor.core.publisher.Mono<Void> _m = reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
                 try {
                     _delegate.hasArgDocs(s, i);
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            });
+
+        if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+        }
+
+        return _m;
     }
 
 }

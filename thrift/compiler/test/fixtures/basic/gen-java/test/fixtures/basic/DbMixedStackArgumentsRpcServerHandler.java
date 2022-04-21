@@ -99,8 +99,8 @@ oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .getDataByKey0(key)
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .getDataByKey0(key))
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -131,6 +131,10 @@ oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
+          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+          }
+
           return _internalResponse;
   }
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_getDataByKey1_request_readers() {
@@ -184,8 +188,8 @@ oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
-            _delegate
-            .getDataByKey1(key)
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .getDataByKey1(key))
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
@@ -216,6 +220,10 @@ oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
+          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+          }
+
           return _internalResponse;
   }
 

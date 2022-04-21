@@ -40,22 +40,34 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:exten
     @java.lang.Override
     public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
         {{#function:voidType}}
-        return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+        reactor.core.publisher.Mono<Void> _m = reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
                 try {
                     _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            });
+
+        if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+        }
+
+        return _m;
         {{/function:voidType}}
         {{^function:voidType}}
-        return reactor.core.publisher.Mono.fromSupplier(() -> {
+        reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> _m =  reactor.core.publisher.Mono.fromSupplier(() -> {
                 try {
                     return _delegate.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            });
+
+        if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+        }
+
+        return _m;
         {{/function:voidType}}
     }
 
@@ -86,22 +98,35 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:exten
         @java.lang.Override
         public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
             {{#function:voidType}}
-            return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+
+             reactor.core.publisher.Mono<Void> _m = reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
                     try {
                         _delegateInteraction.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
                     } catch (Throwable _e) {
                         throw reactor.core.Exceptions.propagate(_e);
                     }
-                }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+                });
+
+                if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+                    _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+                }
+
+                return _m;
             {{/function:voidType}}
             {{^function:voidType}}
-            return reactor.core.publisher.Mono.fromSupplier(() -> {
+                reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> _m = reactor.core.publisher.Mono.fromSupplier(() -> {
                     try {
                         return _delegateInteraction.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
                     } catch (Throwable _e) {
                         throw reactor.core.Exceptions.propagate(_e);
                     }
-                }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+                });
+
+                if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+                    _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+                }
+
+                return _m;
             {{/function:voidType}}
         }
 
