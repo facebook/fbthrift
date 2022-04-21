@@ -16,7 +16,10 @@
 
 #pragma once
 
+#include <fizz/client/FizzClientContext.h>
+#include <fizz/protocol/CertificateVerifier.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/SSLContext.h>
 #include <thrift/conformance/stresstest/if/gen-cpp2/StressTest.h>
 
 namespace apache {
@@ -30,6 +33,7 @@ enum class ClientSecurity {
 };
 
 struct ClientConnectionConfig {
+  folly::SocketAddress serverHost;
   ClientSecurity security;
   std::string certPath;
   std::string keyPath;
@@ -39,9 +43,14 @@ struct ClientConnectionConfig {
 class ClientFactory {
  public:
   static std::unique_ptr<StressTestAsyncClient> createClient(
-      const folly::SocketAddress& addr,
-      folly::EventBase* evb,
-      const ClientConnectionConfig& cfg);
+      folly::EventBase* evb, const ClientConnectionConfig& cfg);
+
+  static void useCustomSslContext(
+      std::function<std::shared_ptr<folly::SSLContext>()> fn);
+  static void useCustomFizzClientContext(
+      std::function<std::shared_ptr<fizz::client::FizzClientContext>()> fn);
+  static void useCustomFizzVerifier(
+      std::function<std::shared_ptr<fizz::CertificateVerifier>()> fn);
 };
 
 } // namespace stress

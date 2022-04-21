@@ -49,7 +49,7 @@ struct ClientThreadMemoryStats {
 
 class ClientRunner {
  public:
-  ClientRunner(const ClientConfig& config, const folly::SocketAddress& addr);
+  explicit ClientRunner(const ClientConfig& config);
   ~ClientRunner();
 
   void run(const StressTestBase* test);

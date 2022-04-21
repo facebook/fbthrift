@@ -34,10 +34,7 @@ void ClientThreadMemoryStats::combine(const ClientThreadMemoryStats& other) {
 
 class ClientThread : public folly::HHWheelTimer::Callback {
  public:
-  ClientThread(
-      const ClientConfig& cfg,
-      const folly::SocketAddress& addr,
-      folly::CancellationSource& cancelSource)
+  ClientThread(const ClientConfig& cfg, folly::CancellationSource& cancelSource)
       : memoryHistogram_(50, 0, 1024 * 1024 * 1024 /* 1GB */),
         cancelSource_(cancelSource) {
     auto* evb = thread_.getEventBase();
@@ -47,7 +44,7 @@ class ClientThread : public folly::HHWheelTimer::Callback {
       memoryStats_.threadStart = getThreadMemoryUsage();
       for (size_t i = 0; i < cfg.numClientsPerThread; i++) {
         clients_.emplace_back(std::make_unique<StressTestClient>(
-            ClientFactory::createClient(addr, evb, cfg.connConfig), rpcStats_));
+            ClientFactory::createClient(evb, cfg.connConfig), rpcStats_));
       }
       // capture memory usage after connections are established
       memoryStats_.connectionsEstablished = getThreadMemoryUsage();
@@ -114,17 +111,15 @@ class ClientThread : public folly::HHWheelTimer::Callback {
   folly::ScopedEventBaseThread thread_;
 };
 
-ClientRunner::ClientRunner(
-    const ClientConfig& config, const folly::SocketAddress& addr)
-    : clientThreads_() {
+ClientRunner::ClientRunner(const ClientConfig& config) : clientThreads_() {
   for (size_t i = 0; i < config.numClientThreads; i++) {
     clientThreads_.emplace_back(
-        std::make_unique<ClientThread>(config, addr, cancelSource_));
+        std::make_unique<ClientThread>(config, cancelSource_));
   }
 }
 
 ClientRunner::~ClientRunner() {
-  // need destructor here so that ClientThread definition is available
+  // need destructor in .cpp for ClientThread definition to be available
 }
 
 void ClientRunner::run(const StressTestBase* test) {
