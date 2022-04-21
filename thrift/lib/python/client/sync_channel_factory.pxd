@@ -12,28 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# cython: c_string_type=unicode, c_string_encoding=utf8
-
 from thrift.python.client cimport ssl as thrift_ssl
-from thrift.python.client.request_channel cimport ClientType as cClientType
-from thrift.python.client.request_channel import ClientType
-from thrift.python.client.sync_channel_factory cimport create_channel
+from thrift.python.client.request_channel cimport (
+    ClientType as cClientType,
+    RequestChannel,
+)
 from thrift.python.serializer cimport Protocol as cProtocol
 
-
-def get_client(
-    clientKlass,
-    *,
-    host=None,
-    port=None,
-    path=None,
-    double timeout=1,
-    cClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
-    cProtocol protocol = cProtocol.COMPACT,
-    thrift_ssl.SSLContext ssl_context=None,
-    double ssl_timeout=1,
-):
-    channel = create_channel(
-        host, port, path, timeout, client_type, protocol, ssl_context, ssl_timeout
-    )
-    return clientKlass.Sync(channel)
+cdef RequestChannel create_channel(
+    object host,
+    object port,
+    object path,
+    double timeout,
+    cClientType client_type,
+    cProtocol protocol,
+    thrift_ssl.SSLContext ssl_context,
+    double ssl_timeout,
+)

@@ -19,7 +19,6 @@ import typing
 from thrift.python.client.client_wrapper import Client, TAsyncClient, TSyncClient
 from thrift.python.client.request_channel import ClientType
 from thrift.python.client.ssl import SSLContext
-from thrift.python.client.sync_client import SyncClient
 from thrift.python.serializer import Protocol
 
 Path = typing.Union[str, bytes, os.PathLike[str], os.PathLike[bytes]]
