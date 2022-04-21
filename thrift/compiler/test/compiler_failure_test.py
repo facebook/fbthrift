@@ -174,8 +174,8 @@ class CompilerFailureTest(unittest.TestCase):
                 struct Foo {
                     i32 f1;  // auto id = -1
                     -2: i32 f2; // auto and manual id = -2
-                    -16384: i32 f3; // min value.
-                    -16385: i32 f4; // min value - 1.
+                    -999: i32 f3; // min value.
+                    -1000: i32 f4; // min value - 1.
                 }
                 """
             ),
@@ -184,8 +184,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[WARNING:foo.thrift:3] Nonpositive value (-2) not allowed as a field id.\n"
-            "[WARNING:foo.thrift:4] Nonpositive field id (-16384) differs from what is auto-assigned by thrift. The id must positive or -3.\n"
-            "[WARNING:foo.thrift:5] Nonpositive field id (-16385) differs from what is auto-assigned by thrift. The id must positive or -4.\n"
+            "[WARNING:foo.thrift:4] Nonpositive field id (-999) differs from what is auto-assigned by thrift. The id must positive or -3.\n"
+            "[WARNING:foo.thrift:5] Nonpositive field id (-1000) differs from what is auto-assigned by thrift. The id must positive or -4.\n"
             "[WARNING:foo.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[WARNING:foo.thrift:4] No field id specified for `f3`, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[WARNING:foo.thrift:5] No field id specified for `f4`, resulting protocol may have conflicts or not be backwards compatible!\n",
@@ -195,9 +195,9 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("--allow-neg-keys", "foo.thrift")
         self.assertEqual(
             err,
-            "[WARNING:foo.thrift:4] Nonpositive field id (-16384) differs from what would be auto-assigned by thrift (-3).\n"
+            "[WARNING:foo.thrift:4] Nonpositive field id (-999) differs from what would be auto-assigned by thrift (-3).\n"
             "[WARNING:foo.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
-            "[FAILURE:foo.thrift:5] Reserved field id (-16385) cannot be used for `f4`.\n",
+            "[FAILURE:foo.thrift:5] Reserved field id (-1000) cannot be used for `f4`.\n",
         )
         self.assertEqual(ret, 1)
 
@@ -207,7 +207,7 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 struct Foo {
-                    -16384: i32 f1; // min value.
+                    -999: i32 f1; // min value.
                     i32 f2; // auto id = -2 or min value - 1.
                 }
                 """
@@ -216,7 +216,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[WARNING:foo.thrift:2] Nonpositive field id (-16384) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
+            "[WARNING:foo.thrift:2] Nonpositive field id (-999) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
             "[WARNING:foo.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[WARNING:foo.thrift:3] No field id specified for `f2`, resulting protocol may have conflicts or not be backwards compatible!\n",
         )
@@ -225,16 +225,13 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("--allow-neg-keys", "foo.thrift")
         self.assertEqual(
             err,
-            "[WARNING:foo.thrift:2] Nonpositive field id (-16384) differs from what would be auto-assigned by thrift (-1).\n"
+            "[WARNING:foo.thrift:2] Nonpositive field id (-999) differs from what would be auto-assigned by thrift (-1).\n"
             "[FAILURE:foo.thrift:3] Cannot allocate an id for `f2`. Automatic field ids are exhausted.\n",
         )
         self.assertEqual(ret, 1)
 
     def test_too_many_fields(self):
-        reserved_id = int.from_bytes(
-            [int("10111111", 2), 255], byteorder="big", signed=True
-        )
-        id_count = -reserved_id
+        id_count = 1000
         lines = ["struct Foo {"] + [f"i32 field_{i}" for i in range(id_count)] + ["}"]
         write_file("foo.thrift", "\n".join(lines))
 
