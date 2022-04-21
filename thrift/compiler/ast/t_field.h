@@ -50,8 +50,8 @@ using t_field_id = int16_t;
  */
 class t_field final : public t_named {
  public:
-  // Field ids < -999 are for internal use
-  static constexpr auto min_id = -999;
+  // Field ids < -32 are for internal use
+  static constexpr auto min_id = -32;
 
   /**
    * Constructor for t_field
