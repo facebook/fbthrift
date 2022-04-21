@@ -53,10 +53,10 @@ class parsing_driver::lex_handler_impl : public lex_handler {
   // as an optional prefix before either a definition or standalone at
   // the header. Hence this method of "pushing" it into the driver and
   // "pop-ing" it on the node as needed.
-  void on_doc_comment(const char* text, int lineno) override {
+  void on_doc_comment(const char* text, source_location loc) override {
     driver_.clear_doctext();
     driver_.doctext = driver_.strip_doctext(text);
-    driver_.doctext_lineno = lineno;
+    driver_.doctext_lineno = driver_.get_lineno(loc);
   }
 };
 
@@ -64,7 +64,10 @@ parsing_driver::parsing_driver(
     diagnostic_context& ctx, std::string path, parsing_params parse_params)
     : lex_handler_(std::make_unique<lex_handler_impl>(*this)),
       lexer_(std::make_unique<lexer>(
-          lexer::from_string(*lex_handler_, ctx, path, {}))),
+          source_mgr_,
+          *lex_handler_,
+          ctx,
+          source{source_location::invalid(), ""})),
       params(std::move(parse_params)),
       doctext(boost::none),
       doctext_lineno(0),
@@ -83,8 +86,13 @@ parsing_driver::parsing_driver(
  */
 parsing_driver::~parsing_driver() = default;
 
-int parsing_driver::get_lineno() const {
-  return lexer_->lineno();
+int parsing_driver::get_lineno(source_location loc) {
+  if (loc == source_location::invalid()) {
+    loc = lexer_->location();
+  }
+  return loc != source_location::invalid()
+      ? resolved_location(loc, source_mgr_).line()
+      : 0;
 }
 
 std::string parsing_driver::get_text() const {
@@ -115,8 +123,8 @@ void parsing_driver::parse_file() {
   assert(!ctx_.visiting());
   ctx_.begin_visit(*program);
   try {
-    lexer_ =
-        std::make_unique<lexer>(lexer::from_file(*lex_handler_, ctx_, path));
+    lexer_ = std::make_unique<lexer>(
+        source_mgr_, *lex_handler_, ctx_, source_mgr_.add_file(path));
     reset_locations();
   } catch (std::runtime_error const& ex) {
     end_parsing(ex.what());
@@ -164,18 +172,18 @@ void parsing_driver::parse_file() {
   program = old_program;
 
   // Parse the program file
+  auto src = source{source_location::invalid(), {}};
   try {
-    lexer_ =
-        std::make_unique<lexer>(lexer::from_file(*lex_handler_, ctx_, path));
+    src = source_mgr_.add_file(path);
+    lexer_ = std::make_unique<lexer>(source_mgr_, *lex_handler_, ctx_, src);
     reset_locations();
   } catch (std::runtime_error const& ex) {
     end_parsing(ex.what());
   }
 
   // Compute locations in the program mode.
-  boost::string_view source = lexer_->source();
-  for (size_t i = 0; i < source.size(); ++i) {
-    if (source[i] == '\n') {
+  for (size_t i = 0; i < src.text.size(); ++i) {
+    if (src.text[i] == '\n') {
       program->add_line_offset(i + 1);
     }
   }
@@ -495,7 +503,7 @@ std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
   auto ttype = const_struct->ttype(); // Copy the t_type_ref.
   auto result = std::make_unique<t_const>(
       program, std::move(ttype), "", std::move(const_struct));
-  result->set_lineno(lexer_->lineno());
+  result->set_lineno(get_lineno());
   return result;
 }
 
@@ -672,12 +680,12 @@ void parsing_driver::add_include(std::string name) {
   assert(!path.empty()); // Should have throw an exception if not found.
 
   if (program_cache.find(path) == program_cache.end()) {
-    auto included_program = program->add_include(path, name, lexer_->lineno());
+    auto included_program = program->add_include(path, name, get_lineno());
     program_cache[path] = included_program.get();
     program_bundle->add_program(std::move(included_program));
   } else {
     auto include = std::make_unique<t_include>(program_cache[path]);
-    include->set_lineno(lexer_->lineno());
+    include->set_lineno(get_lineno());
     program->add_include(std::move(include));
   }
 }
@@ -703,7 +711,7 @@ const t_type* parsing_driver::add_placeholder_typedef(
     std::unique_ptr<t_placeholder_typedef> node,
     std::unique_ptr<t_annotations> annotations) {
   const t_type* result(node.get());
-  node->set_lineno(lexer_->lineno());
+  node->set_lineno(get_lineno());
   set_annotations(node.get(), std::move(annotations));
   program->add_placeholder_typedef(std::move(node));
   return result;

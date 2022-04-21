@@ -18,7 +18,9 @@
 
 #include <string>
 #include <vector>
-#include <boost/utility/string_view.hpp>
+#include <fmt/core.h>
+
+#include <thrift/compiler/source_location.h>
 
 // This is a macro because of a difference between the OSS and internal builds.
 #ifndef THRIFTY_HH
@@ -38,39 +40,32 @@ class lex_handler {
   virtual ~lex_handler() {}
 
   // Invoked on a documentation comment such as `/** ... */` or `/// ...`.
-  virtual void on_doc_comment(const char* text, int lineno) = 0;
+  virtual void on_doc_comment(const char* text, source_location loc) = 0;
 };
 
 // A Thrift lexer.
 class lexer {
  private:
+  source_manager* source_mgr_;
   lex_handler* handler_;
   diagnostics_engine* diags_;
   std::string filename_;
-  std::vector<char> source_; // Source being lexed with a terminating '\0'.
+  fmt::string_view source_; // Source being lexed; has a terminating '\0'.
+  source_location start_;
   const char* ptr_; // Current position in the source.
   const char* token_start_;
-  yy::position token_pos_;
-  const char* line_start_;
-  int lineno_ = 0;
-
-  lexer(
-      lex_handler& handler,
-      diagnostics_engine& diags,
-      std::string filename,
-      std::vector<char> source);
 
   const char* end() const { return source_.data() + source_.size() - 1; }
 
-  yy::position make_position() {
-    return yy::position(&filename_, lineno_, ptr_ - line_start_ + 1);
+  yy::location make_location() {
+    auto make_position = [this](const char* p) {
+      auto loc = resolved_location(start_ + (p - source_.data()), *source_mgr_);
+      return yy::position(&filename_, loc.line(), loc.column());
+    };
+    return {make_position(token_start_), make_position(ptr_)};
   }
-  yy::location make_location() { return {token_pos_, make_position()}; }
 
-  void start_token() {
-    token_start_ = ptr_;
-    token_pos_ = make_position();
-  }
+  void start_token() { token_start_ = ptr_; }
 
   // Reports a failure if the parsed value cannot fit in the widest supported
   // representation, i.e. int64_t and double.
@@ -81,8 +76,6 @@ class lexer {
   yy::parser::symbol_type report_error(T&&... args);
   yy::parser::symbol_type unexpected_token();
 
-  void update_line();
-
   enum class comment_lex_result { skipped, doc_comment, unterminated };
 
   void skip_line_comment();
@@ -91,37 +84,22 @@ class lexer {
   comment_lex_result lex_whitespace_or_comment();
 
  public:
+  lexer(
+      source_manager& sm,
+      lex_handler& handler,
+      diagnostics_engine& diags,
+      source src);
+
   lexer(lexer&& other) = default;
   lexer& operator=(lexer&& other) = default;
 
-  // Creates a lexer from a file.
-  static lexer from_file(
-      lex_handler& handler, diagnostics_engine& diags, std::string filename);
-
-  // Creates a lexer from a string; filename is used for source locations.
-  static lexer from_string(
-      lex_handler& handler,
-      diagnostics_engine& diags,
-      std::string filename,
-      std::string source) {
-    const char* start = source.c_str();
-    return {
-        handler,
-        diags,
-        std::move(filename),
-        {start, start + source.size() + 1}};
-  }
-
   yy::parser::symbol_type get_next_token();
 
-  int lineno() const { return lineno_; }
+  // Returns the current source location.
+  source_location location() const { return start_ + (ptr_ - source_.data()); }
 
   // Returns the current token as a string.
   std::string token_text() const { return {token_start_, ptr_}; }
-
-  boost::string_view source() const {
-    return {source_.data(), source_.size() - 1};
-  }
 };
 
 } // namespace compiler

@@ -42,6 +42,7 @@
 #include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/parse/t_ref.h>
+#include <thrift/compiler/source_location.h>
 
 // This is a macro because of a difference between the OSS and internal builds.
 #ifndef LOCATION_HH
@@ -129,11 +130,11 @@ struct parsing_params {
 
 class parsing_driver {
  private:
+  source_manager source_mgr_;
   class lex_handler_impl;
   std::unique_ptr<lex_handler_impl> lex_handler_;
   std::unique_ptr<lexer> lexer_;
 
-  int get_lineno() const;
   std::string get_text() const;
 
  public:
@@ -178,6 +179,8 @@ class parsing_driver {
 
   const lexer& get_lexer() const { return *lexer_; }
   lexer& get_lexer() { return *lexer_; }
+
+  int get_lineno(source_location loc = source_location::invalid());
 
   /**
    * Parses a program and returns the resulted AST.

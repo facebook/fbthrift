@@ -23,7 +23,6 @@
 #include <string.h>
 
 #include <algorithm>
-#include <stdexcept>
 #include <unordered_map>
 #include <utility>
 
@@ -36,34 +35,6 @@ namespace thrift {
 namespace compiler {
 
 namespace {
-
-class file {
- private:
-  FILE* file_;
-
- public:
-  file(const char* filename, const char* mode) : file_(fopen(filename, mode)) {
-    if (!file_) {
-      throw std::runtime_error(std::string("failed to open file: ") + filename);
-    }
-  }
-  ~file() {
-    int result = fclose(file_);
-    (void)result;
-    assert(result == 0);
-  }
-
-  file(const file&) = delete;
-  void operator=(const file&) = delete;
-
-  size_t read(char* buffer, size_t size) {
-    size_t result = fread(buffer, 1, size, file_);
-    if (result == 0 && !feof(file_)) {
-      throw std::runtime_error("error reading from file");
-    }
-    return result;
-  }
-};
 
 bool is_whitespace(char c) {
   return c == ' ' || c == '\t' || c == '\r' || c == '\n';
@@ -189,29 +160,20 @@ const std::unordered_map<std::string, make_token_fun> keywords = {
 } // namespace
 
 lexer::lexer(
+    source_manager& sm,
     lex_handler& handler,
     diagnostics_engine& diags,
-    std::string filename,
-    std::vector<char> source)
-    : handler_(&handler),
+    source src)
+    : source_mgr_(&sm),
+      handler_(&handler),
       diags_(&diags),
-      filename_(std::move(filename)),
-      source_(std::move(source)) {
+      source_(src.text),
+      start_(src.start) {
   ptr_ = source_.data();
   token_start_ = ptr_;
-  line_start_ = ptr_;
-}
-
-lexer lexer::from_file(
-    lex_handler& handler, diagnostics_engine& diags, std::string filename) {
-  auto f = file(filename.c_str(), "rb");
-  char buffer[4096];
-  auto source = std::vector<char>();
-  while (size_t count = f.read(buffer, sizeof(buffer))) {
-    source.insert(source.end(), buffer, buffer + count);
+  if (src.start != source_location::invalid()) {
+    filename_ = resolved_location(src.start, sm).file_name();
   }
-  source.push_back('\0');
-  return {handler, diags, std::move(filename), std::move(source)};
 }
 
 parser::symbol_type lexer::make_int_constant(int offset, int base) {
@@ -247,10 +209,11 @@ parser::symbol_type lexer::make_float_constant() {
 
 template <typename... T>
 parser::symbol_type lexer::report_error(T&&... args) {
+  auto loc = resolved_location(location(), *source_mgr_);
   diags_->report(
       diagnostic_level::failure,
-      filename_,
-      lineno_,
+      loc.file_name(),
+      loc.line(),
       token_text(),
       std::forward<T>(args)...);
   return parser::make_tok_error(make_location());
@@ -260,15 +223,6 @@ parser::symbol_type lexer::unexpected_token() {
   return report_error([&](auto& o) {
     o << "Unexpected token in input: " << token_text() << "\n";
   });
-}
-
-void lexer::update_line() {
-  for (const char* p = token_start_; p != ptr_; ++p) {
-    if (*p == '\n') {
-      ++lineno_;
-      line_start_ = p + 1;
-    }
-  }
 }
 
 void lexer::skip_line_comment() {
@@ -291,9 +245,8 @@ bool lexer::lex_doc_comment() {
       ++ptr_;
     }
   } while (strncmp(ptr_, prefix, prefix_size) == 0);
-  update_line();
   if (!is_inline) {
-    handler_->on_doc_comment(token_text().c_str(), lineno_);
+    handler_->on_doc_comment(token_text().c_str(), location());
   }
   return is_inline;
 }
@@ -310,7 +263,6 @@ lexer::comment_lex_result lexer::lex_block_comment() {
     ++p; // Skip '*'.
   } while (*p != '/');
   ptr_ = p + 1; // Skip '/'.
-  update_line();
   if (token_start_[2] == '*') {
     if (token_start_[3] == '<') {
       return comment_lex_result::doc_comment;
@@ -319,7 +271,7 @@ lexer::comment_lex_result lexer::lex_block_comment() {
     auto non_star = std::find_if(
         token_start_ + 2, ptr_ - 1, [](char c) { return c != '*'; });
     if (non_star != ptr_ - 1) {
-      handler_->on_doc_comment(token_text().c_str(), lineno_);
+      handler_->on_doc_comment(token_text().c_str(), location());
     }
   }
   return comment_lex_result::skipped;
@@ -329,9 +281,6 @@ lexer::comment_lex_result lexer::lex_whitespace_or_comment() {
   for (;;) {
     switch (*ptr_) {
       case '\n':
-        ++lineno_;
-        line_start_ = ptr_ + 1;
-        BOOST_FALLTHROUGH;
       case ' ':
       case '\t':
       case '\r':
@@ -368,7 +317,6 @@ lexer::comment_lex_result lexer::lex_whitespace_or_comment() {
 }
 
 parser::symbol_type lexer::get_next_token() {
-  lineno_ = std::max(lineno_, 1);
   if (lex_whitespace_or_comment() == comment_lex_result::doc_comment) {
     return parser::make_tok_inline_doc(token_text(), make_location());
   }
@@ -452,7 +400,6 @@ parser::symbol_type lexer::get_next_token() {
     const char* p = std::find(ptr_, end(), c);
     if (*p) {
       ptr_ = p + 1;
-      update_line();
       return parser::make_tok_literal(
           std::string(token_start_ + 1, p), make_location());
     }

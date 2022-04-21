@@ -54,6 +54,7 @@ add_library(
   diagnostic.cc
   filesystem.cc
   platform.cc
+  source_location.cc
   util.cc
 
   parse/lexer.cc

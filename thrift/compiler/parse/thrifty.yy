@@ -886,7 +886,7 @@ Performs:
         std::move(name),
         std::make_unique<t_paramlist>(driver.program)
       );
-      $$->set_lineno(driver.get_lexer().lineno());
+      $$->set_lineno(driver.get_lineno());
       $$->set_is_interaction_constructor();
     }
 

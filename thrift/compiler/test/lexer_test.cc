@@ -23,16 +23,19 @@ using namespace apache::thrift::compiler;
 struct test_lex_handler : lex_handler {
   std::string doc_comment;
 
-  void on_doc_comment(const char* text, int) override { doc_comment = text; }
+  void on_doc_comment(const char* text, source_location) override {
+    doc_comment = text;
+  }
 };
 
 class LexerTest : public testing::Test {
  public:
+  source_manager source_mgr;
   test_lex_handler handler;
   diagnostics_engine diags;
 
   lexer make_lexer(const std::string& source) {
-    return lexer::from_string(handler, diags, "", source);
+    return {source_mgr, handler, diags, source_mgr.add_string("", source)};
   }
 
   LexerTest() : diags([](diagnostic) {}) {}
