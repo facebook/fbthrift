@@ -407,5 +407,128 @@ Cpp2Worker::PerServiceMetadata::getBaseContextForRequest(
   return nullptr;
 }
 
+void Cpp2Worker::dispatchRequest(
+    AsyncProcessor* processor,
+    ResponseChannelRequest::UniquePtr request,
+    SerializedCompressedRequest&& serializedCompressedRequest,
+    const PerServiceMetadata::FindMethodResult& methodMetadataResult,
+    protocol::PROTOCOL_TYPES protocolId,
+    Cpp2RequestContext* cpp2ReqCtx,
+    concurrency::ThreadManager* tm,
+    server::ServerConfigs* serverConfigs) {
+  auto eb = cpp2ReqCtx->getConnectionContext()
+                ->getWorkerContext()
+                ->getWorkerEventBase();
+  try {
+    if (auto* found = std::get_if<PerServiceMetadata::MetadataFound>(
+            &methodMetadataResult);
+        LIKELY(found != nullptr)) {
+      if (!serverConfigs->resourcePoolSet().empty()) {
+        if (!found->metadata.rpcKind) {
+          std::string_view methodName = cpp2ReqCtx->getMethodName();
+          AsyncProcessorHelper::sendUnknownMethodError(
+              std::move(request), methodName);
+          return;
+        }
+
+        auto priority = cpp2ReqCtx->getCallPriority();
+        if (priority == concurrency::N_PRIORITIES) {
+          priority = found->metadata.priority.value_or(concurrency::NORMAL);
+        }
+        cpp2ReqCtx->setRequestExecutionScope(
+            concurrency::PriorityThreadManager::ExecutionScope(priority));
+
+        ServerRequest serverRequest(
+            std::move(request),
+            std::move(serializedCompressedRequest),
+            cpp2ReqCtx,
+            protocolId,
+            folly::RequestContext::saveContext(),
+            processor,
+            &found->metadata);
+
+        // Once we remove the old code we'll move validateRpcKind to a helper.
+        if (!GeneratedAsyncProcessor::validateRpcKind(
+                serverRequest.request(), *found->metadata.rpcKind)) {
+          return;
+        }
+
+        auto poolResult = AsyncProcessorHelper::selectResourcePool(
+            serverRequest, found->metadata);
+        if (auto* reject = std::get_if<ServerRequestRejection>(&poolResult)) {
+          auto errorCode = kAppOverloadedErrorCode;
+          if (reject->applicationException().getType() ==
+              TApplicationException::UNKNOWN_METHOD) {
+            errorCode = kMethodUnknownErrorCode;
+          }
+          serverRequest.request()->sendErrorWrapped(
+              folly::exception_wrapper(
+                  folly::in_place, std::move(*reject).applicationException()),
+              errorCode);
+          return;
+        }
+
+        auto resourcePoolHandle =
+            std::get_if<std::reference_wrapper<const ResourcePoolHandle>>(
+                &poolResult);
+        DCHECK(serverConfigs->resourcePoolSet().hasResourcePool(
+            *resourcePoolHandle));
+        auto* resourcePool =
+            &serverConfigs->resourcePoolSet().resourcePool(*resourcePoolHandle);
+        // Allow the priority to override the default resource pool
+        if (priority != concurrency::NORMAL &&
+            resourcePoolHandle->get().index() ==
+                ResourcePoolHandle::kDefaultAsync) {
+          resourcePool = &serverConfigs->resourcePoolSet()
+                              .resourcePoolByPriority_deprecated(priority);
+        }
+        apache::thrift::detail::ServerRequestHelper::setExecutor(
+            serverRequest, resourcePool->executor().value_or(nullptr));
+        auto result = resourcePool->accept(std::move(serverRequest));
+        if (result) {
+          auto errorCode = kQueueOverloadedErrorCode;
+          serverRequest.request()->sendErrorWrapped(
+              folly::exception_wrapper(
+                  folly::in_place,
+                  std::move(std::move(result).value()).applicationException()),
+              errorCode);
+          return;
+        }
+      } else {
+        processor->processSerializedCompressedRequestWithMetadata(
+            std::move(request),
+            std::move(serializedCompressedRequest),
+            found->metadata,
+            protocolId,
+            cpp2ReqCtx,
+            eb,
+            tm);
+      }
+    } else if (std::holds_alternative<
+                   PerServiceMetadata::MetadataNotImplemented>(
+                   methodMetadataResult)) {
+      // The AsyncProcessorFactory does not implement createMethodMetadata
+      // so we need to fallback to processSerializedCompressedRequest.
+      processor->processSerializedCompressedRequest(
+          std::move(request),
+          std::move(serializedCompressedRequest),
+          protocolId,
+          cpp2ReqCtx,
+          eb,
+          tm);
+    } else if (std::holds_alternative<PerServiceMetadata::MetadataNotFound>(
+                   methodMetadataResult)) {
+      std::string_view methodName = cpp2ReqCtx->getMethodName();
+      AsyncProcessorHelper::sendUnknownMethodError(
+          std::move(request), methodName);
+    } else {
+      LOG(FATAL) << "Invalid PerServiceMetadata from Cpp2Worker";
+    }
+  } catch (...) {
+    LOG(DFATAL) << "AsyncProcessor::process exception: "
+                << folly::exceptionStr(std::current_exception());
+  }
+}
+
 } // namespace thrift
 } // namespace apache

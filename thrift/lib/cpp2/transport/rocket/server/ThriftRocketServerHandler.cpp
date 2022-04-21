@@ -611,115 +611,15 @@ void ThriftRocketServerHandler::handleRequestCommon(
           ? CompressionAlgorithm::NONE
           : metadata.compression_ref().value_or(CompressionAlgorithm::NONE));
 
-  try {
-    if (auto* found = std::get_if<PerServiceMetadata::MetadataFound>(
-            &methodMetadataResult);
-        LIKELY(found != nullptr)) {
-      if (!worker_->getServer()->resourcePoolSet().empty()) {
-        if (!found->metadata.rpcKind) {
-          std::string_view methodName = request->getMethodName();
-          AsyncProcessorHelper::sendUnknownMethodError(
-              std::move(request), methodName);
-          return;
-        }
-
-        auto priority = cpp2ReqCtx->getCallPriority();
-        if (priority == concurrency::N_PRIORITIES) {
-          priority = found->metadata.priority.value_or(concurrency::NORMAL);
-        }
-        cpp2ReqCtx->setRequestExecutionScope(
-            concurrency::PriorityThreadManager::ExecutionScope(priority));
-
-        ServerRequest serverRequest(
-            std::move(request),
-            std::move(serializedCompressedRequest),
-            cpp2ReqCtx,
-            protocolId,
-            folly::RequestContext::saveContext(),
-            processor_.get(),
-            &found->metadata);
-
-        // Once we remove the old code we'll move validateRpcKind to a helper.
-        if (!GeneratedAsyncProcessor::validateRpcKind(
-                serverRequest.request(), *found->metadata.rpcKind)) {
-          return;
-        }
-
-        auto poolResult = AsyncProcessorHelper::selectResourcePool(
-            serverRequest, found->metadata);
-        if (auto* reject = std::get_if<ServerRequestRejection>(&poolResult)) {
-          auto errorCode = kAppOverloadedErrorCode;
-          if (reject->applicationException().getType() ==
-              TApplicationException::UNKNOWN_METHOD) {
-            errorCode = kMethodUnknownErrorCode;
-          }
-          serverRequest.request()->sendErrorWrapped(
-              folly::exception_wrapper(
-                  folly::in_place, std::move(*reject).applicationException()),
-              errorCode);
-          return;
-        }
-
-        auto resourcePoolHandle =
-            std::get_if<std::reference_wrapper<const ResourcePoolHandle>>(
-                &poolResult);
-        DCHECK(serverConfigs_->resourcePoolSet().hasResourcePool(
-            *resourcePoolHandle));
-        auto* resourcePool = &serverConfigs_->resourcePoolSet().resourcePool(
-            *resourcePoolHandle);
-        // Allow the priority to override the default resource pool
-        if (priority != concurrency::NORMAL &&
-            resourcePoolHandle->get().index() ==
-                ResourcePoolHandle::kDefaultAsync) {
-          resourcePool = &serverConfigs_->resourcePoolSet()
-                              .resourcePoolByPriority_deprecated(priority);
-        }
-        apache::thrift::detail::ServerRequestHelper::setExecutor(
-            serverRequest, resourcePool->executor().value_or(nullptr));
-        auto result = resourcePool->accept(std::move(serverRequest));
-        if (result) {
-          auto errorCode = kQueueOverloadedErrorCode;
-          serverRequest.request()->sendErrorWrapped(
-              folly::exception_wrapper(
-                  folly::in_place,
-                  std::move(std::move(result).value()).applicationException()),
-              errorCode);
-          return;
-        }
-      } else {
-        processor_->processSerializedCompressedRequestWithMetadata(
-            std::move(request),
-            std::move(serializedCompressedRequest),
-            found->metadata,
-            protocolId,
-            cpp2ReqCtx,
-            eventBase_,
-            threadManager_.get());
-      }
-    } else if (std::holds_alternative<
-                   PerServiceMetadata::MetadataNotImplemented>(
-                   methodMetadataResult)) {
-      // The AsyncProcessorFactory does not implement createMethodMetadata
-      // so we need to fallback to processSerializedCompressedRequest.
-      processor_->processSerializedCompressedRequest(
-          std::move(request),
-          std::move(serializedCompressedRequest),
-          protocolId,
-          cpp2ReqCtx,
-          eventBase_,
-          threadManager_.get());
-    } else if (std::holds_alternative<PerServiceMetadata::MetadataNotFound>(
-                   methodMetadataResult)) {
-      std::string_view methodName = request->getMethodName();
-      AsyncProcessorHelper::sendUnknownMethodError(
-          std::move(request), methodName);
-    } else {
-      LOG(FATAL) << "Invalid PerServiceMetadata from Cpp2Worker";
-    }
-  } catch (...) {
-    LOG(DFATAL) << "AsyncProcessor::process exception: "
-                << folly::exceptionStr(std::current_exception());
-  }
+  Cpp2Worker::dispatchRequest(
+      processor_.get(),
+      std::move(request),
+      std::move(serializedCompressedRequest),
+      methodMetadataResult,
+      protocolId,
+      cpp2ReqCtx,
+      threadManager_.get(),
+      serverConfigs_);
 }
 
 void ThriftRocketServerHandler::handleRequestWithBadMetadata(

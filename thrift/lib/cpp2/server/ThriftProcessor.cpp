@@ -99,98 +99,15 @@ void ThriftProcessor::onThriftRequest(
   auto protoId = request->getProtoId();
   auto reqContext = request->getRequestContext();
 
-  folly::variant_match(
+  Cpp2Worker::dispatchRequest(
+      processor_.get(),
+      std::move(request),
+      SerializedCompressedRequest(std::move(payload)),
       methodMetadataResult,
-      [&](PerServiceMetadata::MetadataNotImplemented) {
-        // The AsyncProcessorFactory does not implement createMethodMetadata
-        // so we need to fallback to processSerializedCompressedRequest.
-        processor_->processSerializedCompressedRequest(
-            std::move(request),
-            SerializedCompressedRequest(std::move(payload)),
-            protoId,
-            reqContext,
-            evb,
-            server_.getThreadManager().get());
-      },
-      [&](PerServiceMetadata::MetadataNotFound) {
-        std::string_view methodName = request->getMethodName();
-        AsyncProcessorHelper::sendUnknownMethodError(
-            std::move(request), methodName);
-      },
-      [&](const PerServiceMetadata::MetadataFound& found) {
-        if (!server_.resourcePoolSet().empty()) {
-          // We need to process this using request pools
-          auto priority = reqContext->getCallPriority();
-          if (priority == concurrency::N_PRIORITIES) {
-            priority = found.metadata.priority.value_or(concurrency::NORMAL);
-          }
-          reqContext->setRequestExecutionScope(
-              concurrency::PriorityThreadManager::ExecutionScope(priority));
-
-          ServerRequest serverRequest(
-              std::move(request),
-              SerializedCompressedRequest(std::move(payload)),
-              reqContext,
-              protoId,
-              folly::RequestContext::saveContext(),
-              processor_.get(),
-              &found.metadata);
-
-          auto poolResult = AsyncProcessorHelper::selectResourcePool(
-              serverRequest, found.metadata);
-          if (auto* reject = std::get_if<ServerRequestRejection>(&poolResult)) {
-            auto errorCode = kAppOverloadedErrorCode;
-            if (reject->applicationException().getType() ==
-                TApplicationException::UNKNOWN_METHOD) {
-              errorCode = kMethodUnknownErrorCode;
-            }
-            serverRequest.request()->sendErrorWrapped(
-                folly::exception_wrapper(
-                    folly::in_place, std::move(*reject).applicationException()),
-                errorCode);
-            return;
-          }
-
-          auto resourcePoolHandle =
-              std::get_if<std::reference_wrapper<const ResourcePoolHandle>>(
-                  &poolResult);
-          DCHECK(
-              server_.resourcePoolSet().hasResourcePool(*resourcePoolHandle));
-          auto* resourcePool =
-              &server_.resourcePoolSet().resourcePool(*resourcePoolHandle);
-          // Allow the priority to override the default resource pool
-          if (priority != concurrency::NORMAL &&
-              resourcePoolHandle->get().index() ==
-                  ResourcePoolHandle::kDefaultAsync) {
-            resourcePool =
-                &server_.resourcePoolSet().resourcePoolByPriority_deprecated(
-                    priority);
-          }
-          apache::thrift::detail::ServerRequestHelper::setExecutor(
-              serverRequest, resourcePool->executor().value_or(nullptr));
-
-          auto result = resourcePool->accept(std::move(serverRequest));
-          if (result) {
-            auto errorCode = kQueueOverloadedErrorCode;
-            serverRequest.request()->sendErrorWrapped(
-                folly::exception_wrapper(
-                    folly::in_place,
-                    std::move(std::move(result).value())
-                        .applicationException()),
-                errorCode);
-            return;
-          }
-        } else {
-          processor_->processSerializedCompressedRequestWithMetadata(
-              std::move(request),
-              SerializedCompressedRequest(std::move(payload)),
-              found.metadata,
-              protoId,
-              reqContext,
-              evb,
-              server_.getThreadManager().get());
-        }
-      });
+      protoId,
+      reqContext,
+      server_.getThreadManager().get(),
+      &server_);
 }
 } // namespace thrift
 } // namespace apache

@@ -87,8 +87,9 @@ class Cpp2Worker : public IOWorkerContext,
     return worker;
   }
 
-  static std::shared_ptr<Cpp2Worker> createDummy(folly::EventBase* eventBase) {
-    std::shared_ptr<Cpp2Worker> worker(new Cpp2Worker(nullptr, {}));
+  static std::shared_ptr<Cpp2Worker> createDummy(
+      folly::EventBase* eventBase, ThriftServer* server = nullptr) {
+    std::shared_ptr<Cpp2Worker> worker(new Cpp2Worker(server, {}));
     worker->Acceptor::init(nullptr, eventBase);
     worker->IOWorkerContext::init(*eventBase);
     return worker;
@@ -234,6 +235,16 @@ class Cpp2Worker : public IOWorkerContext,
             processorFactory, processorFactory.createMethodMetadata()});
     return metadata->second;
   }
+
+  static void dispatchRequest(
+      AsyncProcessor* processor,
+      ResponseChannelRequest::UniquePtr request,
+      SerializedCompressedRequest&& serializedCompressedRequest,
+      const PerServiceMetadata::FindMethodResult& methodMetadataResult,
+      protocol::PROTOCOL_TYPES protocolId,
+      Cpp2RequestContext* cpp2ReqCtx,
+      concurrency::ThreadManager* tm,
+      server::ServerConfigs* serverConfigs);
 
  protected:
   Cpp2Worker(

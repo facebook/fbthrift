@@ -33,7 +33,7 @@ CoreTestFixture::CoreTestFixture() : processor_(server_) {
   server_.setInterface(service_);
   server_.setup();
   channel_ = std::make_shared<FakeChannel>(&eventBase_);
-  worker_ = Cpp2Worker::createDummy(&eventBase_);
+  worker_ = Cpp2Worker::createDummy(&eventBase_, &server_);
 }
 
 CoreTestFixture::~CoreTestFixture() {
