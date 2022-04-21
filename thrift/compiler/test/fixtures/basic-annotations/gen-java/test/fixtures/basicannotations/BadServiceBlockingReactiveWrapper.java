@@ -26,13 +26,19 @@ public class BadServiceBlockingReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Integer> bar() {
-        return reactor.core.publisher.Mono.fromSupplier(() -> {
+        reactor.core.publisher.Mono<Integer> _m =  reactor.core.publisher.Mono.fromSupplier(() -> {
                 try {
                     return _delegate.bar();
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            });
+
+        if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+        }
+
+        return _m;
     }
 
     public class BadInteractionImpl implements BadInteraction {
@@ -44,13 +50,20 @@ public class BadServiceBlockingReactiveWrapper
 
         @java.lang.Override
         public reactor.core.publisher.Mono<Void> foo() {
-            return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+
+             reactor.core.publisher.Mono<Void> _m = reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
                     try {
                         _delegateInteraction.foo();
                     } catch (Throwable _e) {
                         throw reactor.core.Exceptions.propagate(_e);
                     }
-                }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+                });
+
+                if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+                    _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+                }
+
+                return _m;
         }
 
         @java.lang.Override

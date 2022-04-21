@@ -181,10 +181,6 @@ public class MyServiceRpcServerHandler
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_getRandomData_request_readers() {
@@ -267,10 +263,6 @@ oprot.writeString(_iter0);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_hasDataById_request_readers() {
@@ -356,10 +348,6 @@ oprot.writeBool(_iter0);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_getDataById_request_readers() {
@@ -445,10 +433,6 @@ oprot.writeString(_iter0);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_putDataById_request_readers() {
@@ -534,10 +518,6 @@ oprot.writeString(_iter0);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_doNothing_request_readers() {
@@ -617,10 +597,6 @@ oprot.writeString(_iter0);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
 
@@ -655,9 +631,6 @@ oprot.writeString(_iter0);
     reactor.core.publisher.Mono<Void> _internalResponse =
       _delegate
       .lobDataById(id, data);
-    if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-      _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-    }
 
     return _internalResponse;
   }

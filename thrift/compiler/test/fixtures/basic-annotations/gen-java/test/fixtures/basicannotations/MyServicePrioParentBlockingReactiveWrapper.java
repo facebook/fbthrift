@@ -26,24 +26,36 @@ public class MyServicePrioParentBlockingReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> ping() {
-        return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+        reactor.core.publisher.Mono<Void> _m = reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
                 try {
                     _delegate.ping();
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            });
+
+        if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+        }
+
+        return _m;
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> pong() {
-        return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+        reactor.core.publisher.Mono<Void> _m = reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
                 try {
                     _delegate.pong();
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            });
+
+        if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+        }
+
+        return _m;
     }
 
 }

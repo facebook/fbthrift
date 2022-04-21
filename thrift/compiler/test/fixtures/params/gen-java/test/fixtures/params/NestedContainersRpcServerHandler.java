@@ -140,10 +140,6 @@ public class NestedContainersRpcServerHandler
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_mapSet_request_readers() {
@@ -226,10 +222,6 @@ public class NestedContainersRpcServerHandler
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_listMap_request_readers() {
@@ -312,10 +304,6 @@ public class NestedContainersRpcServerHandler
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_listSet_request_readers() {
@@ -398,10 +386,6 @@ public class NestedContainersRpcServerHandler
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_turtles_request_readers() {
@@ -484,10 +468,6 @@ public class NestedContainersRpcServerHandler
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
 

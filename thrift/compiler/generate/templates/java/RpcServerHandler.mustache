@@ -203,10 +203,6 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
                 }
                 {{/function:exceptions?}}
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
   {{/service:requestResponseFunctions}}
@@ -244,9 +240,6 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
     reactor.core.publisher.Mono<Void> _internalResponse =
       _delegate
       .{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
-    if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-      _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-    }
 
     return _internalResponse;
   }

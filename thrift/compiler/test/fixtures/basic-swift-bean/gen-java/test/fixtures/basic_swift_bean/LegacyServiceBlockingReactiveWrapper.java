@@ -26,13 +26,19 @@ public class LegacyServiceBlockingReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Map<String, List<Integer>>> getPoints(final Set<String> key, final long legacyStuff) {
-        return reactor.core.publisher.Mono.fromSupplier(() -> {
+        reactor.core.publisher.Mono<Map<String, List<Integer>>> _m =  reactor.core.publisher.Mono.fromSupplier(() -> {
                 try {
                     return _delegate.getPoints(key, legacyStuff);
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            });
+
+        if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+        }
+
+        return _m;
     }
 
 }

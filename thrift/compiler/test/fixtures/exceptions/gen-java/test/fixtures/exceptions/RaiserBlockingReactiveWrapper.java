@@ -26,46 +26,70 @@ public class RaiserBlockingReactiveWrapper
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> doBland() {
-        return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+        reactor.core.publisher.Mono<Void> _m = reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
                 try {
                     _delegate.doBland();
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            });
+
+        if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+        }
+
+        return _m;
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> doRaise() {
-        return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+        reactor.core.publisher.Mono<Void> _m = reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
                 try {
                     _delegate.doRaise();
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            });
+
+        if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+        }
+
+        return _m;
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<String> get200() {
-        return reactor.core.publisher.Mono.fromSupplier(() -> {
+        reactor.core.publisher.Mono<String> _m =  reactor.core.publisher.Mono.fromSupplier(() -> {
                 try {
                     return _delegate.get200();
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            });
+
+        if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+        }
+
+        return _m;
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<String> get500() {
-        return reactor.core.publisher.Mono.fromSupplier(() -> {
+        reactor.core.publisher.Mono<String> _m =  reactor.core.publisher.Mono.fromSupplier(() -> {
                 try {
                     return _delegate.get500();
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }
-            }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            });
+
+        if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+        }
+
+        return _m;
     }
 
 }

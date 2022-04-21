@@ -129,10 +129,6 @@ public class MyServiceRpcServerHandler
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_interact_request_readers() {
@@ -215,10 +211,6 @@ public class MyServiceRpcServerHandler
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_interactFast_request_readers() {
@@ -301,10 +293,6 @@ oprot.writeI32(_iter0);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
 

@@ -141,10 +141,6 @@ oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
-          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
-            _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
-          }
-
           return _internalResponse;
   }
 
