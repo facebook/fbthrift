@@ -109,15 +109,15 @@ using if_is_a = std::enable_if_t<is_a_v<CTag, Tag>, R>;
 namespace bound {
 struct is_concrete {
   template <typename Tag>
-  using apply = folly::bool_constant<type::is_concrete_v<Tag>>;
+  using apply = type::is_concrete<Tag>;
 };
 struct is_thrift_type_tag {
   template <typename Tag>
-  using apply = folly::bool_constant<type::is_thrift_type_tag_v<Tag>>;
+  using apply = type::is_thrift_type_tag<Tag>;
 };
 struct is_abstract {
   template <typename Tag>
-  using apply = folly::bool_constant<type::is_abstract_v<Tag>>;
+  using apply = type::is_abstract<Tag>;
 };
 template <typename CTag>
 struct is_a {
