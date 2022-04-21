@@ -18,7 +18,7 @@
 
 #include <folly/experimental/coro/Task.h>
 #include <folly/stats/Histogram.h>
-#include <thrift/test/stresstest/if/gen-cpp2/StressTest.h>
+#include <thrift/conformance/stresstest/if/gen-cpp2/StressTest.h>
 
 namespace apache {
 namespace thrift {

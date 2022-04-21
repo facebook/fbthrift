@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/test/stresstest/client/StressTestRegistry.h>
+#include <thrift/conformance/stresstest/client/StressTestRegistry.h>
 
 namespace apache {
 namespace thrift {

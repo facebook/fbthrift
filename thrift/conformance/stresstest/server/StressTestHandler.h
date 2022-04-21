@@ -19,7 +19,7 @@
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Sleep.h>
 #include <folly/experimental/coro/Task.h>
-#include <thrift/test/stresstest/if/gen-cpp2/StressTest.h>
+#include <thrift/conformance/stresstest/if/gen-cpp2/StressTest.h>
 
 namespace apache {
 namespace thrift {

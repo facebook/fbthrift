@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#include <thrift/test/stresstest/StressTest.h>
+#include <thrift/conformance/stresstest/StressTest.h>
 
 #include <fmt/core.h>
 #include <folly/SocketAddress.h>
 #include <folly/init/Init.h>
 #include <folly/portability/GFlags.h>
-#include <thrift/test/stresstest/client/ClientRunner.h>
-#include <thrift/test/stresstest/client/StressTestRegistry.h>
-#include <thrift/test/stresstest/util/Util.h>
+#include <thrift/conformance/stresstest/client/ClientRunner.h>
+#include <thrift/conformance/stresstest/client/StressTestRegistry.h>
+#include <thrift/conformance/stresstest/util/Util.h>
 
 using namespace apache::thrift::stress;
 

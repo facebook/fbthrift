@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#include <thrift/test/stresstest/client/ClientRunner.h>
+#include <thrift/conformance/stresstest/client/ClientRunner.h>
 
 #include <folly/experimental/coro/BlockingWait.h>
-#include <thrift/test/stresstest/util/Util.h>
+#include <thrift/conformance/stresstest/util/Util.h>
 
 namespace apache {
 namespace thrift {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/test/stresstest/client/ClientFactory.h>
+#include <thrift/conformance/stresstest/client/ClientFactory.h>
 
 #include <fizz/client/AsyncFizzClient.h>
 #include <folly/FileUtil.h>

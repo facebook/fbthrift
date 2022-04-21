@@ -14,35 +14,35 @@
  * limitations under the License.
  */
 
-#include <thrift/test/stresstest/util/Util.h>
+#pragma once
 
-#include <folly/memory/MallctlHelper.h>
+#include <folly/io/async/EventBase.h>
+#include <thrift/conformance/stresstest/if/gen-cpp2/StressTest.h>
 
 namespace apache {
 namespace thrift {
 namespace stress {
 
-namespace {
-size_t* getStatsPtr(const char* name) {
-  size_t* ptr{nullptr};
-  if (folly::usingJEMalloc()) {
-    folly::mallctlRead(name, &ptr);
-  }
-  return ptr;
-}
-} // namespace
+enum class ClientSecurity {
+  None = 0,
+  TLS,
+  FIZZ,
+};
 
-void resetMemoryStats() {
-  if (folly::usingJEMalloc()) {
-    mallctl("prof.reset", nullptr, nullptr, nullptr, 0);
-  }
-}
+struct ClientConnectionConfig {
+  ClientSecurity security;
+  std::string certPath;
+  std::string keyPath;
+  std::string trustedCertsPath;
+};
 
-size_t getThreadMemoryUsage() {
-  static size_t* allocatedp = getStatsPtr("thread.allocatedp");
-  static size_t* deallocatedp = getStatsPtr("thread.deallocatedp");
-  return allocatedp && deallocatedp ? (*allocatedp - *deallocatedp) : 0;
-}
+class ClientFactory {
+ public:
+  static std::unique_ptr<StressTestAsyncClient> createClient(
+      const folly::SocketAddress& addr,
+      folly::EventBase* evb,
+      const ClientConnectionConfig& cfg);
+};
 
 } // namespace stress
 } // namespace thrift

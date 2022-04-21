@@ -16,32 +16,36 @@
 
 #pragma once
 
-#include <folly/io/async/EventBase.h>
-#include <thrift/test/stresstest/if/gen-cpp2/StressTest.h>
+#include <folly/Function.h>
+#include <folly/Indestructible.h>
+#include <thrift/conformance/stresstest/client/StressTestBase.h>
 
 namespace apache {
 namespace thrift {
 namespace stress {
 
-enum class ClientSecurity {
-  None = 0,
-  TLS,
-  FIZZ,
-};
-
-struct ClientConnectionConfig {
-  ClientSecurity security;
-  std::string certPath;
-  std::string keyPath;
-  std::string trustedCertsPath;
-};
-
-class ClientFactory {
+/**
+ * Registry for stress tests
+ */
+class StressTestRegistry {
  public:
-  static std::unique_ptr<StressTestAsyncClient> createClient(
-      const folly::SocketAddress& addr,
-      folly::EventBase* evb,
-      const ClientConnectionConfig& cfg);
+  using Create = std::unique_ptr<StressTestBase>() const;
+
+  static StressTestRegistry& getInstance();
+
+  bool add(std::string name, folly::Function<Create> createFn);
+
+  std::vector<std::string> listAll() const;
+
+  std::unique_ptr<StressTestBase> create(std::string name) const;
+
+ private:
+  friend class folly::Indestructible<StressTestRegistry>;
+  StressTestRegistry() = default;
+  StressTestRegistry(StressTestRegistry&&) = delete;
+  StressTestRegistry& operator=(StressTestRegistry&&) = delete;
+
+  std::unordered_map<std::string, folly::Function<Create>> registry_;
 };
 
 } // namespace stress

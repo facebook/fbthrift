@@ -21,9 +21,9 @@
 #include <folly/io/async/HHWheelTimer.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/synchronization/RelaxedAtomic.h>
-#include <thrift/test/stresstest/client/ClientFactory.h>
-#include <thrift/test/stresstest/client/StressTestBase.h>
-#include <thrift/test/stresstest/if/gen-cpp2/StressTest.h>
+#include <thrift/conformance/stresstest/client/ClientFactory.h>
+#include <thrift/conformance/stresstest/client/StressTestBase.h>
+#include <thrift/conformance/stresstest/if/gen-cpp2/StressTest.h>
 
 namespace apache {
 namespace thrift {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/test/stresstest/client/StressTestClient.h>
+#include <thrift/conformance/stresstest/client/StressTestClient.h>
 
 #include <folly/experimental/coro/Sleep.h>
 

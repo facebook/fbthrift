@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <thrift/test/stresstest/client/StressTestBase.h>
-#include <thrift/test/stresstest/client/StressTestRegistry.h>
+#include <thrift/conformance/stresstest/client/StressTestBase.h>
+#include <thrift/conformance/stresstest/client/StressTestRegistry.h>
 
 // TODO: Consider adding autodeps support for the custom `thrift_stress_test`
 // rule. Until then, extra dependencies must be added manually. For convenience

@@ -16,8 +16,8 @@
 
 #include <folly/init/Init.h>
 #include <folly/portability/GFlags.h>
+#include <thrift/conformance/stresstest/server/StressTestHandler.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/test/stresstest/server/StressTestHandler.h>
 #include <wangle/ssl/SSLContextConfig.h>
 
 DEFINE_int32(port, 5000, "Server port");
