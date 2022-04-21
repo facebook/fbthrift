@@ -12,19 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import enum
-
-from thrift.python.client.request_channel import RequestChannel as RequestChannel
-from thrift.python.client.ssl import (
-    SSLContext as SSLContext,
-    SSLVerifyOption as SSLVerifyOption,
+from thrift.python.client.request_channel import (  # noqa: F401
+    ClientType,  # noqa: F401
+    RequestChannel,  # noqa: F401
 )
-
-class Protocol(enum.Enum):
-    BINARY: Protocol = ...
-    COMPACT: Protocol = ...
-
-class ClientType(enum.Enum):
-    THRIFT_HEADER_CLIENT_TYPE: ClientType = ...
-    THRIFT_ROCKET_CLIENT_TYPE: ClientType = ...
-    THRIFT_HTTP_CLIENT_TYPE: ClientType = ...
+from thrift.python.client.ssl import SSLContext, SSLVerifyOption  # noqa: F401
+from thrift.python.serializer import Protocol  # noqa: F401

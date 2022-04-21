@@ -25,13 +25,11 @@ from thrift.python.client cimport ssl as thrift_ssl
 from thrift.python.client.request_channel cimport (
     sync_createThriftChannelTCP,
     sync_createThriftChannelUnix,
+    ClientType as cClientType,
     RequestChannel,
 )
+from thrift.python.serializer cimport Protocol as cProtocol
 
-from thrift.py.client.common cimport (
-    ClientType as cClientType,
-    Protocol as cProtocol
-)
 from thrift.py.client.common import ClientType
 from thrift.py.client.sync_client import SyncClient
 
