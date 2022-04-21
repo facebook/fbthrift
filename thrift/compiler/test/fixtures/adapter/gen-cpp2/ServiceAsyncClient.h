@@ -29,8 +29,6 @@ class Client<::cpp2::Service> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
-  using ServiceAsyncClient = ::apache::thrift::Client<::cpp2::Service>;
-
   char const* getServiceName() const noexcept override {
     return "Service";
   }

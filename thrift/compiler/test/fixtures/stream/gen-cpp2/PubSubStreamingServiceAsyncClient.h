@@ -27,8 +27,6 @@ class Client<::cpp2::PubSubStreamingService> : public apache::thrift::GeneratedA
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
-  using PubSubStreamingServiceAsyncClient = ::apache::thrift::Client<::cpp2::PubSubStreamingService>;
-
   char const* getServiceName() const noexcept override {
     return "PubSubStreamingService";
   }

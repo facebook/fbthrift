@@ -27,8 +27,6 @@ class Client<::cpp2::MyNode> : public ::cpp2::MyRootAsyncClient {
  public:
   using ::cpp2::MyRootAsyncClient::MyRootAsyncClient;
 
-  using MyNodeAsyncClient = ::apache::thrift::Client<::cpp2::MyNode>;
-
   char const* getServiceName() const noexcept override {
     return "MyNode";
   }

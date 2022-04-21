@@ -28,8 +28,6 @@ class Client<::some::valid::ns::EmptyService> : public apache::thrift::Generated
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
-  using EmptyServiceAsyncClient = ::apache::thrift::Client<::some::valid::ns::EmptyService>;
-
   char const* getServiceName() const noexcept override {
     return "EmptyService";
   }

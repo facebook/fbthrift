@@ -28,8 +28,6 @@ class Client<::extra::svc::ExtraService> : public ::some::valid::ns::ParamServic
  public:
   using ::some::valid::ns::ParamServiceAsyncClient::ParamServiceAsyncClient;
 
-  using ExtraServiceAsyncClient = ::apache::thrift::Client<::extra::svc::ExtraService>;
-
   char const* getServiceName() const noexcept override {
     return "ExtraService";
   }

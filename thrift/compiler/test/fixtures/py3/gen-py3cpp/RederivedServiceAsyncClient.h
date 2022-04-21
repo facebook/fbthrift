@@ -27,8 +27,6 @@ class Client<::py3::simple::RederivedService> : public ::py3::simple::DerivedSer
  public:
   using ::py3::simple::DerivedServiceAsyncClient::DerivedServiceAsyncClient;
 
-  using RederivedServiceAsyncClient = ::apache::thrift::Client<::py3::simple::RederivedService>;
-
   char const* getServiceName() const noexcept override {
     return "RederivedService";
   }

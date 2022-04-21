@@ -27,8 +27,6 @@ class Client<::apache::thrift::fixtures::types::SomeService> : public apache::th
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
-  using SomeServiceAsyncClient = ::apache::thrift::Client<::apache::thrift::fixtures::types::SomeService>;
-
   char const* getServiceName() const noexcept override {
     return "SomeService";
   }

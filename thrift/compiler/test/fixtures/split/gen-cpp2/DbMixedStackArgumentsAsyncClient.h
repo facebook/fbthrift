@@ -26,8 +26,6 @@ class Client<::cpp2::DbMixedStackArguments> : public apache::thrift::GeneratedAs
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
-  using DbMixedStackArgumentsAsyncClient = ::apache::thrift::Client<::cpp2::DbMixedStackArguments>;
-
   char const* getServiceName() const noexcept override {
     return "DbMixedStackArguments";
   }

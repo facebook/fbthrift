@@ -29,8 +29,6 @@ class Client<::cpp2::GoodService> : public apache::thrift::GeneratedAsyncClient 
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
-  using GoodServiceAsyncClient = ::apache::thrift::Client<::cpp2::GoodService>;
-
   char const* getServiceName() const noexcept override {
     return "BadService";
   }

@@ -26,8 +26,6 @@ class Client<::cpp2::Raiser> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
-  using RaiserAsyncClient = ::apache::thrift::Client<::cpp2::Raiser>;
-
   char const* getServiceName() const noexcept override {
     return "Raiser";
   }

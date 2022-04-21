@@ -28,8 +28,6 @@ class Client<::some::valid::ns::ReturnService> : public apache::thrift::Generate
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
-  using ReturnServiceAsyncClient = ::apache::thrift::Client<::some::valid::ns::ReturnService>;
-
   char const* getServiceName() const noexcept override {
     return "ReturnService";
   }
