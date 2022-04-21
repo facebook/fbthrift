@@ -91,15 +91,12 @@ class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {
   }
 
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
-    return svIf_->getProcessor();
+    return std::unique_ptr<apache::thrift::AsyncProcessor>(
+        new typename T::ProcessorType(svIf_.get()));
   }
 
   std::vector<ServiceHandlerBase*> getServiceHandlers() override {
     return {svIf_.get()};
-  }
-
-  CreateMethodMetadataResult createMethodMetadata() override {
-    return svIf_->createMethodMetadata();
   }
 
  private:
