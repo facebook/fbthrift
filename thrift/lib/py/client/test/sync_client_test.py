@@ -14,6 +14,7 @@
 
 import unittest
 
+from thrift.py.client.common import ClientType, Protocol
 from thrift.py.client.sync_client_factory import get_client
 from thrift.py.test import TestService
 from thrift.py.test.ttypes import ArithmeticException
@@ -27,6 +28,17 @@ class SyncClientTests(unittest.TestCase):
         with server_in_another_process() as path:
             with get_client(TestService.Client, path=path) as client:
                 self.assertEqual(3, client.add(1, 2))
+
+    def test_client_type_and_protocol(self) -> None:
+        with server_in_another_process() as path:
+            with get_client(
+                TestService.Client,
+                path=path,
+                client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+                protocol=Protocol.BINARY,
+            ) as client:
+                sum = client.add(1, 2)
+                self.assertEqual(3, sum)
 
     def test_persistent_header(self) -> None:
         with server_in_another_process() as path:

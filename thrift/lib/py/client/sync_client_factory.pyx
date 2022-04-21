@@ -18,20 +18,13 @@ import ipaddress
 import os
 import socket
 
-from libc.stdint cimport uint32_t
-from libcpp.utility cimport move as cmove
-from libcpp.string cimport string
-from thrift.python.client cimport ssl as thrift_ssl
-from thrift.python.client.request_channel cimport (
-    sync_createThriftChannelTCP,
-    sync_createThriftChannelUnix,
-    ClientType as cClientType,
-    RequestChannel,
-)
-from thrift.python.serializer cimport Protocol as cProtocol
-
 from thrift.py.client.common import ClientType
 from thrift.py.client.sync_client import SyncClient
+
+from thrift.python.client cimport ssl as thrift_ssl
+from thrift.python.client.request_channel cimport ClientType as cClientType
+from thrift.python.client.sync_channel_factory cimport create_channel
+from thrift.python.serializer cimport Protocol as cProtocol
 
 def get_client(
     clientKlass,
@@ -45,51 +38,7 @@ def get_client(
     thrift_ssl.SSLContext ssl_context=None,
     double ssl_timeout=1,
 ):
-    endpoint = b""
-    if client_type == ClientType.THRIFT_HTTP_CLIENT_TYPE:
-        if host is None or port is None:
-            raise ValueError("Must set host and port when using ClientType.THRIFT_HTTP_CLIENT_TYPE")
-        if path is None:
-            raise ValueError("use path='/endpoint' when using ClientType.THRIFT_HTTP_CLIENT_TYPE")
-        endpoint = os.fsencode(path)
-        path = None
-
-    cdef uint32_t _timeout_ms = int(timeout * 1000)
-    cdef uint32_t _ssl_timeout_ms = int(ssl_timeout * 1000)
-
-    if host is not None and port is not None:
-        if path is not None:
-            raise ValueError("Can not set path and host/port at same time")
-
-        if isinstance(host, str):
-            try:
-                ipaddress.ip_address(host)
-            except ValueError:
-                host = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)[0][4][0]
-        else:
-            host = str(host)
-
-        if ssl_context:
-            channel = RequestChannel.create(thrift_ssl.sync_createThriftChannelTCP(
-                ssl_context._cpp_obj,
-                host,
-                port,
-                _timeout_ms,
-                _ssl_timeout_ms,
-                client_type,
-                protocol,
-                endpoint,
-            ))
-        else:
-            channel = RequestChannel.create(sync_createThriftChannelTCP(
-                host, port, _timeout_ms, client_type, protocol, endpoint
-            ))
-    elif path is not None:
-        fspath = os.fsencode(path)
-        channel = RequestChannel.create(sync_createThriftChannelUnix(
-            cmove[string](fspath), _timeout_ms, client_type, protocol
-        ))
-    else:
-        raise ValueError("Must set path or host/port")
-
+    channel = create_channel(
+        host, port, path, timeout, client_type, protocol, ssl_context, ssl_timeout
+    )
     return clientKlass(cpp_transport=SyncClient(channel))
