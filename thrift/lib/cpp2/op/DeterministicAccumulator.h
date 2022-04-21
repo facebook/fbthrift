@@ -124,14 +124,15 @@ class DeterministicAccumulator {
 
   void beginOrdered();
   void endOrdered();
-  void beginUnordered() {
-    context_.emplace(Context{
-        .hashers = {}, .ordered_count = 0, .has_unordered_context = true});
-  }
+  void beginUnordered() { context_.emplace(Context{true}); }
   void endUnordered();
 
  private:
   struct Context {
+    Context() = default;
+    explicit Context(bool has_unordered_ctx)
+        : has_unordered_context(has_unordered_ctx) {}
+
     std::vector<Hasher> hashers;
     // Number of ordered collections that this context represents.
     // An ordered hasher is always located at the back of the hashers.
