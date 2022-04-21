@@ -109,7 +109,7 @@ public final class HeaderAwareRSocketRpcClient implements RpcClient {
           && response.getData() instanceof String
           && response.getData().equals(HEADER_KEY)) {
 
-        ByteBuf buffer = RpcResources.getByteBufAllocator().buffer(1, 1);
+        ByteBuf buffer = RpcResources.getByteBufAllocator().buffer();
         try {
           ByteBufTProtocol dataProtocol = TProtocolType.TBinary.apply(buffer);
           K streamResponse = (K) StreamResponse.fromData(responseReader.read(dataProtocol));
@@ -121,7 +121,7 @@ public final class HeaderAwareRSocketRpcClient implements RpcClient {
               kClientResponsePayload.getBinaryHeaders(),
               kClientResponsePayload.getStreamId());
         } finally {
-          ReferenceCountUtil.release(buffer);
+          ReferenceCountUtil.safeRelease(buffer);
         }
       }
       return kClientResponsePayload;
