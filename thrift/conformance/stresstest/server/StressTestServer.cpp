@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-#include <folly/init/Init.h>
+#include <thrift/conformance/stresstest/server/StressTestServer.h>
+
 #include <folly/portability/GFlags.h>
-#include <thrift/conformance/stresstest/server/StressTestHandler.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <wangle/ssl/SSLContextConfig.h>
 
 DEFINE_int32(port, 5000, "Server port");
@@ -36,9 +35,11 @@ DEFINE_string(
     "folly/io/async/test/certs/ca-cert.pem",
     "Path to client trusted CA file");
 
-using namespace apache::thrift;
-using namespace apache::thrift::stress;
+namespace apache {
+namespace thrift {
+namespace stress {
 
+namespace {
 uint32_t sanitizeNumThreads(int32_t n) {
   return n <= 0 ? std::thread::hardware_concurrency() : n;
 }
@@ -50,26 +51,34 @@ std::shared_ptr<wangle::SSLContextConfig> getSSLConfig() {
   sslConfig->clientVerification =
       folly::SSLContext::VerifyClientCertificate::IF_PRESENTED;
   sslConfig->setNextProtocols(**ThriftServer::defaultNextProtocols());
+  sslConfig->sslCiphers =
+      folly::join(":", folly::ssl::SSLOptions2021::ciphers());
   return sslConfig;
 }
+} // namespace
 
-int main(int argc, char** argv) {
-  folly::init(&argc, &argv);
+std::shared_ptr<StressTestHandler> createStressTestHandler() {
+  return std::make_shared<StressTestHandler>();
+}
 
+std::shared_ptr<ThriftServer> createStressTestServer(
+    std::shared_ptr<StressTestHandler> handler) {
+  if (!handler) {
+    handler = createStressTestHandler();
+  }
   auto server = std::make_shared<ThriftServer>();
-  auto handler = std::make_shared<StressTestHandler>();
-  server->setInterface(handler);
+  server->setInterface(std::move(handler));
   server->setPort(FLAGS_port);
   server->setNumIOWorkerThreads(sanitizeNumThreads(FLAGS_io_threads));
   server->setNumCPUWorkerThreads(sanitizeNumThreads(FLAGS_cpu_threads));
+  server->setSSLPolicy(apache::thrift::SSLPolicy::PERMITTED);
   if (!FLAGS_certPath.empty() && !FLAGS_keyPath.empty() &&
       !FLAGS_caPath.empty()) {
     server->setSSLConfig(getSSLConfig());
-    server->setSSLPolicy(apache::thrift::SSLPolicy::PERMITTED);
   }
-
-  // @lint-ignore CLANGTIDY
-  server->serve();
-
-  return 0;
+  return server;
 }
+
+} // namespace stress
+} // namespace thrift
+} // namespace apache
