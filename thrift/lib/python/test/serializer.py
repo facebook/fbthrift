@@ -25,6 +25,7 @@ from testing.thrift_types import (
     easy,
     hard,
     Color,
+    ColorGroups,
     ComplexUnion,
 )
 from thrift.python.exceptions import Error
@@ -116,6 +117,11 @@ class SerializerTests(unittest.TestCase):
             val_set={easy(val=42)},
             val_map={"foo": b"foovalue"},
             val_complex_map={"bar": [{easy(val=42), easy(val_list=[1, 2, 3])}]},
+            val_struct_with_containers=ColorGroups(
+                color_list=[Color.blue, Color.green],
+                color_set={Color.blue, Color.red},
+                color_map={Color.blue: Color.green},
+            ),
         )
         self.thrift_serialization_round_trip(control)
 

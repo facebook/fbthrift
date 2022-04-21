@@ -430,13 +430,15 @@ void SetTypeInfo::consumeElem(
   reader(context, &elem);
   // This is nasty hack since Cython generated code will incr the refcnt
   // so PySet_Add will fail. Need to temporarily decrref.
-  auto guard = folly::makeGuard([pyObjPtr] { Py_INCREF(*pyObjPtr); });
-  if (Py_REFCNT(*pyObjPtr) == 2) {
+  auto currentRefCnt = Py_REFCNT(*pyObjPtr);
+  auto guard = folly::makeGuard([pyObjPtr, currentRefCnt] {
+    while (Py_REFCNT(*pyObjPtr) < currentRefCnt) {
+      Py_INCREF(*pyObjPtr);
+    }
+  });
+  while (Py_REFCNT(*pyObjPtr) > 1) {
     Py_DECREF(*pyObjPtr);
-  } else {
-    guard.dismiss();
   }
-  DCHECK(Py_REFCNT(*pyObjPtr) == 1);
   DCHECK_NOTNULL(elem);
   if (PySet_Add(*pyObjPtr, elem) == -1) {
     THRIFT_PY3_CHECK_ERROR();

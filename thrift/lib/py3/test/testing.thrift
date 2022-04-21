@@ -326,6 +326,7 @@ struct Complex {
   11: map<string, binary> val_map;
   // @lint-ignore THRIFTCHECKS
   12: map<string, list<set<easy>>> val_complex_map;
+  13: ColorGroups val_struct_with_containers;
 }
 
 struct StructuredAnnotation {
