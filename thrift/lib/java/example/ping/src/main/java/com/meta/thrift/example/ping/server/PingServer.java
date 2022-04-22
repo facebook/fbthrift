@@ -18,10 +18,8 @@ package com.meta.thrift.example.ping.server;
 
 import com.facebook.swift.service.ThriftServerConfig;
 import com.facebook.thrift.example.ping.PingService;
-import com.facebook.thrift.example.ping.PingServiceRpcServerHandler;
-import com.facebook.thrift.legacy.server.LegacyServerTransport;
-import com.facebook.thrift.legacy.server.LegacyServerTransportFactory;
-import java.net.SocketAddress;
+import com.facebook.thrift.server.ServerTransport;
+import com.facebook.thrift.util.TransportType;
 import java.util.Collections;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -88,21 +86,16 @@ public class PingServer {
 
   public static void main(String[] args) {
     PingServerConfig config = parseArgs(args);
-
-    PingService pingService = new PingImpl();
-
-    PingServiceRpcServerHandler serverHandler =
-        new PingServiceRpcServerHandler(pingService, Collections.emptyList());
-
     LOG.info("starting server");
     if ("header".equals(config.getTransport())) {
-      LegacyServerTransportFactory transportFactory =
-          new LegacyServerTransportFactory(new ThriftServerConfig().setPort(config.getPort()));
-      LegacyServerTransport transport =
-          transportFactory.createServerTransport(serverHandler).block();
-      SocketAddress address = transport.getAddress();
-
-      LOG.info("server started at -> " + address.toString());
+      ServerTransport transport =
+          PingService.createServer(
+                  new ThriftServerConfig().setPort(config.getPort()),
+                  TransportType.THEADER,
+                  new PingImpl(),
+                  Collections.emptyList())
+              .block();
+      LOG.info("server started at -> " + transport.getAddress());
       transport.onClose().block();
     } else {
       throw new UnsupportedOperationException("Need to Support RSocket");
