@@ -24,14 +24,8 @@ import static org.junit.Assume.assumeTrue;
 import com.facebook.nifty.ssl.SslSession;
 import com.facebook.swift.service.SwiftConstants;
 import com.facebook.swift.service.ThriftServerConfig;
-import com.facebook.thrift.example.ping.CustomException;
-import com.facebook.thrift.example.ping.PingRequest;
-import com.facebook.thrift.example.ping.PingResponse;
-import com.facebook.thrift.example.ping.PingService;
 import com.facebook.thrift.legacy.server.ThriftOptionalSslHandler;
-import com.facebook.thrift.server.RpcServerHandler;
 import com.facebook.thrift.util.resources.RpcResources;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.epoll.EpollServerDomainSocketChannel;
@@ -43,16 +37,11 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.unix.DomainSocketAddress;
 import io.netty.handler.ssl.SslContext;
 import io.netty.util.AttributeKey;
-import java.lang.invoke.MethodHandle;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.Collections;
-import org.apache.thrift.TException;
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import reactor.core.publisher.Mono;
 
 public class RpcServerUtilsTest {
 
@@ -142,110 +131,5 @@ public class RpcServerUtilsTest {
 
   private static boolean isMacos() {
     return System.getProperty("os.name").startsWith("Mac");
-  }
-
-  @Test
-  public void testGetRpcServerHandlerMethodHandleBlocking() {
-    PingService p =
-        new PingService() {
-          @Override
-          public void close() {}
-
-          @Override
-          public PingResponse ping(PingRequest pingRequest) throws TException {
-            return null;
-          }
-
-          @Override
-          public PingResponse pingException(PingRequest pingRequest)
-              throws CustomException, TException {
-            return null;
-          }
-
-          @Override
-          public void pingVoid(PingRequest pingRequest) throws TException {}
-        };
-    MethodHandle methodHandle = RpcServerUtils.getRpcServerHandlerMethodHandle(p);
-    Assert.assertNotNull(methodHandle);
-  }
-
-  @Test
-  public void testGetRpcServerHandlerMethodHandleAsync() {
-    PingService.Async p =
-        new PingService.Async() {
-          @Override
-          public void close() {}
-
-          @Override
-          public ListenableFuture<PingResponse> ping(PingRequest pingRequest) {
-            return null;
-          }
-
-          @Override
-          public ListenableFuture<PingResponse> pingException(PingRequest pingRequest) {
-            return null;
-          }
-
-          @Override
-          public ListenableFuture<Void> pingVoid(PingRequest pingRequest) {
-            return null;
-          }
-        };
-
-    MethodHandle methodHandle = RpcServerUtils.getRpcServerHandlerMethodHandle(p);
-    Assert.assertNotNull(methodHandle);
-  }
-
-  @Test
-  public void testGetRpcServerHandlerMethodHandleReactive() {
-    PingService.Reactive p =
-        new PingService.Reactive() {
-          @Override
-          public Mono<PingResponse> ping(PingRequest pingRequest) {
-            return null;
-          }
-
-          @Override
-          public Mono<PingResponse> pingException(PingRequest pingRequest) {
-            return null;
-          }
-
-          @Override
-          public Mono<Void> pingVoid(PingRequest pingRequest) {
-            return null;
-          }
-
-          @Override
-          public void dispose() {}
-        };
-    MethodHandle methodHandle = RpcServerUtils.getRpcServerHandlerMethodHandle(p);
-    Assert.assertNotNull(methodHandle);
-  }
-
-  @Test
-  public void testGetRpcServerHandlerForThriftService() {
-    PingService.Reactive p =
-        new PingService.Reactive() {
-          @Override
-          public Mono<PingResponse> ping(PingRequest pingRequest) {
-            return null;
-          }
-
-          @Override
-          public Mono<PingResponse> pingException(PingRequest pingRequest) {
-            return null;
-          }
-
-          @Override
-          public Mono<Void> pingVoid(PingRequest pingRequest) {
-            return null;
-          }
-
-          @Override
-          public void dispose() {}
-        };
-    RpcServerHandler rsh =
-        RpcServerUtils.getRpcServerHandlerForThriftService(p, Collections.emptyList());
-    Assert.assertNotNull(rsh);
   }
 }
