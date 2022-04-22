@@ -425,7 +425,7 @@ void SetTypeInfo::consumeElem(
     void* object,
     void (*reader)(const void* /*context*/, void* /*val*/)) {
   PyObject** pyObjPtr = toPyObjectPtr(object);
-  DCHECK_NOTNULL(*pyObjPtr);
+  DCHECK(*pyObjPtr);
   PyObject* elem = nullptr;
   reader(context, &elem);
   // This is nasty hack since Cython generated code will incr the refcnt
@@ -439,7 +439,7 @@ void SetTypeInfo::consumeElem(
   while (Py_REFCNT(*pyObjPtr) > 1) {
     Py_DECREF(*pyObjPtr);
   }
-  DCHECK_NOTNULL(elem);
+  DCHECK(elem);
   if (PySet_Add(*pyObjPtr, elem) == -1) {
     THRIFT_PY3_CHECK_ERROR();
   }
@@ -576,7 +576,7 @@ void DynamicStructInfo::addFieldInfo(
 }
 
 void DynamicStructInfo::addFieldValue(int16_t index, PyObject* fieldValue) {
-  DCHECK_NOTNULL(fieldValue);
+  DCHECK(fieldValue);
   if (fieldValue == Py_None) {
     return;
   }
