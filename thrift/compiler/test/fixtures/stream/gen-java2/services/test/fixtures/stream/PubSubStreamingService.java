@@ -18,6 +18,23 @@ import java.util.*;
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("PubSubStreamingService")
 public interface PubSubStreamingService extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
+    static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
+        final PubSubStreamingService _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+        return new PubSubStreamingServiceRpcServerHandler(_serviceImpl, _eventHandlers);
+    }
+
+    static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
+        final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
+        final com.facebook.thrift.util.TransportType _transportType,
+        final PubSubStreamingService _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+
+        final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
+
+        return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
+    }
+
     static PubSubStreamingService createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -68,6 +85,23 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
 
     @com.facebook.swift.service.ThriftService("PubSubStreamingService")
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
+        static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
+        final PubSubStreamingService.Async _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+            return new PubSubStreamingServiceRpcServerHandler(_serviceImpl, _eventHandlers);
+        }
+
+        static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
+            final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
+            final com.facebook.thrift.util.TransportType _transportType,
+            final PubSubStreamingService.Async _serviceImpl,
+            final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+
+            final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
+
+            return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
+        }
+
         static PubSubStreamingService.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -123,6 +157,23 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
 
     @com.facebook.swift.service.ThriftService("PubSubStreamingService")
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
+        static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
+        final PubSubStreamingService.Reactive _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+            return new PubSubStreamingServiceRpcServerHandler(_serviceImpl, _eventHandlers);
+        }
+
+        static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
+            final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
+            final com.facebook.thrift.util.TransportType _transportType,
+            final PubSubStreamingService.Reactive _serviceImpl,
+            final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+
+            final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
+
+            return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
+        }
+
         static PubSubStreamingService.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,

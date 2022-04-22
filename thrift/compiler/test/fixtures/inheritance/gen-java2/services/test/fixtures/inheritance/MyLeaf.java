@@ -18,6 +18,23 @@ import java.util.*;
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("MyLeaf")
 public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.BlockingService, test.fixtures.inheritance.MyNode {
+    static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
+        final MyLeaf _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+        return new MyLeafRpcServerHandler(_serviceImpl, _eventHandlers);
+    }
+
+    static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
+        final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
+        final com.facebook.thrift.util.TransportType _transportType,
+        final MyLeaf _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+
+        final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
+
+        return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
+    }
+
     static MyLeaf createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -68,6 +85,23 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
 
     @com.facebook.swift.service.ThriftService("MyLeaf")
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService, test.fixtures.inheritance.MyNode.Async {
+        static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
+        final MyLeaf.Async _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+            return new MyLeafRpcServerHandler(_serviceImpl, _eventHandlers);
+        }
+
+        static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
+            final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
+            final com.facebook.thrift.util.TransportType _transportType,
+            final MyLeaf.Async _serviceImpl,
+            final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+
+            final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
+
+            return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
+        }
+
         static MyLeaf.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -148,6 +182,23 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
 
     @com.facebook.swift.service.ThriftService("MyLeaf")
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService, test.fixtures.inheritance.MyNode.Reactive {
+        static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
+        final MyLeaf.Reactive _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+            return new MyLeafRpcServerHandler(_serviceImpl, _eventHandlers);
+        }
+
+        static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
+            final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
+            final com.facebook.thrift.util.TransportType _transportType,
+            final MyLeaf.Reactive _serviceImpl,
+            final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+
+            final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
+
+            return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
+        }
+
         static MyLeaf.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,

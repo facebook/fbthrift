@@ -18,6 +18,23 @@ import java.util.*;
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("NestedContainers")
 public interface NestedContainers extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
+    static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
+        final NestedContainers _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+        return new NestedContainersRpcServerHandler(_serviceImpl, _eventHandlers);
+    }
+
+    static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
+        final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
+        final com.facebook.thrift.util.TransportType _transportType,
+        final NestedContainers _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+
+        final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
+
+        return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
+    }
+
     static NestedContainers createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -68,6 +85,23 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
 
     @com.facebook.swift.service.ThriftService("NestedContainers")
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
+        static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
+        final NestedContainers.Async _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+            return new NestedContainersRpcServerHandler(_serviceImpl, _eventHandlers);
+        }
+
+        static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
+            final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
+            final com.facebook.thrift.util.TransportType _transportType,
+            final NestedContainers.Async _serviceImpl,
+            final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+
+            final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
+
+            return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
+        }
+
         static NestedContainers.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -282,6 +316,23 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
 
     @com.facebook.swift.service.ThriftService("NestedContainers")
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
+        static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
+        final NestedContainers.Reactive _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+            return new NestedContainersRpcServerHandler(_serviceImpl, _eventHandlers);
+        }
+
+        static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
+            final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
+            final com.facebook.thrift.util.TransportType _transportType,
+            final NestedContainers.Reactive _serviceImpl,
+            final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+
+            final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
+
+            return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
+        }
+
         static NestedContainers.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,

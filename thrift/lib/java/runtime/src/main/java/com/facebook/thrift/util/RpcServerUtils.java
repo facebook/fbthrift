@@ -21,8 +21,12 @@ import static io.rsocket.frame.FrameLengthCodec.FRAME_LENGTH_SIZE;
 
 import com.facebook.nifty.ssl.SslSession;
 import com.facebook.swift.service.ThriftServerConfig;
+import com.facebook.thrift.legacy.server.LegacyServerTransportFactory;
 import com.facebook.thrift.metadata.ThriftTransportType;
 import com.facebook.thrift.rsocket.transport.RSocketDuplexHandler;
+import com.facebook.thrift.server.RpcServerHandler;
+import com.facebook.thrift.server.ServerTransport;
+import com.facebook.thrift.server.ServerTransportFactory;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
@@ -46,11 +50,13 @@ import java.io.FileInputStream;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.security.cert.X509Certificate;
+import java.util.Objects;
 import javax.net.ssl.SSLSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.FluxProcessor;
+import reactor.core.publisher.Mono;
 
 public class RpcServerUtils {
 
@@ -173,5 +179,45 @@ public class RpcServerUtils {
       LOG.info("No SSL info received from client");
     }
     return null;
+  }
+
+  public static Mono<? extends ServerTransport> createServerTransport(
+      ThriftServerConfig config, TransportType transportType, RpcServerHandler rpcServerHandler) {
+    Objects.requireNonNull(config);
+    Objects.requireNonNull(transportType);
+
+    ServerTransportFactory<? extends ServerTransport> transportFactory;
+    switch (transportType) {
+      case RSOCKET:
+        transportFactory = createRSocketTransport(config);
+        break;
+      case THEADER:
+        transportFactory = createTHeaderTransport(config);
+        break;
+      default:
+        throw new IllegalArgumentException("unknown transport type: " + transportType);
+    }
+
+    if (config.isEnableUDS()) {
+      return transportFactory.createServerTransport(
+          new DomainSocketAddress(config.getUdsPath()), rpcServerHandler);
+    } else if (config.isBindAddressEnabled()) {
+      return transportFactory.createServerTransport(
+          new InetSocketAddress(config.getBindAddress(), config.getPort()), rpcServerHandler);
+    } else {
+      return transportFactory.createServerTransport(
+          new InetSocketAddress("localhost", config.getPort()), rpcServerHandler);
+    }
+  }
+
+  private static ServerTransportFactory<? extends ServerTransport> createTHeaderTransport(
+      ThriftServerConfig config) {
+    return new LegacyServerTransportFactory(config);
+  }
+
+  private static ServerTransportFactory<? extends ServerTransport> createRSocketTransport(
+      ThriftServerConfig config) {
+    return (bindAddress, rpcServerHandler) ->
+        Mono.error(new UnsupportedOperationException("Need to Support RSocket"));
   }
 }

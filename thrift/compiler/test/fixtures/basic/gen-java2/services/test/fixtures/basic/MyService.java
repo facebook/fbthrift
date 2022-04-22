@@ -18,6 +18,23 @@ import java.util.*;
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("MyService")
 public interface MyService extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
+    static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
+        final MyService _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+        return new MyServiceRpcServerHandler(_serviceImpl, _eventHandlers);
+    }
+
+    static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
+        final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
+        final com.facebook.thrift.util.TransportType _transportType,
+        final MyService _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+
+        final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
+
+        return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
+    }
+
     static MyService createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -68,6 +85,23 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
 
     @com.facebook.swift.service.ThriftService("MyService")
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
+        static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
+        final MyService.Async _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+            return new MyServiceRpcServerHandler(_serviceImpl, _eventHandlers);
+        }
+
+        static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
+            final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
+            final com.facebook.thrift.util.TransportType _transportType,
+            final MyService.Async _serviceImpl,
+            final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+
+            final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
+
+            return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
+        }
+
         static MyService.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -406,6 +440,23 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
 
     @com.facebook.swift.service.ThriftService("MyService")
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
+        static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
+        final MyService.Reactive _serviceImpl,
+        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+            return new MyServiceRpcServerHandler(_serviceImpl, _eventHandlers);
+        }
+
+        static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
+            final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
+            final com.facebook.thrift.util.TransportType _transportType,
+            final MyService.Reactive _serviceImpl,
+            final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+
+            final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
+
+            return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
+        }
+
         static MyService.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
