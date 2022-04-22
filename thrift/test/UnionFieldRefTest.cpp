@@ -291,6 +291,7 @@ TEST(UnionFieldTest, CppRef) {
 
   EXPECT_EQ(std::as_const(s).cppref_ref()->str_ref(), "ref");
   EXPECT_EQ(s.cppref_ref()->str_ref(), "ref");
+  EXPECT_THROW(*s.shared_const_ref(), bad_field_access);
 
   s.shared_ref().emplace().str_ref() = "shared";
 
@@ -303,6 +304,12 @@ TEST(UnionFieldTest, CppRef) {
   EXPECT_EQ(std::as_const(s).box_ref()->str_ref(), "box");
   EXPECT_EQ(s.box_ref()->str_ref(), "box");
   EXPECT_THROW(*s.shared_ref(), bad_field_access);
+
+  s.shared_const_ref().emplace("shared_const");
+
+  EXPECT_EQ(std::as_const(s).shared_const_ref(), "shared_const");
+  EXPECT_EQ(s.shared_const_ref(), "shared_const");
+  EXPECT_THROW(*s.box_ref(), bad_field_access);
 }
 } // namespace test
 } // namespace thrift

@@ -38,4 +38,5 @@ union CppRef {
   2: CppRef cppref (cpp.ref);
   3: CppRef shared (cpp.ref = "shared");
   4: CppRef box (thrift.box);
+  5: string shared_const (cpp.ref = "shared_const");
 }
