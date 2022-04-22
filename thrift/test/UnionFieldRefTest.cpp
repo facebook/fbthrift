@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -274,6 +274,35 @@ TEST(UnionFieldTest, TreeNode) {
   EXPECT_THROW(*root.data_ref(), bad_field_access);
   EXPECT_THROW(*(*root.nodes_ref())[0].nodes_ref(), bad_field_access);
   EXPECT_THROW(*(*root.nodes_ref())[1].nodes_ref(), bad_field_access);
+}
+
+TEST(UnionFieldTest, CppRef) {
+  CppRef s;
+
+  s.str_ref() = "foo";
+
+  EXPECT_EQ(std::as_const(s).str_ref(), "foo");
+  EXPECT_EQ(s.str_ref(), "foo");
+
+  EXPECT_THROW(*std::as_const(s).cppref_ref(), bad_field_access);
+  EXPECT_THROW(*s.cppref_ref(), bad_field_access);
+
+  s.cppref_ref().emplace().str_ref() = "ref";
+
+  EXPECT_EQ(std::as_const(s).cppref_ref()->str_ref(), "ref");
+  EXPECT_EQ(s.cppref_ref()->str_ref(), "ref");
+
+  s.shared_ref().emplace().str_ref() = "shared";
+
+  EXPECT_EQ(std::as_const(s).shared_ref()->str_ref(), "shared");
+  EXPECT_EQ(s.shared_ref()->str_ref(), "shared");
+  EXPECT_THROW(*s.cppref_ref(), bad_field_access);
+
+  s.box_ref().emplace().str_ref() = "box";
+
+  EXPECT_EQ(std::as_const(s).box_ref()->str_ref(), "box");
+  EXPECT_EQ(s.box_ref()->str_ref(), "box");
+  EXPECT_THROW(*s.shared_ref(), bad_field_access);
 }
 } // namespace test
 } // namespace thrift

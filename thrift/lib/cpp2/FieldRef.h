@@ -48,6 +48,7 @@ using is_set_t =
     std::conditional_t<std::is_const<T>::value, const uint8_t, uint8_t>;
 
 [[noreturn]] void throw_on_bad_field_access();
+[[noreturn]] void throw_on_nullptr_dereferencing();
 
 struct ensure_isset_unsafe_fn;
 struct unset_unsafe_fn;
@@ -1376,18 +1377,15 @@ template <typename T>
 FOLLY_INLINE_VARIABLE constexpr union_field_ref_owner_vtable //
     union_field_ref_owner_vtable_for<T const&>{nullptr};
 
-template <class T, class = void>
-struct element_type {
-  using type = T;
-};
+// TODO: use FieldRefTraits version
+template <class>
+struct is_cpp_ref : std::false_type {};
 
 template <class T>
-struct element_type<T, folly::void_t<typename T::element_type>> {
-  using type = typename T::element_type;
-};
+struct is_cpp_ref<std::unique_ptr<T>> : std::true_type {};
 
 template <class T>
-using is_boxed = folly::detail::is_instantiation_of<boxed_value_ptr, T>;
+struct is_cpp_ref<std::shared_ptr<T>> : std::true_type {};
 
 } // namespace detail
 
@@ -1399,9 +1397,18 @@ class union_field_ref {
   template <typename>
   friend class union_field_ref;
 
-  using element_type =
-      typename detail::element_type<folly::remove_cvref_t<T>>::type;
-  using is_boxed = detail::is_boxed<folly::remove_cvref_t<T>>;
+  using is_cpp_ref_or_boxed = folly::Disjunction<
+      detail::is_boxed_value_ptr<folly::remove_cvref_t<T>>,
+      detail::is_cpp_ref<folly::remove_cvref_t<T>>>;
+
+  struct element_type_adapter {
+    using element_type = folly::remove_cvref_t<T>;
+  };
+
+  using element_type = typename std::conditional_t<
+      is_cpp_ref_or_boxed::value,
+      folly::remove_cvref_t<T>,
+      element_type_adapter>::element_type;
 
   using storage_reference_type = T;
   using storage_value_type = std::remove_reference_t<T>;
@@ -1411,10 +1418,8 @@ class union_field_ref {
   using reference_type = detail::copy_reference_t<T, value_type>;
 
  private:
-  using int_t =
-      std::conditional_t<std::is_const<value_type>::value, const int, int>;
-  using owner =
-      std::conditional_t<std::is_const<value_type>::value, void const*, void*>;
+  using int_t = detail::copy_const_t<T, int>;
+  using owner = detail::copy_const_t<T, void>*;
   using vtable = apache::thrift::detail::union_field_ref_owner_vtable;
 
  public:
@@ -1439,7 +1444,7 @@ class union_field_ref {
   FOLLY_ERASE union_field_ref& operator=(U&& other) noexcept(
       std::is_nothrow_constructible<value_type, U>::value&&
           std::is_nothrow_assignable<value_type, U>::value) {
-    if (has_value()) {
+    if (has_value() && !detail::is_cpp_ref<folly::remove_cvref_t<T>>{}) {
       get_value() = static_cast<U&&>(other);
     } else {
       emplace(static_cast<U&&>(other));
@@ -1475,7 +1480,7 @@ class union_field_ref {
   template <typename... Args>
   FOLLY_ERASE value_type& emplace(Args&&... args) {
     vtable_.reset(owner_);
-    ::new (&storage_value_) storage_value_type(static_cast<Args&&>(args)...);
+    emplace_impl(is_cpp_ref_or_boxed{}, static_cast<Args&&>(args)...);
     type_ = field_type_;
     return get_value();
   }
@@ -1487,8 +1492,7 @@ class union_field_ref {
       value_type&>
   emplace(std::initializer_list<U> ilist, Args&&... args) {
     vtable_.reset(owner_);
-    ::new (&storage_value_)
-        storage_value_type(ilist, static_cast<Args&&>(args)...);
+    emplace_impl(is_cpp_ref_or_boxed{}, ilist, static_cast<Args&&>(args)...);
     type_ = field_type_;
     return get_value();
   }
@@ -1500,12 +1504,31 @@ class union_field_ref {
     }
   }
 
-  FOLLY_ERASE value_type& get_value() const { return get_value(is_boxed{}); }
-  FOLLY_ERASE value_type& get_value(std::true_type) const {
-    return *storage_value_;
+  FOLLY_ERASE value_type& get_value() const {
+    return get_value(is_cpp_ref_or_boxed{});
   }
   FOLLY_ERASE value_type& get_value(std::false_type) const {
     return storage_value_;
+  }
+  FOLLY_ERASE value_type& get_value(std::true_type) const {
+    if (storage_value_ == nullptr) {
+      // This can only happen if user used setter/getter to clear cpp.ref
+      // pointer. It won't happen if user didn't use setter/getter API at all.
+      apache::thrift::detail::throw_on_nullptr_dereferencing();
+    }
+    return *storage_value_;
+  }
+
+  template <class... Args>
+  FOLLY_ERASE void emplace_impl(std::false_type, Args&&... args) {
+    ::new (&storage_value_) storage_value_type(static_cast<Args&&>(args)...);
+  }
+
+  template <class... Args>
+  FOLLY_ERASE void emplace_impl(std::true_type, Args&&... args) {
+    ::new (&storage_value_) storage_value_type();
+    // TODO: use make_shared to initialize cpp.ref_type = "shared" field
+    storage_value_.reset(new element_type(static_cast<Args&&>(args)...));
   }
 
   storage_value_type& storage_value_;

@@ -21,3 +21,9 @@
 [[noreturn]] void apache::thrift::detail::throw_on_bad_field_access() {
   throw bad_field_access();
 }
+[[noreturn]] void apache::thrift::detail::throw_on_nullptr_dereferencing() {
+  throw std::logic_error(
+      "Trying to dereference a nullptr in union_field_ref. "
+      "This can only happen if user used setter to clear cpp.ref pointer. "
+      "It won't happen if user didn't use deprecated setter API at all.");
+}

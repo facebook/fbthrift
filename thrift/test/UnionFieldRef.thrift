@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,4 +36,6 @@ union TreeNode {
 union CppRef {
   1: string str;
   2: CppRef cppref (cpp.ref);
+  3: CppRef shared (cpp.ref = "shared");
+  4: CppRef box (thrift.box);
 }
