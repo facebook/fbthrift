@@ -50,8 +50,8 @@ class {{struct:name}}(metaclass={{!
             }}{{^field:opt_in_req_out?}}False{{/field:opt_in_req_out?}},  # isUnqualified
             "{{field:py_name}}",  # name
             {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
-            {{#field:value}}{{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{/field:type}}{{> types/constant_value }}{{/field:value}}{{!
-            }}{{^field:value}}None{{/field:value}},  # default value
+            {{#field:user_default_value}}{{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{/field:type}}{{> types/constant_value }}{{/field:user_default_value}}{{!
+            }}{{^field:user_default_value}}None{{/field:user_default_value}},  # default value
         ),
         {{/struct:fields_and_mixin_fields}}
     )

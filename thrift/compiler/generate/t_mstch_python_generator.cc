@@ -541,10 +541,30 @@ class mstch_python_field : public mstch_field {
         this,
         {
             {"field:py_name", &mstch_python_field::py_name},
+            {"field:user_default_value",
+             &mstch_python_field::user_default_value},
         });
   }
 
   mstch::node py_name() { return py_name_; }
+  mstch::node user_default_value() {
+    const t_const_value* value = field_->get_value();
+    if (!value) {
+      return mstch::node();
+    }
+    if (value->is_empty()) {
+      auto true_type = field_->get_type()->get_true_type();
+      if ((true_type->is_list() || true_type->is_set()) &&
+          value->get_type() != t_const_value::CV_LIST) {
+        const_cast<t_const_value*>(value)->set_list();
+      }
+      if (true_type->is_map() && value->get_type() != t_const_value::CV_MAP) {
+        const_cast<t_const_value*>(value)->set_map();
+      }
+    }
+    return generators_->const_value_generator_->generate(
+        value, generators_, cache_, pos_);
+  }
 
  private:
   const std::string py_name_;
