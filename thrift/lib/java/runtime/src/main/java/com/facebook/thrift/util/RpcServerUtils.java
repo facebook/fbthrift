@@ -20,6 +20,7 @@ import static io.rsocket.frame.FrameLengthCodec.FRAME_LENGTH_MASK;
 import static io.rsocket.frame.FrameLengthCodec.FRAME_LENGTH_SIZE;
 
 import com.facebook.nifty.ssl.SslSession;
+import com.facebook.swift.service.ThriftEventHandler;
 import com.facebook.swift.service.ThriftServerConfig;
 import com.facebook.thrift.legacy.server.LegacyServerTransportFactory;
 import com.facebook.thrift.metadata.ThriftTransportType;
@@ -47,9 +48,13 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.ssl.SslProvider;
 import java.io.FileInputStream;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.security.cert.X509Certificate;
+import java.util.List;
 import java.util.Objects;
 import javax.net.ssl.SSLSession;
 import org.slf4j.Logger;
@@ -219,5 +224,51 @@ public class RpcServerUtils {
       ThriftServerConfig config) {
     return (bindAddress, rpcServerHandler) ->
         Mono.error(new UnsupportedOperationException("Need to Support RSocket"));
+  }
+
+  @SuppressWarnings("rawtypes")
+  public static MethodHandle getRpcServerHandlerMethodHandle(ThriftService thriftService) {
+    MethodHandles.Lookup lookup = MethodHandles.lookup();
+    Class<?>[] interfaces = thriftService.getClass().getInterfaces();
+    final Class<? extends ThriftService> th;
+
+    if (thriftService instanceof ReactiveService) {
+      th = ReactiveService.class;
+    } else if (thriftService instanceof AsyncService) {
+      th = AsyncService.class;
+    } else if (thriftService instanceof BlockingService) {
+      th = BlockingService.class;
+    } else {
+      throw new IllegalArgumentException(
+          "Thrift Service does not implement BlockingService, AsyncService or ReactiveService");
+    }
+
+    Class target = null;
+    for (Class c : interfaces) {
+      if (th.isAssignableFrom(c)) {
+        target = c;
+        break;
+      }
+    }
+    try {
+      assert target != null;
+      return lookup.findStatic(
+          target,
+          "createRpcServerHandler",
+          MethodType.methodType(RpcServerHandler.class, target, List.class));
+    } catch (Throwable t) {
+      throw Exceptions.propagate(t);
+    }
+  }
+
+  public static RpcServerHandler getRpcServerHandlerForThriftService(
+      ThriftService thriftService, List<ThriftEventHandler> thriftEventHandlers) {
+    MethodHandle methodHandle = getRpcServerHandlerMethodHandle(thriftService);
+    try {
+      return (RpcServerHandler)
+          methodHandle.invokeWithArguments(thriftService, thriftEventHandlers);
+    } catch (Throwable t) {
+      throw Exceptions.propagate(t);
+    }
   }
 }
