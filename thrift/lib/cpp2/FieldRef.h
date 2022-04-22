@@ -37,6 +37,7 @@
 #include <folly/Traits.h>
 #include <folly/synchronization/AtomicUtil.h>
 #include <thrift/lib/cpp2/BoxedValuePtr.h>
+#include <thrift/lib/cpp2/FieldRefTraits.h>
 #include <thrift/lib/cpp2/Thrift.h>
 
 namespace apache {
@@ -1377,16 +1378,6 @@ template <typename T>
 FOLLY_INLINE_VARIABLE constexpr union_field_ref_owner_vtable //
     union_field_ref_owner_vtable_for<T const&>{nullptr};
 
-// TODO: use FieldRefTraits version
-template <class>
-struct is_cpp_ref : std::false_type {};
-
-template <class T>
-struct is_cpp_ref<std::unique_ptr<T>> : std::true_type {};
-
-template <class T>
-struct is_cpp_ref<std::shared_ptr<T>> : std::true_type {};
-
 } // namespace detail
 
 // A reference to an union field of the possibly const-qualified type
@@ -1399,7 +1390,7 @@ class union_field_ref {
 
   using is_cpp_ref_or_boxed = folly::Disjunction<
       detail::is_boxed_value_ptr<folly::remove_cvref_t<T>>,
-      detail::is_cpp_ref<folly::remove_cvref_t<T>>>;
+      detail::is_shared_or_unique_ptr<folly::remove_cvref_t<T>>>;
 
   struct element_type_adapter {
     using element_type = folly::remove_cvref_t<T>;
@@ -1444,7 +1435,8 @@ class union_field_ref {
   FOLLY_ERASE union_field_ref& operator=(U&& other) noexcept(
       std::is_nothrow_constructible<value_type, U>::value&&
           std::is_nothrow_assignable<value_type, U>::value) {
-    if (has_value() && !detail::is_cpp_ref<folly::remove_cvref_t<T>>{}) {
+    if (has_value() &&
+        !detail::is_shared_or_unique_ptr<folly::remove_cvref_t<T>>{}) {
       get_value() = static_cast<U&&>(other);
     } else {
       emplace(static_cast<U&&>(other));
