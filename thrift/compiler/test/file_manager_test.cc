@@ -14,31 +14,12 @@
  * limitations under the License.
  */
 
-#include <folly/String.h>
-#include <folly/experimental/TestUtil.h>
 #include <folly/portability/GTest.h>
-
-#include <thrift/compiler/ast/t_program.h>
-#include <thrift/compiler/ast/t_program_bundle.h>
 #include <thrift/compiler/codemod/file_manager.h>
-#include <thrift/compiler/compiler.h>
+#include <thrift/compiler/test/parser_test_helpers.h>
+#include <thrift/compiler/util.h>
 
 namespace apache::thrift::compiler {
-
-// Simulates parsing a thrift file, only adding the offsets to the program.
-void add_offsets(t_program& program, const std::string& content) {
-  size_t offset = 0;
-  for (const auto& c : content) {
-    offset++;
-    if (c == '\n') {
-      program.add_line_offset(offset);
-    }
-  }
-}
-
-void write_file(const std::string& path, const std::string& content) {
-  EXPECT_TRUE(folly::writeFile(content, path.c_str()));
-}
 
 std::string read_file(const std::string& path) {
   std::string content;
@@ -61,68 +42,45 @@ TEST(FileManagerTest, replacement_less_than) {
 
 // Basic test of apply_replacements functionality, without traversing AST.
 TEST(FileManagerTest, apply_replacements_test) {
-  const folly::test::TemporaryFile tempFile(
-      "FileManagerTest_apply_replacements_test");
-  const std::string path = tempFile.path().string();
-  const std::string initial_content = folly::stripLeftMargin(R"(
-      struct A {
-        1: optional A a (cpp.ref);
-      } (cpp.noexcept_move)
-      )");
+  auto program = dedent_and_parse_to_program(R"(
+    struct A {
+      1: optional A a (cpp.ref);
+    } (cpp.noexcept_move)
+  )");
 
-  write_file(path, initial_content);
-
-  t_program program(path);
-  add_offsets(program, initial_content);
-
-  codemod::file_manager fm(program);
+  codemod::file_manager fm(*program);
 
   fm.add(
-      {program.get_byte_offset(2, 2),
-       program.get_byte_offset(2, 28),
+      {program->get_byte_offset(2, 2),
+       program->get_byte_offset(2, 28),
        "@cpp.Ref{cpp.RefType.Unique}\n  1: optional string a;"});
-  fm.add({program.get_byte_offset(3, 1), program.get_byte_offset(3, 21), ""});
+  fm.add({program->get_byte_offset(3, 1), program->get_byte_offset(3, 21), ""});
 
   fm.apply_replacements();
 
-  EXPECT_EQ(read_file(path), folly::stripLeftMargin(R"(
-      struct A {
-        @cpp.Ref{cpp.RefType.Unique}
-        1: optional string a;
-      }
-      )"));
+  EXPECT_EQ(read_file(program->path()), strip_left_margin(R"(
+    struct A {
+      @cpp.Ref{cpp.RefType.Unique}
+      1: optional string a;
+    }
+  )"));
 }
 
 // Testing correct line and column after including another thrift file.
 TEST(FileManagerTest, correct_location_after_include_test) {
-  const folly::test::TemporaryFile tempFile1(
-      "FileManagerTest_correct_location_after_include_test");
-  const std::string path1 = tempFile1.path().string();
-  const std::string initial_content1 = folly::stripLeftMargin(R"(
-      struct A {
-        1: string a;
-      }
-      )");
+  auto include = dedent_and_parse_to_program(R"(
+    struct A {
+      1: string a;
+    }
+  )");
 
-  const folly::test::TemporaryFile tempFile2(
-      "FileManagerTest_correct_location_after_include_test2");
-  const std::string path2 = tempFile2.path().string();
-  const std::string initial_content2 = folly::stripLeftMargin(R"(
-      include ")" + path1 + R"("
-      struct B {
-        1: string b;
-      }
-      )");
+  auto program = dedent_and_parse_to_program(R"(
+    include ")" + include->path() + R"("
+    struct B {
+      1: string b;
+    }
+  )");
 
-  write_file(path1, initial_content1);
-  write_file(path2, initial_content2);
-
-  const auto program_bundle =
-      parse_and_get_program({"thrift1", "--gen", "mstch_cpp2", path2});
-
-  EXPECT_TRUE(program_bundle);
-
-  const auto program = program_bundle->root_program();
   const auto struct_src_range = program->structs()[0]->src_range();
   const auto field_src_range = program->structs()[0]->fields()[0].src_range();
 

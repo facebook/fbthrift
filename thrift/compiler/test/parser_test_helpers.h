@@ -24,6 +24,7 @@
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_function.h>
+#include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_service.h>
 
 #include <thrift/compiler/test/parser_test_helpers-inl.h>
@@ -63,3 +64,9 @@ std::unique_ptr<t_enum> create_fake_enum(
     std::string name, t_program* program = nullptr) {
   return std::make_unique<t_enum>(program, std::move(name));
 }
+
+/**
+ * Helper function to parse thrift content to t_program
+ */
+std::shared_ptr<t_program> dedent_and_parse_to_program(
+    std::string thrift_content);
