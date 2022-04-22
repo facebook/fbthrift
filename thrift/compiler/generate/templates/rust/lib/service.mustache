@@ -72,9 +72,9 @@
                 match self {
                     {{function:upcamel}}StreamExn::Success(_) => ::fbthrift::ResultType::Return,
                     {{function:upcamel}}StreamExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
-                    {{#function:exceptions}}
+                    {{#function:stream_exceptions}}
                     {{function:upcamel}}StreamExn::{{field:rust_name}}(_exn) => fbthrift::ResultType::Error,
-                    {{/function:exceptions}}
+                    {{/function:stream_exceptions}}
                 }
             }
         }

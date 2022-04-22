@@ -1466,6 +1466,7 @@ pub mod services {
                 match self {
                     StreamByIdWithExceptionStreamExn::Success(_) => ::fbthrift::ResultType::Return,
                     StreamByIdWithExceptionStreamExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                    StreamByIdWithExceptionStreamExn::e(_exn) => fbthrift::ResultType::Error,
                 }
             }
         }
