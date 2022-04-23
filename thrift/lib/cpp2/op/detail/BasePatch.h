@@ -23,6 +23,7 @@
 #include <folly/Traits.h>
 #include <thrift/lib/cpp2/FieldRef.h>
 #include <thrift/lib/cpp2/op/Clear.h>
+#include <thrift/lib/cpp2/type/detail/Wrap.h>
 
 namespace apache {
 namespace thrift {
@@ -92,21 +93,11 @@ bool sameType(terse_field_ref<T> unn1, const U& unn2) {
 // - Patch: The Thrift struct representation for the patch.
 // - Derived: The leaf type deriving from this class.
 template <typename Patch, typename Derived>
-class BasePatch {
+class BasePatch : public type::detail::Wrap<Patch> {
+  using Base = type::detail::Wrap<Patch>;
+
  public:
-  using underlying_tag = type::struct_t<Patch>;
-  using underlying_type = Patch;
-
-  BasePatch() = default;
-  explicit BasePatch(const underlying_type& patch) : patch_(patch) {}
-  explicit BasePatch(underlying_type&& patch) noexcept
-      : patch_(std::move(patch)) {}
-
-  FOLLY_NODISCARD const underlying_type& toThrift() const& { return patch_; }
-  FOLLY_NODISCARD underlying_type&& toThrift() && { return std::move(patch_); }
-
-  void reset() { op::clear<underlying_tag>(patch_); }
-  bool empty() const { return op::isEmpty<underlying_tag>(patch_); }
+  using Base::Base;
 
   // Automatically dereference non-optional fields.
   template <typename U>
@@ -137,12 +128,8 @@ class BasePatch {
   }
 
  protected:
-  Patch patch_;
-
+  using Base::resetAnd;
   ~BasePatch() = default; // abstract base class
-
-  // A fluent version of 'reset()'.
-  FOLLY_NODISCARD Patch& resetAnd() { return (reset(), patch_); }
 
   Derived& derived() { return static_cast<Derived&>(*this); }
   const Derived& derived() const { return static_cast<const Derived&>(*this); }
@@ -188,19 +175,19 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
   }
 
  protected:
+  using Base::data_;
   using Base::derived;
-  using Base::patch_;
   using Base::resetAnd;
 
   ~BaseValuePatch() = default; // abstract base class
 
   FOLLY_NODISCARD value_type& assignOr(value_type& value) noexcept {
-    return hasValue(patch_.assign()) ? *patch_.assign() : value;
+    return hasValue(data_.assign()) ? *data_.assign() : value;
   }
 
   bool applyAssign(value_type& val) const {
-    if (hasValue(patch_.assign())) {
-      val = *patch_.assign();
+    if (hasValue(data_.assign())) {
+      val = *data_.assign();
       return true;
     }
     return false;
@@ -209,11 +196,11 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
   template <typename U>
   bool mergeAssign(U&& next) {
     if (hasValue(next.toThrift().assign())) {
-      patch_ = std::forward<U>(next).toThrift();
+      data_ = std::forward<U>(next).toThrift();
       return true;
     }
-    if (hasValue(patch_.assign())) {
-      next.apply(*patch_.assign());
+    if (hasValue(data_.assign())) {
+      next.apply(*data_.assign());
       return true;
     }
     return false;
@@ -244,8 +231,8 @@ class BaseClearValuePatch : public BaseValuePatch<Patch, Derived> {
 
  protected:
   using Base::applyAssign;
+  using Base::data_;
   using Base::mergeAssign;
-  using Base::patch_;
   using Base::resetAnd;
 
   ~BaseClearValuePatch() = default;
@@ -258,7 +245,7 @@ class BaseClearValuePatch : public BaseValuePatch<Patch, Derived> {
     // it.
     if (*next.toThrift().clear() && !hasValue(next.toThrift().assign())) {
       // Next patch completely replaces this one.
-      patch_ = std::forward<U>(next).toThrift();
+      data_ = std::forward<U>(next).toThrift();
       return true;
     }
     return mergeAssign(std::forward<U>(next));
@@ -308,66 +295,66 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
 
   // Patch any set value.
   FOLLY_NODISCARD value_patch_type& patch() {
-    if (hasValue(patch_.ensure())) {
-      return *patch_.patchAfter();
-    } else if (*patch_.clear()) {
+    if (hasValue(data_.ensure())) {
+      return *data_.patchAfter();
+    } else if (*data_.clear()) {
       folly::throw_exception<bad_patch_access>();
     }
-    return *patch_.patch();
+    return *data_.patch();
   }
 
  protected:
+  using Base::data_;
   using Base::derived;
-  using Base::patch_;
   using Base::resetAnd;
 
   ~BaseEnsurePatch() = default;
 
-  Patch& clearAnd() { return (clear(), patch_); }
+  Patch& clearAnd() { return (clear(), data_); }
   template <typename U = value_type>
   Patch& ensureAnd(U&& _default) {
-    if (!hasValue(patch_.ensure())) {
-      patch_.ensure().emplace(std::forward<U>(_default));
+    if (!hasValue(data_.ensure())) {
+      data_.ensure().emplace(std::forward<U>(_default));
     }
-    return patch_;
+    return data_;
   }
 
   bool emptyEnsure() const {
-    return !*patch_.clear() && patch_.patch()->empty() &&
-        !hasValue(patch_.ensure()) && patch_.patchAfter()->empty();
+    return !*data_.clear() && data_.patch()->empty() &&
+        !hasValue(data_.ensure()) && data_.patchAfter()->empty();
   }
 
   template <typename U>
   bool mergeEnsure(U&& next) {
     if (*next.toThrift().clear()) {
       if (hasValue(next.toThrift().ensure())) {
-        patch_.clear() = true;
-        patch_.patch()->reset(); // We can ignore next.patch.
-        patch_.ensure() = *std::forward<U>(next).toThrift().ensure();
-        patch_.patchAfter() = *std::forward<U>(next).toThrift().patchAfter();
+        data_.clear() = true;
+        data_.patch()->reset(); // We can ignore next.patch.
+        data_.ensure() = *std::forward<U>(next).toThrift().ensure();
+        data_.patchAfter() = *std::forward<U>(next).toThrift().patchAfter();
       } else {
         clear(); // We can ignore everything else.
       }
       return true; // It's a complete replacement.
     }
 
-    if (hasValue(patch_.ensure())) {
+    if (hasValue(data_.ensure())) {
       // All values will be set before next, so ignore next.ensure and
       // merge next.patch and next.patchAfter into this.patchAfter.
       auto temp = *std::forward<U>(next).toThrift().patchAfter();
-      patch_.patchAfter()->merge(*std::forward<U>(next).toThrift().patch());
-      patch_.patchAfter()->merge(std::move(temp));
+      data_.patchAfter()->merge(*std::forward<U>(next).toThrift().patch());
+      data_.patchAfter()->merge(std::move(temp));
     } else { // Both this.ensure and next.clear are known to be empty.
       // Merge anything (oddly) in patchAfter into patch.
-      patch_.patch()->merge(std::move(*patch_.patchAfter()));
+      data_.patch()->merge(std::move(*data_.patchAfter()));
       // Merge in next.patch into patch.
-      patch_.patch()->merge(*std::forward<U>(next).toThrift().patch());
+      data_.patch()->merge(*std::forward<U>(next).toThrift().patch());
       // Consume next.ensure, if any.
       if (hasValue(next.toThrift().ensure())) {
-        patch_.ensure() = *std::forward<U>(next).toThrift().ensure();
+        data_.ensure() = *std::forward<U>(next).toThrift().ensure();
       }
       // Consume next.patchAfter.
-      patch_.patchAfter() = *std::forward<U>(next).toThrift().patchAfter();
+      data_.patchAfter() = *std::forward<U>(next).toThrift().patchAfter();
     }
     return false;
   }
@@ -375,17 +362,17 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
   template <typename U>
   void applyEnsure(U& val) const {
     // Clear or patch.
-    if (*patch_.clear()) {
+    if (*data_.clear()) {
       clearValue(val);
     } else {
-      patch_.patch()->apply(val);
+      data_.patch()->apply(val);
     }
     // Ensure if needed.
-    if (hasValue(patch_.ensure()) && !sameType(patch_.ensure(), val)) {
-      val = *patch_.ensure();
+    if (hasValue(data_.ensure()) && !sameType(data_.ensure(), val)) {
+      val = *data_.ensure();
     }
     // Apply the patch after ensure.
-    patch_.patchAfter()->apply(val);
+    data_.patchAfter()->apply(val);
   }
 };
 

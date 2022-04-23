@@ -62,18 +62,17 @@ class BoolPatch : public BaseValuePatch<Patch, BoolPatch<Patch>> {
  public:
   using Base::apply;
   using Base::Base;
-  using Base::toThrift;
   using Base::operator=;
 
   static BoolPatch createInvert() { return !BoolPatch{}; }
 
   void invert() {
-    auto& val = assignOr(*patch_.invert());
+    auto& val = assignOr(*data_.invert());
     val = !val;
   }
 
   void apply(T& val) const {
-    if (!applyAssign(val) && *patch_.invert()) {
+    if (!applyAssign(val) && *data_.invert()) {
       val = !val;
     }
   }
@@ -81,15 +80,15 @@ class BoolPatch : public BaseValuePatch<Patch, BoolPatch<Patch>> {
   template <typename U>
   void merge(U&& next) {
     if (!mergeAssign(std::forward<U>(next))) {
-      *patch_.invert() ^= *next.toThrift().invert();
+      *data_.invert() ^= *next.toThrift().invert();
     }
   }
 
  private:
   using Base::applyAssign;
   using Base::assignOr;
+  using Base::data_;
   using Base::mergeAssign;
-  using Base::patch_;
 
   friend BoolPatch operator!(BoolPatch val) { return (val.invert(), val); }
 };
@@ -122,24 +121,24 @@ class NumberPatch : public BaseValuePatch<Patch, NumberPatch<Patch>> {
 
   template <typename U>
   void add(U&& val) {
-    assignOr(*patch_.add()) += std::forward<U>(val);
+    assignOr(*data_.add()) += std::forward<U>(val);
   }
 
   template <typename U>
   void subtract(U&& val) {
-    assignOr(*patch_.add()) -= std::forward<U>(val);
+    assignOr(*data_.add()) -= std::forward<U>(val);
   }
 
   void apply(T& val) const {
     if (!applyAssign(val)) {
-      val += *patch_.add();
+      val += *data_.add();
     }
   }
 
   template <typename U>
   void merge(U&& next) {
     if (!mergeAssign(std::forward<U>(next))) {
-      *patch_.add() += *next.toThrift().add();
+      *data_.add() += *next.toThrift().add();
     }
   }
 
@@ -158,8 +157,8 @@ class NumberPatch : public BaseValuePatch<Patch, NumberPatch<Patch>> {
  private:
   using Base::applyAssign;
   using Base::assignOr;
+  using Base::data_;
   using Base::mergeAssign;
-  using Base::patch_;
 
   template <typename U>
   friend NumberPatch operator+(NumberPatch lhs, U&& rhs) {
@@ -211,44 +210,44 @@ class StringPatch : public BaseClearValuePatch<Patch, StringPatch<Patch>> {
 
   template <typename... Args>
   void append(Args&&... args) {
-    assignOr(*patch_.append()).append(std::forward<Args>(args)...);
+    assignOr(*data_.append()).append(std::forward<Args>(args)...);
   }
 
   template <typename U>
   void prepend(U&& val) {
-    T& cur = assignOr(*patch_.prepend());
+    T& cur = assignOr(*data_.prepend());
     cur = std::forward<U>(val) + std::move(cur);
   }
 
   void apply(T& val) const {
     if (!applyAssign(val)) {
-      if (patch_.clear() == true) {
+      if (data_.clear() == true) {
         val.clear();
       }
-      val = *patch_.prepend() + std::move(val) + *patch_.append();
+      val = *data_.prepend() + std::move(val) + *data_.append();
     }
   }
 
   template <typename U>
   void merge(U&& next) {
     if (!mergeAssignAndClear(std::forward<U>(next))) {
-      *patch_.prepend() = *std::forward<U>(next).toThrift().prepend() +
-          std::move(*patch_.prepend());
-      patch_.append()->append(*std::forward<U>(next).toThrift().append());
+      *data_.prepend() = *std::forward<U>(next).toThrift().prepend() +
+          std::move(*data_.prepend());
+      data_.append()->append(*std::forward<U>(next).toThrift().append());
     }
   }
 
   template <typename U>
   StringPatch& operator+=(U&& val) {
-    assignOr(*patch_.append()) += std::forward<U>(val);
+    assignOr(*data_.append()) += std::forward<U>(val);
     return *this;
   }
 
  private:
   using Base::applyAssign;
   using Base::assignOr;
+  using Base::data_;
   using Base::mergeAssignAndClear;
-  using Base::patch_;
 
   template <typename U>
   friend StringPatch operator+(StringPatch lhs, U&& rhs) {

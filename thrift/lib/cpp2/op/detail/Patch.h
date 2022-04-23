@@ -95,13 +95,13 @@ class OptionalPatch : public BaseEnsurePatch<Patch, OptionalPatch<Patch>> {
   bool empty() const { return emptyEnsure(); }
 
   void apply(T& val) const {
-    if (*patch_.clear()) {
-      if (!patch_.ensure().has_value()) { // Cannot represent 'unset'.
+    if (*data_.clear()) {
+      if (!data_.ensure().has_value()) { // Cannot represent 'unset'.
         folly::throw_exception<op::bad_patch_access>();
       }
-      val = *patch_.ensure();
+      val = *data_.ensure();
     }
-    patch_.patchAfter()->apply(val);
+    data_.patchAfter()->apply(val);
   }
 
   template <typename U>
@@ -117,12 +117,12 @@ class OptionalPatch : public BaseEnsurePatch<Patch, OptionalPatch<Patch>> {
  private:
   using Base::applyEnsure;
   using Base::clearAnd;
+  using Base::data_;
   using Base::emptyEnsure;
   using Base::ensureAnd;
   using Base::mergeEnsure;
-  using Base::patch_;
 
-  Patch& ensureAnd() { return (patch_.ensure().ensure(), patch_); }
+  Patch& ensureAnd() { return (data_.ensure().ensure(), data_); }
 };
 
 template <template <typename> class PatchType>

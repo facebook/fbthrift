@@ -75,29 +75,29 @@ class StructuredPatch : public BasePatch<Patch, StructuredPatch<Patch>> {
     return patch;
   }
 
-  Patch& toThrift() & noexcept { return patch_; }
-  Patch* operator->() noexcept { return &patch_; }
-  const Patch* operator->() const noexcept { return &patch_; }
-  Patch& operator*() noexcept { return patch_; }
-  const Patch& operator*() const noexcept { return patch_; }
+  Patch& toThrift() & noexcept { return data_; }
+  Patch* operator->() noexcept { return &data_; }
+  const Patch* operator->() const noexcept { return &data_; }
+  Patch& operator*() noexcept { return data_; }
+  const Patch& operator*() const noexcept { return data_; }
 
   template <typename T>
   void assignFrom(T&& val) {
-    FieldPatch<T>::forwardFrom(std::forward<T>(val), patch_);
+    FieldPatch<T>::forwardFrom(std::forward<T>(val), data_);
   }
 
   template <typename T>
   void apply(T& val) const {
-    FieldPatch<T>::apply(patch_, val);
+    FieldPatch<T>::apply(data_, val);
   }
 
   template <typename U>
   void merge(U&& next) {
-    FieldPatch<Patch>::merge(patch_, std::forward<U>(next).toThrift());
+    FieldPatch<Patch>::merge(data_, std::forward<U>(next).toThrift());
   }
 
  private:
-  using Base::patch_;
+  using Base::data_;
   template <typename T>
   using Fields = ::apache::thrift::detail::st::struct_private_access::fields<T>;
   template <typename T>
@@ -105,23 +105,23 @@ class StructuredPatch : public BasePatch<Patch, StructuredPatch<Patch>> {
 
   friend bool operator==(
       const StructuredPatch& lhs, const StructuredPatch& rhs) {
-    return lhs.patch_ == rhs.patch_;
+    return lhs.data_ == rhs.data_;
   }
   friend bool operator==(const StructuredPatch& lhs, const Patch& rhs) {
-    return lhs.patch_ == rhs;
+    return lhs.data_ == rhs;
   }
   friend bool operator==(const Patch& lhs, const StructuredPatch& rhs) {
-    return lhs == rhs.patch_;
+    return lhs == rhs.data_;
   }
   friend bool operator!=(
       const StructuredPatch& lhs, const StructuredPatch& rhs) {
-    return lhs.patch_ != rhs.patch_;
+    return lhs.data_ != rhs.data_;
   }
   friend bool operator!=(const StructuredPatch& lhs, const Patch& rhs) {
-    return lhs.patch_ != rhs;
+    return lhs.data_ != rhs;
   }
   friend bool operator!=(const Patch& lhs, const StructuredPatch& rhs) {
-    return lhs != rhs.patch_;
+    return lhs != rhs.data_;
   }
 };
 
@@ -149,37 +149,37 @@ class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
     if (applyAssign(val)) {
       return;
     }
-    if (*patch_.clear()) {
+    if (*data_.clear()) {
       thrift::clear(val);
     }
-    patch_.patch()->apply(val);
+    data_.patch()->apply(val);
   }
 
   template <typename U>
   void merge(U&& next) {
     if (!mergeAssignAndClear(std::forward<U>(next))) {
-      patch_.patch()->merge(*std::forward<U>(next).toThrift().patch());
+      data_.patch()->merge(*std::forward<U>(next).toThrift().patch());
     }
   }
 
  private:
   using Base::applyAssign;
+  using Base::data_;
   using Base::mergeAssignAndClear;
-  using Base::patch_;
   using Base::resetAnd;
   using Fields = ::apache::thrift::detail::st::struct_private_access::fields<T>;
   using FieldPatch = detail::FieldPatch<Fields>;
 
   patch_type& ensurePatch() {
-    if (patch_.assign().has_value()) {
+    if (data_.assign().has_value()) {
       // Ensure even unknown fields are cleared.
-      *patch_.clear() = true;
+      *data_.clear() = true;
 
       // Split the assignment patch into a patch of assignments.
-      patch_.patch()->assignFrom(std::move(*patch_.assign()));
-      patch_.assign().reset();
+      data_.patch()->assignFrom(std::move(*data_.assign()));
+      data_.assign().reset();
     }
-    return *patch_.patch();
+    return *data_.patch();
   }
 };
 
@@ -208,7 +208,7 @@ class UnionPatch : public BaseEnsurePatch<Patch, UnionPatch<Patch>> {
     patch.ensure(std::forward<U>(_default));
     return patch;
   }
-  T& ensure() { return *patch_.ensure(); }
+  T& ensure() { return *data_.ensure(); }
   P& ensure(const T& val) { return *ensureAnd(val).patchAfter(); }
   P& ensure(T&& val) { return *ensureAnd(std::move(val)).patchAfter(); }
 
@@ -221,9 +221,9 @@ class UnionPatch : public BaseEnsurePatch<Patch, UnionPatch<Patch>> {
 
  private:
   using Base::applyEnsure;
+  using Base::data_;
   using Base::ensureAnd;
   using Base::mergeEnsure;
-  using Base::patch_;
 };
 
 } // namespace detail

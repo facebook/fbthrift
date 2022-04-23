@@ -51,57 +51,56 @@ class ListPatch : public BaseClearValuePatch<Patch, ListPatch<Patch>> {
   template <typename C = T>
   static ListPatch createAppend(C&& values) {
     ListPatch result;
-    *result.patch_.append() = std::forward<C>(values);
+    *result.data_.append() = std::forward<C>(values);
     return result;
   }
 
   template <typename C = T>
   static ListPatch createPrepend(C&& values) {
     ListPatch result;
-    *result.patch_.prepend() = std::forward<C>(values);
+    *result.data_.prepend() = std::forward<C>(values);
     return result;
   }
 
   template <typename C = T>
   void append(C&& rhs) {
-    auto& lhs = assignOr(*patch_.append());
+    auto& lhs = assignOr(*data_.append());
     lhs.insert(lhs.end(), rhs.begin(), rhs.end());
   }
   template <typename... Args>
   void emplace_back(Args&&... args) {
-    assignOr(*patch_.append()).emplace_back(std::forward<Args>(args)...);
+    assignOr(*data_.append()).emplace_back(std::forward<Args>(args)...);
   }
   template <typename U = typename T::value_type>
   void push_back(U&& val) {
-    assignOr(*patch_.append()).push_back(std::forward<U>(val));
+    assignOr(*data_.append()).push_back(std::forward<U>(val));
   }
 
   template <typename C = T>
   void prepend(C&& lhs) {
-    auto& rhs = assignOr(*patch_.prepend());
+    auto& rhs = assignOr(*data_.prepend());
     rhs.insert(rhs.begin(), lhs.begin(), lhs.end());
   }
   template <typename... Args>
   void emplace_front(Args&&... args) {
     // TODO(afuller): Switch prepend to a std::forward_list.
-    auto& prepend = assignOr(*patch_.prepend());
+    auto& prepend = assignOr(*data_.prepend());
     prepend.emplace(prepend.begin(), std::forward<Args>(args)...);
   }
   template <typename U = typename T::value_type>
   void push_front(U&& val) {
     // TODO(afuller): Switch prepend to a std::forward_list.
-    auto& prepend = assignOr(*patch_.prepend());
+    auto& prepend = assignOr(*data_.prepend());
     prepend.insert(prepend.begin(), std::forward<U>(val));
   }
 
   void apply(T& val) const {
     if (!applyAssign(val)) {
-      if (patch_.clear() == true) {
+      if (data_.clear() == true) {
         val.clear();
       }
-      val.insert(
-          val.begin(), patch_.prepend()->begin(), patch_.prepend()->end());
-      val.insert(val.end(), patch_.append()->begin(), patch_.append()->end());
+      val.insert(val.begin(), data_.prepend()->begin(), data_.prepend()->end());
+      val.insert(val.end(), data_.append()->begin(), data_.append()->end());
     }
   }
 
@@ -111,13 +110,13 @@ class ListPatch : public BaseClearValuePatch<Patch, ListPatch<Patch>> {
       // TODO(afuller): Optimize the r-value reference case.
       if (!next.toThrift().prepend()->empty()) {
         decltype(auto) rhs = *std::forward<U>(next).toThrift().prepend();
-        patch_.prepend()->insert(
-            patch_.prepend()->begin(), rhs.begin(), rhs.end());
+        data_.prepend()->insert(
+            data_.prepend()->begin(), rhs.begin(), rhs.end());
       }
       if (!next.toThrift().append()->empty()) {
         decltype(auto) rhs = *std::forward<U>(next).toThrift().append();
-        patch_.append()->reserve(patch_.append()->size() + rhs.size());
-        auto inserter = std::back_inserter(*patch_.append());
+        data_.append()->reserve(data_.append()->size() + rhs.size());
+        auto inserter = std::back_inserter(*data_.append());
         std::copy_n(rhs.begin(), rhs.size(), inserter);
       }
     }
@@ -126,8 +125,8 @@ class ListPatch : public BaseClearValuePatch<Patch, ListPatch<Patch>> {
  private:
   using Base::applyAssign;
   using Base::assignOr;
+  using Base::data_;
   using Base::mergeAssignAndClear;
-  using Base::patch_;
 };
 
 // Patch must have the following fields:
@@ -148,66 +147,66 @@ class SetPatch : public BaseClearValuePatch<Patch, SetPatch<Patch>> {
   template <typename C = T>
   static SetPatch createAdd(C&& keys) {
     SetPatch result;
-    *result.patch_.add() = std::forward<C>(keys);
+    *result.data_.add() = std::forward<C>(keys);
     return result;
   }
 
   template <typename C = T>
   static SetPatch createRemove(C&& keys) {
     SetPatch result;
-    *result.patch_.remove() = std::forward<C>(keys);
+    *result.data_.remove() = std::forward<C>(keys);
     return result;
   }
 
   template <typename C = T>
   void add(C&& keys) {
-    erase_all(*patch_.remove(), keys);
-    assignOr(*patch_.add()).insert(keys.begin(), keys.end());
+    erase_all(*data_.remove(), keys);
+    assignOr(*data_.add()).insert(keys.begin(), keys.end());
   }
   template <typename... Args>
   void emplace(Args&&... args) {
-    if (patch_.assign().has_value()) {
-      patch_.assign()->emplace(std::forward<Args>(args)...);
+    if (data_.assign().has_value()) {
+      data_.assign()->emplace(std::forward<Args>(args)...);
       return;
     }
-    auto result = patch_.add()->emplace(std::forward<Args>(args)...);
+    auto result = data_.add()->emplace(std::forward<Args>(args)...);
     if (result.second) {
-      patch_.remove()->erase(*result.first);
+      data_.remove()->erase(*result.first);
     }
   }
   template <typename U = typename T::value_type>
   void insert(U&& val) {
-    if (patch_.assign().has_value()) {
-      patch_.assign()->insert(std::forward<U>(val));
+    if (data_.assign().has_value()) {
+      data_.assign()->insert(std::forward<U>(val));
       return;
     }
-    patch_.remove()->erase(val);
-    patch_.add()->insert(std::forward<U>(val));
+    data_.remove()->erase(val);
+    data_.add()->insert(std::forward<U>(val));
   }
 
   template <typename C = T>
   void remove(C&& keys) {
-    if (patch_.assign().has_value()) {
-      erase_all(*patch_.assign(), keys);
+    if (data_.assign().has_value()) {
+      erase_all(*data_.assign(), keys);
       return;
     }
-    erase_all(*patch_.add(), keys);
-    patch_.remove()->insert(keys.begin(), keys.end());
+    erase_all(*data_.add(), keys);
+    data_.remove()->insert(keys.begin(), keys.end());
   }
   template <typename U = typename T::value_type>
   void erase(U&& val) {
-    assignOr(*patch_.add()).erase(val);
-    assignOr(*patch_.remove()).insert(std::forward<U>(val));
+    assignOr(*data_.add()).erase(val);
+    assignOr(*data_.remove()).insert(std::forward<U>(val));
   }
 
   void apply(T& val) const {
     if (!applyAssign(val)) {
-      if (patch_.clear() == true) {
+      if (data_.clear() == true) {
         val.clear();
       } else {
-        erase_all(val, *patch_.remove());
+        erase_all(val, *data_.remove());
       }
-      val.insert(patch_.add()->begin(), patch_.add()->end());
+      val.insert(data_.add()->begin(), data_.add()->end());
     }
   }
 
@@ -222,8 +221,8 @@ class SetPatch : public BaseClearValuePatch<Patch, SetPatch<Patch>> {
  private:
   using Base::applyAssign;
   using Base::assignOr;
+  using Base::data_;
   using Base::mergeAssignAndClear;
-  using Base::patch_;
 };
 
 // Patch must have the following fields:
@@ -243,13 +242,13 @@ class MapPatch : public BaseClearValuePatch<Patch, MapPatch<Patch>> {
   template <typename C = T>
   static MapPatch createPut(C&& entries) {
     MapPatch result;
-    *result.patch_.put() = std::forward<C>(entries);
+    *result.data_.put() = std::forward<C>(entries);
     return result;
   }
 
   template <typename C = T>
   void put(C&& entries) {
-    auto& field = assignOr(*patch_.put());
+    auto& field = assignOr(*data_.put());
     for (auto&& entry : entries) {
       field.insert_or_assign(
           std::forward<decltype(entry)>(entry).first,
@@ -258,16 +257,16 @@ class MapPatch : public BaseClearValuePatch<Patch, MapPatch<Patch>> {
   }
   template <typename K, typename V>
   void insert_or_assign(K&& key, V&& value) {
-    assignOr(*patch_.put())
+    assignOr(*data_.put())
         .insert_or_assign(std::forward<K>(key), std::forward<V>(value));
   }
 
   void apply(T& val) const {
     if (!applyAssign(val)) {
-      if (patch_.clear() == true) {
+      if (data_.clear() == true) {
         val.clear();
       }
-      for (const auto& entry : *patch_.put()) {
+      for (const auto& entry : *data_.put()) {
         val.insert_or_assign(entry.first, entry.second);
       }
     }
@@ -283,8 +282,8 @@ class MapPatch : public BaseClearValuePatch<Patch, MapPatch<Patch>> {
  private:
   using Base::applyAssign;
   using Base::assignOr;
+  using Base::data_;
   using Base::mergeAssignAndClear;
-  using Base::patch_;
 };
 
 } // namespace detail
