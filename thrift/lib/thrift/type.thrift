@@ -66,8 +66,8 @@ enum BaseType {
   Set = 15,
   Map = 16,
 } (
-  cpp.name = "ThriftBaseType",
-  cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::BaseType, ::apache::thrift::type::ThriftBaseType>",
+  cpp.name = "BaseTypeEnum",
+  cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::BaseType, ::apache::thrift::type::BaseTypeEnum>",
 )
 
 // The minimum and default number of bytes that can be used to identify
@@ -84,6 +84,6 @@ const byte defaultTypeHashBytes = 16;
 enum UniversalHashAlgorithm {
   Sha2_256 = 1,
 } (
-  cpp.name = "ThriftUniversalHashAlgorithm",
-  cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::UniversalHashAlgorithm, ::apache::thrift::type::ThriftUniversalHashAlgorithm>",
+  cpp.name = "UniversalHashAlgorithmEnum",
+  cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::UniversalHashAlgorithm, ::apache::thrift::type::UniversalHashAlgorithmEnum>",
 )

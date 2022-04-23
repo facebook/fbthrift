@@ -155,7 +155,7 @@ TEST(CreateTest, Integral) {
   testCreate<i32_t>();
   testCreate<i64_t>();
   // testset does not include structured with Enum.
-  testCreateWithTag<enum_t<ThriftBaseType>>();
+  testCreateWithTag<enum_t<BaseTypeEnum>>();
 }
 
 TEST(CreateTest, FloatingPoint) {

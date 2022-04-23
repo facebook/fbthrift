@@ -128,16 +128,16 @@ TEST(TraitsTest, Enum) {
   EXPECT_EQ(base_type_v<tag>, BaseType::Enum);
   EXPECT_EQ(getName<tag>(), "enum");
 
-  using tag_t = enum_t<ThriftBaseType>;
+  using tag_t = enum_t<BaseTypeEnum>;
   EXPECT_EQ(base_type_v<tag_t>, BaseType::Enum);
   EXPECT_EQ(getName<tag_t>(), "type.BaseType");
-  test::same_type<standard_type<tag_t>, ThriftBaseType>;
-  test::same_type<native_type<tag_t>, ThriftBaseType>;
+  test::same_type<standard_type<tag_t>, BaseTypeEnum>;
+  test::same_type<native_type<tag_t>, BaseTypeEnum>;
 
-  using tag_at = adapted<StaticCastAdapter<BaseType, ThriftBaseType>, tag_t>;
+  using tag_at = adapted<StaticCastAdapter<BaseType, BaseTypeEnum>, tag_t>;
   EXPECT_EQ(base_type_v<tag_at>, BaseType::Enum);
   EXPECT_EQ(getName<tag_at>(), "apache::thrift::type::BaseType");
-  test::same_type<standard_type<tag_at>, ThriftBaseType>;
+  test::same_type<standard_type<tag_at>, BaseTypeEnum>;
   test::same_type<native_type<tag_at>, BaseType>;
 }
 

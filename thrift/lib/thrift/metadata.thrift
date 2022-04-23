@@ -18,6 +18,7 @@ namespace cpp2 apache.thrift.metadata
 namespace java2 com.facebook.thrift.metadata
 namespace java.swift com.facebook.thrift.metadata
 namespace py apache.thrift.metadata
+namespace py.asyncio apache_thrift_asyncio.metadata
 namespace py3 apache.thrift
 namespace js apache.thrift
 namespace php tmeta

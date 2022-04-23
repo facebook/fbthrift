@@ -25,8 +25,7 @@ namespace {
 
 TEST(UniversalHashAlgorithmTest, Conversions) {
   EXPECT_EQ(
-      static_cast<UniversalHashAlgorithm>(
-          ThriftUniversalHashAlgorithm::Sha2_256),
+      static_cast<UniversalHashAlgorithm>(UniversalHashAlgorithmEnum::Sha2_256),
       UniversalHashAlgorithm::Sha2_256);
 }
 

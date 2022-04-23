@@ -54,8 +54,8 @@ TEST(ClearTest, Integral) {
   testClear<type::i16_t>(0, 1);
   testClear<type::i32_t>(0, 1);
   testClear<type::i64_t>(0, 1);
-  testClear<type::enum_t<type::ThriftBaseType>>(
-      type::ThriftBaseType::Void, type::ThriftBaseType::Bool);
+  testClear<type::enum_t<type::BaseTypeEnum>>(
+      type::BaseTypeEnum::Void, type::BaseTypeEnum::Bool);
 }
 
 TEST(ClearTest, FloatingPoint) {
