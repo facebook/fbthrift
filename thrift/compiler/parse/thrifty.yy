@@ -60,9 +60,9 @@ std::unique_ptr<T> own(T* ptr) {
   return std::unique_ptr<T>(ptr);
 }
 
-const yy::parser::symbol_type error = yy::parser::make_tok_error(yy::location());
+const yy::parser::symbol_type error = yy::parser::make_tok_error({});
 
-yy::parser::symbol_type parse_lex(parsing_driver& driver, YYSTYPE*, YYLTYPE*) {
+yy::parser::symbol_type parse_lex(parsing_driver& driver, YYSTYPE*, source_range*) {
   auto token = driver.get_lexer().get_next_token();
   if (token.type_get() == error.type_get()) {
     driver.end_parsing();
@@ -87,20 +87,6 @@ yy::parser::symbol_type parse_lex(parsing_driver& driver, YYSTYPE*, YYLTYPE*) {
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/parse/t_ref.h>
 
-namespace apache { namespace thrift { namespace compiler { namespace yy {
-class location;
-}}}}
-
-/**
- * YYLTYPE evaluates to a class named 'location', which has:
- *   position begin;
- *   position end;
- * The class 'position', in turn, has:
- *   std::string* filename;
- *   unsigned line;
- *   unsigned column;
- */
-using YYLTYPE = apache::thrift::compiler::yy::location;
 using YYSTYPE = int;
 
 namespace apache {
@@ -135,14 +121,15 @@ using t_typethrowspair = std::pair<t_type_ref, t_throws*>;
 
 %defines
 %locations
+%define api.location.type {apache::thrift::compiler::source_range}
 %define api.token.constructor
 %define api.value.type variant
 %define api.namespace {apache::thrift::compiler::yy}
 
 %param
     {apache::thrift::compiler::parsing_driver& driver}
-    {YYSTYPE * yylval_param}
-    {YYLTYPE * yylloc_param}
+    {YYSTYPE* yylval_param}
+    {source_range* yylloc_param}
 
 /**
  * Strings identifier
@@ -554,7 +541,7 @@ Typedef:
     {
       driver.debug("TypeDef => tok_typedef FieldType Identifier");
       $$ = new t_typedef(driver.program, std::move($3), std::move($2));
-      $$->set_lineno(@3.end.line);
+      $$->set_lineno(driver.get_lineno(@3.end));
     }
 
 Enum:
@@ -563,7 +550,7 @@ Enum:
       driver.debug("Enum => tok_enum Identifier {{ EnumValueList }}");
       $$ = new t_enum(driver.program, std::move($2));
       $$->set_values(std::move(*own($4)));
-      $$->set_lineno(@2.end.line);
+      $$->set_lineno(driver.get_lineno(@2.end));
     }
 
 EnumValueList:
@@ -597,13 +584,13 @@ EnumValue:
       driver.debug("EnumValue -> Identifier = Integer");
       $$ = new t_enum_value(std::move($1));
       $$->set_value(driver.to_enum_value($3));
-      $$->set_lineno(@1.end.line);
+      $$->set_lineno(driver.get_lineno(@1.end));
     }
 | Identifier
     {
       driver.debug("EnumValue -> Identifier");
       $$ = new t_enum_value(std::move($1));
-      $$->set_lineno(@1.end.line);
+      $$->set_lineno(driver.get_lineno(@1.end));
     }
 
 Const:
@@ -611,7 +598,7 @@ Const:
     {
       driver.debug("Const => tok_const FieldType Identifier = ConstValue");
       $$ = new t_const(driver.program, std::move($2), std::move($3), own($5));
-      $$->set_lineno(@3.end.line);
+      $$->set_lineno(driver.get_lineno(@3.end));
     }
 
 ConstValue:
@@ -757,7 +744,7 @@ Struct:
       driver.debug("Struct => tok_struct Identifier {{ FieldList }}");
       $$ = new t_struct(driver.program, std::move($2));
       driver.set_fields(*$$, std::move(*own($4)));
-      $$->set_lineno(@2.end.line);
+      $$->set_lineno(driver.get_lineno(@2.end));
     }
 
 Union:
@@ -766,7 +753,7 @@ Union:
       driver.debug("Union => tok_union Identifier {{ FieldList }}");
       $$ = new t_union(driver.program, std::move($2));
       driver.set_fields(*$$, std::move(*own($4)));
-      $$->set_lineno(@2.end.line);
+      $$->set_lineno(driver.get_lineno(@2.end));
     }
 
 Exception:
@@ -781,7 +768,7 @@ Exception:
       $$->set_kind($2);
       $$->set_blame($3);
       driver.set_fields(*$$, std::move(*own($7)));
-      $$->set_lineno(@5.end.line);
+      $$->set_lineno(driver.get_lineno(@5.end));
     }
 
 ErrorSafety:
@@ -805,7 +792,7 @@ Service:
       driver.debug("Service => tok_service Identifier Extends {{ FunctionList }}");
       $$ = new t_service(driver.program, std::move($2), $3);
       driver.set_functions(*$$, own($5));
-      $$->set_lineno(@2.end.line);
+      $$->set_lineno(driver.get_lineno(@2.end));
     }
 
 Extends:
@@ -822,7 +809,7 @@ Interaction:
       driver.debug("Interaction -> tok_interaction Identifier {{ FunctionList }}");
       $$ = new t_interaction(driver.program, std::move($2));
       driver.set_functions(*$$, own($4));
-      $$->set_lineno(@2.end.line);
+      $$->set_lineno(driver.get_lineno(@2.end));
     }
 
 FunctionList:
@@ -859,7 +846,7 @@ Function:
       $$->set_qualifier($1);
       driver.set_fields($$->params(), std::move(*own($5)));
       $$->set_exceptions(own($7));
-      $$->set_lineno(@3.end.line);
+      $$->set_lineno(driver.get_lineno(@3.end));
       // TODO(afuller): Leave the param list unnamed.
       $$->params().set_name($$->name() + "_args");
     }
@@ -928,7 +915,7 @@ Field:
       $$ = new t_field(std::move($3), std::move($4), $1.value_or(0), $1 != boost::none);
       $$->set_qualifier($2);
       $$->set_default_value(own($5));
-      $$->set_lineno(@4.end.line);
+      $$->set_lineno(driver.get_lineno(@4.end));
     }
 
 FieldAnnotated:

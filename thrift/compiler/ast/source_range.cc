@@ -94,20 +94,23 @@ std::ostream& operator<<(std::ostream& os, const source_loc& rhs) {
   return os;
 }
 
-source_range::source_range(const source_loc& begin, const source_loc& end)
-    : source_range(
+resolved_source_range::resolved_source_range(
+    const source_loc& begin, const source_loc& end)
+    : resolved_source_range(
           begin.program(),
           begin.line(),
           begin.column(),
           end.line(),
           end.column()) {
   if (&begin.program() != &end.program()) {
-    throw std::invalid_argument("A source_range cannot span programs/files.");
+    throw std::invalid_argument(
+        "A resolved_source_range cannot span programs/files.");
   }
 }
 
-int source_range::compare(
-    const source_range& lhs, const source_range& rhs) noexcept {
+int resolved_source_range::compare(
+    const resolved_source_range& lhs,
+    const resolved_source_range& rhs) noexcept {
   // Order by program.
   if (auto result = compare_programs(lhs.program_, rhs.program_)) {
     return result;

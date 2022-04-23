@@ -33,7 +33,7 @@ namespace thrift {
 namespace compiler {
 
 struct annotation_value {
-  source_range src_range;
+  resolved_source_range src_range;
   std::string value;
 };
 
@@ -47,8 +47,8 @@ class t_node {
  public:
   virtual ~t_node() = default;
 
-  const source_range& src_range() const { return source_range_; }
-  void set_src_range(const source_range& source_range) {
+  const resolved_source_range& src_range() const { return source_range_; }
+  void set_src_range(const resolved_source_range& source_range) {
     source_range_ = source_range;
   }
 
@@ -102,7 +102,7 @@ class t_node {
   void set_annotation(
       const std::string& key,
       const std::string& value = {},
-      const source_range& range = {}) {
+      const resolved_source_range& range = {}) {
     annotations_[key] = {range, value};
   }
 
@@ -139,7 +139,7 @@ class t_node {
    * source_range.
    */
   int lineno_{-1};
-  source_range source_range_;
+  resolved_source_range source_range_;
 
   std::map<std::string, annotation_value> annotations_;
   // TODO(afuller): Remove everything below this comment. It is only provideed

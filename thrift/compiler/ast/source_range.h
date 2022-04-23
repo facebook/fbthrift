@@ -115,16 +115,17 @@ class source_loc final {
 };
 
 /**
- * class source_range
+ * class resolved_source_range
  *
  * Source range information of a parsed element.
  */
-class source_range final {
+class resolved_source_range final {
  public:
-  constexpr source_range() noexcept = default;
-  constexpr source_range(source_range const&) noexcept = default;
+  constexpr resolved_source_range() noexcept = default;
+  constexpr resolved_source_range(resolved_source_range const&) noexcept =
+      default;
 
-  constexpr source_range(
+  constexpr resolved_source_range(
       const t_program& program,
       size_t begin_line,
       size_t begin_column,
@@ -137,7 +138,7 @@ class source_range final {
         end_col_(end_column) {}
 
   // Throws std::invalid_argument if begin and end refer to different programs.
-  source_range(const source_loc& begin, const source_loc& end);
+  resolved_source_range(const source_loc& begin, const source_loc& end);
 
   constexpr source_loc begin() const noexcept {
     return {*program_, begin_line_, begin_col_};
@@ -154,11 +155,11 @@ class source_range final {
   constexpr bool has_range() const noexcept { return program_ != nullptr; }
 
   constexpr explicit operator bool() const noexcept { return has_range(); }
-  constexpr source_range& operator=(const source_range& range) noexcept =
-      default;
+  constexpr resolved_source_range& operator=(
+      const resolved_source_range& range) noexcept = default;
 
   // Ordered by `begin` than `end`.
-  int compare(const source_range& rhs) const noexcept {
+  int compare(const resolved_source_range& rhs) const noexcept {
     return compare(*this, rhs);
   }
 
@@ -169,32 +170,40 @@ class source_range final {
   size_t end_line_ = 0; // 1-based
   size_t end_col_ = 0; // Code units (bytes), 1-based
 
-  friend bool operator==(const source_range& lhs, const source_range& rhs) {
+  friend bool operator==(
+      const resolved_source_range& lhs, const resolved_source_range& rhs) {
     return lhs.program_ == rhs.program_ && lhs.begin_line_ == rhs.begin_line_ &&
         lhs.begin_col_ == rhs.begin_col_ && lhs.end_line_ == rhs.end_line_ &&
         lhs.end_col_ == rhs.end_col_;
   }
   friend bool operator!=(
-      const source_range& lhs, const source_range& rhs) noexcept {
+      const resolved_source_range& lhs,
+      const resolved_source_range& rhs) noexcept {
     return !(lhs == rhs);
   }
 
-  static int compare(const source_range& lhs, const source_range& rhs) noexcept;
+  static int compare(
+      const resolved_source_range& lhs,
+      const resolved_source_range& rhs) noexcept;
 
   friend bool operator<(
-      const source_range& lhs, const source_range& rhs) noexcept {
+      const resolved_source_range& lhs,
+      const resolved_source_range& rhs) noexcept {
     return compare(lhs, rhs) < 0;
   }
   friend bool operator<=(
-      const source_range& lhs, const source_range& rhs) noexcept {
+      const resolved_source_range& lhs,
+      const resolved_source_range& rhs) noexcept {
     return compare(lhs, rhs) <= 0;
   }
   friend bool operator>(
-      const source_range& lhs, const source_range& rhs) noexcept {
+      const resolved_source_range& lhs,
+      const resolved_source_range& rhs) noexcept {
     return compare(lhs, rhs) > 0;
   }
   friend bool operator>=(
-      const source_range& lhs, const source_range& rhs) noexcept {
+      const resolved_source_range& lhs,
+      const resolved_source_range& rhs) noexcept {
     return compare(lhs, rhs) >= 0;
   }
 };

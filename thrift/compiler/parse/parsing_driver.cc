@@ -63,11 +63,8 @@ class parsing_driver::lex_handler_impl : public lex_handler {
 parsing_driver::parsing_driver(
     diagnostic_context& ctx, std::string path, parsing_params parse_params)
     : lex_handler_(std::make_unique<lex_handler_impl>(*this)),
-      lexer_(std::make_unique<lexer>(
-          source_mgr_,
-          *lex_handler_,
-          ctx,
-          source{source_location::invalid(), ""})),
+      lexer_(
+          std::make_unique<lexer>(source_mgr_, *lex_handler_, ctx, source())),
       params(std::move(parse_params)),
       doctext(boost::none),
       doctext_lineno(0),
@@ -87,12 +84,11 @@ parsing_driver::parsing_driver(
 parsing_driver::~parsing_driver() = default;
 
 int parsing_driver::get_lineno(source_location loc) {
-  if (loc == source_location::invalid()) {
+  if (loc == source_location()) {
     loc = lexer_->location();
   }
-  return loc != source_location::invalid()
-      ? resolved_location(loc, source_mgr_).line()
-      : 0;
+  return loc != source_location() ? resolved_location(loc, source_mgr_).line()
+                                  : 0;
 }
 
 std::string parsing_driver::get_text() const {
@@ -172,7 +168,7 @@ void parsing_driver::parse_file() {
   program = old_program;
 
   // Parse the program file
-  auto src = source{source_location::invalid(), {}};
+  auto src = source();
   try {
     src = source_mgr_.add_file(path);
     lexer_ = std::make_unique<lexer>(source_mgr_, *lex_handler_, ctx_, src);
@@ -456,7 +452,7 @@ void parsing_driver::set_attributes(
     t_named& node,
     std::unique_ptr<t_def_attrs> attrs,
     std::unique_ptr<t_annotations> annots,
-    const YYLTYPE& loc) const {
+    const source_range& loc) const {
   if (mode != parsing_mode::PROGRAM) {
     return;
   }
@@ -485,16 +481,17 @@ void parsing_driver::set_doctext(t_node& node, t_doc doctext) const {
   }
 }
 
-source_range parsing_driver::get_source_range(const YYLTYPE& loc) const {
-  return source_range(
-      *program, loc.begin.line, loc.begin.column, loc.end.line, loc.end.column);
+resolved_source_range parsing_driver::get_source_range(
+    const source_range& range) const {
+  if (range.begin == source_location()) {
+    return {*program, 0, 0, 0, 0};
+  }
+  auto begin = resolved_location(range.begin, source_mgr_);
+  auto end = resolved_location(range.end, source_mgr_);
+  return {*program, begin.line(), begin.column(), end.line(), end.column()};
 }
 
 void parsing_driver::reset_locations() {
-  yylloc_.begin.line = 1;
-  yylloc_.begin.column = 1;
-  yylloc_.end.line = 1;
-  yylloc_.end.column = 1;
   yylval_ = 0;
 }
 
@@ -916,7 +913,7 @@ void parsing_driver::validate_header_annotations(
 void parsing_driver::set_program_annotations(
     std::unique_ptr<t_def_attrs> statement_attrs,
     std::unique_ptr<t_annotations> annotations,
-    const YYLTYPE& loc) {
+    const source_range& loc) {
   set_attributes(
       *program, std::move(statement_attrs), std::move(annotations), loc);
 }

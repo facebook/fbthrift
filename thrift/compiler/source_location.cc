@@ -98,7 +98,8 @@ source source_manager::add_string(std::string file_name, std::string src) {
       std::move(file_name), std::vector<char>(start, start + src.size() + 1));
 }
 
-resolved_location::resolved_location(source_location loc, source_manager& sm) {
+resolved_location::resolved_location(
+    source_location loc, const source_manager& sm) {
   assert(loc.source_id_ != 0 && loc.source_id_ <= sm.sources_.size());
   const source_manager::source_info& source = sm.sources_[loc.source_id_ - 1];
   file_name_ = source.file_name.c_str();

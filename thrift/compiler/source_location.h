@@ -56,8 +56,8 @@ class source_manager {
 // A lightweight source location that can be resolved via source_manager.
 class source_location {
  private:
-  uint_least32_t source_id_;
-  uint_least32_t offset_;
+  uint_least32_t source_id_ = 0;
+  uint_least32_t offset_ = 0;
 
   friend class resolved_location;
   friend class source_manager;
@@ -66,7 +66,7 @@ class source_location {
       : source_id_(source_id), offset_(offset) {}
 
  public:
-  static source_location invalid() { return {0, 0}; }
+  source_location() = default;
 
   friend bool operator==(source_location lhs, source_location rhs) {
     return lhs.source_id_ == rhs.source_id_ && lhs.offset_ == rhs.offset_;
@@ -81,6 +81,11 @@ class source_location {
   }
 };
 
+struct source_range {
+  source_location begin;
+  source_location end;
+};
+
 // A resolved (source) location that provides the file name, line and column.
 class resolved_location {
  private:
@@ -89,7 +94,7 @@ class resolved_location {
   uint_least32_t column_;
 
  public:
-  resolved_location(source_location loc, source_manager& sm);
+  resolved_location(source_location loc, const source_manager& sm);
 
   // Returns the source file name. It can include directory components and/or be
   // a virtual file name that doesn't have a correspondent entry in the system's

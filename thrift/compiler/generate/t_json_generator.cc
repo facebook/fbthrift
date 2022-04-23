@@ -83,7 +83,7 @@ class t_json_generator : public t_concat_generator {
       const std::vector<const t_const*>& annotations);
   void print_node_annotations(
       const t_named& node, bool add_heading_comma, bool add_trailing_comma);
-  void print_source_range(const source_range& range);
+  void print_source_range(const resolved_source_range& range);
 
   /**
    * True if we should generate annotations in json representation.
@@ -759,7 +759,7 @@ bool t_json_generator::should_resolve_to_true_type(const t_type* ttype) {
  *
  * @param range The source range
  */
-void t_json_generator::print_source_range(const source_range& range) {
+void t_json_generator::print_source_range(const resolved_source_range& range) {
   indent(f_out_) << "\"source_range\" : {" << endl;
   indent_up();
 

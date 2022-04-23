@@ -44,12 +44,6 @@
 #include <thrift/compiler/parse/t_ref.h>
 #include <thrift/compiler/source_location.h>
 
-// This is a macro because of a difference between the OSS and internal builds.
-#ifndef LOCATION_HH
-#define LOCATION_HH "thrift/compiler/parse/location.hh"
-#endif
-#include LOCATION_HH
-
 namespace apache {
 namespace thrift {
 namespace compiler {
@@ -180,7 +174,7 @@ class parsing_driver {
   const lexer& get_lexer() const { return *lexer_; }
   lexer& get_lexer() { return *lexer_; }
 
-  int get_lineno(source_location loc = source_location::invalid());
+  int get_lineno(source_location loc = {});
 
   /**
    * Parses a program and returns the resulted AST.
@@ -195,11 +189,7 @@ class parsing_driver {
   using YYSTYPE = int;
   YYSTYPE yylval_ = 0;
 
-  /**
-   * Bison's structure to store location.
-   */
-  using YYLTYPE = apache::thrift::compiler::yy::location;
-  YYLTYPE yylloc_;
+  source_range yylloc_;
 
   /**
    * Diagnostic message callbacks.
@@ -322,7 +312,7 @@ class parsing_driver {
   bool require_experimental_feature(const char* feature);
 
   // Returns the source range object containing the location information.
-  source_range get_source_range(const YYLTYPE& loc) const;
+  resolved_source_range get_source_range(const source_range& range) const;
 
   void reset_locations();
 
@@ -332,9 +322,9 @@ class parsing_driver {
    *  to begin of next token)
    */
   void avoid_tokens_loc(
-      YYLTYPE& result_loc,
-      const std::vector<std::pair<bool, YYLTYPE>>& last_loc_overrides,
-      const std::vector<std::pair<bool, YYLTYPE>>& next_loc_overrides) {
+      source_range& result_loc,
+      const std::vector<std::pair<bool, source_range>>& last_loc_overrides,
+      const std::vector<std::pair<bool, source_range>>& next_loc_overrides) {
     for (const auto& loc_override : last_loc_overrides) {
       if (!loc_override.first) {
         break;
@@ -388,7 +378,7 @@ class parsing_driver {
       t_named& node,
       std::unique_ptr<t_def_attrs> attrs,
       std::unique_ptr<t_annotations> annots,
-      const YYLTYPE& loc) const;
+      const source_range& loc) const;
 
   // Adds a definition to the program.
   t_ref<t_named> add_def(std::unique_ptr<t_named> node);
@@ -419,11 +409,11 @@ class parsing_driver {
   void set_program_annotations(
       std::unique_ptr<t_def_attrs> statement_attrs,
       std::unique_ptr<t_annotations> annotations,
-      const YYLTYPE& loc);
+      const source_range& loc);
 
  private:
   void compute_location_impl(
-      YYLTYPE& yylloc, YYSTYPE& yylval, const char* text);
+      source_range& yylloc, YYSTYPE& yylval, const char* text);
 
   std::set<std::string> already_parsed_paths_;
   std::set<std::string> circular_deps_;

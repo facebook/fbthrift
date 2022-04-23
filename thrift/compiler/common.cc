@@ -17,6 +17,7 @@
 #include <thrift/compiler/common.h>
 
 #include <cstdarg>
+#include <iostream>
 
 #include <boost/filesystem.hpp>
 

@@ -17,7 +17,6 @@
 #pragma once
 
 #include <string>
-#include <vector>
 #include <fmt/core.h>
 
 #include <thrift/compiler/source_location.h>
@@ -49,7 +48,6 @@ class lexer {
   source_manager* source_mgr_;
   lex_handler* handler_;
   diagnostics_engine* diags_;
-  std::string filename_;
   fmt::string_view source_; // Source being lexed; has a terminating '\0'.
   source_location start_;
   const char* ptr_; // Current position in the source.
@@ -57,12 +55,8 @@ class lexer {
 
   const char* end() const { return source_.data() + source_.size() - 1; }
 
-  yy::location make_location() {
-    auto make_position = [this](const char* p) {
-      auto loc = resolved_location(start_ + (p - source_.data()), *source_mgr_);
-      return yy::position(&filename_, loc.line(), loc.column());
-    };
-    return {make_position(token_start_), make_position(ptr_)};
+  source_range token_source_range() const {
+    return {start_ + (token_start_ - source_.data()), location()};
   }
 
   void start_token() { token_start_ = ptr_; }

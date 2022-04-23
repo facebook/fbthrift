@@ -69,7 +69,9 @@ class SourceLocTest : public ::testing::Test {
 class SourceRangeTest : public ::testing::Test {
  protected:
   void testRangeOrdering(
-      int expected_cmp, const source_range& lhs, const source_range& rhs) {
+      int expected_cmp,
+      const resolved_source_range& lhs,
+      const resolved_source_range& rhs) {
     // Should match comparing begin() than end()
     int actual_cmp = lhs.begin().compare(rhs.begin());
     if (actual_cmp == 0) {
@@ -139,34 +141,47 @@ TEST_F(SourceRangeTest, ProgramMismatch) {
   source_loc loc1(program1, 1, 1);
   source_loc loc2(program2, 2, 1);
 
-  EXPECT_THROW(source_range(loc1, loc2), std::invalid_argument);
+  EXPECT_THROW(resolved_source_range(loc1, loc2), std::invalid_argument);
 }
 
 TEST_F(SourceRangeTest, Order) {
   t_program prog1("prog/1/src.thrift");
   t_program prog2("prog/2/src.thrift");
-  testRangeOrdering(0, source_range(), source_range());
-  testRangeOrdering(-1, source_range(), source_range(prog1, 1, 1, 1, 2));
+  testRangeOrdering(0, resolved_source_range(), resolved_source_range());
   testRangeOrdering(
-      0, source_range(prog1, 7, 13, 7, 14), source_range(prog1, 7, 13, 7, 14));
+      -1, resolved_source_range(), resolved_source_range(prog1, 1, 1, 1, 2));
   testRangeOrdering(
-      -1, source_range(prog1, 7, 13, 7, 14), source_range(prog1, 7, 13, 7, 15));
+      0,
+      resolved_source_range(prog1, 7, 13, 7, 14),
+      resolved_source_range(prog1, 7, 13, 7, 14));
   testRangeOrdering(
-      1, source_range(prog1, 7, 13, 8, 14), source_range(prog1, 7, 13, 7, 15));
+      -1,
+      resolved_source_range(prog1, 7, 13, 7, 14),
+      resolved_source_range(prog1, 7, 13, 7, 15));
   testRangeOrdering(
-      -1, source_range(prog1, 7, 13, 8, 14), source_range(prog1, 7, 14, 7, 15));
+      1,
+      resolved_source_range(prog1, 7, 13, 8, 14),
+      resolved_source_range(prog1, 7, 13, 7, 15));
   testRangeOrdering(
-      1, source_range(prog1, 8, 13, 8, 14), source_range(prog1, 7, 14, 7, 15));
+      -1,
+      resolved_source_range(prog1, 7, 13, 8, 14),
+      resolved_source_range(prog1, 7, 14, 7, 15));
   testRangeOrdering(
-      -1, source_range(prog1, 8, 13, 8, 14), source_range(prog2, 7, 14, 7, 15));
+      1,
+      resolved_source_range(prog1, 8, 13, 8, 14),
+      resolved_source_range(prog1, 7, 14, 7, 15));
+  testRangeOrdering(
+      -1,
+      resolved_source_range(prog1, 8, 13, 8, 14),
+      resolved_source_range(prog2, 7, 14, 7, 15));
 
   // For stability and consistency with operator==, Pointer address is a tie
   // breaker between same paths.
   t_program prog1b("prog/1/src.thrift");
   testRangeOrdering(
       &prog1 > &prog1b ? 1 : -1,
-      source_range(prog1, 1, 1, 1, 1),
-      source_range(prog1b, 1, 1, 1, 1));
+      resolved_source_range(prog1, 1, 1, 1, 1),
+      resolved_source_range(prog1b, 1, 1, 1, 1));
 }
 
 } // namespace

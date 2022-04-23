@@ -21,8 +21,6 @@ set(CMAKE_INSTALL_PREFIX ${THRIFT_HOME})
 # Compile Bison files.
 set(BISON_FLAGS "--skeleton=lalr1.cc")
 BISON_TARGET(ThriftParser parse/thrifty.yy ${COMPILER_DIR}/thrifty.cc
-  DEFINES_FILE ${COMPILER_DIR}/location.hh
-  DEFINES_FILE ${COMPILER_DIR}/thrifty.hh
   COMPILE_FLAGS "${BISON_FLAGS}")
 
 # The Thrift AST library.
@@ -71,7 +69,6 @@ add_library(
 target_compile_definitions(
   compiler_base
   PRIVATE -DTHRIFTY_HH="${COMPILER_DIR}/thrifty.hh"
-  PUBLIC -DLOCATION_HH="${COMPILER_DIR}/location.hh"
 )
 target_link_libraries(
   compiler_base

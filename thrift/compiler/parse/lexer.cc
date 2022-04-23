@@ -99,9 +99,9 @@ const char* lex_float_constant(const char* p) {
 using location_arg = std::conditional<
     std::is_same<
         decltype(parser::make_tok_void),
-        parser::symbol_type(yy::location)>::value,
-    yy::location,
-    const yy::location&>::type;
+        parser::symbol_type(source_range)>::value,
+    source_range,
+    const source_range&>::type;
 using make_token_fun = parser::symbol_type (*)(location_arg);
 
 const std::unordered_map<std::string, make_token_fun> keywords = {
@@ -171,9 +171,6 @@ lexer::lexer(
       start_(src.start) {
   ptr_ = source_.data();
   token_start_ = ptr_;
-  if (src.start != source_location::invalid()) {
-    filename_ = resolved_location(src.start, sm).file_name();
-  }
 }
 
 parser::symbol_type lexer::make_int_constant(int offset, int base) {
@@ -184,7 +181,7 @@ parser::symbol_type lexer::make_int_constant(int offset, int base) {
     return report_error(
         [&](auto& o) { o << "This integer is too big: " << text; });
   }
-  return parser::make_tok_int_constant(val, make_location());
+  return parser::make_tok_int_constant(val, token_source_range());
 }
 
 parser::symbol_type lexer::make_float_constant() {
@@ -204,7 +201,7 @@ parser::symbol_type lexer::make_float_constant() {
     }
     // Allow subnormals.
   }
-  return parser::make_tok_dub_constant(val, make_location());
+  return parser::make_tok_dub_constant(val, token_source_range());
 }
 
 template <typename... T>
@@ -216,7 +213,7 @@ parser::symbol_type lexer::report_error(T&&... args) {
       loc.line(),
       token_text(),
       std::forward<T>(args)...);
-  return parser::make_tok_error(make_location());
+  return parser::make_tok_error(token_source_range());
 }
 
 parser::symbol_type lexer::unexpected_token() {
@@ -318,7 +315,7 @@ lexer::comment_lex_result lexer::lex_whitespace_or_comment() {
 
 parser::symbol_type lexer::get_next_token() {
   if (lex_whitespace_or_comment() == comment_lex_result::doc_comment) {
-    return parser::make_tok_inline_doc(token_text(), make_location());
+    return parser::make_tok_inline_doc(token_text(), token_source_range());
   }
 
   start_token();
@@ -332,9 +329,9 @@ parser::symbol_type lexer::get_next_token() {
     auto text = token_text();
     auto it = keywords.find(text);
     if (it != keywords.end()) {
-      return it->second(make_location());
+      return it->second(token_source_range());
     }
-    return parser::make_tok_identifier(text, make_location());
+    return parser::make_tok_identifier(text, token_source_range());
   } else if (c == '.') {
     if (const char* p = lex_float_constant(ptr_)) {
       ptr_ = p;
@@ -401,45 +398,45 @@ parser::symbol_type lexer::get_next_token() {
     if (*p) {
       ptr_ = p + 1;
       return parser::make_tok_literal(
-          std::string(token_start_ + 1, p), make_location());
+          std::string(token_start_ + 1, p), token_source_range());
     }
   } else if (!c && ptr_ > end()) {
     --ptr_; // Put '\0' back in case get_next_token() is called again.
-    return parser::make_tok_eof(make_location());
+    return parser::make_tok_eof(token_source_range());
   }
 
   // Lex operators and punctuators.
   switch (c) {
     case '{':
-      return parser::make_tok_char_bracket_curly_l(make_location());
+      return parser::make_tok_char_bracket_curly_l(token_source_range());
     case '}':
-      return parser::make_tok_char_bracket_curly_r(make_location());
+      return parser::make_tok_char_bracket_curly_r(token_source_range());
     case ',':
-      return parser::make_tok_char_comma(make_location());
+      return parser::make_tok_char_comma(token_source_range());
     case ';':
-      return parser::make_tok_char_semicolon(make_location());
+      return parser::make_tok_char_semicolon(token_source_range());
     case '=':
-      return parser::make_tok_char_equal(make_location());
+      return parser::make_tok_char_equal(token_source_range());
     case '[':
-      return parser::make_tok_char_bracket_square_l(make_location());
+      return parser::make_tok_char_bracket_square_l(token_source_range());
     case ']':
-      return parser::make_tok_char_bracket_square_r(make_location());
+      return parser::make_tok_char_bracket_square_r(token_source_range());
     case ':':
-      return parser::make_tok_char_colon(make_location());
+      return parser::make_tok_char_colon(token_source_range());
     case '(':
-      return parser::make_tok_char_bracket_round_l(make_location());
+      return parser::make_tok_char_bracket_round_l(token_source_range());
     case ')':
-      return parser::make_tok_char_bracket_round_r(make_location());
+      return parser::make_tok_char_bracket_round_r(token_source_range());
     case '<':
-      return parser::make_tok_char_bracket_angle_l(make_location());
+      return parser::make_tok_char_bracket_angle_l(token_source_range());
     case '>':
-      return parser::make_tok_char_bracket_angle_r(make_location());
+      return parser::make_tok_char_bracket_angle_r(token_source_range());
     case '@':
-      return parser::make_tok_char_at_sign(make_location());
+      return parser::make_tok_char_at_sign(token_source_range());
     case '-':
-      return parser::make_tok_char_minus(make_location());
+      return parser::make_tok_char_minus(token_source_range());
     case '+':
-      return parser::make_tok_char_plus(make_location());
+      return parser::make_tok_char_plus(token_source_range());
   }
 
   return unexpected_token();
