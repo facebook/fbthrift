@@ -279,6 +279,18 @@ TEST(UnionFieldTest, TreeNode) {
 TEST(UnionFieldTest, CppRef) {
   CppRef s;
 
+  static_assert(std::is_same_v<
+                folly::remove_cvref_t<decltype(s.get_cppref())>,
+                std::unique_ptr<CppRef>>);
+
+  static_assert(std::is_same_v<
+                folly::remove_cvref_t<decltype(s.get_shared_mutable())>,
+                std::shared_ptr<CppRef>>);
+
+  static_assert(std::is_same_v<
+                folly::remove_cvref_t<decltype(s.get_shared_const())>,
+                std::shared_ptr<const std::string>>);
+
   s.str_ref() = "foo";
 
   EXPECT_EQ(std::as_const(s).str_ref(), "foo");
@@ -293,17 +305,17 @@ TEST(UnionFieldTest, CppRef) {
   EXPECT_EQ(s.cppref_ref()->str_ref(), "ref");
   EXPECT_THROW(*s.shared_const_ref(), bad_field_access);
 
-  s.shared_ref().emplace().str_ref() = "shared";
+  s.shared_mutable_ref().emplace().str_ref() = "shared";
 
-  EXPECT_EQ(std::as_const(s).shared_ref()->str_ref(), "shared");
-  EXPECT_EQ(s.shared_ref()->str_ref(), "shared");
+  EXPECT_EQ(std::as_const(s).shared_mutable_ref()->str_ref(), "shared");
+  EXPECT_EQ(s.shared_mutable_ref()->str_ref(), "shared");
   EXPECT_THROW(*s.cppref_ref(), bad_field_access);
 
   s.box_ref().emplace().str_ref() = "box";
 
   EXPECT_EQ(std::as_const(s).box_ref()->str_ref(), "box");
   EXPECT_EQ(s.box_ref()->str_ref(), "box");
-  EXPECT_THROW(*s.shared_ref(), bad_field_access);
+  EXPECT_THROW(*s.shared_mutable_ref(), bad_field_access);
 
   s.shared_const_ref().emplace("shared_const");
 

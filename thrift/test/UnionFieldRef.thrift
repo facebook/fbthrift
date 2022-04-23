@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/thrift.thrift"
+include "thrift/annotation/cpp.thrift"
+
 namespace cpp2 apache.thrift.test
 
 union Basic {
@@ -35,8 +38,16 @@ union TreeNode {
 
 union CppRef {
   1: string str;
-  2: CppRef cppref (cpp.ref);
-  3: CppRef shared (cpp.ref = "shared");
-  4: CppRef box (thrift.box);
-  5: string shared_const (cpp.ref = "shared_const");
+
+  @cpp.Ref{type = cpp.RefType.Unique}
+  2: CppRef cppref;
+
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  3: CppRef shared_mutable;
+
+  @thrift.Box
+  4: CppRef box;
+
+  @cpp.Ref{type = cpp.RefType.Shared}
+  5: string shared_const;
 }
