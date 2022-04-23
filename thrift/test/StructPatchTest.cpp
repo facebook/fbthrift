@@ -98,9 +98,9 @@ TEST(StructPatchTest, AssignSplit) {
   auto patch = MyStructValuePatch::createAssign(testValue());
   // Break apart the assign patch and check the result;
   patch.patch();
-  EXPECT_FALSE(patch.get().assign().has_value());
-  EXPECT_TRUE(*patch.get().clear());
-  EXPECT_NE(*patch.get().patch(), MyStructPatch{});
+  EXPECT_FALSE(patch.toThrift().assign().has_value());
+  EXPECT_TRUE(*patch.toThrift().clear());
+  EXPECT_NE(*patch.toThrift().patch(), MyStructPatch{});
   test::expectPatch(patch, {}, testValue());
 }
 
@@ -139,9 +139,9 @@ TEST(StructPatchTest, Patch) {
   test::expectPatch(patch, val, expected1, expected2);
 
   patch.merge(MyStructValuePatch::createClear());
-  EXPECT_FALSE(patch.get().assign().has_value());
+  EXPECT_FALSE(patch.toThrift().assign().has_value());
   EXPECT_EQ(patch.patch(), MyStructPatch{});
-  EXPECT_TRUE(*patch.get().clear());
+  EXPECT_TRUE(*patch.toThrift().clear());
   test::expectPatch(patch, testValue(), {});
 }
 
@@ -159,8 +159,8 @@ TEST(StructPatchTest, AssignClear) {
 
   // Clear patch takes precedence (as it is smaller to encode and slightly
   // stronger in the presense of non-terse non-optional fields).
-  EXPECT_FALSE(patch.get().assign().has_value());
-  EXPECT_TRUE(*patch.get().clear());
+  EXPECT_FALSE(patch.toThrift().assign().has_value());
+  EXPECT_TRUE(*patch.toThrift().clear());
 }
 
 TEST(StructPatchTest, OptionalFields) {
@@ -298,7 +298,7 @@ TEST(StructPatchTest, OptionalPatch_BadAccess) {
   patch.ensure();
   patch.patch() = true;
   // And clear is still set.
-  EXPECT_TRUE(*patch.get().clear());
+  EXPECT_TRUE(*patch.toThrift().clear());
 }
 
 TEST(StructPatchTest, PrimitivesNotBoxed) {
@@ -349,7 +349,7 @@ TEST(StructPatchTest, SetPatch) {
   assignPatch.add({"c"});
   assignPatch.remove({"c", "d"});
   EXPECT_THAT(
-      *assignPatch.get().assign(), ::testing::ElementsAre("a", "b", "e"));
+      *assignPatch.toThrift().assign(), ::testing::ElementsAre("a", "b", "e"));
 }
 
 TEST(StructPatchTest, MapPatch) {
@@ -367,7 +367,7 @@ TEST(StructPatchTest, MapPatch) {
   assignPatch.insert_or_assign("b", "3");
   assignPatch.insert_or_assign("c", "4");
   EXPECT_EQ(
-      *assignPatch.get().assign(),
+      *assignPatch.toThrift().assign(),
       (std::map<std::string, std::string>(
           {{"a", "1"}, {"b", "3"}, {"c", "4"}})));
 }
@@ -376,10 +376,11 @@ TEST(UnionPatchTest, ClearAndAssign) {
   MyUnionValuePatch noop;
   MyUnion actual;
   MyUnionValuePatch assignEmpty = MyUnionValuePatch::createAssign(actual);
-  EXPECT_EQ(assignEmpty.get(), MyUnionValuePatch::createClear().get());
+  EXPECT_EQ(
+      assignEmpty.toThrift(), MyUnionValuePatch::createClear().toThrift());
   EXPECT_EQ(actual.getType(), MyUnion::__EMPTY__);
-  EXPECT_EQ(*assignEmpty.get().clear(), true);
-  EXPECT_EQ(assignEmpty.get().ensure()->getType(), MyUnion::__EMPTY__);
+  EXPECT_EQ(*assignEmpty.toThrift().clear(), true);
+  EXPECT_EQ(assignEmpty.toThrift().ensure()->getType(), MyUnion::__EMPTY__);
 
   EXPECT_EQ(actual, MyUnion{});
   test::expectPatch(noop, actual, {});
@@ -404,7 +405,8 @@ TEST(UnionPatchTest, Ensure) {
   MyUnion expected, actual;
   patch.ensure().option1_ref() = "hi";
   expected.option1_ref() = "hi";
-  EXPECT_EQ(patch.get(), decltype(patch)::createEnsure(expected).get());
+  EXPECT_EQ(
+      patch.toThrift(), decltype(patch)::createEnsure(expected).toThrift());
 
   // Empty -> expected
   test::expectPatch(patch, {}, expected);

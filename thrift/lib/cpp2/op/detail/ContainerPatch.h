@@ -109,13 +109,13 @@ class ListPatch : public BaseClearValuePatch<Patch, ListPatch<Patch>> {
   void merge(U&& next) {
     if (!mergeAssignAndClear(std::forward<U>(next))) {
       // TODO(afuller): Optimize the r-value reference case.
-      if (!next.get().prepend()->empty()) {
-        decltype(auto) rhs = *std::forward<U>(next).get().prepend();
+      if (!next.toThrift().prepend()->empty()) {
+        decltype(auto) rhs = *std::forward<U>(next).toThrift().prepend();
         patch_.prepend()->insert(
             patch_.prepend()->begin(), rhs.begin(), rhs.end());
       }
-      if (!next.get().append()->empty()) {
-        decltype(auto) rhs = *std::forward<U>(next).get().append();
+      if (!next.toThrift().append()->empty()) {
+        decltype(auto) rhs = *std::forward<U>(next).toThrift().append();
         patch_.append()->reserve(patch_.append()->size() + rhs.size());
         auto inserter = std::back_inserter(*patch_.append());
         std::copy_n(rhs.begin(), rhs.size(), inserter);
@@ -214,8 +214,8 @@ class SetPatch : public BaseClearValuePatch<Patch, SetPatch<Patch>> {
   template <typename U>
   void merge(U&& next) {
     if (!mergeAssignAndClear(std::forward<U>(next))) {
-      remove(*std::forward<U>(next).get().remove());
-      add(*std::forward<U>(next).get().add());
+      remove(*std::forward<U>(next).toThrift().remove());
+      add(*std::forward<U>(next).toThrift().add());
     }
   }
 
@@ -276,7 +276,7 @@ class MapPatch : public BaseClearValuePatch<Patch, MapPatch<Patch>> {
   template <typename U>
   void merge(U&& next) {
     if (!mergeAssignAndClear(std::forward<U>(next))) {
-      put(*std::forward<U>(next).get().put());
+      put(*std::forward<U>(next).toThrift().put());
     }
   }
 

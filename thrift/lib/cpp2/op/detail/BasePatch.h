@@ -102,8 +102,8 @@ class BasePatch {
   explicit BasePatch(underlying_type&& patch) noexcept
       : patch_(std::move(patch)) {}
 
-  FOLLY_NODISCARD const underlying_type& get() const& { return patch_; }
-  FOLLY_NODISCARD underlying_type&& get() && { return std::move(patch_); }
+  FOLLY_NODISCARD const underlying_type& toThrift() const& { return patch_; }
+  FOLLY_NODISCARD underlying_type&& toThrift() && { return std::move(patch_); }
 
   void reset() { op::clear<underlying_tag>(patch_); }
   bool empty() const { return op::isEmpty<underlying_tag>(patch_); }
@@ -208,8 +208,8 @@ class BaseValuePatch : public BasePatch<Patch, Derived> {
 
   template <typename U>
   bool mergeAssign(U&& next) {
-    if (hasValue(next.get().assign())) {
-      patch_ = std::forward<U>(next).get();
+    if (hasValue(next.toThrift().assign())) {
+      patch_ = std::forward<U>(next).toThrift();
       return true;
     }
     if (hasValue(patch_.assign())) {
@@ -256,9 +256,9 @@ class BaseClearValuePatch : public BaseValuePatch<Patch, Derived> {
     // cases. For example a struct with non-terse, non-optional fields with
     // custom defaults and missmatched schemas... it's also smaller, so prefer
     // it.
-    if (*next.get().clear() && !hasValue(next.get().assign())) {
+    if (*next.toThrift().clear() && !hasValue(next.toThrift().assign())) {
       // Next patch completely replaces this one.
-      patch_ = std::forward<U>(next).get();
+      patch_ = std::forward<U>(next).toThrift();
       return true;
     }
     return mergeAssign(std::forward<U>(next));
@@ -339,12 +339,12 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
 
   template <typename U>
   bool mergeEnsure(U&& next) {
-    if (*next.get().clear()) {
-      if (hasValue(next.get().ensure())) {
+    if (*next.toThrift().clear()) {
+      if (hasValue(next.toThrift().ensure())) {
         patch_.clear() = true;
         patch_.patch()->reset(); // We can ignore next.patch.
-        patch_.ensure() = *std::forward<U>(next).get().ensure();
-        patch_.patchAfter() = *std::forward<U>(next).get().patchAfter();
+        patch_.ensure() = *std::forward<U>(next).toThrift().ensure();
+        patch_.patchAfter() = *std::forward<U>(next).toThrift().patchAfter();
       } else {
         clear(); // We can ignore everything else.
       }
@@ -354,20 +354,20 @@ class BaseEnsurePatch : public BasePatch<Patch, Derived> {
     if (hasValue(patch_.ensure())) {
       // All values will be set before next, so ignore next.ensure and
       // merge next.patch and next.patchAfter into this.patchAfter.
-      auto temp = *std::forward<U>(next).get().patchAfter();
-      patch_.patchAfter()->merge(*std::forward<U>(next).get().patch());
+      auto temp = *std::forward<U>(next).toThrift().patchAfter();
+      patch_.patchAfter()->merge(*std::forward<U>(next).toThrift().patch());
       patch_.patchAfter()->merge(std::move(temp));
     } else { // Both this.ensure and next.clear are known to be empty.
       // Merge anything (oddly) in patchAfter into patch.
       patch_.patch()->merge(std::move(*patch_.patchAfter()));
       // Merge in next.patch into patch.
-      patch_.patch()->merge(*std::forward<U>(next).get().patch());
+      patch_.patch()->merge(*std::forward<U>(next).toThrift().patch());
       // Consume next.ensure, if any.
-      if (hasValue(next.get().ensure())) {
-        patch_.ensure() = *std::forward<U>(next).get().ensure();
+      if (hasValue(next.toThrift().ensure())) {
+        patch_.ensure() = *std::forward<U>(next).toThrift().ensure();
       }
       // Consume next.patchAfter.
-      patch_.patchAfter() = *std::forward<U>(next).get().patchAfter();
+      patch_.patchAfter() = *std::forward<U>(next).toThrift().patchAfter();
     }
     return false;
   }

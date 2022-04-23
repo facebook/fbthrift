@@ -62,7 +62,7 @@ class BoolPatch : public BaseValuePatch<Patch, BoolPatch<Patch>> {
  public:
   using Base::apply;
   using Base::Base;
-  using Base::get;
+  using Base::toThrift;
   using Base::operator=;
 
   static BoolPatch createInvert() { return !BoolPatch{}; }
@@ -81,7 +81,7 @@ class BoolPatch : public BaseValuePatch<Patch, BoolPatch<Patch>> {
   template <typename U>
   void merge(U&& next) {
     if (!mergeAssign(std::forward<U>(next))) {
-      *patch_.invert() ^= *next.get().invert();
+      *patch_.invert() ^= *next.toThrift().invert();
     }
   }
 
@@ -139,7 +139,7 @@ class NumberPatch : public BaseValuePatch<Patch, NumberPatch<Patch>> {
   template <typename U>
   void merge(U&& next) {
     if (!mergeAssign(std::forward<U>(next))) {
-      *patch_.add() += *next.get().add();
+      *patch_.add() += *next.toThrift().add();
     }
   }
 
@@ -232,9 +232,9 @@ class StringPatch : public BaseClearValuePatch<Patch, StringPatch<Patch>> {
   template <typename U>
   void merge(U&& next) {
     if (!mergeAssignAndClear(std::forward<U>(next))) {
-      *patch_.prepend() =
-          *std::forward<U>(next).get().prepend() + std::move(*patch_.prepend());
-      patch_.append()->append(*std::forward<U>(next).get().append());
+      *patch_.prepend() = *std::forward<U>(next).toThrift().prepend() +
+          std::move(*patch_.prepend());
+      patch_.append()->append(*std::forward<U>(next).toThrift().append());
     }
   }
 

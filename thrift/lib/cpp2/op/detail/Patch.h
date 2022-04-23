@@ -129,7 +129,7 @@ template <template <typename> class PatchType>
 struct PatchAdapter {
   template <typename Patch>
   static decltype(auto) toThrift(Patch&& value) {
-    return std::forward<Patch>(value).get();
+    return std::forward<Patch>(value).toThrift();
   }
 
   template <typename Patch>

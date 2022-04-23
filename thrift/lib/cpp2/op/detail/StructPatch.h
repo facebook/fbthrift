@@ -66,7 +66,7 @@ class StructuredPatch : public BasePatch<Patch, StructuredPatch<Patch>> {
   using Base::apply;
   using Base::Base;
   using Base::operator=;
-  using Base::get;
+  using Base::toThrift;
 
   template <typename T>
   static StructuredPatch createFrom(T&& val) {
@@ -75,7 +75,7 @@ class StructuredPatch : public BasePatch<Patch, StructuredPatch<Patch>> {
     return patch;
   }
 
-  Patch& get() & noexcept { return patch_; }
+  Patch& toThrift() & noexcept { return patch_; }
   Patch* operator->() noexcept { return &patch_; }
   const Patch* operator->() const noexcept { return &patch_; }
   Patch& operator*() noexcept { return patch_; }
@@ -93,7 +93,7 @@ class StructuredPatch : public BasePatch<Patch, StructuredPatch<Patch>> {
 
   template <typename U>
   void merge(U&& next) {
-    FieldPatch<Patch>::merge(patch_, std::forward<U>(next).get());
+    FieldPatch<Patch>::merge(patch_, std::forward<U>(next).toThrift());
   }
 
  private:
@@ -158,7 +158,7 @@ class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
   template <typename U>
   void merge(U&& next) {
     if (!mergeAssignAndClear(std::forward<U>(next))) {
-      patch_.patch()->merge(*std::forward<U>(next).get().patch());
+      patch_.patch()->merge(*std::forward<U>(next).toThrift().patch());
     }
   }
 
