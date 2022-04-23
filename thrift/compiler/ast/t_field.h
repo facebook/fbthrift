@@ -74,7 +74,7 @@ class t_field final : public t_named {
   t_field& operator=(t_field&&) = delete;
 
   const t_type_ref& type() const { return type_; }
-  int32_t id() const { return id_; }
+  t_field_id id() const { return id_; }
   bool has_explicit_id() const { return has_explicit_id_; }
 
   const t_const_value* default_value() const { return value_.get(); }
