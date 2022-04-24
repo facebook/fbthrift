@@ -912,7 +912,7 @@ Field:
     {
       driver.debug("Field => FieldId FieldQualifier FieldType Identifier FieldValue");
       driver.avoid_tokens_loc(@$, {}, {{$5 == nullptr, @4}});
-      $$ = new t_field(std::move($3), std::move($4), $1.value_or(0), $1 != boost::none);
+      $$ = new t_field(std::move($3), std::move($4), $1);
       $$->set_qualifier($2);
       $$->set_default_value(own($5));
       $$->set_lineno(driver.get_lineno(@4.end));

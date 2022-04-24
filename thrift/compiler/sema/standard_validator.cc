@@ -418,7 +418,7 @@ void validate_uri_uniqueness(diagnostic_context& ctx, const t_program& prog) {
 }
 
 void validate_field_id(diagnostic_context& ctx, const t_field& node) {
-  if (!node.has_explicit_id()) {
+  if (node.explicit_id() != node.id()) {
     ctx.warning([&](auto& o) {
       o << "No field id specified for `" << node.name()
         << "`, resulting protocol may"

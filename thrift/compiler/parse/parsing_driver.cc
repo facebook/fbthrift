@@ -731,7 +731,7 @@ void parsing_driver::allocate_field_id(t_field_id& next_id, t_field& field) {
 
 void parsing_driver::maybe_allocate_field_id(
     t_field_id& next_id, t_field& field) {
-  if (!field.has_explicit_id()) {
+  if (!field.explicit_id()) {
     // Auto assign an id.
     allocate_field_id(next_id, field);
     return;

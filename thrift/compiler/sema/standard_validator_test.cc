@@ -361,8 +361,9 @@ TEST_F(StandardValidatorTest, FieldId) {
       std::make_unique<t_field>(t_base_type::t_i64(), "zero_id", 0));
   tstruct->append(
       std::make_unique<t_field>(t_base_type::t_i64(), "neg_id", -1));
-  tstruct->append(std::make_unique<t_field>(
-      t_base_type::t_i64(), "implicit_id", -2, false));
+  auto f = std::make_unique<t_field>(t_base_type::t_i64(), "implicit_id");
+  f->set_implicit_id(-2);
+  tstruct->append(std::move(f));
 
   program_.add_struct(std::move(tstruct));
   EXPECT_THAT(
