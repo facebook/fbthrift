@@ -111,15 +111,15 @@ TEST(FileManagerTest, location_range) {
 
   auto& func = program->services()[0]->functions()[0];
   EXPECT_EQ(func.name(), "echo");
-  EXPECT_EQ(func.src_range().begin().line(), 1);
-  EXPECT_EQ(func.src_range().begin().column(), 22);
+  EXPECT_EQ(func.src_range().begin().line(), 3);
+  EXPECT_EQ(func.src_range().begin().column(), 3);
   EXPECT_EQ(func.src_range().end().line(), 4);
   EXPECT_EQ(func.src_range().end().column(), 4);
 
   auto& field = program->structs()[0]->fields()[0];
   EXPECT_EQ(field.name(), "foo");
-  EXPECT_EQ(field.src_range().begin().line(), 7);
-  EXPECT_EQ(field.src_range().begin().column(), 13);
+  EXPECT_EQ(field.src_range().begin().line(), 9);
+  EXPECT_EQ(field.src_range().begin().column(), 3);
   EXPECT_EQ(field.src_range().end().line(), 9);
   EXPECT_EQ(field.src_range().end().column(), 10);
 }

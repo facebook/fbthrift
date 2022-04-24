@@ -316,27 +316,22 @@ class parsing_driver {
 
   void reset_locations();
 
-  /*
-   * To fix Bison's default location
-   * (result's begin set to end of prev token and result's end set
-   *  to begin of next token)
-   */
-  void avoid_tokens_loc(
-      source_range& result_loc,
-      const std::vector<std::pair<bool, source_range>>& last_loc_overrides,
-      const std::vector<std::pair<bool, source_range>>& next_loc_overrides) {
-    for (const auto& loc_override : last_loc_overrides) {
-      if (!loc_override.first) {
-        break;
-      }
-      result_loc.begin = loc_override.second.begin;
+  // Get the location of the whole grouping from the locations of the
+  // subexpressions
+  //
+  // For a given grammar node, some subexpressions might not exist.
+  // For example, user can omit qualifier when defining a field.
+  // We need to skip locations of such nodes.
+  static source_range compute_location(std::vector<source_range> locations) {
+    assert(!locations.empty());
+    auto empty = [](const source_range& loc) { return loc.begin == loc.end; };
+    auto iter = std::remove_if(locations.begin(), locations.end(), empty);
+    if (iter == locations.begin()) {
+      // The whole grammar node is empty
+      return locations[0];
     }
-    for (const auto& loc_override : next_loc_overrides) {
-      if (!loc_override.first) {
-        break;
-      }
-      result_loc.end = loc_override.second.end;
-    }
+
+    return {locations[0].begin, (iter - 1)->end};
   }
 
   // Populate the annotation on the given node.
@@ -412,9 +407,6 @@ class parsing_driver {
       const source_range& loc);
 
  private:
-  void compute_location_impl(
-      source_range& yylloc, YYSTYPE& yylval, const char* text);
-
   std::set<std::string> already_parsed_paths_;
   std::set<std::string> circular_deps_;
 

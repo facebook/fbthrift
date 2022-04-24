@@ -55,8 +55,8 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 23,
-              "column" : 20
+              "line" : 25,
+              "column" : 3
             },
             "end" : {
               "line" : 25,
@@ -94,8 +94,8 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 20,
-          "column" : 44
+          "line" : 23,
+          "column" : 1
         },
         "end" : {
           "line" : 30,

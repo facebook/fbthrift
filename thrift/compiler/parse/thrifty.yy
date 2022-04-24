@@ -472,7 +472,7 @@ StatementAnnotated:
           $$ = nullptr;
           break;
         case t_statement_type::definition:
-          driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
+          @$ = driver.compute_location({@1, @2, @3});
           $$ = $2.second;
           driver.set_attributes(*$$, own($1), own($3), @$);
       }
@@ -484,7 +484,7 @@ StatementAttrs:
       driver.debug("StatementAttrs -> CaptureDocText StructuredAnnotations");
       $$ = nullptr;
       if ($1 || $2 != nullptr) {
-        driver.avoid_tokens_loc(@$, {{!$1, @2}}, {});
+        @$ = driver.compute_location({@1, @2});
         $$ = new t_def_attrs{std::move($1), own($2)};
       }
     }
@@ -573,7 +573,7 @@ EnumValueAnnotated:
   StatementAttrs EnumValue Annotations
     {
       driver.debug("StatementAttrs EnumValue Annotations");
-      driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
+      @$ = driver.compute_location({@1, @2, @3});
       $$ = $2;
       driver.set_attributes(*$$, own($1), own($3), @$);
     }
@@ -835,10 +835,7 @@ Function:
   FunctionQualifier FunctionType Identifier "(" FieldList ")" MaybeThrows
     {
       driver.debug("Function => FunctionQualifier FunctionType Identifier ( FieldList ) MaybeThrows");
-      driver.avoid_tokens_loc(
-        @$,
-        {{$1 == t_function_qualifier::unspecified, @2}},
-        {{$7 == nullptr, @6}});
+      @$ = driver.compute_location({@1, @2, @3, @4, @5, @6, @7});
       $$ = new t_function(driver.program, std::move($2.first), std::move($3));
       if ($2.second) {
         $$->set_returned_interaction(std::move(*$2.second));
@@ -855,7 +852,7 @@ FunctionAnnotated:
   StatementAttrs Function Annotations
     {
       driver.debug("FunctionAnnotated => StatementAttrs Function Annotations");
-      driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
+      @$ = driver.compute_location({@1, @2, @3});
       $$ = $2;
       driver.set_attributes(*$$, own($1), own($3), @$);
     }
@@ -911,7 +908,7 @@ Field:
   FieldId FieldQualifier FieldType Identifier FieldValue
     {
       driver.debug("Field => FieldId FieldQualifier FieldType Identifier FieldValue");
-      driver.avoid_tokens_loc(@$, {}, {{$5 == nullptr, @4}});
+      @$ = driver.compute_location({@1, @2, @3, @4, @5});
       $$ = new t_field(std::move($3), std::move($4), $1);
       $$->set_qualifier($2);
       $$->set_default_value(own($5));
@@ -922,7 +919,7 @@ FieldAnnotated:
   StatementAttrs Field Annotations
     {
       driver.debug("FieldAnnotated => StatementAttrs Field Annotations");
-      driver.avoid_tokens_loc(@$, {{$1 == nullptr, @2}}, {{$3 == nullptr, @2}});
+      @$ = driver.compute_location({@1, @2, @3});
       $$ = $2;
       driver.set_attributes(*$$, own($1), own($3), @$);
     }
