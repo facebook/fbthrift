@@ -2530,25 +2530,66 @@ bool service_method_validator::visit(t_service* service) {
 
 class splits_validator : public validator {
  public:
-  explicit splits_validator(int split_count) : split_count_(split_count) {}
+  explicit splits_validator(std::map<std::string, std::string> const& options)
+      : options_(options) {}
 
   using validator::visit;
+
   bool visit(t_program* program) override {
     set_program(program);
-    const int32_t object_count =
-        program->objects().size() + program->enums().size();
-    if (split_count_ != 0 && split_count_ > object_count) {
-      add_error(
-          boost::none,
-          "`types_cpp_splits=" + std::to_string(split_count_) +
-              "` is misconfigured: it can not be greater than number of object, which is " +
-              std::to_string(object_count) + ".");
-    }
+    validate_type_cpp_splits(
+        program->objects().size() + program->enums().size());
+    validate_client_cpp_splits(program->services());
     return true;
   }
 
  private:
-  int32_t split_count_;
+  void validate_type_cpp_splits(const int32_t object_count) {
+    int32_t split_count = 0;
+    try {
+      split_count = cpp2::get_split_count(options_);
+    } catch (std::runtime_error& e) {
+      add_error(boost::none, e.what());
+    }
+
+    if (split_count != 0 && split_count > object_count) {
+      add_error(
+          boost::none,
+          "`types_cpp_splits=" + std::to_string(split_count) +
+              "` is misconfigured: it can not be greater than number of object, which is " +
+              std::to_string(object_count) + ".");
+    }
+  }
+
+  void validate_client_cpp_splits(const std::vector<t_service*>& services) {
+    std::unordered_map<std::string, int32_t> client_name_to_split_count;
+    try {
+      client_name_to_split_count =
+          cpp2::get_client_name_to_split_count(options_);
+    } catch (std::runtime_error& e) {
+      add_error(boost::none, e.what());
+    }
+
+    if (client_name_to_split_count.empty()) {
+      // fast path
+      return;
+    }
+
+    for (auto* s : services) {
+      auto iter = client_name_to_split_count.find(s->get_name());
+      if (iter != client_name_to_split_count.end() &&
+          iter->second > static_cast<int32_t>(s->get_functions().size())) {
+        add_error(
+            s->get_lineno(),
+            "`client_cpp_splits=" + std::to_string(iter->second) +
+                "` (For service " + s->get_name() +
+                ") is misconfigured: it can not be greater than number of functions, which is " +
+                std::to_string(s->get_functions().size()) + ".");
+      }
+    }
+  }
+
+  const std::map<std::string, std::string>& options_;
 };
 
 class lazy_field_validator : public validator {
@@ -2580,7 +2621,7 @@ class lazy_field_validator : public validator {
 void t_mstch_cpp2_generator::fill_validator_list(validator_list& l) const {
   l.add<annotation_validator>(this->parsed_options_);
   l.add<service_method_validator>(this->parsed_options_);
-  l.add<splits_validator>(cpp2::get_split_count(parsed_options_));
+  l.add<splits_validator>(this->parsed_options_);
   l.add<lazy_field_validator>();
 }
 

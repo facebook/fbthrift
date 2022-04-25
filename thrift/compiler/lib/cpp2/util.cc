@@ -300,7 +300,14 @@ int32_t get_split_count(std::map<std::string, std::string> const& options) {
   if (iter == options.end()) {
     return 0;
   }
-  return std::stoi(iter->second);
+
+  std::size_t pos = 0;
+  auto ret = std::stoi(iter->second, &pos);
+  if (pos != iter->second.size()) {
+    throw std::runtime_error(
+        "Invalid types_cpp_splits value: `" + iter->second + "`");
+  }
+  return ret;
 }
 
 static auto split(const std::string& s, char delimiter) {
@@ -332,7 +339,13 @@ std::unordered_map<std::string, int32_t> get_client_name_to_split_count(
           "Invalid pair `" + kv + "` in client_cpp_splits value: `" + map +
           "`");
     }
-    ret[a[0]] = std::stoi(a[1]);
+    std::size_t pos = 0;
+    ret[a[0]] = std::stoi(a[1], &pos);
+    if (pos != a[1].size()) {
+      throw std::runtime_error(
+          "Invalid pair `" + kv + "` in client_cpp_splits value: `" + map +
+          "`");
+    }
   }
   return ret;
 }

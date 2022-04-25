@@ -1151,6 +1151,101 @@ class CompilerFailureTest(unittest.TestCase):
             "it can not be greater than number of object, which is 4.\n",
         )
 
+        ret, out, err = self.run_thrift(
+            "foo.thrift", gen="mstch_cpp2:types_cpp_splits=3a"
+        )
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift] Invalid types_cpp_splits value: `3a`\n",
+        )
+
+    def test_invalid_splits(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct Foo { 1: i32 field }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift(
+            "foo.thrift", gen="mstch_cpp2:types_cpp_splits=1a"
+        )
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift] Invalid types_cpp_splits value: `1a`\n",
+        )
+
+    def test_too_many_client_splits(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                service MyService1 {
+                    i32 func1(1: i32 num);
+                    i32 func2(1: i32 num);
+                    i32 func3(1: i32 num);
+                }
+                service MyService2 {
+                    i32 func1(1: i32 num);
+                    i32 func2(1: i32 num);
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift(
+            "foo.thrift", gen="mstch_cpp2:client_cpp_splits={MyService1:3,MyService2:2}"
+        )
+        self.assertEqual(ret, 0)
+
+        ret, out, err = self.run_thrift(
+            "foo.thrift", gen="mstch_cpp2:client_cpp_splits={MyService1:3,MyService2:3}"
+        )
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:6] `client_cpp_splits=3` (For service MyService2) is misconfigured: it can not be greater than number of functions, which is 2.\n",
+        )
+
+    def test_invalid_client_splits(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                service MyService1 {
+                    i32 func1(1: i32 num);
+                    i32 func2(1: i32 num);
+                    i32 func3(1: i32 num);
+                }
+                service MyService2 {
+                    i32 func1(1: i32 num);
+                    i32 func2(1: i32 num);
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift(
+            "foo.thrift",
+            gen="mstch_cpp2:client_cpp_splits={MyService1:3:1,MyService2:2}",
+        )
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift] Invalid pair `MyService1:3:1` in client_cpp_splits value: `MyService1:3:1,MyService2:2`\n",
+        )
+
+        ret, out, err = self.run_thrift(
+            "foo.thrift", gen="mstch_cpp2:client_cpp_splits={MyService3:1}"
+        )
+        self.assertEqual(ret, 0)
+
     def test_lazy_field(self):
         write_file(
             "foo.thrift",
