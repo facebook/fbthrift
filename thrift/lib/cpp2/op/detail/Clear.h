@@ -23,7 +23,6 @@
 #include <thrift/lib/cpp2/op/Compare.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
-#include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache {
 namespace thrift {
