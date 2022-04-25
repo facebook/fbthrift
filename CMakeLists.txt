@@ -98,12 +98,13 @@ if (compiler_only OR build_all)
 endif ()
 
 # Find required dependencies for thrift/lib
+find_package(fmt CONFIG REQUIRED)
+
 if(lib_only OR build_all)
   find_package(Gflags REQUIRED)
   find_package(Glog REQUIRED)
   find_package(folly CONFIG REQUIRED)
   find_package(fizz CONFIG REQUIRED)
-  find_package(fmt CONFIG REQUIRED)
   find_package(wangle CONFIG REQUIRED)
   find_package(ZLIB REQUIRED)
   find_package(Zstd REQUIRED)
