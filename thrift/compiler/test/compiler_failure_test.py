@@ -22,27 +22,9 @@ import tempfile
 import textwrap
 import unittest
 
+import pkg_resources
 
-def ascend_find_exe(path, target):
-    if not os.path.isdir(path):
-        path = os.path.dirname(path)
-    while True:
-        test = os.path.join(path, target)
-        if os.access(test, os.X_OK):
-            return test
-        parent = os.path.dirname(path)
-        if os.path.samefile(parent, path):
-            return None
-        path = parent
-
-
-exe = os.path.join(os.getcwd(), sys.argv[0])
-thrift = ascend_find_exe(exe, "thrift")
-
-
-def read_file(path):
-    with open(path, "r") as f:
-        return f.read()
+thrift = pkg_resources.resource_filename(__name__, "thrift")
 
 
 def write_file(path, content):
