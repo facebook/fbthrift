@@ -34,6 +34,7 @@ static_assert(!is_concrete_v<evil_c>);
 static_assert(!is_concrete_v<evil_t>);
 
 static_assert(!is_concrete_v<all_c>);
+static_assert(!is_concrete_v<primitive_c>);
 static_assert(!is_concrete_v<number_c>);
 static_assert(!is_concrete_v<integral_c>);
 static_assert(!is_concrete_v<floating_point_c>);
@@ -90,6 +91,7 @@ static_assert(!is_thrift_type_tag_v<evil_c>);
 static_assert(!is_thrift_type_tag_v<evil_t>);
 
 static_assert(is_thrift_type_tag_v<all_c>);
+static_assert(is_thrift_type_tag_v<primitive_c>);
 static_assert(is_thrift_type_tag_v<number_c>);
 static_assert(is_thrift_type_tag_v<integral_c>);
 static_assert(is_thrift_type_tag_v<floating_point_c>);
@@ -146,6 +148,7 @@ static_assert(!is_abstract_v<evil_c>);
 static_assert(!is_abstract_v<evil_t>);
 
 static_assert(is_abstract_v<all_c>);
+static_assert(is_abstract_v<primitive_c>);
 static_assert(is_abstract_v<number_c>);
 static_assert(is_abstract_v<integral_c>);
 static_assert(is_abstract_v<floating_point_c>);

@@ -33,11 +33,12 @@ namespace type {
 
 // Classes of types (_c suffix).
 struct all_c {}; // all thrift types
-struct number_c : all_c {}; // all number types, including 'bool' and 'enum'
+struct primitive_c : all_c {}; // all number and string types
+struct number_c : primitive_c {}; // all number types, incl. 'bool' and 'enum'
 struct integral_c : number_c {}; // all integral types, not `enum`
 struct floating_point_c : number_c {}; // all floating point types
 struct enum_c : number_c {}; // all `enum` types
-struct string_c : all_c {}; // `binary` and `string`
+struct string_c : primitive_c {}; // `binary` and `string`
 struct structured_c : all_c {}; // all structured types, including 'union'
 struct struct_except_c : structured_c {}; // all `struct` and `exception` types
 struct struct_c : struct_except_c {}; // all `struct` types

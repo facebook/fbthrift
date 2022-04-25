@@ -26,6 +26,8 @@
 namespace apache::thrift::type {
 
 all_c testOverload(all_c);
+// Intentionally omitted.
+// primitive_c testOverload(primitive_c);
 integral_c testOverload(integral_c);
 floating_point_c testOverload(floating_point_c);
 enum_c testOverload(enum_c);
@@ -78,6 +80,7 @@ using test::TestAdapter;
 
 // Test that type tags can be used to find an overload in ~constant time
 // by the compiler.
+static_assert(same_tag<all_c, decltype(testOverload(primitive_c{}))>);
 static_assert(same_tag<void_t, decltype(testOverload(void_t{}))>);
 static_assert(same_tag<integral_c, decltype(testOverload(bool_t{}))>);
 static_assert(same_tag<byte_t, decltype(testOverload(byte_t{}))>);

@@ -179,6 +179,8 @@ struct is_concrete<cpp_type<T, Tag>>
 template <>
 struct is_thrift_type_tag<all_c> : std::true_type {};
 template <>
+struct is_thrift_type_tag<primitive_c> : std::true_type {};
+template <>
 struct is_thrift_type_tag<number_c> : std::true_type {};
 template <>
 struct is_thrift_type_tag<integral_c> : std::true_type {};
