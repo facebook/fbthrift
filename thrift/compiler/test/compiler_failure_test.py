@@ -41,10 +41,13 @@ class CompilerFailureTest(unittest.TestCase):
         self.tmp = tmp
         self.addCleanup(os.chdir, os.getcwd())
         os.chdir(self.tmp)
+        os.makedirs("thrift")
+        files = pkg_resources.resource_filename(__name__, "annotation_files")
+        shutil.copytree(files, "thrift/annotation")
         self.maxDiff = None
 
     def run_thrift(self, *args, gen="mstch_cpp2"):
-        argsx = [thrift, "--gen", gen]
+        argsx = [thrift, "--gen", gen, "-I", self.tmp]
         argsx.extend(args)
         pipe = subprocess.PIPE
         p = subprocess.Popen(argsx, stdout=pipe, stderr=pipe)
@@ -762,18 +765,6 @@ class CompilerFailureTest(unittest.TestCase):
 
     def test_structured_ref(self):
         write_file(
-            "thrift/annotation/cpp.thrift",
-            textwrap.dedent(
-                """\
-                enum RefType {Unique, SharedConst, SharedMutable}
-                struct Ref {
-                    1: RefType type;
-                } (thrift.uri = "facebook.com/thrift/annotation/cpp/Ref")
-                """
-            ),
-        )
-
-        write_file(
             "foo.thrift",
             textwrap.dedent(
                 """\
@@ -815,22 +806,6 @@ class CompilerFailureTest(unittest.TestCase):
         )
 
     def test_adapter(self):
-        write_file(
-            "thrift/annotation/cpp.thrift",
-            textwrap.dedent(
-                """\
-                struct Adapter {
-                    1: string name;
-                } (thrift.uri = "facebook.com/thrift/annotation/cpp/Adapter")
-
-                enum RefType {Unique, SharedConst, SharedMutable}
-                struct Ref {
-                    1: RefType type;
-                } (thrift.uri = "facebook.com/thrift/annotation/cpp/Ref")
-                """
-            ),
-        )
-
         write_file(
             "foo.thrift",
             textwrap.dedent(
@@ -874,17 +849,6 @@ class CompilerFailureTest(unittest.TestCase):
         )
 
     def test_typedef_adapter(self):
-        write_file(
-            "thrift/annotation/cpp.thrift",
-            textwrap.dedent(
-                """\
-                struct Adapter {
-                    1: string name;
-                } (thrift.uri = "facebook.com/thrift/annotation/cpp/Adapter")
-                """
-            ),
-        )
-
         write_file(
             "foo.thrift",
             textwrap.dedent(
@@ -986,16 +950,6 @@ class CompilerFailureTest(unittest.TestCase):
         )
 
     def test_bitpack_with_tablebased_seriliazation(self):
-        write_file(
-            "thrift/annotation/cpp.thrift",
-            textwrap.dedent(
-                """\
-                struct PackIsset {
-                } (thrift.uri = "facebook.com/thrift/annotation/cpp/PackIsset")
-                """
-            ),
-        )
-
         write_file(
             "foo.thrift",
             textwrap.dedent(
@@ -1327,43 +1281,10 @@ class CompilerFailureTest(unittest.TestCase):
 
     def test_annotation_scopes(self):
         write_file(
-            "scope.thrift",
-            textwrap.dedent(
-                """
-                struct Struct {
-                } (thrift.uri = "facebook.com/thrift/annotation/Struct")
-                struct Union {
-                } (thrift.uri = "facebook.com/thrift/annotation/Union")
-                struct Exception {
-                } (thrift.uri = "facebook.com/thrift/annotation/Exception")
-                struct Field {
-                } (thrift.uri = "facebook.com/thrift/annotation/Field")
-                struct Typedef {
-                } (thrift.uri = "facebook.com/thrift/annotation/Typedef")
-                struct Service {
-                } (thrift.uri = "facebook.com/thrift/annotation/Service")
-                struct Interaction {
-                } (thrift.uri = "facebook.com/thrift/annotation/Interaction")
-                struct Function {
-                } (thrift.uri = "facebook.com/thrift/annotation/Function")
-                struct EnumValue {
-                } (thrift.uri = "facebook.com/thrift/annotation/EnumValue")
-                struct Const {
-                } (thrift.uri = "facebook.com/thrift/annotation/Const")
-
-                // Due to cython bug, we can not use `Enum` as class name directly
-                // https://github.com/cython/cython/issues/2474
-                struct FbthriftInternalEnum {}
-                typedef FbthriftInternalEnum Enum (thrift.uri = "facebook.com/thrift/annotation/Enum")
-                """
-            ),
-        )
-
-        write_file(
             "foo.thrift",
             textwrap.dedent(
                 """\
-                include "scope.thrift"
+                include "thrift/annotation/scope.thrift"
 
                 struct NotAnAnnot {}
 
@@ -1512,18 +1433,6 @@ class CompilerFailureTest(unittest.TestCase):
 
     def test_unique_ref(self):
         write_file(
-            "thrift/annotation/cpp.thrift",
-            textwrap.dedent(
-                """\
-                enum RefType {Unique, SharedConst, SharedMutable}
-                struct Ref {
-                    1: RefType type;
-                } (thrift.uri = "facebook.com/thrift/annotation/cpp/Ref")
-                """
-            ),
-        )
-
-        write_file(
             "foo.thrift",
             textwrap.dedent(
                 """\
@@ -1537,7 +1446,7 @@ class CompilerFailureTest(unittest.TestCase):
                     @cpp.Ref{type = cpp.RefType.Unique}
                     3: optional Foo field3;
 
-                    @cpp.Ref{type = cpp.RefType.SharedConst}
+                    @cpp.Ref{type = cpp.RefType.Shared}
                     4: optional Foo field4;
 
                     @cpp.Ref{type = cpp.RefType.SharedMutable}
@@ -1607,15 +1516,6 @@ class CompilerFailureTest(unittest.TestCase):
         )
 
     def test_terse_write_annotation(self):
-        write_file(
-            "thrift/annotation/thrift.thrift",
-            textwrap.dedent(
-                """\
-                struct TerseWrite {} (thrift.uri = "facebook.com/thrift/annotation/thrift/TerseWrite")
-                """
-            ),
-        )
-
         write_file(
             "foo.thrift",
             textwrap.dedent(
@@ -1801,17 +1701,6 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 0)
 
     def test_merge_from_annotation(self):
-        write_file(
-            "thrift/annotation/meta.thrift",
-            textwrap.dedent(
-                """\
-                struct MergeFrom {
-                    1: string name;
-                } (thrift.uri = "facebook.com/thrift/annotation/meta/MergeFrom")
-                """
-            ),
-        )
-
         write_file(
             "foo.thrift",
             textwrap.dedent(
