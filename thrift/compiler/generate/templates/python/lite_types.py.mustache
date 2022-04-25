@@ -32,6 +32,9 @@ import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptio
 import {{included_module_path}}.lite_types
 {{/has_types?}}
 {{/program:include_namespaces}}
+{{#program:adapter_modules}}
+import {{module_path}}
+{{/program:adapter_modules}}
 {{#program:structs}}
 
 
@@ -52,6 +55,8 @@ class {{struct:name}}(metaclass={{!
             {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
             {{#field:user_default_value}}{{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{/field:type}}{{> types/constant_value }}{{/field:user_default_value}}{{!
             }}{{^field:user_default_value}}None{{/field:user_default_value}},  # default value
+            {{#field:has_adapter?}}{{field:adapter_name}}{{/field:has_adapter?}}{{!
+            }}{{^field:has_adapter?}}None{{/field:has_adapter?}},  # adapter class
         ),
         {{/struct:fields_and_mixin_fields}}
     )
@@ -142,6 +147,8 @@ class {{> types/function_args_type}}(metaclass=_fbthrift_py3lite_types.StructMet
             "{{field:py_name}}",  # name
             {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
             None,  # default value
+            {{#field:has_adapter?}}{{field:adapter_name}}{{/field:has_adapter?}}{{!
+            }}{{^field:has_adapter?}}None{{/field:has_adapter?}},  # adapter class
         ),
         {{/function:args}}
     )
@@ -157,7 +164,8 @@ class {{> types/function_return_type}}(metaclass=_fbthrift_py3lite_types.StructM
             "success",  # name
             {{#function:return_type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/function:return_type}},  # typeinfo
             None,  # default value
-
+            {{#field:has_adapter?}}{{field:adapter_name}}{{/field:has_adapter?}}{{!
+            }}{{^field:has_adapter?}}None{{/field:has_adapter?}},  # adapter class
         ),
         {{/type:void?}}
         {{/function:return_type}}
@@ -168,6 +176,8 @@ class {{> types/function_return_type}}(metaclass=_fbthrift_py3lite_types.StructM
             "{{field:py_name}}",  # name
             {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
             None,  # default value
+            {{#field:has_adapter?}}{{field:adapter_name}}{{/field:has_adapter?}}{{!
+            }}{{^field:has_adapter?}}None{{/field:has_adapter?}},  # adapter class
         ),
         {{/function:exceptions}}
     )

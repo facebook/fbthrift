@@ -20,6 +20,7 @@ class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
             "weeks",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -27,6 +28,7 @@ class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
             "title",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             3,  # id
@@ -34,6 +36,7 @@ class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
             "employer",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(Company),  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             4,  # id
@@ -41,6 +44,7 @@ class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
             "compensation",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             5,  # id
@@ -48,6 +52,7 @@ class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
             "school",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 
@@ -73,6 +78,7 @@ class Range(metaclass=_fbthrift_py3lite_types.StructMeta):
             "min",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -80,6 +86,7 @@ class Range(metaclass=_fbthrift_py3lite_types.StructMeta):
             "max",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 
@@ -105,6 +112,7 @@ class struct1(metaclass=_fbthrift_py3lite_types.StructMeta):
             "a",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             1234567,  # default value
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -112,6 +120,7 @@ class struct1(metaclass=_fbthrift_py3lite_types.StructMeta):
             "b",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             "<uninitialized>",  # default value
+            None,  # adapter class
         ),
     )
 
@@ -137,6 +146,7 @@ class struct2(metaclass=_fbthrift_py3lite_types.StructMeta):
             "a",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -144,6 +154,7 @@ class struct2(metaclass=_fbthrift_py3lite_types.StructMeta):
             "b",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             3,  # id
@@ -151,6 +162,7 @@ class struct2(metaclass=_fbthrift_py3lite_types.StructMeta):
             "c",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(struct1),  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             4,  # id
@@ -158,6 +170,7 @@ class struct2(metaclass=_fbthrift_py3lite_types.StructMeta):
             "d",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 
@@ -183,6 +196,7 @@ class struct3(metaclass=_fbthrift_py3lite_types.StructMeta):
             "a",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -190,6 +204,7 @@ class struct3(metaclass=_fbthrift_py3lite_types.StructMeta):
             "b",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             3,  # id
@@ -197,6 +212,7 @@ class struct3(metaclass=_fbthrift_py3lite_types.StructMeta):
             "c",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(struct2),  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 
@@ -222,6 +238,7 @@ class struct4(metaclass=_fbthrift_py3lite_types.StructMeta):
             "a",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -229,6 +246,7 @@ class struct4(metaclass=_fbthrift_py3lite_types.StructMeta):
             "b",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             3,  # id
@@ -236,6 +254,7 @@ class struct4(metaclass=_fbthrift_py3lite_types.StructMeta):
             "c",  # name
             _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 
@@ -261,6 +280,7 @@ class union1(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "i",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -268,6 +288,7 @@ class union1(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "d",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 
@@ -293,6 +314,7 @@ class union2(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "i",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -300,6 +322,7 @@ class union2(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "d",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             3,  # id
@@ -307,6 +330,7 @@ class union2(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "s",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(struct1),  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             4,  # id
@@ -314,6 +338,7 @@ class union2(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "u",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(union1),  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 

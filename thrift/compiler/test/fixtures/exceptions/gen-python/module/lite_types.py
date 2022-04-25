@@ -18,6 +18,7 @@ class Fiery(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
             "message",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 
@@ -50,6 +51,7 @@ class Serious(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
             "sonnet",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 
@@ -82,6 +84,7 @@ class ComplexFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMet
             "error_message",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -89,6 +92,7 @@ class ComplexFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMet
             "internal_error_message",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 
@@ -121,6 +125,7 @@ class CustomFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
             "error_message",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -128,6 +133,7 @@ class CustomFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
             "internal_error_message",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 
@@ -160,6 +166,7 @@ class ExceptionWithPrimitiveField(metaclass=_fbthrift_py3lite_exceptions.Generat
             "message",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -167,6 +174,7 @@ class ExceptionWithPrimitiveField(metaclass=_fbthrift_py3lite_exceptions.Generat
             "error_code",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 
@@ -257,6 +265,7 @@ class _fbthrift_Raiser_doRaise_result(metaclass=_fbthrift_py3lite_types.StructMe
             "b",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(Banal),  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -264,6 +273,7 @@ class _fbthrift_Raiser_doRaise_result(metaclass=_fbthrift_py3lite_types.StructMe
             "f",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(Fiery),  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             3,  # id
@@ -271,6 +281,7 @@ class _fbthrift_Raiser_doRaise_result(metaclass=_fbthrift_py3lite_types.StructMe
             "s",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(Serious),  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 
@@ -287,7 +298,7 @@ class _fbthrift_Raiser_get200_result(metaclass=_fbthrift_py3lite_types.StructMet
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-
+            None,  # adapter class
         ),
     )
 
@@ -304,7 +315,7 @@ class _fbthrift_Raiser_get500_result(metaclass=_fbthrift_py3lite_types.StructMet
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-
+            None,  # adapter class
         ),
         (
             1,  # id
@@ -312,6 +323,7 @@ class _fbthrift_Raiser_get500_result(metaclass=_fbthrift_py3lite_types.StructMet
             "f",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(Fiery),  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -319,6 +331,7 @@ class _fbthrift_Raiser_get500_result(metaclass=_fbthrift_py3lite_types.StructMet
             "b",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(Banal),  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
         (
             3,  # id
@@ -326,6 +339,7 @@ class _fbthrift_Raiser_get500_result(metaclass=_fbthrift_py3lite_types.StructMet
             "s",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(Serious),  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 

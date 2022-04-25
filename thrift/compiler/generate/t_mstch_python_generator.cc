@@ -64,6 +64,32 @@ bool is_func_supported(const t_function* func) {
       !func->get_returntype()->is_service();
 }
 
+const t_const* find_structured_adapter_annotation(const t_named& node) {
+  return node.find_structured_annotation_or_null(
+      "facebook.com/thrift/annotation/python/Adapter");
+}
+
+const std::string get_annotation_property(
+    const t_const* annotation, const std::string& key) {
+  if (annotation) {
+    for (const auto& item : annotation->value()->get_map()) {
+      if (item.first->get_string() == key) {
+        return item.second->get_string();
+      }
+    }
+  }
+  return "";
+}
+
+const std::string extract_module_path(const std::string& fully_qualified_name) {
+  auto tokens = split_namespace(fully_qualified_name);
+  if (tokens.size() <= 1) {
+    return "";
+  }
+  tokens.pop_back();
+  return boost::algorithm::join(tokens, ".");
+}
+
 class mstch_python_type : public mstch_type {
  public:
   mstch_python_type(
@@ -342,6 +368,9 @@ class mstch_python_program : public mstch_program {
              &mstch_python_program::base_library_package},
             {"program:root_module_prefix",
              &mstch_python_program::root_module_prefix},
+            {"program:adapter_modules", &mstch_python_program::adapter_modules},
+            {"program:adapter_type_hint_modules",
+             &mstch_python_program::adapter_type_hint_modules},
         });
     gather_included_program_namespaces();
     visit_types_for_services_and_interactions();
@@ -349,6 +378,7 @@ class mstch_python_program : public mstch_program {
     visit_types_for_constants();
     visit_types_for_typedefs();
     visit_types_for_mixin_fields();
+    visit_types_for_adapters();
   }
 
   mstch::node is_types_file() { return has_option("is_types_file"); }
@@ -385,6 +415,12 @@ class mstch_python_program : public mstch_program {
   mstch::node root_module_prefix() {
     auto prefix = get_option("root_module_prefix");
     return prefix.empty() ? "" : prefix + ".";
+  }
+
+  mstch::node adapter_modules() { return module_path_array(adapter_modules_); }
+
+  mstch::node adapter_type_hint_modules() {
+    return module_path_array(adapter_type_hint_modules_);
   }
 
  protected:
@@ -475,6 +511,29 @@ class mstch_python_program : public mstch_program {
       }
     }
   }
+
+  void visit_types_for_adapters() {
+    for (const auto& strct : program_->structs()) {
+      for (const auto& field : strct->fields()) {
+        if (auto annotation = find_structured_adapter_annotation(field)) {
+          extract_module_and_insert_to(
+              get_annotation_property(annotation, "name"), adapter_modules_);
+          extract_module_and_insert_to(
+              get_annotation_property(annotation, "typeHint"),
+              adapter_type_hint_modules_);
+        }
+      }
+    }
+  }
+
+  void extract_module_and_insert_to(
+      const std::string& name, std::unordered_set<std::string>& modules) {
+    auto module_path = extract_module_path(name);
+    if (module_path != "") {
+      modules.insert(module_path);
+    }
+  }
+
   enum TypeDef { NoTypedef, HasTypedef };
 
   void visit_type(const t_type* orig_type) {
@@ -516,8 +575,19 @@ class mstch_python_program : public mstch_program {
     }
   }
 
+  mstch::node module_path_array(
+      const std::unordered_set<std::string>& modules) {
+    mstch::array a;
+    for (const auto& m : modules) {
+      a.push_back(mstch::map{{"module_path", m}});
+    }
+    return a;
+  }
+
   std::unordered_map<std::string, Namespace> include_namespaces_;
   std::unordered_set<const t_type*> seen_types_;
+  std::unordered_set<std::string> adapter_modules_;
+  std::unordered_set<std::string> adapter_type_hint_modules_;
 };
 
 class mstch_python_field : public mstch_field {
@@ -536,13 +606,17 @@ class mstch_python_field : public mstch_field {
             pos,
             index,
             field_context),
-        py_name_{py3::get_py3_name(*field)} {
+        py_name_{py3::get_py3_name(*field)},
+        adapter_annotation_(find_structured_adapter_annotation(*field)) {
     register_methods(
         this,
         {
             {"field:py_name", &mstch_python_field::py_name},
             {"field:user_default_value",
              &mstch_python_field::user_default_value},
+            {"field:has_adapter?", &mstch_python_field::has_adapter},
+            {"field:adapter_name", &mstch_python_field::adapter_name},
+            {"field:adapter_type_hint", &mstch_python_field::adapter_type_hint},
         });
   }
 
@@ -565,9 +639,17 @@ class mstch_python_field : public mstch_field {
     return generators_->const_value_generator_->generate(
         value, generators_, cache_, pos_);
   }
+  mstch::node has_adapter() { return adapter_annotation_ != nullptr; }
+  mstch::node adapter_name() {
+    return get_annotation_property(adapter_annotation_, "name");
+  }
+  mstch::node adapter_type_hint() {
+    return get_annotation_property(adapter_annotation_, "typeHint");
+  }
 
  private:
   const std::string py_name_;
+  const t_const* adapter_annotation_;
 };
 
 class mstch_python_struct : public mstch_struct {

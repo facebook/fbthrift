@@ -146,7 +146,7 @@ cdef class StructInfo:
 
     cdef void fill(self) except *:
         cdef cDynamicStructInfo* info_ptr = self.cpp_obj.get()
-        for idx, (id, is_unqualified, name, type_info, _) in enumerate(self.fields):
+        for idx, (id, is_unqualified, name, type_info, _, _) in enumerate(self.fields):
             # type_info can be a lambda function so types with dependencies
             # won't need to be defined in order
             if callable(type_info):
@@ -183,7 +183,7 @@ cdef class UnionInfo:
 
     cdef void fill(self) except *:
         cdef cDynamicStructInfo* info_ptr = self.cpp_obj.get()
-        for idx, (id, is_unqualified, name, type_info, _) in enumerate(self.fields):
+        for idx, (id, is_unqualified, name, type_info, _, _) in enumerate(self.fields):
             # type_info can be a lambda function so types with dependencies
             # won't need to be defined in order
             if callable(type_info):

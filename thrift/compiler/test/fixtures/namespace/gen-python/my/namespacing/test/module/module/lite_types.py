@@ -18,6 +18,7 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
             "MyInt",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 
@@ -55,6 +56,7 @@ class _fbthrift_TestService_init_args(metaclass=_fbthrift_py3lite_types.StructMe
             "int1",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
+            None,  # adapter class
         ),
     )
 
@@ -66,7 +68,7 @@ class _fbthrift_TestService_init_result(metaclass=_fbthrift_py3lite_types.Struct
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-
+            None,  # adapter class
         ),
     )
 
