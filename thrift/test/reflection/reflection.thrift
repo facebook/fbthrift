@@ -572,6 +572,8 @@ struct StructWithAdaptedField {
   3: IntStruct fieldAdapted;
   4: MyI64 typeAdapted2;
   5: DeprecatedMyI64 typeAdapted3;
+  @cpp.Adapter{name = "::apache::thrift::test::AdapterWithContext"}
+  6: MyI64 DoubleAdapted;
 } (
   thrift.uri = "facebook.com/thrift/test/reflection/reflection/StructWithAdaptedField",
 )

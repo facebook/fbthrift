@@ -197,7 +197,7 @@ class Foo final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::adapted<my::Adapter3, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::list<::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::string_t>>>>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::binary_t>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{9}, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{10}, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{10}, ::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>>>
   >;
 
   void __fbthrift_clear();
