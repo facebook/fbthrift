@@ -81,11 +81,11 @@ RequestRpcMetadata makeRequestRpcMetadata(
     }
   }
 
-  if (auto clientId = header.clientId()) {
-    metadata.clientId_ref() = std::move(*clientId);
+  if (const auto& clientId = header.clientId()) {
+    metadata.clientId_ref() = *clientId;
   }
-  if (auto serviceTraceMeta = header.serviceTraceMeta()) {
-    metadata.serviceTraceMeta_ref() = std::move(*serviceTraceMeta);
+  if (const auto& serviceTraceMeta = header.serviceTraceMeta()) {
+    metadata.serviceTraceMeta_ref() = *serviceTraceMeta;
   }
 
   auto loadIt = writeHeaders.find(transport::THeader::QUERY_LOAD_HEADER);
