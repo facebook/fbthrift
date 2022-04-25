@@ -93,6 +93,7 @@ target_link_libraries(
   compiler
   compiler_ast
   ${Boost_LIBRARIES}
+  fmt::fmt
 )
 
 add_library(

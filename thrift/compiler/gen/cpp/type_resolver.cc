@@ -18,6 +18,7 @@
 
 #include <stdexcept>
 
+#include <fmt/core.h>
 #include <thrift/compiler/ast/t_list.h>
 #include <thrift/compiler/ast/t_map.h>
 #include <thrift/compiler/ast/t_node.h>
@@ -337,6 +338,13 @@ std::string type_resolver::gen_type_tag(const t_type& type) {
     tag = "::apache::thrift::type::cpp_type<" + *cpp_type + ", " + tag + ">";
   }
   return tag;
+}
+
+std::string type_resolver::gen_type_tag(const t_field& field) {
+  return fmt::format(
+      "::apache::thrift::type::field_t<::apache::thrift::FieldId{{{}}}, {}>",
+      field.id(),
+      gen_type_tag(*field.type()));
 }
 
 std::string type_resolver::gen_thrift_type_tag(const t_type& original_type) {

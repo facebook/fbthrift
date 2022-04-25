@@ -71,6 +71,12 @@ class type_resolver {
         type_tag_cache_, &node, [&] { return gen_type_tag(node); });
   }
 
+  // Returns C++ type tag of given thrift type
+  const std::string& get_type_tag(const t_field& node) {
+    return detail::get_or_gen(
+        field_type_tag_cache_, &node, [&] { return gen_type_tag(node); });
+  }
+
   std::string get_namespaced_name(
       const t_program& program, const t_named& node) {
     return namespaces_.get_namespaced_name(program, node);
@@ -142,6 +148,7 @@ class type_resolver {
   std::map<std::tuple<const t_field*, reference_type>, std::string>
       storage_type_cache_;
   std::unordered_map<const t_type*, std::string> type_tag_cache_;
+  std::unordered_map<const t_field*, std::string> field_type_tag_cache_;
 
   static const std::string& default_type(t_base_type::type btype);
   static const std::string& default_template(t_container::type ctype);
@@ -179,6 +186,7 @@ class type_resolver {
 
   std::string gen_thrift_type_tag(const t_type&);
   std::string gen_type_tag(const t_type&);
+  std::string gen_type_tag(const t_field&);
 
   const std::string& resolve(type_resolve_fn resolve_fn, const t_type& node) {
     return (this->*resolve_fn)(node);

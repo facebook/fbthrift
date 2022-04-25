@@ -661,6 +661,7 @@ class mstch_cpp2_field : public mstch_field {
              &mstch_cpp2_field::transitively_refers_to_unique},
             {"field:eligible_for_storage_name_mangling?",
              &mstch_cpp2_field::eligible_for_storage_name_mangling},
+            {"field:type_tag", &mstch_cpp2_field::type_tag},
         });
     register_has_option("field:deprecated_clear?", "deprecated_clear");
   }
@@ -854,6 +855,8 @@ class mstch_cpp2_field : public mstch_field {
     auto suffix = key >= 0 ? std::to_string(key) : "_" + std::to_string(-key);
     return field_->get_name() + "_" + suffix;
   }
+
+  mstch::node type_tag() { return context_->resolver().get_type_tag(*field_); }
 
  private:
   bool is_private() const {

@@ -92,9 +92,9 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   <%^struct:deprecated_tag_incompatible?%>
   using __fbthrift_fields = ::apache::thrift::type::fields<
-  <%#struct:fields%><%#field:type%>
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{<%field:key%>}, <%type:type_tag%>><%^last?%>,<%/last?%>
-  <%/field:type%><%/struct:fields%>
+  <%#struct:fields%>
+    <%field:type_tag%><%^last?%>,<%/last?%>
+  <%/struct:fields%>
   >;
   <%/struct:deprecated_tag_incompatible?%>
   <%/struct:thrift_uri%>
