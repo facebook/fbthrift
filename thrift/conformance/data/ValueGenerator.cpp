@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,7 +89,7 @@ void addNumberValues(NamedValues<Tag>& values) {
 
 template <typename Tag, bool key>
 NamedValues<Tag> generateValues() {
-  static_assert(type::primitive_types::contains<Tag>(), "");
+  static_assert(type::is_a_v<Tag, type::primitive_c>, "");
   using T = type::standard_type<Tag>;
   NamedValues<Tag> values;
 

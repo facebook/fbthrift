@@ -20,8 +20,8 @@
 #include <fatal/type/slice.h>
 #include <folly/Utility.h>
 #include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
-#include <thrift/lib/cpp2/type/detail/Traits.h>
 
 namespace apache {
 namespace thrift {
@@ -50,10 +50,8 @@ template <class StructTag, FieldId Id>
 class field_tag {
  private:
   using fields = ::apache::thrift::detail::st::struct_private_access::fields<
-      typename traits<StructTag>::native_type>;
-
+      native_type<StructTag>>;
   using sorted_fields = fatal::sort_by<fields, field_to_id>;
-
   static constexpr auto index() {
     auto ret = fatal::size<fields>::value; // return size(fields) if not found
     fatal::sorted_search<sorted_fields, field_to_id>(

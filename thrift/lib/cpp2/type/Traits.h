@@ -16,7 +16,7 @@
 
 // Utilities for working with ThriftType tags.
 //
-// TODO(afuller): Lots more docs (for now see tests for usage).
+// TODO(afuller): Migrate all usage to ThriftType.h and delete file.
 #pragma once
 
 #include <fatal/type/cat.h>
@@ -25,19 +25,6 @@
 namespace apache {
 namespace thrift {
 namespace type {
-
-// The default standard type associated with the given concrete ThriftType.
-//
-// This is the type that is used by default, to represent the given ThriftType.
-template <typename Tag>
-using standard_type = typename detail::traits<Tag>::standard_type;
-
-// The native type associated with the given concrete ThriftType.
-//
-// This is actual used by thrift to represent a value, taking
-// into account any IDL annotations that modify the c++ type.
-template <typename Tag>
-using native_type = typename detail::traits<Tag>::native_type;
 
 // All primitive types.
 using primitive_types = detail::types<

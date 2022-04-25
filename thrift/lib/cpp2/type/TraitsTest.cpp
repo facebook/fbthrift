@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp2/type/AnyType.h>
 #include <thrift/lib/cpp2/type/BaseType.h>
 #include <thrift/lib/cpp2/type/Name.h>
+#include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Testing.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/thrift/gen-cpp2/type_fatal_all.h>

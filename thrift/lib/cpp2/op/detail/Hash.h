@@ -22,8 +22,8 @@
 #include <thrift/lib/cpp2/op/DeterministicAccumulator.h>
 #include <thrift/lib/cpp2/op/StdHasher.h>
 #include <thrift/lib/cpp2/op/detail/HashProtocol.h>
+#include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
-#include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache {
 namespace thrift {

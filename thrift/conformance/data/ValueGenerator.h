@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,9 @@
 
 #include <fmt/core.h>
 #include <folly/CPortability.h>
+#include <thrift/lib/cpp2/type/NativeType.h>
+#include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
-#include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache::thrift::conformance::data {
 
