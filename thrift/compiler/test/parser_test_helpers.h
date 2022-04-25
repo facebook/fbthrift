@@ -52,7 +52,7 @@ std::unique_ptr<t_function> create_fake_function(
 /**
  * Helper function to instantiate fake t_services
  */
-std::unique_ptr<t_service> create_fake_service(
+inline std::unique_ptr<t_service> create_fake_service(
     std::string name, t_program* program = nullptr) {
   return std::make_unique<t_service>(program, std::move(name));
 }
@@ -60,7 +60,7 @@ std::unique_ptr<t_service> create_fake_service(
 /**
  * Helper function to instantiate fake t_enums
  */
-std::unique_ptr<t_enum> create_fake_enum(
+inline std::unique_ptr<t_enum> create_fake_enum(
     std::string name, t_program* program = nullptr) {
   return std::make_unique<t_enum>(program, std::move(name));
 }
