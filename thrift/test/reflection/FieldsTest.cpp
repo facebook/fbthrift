@@ -55,6 +55,21 @@ struct ForEach<type::fields<Tags...>> {
 
 static_assert(
     test::same_tag<
+        struct_private_access::fields<
+            ::test_cpp2::cpp_reflection::StructWithAdaptedField>,
+        fields<
+            field_t<FieldId{1}, string_t>,
+            field_t<
+                FieldId{2},
+                struct_t<::test_cpp2::cpp_reflection::IntStruct>>,
+            field_t<
+                FieldId{3},
+                struct_t<::test_cpp2::cpp_reflection::IntStruct>>,
+            field_t<FieldId{4}, adapted<test::TemplatedTestAdapter, i64_t>>,
+            field_t<FieldId{5}, adapted<test::TemplatedTestAdapter, i64_t>>>>);
+
+static_assert(
+    test::same_tag<
         struct_private_access::fields<test_cpp2::cpp_reflection::struct3>,
         fields<
             field_t<FieldId{2}, i32_t>,

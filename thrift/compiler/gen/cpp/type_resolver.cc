@@ -337,6 +337,9 @@ std::string type_resolver::gen_type_tag(const t_type& type) {
   if (const auto* cpp_type = find_first_type(type)) {
     tag = "::apache::thrift::type::cpp_type<" + *cpp_type + ", " + tag + ">";
   }
+  if (const auto* cpp_adapter = find_first_adapter(type)) {
+    tag = "::apache::thrift::type::adapted<" + *cpp_adapter + ", " + tag + ">";
+  }
   return tag;
 }
 
@@ -367,7 +370,7 @@ std::string type_resolver::gen_thrift_type_tag(const t_type& original_type) {
   } else if (type.is_double()) {
     return ns + "double_t";
   } else if (type.is_enum()) {
-    return ns + "enum_t<" + get_type_name(type) + ">";
+    return ns + "enum_t<" + get_standard_type_name(type) + ">";
   } else if (type.is_string()) {
     return ns + "string_t";
   } else if (type.is_binary()) {
@@ -390,11 +393,11 @@ std::string type_resolver::gen_thrift_type_tag(const t_type& original_type) {
     auto val_tag = gen_type_tag(val);
     return ns + "map<" + key_tag + ", " + val_tag + ">";
   } else if (type.is_union()) {
-    return ns + "union_t<" + get_type_name(type) + ">";
+    return ns + "union_t<" + get_standard_type_name(type) + ">";
   } else if (type.is_struct()) {
-    return ns + "struct_t<" + get_type_name(type) + ">";
+    return ns + "struct_t<" + get_standard_type_name(type) + ">";
   } else if (type.is_exception()) {
-    return ns + "exception_t<" + get_type_name(type) + ">";
+    return ns + "exception_t<" + get_standard_type_name(type) + ">";
   } else {
     throw std::runtime_error("unknown type for: " + type.get_full_name());
   }

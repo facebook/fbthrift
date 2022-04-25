@@ -2577,8 +2577,8 @@ class MyDataPatchStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I32PatchStruct>>>
   >;
 
   void __fbthrift_clear();
@@ -2748,7 +2748,7 @@ class MyDataValuePatchStruct final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::struct_t<::cpp2::MyData>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyDataPatchStruct>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructuredPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyDataPatchStruct>>>
   >;
 
   void __fbthrift_clear();
@@ -2973,9 +2973,9 @@ class OptionalMyDataValuePatchStruct final  {
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyDataValuePatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyDataValuePatchStruct>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::struct_t<::cpp2::MyData>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyDataValuePatchStruct>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyDataValuePatchStruct>>>
   >;
 
   void __fbthrift_clear();
@@ -3246,8 +3246,8 @@ class MyUnionPatchStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I32PatchStruct>>>
   >;
 
   void __fbthrift_clear();
@@ -3416,9 +3416,9 @@ class MyUnionValuePatchStruct final  {
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructuredPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyUnionPatchStruct>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::union_t<::cpp2::MyUnion>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyUnionPatchStruct>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructuredPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyUnionPatchStruct>>>
   >;
 
   void __fbthrift_clear();
@@ -3699,9 +3699,9 @@ class OptionalMyUnionValuePatchStruct final  {
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyUnionValuePatchStruct>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::union_t<::cpp2::MyUnion>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatchStruct>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyUnionValuePatchStruct>>>
   >;
 
   void __fbthrift_clear();
@@ -4276,9 +4276,9 @@ class OptionalMyStructField21PatchStruct final  {
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::cpp2::MyStructField21PatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::ListPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyStructField21PatchStruct>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::list<::apache::thrift::type::i16_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::cpp2::MyStructField21PatchStruct>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::ListPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyStructField21PatchStruct>>>
   >;
 
   void __fbthrift_clear();
@@ -4865,9 +4865,9 @@ class OptionalMyStructField22PatchStruct final  {
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::cpp2::MyStructField22PatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::SetPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyStructField22PatchStruct>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::set<::apache::thrift::type::string_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::cpp2::MyStructField22PatchStruct>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::SetPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyStructField22PatchStruct>>>
   >;
 
   void __fbthrift_clear();
@@ -5398,9 +5398,9 @@ class OptionalMyStructField23PatchStruct final  {
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::cpp2::MyStructField23PatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::MapPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyStructField23PatchStruct>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::cpp2::MyStructField23PatchStruct>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::MapPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyStructField23PatchStruct>>>
   >;
 
   void __fbthrift_clear();
@@ -5683,30 +5683,30 @@ class MyStructPatchStruct final  {
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::BoolPatchAdapter, ::apache::thrift::op::BoolPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::BytePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I16PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I64PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{6}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::FloatPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::DoublePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{9}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::op::BinaryPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{10}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyDataValuePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{11}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBoolPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{12}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBytePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{13}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI16PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{14}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI32PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{15}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI64PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{16}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalFloatPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{17}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalDoublePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{18}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalStringPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{19}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBinaryPatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{20}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::cpp2::OptionalMyDataValuePatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{21}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::cpp2::OptionalMyStructField21PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{22}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::cpp2::OptionalMyStructField22PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{23}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::cpp2::OptionalMyStructField23PatchStruct>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{30}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionValuePatchStruct>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::BoolPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::BoolPatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::BytePatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I16PatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I32PatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I64PatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{6}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::FloatPatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::DoublePatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{9}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::BinaryPatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{10}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyDataValuePatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{11}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalBoolPatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{12}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalBytePatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{13}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalI16PatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{14}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalI32PatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{15}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalI64PatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{16}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalFloatPatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{17}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalDoublePatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{18}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalStringPatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{19}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::OptionalBinaryPatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{20}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::OptionalMyDataValuePatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{21}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::OptionalMyStructField21PatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{22}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::OptionalMyStructField22PatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{23}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::OptionalMyStructField23PatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{30}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyUnionValuePatchStruct>>>
   >;
 
   void __fbthrift_clear();
@@ -6910,7 +6910,7 @@ class MyStructValuePatchStruct final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::struct_t<::cpp2::MyStruct>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructuredPatchAdapter, ::cpp2::MyStructPatchStruct>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructuredPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyStructPatchStruct>>>
   >;
 
   void __fbthrift_clear();
@@ -7135,9 +7135,9 @@ class OptionalMyStructValuePatchStruct final  {
   static const char* __fbthrift_cpp2_gen_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyStructValuePatchStruct>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyStructValuePatchStruct>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::struct_t<::cpp2::MyStruct>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::struct_t<::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyStructValuePatchStruct>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyStructValuePatchStruct>>>
   >;
 
   void __fbthrift_clear();

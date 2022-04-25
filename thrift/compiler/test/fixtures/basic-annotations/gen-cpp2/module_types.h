@@ -498,9 +498,9 @@ class YourStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::string_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::string_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{6}, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::enum_t<::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourEnum>>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::enum_t<::cpp2::YourEnum>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::cpp_type<std::deque<std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{9}, ::apache::thrift::type::union_t<::apache::thrift::adapt_detail::adapted_t<StaticCast, ::cpp2::YourUnion>>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{9}, ::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::union_t<::cpp2::YourUnion>>>
   >;
 
   void __fbthrift_clear();
