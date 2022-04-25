@@ -71,7 +71,6 @@ target_compile_definitions(
   PRIVATE -DTHRIFTY_HH="${COMPILER_DIR}/thrifty.hh"
 )
 
-find_package(fmt)
 target_link_libraries(
   compiler_base
   compiler_ast
