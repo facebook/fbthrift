@@ -107,7 +107,7 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
 
     @staticmethod
     def __get_thrift_uri__():
-        return None
+        return "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo"
 
     @staticmethod
     def __get_metadata__():

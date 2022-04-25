@@ -1075,6 +1075,7 @@ Foo.thrift_spec = (
 )
 
 Foo.thrift_struct_annotations = {
+  "thrift.uri": "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo",
 }
 Foo.thrift_field_annotations = {
 }

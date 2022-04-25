@@ -15,6 +15,7 @@ type UnionWithAdapter = \Adapter2::THackType;
  * Original thrift struct:-
  * Foo
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo'))>>
 class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 

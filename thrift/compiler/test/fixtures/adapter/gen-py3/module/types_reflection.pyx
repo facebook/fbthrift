@@ -36,7 +36,7 @@ cdef __StructSpec get_reflection__Foo():
         name="Foo",
         kind=__StructType.STRUCT,
         annotations={
-        },
+            """thrift.uri""": """facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(

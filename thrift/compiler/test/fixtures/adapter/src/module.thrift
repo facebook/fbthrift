@@ -89,7 +89,9 @@ struct Foo {
   9: MyI64 longField;
   @cpp.Adapter{name = "my::Adapter2"}
   10: MyI64 adaptedLongField;
-}
+} (
+  thrift.uri = "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo",
+)
 
 union Baz {
   1: i32 (
