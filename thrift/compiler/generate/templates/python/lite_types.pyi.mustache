@@ -38,6 +38,9 @@ import {{included_module_path}}.lite_types
 {{/has_types?}}
 {{/program:include_namespaces}}
 {{#program:enums}}
+{{#program:adapter_type_hint_modules}}
+import {{module_path}}
+{{/program:adapter_type_hint_modules}}
 
 
 class {{enum:name}}(_fbthrift_py3lite_types.Enum, enum.{{!
@@ -62,7 +65,7 @@ class {{struct:name}}({{!
         }}):
     {{#struct:fields_and_mixin_fields}}
     {{field:py_name}}: _typing.Final[{{^field:opt_in_req_out?}}_typing.Optional[{{/field:opt_in_req_out?}}{{!
-            }}{{#field:type}}{{> types/pep484_type}}{{/field:type}}{{!
+            }}{{> fields/adapted_type}}{{!
             }}{{^field:opt_in_req_out?}}]{{/field:opt_in_req_out?}}] = ...
     {{/struct:fields_and_mixin_fields}}
     def __init__(
@@ -92,7 +95,7 @@ class {{struct:name}}({{!
     {{/struct:union?}}
     {{^struct:union?}}
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[{{^struct:fields_and_mixin_fields}}None{{/struct:fields_and_mixin_fields}}{{!
-        }}{{#struct:fields_and_mixin_fields}}{{^first?}}, {{/first?}}{{#field:type}}{{> types/pep484_type}}{{/field:type}}{{!
+        }}{{#struct:fields_and_mixin_fields}}{{^first?}}, {{/first?}}{{> fields/adapted_type}}{{!
         }}{{/struct:fields_and_mixin_fields}}]]]: ...
     {{/struct:union?}}
 {{/program:structs}}

@@ -599,7 +599,13 @@ cdef class Union(StructOrUnion):
         return self.type.value != 0
 
 
-cdef make_fget_struct(i):
+cdef make_fget_struct(i, adapter_cls):
+    if adapter_cls:
+        return functools.cached_property(lambda self:
+            adapter_cls.from_thrift_field(
+                (<Struct>self)._fbthrift_get_field_value(i), i, self
+            )
+        )
     return functools.cached_property(lambda self: (<Struct>self)._fbthrift_get_field_value(i))
 
 cdef make_fget_union(type_value):
@@ -612,7 +618,7 @@ class StructMeta(type):
         num_fields = len(fields)
         dct["_fbthrift_struct_info"] = StructInfo(name, fields)
         for i, f in enumerate(fields):
-            dct[f[2]] = make_fget_struct(i)
+            dct[f[2]] = make_fget_struct(i, f[5])
         return super().__new__(cls, name, (Struct,), dct)
 
     def _fbthrift_fill_spec(cls):
