@@ -1,0 +1,71 @@
+{
+  "__fbthrift": "@generated",
+  "thrift_module" : "thrift",
+  "namespaces": {
+    "cpp2": "facebook.thrift.annotation.thrift",
+    "go": "thrift.annotation.thrift",
+    "java": "com.facebook.thrift.annotation.thrift_deprecated",
+    "java.swift": "com.facebook.thrift.annotation.thrift",
+    "java2": "com.facebook.thrift.annotation.thrift",
+    "php": "facebook_thrift_annotation_thrift",
+    "py": "thrift.annotation.thrift",
+    "py.asyncio": "facebook_thrift_asyncio.annotation.thrift",
+    "py3": "facebook.thrift.annotation"
+  },  "structs" :
+  {
+      "RequiresBackwardCompatibility" : {
+        "name" : "RequiresBackwardCompatibility",
+        "fields" : {
+          "field_name" : {
+            "name" : "field_name",
+            "default_value" : 0,
+            "key" : 1,
+            "lineno" : 34,
+            "required" : "opt-in-req-out",
+            "type" : "bool"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 33
+      },
+      "Experimental" : {
+        "name" : "Experimental",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 41
+      },
+      "Deprecated" : {
+        "name" : "Deprecated",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 46
+      },
+      "TerseWrite" : {
+        "name" : "TerseWrite",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 52
+      },
+      "Box" : {
+        "name" : "Box",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 57
+      },
+      "SerializeInFieldIdOrder" : {
+        "name" : "SerializeInFieldIdOrder",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 64
+      },
+      "v1" : {
+        "name" : "v1",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 70
+      }
+      },
+  "source_path" : "thrift/annotation/thrift",
+  "py_namespace" : "thrift.annotation.thrift"
+}
