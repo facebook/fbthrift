@@ -322,10 +322,10 @@ struct Complex {
   8: ComplexUnion val_union;
   9: list<i64> val_list;
   // @lint-ignore THRIFTCHECKS
-  10: set<easy> val_set;
+  10: optional set<easy> val_set;
   11: map<string, binary> val_map;
   // @lint-ignore THRIFTCHECKS
-  12: map<string, list<set<easy>>> val_complex_map;
+  12: optional map<string, list<set<easy>>> val_complex_map;
   13: ColorGroups val_struct_with_containers;
 }
 

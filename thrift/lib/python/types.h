@@ -223,23 +223,15 @@ extern const detail::TypeInfo iobufTypeInfo;
 
 detail::OptionalThriftValue getStruct(const void* object);
 inline void* setContainer(void* object) {
-  PyObject** pyObjPtr = toPyObjectPtr(object);
-  if (!*pyObjPtr) {
-    *pyObjPtr = PyTuple_New(0);
-    if (!*pyObjPtr) {
-      THRIFT_PY3_CHECK_ERROR();
-    }
+  if (!setPyObject(object, UniquePyObjectPtr{PyTuple_New(0)})) {
+    THRIFT_PY3_CHECK_ERROR();
   }
   return object;
 }
 
 inline void* setFrozenSet(void* object) {
-  PyObject** pyObjPtr = toPyObjectPtr(object);
-  if (!*pyObjPtr) {
-    *pyObjPtr = PyFrozenSet_New(nullptr);
-    if (!*pyObjPtr) {
-      THRIFT_PY3_CHECK_ERROR();
-    }
+  if (!setPyObject(object, UniquePyObjectPtr{PyFrozenSet_New(nullptr)})) {
+    THRIFT_PY3_CHECK_ERROR();
   }
   return object;
 }
