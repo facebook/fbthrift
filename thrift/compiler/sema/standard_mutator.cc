@@ -169,15 +169,14 @@ void assign_uri(diagnostic_context& ctx, mutator_context&, t_named& node) {
     return;
   }
 
-  auto* program = dynamic_cast<const t_program*>(ctx.root());
-  assert(program != nullptr);
-  if (program != nullptr && !program->package().empty()) {
-    // Derive from package.
-    node.set_uri(program->package().get_uri(node.name()));
+  // TODO(afuller): Move this to program.add_definition.
+  if (!ctx.program().package().empty() && !node.generated()) {
+    // Inherit from package.
+    node.set_uri(ctx.program().package().get_uri(node.name()));
   }
 }
 
-void set_generated(diagnostic_context&, mutator_context&, t_struct& node) {
+void set_generated(diagnostic_context&, mutator_context&, t_named& node) {
   if (node.find_structured_annotation_or_null(kSetGenerated)) {
     node.set_generated();
   }
@@ -233,7 +232,7 @@ ast_mutators standard_mutators() {
         &propagate_process_in_event_base_annotation);
     initial.add_function_visitor(&remove_param_list_field_qualifiers);
     initial.add_function_visitor(&rectify_returned_interactions);
-    initial.add_struct_visitor(&set_generated);
+    initial.add_definition_visitor(&set_generated);
   }
 
   {
