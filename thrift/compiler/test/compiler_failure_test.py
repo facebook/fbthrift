@@ -212,7 +212,9 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[WARNING:foo.thrift:2] Nonpositive field id (-32) differs from what would be auto-assigned by thrift (-1).\n"
-            "[FAILURE:foo.thrift:3] Cannot allocate an id for `f2`. Automatic field ids are exhausted.\n",
+            "[FAILURE:foo.thrift:3] Cannot allocate an id for `f2`. Automatic field ids are exhausted.\n"
+            "[WARNING:foo.thrift:3] No field id specified for `f2`, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[FAILURE:foo.thrift:3] Reserved field id (-33) cannot be used for `f2`.\n",
         )
         self.assertEqual(ret, 1)
 
@@ -221,11 +223,19 @@ class CompilerFailureTest(unittest.TestCase):
         lines = ["struct Foo {"] + [f"i32 field_{i}" for i in range(id_count)] + ["}"]
         write_file("foo.thrift", "\n".join(lines))
 
+        lines = [
+            f"[WARNING:foo.thrift:{i + 2}] No field id specified for `field_{i}`, "
+            "resulting protocol may have conflicts or not be backwards compatible!\n"
+            for i in range(id_count)
+        ]
+
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            f"[FAILURE:foo.thrift:{id_count + 1}] Cannot allocate an id for `field_{id_count - 1}`. Automatic field ids are exhausted.\n",
+            "[FAILURE:foo.thrift:34] Cannot allocate an id for `field_32`. Automatic field ids are exhausted.\n"
+            + "".join(lines)
+            + "[FAILURE:foo.thrift:34] Reserved field id (-33) cannot be used for `field_32`.\n",
         )
 
     def test_out_of_range_field_ids(self):
@@ -258,7 +268,9 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             "[FAILURE:overflow.thrift:4] Integer constant (32768) outside the range of field ids ([-32768, 32767]).\n"
             "[WARNING:overflow.thrift:2] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
-            "[WARNING:overflow.thrift:4] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must positive or -2.\n",
+            "[WARNING:overflow.thrift:4] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must positive or -2.\n"
+            "[WARNING:overflow.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[WARNING:overflow.thrift:4] No field id specified for `f3`, resulting protocol may have conflicts or not be backwards compatible!\n",
         )
         self.assertEqual(ret, 1)
         ret, out, err = self.run_thrift("underflow.thrift")
@@ -266,7 +278,8 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             "[FAILURE:underflow.thrift:4] Integer constant (-32769) outside the range of field ids ([-32768, 32767]).\n"
             "[WARNING:underflow.thrift:2] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
-            '[FAILURE:underflow.thrift:4] Field identifier 32767 for "f6" has already been used.\n',
+            '[FAILURE:underflow.thrift:4] Field identifier 32767 for "f6" has already been used.\n'
+            "[WARNING:underflow.thrift:2] No field id specified for `f4`, resulting protocol may have conflicts or not be backwards compatible!\n",
         )
         self.assertEqual(ret, 1)
 
@@ -354,7 +367,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:3] Integer constant (2147483648) outside the range of enum values ([-2147483648, 2147483647]).\n",
+            "[FAILURE:foo.thrift:3] Integer constant (2147483648) outside the range of enum values ([-2147483648, 2147483647]).\n"
+            "[WARNING:foo.thrift:3] Negative value supplied for enum value `Baz`.\n",
         )
 
     def test_enum_underflow(self):
@@ -373,7 +387,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:3] Integer constant (-2147483649) outside the range of enum values ([-2147483648, 2147483647]).\n",
+            "[FAILURE:foo.thrift:3] Integer constant (-2147483649) outside the range of enum values ([-2147483648, 2147483647]).\n"
+            "[WARNING:foo.thrift:2] Negative value supplied for enum value `Bar`.\n",
         )
 
     def assertConstError(self, type, value, expected):
@@ -1719,7 +1734,9 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             "[FAILURE:foo.thrift:6] Only an interaction is allowed in this position\n"
             "[FAILURE:foo.thrift:7] Only an interaction is allowed in this position\n"
-            "[FAILURE:foo.thrift:8] Only an interaction is allowed in this position\n",
+            "[FAILURE:foo.thrift:8] Only an interaction is allowed in this position\n"
+            "[FAILURE:foo.thrift:6] Interactions are not allowed in this position\n"
+            "[FAILURE:foo.thrift:8] Interactions are not allowed in this position\n",
         )
 
     def test_interaction_in_return_type(self):

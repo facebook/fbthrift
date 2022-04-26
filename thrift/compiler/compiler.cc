@@ -453,7 +453,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
   g_stage = "parse";
   auto program = parse_and_mutate_program(
       source_mgr, ctx, input_filename, std::move(pparams));
-  if (!program || result.detail.has_failure()) {
+  if (!program) {
     return result;
   }
 
