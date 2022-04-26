@@ -210,7 +210,6 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   static mstch::array cpp_includes(t_program const* program);
   static mstch::node include_prefix(
       t_program const* program, std::map<std::string, std::string>& options);
-  static std::string get_service_qualified_name(t_service const* service);
 
  private:
   void set_mstch_generators();
@@ -1488,16 +1487,12 @@ class mstch_cpp2_service : public mstch_service {
                                       : cpp2::get_name(service_);
   }
   mstch::node qualified_name() {
-    return t_mstch_cpp2_generator::get_service_qualified_name(service_);
+    return cpp2::get_service_qualified_name(*service_);
   }
-  mstch::node parent_service_name() {
-    return cache_->parsed_options_.at("parent_service_name");
-  }
-  mstch::node parent_service_cpp_name() {
-    return cache_->parsed_options_.at("parent_service_cpp_name");
-  }
-  mstch::node parent_service_qualified_name() {
-    return cache_->parsed_options_.at("parent_service_qualified_name");
+  virtual mstch::node parent_service_name() { return service_->get_name(); }
+  virtual mstch::node parent_service_cpp_name() { return cpp_name(); }
+  virtual mstch::node parent_service_qualified_name() {
+    return qualified_name();
   }
 
  private:
@@ -1506,6 +1501,32 @@ class mstch_cpp2_service : public mstch_service {
   }
 
   std::vector<t_function*> functions_;
+};
+
+class mstch_cpp2_interaction : public mstch_cpp2_service {
+ public:
+  mstch_cpp2_interaction(
+      t_interaction const* interaction,
+      t_service const* containing_service,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_cpp2_service(
+            interaction, std::move(generators), std::move(cache), pos),
+        containing_service_(containing_service) {}
+
+  mstch::node parent_service_name() override {
+    return containing_service_->get_name();
+  }
+  mstch::node parent_service_cpp_name() override {
+    return cpp2::get_name(containing_service_);
+  }
+  mstch::node parent_service_qualified_name() override {
+    return cpp2::get_service_qualified_name(*containing_service_);
+  }
+
+ private:
+  t_service const* containing_service_{nullptr};
 };
 
 class mstch_cpp2_annotation : public mstch_annotation {
@@ -2063,6 +2084,23 @@ class service_cpp2_generator : public service_generator {
   }
 };
 
+class interaction_cpp2_generator : public interaction_generator {
+  std::shared_ptr<mstch_base> generate(
+      t_interaction const* interaction,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t /*index*/,
+      t_service const* containing_service) const override {
+    return std::make_shared<mstch_cpp2_interaction>(
+        interaction,
+        containing_service,
+        std::move(generators),
+        std::move(cache),
+        pos);
+  }
+};
+
 class annotation_cpp2_generator : public annotation_generator {
  public:
   annotation_cpp2_generator() = default;
@@ -2210,6 +2248,8 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
       std::make_unique<struct_cpp2_generator>(context_));
   generators_->set_service_generator(
       std::make_unique<service_cpp2_generator>());
+  generators_->set_interaction_generator(
+      std::make_unique<interaction_cpp2_generator>());
   generators_->set_const_generator(std::make_unique<const_cpp2_generator>());
   generators_->set_const_value_generator(
       std::make_unique<const_value_cpp2_generator>());
@@ -2315,12 +2355,6 @@ void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
 void t_mstch_cpp2_generator::generate_service(t_service const* service) {
   const auto& name = service->get_name();
 
-  // for interactions
-  cache_->parsed_options_["parent_service_name"] = name;
-  cache_->parsed_options_["parent_service_cpp_name"] = cpp2::get_name(service);
-  cache_->parsed_options_["parent_service_qualified_name"] =
-      t_mstch_cpp2_generator::get_service_qualified_name(service);
-
   auto serv = generators_->service_generator_->generate_cached(
       get_program(), service, generators_, cache_);
 
@@ -2358,10 +2392,6 @@ void t_mstch_cpp2_generator::generate_service(t_service const* service) {
         "service_processmap_protocol.cpp",
         name + "_processmap_" + protocol.at(0) + ".cpp");
   }
-
-  cache_->parsed_options_.erase("parent_service_name");
-  cache_->parsed_options_.erase("parent_service_cpp_name");
-  cache_->parsed_options_.erase("parent_service_qualified_name");
 }
 
 void t_mstch_cpp2_generator::generate_aliased_services(
@@ -2389,12 +2419,6 @@ std::string t_mstch_cpp2_generator::get_cpp2_namespace(
 /* static */ std::string t_mstch_cpp2_generator::get_cpp2_unprefixed_namespace(
     t_program const* program) {
   return cpp2::get_gen_unprefixed_namespace(*program);
-}
-
-/* static */ std::string t_mstch_cpp2_generator::get_service_qualified_name(
-    t_service const* service) {
-  return get_cpp2_namespace(service->program()) +
-      "::" + cpp2::get_name(service);
 }
 
 mstch::array t_mstch_cpp2_generator::get_namespace_array(

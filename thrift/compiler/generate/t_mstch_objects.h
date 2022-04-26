@@ -212,6 +212,19 @@ class service_generator {
   }
 };
 
+class interaction_generator {
+ public:
+  interaction_generator() = default;
+  virtual ~interaction_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_interaction const* interaction,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t index,
+      t_service const* containing_service) const = 0;
+};
+
 class typedef_generator {
  public:
   typedef_generator() = default;
@@ -321,6 +334,10 @@ class mstch_generators {
     service_generator_ = std::move(g);
   }
 
+  void set_interaction_generator(std::unique_ptr<interaction_generator> g) {
+    interaction_generator_ = std::move(g);
+  }
+
   void set_typedef_generator(std::unique_ptr<typedef_generator> g) {
     typedef_generator_ = std::move(g);
   }
@@ -344,6 +361,7 @@ class mstch_generators {
   std::unique_ptr<struct_generator> struct_generator_;
   std::unique_ptr<function_generator> function_generator_;
   std::unique_ptr<service_generator> service_generator_;
+  std::unique_ptr<interaction_generator> interaction_generator_;
   std::unique_ptr<typedef_generator> typedef_generator_;
   std::unique_ptr<const_generator> const_generator_;
   std::unique_ptr<program_generator> program_generator_;
@@ -437,6 +455,22 @@ class mstch_base : public mstch::object {
 
   template <typename C, typename... Args>
   mstch::array generate_services(C const& container, Args const&... args) {
+    return generate_elements(
+        container, generators_->service_generator_.get(), args...);
+  }
+
+  template <typename C, typename... Args>
+  mstch::array generate_interactions(
+      C const& container,
+      t_service const* containing_service,
+      Args const&... args) {
+    if (generators_->interaction_generator_) {
+      return generate_elements(
+          container,
+          generators_->interaction_generator_.get(),
+          containing_service,
+          args...);
+    }
     return generate_elements(
         container, generators_->service_generator_.get(), args...);
   }
@@ -1251,7 +1285,7 @@ class mstch_service : public mstch_base {
   mstch::node thrift_uri() { return service_->uri(); }
 
   mstch::node parent() {
-    return cache_->parsed_options_["parent_service_name"];
+    return cache_->parsed_options_.at("parent_service_name");
   }
 
   mstch::node has_streams() {
@@ -1271,11 +1305,12 @@ class mstch_service : public mstch_base {
   mstch::node has_interactions() { return !interactions_.empty(); }
   mstch::node interactions() {
     if (!service_->is_interaction()) {
+      // for Python interactions
       cache_->parsed_options_["parent_service_name"] = service_->get_name();
       cache_->parsed_options_["parent_service_cpp_name"] =
           cpp2::get_name(service_);
     }
-    return generate_services(interactions_);
+    return generate_interactions(interactions_, service_);
   }
   mstch::node structured_annotations() {
     return mstch_base::structured_annotations(service_);

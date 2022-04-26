@@ -39,6 +39,11 @@ namespace thrift {
 namespace compiler {
 namespace cpp2 {
 
+template <typename Node>
+const std::string& get_name(const Node* node) {
+  return gen::cpp::namespace_resolver::get_cpp_name(*node);
+}
+
 bool is_custom_type(const t_type& type);
 
 std::unordered_map<t_struct*, std::vector<t_struct*>> gen_dependency_graph(
@@ -55,6 +60,10 @@ inline std::string get_gen_namespace(t_program const& program) {
 
 inline std::string get_gen_unprefixed_namespace(t_program const& program) {
   return gen::cpp::namespace_resolver::gen_unprefixed_namespace(program);
+}
+
+inline std::string get_service_qualified_name(t_service const& service) {
+  return get_gen_namespace(*service.program()) + "::" + get_name(&service);
 }
 
 /*
@@ -169,11 +178,6 @@ void for_each_transitive_field(const t_struct* s, F f) {
 // TODO(afuller): Remove by actually inlining function.
 inline bool is_unique_ref(const t_field* f) {
   return gen::cpp::find_ref_type(*f) == gen::cpp::reference_type::unique;
-}
-
-template <typename Node>
-const std::string& get_name(const Node* node) {
-  return gen::cpp::namespace_resolver::get_cpp_name(*node);
 }
 
 bool is_stack_arguments(
