@@ -226,8 +226,9 @@ class parsing_driver {
   }
 
   template <typename... Args>
-  void warning_strict(Args&&... args) {
-    ctx_.warning_strict(get_lineno(), get_text(), std::forward<Args>(args)...);
+  void warning_legacy_strict(Args&&... args) {
+    ctx_.warning_legacy_strict(
+        get_lineno(), get_text(), std::forward<Args>(args)...);
   }
 
   template <typename... Args>

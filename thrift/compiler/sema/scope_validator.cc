@@ -98,7 +98,7 @@ void validate_annotation_scopes(diagnostic_context& ctx, const t_named& node) {
 
     if (allowed.types.empty()) {
       // Warn that the annotation isn't marked as such.
-      ctx.warning_strict(*annot, [&](auto& o) {
+      ctx.warning_legacy_strict(*annot, [&](auto& o) {
         o << "Using `" << annot_type->name()
           << "` as an annotation, even though it has not been enabled for any "
              "annotation scope.";

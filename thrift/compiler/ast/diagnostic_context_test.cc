@@ -70,7 +70,7 @@ TEST_F(DiagnosticContextTest, KeepInfo) {
 TEST_F(DiagnosticContextTest, WarningLevel) {
   // Strict not reported by default.
   ctx_.warning(0, "", "hi");
-  ctx_.warning_strict(0, "", "bye");
+  ctx_.warning_legacy_strict(0, "", "bye");
   EXPECT_THAT(
       results_.diagnostics(),
       ::testing::ElementsAre(
@@ -80,13 +80,13 @@ TEST_F(DiagnosticContextTest, WarningLevel) {
   // Not reported.
   ctx_.params().warn_level = 0;
   ctx_.warning(0, "", "hi");
-  ctx_.warning_strict(0, "", "bye");
+  ctx_.warning_legacy_strict(0, "", "bye");
   EXPECT_THAT(results_.diagnostics(), ::testing::IsEmpty());
 
   // Both reported.
   ctx_.params().warn_level = 2;
   ctx_.warning(0, "", "hi");
-  ctx_.warning_strict(0, "", "bye");
+  ctx_.warning_legacy_strict(0, "", "bye");
   EXPECT_THAT(
       results_.diagnostics(),
       ::testing::ElementsAre(

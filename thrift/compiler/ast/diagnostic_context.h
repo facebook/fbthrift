@@ -275,7 +275,7 @@ class diagnostic_context : public diagnostics_engine,
   }
 
   template <typename... Args>
-  void warning_strict(Args&&... args) {
+  void warning_legacy_strict(Args&&... args) {
     if (params().warn_level < 2) {
       return;
     }

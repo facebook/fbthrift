@@ -273,7 +273,7 @@ void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
 
 void parsing_driver::clear_doctext() {
   if (doctext && mode == parsing_mode::PROGRAM) {
-    warning_strict([&](auto& o) {
+    warning_legacy_strict([&](auto& o) {
       o << "Uncaptured doctext at on line " << doctext_lineno << ".";
     });
   }
@@ -434,7 +434,7 @@ bool parsing_driver::require_experimental_feature(const char* feature) {
   assert(feature != std::string("all"));
   if (params.allow_experimental_features.count("all") ||
       params.allow_experimental_features.count(feature)) {
-    warning_strict([&](auto& o) {
+    warning_legacy_strict([&](auto& o) {
       o << "'" << feature << "' is an experimental feature.";
     });
     return true;
