@@ -96,7 +96,7 @@ template <
 struct cpp_type : Tag {};
 
 template <typename T> // the generated C++ type
-struct service {};
+struct service_t {};
 
 template <FieldId Id, typename Tag>
 struct field_t;

@@ -25,5 +25,5 @@ struct TestAsyncClient {
 };
 
 TEST(NameTest, Extract) {
-  EXPECT_EQ(getName<service<TestAsyncClient>>(), "you are I");
+  EXPECT_EQ(getName<service_t<TestAsyncClient>>(), "you are I");
 }
