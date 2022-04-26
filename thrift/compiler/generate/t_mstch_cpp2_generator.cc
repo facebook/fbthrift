@@ -2546,7 +2546,7 @@ class splits_validator : public validator {
  private:
   void validate_type_cpp_splits(const int32_t object_count) try {
     auto split_count = cpp2::get_split_count(options_);
-    if (split_count != 0 && split_count > object_count) {
+    if (split_count > object_count) {
       add_error(
           boost::none,
           "`types_cpp_splits=" + std::to_string(split_count) +
