@@ -190,6 +190,7 @@ add_library(
   server/LoggingEventHelper.cpp
   server/MonitoringMethodNames.cpp
   server/ParallelConcurrencyController.cpp
+  server/ExecutorToThreadManagerAdaptor.cpp
   server/RequestDebugLog.cpp
   server/RequestPileBase.cpp
   server/RequestPileInterface.cpp

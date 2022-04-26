@@ -186,12 +186,17 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     bool setIsOverloaded{false};
     bool resourcePoolEnabled{false};
     bool resourcePoolFlagSet{false};
+    std::string executorToThreadManagerUnexpectedFunctionName{};
   };
 
   /**
    * Get the flags used to support migrations and rollouts.
    */
   const RuntimeServerActions& getRuntimeServerActions() const {
+    return runtimeServerActions_;
+  }
+
+  RuntimeServerActions& getRuntimeServerActions() {
     return runtimeServerActions_;
   }
 
