@@ -29,6 +29,15 @@ namespace compiler {
 
 void t_program::add_definition(std::unique_ptr<t_named> definition) {
   assert(definition != nullptr);
+
+  // Resolve Thrift URI if need be.
+  if (definition->uri().empty()) { // Inherit from package.
+    definition->set_uri(package_.get_uri(definition->name()));
+    if (auto* uri = definition->find_annotation_or_null("thrift.uri")) {
+      definition->set_uri(*uri); // Manual override.
+    }
+  }
+
   // Index the node.
   if (auto* node = dynamic_cast<t_exception*>(definition.get())) {
     objects_.push_back(node);

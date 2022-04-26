@@ -162,20 +162,6 @@ void mutate_merge_from(
   }
 }
 
-void assign_uri(diagnostic_context& ctx, mutator_context&, t_named& node) {
-  if (auto* uri = node.find_annotation_or_null("thrift.uri")) {
-    // Manually assigned.
-    node.set_uri(*uri);
-    return;
-  }
-
-  // TODO(afuller): Move this to program.add_definition.
-  if (!ctx.program().package().empty() && !node.generated()) {
-    // Inherit from package.
-    node.set_uri(ctx.program().package().get_uri(node.name()));
-  }
-}
-
 void set_generated(diagnostic_context&, mutator_context&, t_named& node) {
   if (node.find_structured_annotation_or_null(kSetGenerated)) {
     node.set_generated();
@@ -227,7 +213,6 @@ ast_mutators standard_mutators() {
   ast_mutators mutators;
   {
     auto& initial = mutators[standard_mutator_stage::initial];
-    initial.add_root_definition_visitor(&assign_uri);
     initial.add_interaction_visitor(
         &propagate_process_in_event_base_annotation);
     initial.add_function_visitor(&remove_param_list_field_qualifiers);
