@@ -46,6 +46,15 @@ const std::string& value_or_empty(const std::string* value) {
   return value ? *value : empty_instance<std::string>();
 }
 
+int checked_stoi(const std::string& s, std::string msg) {
+  std::size_t pos = 0;
+  int ret = std::stoi(s, &pos);
+  if (pos != s.size()) {
+    throw std::runtime_error(msg);
+  }
+  return ret;
+}
+
 } // namespace
 
 // TODO: check @cpp.Adapter
@@ -301,13 +310,8 @@ int32_t get_split_count(std::map<std::string, std::string> const& options) {
     return 0;
   }
 
-  std::size_t pos = 0;
-  auto ret = std::stoi(iter->second, &pos);
-  if (pos != iter->second.size()) {
-    throw std::runtime_error(
-        "Invalid types_cpp_splits value: `" + iter->second + "`");
-  }
-  return ret;
+  return checked_stoi(
+      iter->second, "Invalid types_cpp_splits value: `" + iter->second + "`");
 }
 
 static auto split(const std::string& s, char delimiter) {
@@ -339,13 +343,9 @@ std::unordered_map<std::string, int32_t> get_client_name_to_split_count(
           "Invalid pair `" + kv + "` in client_cpp_splits value: `" + map +
           "`");
     }
-    std::size_t pos = 0;
-    ret[a[0]] = std::stoi(a[1], &pos);
-    if (pos != a[1].size()) {
-      throw std::runtime_error(
-          "Invalid pair `" + kv + "` in client_cpp_splits value: `" + map +
-          "`");
-    }
+    ret[a[0]] = checked_stoi(
+        a[1],
+        "Invalid pair `" + kv + "` in client_cpp_splits value: `" + map + "`");
   }
   return ret;
 }
