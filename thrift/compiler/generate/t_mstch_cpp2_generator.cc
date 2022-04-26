@@ -2544,14 +2544,8 @@ class splits_validator : public validator {
   }
 
  private:
-  void validate_type_cpp_splits(const int32_t object_count) {
-    int32_t split_count = 0;
-    try {
-      split_count = cpp2::get_split_count(options_);
-    } catch (std::runtime_error& e) {
-      add_error(boost::none, e.what());
-    }
-
+  void validate_type_cpp_splits(const int32_t object_count) try {
+    auto split_count = cpp2::get_split_count(options_);
     if (split_count != 0 && split_count > object_count) {
       add_error(
           boost::none,
@@ -2559,16 +2553,13 @@ class splits_validator : public validator {
               "` is misconfigured: it can not be greater than number of object, which is " +
               std::to_string(object_count) + ".");
     }
+  } catch (std::runtime_error& e) {
+    add_error(boost::none, e.what());
   }
 
-  void validate_client_cpp_splits(const std::vector<t_service*>& services) {
-    std::unordered_map<std::string, int32_t> client_name_to_split_count;
-    try {
-      client_name_to_split_count =
-          cpp2::get_client_name_to_split_count(options_);
-    } catch (std::runtime_error& e) {
-      add_error(boost::none, e.what());
-    }
+  void validate_client_cpp_splits(const std::vector<t_service*>& services) try {
+    auto client_name_to_split_count =
+        cpp2::get_client_name_to_split_count(options_);
 
     if (client_name_to_split_count.empty()) {
       // fast path
@@ -2587,6 +2578,8 @@ class splits_validator : public validator {
                 std::to_string(s->get_functions().size()) + ".");
       }
     }
+  } catch (std::runtime_error& e) {
+    add_error(boost::none, e.what());
   }
 
   const std::map<std::string, std::string>& options_;
