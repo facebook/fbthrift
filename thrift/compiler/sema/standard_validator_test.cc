@@ -46,8 +46,9 @@ class StandardValidatorTest : public ::testing::Test {
  protected:
   std::vector<diagnostic> validate(
       diagnostic_params params = diagnostic_params::keep_all()) {
+    source_manager source_mgr;
     diagnostic_results results;
-    diagnostic_context ctx{results, std::move(params)};
+    diagnostic_context ctx(source_mgr, results, std::move(params));
     standard_validator()(ctx, program_);
     return std::move(results).diagnostics();
   }

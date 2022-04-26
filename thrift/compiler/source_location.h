@@ -90,8 +90,8 @@ struct source_range {
 class resolved_location {
  private:
   const char* file_name_;
-  uint_least32_t line_;
-  uint_least32_t column_;
+  unsigned line_;
+  unsigned column_;
 
  public:
   resolved_location(source_location loc, const source_manager& sm);
@@ -101,8 +101,8 @@ class resolved_location {
   // directory structure.
   const char* file_name() const { return file_name_; }
 
-  uint_least32_t line() const { return line_; }
-  uint_least32_t column() const { return column_; }
+  unsigned line() const { return line_; }
+  unsigned column() const { return column_; }
 };
 
 struct source {

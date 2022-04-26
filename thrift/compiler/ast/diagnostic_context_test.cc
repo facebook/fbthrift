@@ -30,12 +30,14 @@ namespace {
 
 class DiagnosticContextTest : public ::testing::Test {
  public:
-  DiagnosticContextTest() : ctx_{results_}, program_{"path/to/file.thrift"} {}
+  DiagnosticContextTest()
+      : ctx_(source_mgr_, results_), program_("path/to/file.thrift") {}
 
   void SetUp() override { ctx_.begin_visit(program_); }
   void TearDown() override { ctx_.end_visit(program_); }
 
  protected:
+  source_manager source_mgr_;
   diagnostic_results results_;
   diagnostic_context ctx_;
   t_program program_;

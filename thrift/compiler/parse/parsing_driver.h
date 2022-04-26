@@ -124,7 +124,7 @@ struct parsing_params {
 
 class parsing_driver {
  private:
-  source_manager source_mgr_;
+  source_manager* source_mgr_;
   class lex_handler_impl;
   std::unique_ptr<lex_handler_impl> lex_handler_;
   std::unique_ptr<lexer> lexer_;
@@ -168,7 +168,10 @@ class parsing_driver {
   std::map<std::string, t_program*> program_cache;
 
   parsing_driver(
-      diagnostic_context& ctx, std::string path, parsing_params parse_params);
+      source_manager& sm,
+      diagnostic_context& ctx,
+      std::string path,
+      parsing_params parse_params);
   ~parsing_driver();
 
   const lexer& get_lexer() const { return *lexer_; }

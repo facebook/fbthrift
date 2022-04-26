@@ -159,16 +159,8 @@ const std::unordered_map<std::string, make_token_fun> keywords = {
 
 } // namespace
 
-lexer::lexer(
-    source_manager& sm,
-    lex_handler& handler,
-    diagnostics_engine& diags,
-    source src)
-    : source_mgr_(&sm),
-      handler_(&handler),
-      diags_(&diags),
-      source_(src.text),
-      start_(src.start) {
+lexer::lexer(lex_handler& handler, diagnostics_engine& diags, source src)
+    : handler_(&handler), diags_(&diags), source_(src.text), start_(src.start) {
   ptr_ = source_.data();
   token_start_ = ptr_;
 }
@@ -206,11 +198,9 @@ parser::symbol_type lexer::make_float_constant() {
 
 template <typename... T>
 parser::symbol_type lexer::report_error(T&&... args) {
-  auto loc = resolved_location(location(), *source_mgr_);
   diags_->report(
       diagnostic_level::failure,
-      loc.file_name(),
-      loc.line(),
+      location(),
       token_text(),
       std::forward<T>(args)...);
   return parser::make_tok_error(token_source_range());

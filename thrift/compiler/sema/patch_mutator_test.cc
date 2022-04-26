@@ -25,7 +25,7 @@ namespace apache::thrift::compiler {
 
 class PatchGeneratorTest : public ::testing::Test {
  public:
-  PatchGeneratorTest() : ctx_(results_) {}
+  PatchGeneratorTest() : ctx_(source_mgr_, results_) {}
 
   void SetUp() override {
     ctx_.begin_visit(program_);
@@ -40,6 +40,7 @@ class PatchGeneratorTest : public ::testing::Test {
 
  protected:
   t_program program_{"path/to/file.thrift"};
+  source_manager source_mgr_;
   diagnostic_results results_;
   diagnostic_context ctx_;
   std::unique_ptr<patch_generator> gen_;

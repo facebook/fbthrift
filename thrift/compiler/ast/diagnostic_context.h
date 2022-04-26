@@ -100,15 +100,19 @@ class diagnostic_context : public diagnostics_engine,
                            public const_visitor_context {
  public:
   explicit diagnostic_context(
-      std::function<void(diagnostic)> report_cb, diagnostic_params params = {})
-      : diagnostics_engine(std::move(report_cb), std::move(params)) {}
+      source_manager& sm,
+      std::function<void(diagnostic)> report_cb,
+      diagnostic_params params = {})
+      : diagnostics_engine(sm, std::move(report_cb), std::move(params)) {}
   explicit diagnostic_context(
-      diagnostic_results& results, diagnostic_params params = {})
-      : diagnostics_engine(results, std::move(params)) {}
+      source_manager& sm,
+      diagnostic_results& results,
+      diagnostic_params params = {})
+      : diagnostics_engine(sm, results, std::move(params)) {}
 
-  static diagnostic_context ignore_all() {
+  static diagnostic_context ignore_all(source_manager& sm) {
     return diagnostic_context(
-        [](const diagnostic&) {}, diagnostic_params::only_failures());
+        sm, [](const diagnostic&) {}, diagnostic_params::only_failures());
   }
 
   // A cache for traversal-specific metadata.
@@ -200,7 +204,13 @@ class diagnostic_context : public diagnostics_engine,
       const t_node& node,
       std::string path,
       With&& with) {
-    report(level, std::move(path), node.lineno(), {}, std::forward<With>(with));
+    report(
+        level,
+        std::move(path),
+        node.lineno(),
+        {},
+        {},
+        std::forward<With>(with));
   }
 
   template <typename With>

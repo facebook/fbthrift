@@ -17,8 +17,8 @@
 #pragma once
 
 #include <string>
-#include <fmt/core.h>
 
+#include <fmt/core.h>
 #include <thrift/compiler/source_location.h>
 
 // This is a macro because of a difference between the OSS and internal builds.
@@ -45,7 +45,6 @@ class lex_handler {
 // A Thrift lexer.
 class lexer {
  private:
-  source_manager* source_mgr_;
   lex_handler* handler_;
   diagnostics_engine* diags_;
   fmt::string_view source_; // Source being lexed; has a terminating '\0'.
@@ -78,11 +77,7 @@ class lexer {
   comment_lex_result lex_whitespace_or_comment();
 
  public:
-  lexer(
-      source_manager& sm,
-      lex_handler& handler,
-      diagnostics_engine& diags,
-      source src);
+  lexer(lex_handler& handler, diagnostics_engine& diags, source src);
 
   lexer(lexer&& other) = default;
   lexer& operator=(lexer&& other) = default;

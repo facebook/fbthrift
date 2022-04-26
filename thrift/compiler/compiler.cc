@@ -420,16 +420,18 @@ std::string get_include_path(
 std::unique_ptr<t_program_bundle> parse_and_get_program(
     const std::vector<std::string>& arguments) {
   // Parse arguments.
-  parsing_params pparams{};
-  gen_params gparams{};
-  diagnostic_params dparams{};
+  parsing_params pparams;
+  gen_params gparams;
+  diagnostic_params dparams;
   std::string filename = parseArgs(arguments, pparams, gparams, dparams);
 
   if (filename.empty()) {
     return {};
   }
-  auto ctx = diagnostic_context::ignore_all();
-  return parse_and_mutate_program(ctx, filename, std::move(pparams));
+  source_manager source_mgr;
+  auto ctx = diagnostic_context::ignore_all(source_mgr);
+  return parse_and_mutate_program(
+      source_mgr, ctx, filename, std::move(pparams));
 }
 
 compile_result compile(const std::vector<std::string>& arguments) {
@@ -437,19 +439,20 @@ compile_result compile(const std::vector<std::string>& arguments) {
 
   // Parse arguments.
   g_stage = "arguments";
-  parsing_params pparams{};
-  gen_params gparams{};
-  diagnostic_params dparams{};
+  parsing_params pparams;
+  gen_params gparams;
+  diagnostic_params dparams;
   std::string input_filename = parseArgs(arguments, pparams, gparams, dparams);
   if (input_filename.empty()) {
     return result;
   }
-  diagnostic_context ctx{result.detail, std::move(dparams)};
+  source_manager source_mgr;
+  diagnostic_context ctx(source_mgr, result.detail, std::move(dparams));
 
   // Parse it!
   g_stage = "parse";
-  auto program =
-      parse_and_mutate_program(ctx, input_filename, std::move(pparams));
+  auto program = parse_and_mutate_program(
+      source_mgr, ctx, input_filename, std::move(pparams));
   if (!program || result.detail.has_failure()) {
     return result;
   }

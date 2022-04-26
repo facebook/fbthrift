@@ -23,6 +23,8 @@
 #include <utility>
 #include <vector>
 
+#include <thrift/compiler/source_location.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
@@ -173,11 +175,18 @@ class diagnostics_engine {
 
  public:
   explicit diagnostics_engine(
-      std::function<void(diagnostic)> report_cb, diagnostic_params params = {})
-      : report_cb_(std::move(report_cb)), params_(std::move(params)) {}
+      source_manager& sm,
+      std::function<void(diagnostic)> report_cb,
+      diagnostic_params params = {})
+      : source_mgr_(&sm),
+        report_cb_(std::move(report_cb)),
+        params_(std::move(params)) {}
   explicit diagnostics_engine(
-      diagnostic_results& results, diagnostic_params params = {})
+      source_manager& sm,
+      diagnostic_results& results,
+      diagnostic_params params = {})
       : diagnostics_engine(
+            sm,
             [&results](diagnostic diag) { results.add(std::move(diag)); },
             std::move(params)) {}
 
@@ -216,8 +225,7 @@ class diagnostics_engine {
   template <typename With, typename = if_with<With>>
   void report(
       diagnostic_level level,
-      std::string filename,
-      int lineno,
+      source_location loc,
       std::string token,
       With&& with) {
     if (!params_.should_report(level)) {
@@ -226,16 +234,18 @@ class diagnostics_engine {
 
     std::ostringstream o;
     with(static_cast<std::ostream&>(o));
+    auto resolved_loc = resolved_location(loc, *source_mgr_);
     report_cb_({
         level,
         o.str(),
-        std::move(filename),
-        lineno,
+        std::string(resolved_loc.file_name()),
+        static_cast<int>(resolved_loc.line()),
         std::move(token),
     });
   }
 
  private:
+  source_manager* source_mgr_;
   std::function<void(diagnostic)> report_cb_;
   diagnostic_params params_;
 };

@@ -61,10 +61,13 @@ class parsing_driver::lex_handler_impl : public lex_handler {
 };
 
 parsing_driver::parsing_driver(
-    diagnostic_context& ctx, std::string path, parsing_params parse_params)
-    : lex_handler_(std::make_unique<lex_handler_impl>(*this)),
-      lexer_(
-          std::make_unique<lexer>(source_mgr_, *lex_handler_, ctx, source())),
+    source_manager& sm,
+    diagnostic_context& ctx,
+    std::string path,
+    parsing_params parse_params)
+    : source_mgr_(&sm),
+      lex_handler_(std::make_unique<lex_handler_impl>(*this)),
+      lexer_(std::make_unique<lexer>(*lex_handler_, ctx, source())),
       params(std::move(parse_params)),
       doctext(boost::none),
       doctext_lineno(0),
@@ -87,7 +90,7 @@ int parsing_driver::get_lineno(source_location loc) {
   if (loc == source_location()) {
     loc = lexer_->location();
   }
-  return loc != source_location() ? resolved_location(loc, source_mgr_).line()
+  return loc != source_location() ? resolved_location(loc, *source_mgr_).line()
                                   : 0;
 }
 
@@ -120,7 +123,7 @@ void parsing_driver::parse_file() {
   ctx_.begin_visit(*program);
   try {
     lexer_ = std::make_unique<lexer>(
-        source_mgr_, *lex_handler_, ctx_, source_mgr_.add_file(path));
+        *lex_handler_, ctx_, source_mgr_->add_file(path));
     reset_locations();
   } catch (std::runtime_error const& ex) {
     end_parsing(ex.what());
@@ -170,8 +173,8 @@ void parsing_driver::parse_file() {
   // Parse the program file
   auto src = source();
   try {
-    src = source_mgr_.add_file(path);
-    lexer_ = std::make_unique<lexer>(source_mgr_, *lex_handler_, ctx_, src);
+    src = source_mgr_->add_file(path);
+    lexer_ = std::make_unique<lexer>(*lex_handler_, ctx_, src);
     reset_locations();
   } catch (std::runtime_error const& ex) {
     end_parsing(ex.what());
@@ -486,8 +489,8 @@ resolved_source_range parsing_driver::get_source_range(
   if (range.begin == source_location()) {
     return {*program, 0, 0, 0, 0};
   }
-  auto begin = resolved_location(range.begin, source_mgr_);
-  auto end = resolved_location(range.end, source_mgr_);
+  auto begin = resolved_location(range.begin, *source_mgr_);
+  auto end = resolved_location(range.end, *source_mgr_);
   return {*program, begin.line(), begin.column(), end.line(), end.column()};
 }
 

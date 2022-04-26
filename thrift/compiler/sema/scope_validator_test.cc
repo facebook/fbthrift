@@ -152,8 +152,9 @@ class ScopeValidatorTest : public ::testing::Test {
   }
 
   diagnostic_results validate(const t_named& node) {
+    source_manager source_mgr;
     diagnostic_results results;
-    diagnostic_context ctx{results, diagnostic_params::keep_all()};
+    diagnostic_context ctx(source_mgr, results, diagnostic_params::keep_all());
     ctx.begin_visit(program);
     validate_annotation_scopes(ctx, node);
     return results;

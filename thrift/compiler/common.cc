@@ -159,11 +159,11 @@ void dump_docstrings(t_program* program) {
 }
 
 std::unique_ptr<t_program_bundle> parse_and_mutate_program(
+    source_manager& sm,
     diagnostic_context& ctx,
     const std::string& filename,
     parsing_params params) {
-  // Parse then mutate!
-  parsing_driver driver{ctx, filename, std::move(params)};
+  parsing_driver driver(sm, ctx, filename, std::move(params));
   auto program = driver.parse();
   if (program != nullptr) {
     standard_mutators()(ctx, *program);
@@ -176,16 +176,21 @@ parse_and_mutate_program(
     const std::string& filename,
     parsing_params params,
     diagnostic_params dparams) {
+  source_manager source_mgr;
   diagnostic_results results;
-  diagnostic_context ctx{results, std::move(dparams)};
-  return {parse_and_mutate_program(ctx, filename, std::move(params)), results};
+  diagnostic_context ctx(source_mgr, results, std::move(dparams));
+  return {
+      parse_and_mutate_program(source_mgr, ctx, filename, std::move(params)),
+      results};
 }
 
 std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
     std::string path, parsing_params pparams, diagnostic_params dparams) {
+  source_manager source_mgr;
   diagnostic_results results;
-  diagnostic_context ctx{results, std::move(dparams)};
-  auto program = parse_and_mutate_program(ctx, path, std::move(pparams));
+  diagnostic_context ctx(source_mgr, results, std::move(dparams));
+  auto program =
+      parse_and_mutate_program(source_mgr, ctx, path, std::move(pparams));
   for (const auto& diag : results.diagnostics()) {
     std::cerr << diag << "\n";
   }

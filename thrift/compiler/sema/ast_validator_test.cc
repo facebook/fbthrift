@@ -50,8 +50,9 @@ TEST_F(AstValidatorTest, Output) {
       });
 
   t_program program("path/to/program.thrift");
+  source_manager source_mgr;
   diagnostic_results results;
-  diagnostic_context ctx{results, diagnostic_params::keep_all()};
+  diagnostic_context ctx(source_mgr, results, diagnostic_params::keep_all());
   validator(ctx, program);
   EXPECT_THAT(
       results.diagnostics(),

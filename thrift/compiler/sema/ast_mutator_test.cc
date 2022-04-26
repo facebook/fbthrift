@@ -44,8 +44,9 @@ TEST_F(AstMutatorTest, Output) {
   });
 
   t_program program("path/to/program.thrift");
+  source_manager source_mgr;
   diagnostic_results results;
-  diagnostic_context ctx{results, diagnostic_params::keep_all()};
+  diagnostic_context ctx(source_mgr, results, diagnostic_params::keep_all());
   mutator_context mctx;
   mutator(ctx, mctx, program);
   EXPECT_THAT(

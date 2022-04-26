@@ -122,6 +122,7 @@ parse_and_mutate_program(
     parsing_params params,
     diagnostic_params dparams = {});
 std::unique_ptr<t_program_bundle> parse_and_mutate_program(
+    source_manager& sm,
     diagnostic_context& ctx,
     const std::string& filename,
     parsing_params params);
