@@ -47,6 +47,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.maxDiff = None
 
     def run_thrift(self, *args, gen="mstch_cpp2"):
+        # Annotation files are copied from `thrift/annotation`
         argsx = [thrift, "--gen", gen, "-I", self.tmp]
         argsx.extend(args)
         pipe = subprocess.PIPE
