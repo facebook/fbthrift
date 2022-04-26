@@ -24,7 +24,6 @@
 #include <thrift/lib/cpp2/op/Hash.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
-#include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache {
 namespace thrift {
@@ -69,7 +68,7 @@ struct IdenticalTo : EqualTo<Tag> {
   static_assert(
       type::is_a_v<Tag, type::integral_c> || type::is_a_v<Tag, type::enum_c> ||
           type::is_a_v<Tag, type::string_c> ||
-          type::structured_types::contains<Tag>(),
+          type::is_a_v<Tag, type::structured_c>,
       "");
 };
 

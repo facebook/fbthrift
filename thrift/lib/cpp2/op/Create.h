@@ -18,7 +18,6 @@
 #pragma once
 
 #include <thrift/lib/cpp2/op/detail/Create.h>
-#include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache {
 namespace thrift {
