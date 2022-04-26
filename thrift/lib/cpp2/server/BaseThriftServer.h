@@ -1229,12 +1229,13 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     runtimeDisableResourcePools();
   }
 
+  // Do not try to access ThreadManager in this function as
+  // ThreadManagers are being deprecated from thrift server
+  // e.g. don't call getThreadManager() inside this
   virtual void setPreprocess(PreprocessFunc preprocess) {
     preprocess_ = std::move(preprocess);
     runtimeServerActions_.setPreprocess = true;
-    LOG(INFO) << "thrift server: preprocess() set."
-              << " ResourcePool will be disabled.";
-    runtimeDisableResourcePools();
+    LOG(INFO) << "thrift server: preprocess() set.";
   }
 
   void setMethodsBypassMaxRequestsLimit(
