@@ -514,47 +514,38 @@ void ThriftRocketServerHandler::handleRequestCommon(
   const auto& headers = request->getTHeader().getHeaders();
   const auto& name = request->getMethodName();
 
-  if (!worker_->getServer()->resourcePoolSet().empty()) {
-    serverConfigs_->incActiveRequests();
+  auto errorCode = serverConfigs_->checkOverload(&headers, &name);
+  serverConfigs_->incActiveRequests();
+  if (UNLIKELY(errorCode.has_value())) {
+    handleRequestOverloadedServer(std::move(request), errorCode.value());
+    return;
+  }
 
-    if (!serverConfigs_->shouldHandleRequestForMethod(name)) {
-      handleServerNotReady(std::move(request));
-      return;
-    }
-  } else {
-    auto errorCode = serverConfigs_->checkOverload(&headers, &name);
-    serverConfigs_->incActiveRequests();
-    if (UNLIKELY(errorCode.has_value())) {
-      handleRequestOverloadedServer(std::move(request), errorCode.value());
-      return;
-    }
+  if (!serverConfigs_->shouldHandleRequestForMethod(name)) {
+    handleServerNotReady(std::move(request));
+    return;
+  }
 
-    if (!serverConfigs_->shouldHandleRequestForMethod(name)) {
-      handleServerNotReady(std::move(request));
-      return;
-    }
+  auto preprocessResult =
+      serverConfigs_->preprocess({headers, name, connContext_, request.get()});
+  if (UNLIKELY(!std::holds_alternative<std::monostate>(preprocessResult))) {
+    folly::variant_match(
+        preprocessResult,
+        [&](AppClientException& ace) {
+          handleAppError(
+              std::move(request), ace.name(), ace.getMessage(), true);
+        },
+        [&](AppOverloadedException&) {
+          handleRequestOverloadedServer(
+              std::move(request), kAppOverloadedErrorCode);
+        },
+        [&](const AppServerException& ase) {
+          handleAppError(
+              std::move(request), ase.name(), ase.getMessage(), false);
+        },
+        [](std::monostate&) { folly::assume_unreachable(); });
 
-    auto preprocessResult = serverConfigs_->preprocess(
-        {headers, name, connContext_, request.get()});
-    if (UNLIKELY(!std::holds_alternative<std::monostate>(preprocessResult))) {
-      folly::variant_match(
-          preprocessResult,
-          [&](AppClientException& ace) {
-            handleAppError(
-                std::move(request), ace.name(), ace.getMessage(), true);
-          },
-          [&](AppOverloadedException&) {
-            handleRequestOverloadedServer(
-                std::move(request), kAppOverloadedErrorCode);
-          },
-          [&](const AppServerException& ase) {
-            handleAppError(
-                std::move(request), ase.name(), ase.getMessage(), false);
-          },
-          [](std::monostate&) { folly::assume_unreachable(); });
-
-      return;
-    }
+    return;
   }
 
   logSetupConnectionEventsOnce(setupLoggingFlag_, connContext_);
