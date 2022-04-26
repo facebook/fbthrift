@@ -28,95 +28,95 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
-  module_MyStruct.name_ref() = "module.MyStruct";
-  module_MyStruct.is_union_ref() = false;
+  module_MyStruct.name() = "module.MyStruct";
+  module_MyStruct.is_union() = false;
   static const EncodedThriftField
   module_MyStruct_fields[] = {
     {1, "myString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    module_MyStruct.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module_MyStruct.fields()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::MyUnion>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("module.MyUnion", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("module.MyUnion", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_MyUnion = res.first->second;
-  module_MyUnion.name_ref() = "module.MyUnion";
-  module_MyUnion.is_union_ref() = true;
+  module_MyUnion.name() = "module.MyUnion";
+  module_MyUnion.is_union() = true;
   static const EncodedThriftField
   module_MyUnion_fields[] = {
     {1, "myString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    module_MyUnion.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module_MyUnion.fields()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::MyException>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("module.MyException", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("module.MyException", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_MyException = res.first->second;
-  module_MyException.name_ref() = "module.MyException";
-  module_MyException.is_union_ref() = false;
+  module_MyException.name() = "module.MyException";
+  module_MyException.is_union() = false;
   static const EncodedThriftField
   module_MyException_fields[] = {
     {1, "myString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyException_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    module_MyException.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module_MyException.fields()->push_back(std::move(field));
   }
   return res.first->second;
 }
 
 void ExceptionMetadata<::cpp2::MyException>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions_ref()->emplace("module.MyException", ::apache::thrift::metadata::ThriftException{});
+  auto res = metadata.exceptions()->emplace("module.MyException", ::apache::thrift::metadata::ThriftException{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftException& module_MyException = res.first->second;
-  module_MyException.name_ref() = "module.MyException";
+  module_MyException.name() = "module.MyException";
   static const EncodedThriftField
   module_MyException_fields[] = {
     {1, "myString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyException_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    module_MyException.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    module_MyException.fields()->push_back(std::move(field));
   }
 }
 } // namespace md

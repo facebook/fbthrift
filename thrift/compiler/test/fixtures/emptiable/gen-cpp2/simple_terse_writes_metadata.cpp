@@ -26,38 +26,38 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 void EnumMetadata<::apache::thrift::test::MyEnum>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.enums_ref()->emplace("simple_terse_writes.MyEnum", ::apache::thrift::metadata::ThriftEnum{});
+  auto res = metadata.enums()->emplace("simple_terse_writes.MyEnum", ::apache::thrift::metadata::ThriftEnum{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
-  enum_metadata.name_ref() = "simple_terse_writes.MyEnum";
+  enum_metadata.name() = "simple_terse_writes.MyEnum";
   using EnumTraits = TEnumTraits<::apache::thrift::test::MyEnum>;
   for (std::size_t i = 0; i != EnumTraits::size; ++i) {
-    enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
+    enum_metadata.elements()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::apache::thrift::test::MyStruct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("simple_terse_writes.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("simple_terse_writes.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& simple_terse_writes_MyStruct = res.first->second;
-  simple_terse_writes_MyStruct.name_ref() = "simple_terse_writes.MyStruct";
-  simple_terse_writes_MyStruct.is_union_ref() = false;
+  simple_terse_writes_MyStruct.name() = "simple_terse_writes.MyStruct";
+  simple_terse_writes_MyStruct.is_union() = false;
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::apache::thrift::test::EmptiableStruct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("simple_terse_writes.EmptiableStruct", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("simple_terse_writes.EmptiableStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& simple_terse_writes_EmptiableStruct = res.first->second;
-  simple_terse_writes_EmptiableStruct.name_ref() = "simple_terse_writes.EmptiableStruct";
-  simple_terse_writes_EmptiableStruct.is_union_ref() = false;
+  simple_terse_writes_EmptiableStruct.name() = "simple_terse_writes.EmptiableStruct";
+  simple_terse_writes_EmptiableStruct.is_union() = false;
   static const EncodedThriftField
   simple_terse_writes_EmptiableStruct_fields[] = {
     {1, "bool_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
@@ -77,24 +77,24 @@ StructMetadata<::apache::thrift::test::EmptiableStruct>::gen(ThriftMetadata& met
   };
   for (const auto& f : simple_terse_writes_EmptiableStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    simple_terse_writes_EmptiableStruct.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    simple_terse_writes_EmptiableStruct.fields()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::apache::thrift::test::NotEmptiableStruct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("simple_terse_writes.NotEmptiableStruct", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("simple_terse_writes.NotEmptiableStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& simple_terse_writes_NotEmptiableStruct = res.first->second;
-  simple_terse_writes_NotEmptiableStruct.name_ref() = "simple_terse_writes.NotEmptiableStruct";
-  simple_terse_writes_NotEmptiableStruct.is_union_ref() = false;
+  simple_terse_writes_NotEmptiableStruct.name() = "simple_terse_writes.NotEmptiableStruct";
+  simple_terse_writes_NotEmptiableStruct.is_union() = false;
   static const EncodedThriftField
   simple_terse_writes_NotEmptiableStruct_fields[] = {
     {1, "bool_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
@@ -114,12 +114,12 @@ StructMetadata<::apache::thrift::test::NotEmptiableStruct>::gen(ThriftMetadata& 
   };
   for (const auto& f : simple_terse_writes_NotEmptiableStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    simple_terse_writes_NotEmptiableStruct.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    simple_terse_writes_NotEmptiableStruct.fields()->push_back(std::move(field));
   }
   return res.first->second;
 }

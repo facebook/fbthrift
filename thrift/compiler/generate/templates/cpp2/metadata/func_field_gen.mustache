@@ -15,11 +15,11 @@
   limitations under the License.
 
 %>::apache::thrift::metadata::ThriftField <% > metadata/func_field_name%>;
-<% > metadata/func_field_name%>.id_ref() = <%field:key%>;
-<% > metadata/func_field_name%>.name_ref() = "<%field:name%>";
-<% > metadata/func_field_name%>.is_optional_ref() = false;
+<% > metadata/func_field_name%>.id() = <%field:key%>;
+<% > metadata/func_field_name%>.name() = "<%field:name%>";
+<% > metadata/func_field_name%>.is_optional() = false;
 <%#field:structured_annotations%>
-<% > metadata/func_field_name%>.structured_annotations_ref() = {
+<% > metadata/func_field_name%>.structured_annotations() = {
 <%#structured_annotation:const_struct?%>
     <% > metadata/const_struct%>,
 <%/structured_annotation:const_struct?%>
@@ -27,5 +27,5 @@
 <%/field:structured_annotations%>
 <%#field:type%>
 auto <% > metadata/func_field_name%>_type = <% > metadata/type_gen%>;
-<% > metadata/func_field_name%>_type->writeAndGenType(*<% > metadata/func_field_name%>.type_ref(), metadata);
+<% > metadata/func_field_name%>_type->writeAndGenType(*<% > metadata/func_field_name%>.type(), metadata);
 <%/field:type%>

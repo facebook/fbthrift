@@ -30,27 +30,27 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyRoot>>::gen_do_root(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name_ref() = "do_root";
+  func.name() = "do_root";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
-  func.is_oneway_ref() = false;
-  service.functions_ref()->push_back(std::move(func));
+  func_ret_type->writeAndGenType(*func.return_type(), metadata);
+  func.is_oneway() = false;
+  service.functions()->push_back(std::move(func));
 }
 
 void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyRoot>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
+  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata(), *response.services());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
   ::apache::thrift::metadata::ThriftServiceContext context;
-  context.module_ref() = *self->module_ref();
-  context.service_info_ref() = response.metadata_ref()->services_ref()->at(*self->service_name_ref());
-  response.context_ref() = std::move(context);
+  context.module() = *self->module();
+  context.service_info() = response.metadata()->services()->at(*self->service_name());
+  response.context() = std::move(context);
 }
 
 const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyRoot>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_MyRoot;
-  module_MyRoot.name_ref() = "module.MyRoot";
+  module_MyRoot.name() = "module.MyRoot";
   static const ThriftFunctionGenerator functions[] = {
     ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyRoot>>::gen_do_root,
   };
@@ -61,37 +61,37 @@ const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<
   auto selfIndex = services.size();
   services.emplace_back();
   ThriftServiceContextRef& context = services[selfIndex];
-  metadata.services_ref()->emplace("module.MyRoot", std::move(module_MyRoot));
-  context.service_name_ref() = "module.MyRoot";
+  metadata.services()->emplace("module.MyRoot", std::move(module_MyRoot));
+  context.service_name() = "module.MyRoot";
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.name_ref() = "module";
-  context.module_ref() = std::move(module);
+  module.name() = "module";
+  context.module() = std::move(module);
   return &context;
 }
 void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyNode>>::gen_do_mid(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name_ref() = "do_mid";
+  func.name() = "do_mid";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
-  func.is_oneway_ref() = false;
-  service.functions_ref()->push_back(std::move(func));
+  func_ret_type->writeAndGenType(*func.return_type(), metadata);
+  func.is_oneway() = false;
+  service.functions()->push_back(std::move(func));
 }
 
 void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyNode>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
+  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata(), *response.services());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
   ::apache::thrift::metadata::ThriftServiceContext context;
-  context.module_ref() = *self->module_ref();
-  context.service_info_ref() = response.metadata_ref()->services_ref()->at(*self->service_name_ref());
-  response.context_ref() = std::move(context);
+  context.module() = *self->module();
+  context.service_info() = response.metadata()->services()->at(*self->service_name());
+  response.context() = std::move(context);
 }
 
 const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyNode>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_MyNode;
-  module_MyNode.name_ref() = "module.MyNode";
+  module_MyNode.name() = "module.MyNode";
   static const ThriftFunctionGenerator functions[] = {
     ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyNode>>::gen_do_mid,
   };
@@ -101,40 +101,40 @@ const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<
   // We need to keep the index around because a reference or iterator could be invalidated.
   auto selfIndex = services.size();
   services.emplace_back();
-  module_MyNode.parent_ref() = "module.MyRoot";
+  module_MyNode.parent() = "module.MyRoot";
   ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyRoot>>::genRecurse(metadata, services);
   ThriftServiceContextRef& context = services[selfIndex];
-  metadata.services_ref()->emplace("module.MyNode", std::move(module_MyNode));
-  context.service_name_ref() = "module.MyNode";
+  metadata.services()->emplace("module.MyNode", std::move(module_MyNode));
+  context.service_name() = "module.MyNode";
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.name_ref() = "module";
-  context.module_ref() = std::move(module);
+  module.name() = "module";
+  context.module() = std::move(module);
   return &context;
 }
 void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyLeaf>>::gen_do_leaf(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name_ref() = "do_leaf";
+  func.name() = "do_leaf";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
-  func.is_oneway_ref() = false;
-  service.functions_ref()->push_back(std::move(func));
+  func_ret_type->writeAndGenType(*func.return_type(), metadata);
+  func.is_oneway() = false;
+  service.functions()->push_back(std::move(func));
 }
 
 void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyLeaf>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
+  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata(), *response.services());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
   ::apache::thrift::metadata::ThriftServiceContext context;
-  context.module_ref() = *self->module_ref();
-  context.service_info_ref() = response.metadata_ref()->services_ref()->at(*self->service_name_ref());
-  response.context_ref() = std::move(context);
+  context.module() = *self->module();
+  context.service_info() = response.metadata()->services()->at(*self->service_name());
+  response.context() = std::move(context);
 }
 
 const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyLeaf>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_MyLeaf;
-  module_MyLeaf.name_ref() = "module.MyLeaf";
+  module_MyLeaf.name() = "module.MyLeaf";
   static const ThriftFunctionGenerator functions[] = {
     ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyLeaf>>::gen_do_leaf,
   };
@@ -144,14 +144,14 @@ const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<
   // We need to keep the index around because a reference or iterator could be invalidated.
   auto selfIndex = services.size();
   services.emplace_back();
-  module_MyLeaf.parent_ref() = "module.MyNode";
+  module_MyLeaf.parent() = "module.MyNode";
   ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyNode>>::genRecurse(metadata, services);
   ThriftServiceContextRef& context = services[selfIndex];
-  metadata.services_ref()->emplace("module.MyLeaf", std::move(module_MyLeaf));
-  context.service_name_ref() = "module.MyLeaf";
+  metadata.services()->emplace("module.MyLeaf", std::move(module_MyLeaf));
+  context.service_name() = "module.MyLeaf";
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.name_ref() = "module";
-  context.module_ref() = std::move(module);
+  module.name() = "module";
+  context.module() = std::move(module);
   return &context;
 }
 } // namespace md

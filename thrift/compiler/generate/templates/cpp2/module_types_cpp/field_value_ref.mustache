@@ -17,9 +17,9 @@
 %><%!
 
 For the Thrift field foo this generates:
-  foo_ref().value()
+  foo().value()
 if it's non-optional and
-  foo_ref().value_unchecked()
+  foo().value_unchecked()
 otherwise.
 
 %><%!

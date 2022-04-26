@@ -26,51 +26,51 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 void EnumMetadata<::test::fixtures::enumstrict::EmptyEnum>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.enums_ref()->emplace("module.EmptyEnum", ::apache::thrift::metadata::ThriftEnum{});
+  auto res = metadata.enums()->emplace("module.EmptyEnum", ::apache::thrift::metadata::ThriftEnum{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
-  enum_metadata.name_ref() = "module.EmptyEnum";
+  enum_metadata.name() = "module.EmptyEnum";
   using EnumTraits = TEnumTraits<::test::fixtures::enumstrict::EmptyEnum>;
   for (std::size_t i = 0; i != EnumTraits::size; ++i) {
-    enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
+    enum_metadata.elements()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 void EnumMetadata<::test::fixtures::enumstrict::MyEnum>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.enums_ref()->emplace("module.MyEnum", ::apache::thrift::metadata::ThriftEnum{});
+  auto res = metadata.enums()->emplace("module.MyEnum", ::apache::thrift::metadata::ThriftEnum{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
-  enum_metadata.name_ref() = "module.MyEnum";
+  enum_metadata.name() = "module.MyEnum";
   using EnumTraits = TEnumTraits<::test::fixtures::enumstrict::MyEnum>;
   for (std::size_t i = 0; i != EnumTraits::size; ++i) {
-    enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
+    enum_metadata.elements()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 void EnumMetadata<::test::fixtures::enumstrict::MyBigEnum>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.enums_ref()->emplace("module.MyBigEnum", ::apache::thrift::metadata::ThriftEnum{});
+  auto res = metadata.enums()->emplace("module.MyBigEnum", ::apache::thrift::metadata::ThriftEnum{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
-  enum_metadata.name_ref() = "module.MyBigEnum";
+  enum_metadata.name() = "module.MyBigEnum";
   using EnumTraits = TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>;
   for (std::size_t i = 0; i != EnumTraits::size; ++i) {
-    enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
+    enum_metadata.elements()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::test::fixtures::enumstrict::MyStruct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
-  module_MyStruct.name_ref() = "module.MyStruct";
-  module_MyStruct.is_union_ref() = false;
+  module_MyStruct.name() = "module.MyStruct";
+  module_MyStruct.is_union() = false;
   static const EncodedThriftField
   module_MyStruct_fields[] = {
     {1, "myEnum", false, std::make_unique<Enum<::test::fixtures::enumstrict::MyEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}},
@@ -78,12 +78,12 @@ StructMetadata<::test::fixtures::enumstrict::MyStruct>::gen(ThriftMetadata& meta
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    module_MyStruct.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module_MyStruct.fields()->push_back(std::move(field));
   }
   return res.first->second;
 }

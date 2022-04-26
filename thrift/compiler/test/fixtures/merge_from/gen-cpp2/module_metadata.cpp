@@ -28,62 +28,62 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::Fields>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("module.Fields", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("module.Fields", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_Fields = res.first->second;
-  module_Fields.name_ref() = "module.Fields";
-  module_Fields.is_union_ref() = false;
+  module_Fields.name() = "module.Fields";
+  module_Fields.is_union() = false;
   static const EncodedThriftField
   module_Fields_fields[] = {
     {100, "injected_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_Fields_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    module_Fields.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module_Fields.fields()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::FieldsInjectedToEmptyStruct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("module.FieldsInjectedToEmptyStruct", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("module.FieldsInjectedToEmptyStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_FieldsInjectedToEmptyStruct = res.first->second;
-  module_FieldsInjectedToEmptyStruct.name_ref() = "module.FieldsInjectedToEmptyStruct";
-  module_FieldsInjectedToEmptyStruct.is_union_ref() = false;
+  module_FieldsInjectedToEmptyStruct.name() = "module.FieldsInjectedToEmptyStruct";
+  module_FieldsInjectedToEmptyStruct.is_union() = false;
   static const EncodedThriftField
   module_FieldsInjectedToEmptyStruct_fields[] = {
     {100, "injected_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_FieldsInjectedToEmptyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    module_FieldsInjectedToEmptyStruct.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module_FieldsInjectedToEmptyStruct.fields()->push_back(std::move(field));
   }
-  module_FieldsInjectedToEmptyStruct.structured_annotations_ref()->push_back(*cvStruct("meta.MergeFrom", {{"type", cvString(R"(Fields)")}}).cv_struct_ref());
+  module_FieldsInjectedToEmptyStruct.structured_annotations()->push_back(*cvStruct("meta.MergeFrom", {{"type", cvString(R"(Fields)")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::FieldsInjectedToStruct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("module.FieldsInjectedToStruct", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("module.FieldsInjectedToStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_FieldsInjectedToStruct = res.first->second;
-  module_FieldsInjectedToStruct.name_ref() = "module.FieldsInjectedToStruct";
-  module_FieldsInjectedToStruct.is_union_ref() = false;
+  module_FieldsInjectedToStruct.name() = "module.FieldsInjectedToStruct";
+  module_FieldsInjectedToStruct.is_union() = false;
   static const EncodedThriftField
   module_FieldsInjectedToStruct_fields[] = {
     {1, "string_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
@@ -91,25 +91,25 @@ StructMetadata<::cpp2::FieldsInjectedToStruct>::gen(ThriftMetadata& metadata) {
   };
   for (const auto& f : module_FieldsInjectedToStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    module_FieldsInjectedToStruct.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module_FieldsInjectedToStruct.fields()->push_back(std::move(field));
   }
-  module_FieldsInjectedToStruct.structured_annotations_ref()->push_back(*cvStruct("meta.MergeFrom", {{"type", cvString(R"(Fields)")}}).cv_struct_ref());
+  module_FieldsInjectedToStruct.structured_annotations()->push_back(*cvStruct("meta.MergeFrom", {{"type", cvString(R"(Fields)")}}).cv_struct_ref());
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::FieldsInjectedWithIncludedStruct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("module.FieldsInjectedWithIncludedStruct", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("module.FieldsInjectedWithIncludedStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module_FieldsInjectedWithIncludedStruct = res.first->second;
-  module_FieldsInjectedWithIncludedStruct.name_ref() = "module.FieldsInjectedWithIncludedStruct";
-  module_FieldsInjectedWithIncludedStruct.is_union_ref() = false;
+  module_FieldsInjectedWithIncludedStruct.name() = "module.FieldsInjectedWithIncludedStruct";
+  module_FieldsInjectedWithIncludedStruct.is_union() = false;
   static const EncodedThriftField
   module_FieldsInjectedWithIncludedStruct_fields[] = {
     {1, "string_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
@@ -119,14 +119,14 @@ StructMetadata<::cpp2::FieldsInjectedWithIncludedStruct>::gen(ThriftMetadata& me
   };
   for (const auto& f : module_FieldsInjectedWithIncludedStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    module_FieldsInjectedWithIncludedStruct.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module_FieldsInjectedWithIncludedStruct.fields()->push_back(std::move(field));
   }
-  module_FieldsInjectedWithIncludedStruct.structured_annotations_ref()->push_back(*cvStruct("meta.MergeFrom", {{"type", cvString(R"(foo.Fields)")}}).cv_struct_ref());
+  module_FieldsInjectedWithIncludedStruct.structured_annotations()->push_back(*cvStruct("meta.MergeFrom", {{"type", cvString(R"(foo.Fields)")}}).cv_struct_ref());
   return res.first->second;
 }
 

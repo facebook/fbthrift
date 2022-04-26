@@ -28,13 +28,13 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::some::ns::IncludedB>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("include2.IncludedB", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("include2.IncludedB", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& include2_IncludedB = res.first->second;
-  include2_IncludedB.name_ref() = "include2.IncludedB";
-  include2_IncludedB.is_union_ref() = false;
+  include2_IncludedB.name() = "include2.IncludedB";
+  include2_IncludedB.is_union() = false;
   static const EncodedThriftField
   include2_IncludedB_fields[] = {
     {1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
@@ -42,12 +42,12 @@ StructMetadata<::some::ns::IncludedB>::gen(ThriftMetadata& metadata) {
   };
   for (const auto& f : include2_IncludedB_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    include2_IncludedB.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    include2_IncludedB.fields()->push_back(std::move(field));
   }
   return res.first->second;
 }

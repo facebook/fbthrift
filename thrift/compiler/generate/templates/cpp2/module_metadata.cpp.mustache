@@ -38,19 +38,19 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 <%#program:enums%>
 void EnumMetadata<<% > common/namespace_cpp2%><%enum:cpp_name%>>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.enums_ref()->emplace("<%program:name%>.<%enum:name%>", ::apache::thrift::metadata::ThriftEnum{});
+  auto res = metadata.enums()->emplace("<%program:name%>.<%enum:name%>", ::apache::thrift::metadata::ThriftEnum{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
-  enum_metadata.name_ref() = "<%program:name%>.<%enum:name%>";
+  enum_metadata.name() = "<%program:name%>.<%enum:name%>";
   using EnumTraits = TEnumTraits<<% > common/namespace_cpp2%><%enum:cpp_name%>>;
   for (std::size_t i = 0; i != EnumTraits::size; ++i) {
-    enum_metadata.elements_ref()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
+    enum_metadata.elements()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 <%#enum:structured_annotations%>
 <%#structured_annotation:const_struct?%>
-  enum_metadata.structured_annotations_ref()->push_back(<% > metadata/const_struct%>);
+  enum_metadata.structured_annotations()->push_back(<% > metadata/const_struct%>);
 <%/structured_annotation:const_struct?%>
 <%/enum:structured_annotations%>
 }
@@ -60,7 +60,7 @@ void EnumMetadata<<% > common/namespace_cpp2%><%enum:cpp_name%>>::gen(ThriftMeta
 <%#program:unstructured_annotations_in_metadata?%>
 void StructMetadata<<%struct:cpp_fullname%>>::unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct){
   <%#struct:fields%>
-  thriftStruct.fields_ref()[<%field:index%>].unstructured_annotations_ref() = <% > metadata/unstructured_field_gen%>;
+  thriftStruct.fields()[<%field:index%>].unstructured_annotations() = <% > metadata/unstructured_field_gen%>;
   <%/struct:fields%>
   <%^struct:fields%>
   (void)thriftStruct;
@@ -69,13 +69,13 @@ void StructMetadata<<%struct:cpp_fullname%>>::unstructured_annotations(::apache:
 <%/program:unstructured_annotations_in_metadata?%>
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<<%struct:cpp_fullname%>>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& <%struct:metadata_name%> = res.first->second;
-  <%struct:metadata_name%>.name_ref() = "<%program:name%>.<%struct:name%>";
-  <%struct:metadata_name%>.is_union_ref() = <%struct:union?%>;
+  <%struct:metadata_name%>.name() = "<%program:name%>.<%struct:name%>";
+  <%struct:metadata_name%>.is_union() = <%struct:union?%>;
 <%#struct:fields?%>
   static const EncodedThriftField
   <%struct:metadata_name%>_fields[] = {
@@ -85,12 +85,12 @@ StructMetadata<<%struct:cpp_fullname%>>::gen(ThriftMetadata& metadata) {
   };
   for (const auto& f : <%struct:metadata_name%>_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    <%struct:metadata_name%>.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    <%struct:metadata_name%>.fields()->push_back(std::move(field));
   }
   <%#program:unstructured_annotations_in_metadata?%>
   StructMetadata::unstructured_annotations(<%struct:metadata_name%>);
@@ -98,7 +98,7 @@ StructMetadata<<%struct:cpp_fullname%>>::gen(ThriftMetadata& metadata) {
 <%/struct:fields?%>
 <%#struct:structured_annotations%>
 <%#structured_annotation:const_struct?%>
-  <%struct:metadata_name%>.structured_annotations_ref()->push_back(<% > metadata/const_struct%>);
+  <%struct:metadata_name%>.structured_annotations()->push_back(<% > metadata/const_struct%>);
 <%/structured_annotation:const_struct?%>
 <%/struct:structured_annotations%>
   return res.first->second;
@@ -108,12 +108,12 @@ StructMetadata<<%struct:cpp_fullname%>>::gen(ThriftMetadata& metadata) {
 <%#program:structs%>
 <%#struct:exception?%>
 void ExceptionMetadata<<%struct:cpp_fullname%>>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions_ref()->emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftException{});
+  auto res = metadata.exceptions()->emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftException{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftException& <%struct:metadata_name%> = res.first->second;
-  <%struct:metadata_name%>.name_ref() = "<%program:name%>.<%struct:name%>";
+  <%struct:metadata_name%>.name() = "<%program:name%>.<%struct:name%>";
 <%#struct:fields?%>
   static const EncodedThriftField
   <%struct:metadata_name%>_fields[] = {
@@ -123,16 +123,16 @@ void ExceptionMetadata<<%struct:cpp_fullname%>>::gen(ThriftMetadata& metadata) {
   };
   for (const auto& f : <%struct:metadata_name%>_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    <%struct:metadata_name%>.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    <%struct:metadata_name%>.fields()->push_back(std::move(field));
   }
 <%/struct:fields?%>
 <%#struct:structured_annotations%>
 <%#structured_annotation:const_struct?%>
-  <%struct:metadata_name%>.structured_annotations_ref()->push_back(<% > metadata/const_struct%>);
+  <%struct:metadata_name%>.structured_annotations()->push_back(<% > metadata/const_struct%>);
 <%/structured_annotation:const_struct?%>
 <%/struct:structured_annotations%>
 }
@@ -143,48 +143,48 @@ void ExceptionMetadata<<%struct:cpp_fullname%>>::gen(ThriftMetadata& metadata) {
 void ServiceMetadata<::<% > service_common/service_class_name%>>::gen_<%function:cpp_name%>(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
-  func.name_ref() = "<%function:name%>";
+  func.name() = "<%function:name%>";
 <%#function:return_type%>
   auto func_ret_type = <% > metadata/type_gen%>;
-  func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
+  func_ret_type->writeAndGenType(*func.return_type(), metadata);
 <%/function:return_type%>
 <%#function:args%>
   <% > metadata/func_field_gen%>
-func.arguments_ref()->push_back(std::move(<% > metadata/func_field_name%>));
+func.arguments()->push_back(std::move(<% > metadata/func_field_name%>));
 <%/function:args%>
 <%#function:exceptions%>
   <% > metadata/func_field_gen%>
-func.exceptions_ref()->push_back(std::move(<% > metadata/func_field_name%>));
+func.exceptions()->push_back(std::move(<% > metadata/func_field_name%>));
 <%#field:type%>
 <%#type:struct?%>
   ExceptionMetadata<<%type:cpp_fullname%>>::gen(metadata);
 <%/type:struct?%>
 <%/field:type%>
 <%/function:exceptions%>
-  func.is_oneway_ref() = <%function:oneway?%>;
+  func.is_oneway() = <%function:oneway?%>;
 <%#function:structured_annotations%>
 <%#structured_annotation:const_struct?%>
-  func.structured_annotations_ref()->push_back(<% > metadata/const_struct%>);
+  func.structured_annotations()->push_back(<% > metadata/const_struct%>);
 <%/structured_annotation:const_struct?%>
 <%/function:structured_annotations%>
-  service.functions_ref()->push_back(std::move(func));
+  service.functions()->push_back(std::move(func));
 }
 <%/function:starts_interaction?%><%/service:functions%>
 
 void ServiceMetadata<::<% > service_common/service_class_name%>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
+  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata(), *response.services());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
   ::apache::thrift::metadata::ThriftServiceContext context;
-  context.module_ref() = *self->module_ref();
-  context.service_info_ref() = response.metadata_ref()->services_ref()->at(*self->service_name_ref());
-  response.context_ref() = std::move(context);
+  context.module() = *self->module();
+  context.service_info() = response.metadata()->services()->at(*self->service_name());
+  response.context() = std::move(context);
 }
 
 const ThriftServiceContextRef* ServiceMetadata<::<% > service_common/service_class_name%>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService <%service:metadata_name%>;
-  <%service:metadata_name%>.name_ref() = "<%program:name%>.<%service:name%>";
+  <%service:metadata_name%>.name() = "<%program:name%>.<%service:name%>";
 <%#service:functions?%>
   static const ThriftFunctionGenerator functions[] = {
 <%#service:functions%><%^function:starts_interaction?%>
@@ -199,22 +199,22 @@ const ThriftServiceContextRef* ServiceMetadata<::<% > service_common/service_cla
   auto selfIndex = services.size();
   services.emplace_back();
 <%#service:extends?%>
-  <%service:metadata_name%>.parent_ref() = "<%#service:extends%><%service:program_name%>.<%service:name%><%/service:extends%>";
+  <%service:metadata_name%>.parent() = "<%#service:extends%><%service:program_name%>.<%service:name%><%/service:extends%>";
 <%#service:extends%>
   ServiceMetadata<::<% > service_common/service_class_name%>>::genRecurse(metadata, services);
 <%/service:extends%>
 <%/service:extends?%>
 <%#service:structured_annotations%>
 <%#structured_annotation:const_struct?%>
-  <%service:metadata_name%>.structured_annotations_ref()->push_back(<% > metadata/const_struct%>);
+  <%service:metadata_name%>.structured_annotations()->push_back(<% > metadata/const_struct%>);
 <%/structured_annotation:const_struct?%>
 <%/service:structured_annotations%>
   ThriftServiceContextRef& context = services[selfIndex];
-  metadata.services_ref()->emplace("<%program:name%>.<%service:name%>", std::move(<%service:metadata_name%>));
-  context.service_name_ref() = "<%program:name%>.<%service:name%>";
+  metadata.services()->emplace("<%program:name%>.<%service:name%>", std::move(<%service:metadata_name%>));
+  context.service_name() = "<%program:name%>.<%service:name%>";
   ::apache::thrift::metadata::ThriftModuleContext module;
-  module.name_ref() = "<%program:name%>";
-  context.module_ref() = std::move(module);
+  module.name() = "<%program:name%>";
+  context.module() = std::move(module);
   return &context;
 }
 <%/program:services%>

@@ -28,13 +28,13 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::module2::Struct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("module2.Struct", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("module2.Struct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module2_Struct = res.first->second;
-  module2_Struct.name_ref() = "module2.Struct";
-  module2_Struct.is_union_ref() = false;
+  module2_Struct.name() = "module2.Struct";
+  module2_Struct.is_union() = false;
   static const EncodedThriftField
   module2_Struct_fields[] = {
     {1, "first", false, std::make_unique<Struct<::module0::Struct>>("module0.Struct"), std::vector<ThriftConstStruct>{}},
@@ -42,24 +42,24 @@ StructMetadata<::module2::Struct>::gen(ThriftMetadata& metadata) {
   };
   for (const auto& f : module2_Struct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    module2_Struct.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module2_Struct.fields()->push_back(std::move(field));
   }
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::module2::BigStruct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("module2.BigStruct", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("module2.BigStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& module2_BigStruct = res.first->second;
-  module2_BigStruct.name_ref() = "module2.BigStruct";
-  module2_BigStruct.is_union_ref() = false;
+  module2_BigStruct.name() = "module2.BigStruct";
+  module2_BigStruct.is_union() = false;
   static const EncodedThriftField
   module2_BigStruct_fields[] = {
     {1, "s", false, std::make_unique<Struct<::module2::Struct>>("module2.Struct"), std::vector<ThriftConstStruct>{}},
@@ -67,12 +67,12 @@ StructMetadata<::module2::BigStruct>::gen(ThriftMetadata& metadata) {
   };
   for (const auto& f : module2_BigStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    module2_BigStruct.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    module2_BigStruct.fields()->push_back(std::move(field));
   }
   return res.first->second;
 }

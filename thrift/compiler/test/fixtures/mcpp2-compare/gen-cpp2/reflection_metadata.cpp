@@ -28,25 +28,25 @@ using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 const ::apache::thrift::metadata::ThriftStruct&
 StructMetadata<::cpp2::ReflectionStruct>::gen(ThriftMetadata& metadata) {
-  auto res = metadata.structs_ref()->emplace("reflection.ReflectionStruct", ::apache::thrift::metadata::ThriftStruct{});
+  auto res = metadata.structs()->emplace("reflection.ReflectionStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
   }
   ::apache::thrift::metadata::ThriftStruct& reflection_ReflectionStruct = res.first->second;
-  reflection_ReflectionStruct.name_ref() = "reflection.ReflectionStruct";
-  reflection_ReflectionStruct.is_union_ref() = false;
+  reflection_ReflectionStruct.name() = "reflection.ReflectionStruct";
+  reflection_ReflectionStruct.is_union() = false;
   static const EncodedThriftField
   reflection_ReflectionStruct_fields[] = {
     {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : reflection_ReflectionStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = f.id;
-    field.name_ref() = f.name;
-    field.is_optional_ref() = f.is_optional;
-    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = f.structured_annotations;
-    reflection_ReflectionStruct.fields_ref()->push_back(std::move(field));
+    field.id() = f.id;
+    field.name() = f.name;
+    field.is_optional() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type(), metadata);
+    field.structured_annotations() = f.structured_annotations;
+    reflection_ReflectionStruct.fields()->push_back(std::move(field));
   }
   return res.first->second;
 }
