@@ -1220,13 +1220,14 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   int getListenBacklog() const { return listenBacklog_.get(); }
 
+  // Do not try to access ThreadManager in this function as
+  // ThreadManagers are being deprecated from thrift server
+  // e.g. don't call getThreadManager() inside this
   [[deprecated("Use setPreprocess instead")]] virtual void setIsOverloaded(
       IsOverloadedFunc isOverloaded) {
     isOverloaded_ = std::move(isOverloaded);
     runtimeServerActions_.setIsOverloaded = true;
-    LOG(INFO) << "thrift server: isOverloaded() set."
-              << " ResourcePool will be disabled.";
-    runtimeDisableResourcePools();
+    LOG(INFO) << "thrift server: isOverloaded() set.";
   }
 
   // Do not try to access ThreadManager in this function as
