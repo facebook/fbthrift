@@ -22,11 +22,8 @@ import com.facebook.thrift.model.StreamResponse;
 import com.facebook.thrift.payload.ClientRequestPayload;
 import com.facebook.thrift.payload.ClientResponsePayload;
 import com.facebook.thrift.payload.Reader;
-import com.facebook.thrift.protocol.ByteBufTProtocol;
 import com.facebook.thrift.protocol.TProtocolType;
-import com.facebook.thrift.util.resources.RpcResources;
-import io.netty.buffer.ByteBuf;
-import io.netty.util.ReferenceCountUtil;
+import io.netty.buffer.Unpooled;
 import java.util.function.Function;
 import org.apache.thrift.ClientPushMetadata;
 import org.reactivestreams.Publisher;
@@ -109,20 +106,17 @@ public final class HeaderAwareRSocketRpcClient implements RpcClient {
           && response.getData() instanceof String
           && response.getData().equals(HEADER_KEY)) {
 
-        ByteBuf buffer = RpcResources.getByteBufAllocator().buffer();
-        try {
-          ByteBufTProtocol dataProtocol = TProtocolType.TBinary.apply(buffer);
-          K streamResponse = (K) StreamResponse.fromData(responseReader.read(dataProtocol));
+        K streamResponse =
+            (K)
+                StreamResponse.fromData(
+                    responseReader.read(TProtocolType.TBinary.apply(Unpooled.EMPTY_BUFFER)));
 
-          return ClientResponsePayload.createStreamResult(
-              streamResponse,
-              kClientResponsePayload.getResponseRpcMetadata(),
-              kClientResponsePayload.getStreamPayloadMetadata(),
-              kClientResponsePayload.getBinaryHeaders(),
-              kClientResponsePayload.getStreamId());
-        } finally {
-          ReferenceCountUtil.safeRelease(buffer);
-        }
+        return ClientResponsePayload.createStreamResult(
+            streamResponse,
+            kClientResponsePayload.getResponseRpcMetadata(),
+            kClientResponsePayload.getStreamPayloadMetadata(),
+            kClientResponsePayload.getBinaryHeaders(),
+            kClientResponsePayload.getStreamId());
       }
       return kClientResponsePayload;
     }
