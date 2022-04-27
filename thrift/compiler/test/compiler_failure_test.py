@@ -854,8 +854,7 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             "[FAILURE:foo.thrift:7] `@cpp.Adapter` cannot be combined with "
             "`cpp_adapter` in `my_field`.\n"
-            "[FAILURE:foo.thrift:9] `@cpp.Adapter` cannot be used without "
-            "`name` specified in `my_field2`.\n"
+            "[FAILURE:foo.thrift:9] key `name` not found.\n"
             "[FAILURE:foo.thrift:11] cpp.ref, cpp2.ref are deprecated. "
             "Please use @thrift.Box annotation instead in `my_field3` with @cpp.Adapter.\n"
             "[FAILURE:foo.thrift:13] cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
@@ -892,8 +891,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:4] `@cpp.Adapter` cannot be used without "
-            "`name` specified in `MyI32`.\n"
+            "[FAILURE:foo.thrift:4] key `name` not found.\n"
             "[FAILURE:foo.thrift:10] The @cpp.Adapter annotation cannot be annotated more "
             "than once in all typedef levels in `DoubleMyI64`.\n",
         )
@@ -1873,10 +1871,10 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             "[FAILURE:bar.thrift:17] Can not find expected type `foo.Fields` specified in `@meta.MergeFrom`"
             " in the current scope. Please check the include.\n"
-            "[FAILURE:bar.thrift:20] `@meta.MergeFrom` cannot be used without `type` specified in `Extended2`.\n"
-            "[FAILURE:bar.thrift:23] `UnionFields` is not a struct type. "
+            "[FAILURE:bar.thrift:20] key `type` not found.\n"
+            "[FAILURE:bar.thrift:23] `bar.UnionFields` is not a struct type. "
             "`@meta.MergeFrom` can be only used with a struct type.\n"
-            "[FAILURE:bar.thrift:26] `MyI64` is not a struct type. "
+            "[FAILURE:bar.thrift:26] `bar.MyI64` is not a struct type. "
             "`@meta.MergeFrom` can be only used with a struct type.\n"
             "[FAILURE:bar.thrift:29] Field id `1` is already used in `Extended5`.\n",
         )

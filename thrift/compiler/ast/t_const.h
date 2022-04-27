@@ -65,6 +65,8 @@ class t_const final : public t_named {
   const t_program* program() const { return program_; }
   const t_type_ref& type() const { return type_; }
   const t_const_value* value() const { return value_.get(); }
+  const t_const_value& get_value_from_structured_annotation(
+      const char* key) const;
 
  private:
   t_program* const program_;

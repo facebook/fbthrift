@@ -462,24 +462,16 @@ void validate_ref_annotation(diagnostic_context& ctx, const t_field& node) {
 }
 
 void validate_adapter_annotation(diagnostic_context& ctx, const t_named& node) {
-  const t_const* adapter_annotation = nullptr;
-  for (const t_const* annotation : node.structured_annotations()) {
-    if (annotation->type()->uri() == kCppAdapterUri) {
-      const auto& annotations = annotation->value()->get_map();
-      auto it = std::find_if(
-          annotations.begin(), annotations.end(), [](const auto& item) {
-            return item.first->get_string() == "name";
-          });
-      ctx.failure_if(it == annotations.end(), [&](auto& o) {
-        o << "`@cpp.Adapter` cannot be used without `name` specified in `"
-          << node.name() << "`.";
-      });
-      adapter_annotation = annotation;
-      break;
-    }
-  }
+  const t_const* adapter_annotation =
+      node.find_structured_annotation_or_null(kCppAdapterUri);
 
   if (!adapter_annotation) {
+    return;
+  }
+
+  if (ctx.try_or_failure([&]() {
+        adapter_annotation->get_value_from_structured_annotation("name");
+      })) {
     return;
   }
 

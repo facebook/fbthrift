@@ -114,41 +114,36 @@ void mutate_merge_from(
     return;
   }
 
-  const auto& annotations = merge_from_annotation->value()->get_map();
-  const auto it = std::find_if(
-      annotations.begin(), annotations.end(), [](const auto& item) {
-        return item.first->get_string() == "type";
-      });
-  if (it == annotations.end()) {
-    ctx.failure([&](auto& o) {
-      o << "`@meta.MergeFrom` cannot be used without `type` specified in `"
-        << node.name() << "`.";
-    });
+  std::string type_string;
+  if (ctx.try_or_failure([&]() {
+        type_string =
+            merge_from_annotation->get_value_from_structured_annotation("type")
+                .get_string();
+      })) {
     return;
   }
-  std::string type_string = it->second->get_string();
   // If the specified type and annotation are from the same program, append
   // the current program name.
   if (type_string.find(".") == std::string::npos) {
     type_string = merge_from_annotation->program()->name() + "." + type_string;
   }
 
-  const auto* type = node.program()->scope()->find_type(type_string);
-  if (!type) {
+  const auto* ttype = node.program()->scope()->find_type(type_string);
+  if (!ttype) {
     ctx.failure([&](auto& o) {
-      o << "Can not find expected type `" << it->second->get_string()
+      o << "Can not find expected type `" << type_string
         << "` specified in `@meta.MergeFrom` in the current scope."
         << " Please check the include.";
     });
     return;
   }
 
-  const auto* structured = dynamic_cast<const t_struct*>(type);
+  const auto* structured = dynamic_cast<const t_struct*>(ttype);
   // We only allow merging from a struct type.
-  if (structured == nullptr || type->is_union() || type->is_exception() ||
-      type->is_paramlist()) {
+  if (structured == nullptr || ttype->is_union() || ttype->is_exception() ||
+      ttype->is_paramlist()) {
     ctx.failure([&](auto& o) {
-      o << "`" << it->second->get_string() << "` is not a struct type."
+      o << "`" << type_string << "` is not a struct type."
         << " `@meta.MergeFrom` can be only used with a struct type.";
     });
     return;
