@@ -20,7 +20,7 @@ namespace py3 {
 
 template<>
 const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
-    ::cpp2::MyEnum>::namesmap() {
+    ::cpp2::YourEnum>::namesmap() {
   static const folly::Indestructible<NamesMap> pairs {
     {
     }

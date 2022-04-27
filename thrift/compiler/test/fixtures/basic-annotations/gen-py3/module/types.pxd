@@ -87,7 +87,7 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
-    cdef cppclass cMyEnum "::cpp2::MyEnum":
+    cdef cppclass cMyEnum "::cpp2::YourEnum":
         pass
 
 

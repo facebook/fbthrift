@@ -87,7 +87,7 @@ enum Kind {
   CHAR = 2,
   BLOCK = 6,
   SOCK = 12 (cpp.name = "SOCKET"),
-}
+} (cpp.name = "Kind_")
 
 enum BadMembers {
   name = 1 (py3.name = "name_"),

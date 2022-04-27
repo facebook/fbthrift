@@ -31,7 +31,7 @@ anywhere else the type is used as a value directly.
 }}{{#type:string?}}std::string{{/type:string?}}{{!
 }}{{#type:binary?}}std::string{{/type:binary?}}{{!
 }}{{#type:enum}}{{!
-  }}::{{#type:cppNamespaces}}{{value}}::{{/type:cppNamespaces}}{{enum:name}}{{!
+  }}::{{#type:cppNamespaces}}{{value}}::{{/type:cppNamespaces}}{{enum:cpp_name}}{{!
   }}{{/type:enum}}{{!
 }}{{#type:struct}}{{!
   }}::{{#type:cppNamespaces}}{{value}}::{{/type:cppNamespaces}}{{struct:name}}{{!

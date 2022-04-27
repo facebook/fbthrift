@@ -75,7 +75,7 @@ multi line string.
     return longDoubleValue_;
   }
 
-  static constexpr ::cpp2::MyCompany const my_company_ =  ::cpp2::Company::FACEBOOK;
+  static constexpr ::cpp2::MyCompany const my_company_ =  ::cpp2::MyCompany::FACEBOOK;
 
   static constexpr ::cpp2::MyCompany my_company() {
     return my_company_;

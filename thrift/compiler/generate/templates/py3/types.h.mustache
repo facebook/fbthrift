@@ -37,7 +37,7 @@ namespace py3 {
 
 template<>
 const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
-    {{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}::{{enum:name}}>::namesmap() {
+    {{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}::{{enum:cpp_name}}>::namesmap() {
   static const folly::Indestructible<NamesMap> pairs {
     {
       {{#enum:values}}{{#enum_value:hasPyName?}}
