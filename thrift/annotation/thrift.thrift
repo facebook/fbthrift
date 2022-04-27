@@ -65,6 +65,16 @@ struct SerializeInFieldIdOrder {} (
   thrift.uri = "facebook.com/thrift/annotation/thrift/SerializeInFieldIdOrder",
 )
 
+@scope.Program
+@scope.Struct
+@scope.Union
+@scope.Exception
+@scope.Service
+@Experimental
+struct NoLegacyApi {} (
+  thrift.uri = "facebook.com/thrift/annotation/thrift/NoLegacyApi",
+)
+
 @TerseWrite
 @scope.FbthriftInternalScopeTransitive
 struct v1 {}

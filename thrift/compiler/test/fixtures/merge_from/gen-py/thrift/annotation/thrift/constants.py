@@ -15,5 +15,5 @@ from thrift.protocol.TProtocol import TProtocolException
 import thrift.annotation.scope.ttypes
 
 
-from .ttypes import UTF8STRINGS, RequiresBackwardCompatibility, Experimental, Deprecated, TerseWrite, Box, SerializeInFieldIdOrder, v1
+from .ttypes import UTF8STRINGS, RequiresBackwardCompatibility, Experimental, Deprecated, TerseWrite, Box, SerializeInFieldIdOrder, NoLegacyApi, v1
 

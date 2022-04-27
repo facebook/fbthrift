@@ -460,6 +460,71 @@ func (p *SerializeInFieldIdOrder) String() string {
   return fmt.Sprintf("SerializeInFieldIdOrder({})")
 }
 
+type NoLegacyApi struct {
+}
+
+func NewNoLegacyApi() *NoLegacyApi {
+  return &NoLegacyApi{}
+}
+
+type NoLegacyApiBuilder struct {
+  obj *NoLegacyApi
+}
+
+func NewNoLegacyApiBuilder() *NoLegacyApiBuilder{
+  return &NoLegacyApiBuilder{
+    obj: NewNoLegacyApi(),
+  }
+}
+
+func (p NoLegacyApiBuilder) Emit() *NoLegacyApi{
+  return &NoLegacyApi{
+  }
+}
+
+func (p *NoLegacyApi) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *NoLegacyApi) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("NoLegacyApi"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NoLegacyApi) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("NoLegacyApi({})")
+}
+
 type V1 struct {
 }
 

@@ -125,8 +125,8 @@
         }
       }
     },
-    "v1" : {
-      "lineno" : 70,
+    "NoLegacyApi" : {
+      "lineno" : 74,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -138,7 +138,25 @@
           "column" : 1
         },
         "end" : {
-          "line" : 70,
+          "line" : 76,
+          "column" : 2
+        }
+      }
+    },
+    "v1" : {
+      "lineno" : 80,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 78,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 80,
           "column" : 13
         }
       }
