@@ -64,7 +64,7 @@ class AnyRef {
   void clear() { ensureMutable().clear(ptr_); }
 
   // Type accessors.
-  constexpr const Type& type() const { return info_->type.thriftType; }
+  constexpr const AnyType& type() const { return info_->type.thriftType; }
   constexpr const std::type_info& typeId() const { return info_->type.cppType; }
 
   // Type-safe value accessors.

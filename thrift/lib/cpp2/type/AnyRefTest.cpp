@@ -23,7 +23,7 @@ namespace {
 
 TEST(AnyRefTest, Void) {
   AnyRef value;
-  EXPECT_EQ(value.type(), Type::create<void_t>());
+  EXPECT_EQ(value.type(), AnyType::create<void_t>());
   EXPECT_TRUE(value.empty());
   value.clear();
   EXPECT_TRUE(value.empty());
@@ -35,7 +35,7 @@ TEST(AnyRefTest, Void) {
 TEST(AnyRefTest, Int) {
   int32_t value = 1;
   AnyRef ref = AnyRef::create<i32_t>(value);
-  EXPECT_EQ(ref.type(), Type::create<i32_t>());
+  EXPECT_EQ(ref.type(), AnyType::create<i32_t>());
   EXPECT_FALSE(ref.empty());
   ref.clear();
   EXPECT_TRUE(ref.empty());

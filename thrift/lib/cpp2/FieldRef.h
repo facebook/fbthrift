@@ -1455,14 +1455,6 @@ class union_field_ref {
     return static_cast<reference_type>(get_value());
   }
 
-  template <typename U = std::remove_const_t<value_type>>
-  FOLLY_ERASE std::remove_const_t<value_type> value_or(
-      U&& default_value) const {
-    using type = std::remove_const_t<value_type>;
-    return has_value() ? type(static_cast<reference_type>(get_value()))
-                       : type(static_cast<U&&>(default_value));
-  }
-
   FOLLY_ERASE reference_type operator*() const { return value(); }
 
   FOLLY_ERASE value_type* operator->() const {

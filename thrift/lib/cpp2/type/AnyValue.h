@@ -16,8 +16,8 @@
 
 #pragma once
 
+#include <thrift/lib/cpp2/type/AnyType.h>
 #include <thrift/lib/cpp2/type/Traits.h>
-#include <thrift/lib/cpp2/type/Type.h>
 #include <thrift/lib/cpp2/type/detail/AnyData.h>
 
 namespace apache {
@@ -59,7 +59,7 @@ class AnyValue : public detail::AnyValueBase {
 
   // The runtime type of the stored value (or void_t{} if no value is stored)
   //
-  //   const Type& type() const noexcept;
+  //   const AnyType& type() const noexcept;
   //
   using Base::type;
 
@@ -75,7 +75,7 @@ class AnyValue : public detail::AnyValueBase {
   // the values stored are also identical. See `op::identical`.
   //
   // Throws folly::BadPolyCast if the underlying Tags are different, but have
-  // the same Type.
+  // the same AnyType.
   //
   //   bool identical(const AnyValue& other);
   //
