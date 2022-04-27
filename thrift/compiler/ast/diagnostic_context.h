@@ -98,6 +98,11 @@ class node_metadata_cache {
 // A context aware reporter for diagnostic results.
 class diagnostic_context : public diagnostics_engine,
                            public const_visitor_context {
+ private:
+  template <typename With>
+  using if_with =
+      decltype(std::declval<With&>()(std::declval<std::ostream&>()));
+
  public:
   explicit diagnostic_context(
       source_manager& sm,
@@ -143,25 +148,21 @@ class diagnostic_context : public diagnostics_engine,
       std::string token,
       std::string name,
       With&& with) {
+    std::ostringstream o;
+    with(static_cast<std::ostream&>(o));
     report(
-        level,
-        program().path(),
-        lineno,
-        std::move(token),
-        std::move(name),
-        std::forward<With>(with));
+        {level,
+         o.str(),
+         program().path(),
+         lineno,
+         std::move(token),
+         std::move(name)});
   }
 
   template <typename With, typename = if_with<With>>
   void report(
       diagnostic_level level, int lineno, std::string token, With&& with) {
-    report(
-        level,
-        program().path(),
-        lineno,
-        std::move(token),
-        "",
-        std::forward<With>(with));
+    report(level, lineno, std::move(token), {}, std::forward<With>(with));
   }
 
   void report(diagnostic_level level, const t_node& node, std::string msg) {
@@ -204,13 +205,9 @@ class diagnostic_context : public diagnostics_engine,
       const t_node& node,
       std::string path,
       With&& with) {
-    report(
-        level,
-        std::move(path),
-        node.lineno(),
-        {},
-        {},
-        std::forward<With>(with));
+    std::ostringstream o;
+    with(static_cast<std::ostream&>(o));
+    report({level, o.str(), std::move(path), node.lineno(), {}, {}});
   }
 
   template <typename With>

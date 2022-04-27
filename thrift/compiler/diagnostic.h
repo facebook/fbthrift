@@ -18,11 +18,12 @@
 
 #include <array>
 #include <functional>
-#include <sstream>
+#include <iosfwd>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include <fmt/core.h>
 #include <thrift/compiler/source_location.h>
 
 namespace apache {
@@ -168,11 +169,6 @@ struct diagnostic_params {
 
 // A class used by the Thrift compiler to report diagnostics.
 class diagnostics_engine {
- protected:
-  template <typename With>
-  using if_with =
-      decltype(std::declval<With&>()(std::declval<std::ostream&>()));
-
  public:
   explicit diagnostics_engine(
       source_manager& sm,
@@ -199,52 +195,18 @@ class diagnostics_engine {
     }
   }
 
-  template <typename With, typename = if_with<With>>
+  template <typename... T>
   void report(
-      diagnostic_level level,
-      std::string filename,
-      int lineno,
-      std::string token,
-      std::string name,
-      With&& with) {
-    if (!params_.should_report(level)) {
-      return;
-    }
-
-    std::ostringstream o;
-    with(static_cast<std::ostream&>(o));
-    report_cb_(
-        {level,
-         o.str(),
-         std::move(filename),
-         lineno,
-         std::move(token),
-         std::move(name)});
-  }
-
-  template <typename With, typename = if_with<With>>
-  void report(
-      diagnostic_level level,
       source_location loc,
-      std::string token,
-      With&& with) {
-    if (!params_.should_report(level)) {
-      return;
-    }
-
-    std::ostringstream o;
-    with(static_cast<std::ostream&>(o));
-    auto resolved_loc = resolved_location(loc, *source_mgr_);
-    report_cb_({
-        level,
-        o.str(),
-        std::string(resolved_loc.file_name()),
-        static_cast<int>(resolved_loc.line()),
-        std::move(token),
-    });
+      diagnostic_level level,
+      fmt::format_string<T...> msg,
+      T&&... args) {
+    do_report(loc, level, fmt::format(msg, std::forward<T>(args)...));
   }
 
  private:
+  void do_report(source_location loc, diagnostic_level level, std::string msg);
+
   source_manager* source_mgr_;
   std::function<void(diagnostic)> report_cb_;
   diagnostic_params params_;

@@ -792,8 +792,7 @@ std::unique_ptr<t_const_value> parsing_driver::to_const_value(
   if (mode == parsing_mode::PROGRAM && !params.allow_64bit_consts &&
       (int_const < INT32_MIN || int_const > INT32_MAX)) {
     warning([&](auto& o) {
-      o << "64-bit constant \"" << int_const
-        << "\" may not work in all languages.";
+      o << "64-bit constant " << int_const << " may not work in all languages";
     });
   }
 
@@ -806,13 +805,13 @@ int64_t parsing_driver::to_int(uint64_t val, bool negative) {
   constexpr uint64_t i64max = std::numeric_limits<int64_t>::max();
   if (negative) {
     failure_if(mode == parsing_mode::PROGRAM && val > i64max + 1, [&](auto& o) {
-      o << "This integer is too small: -" << val;
+      o << "integer constant -" << val << " is too small";
     });
     return -val;
   }
 
   failure_if(mode == parsing_mode::PROGRAM && val > i64max, [&](auto& o) {
-    o << "This integer is too big: " << val;
+    o << "integer constant " << val << " is too large";
   });
   return val;
 }

@@ -54,8 +54,13 @@ class lexer {
 
   const char* end() const { return source_.data() + source_.size() - 1; }
 
+  // Converts a pointer within source into a location.
+  source_location location(const char* p) const {
+    return start_ + (p - source_.data());
+  }
+
   source_range token_source_range() const {
-    return {start_ + (token_start_ - source_.data()), location()};
+    return {location(token_start_), location(ptr_)};
   }
 
   void start_token() { token_start_ = ptr_; }
@@ -66,7 +71,8 @@ class lexer {
   yy::parser::symbol_type make_float_constant();
 
   template <typename... T>
-  yy::parser::symbol_type report_error(T&&... args);
+  yy::parser::symbol_type report_error(
+      fmt::format_string<T...> msg, T&&... args);
   yy::parser::symbol_type unexpected_token();
 
   enum class comment_lex_result { skipped, doc_comment, unterminated };
@@ -85,7 +91,7 @@ class lexer {
   yy::parser::symbol_type get_next_token();
 
   // Returns the current source location.
-  source_location location() const { return start_ + (ptr_ - source_.data()); }
+  source_location location() const { return location(ptr_); }
 
   // Returns the current token as a string.
   std::string token_text() const { return {token_start_, ptr_}; }

@@ -408,18 +408,18 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertConstError(
             "i64",
             "9223372036854775808",  # max int64 + 1
-            "[FAILURE:foo.thrift:1] This integer is too big: 9223372036854775808\n"
-            '[WARNING:foo.thrift:1] 64-bit constant "-9223372036854775808" may not work in all languages.\n',
+            "[FAILURE:foo.thrift:1] integer constant 9223372036854775808 is too large\n"
+            "[WARNING:foo.thrift:1] 64-bit constant -9223372036854775808 may not work in all languages\n",
         )
         self.assertConstError(
             "i64",
             "18446744073709551615",  # max uint64
-            "[FAILURE:foo.thrift:1] This integer is too big: 18446744073709551615\n",
+            "[FAILURE:foo.thrift:1] integer constant 18446744073709551615 is too large\n",
         )
         self.assertConstError(
             "i64",
             "18446744073709551616",  # max uint64 + 1
-            "[FAILURE:foo.thrift:1] This integer is too big: 18446744073709551616\n",
+            "[FAILURE:foo.thrift:1] integer constant 18446744073709551616 is too large\n",
         )
 
     def test_double_overflow(self):
@@ -430,20 +430,20 @@ class CompilerFailureTest(unittest.TestCase):
             self.assertConstError(
                 "double",
                 f"{value}",
-                f"[FAILURE:foo.thrift:1] This number is too big: {value}\n",
+                f"[FAILURE:foo.thrift:1] floating-point constant {value} is out of range\n",
             )
             self.assertConstError(
                 "double",
                 f"-{value}",
-                f"[FAILURE:foo.thrift:1] This number is too big: {value}\n",
+                f"[FAILURE:foo.thrift:1] floating-point constant {value} is out of range\n",
             )
 
     def test_integer_underflow(self):
         self.assertConstError(
             "i64",
             "-9223372036854775809",
-            "[FAILURE:foo.thrift:1] This integer is too small: -9223372036854775809\n"
-            '[WARNING:foo.thrift:1] 64-bit constant "9223372036854775807" may not work in all languages.\n',
+            "[FAILURE:foo.thrift:1] integer constant -9223372036854775809 is too small\n"
+            "[WARNING:foo.thrift:1] 64-bit constant 9223372036854775807 may not work in all languages\n",
         )
 
     def test_double_underflow(self):
@@ -454,12 +454,12 @@ class CompilerFailureTest(unittest.TestCase):
             self.assertConstError(
                 "double",
                 f"{value}",
-                f"[FAILURE:foo.thrift:1] This number is too infinitesimal: {value}\n",
+                f"[FAILURE:foo.thrift:1] magnitude of floating-point constant {value} is too small\n",
             )
             self.assertConstError(
                 "double",
                 f"-{value}",
-                f"[FAILURE:foo.thrift:1] This number is too infinitesimal: {value}\n",
+                f"[FAILURE:foo.thrift:1] magnitude of floating-point constant {value} is too small\n",
             )
 
     def test_const_wrong_type(self):

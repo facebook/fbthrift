@@ -170,8 +170,7 @@ parser::symbol_type lexer::make_int_constant(int offset, int base) {
   errno = 0;
   uint64_t val = strtoull(text.c_str() + offset, nullptr, base);
   if (errno == ERANGE) {
-    return report_error(
-        [&](auto& o) { o << "This integer is too big: " << text; });
+    return report_error("integer constant {} is too large", text);
   }
   return parser::make_tok_int_constant(val, token_source_range());
 }
@@ -183,13 +182,9 @@ parser::symbol_type lexer::make_float_constant() {
   if (errno == ERANGE) {
     if (val == 0) {
       return report_error(
-          [&](auto& o) { o << "This number is too infinitesimal: " << text; });
-    } else if (val == HUGE_VAL) {
-      return report_error(
-          [&](auto& o) { o << "This number is too big: " << text; });
-    } else if (val == -HUGE_VAL) {
-      return report_error(
-          [&](auto& o) { o << "This number is too small: " << text; });
+          "magnitude of floating-point constant {} is too small", text);
+    } else if (val == HUGE_VAL || val == -HUGE_VAL) {
+      return report_error("floating-point constant {} is out of range", text);
     }
     // Allow subnormals.
   }
@@ -197,19 +192,18 @@ parser::symbol_type lexer::make_float_constant() {
 }
 
 template <typename... T>
-parser::symbol_type lexer::report_error(T&&... args) {
+parser::symbol_type lexer::report_error(
+    fmt::format_string<T...> msg, T&&... args) {
   diags_->report(
+      location(token_start_),
       diagnostic_level::failure,
-      location(),
-      token_text(),
+      msg,
       std::forward<T>(args)...);
   return parser::make_tok_error(token_source_range());
 }
 
 parser::symbol_type lexer::unexpected_token() {
-  return report_error([&](auto& o) {
-    o << "Unexpected token in input: " << token_text() << "\n";
-  });
+  return report_error("unexpected token in input: {}", token_text());
 }
 
 void lexer::skip_line_comment() {

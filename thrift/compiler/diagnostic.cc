@@ -76,6 +76,19 @@ diagnostic_results::diagnostic_results(
   }
 }
 
+void diagnostics_engine::do_report(
+    source_location loc, diagnostic_level level, std::string msg) {
+  if (!params_.should_report(level)) {
+    return;
+  }
+  auto resolved_loc = resolved_location(loc, *source_mgr_);
+  report_cb_(
+      {level,
+       std::move(msg),
+       std::string(resolved_loc.file_name()),
+       static_cast<int>(resolved_loc.line())});
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
