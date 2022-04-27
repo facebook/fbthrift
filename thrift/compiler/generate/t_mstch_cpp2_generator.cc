@@ -219,8 +219,8 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_constants(t_program const* program);
   void generate_metadata(t_program const* program);
   void generate_structs(t_program const* program);
-  void generate_service(t_service const* service);
-  void generate_aliased_services(const std::vector<t_service*>& services);
+  void generate_out_of_line_service(t_service const* service);
+  void generate_out_of_line_services(const std::vector<t_service*>& services);
 
   std::shared_ptr<cpp2_generator_context> context_;
   std::unordered_map<std::string, int32_t> client_name_to_split_count_;
@@ -2224,10 +2224,7 @@ void t_mstch_cpp2_generator::generate_program() {
   }
   generate_structs(program);
   generate_constants(program);
-  for (const auto* service : program->services()) {
-    generate_service(service);
-  }
-  generate_aliased_services(program->services());
+  generate_out_of_line_services(program->services());
   generate_metadata(program);
   generate_visitation(program);
 }
@@ -2352,7 +2349,8 @@ void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
   }
 }
 
-void t_mstch_cpp2_generator::generate_service(t_service const* service) {
+void t_mstch_cpp2_generator::generate_out_of_line_service(
+    t_service const* service) {
   const auto& name = service->get_name();
 
   auto serv = generators_->service_generator_->generate_cached(
@@ -2394,8 +2392,12 @@ void t_mstch_cpp2_generator::generate_service(t_service const* service) {
   }
 }
 
-void t_mstch_cpp2_generator::generate_aliased_services(
+void t_mstch_cpp2_generator::generate_out_of_line_services(
     const std::vector<t_service*>& services) {
+  for (const auto* service : services) {
+    generate_out_of_line_service(service);
+  }
+
   mstch::array service_contexts;
   service_contexts.reserve(services.size());
   for (t_service const* service : services) {
@@ -2407,8 +2409,10 @@ void t_mstch_cpp2_generator::generate_aliased_services(
       {"services", std::move(service_contexts)},
   };
   const auto& module_name = get_program()->name();
-  render_to_file(context, "module_handlers.h", module_name + "_handlers.h");
-  render_to_file(context, "module_clients.h", module_name + "_clients.h");
+  render_to_file(
+      context, "module_handlers_out_of_line.h", module_name + "_handlers.h");
+  render_to_file(
+      context, "module_clients_out_of_line.h", module_name + "_clients.h");
 }
 
 std::string t_mstch_cpp2_generator::get_cpp2_namespace(
