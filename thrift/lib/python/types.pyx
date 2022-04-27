@@ -179,16 +179,18 @@ cdef class UnionInfo:
             True,
         )
         self.type_infos = {}
+        self.adapter_classes = {}
         self.name_to_index = {}
 
     cdef void fill(self) except *:
         cdef cDynamicStructInfo* info_ptr = self.cpp_obj.get()
-        for idx, (id, is_unqualified, name, type_info, _, _) in enumerate(self.fields):
+        for idx, (id, is_unqualified, name, type_info, _, adapter_class) in enumerate(self.fields):
             # type_info can be a lambda function so types with dependencies
             # won't need to be defined in order
             if callable(type_info):
                 type_info = type_info()
             self.type_infos[id] = type_info
+            self.adapter_classes[id] = adapter_class
             info_ptr.addFieldInfo(
                 id, is_unqualified, name.encode("utf-8"), getCTypeInfo(type_info)
             )
@@ -524,7 +526,11 @@ cdef class Union(StructOrUnion):
         PyTuple_SET_ITEM(self._fbthrift_data, 0, type_value)
         Py_DECREF(old_type_value)
         old_value = self._fbthrift_data[1]
-        value = (<UnionInfo>self._fbthrift_struct_info).type_infos[type_value].to_internal_data(value)
+        union_info = (<UnionInfo>self._fbthrift_struct_info)
+        adapter_class = union_info.adapter_classes[type_value]
+        if adapter_class:
+            value = adapter_class.to_thrift_field(value, type_value, self)
+        value = union_info.type_infos[type_value].to_internal_data(value)
         Py_INCREF(value)
         PyTuple_SET_ITEM(self._fbthrift_data, 1, value)
         Py_DECREF(old_value)
@@ -614,7 +620,14 @@ cdef make_fget_struct(i, adapter_class):
         )
     return functools.cached_property(lambda self: (<Struct>self)._fbthrift_get_field_value(i))
 
-cdef make_fget_union(type_value):
+
+cdef make_fget_union(type_value, adapter_class):
+    if adapter_class:
+        return functools.cached_property(lambda self:
+            adapter_class.from_thrift_field(
+                (<Union>self)._fbthrift_get_field_value(type_value), type_value, self
+            )
+        )
     return property(lambda self: (<Union>self)._fbthrift_get_field_value(type_value))
 
 
@@ -648,7 +661,7 @@ class UnionMeta(type):
         dct["_fbthrift_struct_info"] = UnionInfo(name, fields)
         dct["Type"] = enum.Enum(name, gen_enum(fields))
         for f in fields:
-            dct[f[2]] = make_fget_union(f[0])
+            dct[f[2]] = make_fget_union(f[0], f[5])
         return super().__new__(cls, name, (Union,), dct)
 
     def _fbthrift_fill_spec(cls):

@@ -95,6 +95,7 @@ cdef class StructInfo:
 cdef class UnionInfo:
     cdef unique_ptr[cDynamicStructInfo] cpp_obj
     cdef dict type_infos
+    cdef dict adapter_classes
     cdef tuple fields
     cdef dict name_to_index
     cdef void fill(self) except *

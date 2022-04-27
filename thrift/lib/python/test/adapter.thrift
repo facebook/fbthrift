@@ -25,3 +25,12 @@ struct Foo {
   }
   1: i32 created_at;
 }
+
+union Bar {
+  1: string baz;
+  @python.Adapter{
+    name = "thrift.python.adapters.datetime.DatetimeAdapter",
+    typeHint = "datetime.datetime",
+  }
+  2: i32 ts;
+}

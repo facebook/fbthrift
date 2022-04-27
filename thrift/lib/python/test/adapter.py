@@ -16,7 +16,7 @@ import time
 import unittest
 from datetime import datetime
 
-from thrift.python.test.adapter.thrift_types import Foo
+from thrift.python.test.adapter.thrift_types import Bar, Foo
 
 
 class AdapterTest(unittest.TestCase):
@@ -32,3 +32,8 @@ class AdapterTest(unittest.TestCase):
         future = datetime.fromtimestamp(int(time.time()) + 100)
         foo = foo(created_at=future)
         self.assertEqual(foo.created_at, future)
+
+    def test_union(self) -> None:
+        now = datetime.fromtimestamp(int(time.time()))
+        bar = Bar(ts=now)
+        self.assertEqual(bar.ts, now)
