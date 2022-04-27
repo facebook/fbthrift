@@ -369,6 +369,9 @@ cdef class Struct(StructOrUnion):
                 raise TypeError(f"__init__() got an unexpected keyword argument '{name}'")
             if value is None:
                 continue
+            adapter_class = info.fields[index][5]
+            if adapter_class:
+                value = adapter_class.to_thrift_field(value, index, self)
             set_struct_field(
                 self._fbthrift_data,
                 index,
@@ -391,6 +394,9 @@ cdef class Struct(StructOrUnion):
                     continue
                 value_to_copy = self._fbthrift_data[index + 1]
             else:  # new assigned value
+                adapter_class = info.fields[index][5]
+                if adapter_class:
+                    value = adapter_class.to_thrift_field(value, index, self)
                 value_to_copy = info.type_infos[index].to_internal_data(value)
             set_struct_field(new_inst._fbthrift_data, index, value_to_copy)
         if kwargs:
@@ -599,10 +605,10 @@ cdef class Union(StructOrUnion):
         return self.type.value != 0
 
 
-cdef make_fget_struct(i, adapter_cls):
-    if adapter_cls:
+cdef make_fget_struct(i, adapter_class):
+    if adapter_class:
         return functools.cached_property(lambda self:
-            adapter_cls.from_thrift_field(
+            adapter_class.from_thrift_field(
                 (<Struct>self)._fbthrift_get_field_value(i), i, self
             )
         )

@@ -128,7 +128,7 @@ class StructWithFieldAdapter(_fbthrift_py3lite_types.Struct):
     opt_boxed_field: _typing.Final[_typing.Optional[int]] = ...
     def __init__(
         self, *,
-        field: _typing.Optional[int]=...,
+        field: _typing.Optional[my.AdaptedType1]=...,
         shared_field: _typing.Optional[int]=...,
         opt_shared_field: _typing.Optional[int]=...,
         opt_boxed_field: _typing.Optional[int]=...
@@ -136,7 +136,7 @@ class StructWithFieldAdapter(_fbthrift_py3lite_types.Struct):
 
     def __call__(
         self, *,
-        field: _typing.Optional[int]=...,
+        field: _typing.Optional[my.AdaptedType1]=...,
         shared_field: _typing.Optional[int]=...,
         opt_shared_field: _typing.Optional[int]=...,
         opt_boxed_field: _typing.Optional[int]=...

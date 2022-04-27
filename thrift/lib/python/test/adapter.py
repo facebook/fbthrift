@@ -20,8 +20,15 @@ from thrift.python.test.adapter.thrift_types import Foo
 
 
 class AdapterTest(unittest.TestCase):
-    def test_read(self) -> None:
-        ts = int(time.time())
-        foo = Foo(created_at=ts)
+    def test_round_trip(self) -> None:
+        now = datetime.fromtimestamp(int(time.time()))
+        foo = Foo(created_at=now)
         self.assertIsInstance(foo.created_at, datetime)
-        self.assertEqual(foo.created_at, datetime.fromtimestamp(ts))
+        self.assertEqual(foo.created_at, now)
+
+    def test_update(self) -> None:
+        now = datetime.fromtimestamp(int(time.time()))
+        foo = Foo(created_at=now)
+        future = datetime.fromtimestamp(int(time.time()) + 100)
+        foo = foo(created_at=future)
+        self.assertEqual(foo.created_at, future)
