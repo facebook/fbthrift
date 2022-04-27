@@ -135,8 +135,7 @@ template <typename CTag, typename T>
 struct NamedTypeHelper {
   static AnyTypeHolder make_type() {
     using ::apache::thrift::detail::st::struct_private_access;
-    return NamedType<CTag>{
-        struct_private_access::__fbthrift_cpp2_gen_thrift_uri<T>()};
+    return NamedType<CTag>{struct_private_access::__fbthrift_thrift_uri<T>()};
   }
 };
 template <typename T>

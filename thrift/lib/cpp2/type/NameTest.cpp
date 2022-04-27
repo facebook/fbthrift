@@ -21,7 +21,7 @@
 using namespace apache::thrift::type;
 
 struct TestAsyncClient {
-  static const char* __fbthrift_cpp2_gen_thrift_uri() { return "you are I"; }
+  static const char* __fbthrift_thrift_uri() { return "you are I"; }
 };
 
 TEST(NameTest, Extract) {

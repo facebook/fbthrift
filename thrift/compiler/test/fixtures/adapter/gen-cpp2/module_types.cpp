@@ -35,7 +35,7 @@ void TccStructTraits<::cpp2::Foo>::translateFieldName(
 
 namespace cpp2 {
 
-const char* Foo::__fbthrift_cpp2_gen_thrift_uri() {
+const char* Foo::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo";
 }
 

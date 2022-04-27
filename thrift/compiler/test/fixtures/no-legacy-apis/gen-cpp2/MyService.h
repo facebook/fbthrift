@@ -40,7 +40,7 @@ class ServiceHandler<::test::fixtures::basic::MyService> : public apache::thrift
  public:
   std::string_view getGeneratedName() const override { return "MyService"; }
 
-  static const char* __fbthrift_cpp2_gen_thrift_uri() {
+  static const char* __fbthrift_thrift_uri() {
     return "test.dev/fixtures/no-legacy-apis/MyService";
   }
 

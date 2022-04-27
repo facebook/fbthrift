@@ -60,7 +60,7 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyStruct::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/any/MyStruct";
 }
 
@@ -170,7 +170,7 @@ bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) 
 }} // apache::thrift
 namespace cpp2 {
 
-const char* MyUnion::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyUnion::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/any/MyUnion";
 }
 
@@ -258,7 +258,7 @@ void TccStructTraits<::cpp2::MyException>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyException::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyException::__fbthrift_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/any/MyException";
 }
 

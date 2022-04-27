@@ -32,7 +32,7 @@ class ServiceHandler<<%service:qualified_name%>> : <%#service:extends%>virtual p
   std::string_view getGeneratedName() const override { return "<%service:name%>"; }
 <%#service:thrift_uri%>
 
-  static const char* __fbthrift_cpp2_gen_thrift_uri() {
+  static const char* __fbthrift_thrift_uri() {
     return "<%service:thrift_uri%>";
   }
 <%/service:thrift_uri%>

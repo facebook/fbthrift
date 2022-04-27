@@ -31,7 +31,7 @@ class Client<::test::fixtures::basic::MyService> : public apache::thrift::Genera
     return "MyService";
   }
 
-  static const char* __fbthrift_cpp2_gen_thrift_uri() {
+  static const char* __fbthrift_thrift_uri() {
     return "test.dev/fixtures/no-legacy-apis/MyService";
   }
 

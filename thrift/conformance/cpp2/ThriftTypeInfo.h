@@ -72,8 +72,8 @@ const ThriftTypeInfo& getGeneratedThriftTypeInfo() {
       decltype(struct_private_access::__fbthrift_cpp2_gen_has_thrift_uri<
                T>())::value,
       "missing the `thrift.uri` annotation");
-  static const ThriftTypeInfo kInfo = createThriftTypeInfo(
-      {struct_private_access::__fbthrift_cpp2_gen_thrift_uri<T>()});
+  static const ThriftTypeInfo kInfo =
+      createThriftTypeInfo({struct_private_access::__fbthrift_thrift_uri<T>()});
   return kInfo;
 }
 

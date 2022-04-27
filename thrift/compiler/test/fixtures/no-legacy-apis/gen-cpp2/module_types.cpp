@@ -61,7 +61,7 @@ void TccStructTraits<::test::fixtures::basic::MyStruct>::translateFieldName(
 
 namespace test { namespace fixtures { namespace basic {
 
-const char* MyStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/no-legacy-apis/MyStruct";
 }
 
@@ -183,7 +183,7 @@ bool TEnumTraits<::test::fixtures::basic::MyUnion::Type>::findValue(char const* 
 }} // apache::thrift
 namespace test { namespace fixtures { namespace basic {
 
-const char* MyUnion::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyUnion::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/no-legacy-apis/MyUnion";
 }
 

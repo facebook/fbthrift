@@ -586,7 +586,7 @@ class MyData final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::i32_t>
@@ -778,7 +778,7 @@ class MyUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::i32_t>
@@ -1069,7 +1069,7 @@ class MyStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::byte_t>,
@@ -2569,7 +2569,7 @@ class MyDataPatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I32PatchStruct>>>
@@ -2736,7 +2736,7 @@ class MyDataValuePatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::struct_t<::cpp2::MyData>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
@@ -2960,7 +2960,7 @@ class OptionalMyDataValuePatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyDataValuePatchStruct>>>,
@@ -3232,7 +3232,7 @@ class MyUnionPatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::StringPatchStruct>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::I32PatchStruct>>>
@@ -3399,7 +3399,7 @@ class MyUnionValuePatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructuredPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyUnionPatchStruct>>>,
@@ -3680,7 +3680,7 @@ class OptionalMyUnionValuePatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::UnionPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyUnionValuePatchStruct>>>,
@@ -3952,7 +3952,7 @@ class MyStructField21PatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::list<::apache::thrift::type::i16_t>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
@@ -4253,7 +4253,7 @@ class OptionalMyStructField21PatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::ListPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyStructField21PatchStruct>>>,
@@ -4537,7 +4537,7 @@ class MyStructField22PatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::set<::apache::thrift::type::string_t>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
@@ -4838,7 +4838,7 @@ class OptionalMyStructField22PatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::SetPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyStructField22PatchStruct>>>,
@@ -5122,7 +5122,7 @@ class MyStructField23PatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::map<::apache::thrift::type::string_t, ::apache::thrift::type::string_t>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
@@ -5367,7 +5367,7 @@ class OptionalMyStructField23PatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::MapPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyStructField23PatchStruct>>>,
@@ -5651,7 +5651,7 @@ class MyStructPatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::BoolPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::BoolPatchStruct>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::type::struct_t<::apache::thrift::op::BytePatchStruct>>>,
@@ -6874,7 +6874,7 @@ class MyStructValuePatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::struct_t<::cpp2::MyStruct>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
@@ -7098,7 +7098,7 @@ class OptionalMyStructValuePatchStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::adapted<::apache::thrift::op::detail::StructPatchAdapter, ::apache::thrift::type::struct_t<::cpp2::MyStructValuePatchStruct>>>,

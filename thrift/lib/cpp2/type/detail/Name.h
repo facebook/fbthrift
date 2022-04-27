@@ -126,7 +126,7 @@ template <typename T>
 struct GetName<service_t<T>> {
   FOLLY_EXPORT const std::string& operator()() const {
     static const auto* kUri =
-        new std::string([]() { return T::__fbthrift_cpp2_gen_thrift_uri(); }());
+        new std::string([]() { return T::__fbthrift_thrift_uri(); }());
     return *kUri;
   }
 };

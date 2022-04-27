@@ -159,7 +159,7 @@ class MyDataItem final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
   >;
 
@@ -227,7 +227,7 @@ class MyStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::i64_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::string_t>,
@@ -763,7 +763,7 @@ class MyUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = true;
-  static const char* __fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::enum_t<::cpp2::MyEnum>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::cpp2::MyStruct>>,

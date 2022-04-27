@@ -31,7 +31,7 @@ class Client<::cpp2::MyService> : public apache::thrift::GeneratedAsyncClient {
     return "MyService";
   }
 
-  static const char* __fbthrift_cpp2_gen_thrift_uri() {
+  static const char* __fbthrift_thrift_uri() {
     return "test.dev/fixtures/basic/MyService";
   }
 

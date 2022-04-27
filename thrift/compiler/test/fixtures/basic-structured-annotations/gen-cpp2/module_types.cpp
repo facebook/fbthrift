@@ -61,7 +61,7 @@ void TccStructTraits<::cpp2::structured_annotation_inline>::translateFieldName(
 
 namespace cpp2 {
 
-const char* structured_annotation_inline::__fbthrift_cpp2_gen_thrift_uri() {
+const char* structured_annotation_inline::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/structured_annotation_inline";
 }
 
@@ -169,7 +169,7 @@ void TccStructTraits<::cpp2::structured_annotation_with_default>::translateField
 
 namespace cpp2 {
 
-const char* structured_annotation_with_default::__fbthrift_cpp2_gen_thrift_uri() {
+const char* structured_annotation_with_default::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/structured_annotation_with_default";
 }
 
@@ -265,7 +265,7 @@ void TccStructTraits<::cpp2::structured_annotation_forward>::translateFieldName(
 
 namespace cpp2 {
 
-const char* structured_annotation_forward::__fbthrift_cpp2_gen_thrift_uri() {
+const char* structured_annotation_forward::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/structured_annotation_forward";
 }
 
@@ -348,7 +348,7 @@ void TccStructTraits<::cpp2::structured_annotation_recursive>::translateFieldNam
 
 namespace cpp2 {
 
-const char* structured_annotation_recursive::__fbthrift_cpp2_gen_thrift_uri() {
+const char* structured_annotation_recursive::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/structured_annotation_recursive";
 }
 
@@ -496,7 +496,7 @@ void TccStructTraits<::cpp2::structured_annotation_nested>::translateFieldName(
 
 namespace cpp2 {
 
-const char* structured_annotation_nested::__fbthrift_cpp2_gen_thrift_uri() {
+const char* structured_annotation_nested::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/structured_annotation_nested";
 }
 
@@ -618,7 +618,7 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/MyStruct";
 }
 
@@ -750,7 +750,7 @@ void TccStructTraits<::cpp2::MyException>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyException::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyException::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/MyException";
 }
 
@@ -866,7 +866,7 @@ bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) 
 }} // apache::thrift
 namespace cpp2 {
 
-const char* MyUnion::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyUnion::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/MyUnion";
 }
 

@@ -97,8 +97,8 @@ struct struct_private_access {
   using fields = decltype(__fbthrift_fields<T>());
 
   template <typename T>
-  static const char* __fbthrift_cpp2_gen_thrift_uri() {
-    return T::__fbthrift_cpp2_gen_thrift_uri();
+  static const char* __fbthrift_thrift_uri() {
+    return T::__fbthrift_thrift_uri();
   }
 
   template <typename T>

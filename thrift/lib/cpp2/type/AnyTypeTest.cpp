@@ -109,7 +109,7 @@ TEST(AnyTypeTest, BaseType) {
 }
 
 struct MyStruct {
-  constexpr static auto __fbthrift_cpp2_gen_thrift_uri() {
+  constexpr static auto __fbthrift_thrift_uri() {
     return "domain.com/my/package/MyStruct";
   }
 };

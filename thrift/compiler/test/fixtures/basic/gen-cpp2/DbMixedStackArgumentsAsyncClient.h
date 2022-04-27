@@ -31,7 +31,7 @@ class Client<::cpp2::DbMixedStackArguments> : public apache::thrift::GeneratedAs
     return "DbMixedStackArguments";
   }
 
-  static const char* __fbthrift_cpp2_gen_thrift_uri() {
+  static const char* __fbthrift_thrift_uri() {
     return "test.dev/fixtures/basic/DbMixedStackArguments";
   }
 

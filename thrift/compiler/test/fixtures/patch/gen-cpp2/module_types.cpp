@@ -35,7 +35,7 @@ void TccStructTraits<::cpp2::MyData>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyData::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyData::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyData";
 }
 
@@ -152,7 +152,7 @@ bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(char const* name, type* out) 
 }} // apache::thrift
 namespace cpp2 {
 
-const char* MyUnion::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyUnion::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyUnion";
 }
 
@@ -247,7 +247,7 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStruct";
 }
 
@@ -717,7 +717,7 @@ void TccStructTraits<::cpp2::MyDataPatchStruct>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyDataPatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyDataPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyDataPatch";
 }
 
@@ -847,7 +847,7 @@ void TccStructTraits<::cpp2::MyDataValuePatchStruct>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyDataValuePatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyDataValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyDataValuePatch";
 }
 
@@ -988,7 +988,7 @@ void TccStructTraits<::cpp2::OptionalMyDataValuePatchStruct>::translateFieldName
 
 namespace cpp2 {
 
-const char* OptionalMyDataValuePatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* OptionalMyDataValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyDataValuePatch";
 }
 
@@ -1151,7 +1151,7 @@ void TccStructTraits<::cpp2::MyUnionPatchStruct>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyUnionPatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyUnionPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyUnionPatch";
 }
 
@@ -1281,7 +1281,7 @@ void TccStructTraits<::cpp2::MyUnionValuePatchStruct>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyUnionValuePatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyUnionValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyUnionValuePatch";
 }
 
@@ -1451,7 +1451,7 @@ void TccStructTraits<::cpp2::OptionalMyUnionValuePatchStruct>::translateFieldNam
 
 namespace cpp2 {
 
-const char* OptionalMyUnionValuePatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* OptionalMyUnionValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyUnionValuePatch";
 }
 
@@ -1614,7 +1614,7 @@ void TccStructTraits<::cpp2::MyStructField21PatchStruct>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyStructField21PatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyStructField21PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructField21Patch";
 }
 
@@ -1770,7 +1770,7 @@ void TccStructTraits<::cpp2::OptionalMyStructField21PatchStruct>::translateField
 
 namespace cpp2 {
 
-const char* OptionalMyStructField21PatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* OptionalMyStructField21PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructField21Patch";
 }
 
@@ -1940,7 +1940,7 @@ void TccStructTraits<::cpp2::MyStructField22PatchStruct>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyStructField22PatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyStructField22PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructField22Patch";
 }
 
@@ -2096,7 +2096,7 @@ void TccStructTraits<::cpp2::OptionalMyStructField22PatchStruct>::translateField
 
 namespace cpp2 {
 
-const char* OptionalMyStructField22PatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* OptionalMyStructField22PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructField22Patch";
 }
 
@@ -2266,7 +2266,7 @@ void TccStructTraits<::cpp2::MyStructField23PatchStruct>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyStructField23PatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyStructField23PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructField23Patch";
 }
 
@@ -2402,7 +2402,7 @@ void TccStructTraits<::cpp2::OptionalMyStructField23PatchStruct>::translateField
 
 namespace cpp2 {
 
-const char* OptionalMyStructField23PatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* OptionalMyStructField23PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructField23Patch";
 }
 
@@ -2572,7 +2572,7 @@ void TccStructTraits<::cpp2::MyStructPatchStruct>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyStructPatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyStructPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructPatch";
 }
 
@@ -3186,7 +3186,7 @@ void TccStructTraits<::cpp2::MyStructValuePatchStruct>::translateFieldName(
 
 namespace cpp2 {
 
-const char* MyStructValuePatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* MyStructValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructValuePatch";
 }
 
@@ -3327,7 +3327,7 @@ void TccStructTraits<::cpp2::OptionalMyStructValuePatchStruct>::translateFieldNa
 
 namespace cpp2 {
 
-const char* OptionalMyStructValuePatchStruct::__fbthrift_cpp2_gen_thrift_uri() {
+const char* OptionalMyStructValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructValuePatch";
 }
 
