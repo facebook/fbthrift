@@ -24,12 +24,57 @@ set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 # Using global properties gets around this; probably better to restructure
 # the directories/files to avoid this type of hack
 #
+get_property(api-cpp2-SOURCES GLOBAL PROPERTY api-cpp2-SOURCES)
+get_property(cpp-cpp2-SOURCES GLOBAL PROPERTY cpp-cpp2-SOURCES)
+get_property(hack-cpp2-SOURCES GLOBAL PROPERTY hack-cpp2-SOURCES)
+get_property(java-cpp2-SOURCES GLOBAL PROPERTY java-cpp2-SOURCES)
+get_property(meta-cpp2-SOURCES GLOBAL PROPERTY meta-cpp2-SOURCES)
+get_property(python-cpp2-SOURCES GLOBAL PROPERTY python-cpp2-SOURCES)
+get_property(scope-cpp2-SOURCES GLOBAL PROPERTY scope-cpp2-SOURCES)
+get_property(thrift-cpp2-SOURCES GLOBAL PROPERTY thrift-cpp2-SOURCES)
 get_property(RpcMetadata-cpp2-SOURCES GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES)
 get_property(metadata-cpp2-SOURCES GLOBAL PROPERTY metadata-cpp2-SOURCES)
 get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
 get_property(reflection-cpp2-SOURCES GLOBAL PROPERTY reflection-cpp2-SOURCES)
-get_property(RocketUpgrade-cpp2-SOURCES GLOBAL PROPERTY RocketUpgrade-cpp2-SOURCES)
+get_property(RocketUpgrade-cpp2-SOURCES GLOBAL PROPERTY
+  RocketUpgrade-cpp2-SOURCES)
 get_property(type-cpp2-SOURCES GLOBAL PROPERTY type-cpp2-SOURCES)
+
+bypass_source_check("${api-cpp2-SOURCES}")
+bypass_source_check("${cpp-cpp2-SOURCES}")
+bypass_source_check("${hack-cpp2-SOURCES}")
+bypass_source_check("${java-cpp2-SOURCES}")
+bypass_source_check("${meta-cpp2-SOURCES}")
+bypass_source_check("${python-cpp2-SOURCES}")
+bypass_source_check("${scope-cpp2-SOURCES}")
+bypass_source_check("${thrift-cpp2-SOURCES}")
+add_library(
+  thriftannotation
+
+  ${api-cpp2-SOURCES}
+  ${cpp-cpp2-SOURCES}
+  ${hack-cpp2-SOURCES}
+  ${java-cpp2-SOURCES}
+  ${meta-cpp2-SOURCES}
+  ${python-cpp2-SOURCES}
+  ${scope-cpp2-SOURCES}
+  ${thrift-cpp2-SOURCES}
+)
+add_dependencies(thriftannotation
+  api-cpp2-target
+  cpp-cpp2-target
+  hack-cpp2-target
+  java-cpp2-target
+  meta-cpp2-target
+  python-cpp2-target
+  scope-cpp2-target
+  thrift-cpp2-target
+)
+target_link_libraries(
+  thriftannotation
+  PUBLIC
+    Folly::folly
+)
 
 bypass_source_check("${metadata-cpp2-SOURCES}")
 add_library(
@@ -74,11 +119,12 @@ add_library(
 
   ${type-cpp2-SOURCES}
 )
-add_dependencies(thrifttype type-cpp2-target)
+add_dependencies(thrifttype type-cpp2-target thriftannotation)
 target_link_libraries(
   thrifttype
   PUBLIC
     Folly::folly
+    thriftannotation
 )
 
 bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
@@ -239,8 +285,9 @@ add_library(
 add_dependencies(
   thriftcpp2
   rpcmetadata
-  thriftmetadata
   RocketUpgrade-cpp2-target
+  thriftannotation
+  thriftmetadata
   thrifttype
 )
 target_link_libraries(
@@ -248,6 +295,7 @@ target_link_libraries(
   PUBLIC
     thrift
     rpcmetadata
+    thriftannotation
     thriftmetadata
     thriftfrozen2
     thriftprotocol
@@ -270,8 +318,8 @@ install(
 )
 
 if (BUILD_SHARED_LIBS)
-  set_target_properties(rpcmetadata thriftmetadata thriftfrozen2 thriftprotocol
-    thriftcpp2 thrifttype
+  set_target_properties(rpcmetadata thriftannotation thriftmetadata
+    thriftfrozen2 thriftprotocol thriftcpp2 thrifttype
     PROPERTIES VERSION ${PACKAGE_VERSION}
     )
 endif()
@@ -279,6 +327,7 @@ endif()
 install(
   TARGETS
     rpcmetadata
+    thriftannotation
     thriftmetadata
     thriftfrozen2
     thrifttype

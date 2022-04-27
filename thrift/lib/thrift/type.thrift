@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/thrift.thrift"
+
+cpp_include "<folly/io/IOBuf.h>"
+cpp_include "<folly/FBString.h>"
+cpp_include "thrift/lib/cpp2/type/BaseType.h"
+cpp_include "thrift/lib/cpp2/type/UniversalHashAlgorithm.h"
+
 namespace cpp2 apache.thrift.type
 namespace py3 apache.thrift.type
 namespace php apache_thrift_type
@@ -24,20 +31,17 @@ namespace py.asyncio apache_thrift_asyncio.type
 namespace go thrift.lib.thrift.type
 namespace py thrift.lib.thrift.type
 
-cpp_include "<folly/io/IOBuf.h>"
-cpp_include "<folly/FBString.h>"
-cpp_include "thrift/lib/cpp2/type/BaseType.h"
-cpp_include "thrift/lib/cpp2/type/UniversalHashAlgorithm.h"
-
 // Typedef for binary data which can be represented as a string of 8-bit bytes
 //
 // Each language can map this type into a customized memory efficient object
+@thrift.Experimental
 typedef binary (cpp2.type = "folly::fbstring") ByteString
 
 // Typedef for binary data
 //
 // Each language can map this type into a customized memory efficient object
 // May be used for zero-copy slice of data
+@thrift.Experimental
 typedef binary (cpp2.type = "folly::IOBuf") ByteBuffer
 
 // An enumeration of all base types in thrift.
