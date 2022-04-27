@@ -21,10 +21,13 @@ import sys
 import tempfile
 import textwrap
 import unittest
+from contextlib import ExitStack
+from importlib import resources
 
-import pkg_resources
-
-thrift = pkg_resources.resource_filename(__name__, "thrift")
+file_manager = ExitStack()
+thrift = str(
+    file_manager.enter_context(resources.path(__package__, "thrift")).absolute()
+)
 
 
 def write_file(path, content):
@@ -42,8 +45,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.addCleanup(os.chdir, os.getcwd())
         os.chdir(self.tmp)
         os.makedirs("thrift")
-        files = pkg_resources.resource_filename(__name__, "annotation_files")
-        shutil.copytree(files, "thrift/annotation")
+        with resources.path(__package__, "annotation_files") as files:
+            shutil.copytree(files, "thrift/annotation")
         self.maxDiff = None
 
     def run_thrift(self, *args, gen="mstch_cpp2"):
