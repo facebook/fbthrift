@@ -36,26 +36,25 @@ Test createRoundTripTest(
   using namespace apache::thrift::test::testset::detail;
 
   Test test;
-  test.name_ref() = protocol.name();
+  test.name() = protocol.name();
   for (const auto& value : ValueGenerator<TT>::getInterestingValues()) {
     // Test case #1: Use ValueStruct
     RoundTripTestCase roundTrip;
-    roundTrip.request_ref()->value_ref() =
+    roundTrip.request()->value() =
         registry.store(asValueStruct<TT>(value.value), protocol);
 
-    auto& testCase1 = test.testCases_ref()->emplace_back();
-    testCase1.name_ref() =
-        fmt::format("{}/{}", type::getName<TT>(), value.name);
-    testCase1.test_ref()->set_roundTrip(roundTrip);
+    auto& testCase1 = test.testCases()->emplace_back();
+    testCase1.name() = fmt::format("{}/{}", type::getName<TT>(), value.name);
+    testCase1.test()->set_roundTrip(roundTrip);
 
     // Test case #2: Use Testset
     typename struct_ByFieldType<TT, mod_set<>>::type data;
-    data.field_1_ref() = value.value;
-    roundTrip.request_ref()->value_ref() = registry.store(data, protocol);
-    auto& testCase2 = test.testCases_ref()->emplace_back();
-    testCase2.name_ref() =
+    data.field_1() = value.value;
+    roundTrip.request()->value() = registry.store(data, protocol);
+    auto& testCase2 = test.testCases()->emplace_back();
+    testCase2.name() =
         fmt::format("testset.{}/{}", type::getName<TT>(), value.name);
-    testCase2.test_ref()->set_roundTrip(roundTrip);
+    testCase2.test()->set_roundTrip(roundTrip);
   }
 
   return test;
@@ -64,7 +63,7 @@ Test createRoundTripTest(
 void addRoundTripToSuite(
     const AnyRegistry& registry, const Protocol& protocol, TestSuite& suite) {
   mp11::mp_for_each<detail::PrimaryTypeTags>([&](auto tt) {
-    suite.tests_ref()->emplace_back(
+    suite.tests()->emplace_back(
         createRoundTripTest<decltype(tt)>(registry, protocol));
   });
 }
@@ -74,7 +73,7 @@ void addRoundTripToSuite(
 TestSuite createRoundTripSuite(
     const std::set<Protocol>& protocols, const AnyRegistry& registry) {
   TestSuite suite;
-  suite.name_ref() = "RoundTripTest";
+  suite.name() = "RoundTripTest";
   for (const auto& protocol : protocols) {
     addRoundTripToSuite(registry, protocol, suite);
   }

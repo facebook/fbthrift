@@ -47,9 +47,9 @@ namespace {
 folly::fbstring maybeGetTypeHash(
     const ThriftTypeInfo& type,
     hash_size_t defaultTypeHashBytes = kDefaultTypeHashBytes) {
-  if (type.typeHashBytes_ref().has_value()) {
+  if (type.typeHashBytes().has_value()) {
     // Use the custom size.
-    defaultTypeHashBytes = type.typeHashBytes_ref().value_unchecked();
+    defaultTypeHashBytes = type.typeHashBytes().value_unchecked();
   }
   return maybeGetUniversalHashPrefix(
       type::UniversalHashAlgorithm::Sha2_256,
@@ -169,7 +169,7 @@ Any AnyRegistry::store(const Any& value, const Protocol& protocol) const {
 void AnyRegistry::load(const Any& value, any_ref out) const {
   const auto& entry = getAndCheckTypeEntryFor(value);
   const auto& serializer = getAndCheckSerializer(entry, getProtocol(value));
-  folly::io::Cursor cursor(&*value.data_ref());
+  folly::io::Cursor cursor(&*value.data());
   serializer.decode(entry.typeInfo, cursor, out);
 }
 
@@ -226,7 +226,7 @@ bool AnyRegistry::forceRegisterType(
   }
 
   TypeEntry* entry = &result.first->second;
-  indexUri(*entry->type.uri_ref(), entry);
+  indexUri(*entry->type.uri(), entry);
   return true;
 }
 
@@ -234,7 +234,7 @@ auto AnyRegistry::registerTypeImpl(
     const std::type_info& typeInfo, ThriftTypeInfo type) -> TypeEntry* {
   validateThriftTypeInfo(type);
   std::vector<folly::fbstring> typeHashs;
-  typeHashs.reserve(type.altUris_ref()->size() + 1);
+  typeHashs.reserve(type.altUris()->size() + 1);
   if (!genTypeHashsAndCheckForConflicts(type, &typeHashs)) {
     return nullptr;
   }
@@ -248,8 +248,8 @@ auto AnyRegistry::registerTypeImpl(
   TypeEntry* entry = &result.first->second;
 
   // Add to secondary indexes.
-  indexUri(*entry->type.uri_ref(), entry);
-  for (const auto& alias : *entry->type.altUris_ref()) {
+  indexUri(*entry->type.uri(), entry);
+  for (const auto& alias : *entry->type.altUris()) {
     indexUri(alias, entry);
   }
 
@@ -301,10 +301,10 @@ bool AnyRegistry::genTypeHashsAndCheckForConflicts(
     const ThriftTypeInfo& type,
     std::vector<folly::fbstring>* typeHashs) const noexcept {
   // Ensure uri and all aliases are availabile.
-  if (!genTypeHashsAndCheckForConflicts(*type.uri_ref(), typeHashs)) {
+  if (!genTypeHashsAndCheckForConflicts(*type.uri(), typeHashs)) {
     return false;
   }
-  for (const auto& alias : *type.altUris_ref()) {
+  for (const auto& alias : *type.altUris()) {
     if (!genTypeHashsAndCheckForConflicts(alias, typeHashs)) {
       return false;
     }
@@ -356,25 +356,23 @@ auto AnyRegistry::getTypeEntryByUri(std::string_view uri) const noexcept
 
 auto AnyRegistry::getTypeEntryFor(const Any& value) const noexcept
     -> const TypeEntry* {
-  if (value.type_ref().has_value() && !value.type_ref()->empty()) {
-    return getTypeEntryByUri(value.type_ref().value_unchecked());
+  if (value.type().has_value() && !value.type()->empty()) {
+    return getTypeEntryByUri(value.type().value_unchecked());
   }
-  if (value.typeHashPrefixSha2_256_ref().has_value()) {
-    return getTypeEntryByHash(
-        value.typeHashPrefixSha2_256_ref().value_unchecked());
+  if (value.typeHashPrefixSha2_256().has_value()) {
+    return getTypeEntryByHash(value.typeHashPrefixSha2_256().value_unchecked());
   }
   return nullptr;
 }
 
 auto AnyRegistry::getAndCheckTypeEntryFor(const Any& value) const
     -> const TypeEntry& {
-  if (value.type_ref().has_value() &&
-      !value.type_ref().value_unchecked().empty()) {
-    return getAndCheckTypeEntryByUri(value.type_ref().value_unchecked());
+  if (value.type().has_value() && !value.type().value_unchecked().empty()) {
+    return getAndCheckTypeEntryByUri(value.type().value_unchecked());
   }
-  if (value.typeHashPrefixSha2_256_ref().has_value()) {
+  if (value.typeHashPrefixSha2_256().has_value()) {
     return getAndCheckTypeEntryByHash(
-        value.typeHashPrefixSha2_256_ref().value_unchecked());
+        value.typeHashPrefixSha2_256().value_unchecked());
   }
   throw std::invalid_argument("any must have a type");
 }

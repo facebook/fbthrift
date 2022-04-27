@@ -45,7 +45,7 @@ ThriftTypeInfo testThriftType(std::initializer_list<const char*> uris) {
     type.set_uri(thriftType(*itr++));
   }
   while (itr != uris.end()) {
-    type.altUris_ref()->emplace(thriftType(*itr++));
+    type.altUris()->emplace(thriftType(*itr++));
   }
   return type;
 }

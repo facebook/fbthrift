@@ -357,11 +357,11 @@ TEST(Frozen, SpillBug) {
 namespace std {
 size_t hash<User>::operator()(const User& user) const {
   return folly::hash::hash_combine_generic(
-      folly::Hash{}, folly::StringPiece(*user.name_ref()), *user.uid_ref());
+      folly::Hash{}, folly::StringPiece(*user.name()), *user.uid());
 }
 
 bool equal_to<User>::operator()(const User& lhs, const User& rhs) const {
-  return *lhs.uid_ref() == *rhs.uid_ref() && *lhs.name_ref() == *rhs.name_ref();
+  return *lhs.uid() == *rhs.uid() && *lhs.name() == *rhs.name();
 }
 } // namespace std
 
@@ -369,10 +369,7 @@ namespace apache::thrift::frozen {
 
 size_t Layout<test::User>::hash(const test::User& user) {
   return folly::hash::hash_combine_generic(
-      folly::Hash{},
-      12345,
-      folly::StringPiece(*user.name_ref()),
-      *user.uid_ref());
+      folly::Hash{}, 12345, folly::StringPiece(*user.name()), *user.uid());
 }
 
 size_t Layout<test::User>::hash(const Layout<test::User>::View& user) {
@@ -397,8 +394,8 @@ bool Layout<test::User>::View::operator<(
 TEST(FrozenMap, StructAsKey) {
   auto user = [](int64_t uid, std::string name) {
     User u;
-    *u.uid_ref() = uid;
-    *u.name_ref() = name;
+    *u.uid() = uid;
+    *u.name() = name;
     return u;
   };
 

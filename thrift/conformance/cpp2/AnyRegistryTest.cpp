@@ -35,12 +35,12 @@ TEST(AnyRegistryTest, ShortType) {
 
   // Should use the type uri because it is shorter than the id.
   Any any = registry.store(1, kFollyToStringProtocol);
-  EXPECT_TRUE(any.type_ref());
-  EXPECT_FALSE(any.typeHashPrefixSha2_256_ref());
+  EXPECT_TRUE(any.type());
+  EXPECT_FALSE(any.typeHashPrefixSha2_256());
   EXPECT_EQ(registry.load<int>(any), 1);
   EXPECT_EQ(*registry.tryGetTypeId(any), typeid(int));
   EXPECT_EQ(registry.getTypeId(any), typeid(int));
-  EXPECT_EQ(registry.getTypeUri(any), shortThriftType().uri_ref().value());
+  EXPECT_EQ(registry.getTypeUri(any), shortThriftType().uri().value());
 }
 
 void checkLongType(int typeBytes, int expectedOutBytes) {
@@ -48,7 +48,7 @@ void checkLongType(int typeBytes, int expectedOutBytes) {
   FollyToStringSerializer<int> intCodec;
   auto longType = longThriftType();
   if (typeBytes == kTypeHashBytesNotSpecified) {
-    longType.typeHashBytes_ref().reset();
+    longType.typeHashBytes().reset();
   } else {
     longType.set_typeHashBytes(typeBytes);
   }
@@ -57,16 +57,16 @@ void checkLongType(int typeBytes, int expectedOutBytes) {
   // Should use the type id because it is shorter than the uri.
   Any any = registry.store(1, kFollyToStringProtocol);
   if (expectedOutBytes == kDisableUniversalHash) {
-    EXPECT_FALSE(any.typeHashPrefixSha2_256_ref());
-    EXPECT_TRUE(any.type_ref());
+    EXPECT_FALSE(any.typeHashPrefixSha2_256());
+    EXPECT_TRUE(any.type());
     EXPECT_EQ(
         registry.getSerializerByUri(*any.get_type(), intCodec.getProtocol()),
         &intCodec);
   } else {
-    EXPECT_FALSE(any.type_ref());
-    ASSERT_TRUE(any.typeHashPrefixSha2_256_ref());
+    EXPECT_FALSE(any.type());
+    ASSERT_TRUE(any.typeHashPrefixSha2_256());
     EXPECT_EQ(
-        any.typeHashPrefixSha2_256_ref().value_unchecked().size(),
+        any.typeHashPrefixSha2_256().value_unchecked().size(),
         expectedOutBytes);
     EXPECT_EQ(
         registry.getSerializerByHash(
@@ -78,7 +78,7 @@ void checkLongType(int typeBytes, int expectedOutBytes) {
   EXPECT_EQ(registry.load<int>(any), 1);
   EXPECT_EQ(*registry.tryGetTypeId(any), typeid(int));
   EXPECT_EQ(registry.getTypeId(any), typeid(int));
-  EXPECT_EQ(registry.getTypeUri(any), longType.uri_ref().value());
+  EXPECT_EQ(registry.getTypeUri(any), longType.uri().value());
 }
 
 TEST(AnyRegistryTest, LongType) {
@@ -101,8 +101,7 @@ TEST(AnyRegistryTest, ShortTypeHash) {
   auto longType = longThriftType();
   EXPECT_TRUE(registry.registerType<int>(longType, {&intCodec}));
   Any any = registry.store(1, kFollyToStringProtocol);
-  any.set_typeHashPrefixSha2_256(
-      any.typeHashPrefixSha2_256_ref()->substr(0, 7));
+  any.set_typeHashPrefixSha2_256(any.typeHashPrefixSha2_256()->substr(0, 7));
   EXPECT_THROW(registry.load<int>(any), std::out_of_range);
 }
 
@@ -147,7 +146,7 @@ TEST(AnyRegistryTest, TypeHashToShort) {
   anyType.set_typeHashBytes(17);
   EXPECT_TRUE(registry.registerType<int>(anyType, {&intCodec}));
   Any any = registry.store(1, intCodec.getProtocol());
-  ASSERT_TRUE(any.typeHashPrefixSha2_256_ref());
+  ASSERT_TRUE(any.typeHashPrefixSha2_256());
   EXPECT_EQ(any.get_typeHashPrefixSha2_256()->size(), 17);
   EXPECT_EQ(registry.load<int>(any), 1);
 
@@ -203,9 +202,9 @@ TEST(AnyRegistryTest, Behavior) {
       std::make_unique<FollyToStringSerializer<double>>()));
 
   Any value = cregistry.store(3, kFollyToStringProtocol);
-  EXPECT_EQ(value.type_ref().value_or(""), thriftType("int"));
-  EXPECT_FALSE(value.typeHashPrefixSha2_256_ref().has_value());
-  EXPECT_EQ(toString(*value.data_ref()), "3");
+  EXPECT_EQ(value.type().value_or(""), thriftType("int"));
+  EXPECT_FALSE(value.typeHashPrefixSha2_256().has_value());
+  EXPECT_EQ(toString(*value.data()), "3");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
   EXPECT_EQ(std::any_cast<int>(cregistry.load(value)), 3);
   EXPECT_EQ(cregistry.load<int>(value), 3);
@@ -213,29 +212,29 @@ TEST(AnyRegistryTest, Behavior) {
   // Storing an Any does nothing if the protocols match.
   Any original = value;
   value = cregistry.store(original, kFollyToStringProtocol);
-  EXPECT_EQ(value.type_ref().value_or(""), thriftType("int"));
-  EXPECT_FALSE(value.typeHashPrefixSha2_256_ref().has_value());
-  EXPECT_EQ(toString(*value.data_ref()), "3");
+  EXPECT_EQ(value.type().value_or(""), thriftType("int"));
+  EXPECT_FALSE(value.typeHashPrefixSha2_256().has_value());
+  EXPECT_EQ(toString(*value.data()), "3");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
   value =
       cregistry.store(std::any(std::move(original)), kFollyToStringProtocol);
-  EXPECT_EQ(value.type_ref().value_or(""), thriftType("int"));
-  EXPECT_FALSE(value.typeHashPrefixSha2_256_ref().has_value());
-  EXPECT_EQ(toString(*value.data_ref()), "3");
+  EXPECT_EQ(value.type().value_or(""), thriftType("int"));
+  EXPECT_FALSE(value.typeHashPrefixSha2_256().has_value());
+  EXPECT_EQ(toString(*value.data()), "3");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
 
   // Storing an Any with a different protocol does a conversion.
   original = value;
   value = cregistry.store(original, Number1Serializer::kProtocol);
-  EXPECT_EQ(value.type_ref().value_or(""), thriftType("int"));
-  EXPECT_FALSE(value.typeHashPrefixSha2_256_ref().has_value());
-  EXPECT_EQ(toString(*value.data_ref()), "number 1!!");
+  EXPECT_EQ(value.type().value_or(""), thriftType("int"));
+  EXPECT_FALSE(value.typeHashPrefixSha2_256().has_value());
+  EXPECT_EQ(toString(*value.data()), "number 1!!");
   EXPECT_TRUE(hasProtocol(value, Number1Serializer::kProtocol));
   value = cregistry.store(
       std::any(std::move(original)), Number1Serializer::kProtocol);
-  EXPECT_EQ(value.type_ref().value_or(""), thriftType("int"));
-  EXPECT_FALSE(value.typeHashPrefixSha2_256_ref().has_value());
-  EXPECT_EQ(toString(*value.data_ref()), "number 1!!");
+  EXPECT_EQ(value.type().value_or(""), thriftType("int"));
+  EXPECT_FALSE(value.typeHashPrefixSha2_256().has_value());
+  EXPECT_EQ(toString(*value.data()), "number 1!!");
   EXPECT_TRUE(hasProtocol(value, Number1Serializer::kProtocol));
   EXPECT_EQ(std::any_cast<int>(cregistry.load(value)), 1);
   EXPECT_EQ(cregistry.load<int>(value), 1);
@@ -254,9 +253,9 @@ TEST(AnyRegistryTest, Behavior) {
 
   // Loading an empty Any value throws an error.
   value = {};
-  EXPECT_FALSE(value.type_ref().has_value());
-  EXPECT_FALSE(value.typeHashPrefixSha2_256_ref().has_value());
-  EXPECT_EQ(toString(*value.data_ref()), "");
+  EXPECT_FALSE(value.type().has_value());
+  EXPECT_FALSE(value.typeHashPrefixSha2_256().has_value());
+  EXPECT_EQ(toString(*value.data()), "");
   EXPECT_TRUE(
       hasProtocol(value, getStandardProtocol<StandardProtocol::Compact>()));
   EXPECT_THROW(cregistry.load(value), std::invalid_argument);
@@ -266,9 +265,9 @@ TEST(AnyRegistryTest, Behavior) {
   EXPECT_THROW(cregistry.load<float>(value), std::out_of_range);
 
   value = cregistry.store(2.5, kFollyToStringProtocol);
-  EXPECT_EQ(*value.type_ref(), thriftType("double"));
-  EXPECT_FALSE(value.typeHashPrefixSha2_256_ref().has_value());
-  EXPECT_EQ(toString(*value.data_ref()), "2.5");
+  EXPECT_EQ(*value.type(), thriftType("double"));
+  EXPECT_FALSE(value.typeHashPrefixSha2_256().has_value());
+  EXPECT_EQ(toString(*value.data()), "2.5");
   EXPECT_TRUE(hasProtocol(value, kFollyToStringProtocol));
   EXPECT_EQ(std::any_cast<double>(cregistry.load(value)), 2.5);
   EXPECT_EQ(cregistry.load<double>(value), 2.5);
@@ -307,7 +306,7 @@ TEST(AnyRegistryTest, Aliases) {
 
   auto any = cregistry.store(1, kFollyToStringProtocol);
   // Stored under the main type uri.
-  EXPECT_EQ(any.type_ref().value_or(""), thriftType("int"));
+  EXPECT_EQ(any.type().value_or(""), thriftType("int"));
   EXPECT_EQ(cregistry.load<int>(any), 1);
 
   any.set_type(thriftType("Int"));
@@ -339,7 +338,7 @@ TEST(AnyRegistryTest, ForwardCompat_Any) {
   Any any = cregistry.store(1, kFollyToStringProtocol);
 
   validateAny(any);
-  any.type_ref() = "invalid";
+  any.type() = "invalid";
   EXPECT_THROW(validateAny(any), std::invalid_argument);
   // Load does not throw std::invalid_argument.
   EXPECT_THROW(cregistry.load(any), std::out_of_range);
@@ -354,8 +353,8 @@ TEST(AnyRegistryTest, StdProtocol) {
 
   auto value = asValueStruct<type::i32_t>(1);
   auto any = cregistry.store<StandardProtocol::Compact>(value);
-  ASSERT_TRUE(any.type_ref());
-  EXPECT_EQ(any.type_ref().value_unchecked(), thriftType("Value"));
+  ASSERT_TRUE(any.type());
+  EXPECT_EQ(any.type().value_unchecked(), thriftType("Value"));
   EXPECT_EQ(cregistry.load<Value>(any), value);
 }
 
@@ -380,7 +379,7 @@ TEST(AnyRegistryTest, ForceRegister) {
   expected.set_boolValue(true);
   Any any = registry.store(
       expected, getStandardProtocol<StandardProtocol::Compact>());
-  EXPECT_EQ(any.type_ref(), "va");
+  EXPECT_EQ(any.type(), "va");
   Value actual = registry.load<Value>(any);
   EXPECT_EQ(actual, expected);
 }

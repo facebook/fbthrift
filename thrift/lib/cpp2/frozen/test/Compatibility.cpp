@@ -40,11 +40,11 @@ TEST_P(CompatibilityTest, Write) {
     return;
   }
   auto test = GetParam();
-  if (test.root_ref()) {
+  if (test.root()) {
     freezeToFile(
-        *test.root_ref(),
+        *test.root(),
         folly::File(
-            filePath(*test.name_ref()).c_str(),
+            filePath(*test.name()).c_str(),
             O_RDWR | O_TRUNC | O_CREAT | O_EXCL));
   }
 }
@@ -52,15 +52,14 @@ TEST_P(CompatibilityTest, Write) {
 TEST_P(CompatibilityTest, Read) {
   auto test = GetParam();
   auto path = folly::to<std::string>(
-      "thrift/lib/cpp2/frozen/test/compatibility/", *test.name_ref());
+      "thrift/lib/cpp2/frozen/test/compatibility/", *test.name());
 
   try {
-    auto root =
-        mapFrozen<Root>(folly::File(filePath(*test.name_ref()).c_str()));
-    EXPECT_FALSE(*test.fails_ref());
-    EXPECT_EQ(*test.root_ref(), root.thaw());
+    auto root = mapFrozen<Root>(folly::File(filePath(*test.name()).c_str()));
+    EXPECT_FALSE(*test.fails());
+    EXPECT_EQ(*test.root(), root.thaw());
   } catch (const std::exception&) {
-    EXPECT_TRUE(*test.fails_ref());
+    EXPECT_TRUE(*test.fails());
   }
 }
 

@@ -29,26 +29,26 @@ TEST(AnyTest, SetProtocol) {
   setProtocol(customProtocol, any);
   EXPECT_TRUE(hasProtocol(any, customProtocol));
   EXPECT_EQ(getProtocol(any), customProtocol);
-  EXPECT_TRUE(any.customProtocol_ref().has_value());
-  EXPECT_TRUE(any.protocol_ref().has_value());
+  EXPECT_TRUE(any.customProtocol().has_value());
+  EXPECT_TRUE(any.protocol().has_value());
 
   setProtocol(getStandardProtocol<StandardProtocol::Compact>(), any);
   EXPECT_TRUE(
       hasProtocol(any, getStandardProtocol<StandardProtocol::Compact>()));
   EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::Compact>());
-  EXPECT_FALSE(any.customProtocol_ref().has_value());
-  EXPECT_FALSE(any.protocol_ref().has_value());
+  EXPECT_FALSE(any.customProtocol().has_value());
+  EXPECT_FALSE(any.protocol().has_value());
 
   setProtocol(customProtocol, any);
-  EXPECT_TRUE(any.customProtocol_ref().has_value());
-  EXPECT_TRUE(any.protocol_ref().has_value());
+  EXPECT_TRUE(any.customProtocol().has_value());
+  EXPECT_TRUE(any.protocol().has_value());
 
   setProtocol(getStandardProtocol<StandardProtocol::Binary>(), any);
   EXPECT_TRUE(
       hasProtocol(any, getStandardProtocol<StandardProtocol::Binary>()));
   EXPECT_EQ(getProtocol(any), getStandardProtocol<StandardProtocol::Binary>());
-  EXPECT_FALSE(any.customProtocol_ref().has_value());
-  EXPECT_TRUE(any.protocol_ref().has_value());
+  EXPECT_FALSE(any.customProtocol().has_value());
+  EXPECT_TRUE(any.protocol().has_value());
 }
 
 TEST(AnyTest, None) {
@@ -114,7 +114,7 @@ TEST(AnyTest, Custom_EmptyString) {
   // Empty string protocol is the same as None
   any.set_protocol(StandardProtocol::Custom);
   any.set_customProtocol("");
-  EXPECT_TRUE(any.customProtocol_ref().has_value());
+  EXPECT_TRUE(any.customProtocol().has_value());
   EXPECT_EQ(getProtocol(any), kNoProtocol);
   EXPECT_TRUE(hasProtocol(any, kNoProtocol));
 }
@@ -127,12 +127,12 @@ TEST(AnyTest, ValidateAny) {
   any.set_type("");
   any.set_customProtocol("");
   validateAny(any);
-  any.type_ref().ensure() = bad;
+  any.type().ensure() = bad;
   EXPECT_THROW(validateAny(any), std::invalid_argument);
-  any.type_ref() = good;
-  any.customProtocol_ref().ensure() = bad;
+  any.type() = good;
+  any.customProtocol().ensure() = bad;
   EXPECT_THROW(validateAny(any), std::invalid_argument);
-  any.customProtocol_ref() = good;
+  any.customProtocol() = good;
   validateAny(any);
 }
 

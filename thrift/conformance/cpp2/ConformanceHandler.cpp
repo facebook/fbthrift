@@ -26,13 +26,13 @@ namespace apache::thrift::conformance {
 void ConformanceHandler::roundTrip(
     RoundTripResponse& res, std::unique_ptr<RoundTripRequest> req) {
   // Load the value.
-  std::any val = AnyRegistry::generated().load(*req->value_ref());
+  std::any val = AnyRegistry::generated().load(*req->value());
   // Figure out what protocol we are supposed to use.
-  Protocol protocol = req->targetProtocol_ref().has_value()
-      ? Protocol(req->targetProtocol_ref().value_unchecked())
-      : getProtocol(*req->value_ref());
+  Protocol protocol = req->targetProtocol().has_value()
+      ? Protocol(req->targetProtocol().value_unchecked())
+      : getProtocol(*req->value());
   // Store the value and return the result.
-  res.value_ref() = AnyRegistry::generated().store(std::move(val), protocol);
+  res.value() = AnyRegistry::generated().store(std::move(val), protocol);
 }
 
 } // namespace apache::thrift::conformance

@@ -69,14 +69,14 @@ testing::AssertionResult RunRoundTripTest(
     ConformanceServiceAsyncClient& client, RoundTripTestCase roundTrip) {
   RoundTripResponse res;
   try {
-    client.sync_roundTrip(res, *roundTrip.request_ref());
+    client.sync_roundTrip(res, *roundTrip.request());
   } catch (const apache::thrift::TApplicationException&) {
     return testing::AssertionFailure();
   }
 
-  const Any& expectedAny = roundTrip.expectedResponse_ref()
-      ? *roundTrip.expectedResponse_ref().value_unchecked().value_ref()
-      : *roundTrip.request_ref()->value_ref();
+  const Any& expectedAny = roundTrip.expectedResponse()
+      ? *roundTrip.expectedResponse().value_unchecked().value()
+      : *roundTrip.request()->value();
 
   auto parseAny = [](const Any& a) {
     switch (auto protocol = a.protocol().value_or(StandardProtocol::Compact)) {
@@ -160,12 +160,12 @@ std::set<std::string> parseNonconforming(std::string_view data) {
 
 testing::AssertionResult RunTestCase(
     ConformanceServiceAsyncClient& client, const TestCase& testCase) {
-  switch (testCase.test_ref()->getType()) {
+  switch (testCase.test()->getType()) {
     case TestCaseUnion::roundTrip:
       return RunRoundTripTest(client, *testCase.roundTrip_ref());
     default:
       return testing::AssertionFailure()
-          << "Unsupported test case type: " << testCase.test_ref()->getType();
+          << "Unsupported test case type: " << testCase.test()->getType();
   }
 }
 
@@ -195,15 +195,15 @@ void RegisterTests(
     std::function<ConformanceServiceAsyncClient&()> clientFn,
     const char* file,
     int line) {
-  for (const auto& test : *suite->tests_ref()) {
-    for (const auto& testCase : *test.testCases_ref()) {
-      std::string suiteName = fmt::format(
-          "{}/{}/{}", category, *suite->name_ref(), *testCase.name_ref());
-      std::string fullName = fmt::format("{}.{}", suiteName, *test.name_ref());
+  for (const auto& test : *suite->tests()) {
+    for (const auto& testCase : *test.testCases()) {
+      std::string suiteName =
+          fmt::format("{}/{}/{}", category, *suite->name(), *testCase.name());
+      std::string fullName = fmt::format("{}.{}", suiteName, *test.name());
       bool conforming = nonconforming.find(fullName) == nonconforming.end();
       RegisterTest(
           suiteName.c_str(),
-          test.name_ref()->c_str(),
+          test.name()->c_str(),
           nullptr,
           conforming ? nullptr : "nonconforming",
           file,

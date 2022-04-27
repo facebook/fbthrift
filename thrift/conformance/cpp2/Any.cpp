@@ -24,14 +24,14 @@ namespace apache::thrift::conformance {
 using type::validateUniversalName;
 
 Protocol getProtocol(const Any& any) noexcept {
-  if (!any.protocol_ref()) {
+  if (!any.protocol()) {
     return getStandardProtocol<StandardProtocol::Compact>();
   }
-  if (*any.protocol_ref() != StandardProtocol::Custom) {
+  if (*any.protocol() != StandardProtocol::Custom) {
     return Protocol(*any.get_protocol());
   }
-  if (any.customProtocol_ref()) {
-    return Protocol(any.customProtocol_ref().value_unchecked());
+  if (any.customProtocol()) {
+    return Protocol(any.customProtocol().value_unchecked());
   }
   return {};
 }
@@ -43,9 +43,8 @@ bool hasProtocol(const Any& any, const Protocol& protocol) noexcept {
   if (*any.get_protocol() != StandardProtocol::Custom) {
     return *any.get_protocol() == protocol.standard();
   }
-  if (any.customProtocol_ref() &&
-      !any.customProtocol_ref().value_unchecked().empty()) {
-    return any.customProtocol_ref().value_unchecked() == protocol.custom();
+  if (any.customProtocol() && !any.customProtocol().value_unchecked().empty()) {
+    return any.customProtocol().value_unchecked() == protocol.custom();
   }
   // `any` has no protocol.
   return protocol.isNone();
@@ -54,8 +53,8 @@ bool hasProtocol(const Any& any, const Protocol& protocol) noexcept {
 void setProtocol(const Protocol& protocol, Any& any) noexcept {
   switch (protocol.standard()) {
     case StandardProtocol::Compact:
-      any.protocol_ref().reset();
-      any.customProtocol_ref().reset();
+      any.protocol().reset();
+      any.customProtocol().reset();
       break;
     case StandardProtocol::Custom:
       any.set_protocol(StandardProtocol::Custom);
@@ -63,18 +62,18 @@ void setProtocol(const Protocol& protocol, Any& any) noexcept {
       break;
     default:
       any.set_protocol(protocol.standard());
-      any.customProtocol_ref().reset();
+      any.customProtocol().reset();
       break;
   }
 }
 
 void validateAny(const Any& any) {
-  if (any.type_ref().has_value() && !any.type_ref().value_unchecked().empty()) {
-    validateUniversalName(any.type_ref().value_unchecked());
+  if (any.type().has_value() && !any.type().value_unchecked().empty()) {
+    validateUniversalName(any.type().value_unchecked());
   }
-  if (any.customProtocol_ref().has_value() &&
-      !any.customProtocol_ref().value_unchecked().empty()) {
-    validateUniversalName(any.customProtocol_ref().value_unchecked());
+  if (any.customProtocol().has_value() &&
+      !any.customProtocol().value_unchecked().empty()) {
+    validateUniversalName(any.customProtocol().value_unchecked());
   }
 }
 

@@ -92,7 +92,7 @@ std::vector<TestCase> removeFieldTestCase(const Protocol& protocol) {
 
   for (const auto& value : ValueGenerator<TT>::getInterestingValues()) {
     typename struct_ByFieldType<TT, mod_set<>>::type data;
-    data.field_1_ref() = value.value;
+    data.field_1() = value.value;
 
     Object obj = toObject(def);
     Object dataObj = toObject(data);

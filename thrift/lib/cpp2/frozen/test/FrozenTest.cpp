@@ -46,16 +46,16 @@ std::string toString(const Layout<T>& x) {
 
 EveryLayout stressValue2 = [] {
   EveryLayout x;
-  *x.aBool_ref() = true;
-  *x.aInt_ref() = 2;
-  *x.aList_ref() = {3, 5};
-  *x.aSet_ref() = {7, 11};
-  *x.aHashSet_ref() = {13, 17};
-  *x.aMap_ref() = {{19, 23}, {29, 31}};
-  *x.aHashMap_ref() = {{37, 41}, {43, 47}};
-  x.optInt_ref() = 53;
-  *x.aFloat_ref() = 59.61;
-  x.optMap_ref() = {{2, 4}, {3, 9}};
+  *x.aBool() = true;
+  *x.aInt() = 2;
+  *x.aList() = {3, 5};
+  *x.aSet() = {7, 11};
+  *x.aHashSet() = {13, 17};
+  *x.aMap() = {{19, 23}, {29, 31}};
+  *x.aHashMap() = {{37, 41}, {43, 47}};
+  x.optInt() = 53;
+  *x.aFloat() = 59.61;
+  x.optMap() = {{2, 4}, {3, 9}};
   return x;
 }();
 
@@ -75,50 +75,50 @@ Layout<T> layout(const T& x, size_t& size) {
 
 auto tom1 = [] {
   Pet1 max;
-  *max.name_ref() = "max";
+  *max.name() = "max";
   Pet1 ed;
-  *ed.name_ref() = "ed";
+  *ed.name() = "ed";
   Person1 tom;
-  *tom.name_ref() = "tom";
-  *tom.height_ref() = 1.82f;
-  tom.age_ref() = 30;
-  tom.pets_ref()->push_back(max);
-  tom.pets_ref()->push_back(ed);
+  *tom.name() = "tom";
+  *tom.height() = 1.82f;
+  tom.age() = 30;
+  tom.pets()->push_back(max);
+  tom.pets()->push_back(ed);
   return tom;
 }();
 auto tom2 = [] {
   Pet2 max;
-  *max.name_ref() = "max";
+  *max.name() = "max";
   Pet2 ed;
-  *ed.name_ref() = "ed";
+  *ed.name() = "ed";
   Person2 tom;
-  *tom.name_ref() = "tom";
-  *tom.weight_ref() = 169;
-  tom.age_ref() = 30;
-  tom.pets_ref()->push_back(max);
-  tom.pets_ref()->push_back(ed);
+  *tom.name() = "tom";
+  *tom.weight() = 169;
+  tom.age() = 30;
+  tom.pets()->push_back(max);
+  tom.pets()->push_back(ed);
   return tom;
 }();
 
 TEST(Frozen, EndToEnd) {
   auto view = freeze(tom1);
-  EXPECT_EQ(*tom1.name_ref(), view.name());
+  EXPECT_EQ(*tom1.name(), view.name());
   ASSERT_TRUE(view.name_ref().has_value());
-  EXPECT_EQ(*tom1.name_ref(), *view.name_ref());
+  EXPECT_EQ(*tom1.name(), *view.name_ref());
   ASSERT_TRUE(view.age().has_value());
-  EXPECT_EQ(*tom1.age_ref(), view.age().value());
-  EXPECT_EQ(*tom1.height_ref(), view.height());
-  EXPECT_EQ(view.pets()[0].name(), *tom1.pets_ref()[0].name_ref());
-  auto& pets = *tom1.pets_ref();
+  EXPECT_EQ(*tom1.age(), view.age().value());
+  EXPECT_EQ(*tom1.height(), view.height());
+  EXPECT_EQ(view.pets()[0].name(), *tom1.pets()[0].name());
+  auto& pets = *tom1.pets();
   auto fpets = view.pets();
   ASSERT_EQ(pets.size(), fpets.size());
-  for (size_t i = 0; i < tom1.pets_ref()->size(); ++i) {
-    EXPECT_EQ(*pets[i].name_ref(), fpets[i].name());
+  for (size_t i = 0; i < tom1.pets()->size(); ++i) {
+    EXPECT_EQ(*pets[i].name(), fpets[i].name());
   }
   Layout<Person1> layout;
   LayoutRoot::layout(tom1, layout);
   auto ttom = view.thaw();
-  EXPECT_TRUE(ttom.name_ref().has_value());
+  EXPECT_TRUE(ttom.name().has_value());
   EXPECT_PRINTED_EQ(tom1, ttom);
 }
 
@@ -128,9 +128,9 @@ TEST(Frozen, Comparison) {
   auto view2 = freeze(tom2);
   // name is optional now, and was __isset=true, so we don't write it
   ASSERT_TRUE(view2.age().has_value());
-  EXPECT_EQ(*tom2.age_ref(), view2.age().value());
-  EXPECT_EQ(*tom2.name_ref(), view2.name());
-  EXPECT_EQ(tom2.name_ref()->size(), view2.name().size());
+  EXPECT_EQ(*tom2.age(), view2.age().value());
+  EXPECT_EQ(*tom2.name(), view2.name());
+  EXPECT_EQ(tom2.name()->size(), view2.name().size());
   auto ttom2 = view2.thaw();
   EXPECT_EQ(tom2, ttom2) << debugString(tom2) << debugString(ttom2);
 }
@@ -224,13 +224,13 @@ TEST(Frozen, EmbeddedSchema) {
     folly::StringPiece charRange(&storage[start], storage.size() - start);
     folly::ByteRange bytes(charRange);
     auto view = person2.view({bytes.begin(), 0});
-    EXPECT_EQ(*tom1.name_ref(), view.name());
-    ASSERT_EQ(tom1.age_ref().has_value(), view.age().has_value());
-    if (auto age = tom1.age_ref()) {
+    EXPECT_EQ(*tom1.name(), view.name());
+    ASSERT_EQ(tom1.age().has_value(), view.age().has_value());
+    if (auto age = tom1.age()) {
       EXPECT_EQ(*age, view.age().value());
     }
-    EXPECT_EQ(*tom1.pets_ref()[0].name_ref(), view.pets()[0].name());
-    EXPECT_EQ(*tom1.pets_ref()[1].name_ref(), view.pets()[1].name());
+    EXPECT_EQ(*tom1.pets()[0].name(), view.pets()[0].name());
+    EXPECT_EQ(*tom1.pets()[1].name(), view.pets()[1].name());
   }
 }
 
@@ -314,10 +314,10 @@ TEST(Frozen, VectorString) {
 TEST(Frozen, BigMap) {
   PlaceTest t;
   for (int i = 0; i < 1000; ++i) {
-    auto& place = t.places_ref()[i * i * i % 757368944];
-    *place.name_ref() = folly::to<std::string>(i);
+    auto& place = t.places()[i * i * i % 757368944];
+    *place.name() = folly::to<std::string>(i);
     for (int j = 0; j < 200; ++j) {
-      ++place.popularityByHour_ref()[rand() % (24 * 7)];
+      ++place.popularityByHour()[rand() % (24 * 7)];
     }
   }
   folly::IOBufQueue bq(folly::IOBufQueue::cacheChainLength());
@@ -329,21 +329,21 @@ TEST(Frozen, BigMap) {
 }
 Tiny tiny1 = [] {
   Tiny obj;
-  *obj.a_ref() = "just a";
+  *obj.a() = "just a";
   return obj;
 }();
 Tiny tiny2 = [] {
   Tiny obj;
-  *obj.a_ref() = "two";
-  *obj.b_ref() = "set";
+  *obj.a() = "two";
+  *obj.b() = "set";
   return obj;
 }();
 Tiny tiny4 = [] {
   Tiny obj;
-  *obj.a_ref() = "four";
-  *obj.b_ref() = "itty";
-  *obj.c_ref() = "bitty";
-  *obj.d_ref() = "strings";
+  *obj.a() = "four";
+  *obj.b() = "itty";
+  *obj.c() = "bitty";
+  *obj.d() = "strings";
   return obj;
 }();
 
@@ -376,18 +376,18 @@ TEST(Frozen, SchemaSaving) {
 
 TEST(Frozen, Enum) {
   Person1 he, she;
-  *he.gender_ref() = Gender::Male;
-  *she.gender_ref() = Gender::Female;
+  *he.gender() = Gender::Male;
+  *she.gender() = Gender::Female;
   EXPECT_EQ(he, freeze(he).thaw());
   EXPECT_EQ(she, freeze(she).thaw());
 }
 
 TEST(Frozen, EnumAsKey) {
   EnumAsKeyTest thriftObj;
-  thriftObj.enumSet_ref()->insert(Gender::Male);
-  thriftObj.enumMap_ref()->emplace(Gender::Female, 1219);
-  thriftObj.outsideEnumSet_ref()->insert(Animal::DOG);
-  thriftObj.outsideEnumMap_ref()->emplace(Animal::CAT, 7779);
+  thriftObj.enumSet()->insert(Gender::Male);
+  thriftObj.enumMap()->emplace(Gender::Female, 1219);
+  thriftObj.outsideEnumSet()->insert(Animal::DOG);
+  thriftObj.outsideEnumMap()->emplace(Animal::CAT, 7779);
 
   auto frozenObj = freeze(thriftObj);
   EXPECT_THAT(frozenObj.enumSet(), Contains(Gender::Male));
@@ -405,8 +405,8 @@ size_t frozenBits(const T& value) {
 
 TEST(Frozen, Bool) {
   Pet1 meat, vegan, dunno;
-  meat.vegan_ref() = false;
-  vegan.vegan_ref() = true;
+  meat.vegan() = false;
+  vegan.vegan() = true;
   // Always-empty optionals take 0 bits.
   // Sometimes-full optionals take >=1 bits.
   // Always-false bools take 0 bits.
@@ -433,8 +433,8 @@ TEST(Frozen, ThawPart) {
   auto ed = f.pets()[1].thaw();
   EXPECT_EQ(typeid(max), typeid(Pet1));
   EXPECT_EQ(typeid(ed), typeid(Pet1));
-  EXPECT_EQ(*max.name_ref(), "max");
-  EXPECT_EQ(*ed.name_ref(), "ed");
+  EXPECT_EQ(*max.name(), "max");
+  EXPECT_EQ(*ed.name(), "ed");
 }
 
 TEST(Frozen, SchemaConversion) {
@@ -534,7 +534,7 @@ TEST(Frozen, Bundled) {
 
 TEST(Frozen, TrivialCopyable) {
   TriviallyCopyableStruct s;
-  s.field_ref() = 42;
+  s.field() = 42;
   auto view = freeze(s);
   EXPECT_EQ(view.field(), 42);
 }
@@ -551,7 +551,7 @@ TEST(Frozen, FixedSizeString) {
   // Good example.
   {
     TestFixedSizeString s;
-    s.bytes8_ref() = "01234567";
+    s.bytes8() = "01234567";
     // bytes4 field is optional and can be unset.
     auto view = freeze(s);
     ASSERT_TRUE(view.bytes8_ref().has_value());
@@ -560,8 +560,8 @@ TEST(Frozen, FixedSizeString) {
   // Good example.
   {
     TestFixedSizeString s;
-    s.bytes8_ref() = "01234567";
-    s.bytes4_ref() = "0123";
+    s.bytes8() = "01234567";
+    s.bytes4() = "0123";
     auto view = freeze(s);
     ASSERT_TRUE(view.bytes8_ref().has_value());
     EXPECT_EQ(view.bytes8_ref()->toString(), "01234567");
@@ -571,7 +571,7 @@ TEST(Frozen, FixedSizeString) {
   // Throws if an unqualified FixedSizeString field is unset.
   {
     TestFixedSizeString s;
-    s.bytes4_ref() = "0123";
+    s.bytes4() = "0123";
     // bytes8 field is unqualified and must be set.
     EXPECT_THROW(
         [&s]() { auto view = freeze(s); }(),
@@ -582,16 +582,16 @@ TEST(Frozen, FixedSizeString) {
     EXPECT_THROW(
         []() {
           TestFixedSizeString s;
-          s.bytes8_ref() = "01234567";
-          s.bytes4_ref() = "0";
+          s.bytes8() = "01234567";
+          s.bytes4() = "0";
           auto view = freeze(s);
         }(),
         apache::thrift::frozen::detail::FixedSizeMismatchException);
     EXPECT_THROW(
         []() {
           TestFixedSizeString s;
-          s.bytes8_ref() = "0";
-          s.bytes4_ref() = "0123";
+          s.bytes8() = "0";
+          s.bytes4() = "0123";
           auto view = freeze(s);
         }(),
         apache::thrift::frozen::detail::FixedSizeMismatchException);
@@ -599,7 +599,7 @@ TEST(Frozen, FixedSizeString) {
   // Tests FixedSizeString as both the key_type and the value_type in a hashmap.
   {
     TestFixedSizeString s;
-    s.bytes8_ref() = "01234567";
+    s.bytes8() = "01234567";
     std::unordered_map<std::string, std::string> rawMap = {
         {"76543210", "ab"},
         {"12345670", "cd"},
@@ -607,17 +607,15 @@ TEST(Frozen, FixedSizeString) {
         {"facebook", "hi"},
     };
     for (const auto& [key, val] : rawMap) {
-      s.aMapToFreeze_ref()[apache::thrift::frozen::FixedSizeString<8>(key)] =
-          val;
-      s.aMap_ref()[apache::thrift::frozen::FixedSizeString<8>(key)] = val;
+      s.aMapToFreeze()[apache::thrift::frozen::FixedSizeString<8>(key)] = val;
+      s.aMap()[apache::thrift::frozen::FixedSizeString<8>(key)] = val;
     }
 
     // Tests aMap before serialization.
     {
-      EXPECT_THAT(
-          *s.aMap_ref(), testing::UnorderedPointwise(PairStrEq(), rawMap));
-      auto iter = s.aMap_ref()->find(Fixed8("hellosnw"));
-      ASSERT_NE(iter, s.aMap_ref()->end());
+      EXPECT_THAT(*s.aMap(), testing::UnorderedPointwise(PairStrEq(), rawMap));
+      auto iter = s.aMap()->find(Fixed8("hellosnw"));
+      ASSERT_NE(iter, s.aMap()->end());
       EXPECT_THAT(
           *iter,
           testing::Pair(
@@ -663,7 +661,7 @@ TEST(Frozen, Empty) {
 TEST(Frozen, Excluded) {
   ContainsExcluded excludedUnset;
   ContainsExcluded excludedSet;
-  excludedSet.excluded_ref().ensure();
+  excludedSet.excluded().ensure();
   (void)freeze(excludedUnset);
   EXPECT_THROW(freeze(excludedSet), LayoutExcludedException);
 }

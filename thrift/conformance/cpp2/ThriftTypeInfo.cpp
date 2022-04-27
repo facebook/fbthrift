@@ -21,18 +21,17 @@ using type::validateUniversalHashBytes;
 using type::validateUniversalName;
 
 void validateThriftTypeInfo(const ThriftTypeInfo& type) {
-  validateUniversalName(*type.uri_ref());
-  for (const auto& uri : *type.altUris_ref()) {
+  validateUniversalName(*type.uri());
+  for (const auto& uri : *type.altUris()) {
     validateUniversalName(uri);
   }
-  if (type.altUris_ref()->find(*type.uri_ref()) != type.altUris_ref()->end()) {
+  if (type.altUris()->find(*type.uri()) != type.altUris()->end()) {
     folly::throw_exception<std::invalid_argument>(
-        "duplicate uri: " + *type.uri_ref());
+        "duplicate uri: " + *type.uri());
   }
 
-  if (type.typeHashBytes_ref()) {
-    validateUniversalHashBytes(
-        type.typeHashBytes_ref().value(), kMinTypeHashBytes);
+  if (type.typeHashBytes()) {
+    validateUniversalHashBytes(type.typeHashBytes().value(), kMinTypeHashBytes);
   }
 }
 

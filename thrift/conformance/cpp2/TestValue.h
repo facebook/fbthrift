@@ -30,11 +30,11 @@ Any encodeValue(const Protocol& protocol, const EncodeValue& value) {
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
   W writer;
   writer.setOutput(&queue);
-  detail::invoke(*value.writes_ref(), writer);
+  detail::invoke(*value.writes(), writer);
 
   // Build the result.
   Any result;
-  result.type_ref() = *value.type_ref();
+  result.type() = *value.type();
   setProtocol(protocol, result);
   result.set_data(queue.moveAsValue());
   return result;
@@ -43,7 +43,7 @@ Any encodeValue(const Protocol& protocol, const EncodeValue& value) {
 template <typename T>
 EncodeValue asEncodeValue(const T& value) {
   EncodeValue result;
-  result.set_type(*getGeneratedThriftTypeInfo<T>().uri_ref());
+  result.set_type(*getGeneratedThriftTypeInfo<T>().uri());
 
   detail::EncodeValueRecorder recorder(&result);
   value.write(&recorder);

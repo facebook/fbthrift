@@ -23,10 +23,10 @@ namespace apache::thrift::conformance {
 using type::validateUniversalName;
 
 Protocol::Protocol(ProtocolStruct protocolStruct) noexcept
-    : standard_(*protocolStruct.standard_ref()) {
+    : standard_(*protocolStruct.standard()) {
   if (standard_ == StandardProtocol::Custom &&
-      protocolStruct.custom_ref().has_value()) {
-    custom_ = std::move(protocolStruct.custom_ref().value_unchecked());
+      protocolStruct.custom().has_value()) {
+    custom_ = std::move(protocolStruct.custom().value_unchecked());
   }
 }
 
@@ -62,7 +62,7 @@ ProtocolStruct Protocol::asStruct() const noexcept {
       result.set_custom(custom_);
       // fall through
     default:
-      result.standard_ref() = standard_;
+      result.standard() = standard_;
       break;
   }
   return result;
