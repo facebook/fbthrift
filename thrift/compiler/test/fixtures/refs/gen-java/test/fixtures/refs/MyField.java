@@ -172,8 +172,7 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                                        public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyField");
@@ -306,14 +305,14 @@ public final class MyField implements com.facebook.thrift.payload.ThriftSerializ
     
         return
             Objects.equals(optValue, other.optValue) &&
-            Objects.equals(value, other.value) &&
-            Objects.equals(reqValue, other.reqValue) &&
-            Objects.equals(optEnumValue, other.optEnumValue) &&
-            Objects.equals(enumValue, other.enumValue) &&
-            Objects.equals(reqEnumValue, other.reqEnumValue) &&
-            Objects.equals(optStrValue, other.optStrValue) &&
-            Objects.equals(strValue, other.strValue) &&
-            Objects.equals(reqStrValue, other.reqStrValue) &&
+    Objects.equals(value, other.value) &&
+    Objects.equals(reqValue, other.reqValue) &&
+    Objects.equals(optEnumValue, other.optEnumValue) &&
+    Objects.equals(enumValue, other.enumValue) &&
+    Objects.equals(reqEnumValue, other.reqEnumValue) &&
+    Objects.equals(optStrValue, other.optStrValue) &&
+    Objects.equals(strValue, other.strValue) &&
+    Objects.equals(reqStrValue, other.reqStrValue) &&
             true;
     }
     

@@ -20,6 +20,7 @@ import org.apache.thrift.ProtocolId;
 import reactor.core.publisher.Mono;
 
 @SwiftGenerated
+@Deprecated
 public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
 
     // Method Handlers

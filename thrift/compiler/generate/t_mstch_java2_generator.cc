@@ -85,8 +85,7 @@ class t_mstch_java2_generator : public t_mstch_generator {
       t_generation_context context,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /* option_string */)
-      : t_mstch_generator(
-            program, std::move(context), "java2", parsed_options) {
+      : t_mstch_generator(program, std::move(context), "java", parsed_options) {
     out_dir_base_ = "gen-java2";
   }
 

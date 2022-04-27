@@ -64,8 +64,7 @@ public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerial
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct2");
@@ -126,7 +125,7 @@ static {
     
         return
             Objects.equals(myStruct1, other.myStruct1) &&
-            Objects.equals(myString, other.myString) &&
+    Objects.equals(myString, other.myString) &&
             true;
     }
     

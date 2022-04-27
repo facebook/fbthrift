@@ -172,8 +172,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                                        public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
@@ -232,6 +231,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       NAMES_TO_IDS.put("myUnion", 9);
       THRIFT_NAMES_TO_IDS.put("my_union", 9);
       FIELD_METADATA.put(9, MY_UNION_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/compiler/test/fixtures/basic-annotations/src/module/MyStruct"), 
+        MyStruct.class, MyStruct::read0));
     }
     
     
@@ -306,14 +308,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         return
             Objects.equals(major, other.major) &&
-            Objects.equals(_package, other._package) &&
-            Objects.equals(annotationWithQuote, other.annotationWithQuote) &&
-            Objects.equals(class_, other.class_) &&
-            Objects.equals(annotationWithTrailingComma, other.annotationWithTrailingComma) &&
-            Objects.equals(emptyAnnotations, other.emptyAnnotations) &&
-            Objects.equals(myEnum, other.myEnum) &&
-            Objects.equals(cppTypeAnnotation, other.cppTypeAnnotation) &&
-            Objects.equals(myUnion, other.myUnion) &&
+    Objects.equals(_package, other._package) &&
+    Objects.equals(annotationWithQuote, other.annotationWithQuote) &&
+    Objects.equals(class_, other.class_) &&
+    Objects.equals(annotationWithTrailingComma, other.annotationWithTrailingComma) &&
+    Objects.equals(emptyAnnotations, other.emptyAnnotations) &&
+    Objects.equals(myEnum, other.myEnum) &&
+    Objects.equals(cppTypeAnnotation, other.cppTypeAnnotation) &&
+    Objects.equals(myUnion, other.myUnion) &&
             true;
     }
     

@@ -15,9 +15,12 @@
   limitations under the License.
 
 }}{{#type:typedef?}}{{!
-    }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
-    }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
-    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+    }}{{#field:hasAdapter?}}_{{field:javaName}}_Adapter.toThrift({{field:javaName}}, oprot);{{/field:hasAdapter?}}{{!
+    }}{{^field:hasAdapter?}}{{!
+      }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
+      }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
+      }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{> WriteType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+    }}{{/field:hasAdapter?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
 }}{{#type:set?}}oprot.writeSetBegin(new TSet(TType.{{#type:set_elem_type}}{{> TType}}{{/type:set_elem_type}}, _iter{{field:prevNestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}.size()));

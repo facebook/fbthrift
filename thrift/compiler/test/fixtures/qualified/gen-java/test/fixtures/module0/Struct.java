@@ -74,8 +74,7 @@ public final class Struct implements com.facebook.thrift.payload.ThriftSerializa
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Struct");
@@ -124,7 +123,7 @@ public final class Struct implements com.facebook.thrift.payload.ThriftSerializa
     
         return
             Objects.equals(first, other.first) &&
-            Objects.equals(second, other.second) &&
+    Objects.equals(second, other.second) &&
             true;
     }
     

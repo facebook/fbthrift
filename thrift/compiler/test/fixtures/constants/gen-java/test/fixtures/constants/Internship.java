@@ -116,8 +116,7 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                        public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Internship");
@@ -202,10 +201,10 @@ public final class Internship implements com.facebook.thrift.payload.ThriftSeria
     
         return
             Objects.equals(weeks, other.weeks) &&
-            Objects.equals(title, other.title) &&
-            Objects.equals(employer, other.employer) &&
-            Objects.equals(compensation, other.compensation) &&
-            Objects.equals(school, other.school) &&
+    Objects.equals(title, other.title) &&
+    Objects.equals(employer, other.employer) &&
+    Objects.equals(compensation, other.compensation) &&
+    Objects.equals(school, other.school) &&
             true;
     }
     

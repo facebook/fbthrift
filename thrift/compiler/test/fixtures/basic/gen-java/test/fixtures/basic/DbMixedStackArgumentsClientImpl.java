@@ -20,6 +20,7 @@ import org.apache.thrift.ProtocolId;
 import reactor.core.publisher.Mono;
 
 @SwiftGenerated
+@Deprecated
 public class DbMixedStackArgumentsClientImpl extends AbstractThriftClient implements DbMixedStackArguments {
 
     // Method Handlers

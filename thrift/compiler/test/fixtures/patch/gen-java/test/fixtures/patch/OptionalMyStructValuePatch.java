@@ -102,8 +102,7 @@ public final class OptionalMyStructValuePatch implements com.facebook.thrift.pay
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("OptionalMyStructValuePatch");
@@ -132,6 +131,9 @@ public final class OptionalMyStructValuePatch implements com.facebook.thrift.pay
       NAMES_TO_IDS.put("patchAfter", 5);
       THRIFT_NAMES_TO_IDS.put("patchAfter", 5);
       FIELD_METADATA.put(5, PATCH_AFTER_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/OptionalMyStructValuePatch"), 
+        OptionalMyStructValuePatch.class, OptionalMyStructValuePatch::read0));
     }
     
     
@@ -176,9 +178,9 @@ public final class OptionalMyStructValuePatch implements com.facebook.thrift.pay
     
         return
             Objects.equals(clear, other.clear) &&
-            Objects.equals(patch, other.patch) &&
-            Objects.equals(ensure, other.ensure) &&
-            Objects.equals(patchAfter, other.patchAfter) &&
+    Objects.equals(patch, other.patch) &&
+    Objects.equals(ensure, other.ensure) &&
+    Objects.equals(patchAfter, other.patchAfter) &&
             true;
     }
     

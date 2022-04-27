@@ -74,8 +74,7 @@ public final class MyUnionPatch implements com.facebook.thrift.payload.ThriftSer
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyUnionPatch");
@@ -92,6 +91,9 @@ public final class MyUnionPatch implements com.facebook.thrift.payload.ThriftSer
       NAMES_TO_IDS.put("option2", 2);
       THRIFT_NAMES_TO_IDS.put("option2", 2);
       FIELD_METADATA.put(2, OPTION2_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyUnionPatch"), 
+        MyUnionPatch.class, MyUnionPatch::read0));
     }
     
     @Nullable
@@ -124,7 +126,7 @@ public final class MyUnionPatch implements com.facebook.thrift.payload.ThriftSer
     
         return
             Objects.equals(option1, other.option1) &&
-            Objects.equals(option2, other.option2) &&
+    Objects.equals(option2, other.option2) &&
             true;
     }
     

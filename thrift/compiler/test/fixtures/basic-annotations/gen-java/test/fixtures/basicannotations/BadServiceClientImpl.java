@@ -20,6 +20,7 @@ import org.apache.thrift.ProtocolId;
 import reactor.core.publisher.Mono;
 
 @SwiftGenerated
+@Deprecated
 public class BadServiceClientImpl extends AbstractThriftClient implements BadService {
 
     // Method Handlers

@@ -130,8 +130,7 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithContainers");
@@ -228,11 +227,11 @@ public final class StructWithContainers implements com.facebook.thrift.payload.T
     
         return
             Objects.equals(listRef, other.listRef) &&
-            Objects.equals(setRef, other.setRef) &&
-            Objects.equals(mapRef, other.mapRef) &&
-            Objects.equals(listRefUnique, other.listRefUnique) &&
-            Objects.equals(setRefShared, other.setRefShared) &&
-            Objects.equals(listRefSharedConst, other.listRefSharedConst) &&
+    Objects.equals(setRef, other.setRef) &&
+    Objects.equals(mapRef, other.mapRef) &&
+    Objects.equals(listRefUnique, other.listRefUnique) &&
+    Objects.equals(setRefShared, other.setRefShared) &&
+    Objects.equals(listRefSharedConst, other.listRefSharedConst) &&
             true;
     }
     

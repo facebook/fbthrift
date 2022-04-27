@@ -102,8 +102,7 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructFloatFieldThrowExp");
@@ -176,9 +175,9 @@ public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.pay
     
         return
             Objects.equals(myLongField, other.myLongField) &&
-            Objects.equals(myByteField, other.myByteField) &&
-            Objects.equals(myStringField, other.myStringField) &&
-            Objects.equals(myFloatField, other.myFloatField) &&
+    Objects.equals(myByteField, other.myByteField) &&
+    Objects.equals(myStringField, other.myStringField) &&
+    Objects.equals(myFloatField, other.myFloatField) &&
             true;
     }
     

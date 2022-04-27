@@ -88,8 +88,7 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithRefTypeShared");
@@ -150,8 +149,8 @@ public final class StructWithRefTypeShared implements com.facebook.thrift.payloa
     
         return
             Objects.equals(defField, other.defField) &&
-            Objects.equals(optField, other.optField) &&
-            Objects.equals(reqField, other.reqField) &&
+    Objects.equals(optField, other.optField) &&
+    Objects.equals(reqField, other.reqField) &&
             true;
     }
     

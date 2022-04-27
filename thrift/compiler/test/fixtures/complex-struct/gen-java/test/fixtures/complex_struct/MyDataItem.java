@@ -44,7 +44,6 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
             return result;
         }
     }
-    
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -69,7 +68,7 @@ static {
         MyDataItem other = (MyDataItem)o;
     
         return
-            true;
+                    true;
     }
     
     @java.lang.Override

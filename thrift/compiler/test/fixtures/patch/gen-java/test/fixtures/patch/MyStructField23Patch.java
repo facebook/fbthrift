@@ -88,8 +88,7 @@ public final class MyStructField23Patch implements com.facebook.thrift.payload.T
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructField23Patch");
@@ -112,6 +111,9 @@ public final class MyStructField23Patch implements com.facebook.thrift.payload.T
       NAMES_TO_IDS.put("put", 7);
       THRIFT_NAMES_TO_IDS.put("put", 7);
       FIELD_METADATA.put(7, PUT_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyStructField23Patch"), 
+        MyStructField23Patch.class, MyStructField23Patch::read0));
     }
     
     @Nullable
@@ -150,8 +152,8 @@ public final class MyStructField23Patch implements com.facebook.thrift.payload.T
     
         return
             Objects.equals(assign, other.assign) &&
-            Objects.equals(clear, other.clear) &&
-            Objects.equals(put, other.put) &&
+    Objects.equals(clear, other.clear) &&
+    Objects.equals(put, other.put) &&
             true;
     }
     

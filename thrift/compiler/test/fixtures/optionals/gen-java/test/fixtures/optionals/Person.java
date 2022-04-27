@@ -186,8 +186,7 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                                            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Person");
@@ -332,15 +331,15 @@ public final class Person implements com.facebook.thrift.payload.ThriftSerializa
     
         return
             Objects.equals(id, other.id) &&
-            Objects.equals(name, other.name) &&
-            Objects.equals(age, other.age) &&
-            Objects.equals(address, other.address) &&
-            Objects.equals(favoriteColor, other.favoriteColor) &&
-            Objects.equals(friends, other.friends) &&
-            Objects.equals(bestFriend, other.bestFriend) &&
-            Objects.equals(petNames, other.petNames) &&
-            Objects.equals(afraidOfAnimal, other.afraidOfAnimal) &&
-            Objects.equals(vehicles, other.vehicles) &&
+    Objects.equals(name, other.name) &&
+    Objects.equals(age, other.age) &&
+    Objects.equals(address, other.address) &&
+    Objects.equals(favoriteColor, other.favoriteColor) &&
+    Objects.equals(friends, other.friends) &&
+    Objects.equals(bestFriend, other.bestFriend) &&
+    Objects.equals(petNames, other.petNames) &&
+    Objects.equals(afraidOfAnimal, other.afraidOfAnimal) &&
+    Objects.equals(vehicles, other.vehicles) &&
             true;
     }
     

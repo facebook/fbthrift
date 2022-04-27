@@ -102,8 +102,7 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStructField21Patch");
@@ -132,6 +131,9 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
       NAMES_TO_IDS.put("append", 5);
       THRIFT_NAMES_TO_IDS.put("append", 5);
       FIELD_METADATA.put(5, APPEND_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/patch/MyStructField21Patch"), 
+        MyStructField21Patch.class, MyStructField21Patch::read0));
     }
     
     @Nullable
@@ -176,9 +178,9 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     
         return
             Objects.equals(assign, other.assign) &&
-            Objects.equals(clear, other.clear) &&
-            Objects.equals(prepend, other.prepend) &&
-            Objects.equals(append, other.append) &&
+    Objects.equals(clear, other.clear) &&
+    Objects.equals(prepend, other.prepend) &&
+    Objects.equals(append, other.append) &&
             true;
     }
     

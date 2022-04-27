@@ -21,6 +21,7 @@ import org.apache.thrift.ProtocolId;
 import reactor.core.publisher.Mono;
 
 @SwiftGenerated
+@Deprecated
 public class NestedContainersAsyncClientImpl extends AbstractThriftClient implements NestedContainers.Async {
 
     // Method Handlers

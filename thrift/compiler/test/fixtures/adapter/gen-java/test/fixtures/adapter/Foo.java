@@ -186,8 +186,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                                            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Foo");
@@ -252,6 +251,9 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       NAMES_TO_IDS.put("adaptedLongField", 10);
       THRIFT_NAMES_TO_IDS.put("adaptedLongField", 10);
       FIELD_METADATA.put(10, ADAPTED_LONG_FIELD_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo"), 
+        Foo.class, Foo::read0));
     }
     
     
@@ -332,15 +334,15 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     
         return
             Objects.equals(intField, other.intField) &&
-            Objects.equals(optionalIntField, other.optionalIntField) &&
-            Objects.equals(intFieldWithDefault, other.intFieldWithDefault) &&
-            Objects.equals(setField, other.setField) &&
-            Objects.equals(optionalSetField, other.optionalSetField) &&
-            Objects.equals(mapField, other.mapField) &&
-            Objects.equals(optionalMapField, other.optionalMapField) &&
-            Arrays.equals(binaryField, other.binaryField) &&
-            Objects.equals(longField, other.longField) &&
-            Objects.equals(adaptedLongField, other.adaptedLongField) &&
+    Objects.equals(optionalIntField, other.optionalIntField) &&
+    Objects.equals(intFieldWithDefault, other.intFieldWithDefault) &&
+    Objects.equals(setField, other.setField) &&
+    Objects.equals(optionalSetField, other.optionalSetField) &&
+    Objects.equals(mapField, other.mapField) &&
+    Objects.equals(optionalMapField, other.optionalMapField) &&
+    Arrays.equals(binaryField, other.binaryField) &&
+    Objects.equals(longField, other.longField) &&
+    Objects.equals(adaptedLongField, other.adaptedLongField) &&
             true;
     }
     

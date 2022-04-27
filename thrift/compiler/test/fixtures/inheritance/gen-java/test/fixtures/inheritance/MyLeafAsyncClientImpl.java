@@ -21,6 +21,7 @@ import org.apache.thrift.ProtocolId;
 import reactor.core.publisher.Mono;
 
 @SwiftGenerated
+@Deprecated
 public class MyLeafAsyncClientImpl extends test.fixtures.inheritance.MyNodeAsyncClientImpl implements MyLeaf.Async {
 
     // Method Handlers

@@ -44,12 +44,14 @@ public final class MyDataItem implements com.facebook.thrift.payload.ThriftSeria
             return result;
         }
     }
-    
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyDataItem");
 static {
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/basic/MyDataItem"), 
+        MyDataItem.class, MyDataItem::read0));
     }
     @java.lang.Override
     public String toString() {
@@ -69,7 +71,7 @@ static {
         MyDataItem other = (MyDataItem)o;
     
         return
-            true;
+                    true;
     }
     
     @java.lang.Override

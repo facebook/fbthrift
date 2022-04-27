@@ -88,8 +88,7 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("StructWithUnion");
@@ -150,8 +149,8 @@ public final class StructWithUnion implements com.facebook.thrift.payload.Thrift
     
         return
             Objects.equals(u, other.u) &&
-            Objects.equals(aDouble, other.aDouble) &&
-            Objects.equals(f, other.f) &&
+    Objects.equals(aDouble, other.aDouble) &&
+    Objects.equals(f, other.f) &&
             true;
     }
     

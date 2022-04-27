@@ -25,6 +25,7 @@ import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
 import com.facebook.thrift.client.*;
 import com.facebook.thrift.util.FutureUtil;
+import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -32,7 +33,8 @@ import org.apache.thrift.ProtocolId;
 import reactor.core.publisher.Mono;
 
 @SwiftGenerated
-public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}AbstractThriftClient{{/service:extends}}{{#service:extends}}{{service:javaPackage}}.{{service:javaCapitalName}}ClientImpl{{/service:extends}} implements {{service:javaCapitalName}} {
+@Deprecated
+public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:extends}}AbstractThriftClient{{/service:extends}}{{#service:extends}}{{service:javaPackage}}.{{service:javaCapitalName}}AsyncClientImpl{{/service:extends}} implements {{service:javaCapitalName}}.Async {
 
     // Method Handlers
     {{#service:singleRequestFunctions}}
@@ -58,7 +60,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
     {{/service:singleRequestFunctions}}
     {{/service:interactions}}
 
-    public {{service:javaCapitalName}}ClientImpl(
+    public {{service:javaCapitalName}}AsyncClientImpl(
         RequestChannel channel,
         Map<Method, ThriftMethodHandler> methods,
         Map<String, String> headers,
@@ -84,7 +86,7 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
       {{/service:interactions}}
     }
 
-    public {{service:javaCapitalName}}ClientImpl(
+    public {{service:javaCapitalName}}AsyncClientImpl(
         Map<String, String> headers,
         Map<String, String> persistentHeaders,
         Mono<? extends RpcClient> rpcClient,
@@ -120,41 +122,27 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
     {{#service:singleRequestFunctions}}
 
     @java.lang.Override
-    public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}
-        {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}){{!
-          Exceptions
-        }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
-      {{#function:return_type}}{{^type:void?}}return {{/type:void?}}{{/function:return_type}}{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY).getData();
+    public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
+        {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
+        return {{function:javaName}}({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY);
     }
 
     @java.lang.Override
-    public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}
+    public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
         {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
-        RpcOptions rpcOptions){{!
-          Exceptions
-        }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
-      {{#function:return_type}}{{^type:void?}}return {{/type:void?}}{{/function:return_type}}{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions).getData();
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform({{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions));
     }
 
     @java.lang.Override
-    public ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}Wrapper({{#function:args}}
+    public ListenableFuture<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}
         {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
-        RpcOptions rpcOptions){{!
-          Exceptions
-        }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
-      try {
-        return FutureUtil.get(executeWrapperWithOptions({{function:javaName}}MethodHandler, {{function:javaName}}Exceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}}));
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
+        RpcOptions rpcOptions) {
+        try {
+          return executeWrapperWithOptions({{function:javaName}}MethodHandler, {{function:javaName}}Exceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}});
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
         }
-        {{#function:exceptions}}
-        if (t instanceof {{#field:type}}{{> BoxedType}}{{/field:type}}) {
-          throw ({{#field:type}}{{> BoxedType}}{{/field:type}}) t;
-        }
-        {{/function:exceptions}}
-        throw new org.apache.thrift.TException(t);
-      }
     }
     {{/service:singleRequestFunctions}}
     {{#service:interactions}}
@@ -167,38 +155,28 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
       }
 
       {{#service:singleRequestFunctions}}
-
-      public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}
-      final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
-        {{#function:return_type}}{{^type:void?}}return {{/type:void?}}{{/function:return_type}}{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY).getData();
+      @java.lang.Override
+      public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
+          {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+          RpcOptions rpcOptions) {
+          return FutureUtil.transform({{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions));
       }
 
-      public {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}
-      final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
-      RpcOptions rpcOptions){{!
-      Exceptions
-      }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
-        {{#function:return_type}}{{^type:void?}}return {{/type:void?}}{{/function:return_type}}{{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions).getData();
+      @java.lang.Override
+      public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
+        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
+        return FutureUtil.transform({{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY));
       }
 
-      public ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}Wrapper({{#function:args}}
-      {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
-      RpcOptions _rpcOptions){{!
-        Exceptions
-      }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+      @java.lang.Override
+      public ListenableFuture<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}
+        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+        RpcOptions _rpcOptions) {
         try {
           RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
-          return FutureUtil.get(executeWrapperWithOptions({{function:javaName}}IMethodHandler, {{function:javaName}}IExceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}}));
+          return executeWrapperWithOptions({{function:javaName}}IMethodHandler, {{function:javaName}}IExceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}});
         } catch (Throwable t) {
-          if (t instanceof org.apache.thrift.TException) {
-            throw (org.apache.thrift.TException) t;
-          }
-          {{#function:exceptions}}
-          if (t instanceof {{#field:type}}{{> BoxedType}}{{/field:type}}) {
-            throw ({{#field:type}}{{> BoxedType}}{{/field:type}}) t;
-          }
-          {{/function:exceptions}}
-          throw new org.apache.thrift.TException(t);
+          throw new RuntimeTException(t.getMessage(), t);
         }
       }
 
