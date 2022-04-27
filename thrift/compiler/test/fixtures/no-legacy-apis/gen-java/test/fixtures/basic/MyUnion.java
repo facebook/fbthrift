@@ -37,6 +37,9 @@ public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializ
       NAMES_TO_IDS.put("myDataItem", 2);
       THRIFT_NAMES_TO_IDS.put("myDataItem", 2);
       FIELD_METADATA.put(2, MY_DATA_ITEM_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/no-legacy-apis/MyUnion"), 
+        MyUnion.class, MyUnion::read0));
     }
 
     private Object value;

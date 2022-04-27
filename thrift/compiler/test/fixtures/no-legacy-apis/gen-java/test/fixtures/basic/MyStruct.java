@@ -74,8 +74,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             return result;
         }
     }
-    
-    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
@@ -92,6 +91,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       NAMES_TO_IDS.put("myStringField", 2);
       THRIFT_NAMES_TO_IDS.put("myStringField", 2);
       FIELD_METADATA.put(2, MY_STRING_FIELD_FIELD_DESC);
+      com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
+        new com.facebook.thrift.type.UniversalName("test.dev/fixtures/no-legacy-apis/MyStruct"), 
+        MyStruct.class, MyStruct::read0));
     }
     
     
@@ -124,7 +126,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         return
             Objects.equals(myIntField, other.myIntField) &&
-            Objects.equals(myStringField, other.myStringField) &&
+    Objects.equals(myStringField, other.myStringField) &&
             true;
     }
     
