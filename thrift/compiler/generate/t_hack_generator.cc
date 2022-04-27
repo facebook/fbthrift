@@ -354,7 +354,8 @@ class t_hack_generator : public t_oop_generator {
       t_name_generator& namer,
       std::string val);
 
-  void generate_all_hack_attributes(std::ofstream& out, const t_type* type);
+  void generate_hack_attributes(
+      std::ofstream& out, const t_named* type, bool include_user_defined);
   void generate_adapter_type_checks(
       std::ofstream& out, const t_struct* tstruct);
 
@@ -1297,7 +1298,7 @@ void t_hack_generator::generate_enum(const t_enum* tenum) {
   } else {
     hack_enum = true;
     typehint = hack_name(tenum, true);
-    generate_all_hack_attributes(f_types_, tenum);
+    generate_hack_attributes(f_types_, tenum, /*include_user_defined*/ true);
     f_types_ << "enum " << hack_name(tenum, true) << ": int"
              << (enum_transparenttype_ ? " as int" : "") << " {\n";
   }
@@ -4279,8 +4280,8 @@ std::string t_hack_generator::render_structured_annotations(
  * Combines the user-provided Hack attributes with those intrinsic to the
  * Thrift compiler.
  */
-void t_hack_generator::generate_all_hack_attributes(
-    std::ofstream& out, const t_type* type) {
+void t_hack_generator::generate_hack_attributes(
+    std::ofstream& out, const t_named* type, bool include_user_defined) {
   std::vector<std::string> attributes_parts;
 
   const std::string& uri = type->uri();
@@ -4289,9 +4290,12 @@ void t_hack_generator::generate_all_hack_attributes(
         "\\ThriftTypeInfo(shape('uri' => '" + uri + "'))");
   }
 
-  if (std::string const* attributes =
-          type->find_annotation_or_null("hack.attributes")) {
-    attributes_parts.emplace_back(*attributes);
+  if (include_user_defined) {
+    std::string const* user_attributes =
+        type->find_annotation_or_null("hack.attributes");
+    if (user_attributes) {
+      attributes_parts.emplace_back(*user_attributes);
+    }
   }
 
   if (attributes_parts.empty()) {
@@ -4354,7 +4358,7 @@ void t_hack_generator::_generate_php_struct_definition(
       (type == ThriftStructType::EXCEPTION || !generateAsTrait)) {
     generate_php_docstring(out, tstruct, type == ThriftStructType::EXCEPTION);
   }
-  generate_all_hack_attributes(f_types_, tstruct);
+  generate_hack_attributes(f_types_, tstruct, /*include_user_defined*/ true);
   out << (generateAsTrait ? "trait " : "class ")
       << hack_name(name, tstruct->program(), true);
   if (generateAsTrait) {
@@ -5800,6 +5804,8 @@ void t_hack_generator::generate_service_interface(
     extends_if = ext_prefix + suffix + "If";
   }
 
+  generate_hack_attributes(
+      f_service_, tservice, /*include_user_defined*/ false);
   f_service_ << "interface " << long_name << suffix << "If extends "
              << extends_if << " {\n";
   indent_up();

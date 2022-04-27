@@ -10,6 +10,7 @@
  * Original thrift service:-
  * MyService
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic-structured-annotations/MyService'))>>
 interface MyServiceAsyncIf extends \IThriftAsyncIf {
   /**
    * Original thrift definition:-
@@ -30,6 +31,7 @@ interface MyServiceAsyncIf extends \IThriftAsyncIf {
  * Original thrift service:-
  * MyService
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic-structured-annotations/MyService'))>>
 interface MyServiceIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -50,6 +52,7 @@ interface MyServiceIf extends \IThriftSyncIf {
  * Original thrift service:-
  * MyService
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic-structured-annotations/MyService'))>>
 interface MyServiceAsyncClientIf extends MyServiceAsyncIf {
 }
 
@@ -57,6 +60,7 @@ interface MyServiceAsyncClientIf extends MyServiceAsyncIf {
  * Original thrift service:-
  * MyService
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic-structured-annotations/MyService'))>>
 interface MyServiceClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-

@@ -10,6 +10,7 @@
  * Original thrift service:-
  * DbMixedStackArguments
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/DbMixedStackArguments'))>>
 interface DbMixedStackArgumentsAsyncIf extends \IThriftAsyncIf {
   /**
    * Original thrift definition:-
@@ -30,6 +31,7 @@ interface DbMixedStackArgumentsAsyncIf extends \IThriftAsyncIf {
  * Original thrift service:-
  * DbMixedStackArguments
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/DbMixedStackArguments'))>>
 interface DbMixedStackArgumentsIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -50,6 +52,7 @@ interface DbMixedStackArgumentsIf extends \IThriftSyncIf {
  * Original thrift service:-
  * DbMixedStackArguments
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/DbMixedStackArguments'))>>
 interface DbMixedStackArgumentsAsyncClientIf extends DbMixedStackArgumentsAsyncIf {
 }
 
@@ -57,6 +60,7 @@ interface DbMixedStackArgumentsAsyncClientIf extends DbMixedStackArgumentsAsyncI
  * Original thrift service:-
  * DbMixedStackArguments
  */
+<<\ThriftTypeInfo(shape('uri' => 'test.dev/fixtures/basic/DbMixedStackArguments'))>>
 interface DbMixedStackArgumentsClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
