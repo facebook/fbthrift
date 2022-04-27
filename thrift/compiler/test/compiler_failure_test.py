@@ -1428,11 +1428,39 @@ class CompilerFailureTest(unittest.TestCase):
         )
 
         ret, out, err = self.run_thrift("--strict", "foo.thrift")
+        self.assertEqual(ret, 1)
         self.assertEqual(
             "\n" + err,
             textwrap.dedent(
                 """
                 [WARNING:foo.thrift:18] Using `NotAnAnnot` as an annotation, even though it has not been enabled for any annotation scope.
+                [FAILURE:foo.thrift:20] `FieldAnnot` cannot annotate `TestStruct`
+                [FAILURE:foo.thrift:22] `EnumAnnot` cannot annotate `TestStruct`
+                [FAILURE:foo.thrift:25] `StructAnnot` cannot annotate `test_field`
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("--legacy-strict", "foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            "\n" + err,
+            textwrap.dedent(
+                """
+                [WARNING:foo.thrift:18] Using `NotAnAnnot` as an annotation, even though it has not been enabled for any annotation scope.
+                [FAILURE:foo.thrift:20] `FieldAnnot` cannot annotate `TestStruct`
+                [FAILURE:foo.thrift:22] `EnumAnnot` cannot annotate `TestStruct`
+                [FAILURE:foo.thrift:25] `StructAnnot` cannot annotate `test_field`
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            "\n" + err,
+            textwrap.dedent(
+                """
                 [FAILURE:foo.thrift:20] `FieldAnnot` cannot annotate `TestStruct`
                 [FAILURE:foo.thrift:22] `EnumAnnot` cannot annotate `TestStruct`
                 [FAILURE:foo.thrift:25] `StructAnnot` cannot annotate `test_field`

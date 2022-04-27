@@ -84,7 +84,9 @@ void usage() {
       "  -I dir      Add a directory to the list of directories\n"
       "              searched for include directives\n");
   fprintf(stderr, "  -nowarn     Suppress all compiler warnings (BAD!)\n");
-  fprintf(stderr, "  -strict     Strict compiler warnings on\n");
+  fprintf(
+      stderr,
+      "  -legacy-strict     Strict compiler warnings on (DEPRECATED)\n");
   fprintf(stderr, "  -v[erbose]  Verbose mode\n");
   fprintf(stderr, "  -r[ecurse]  Also generate included files\n");
   fprintf(stderr, "  -debug      Parse debug trace to stdout\n");
@@ -200,7 +202,7 @@ std::string parseArgs(
     } else if (flag == "nowarn") {
       dparams.warn_level = g_warn = 0;
       nowarn = true;
-    } else if (flag == "strict") {
+    } else if (flag == "strict" || flag == "legacy-strict") {
       pparams.strict = 255;
       if (!nowarn) { // Don't override nowarn.
         dparams.warn_level = g_warn = 2;
