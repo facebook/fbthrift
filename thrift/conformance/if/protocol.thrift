@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+include "thrift/lib/thrift/type_rep.thrift"
+
 namespace cpp2 apache.thrift.conformance
 namespace php apache_thrift
 namespace py thrift.conformance.protocol
@@ -24,23 +26,10 @@ namespace java2 org.apache.thrift.conformance
 namespace java org.apache.thrift.conformance
 namespace go thrift.conformance.protocol
 
-// Standard protocols.
-enum StandardProtocol {
-  // Indicates a standard protocol is not being used.
-  Custom = 0,
-
-  // The standard protocols.
-  Binary = 1,
-  Compact = 2,
-  Json = 3,
-  SimpleJson = 4,
-}
-
 // A struct representation of a protocol.
-// TODO(afuller): Put this in another namespace or pick a better name.
 struct ProtocolStruct {
   // The standard protocol or StandardProtocol::Custom.
-  1: StandardProtocol standard;
+  1: type_rep.StandardProtocol standard;
   // The custom protocol, iff standard == StandardProtocol::Custom.
   2: optional string custom;
 }

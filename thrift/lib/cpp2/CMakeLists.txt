@@ -38,6 +38,7 @@ get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
 get_property(reflection-cpp2-SOURCES GLOBAL PROPERTY reflection-cpp2-SOURCES)
 get_property(RocketUpgrade-cpp2-SOURCES GLOBAL PROPERTY
   RocketUpgrade-cpp2-SOURCES)
+get_property(type_rep-cpp2-SOURCES GLOBAL PROPERTY type_rep-cpp2-SOURCES)
 get_property(type-cpp2-SOURCES GLOBAL PROPERTY type-cpp2-SOURCES)
 
 bypass_source_check("${api-cpp2-SOURCES}")
@@ -113,18 +114,33 @@ target_link_libraries(
     ${LIBGFLAGS_LIBRARY}
 )
 
+bypass_source_check("${type_rep-cpp2-SOURCES}")
+add_library(
+  thrifttyperep
+
+  ${type_rep-cpp2-SOURCES}
+)
+add_dependencies(thrifttyperep type_rep-cpp2-target thriftannotation)
+target_link_libraries(
+  thrifttyperep
+  PUBLIC
+    Folly::folly
+    thriftannotation
+)
+
 bypass_source_check("${type-cpp2-SOURCES}")
 add_library(
   thrifttype
 
   ${type-cpp2-SOURCES}
 )
-add_dependencies(thrifttype type-cpp2-target thriftannotation)
+add_dependencies(thrifttype type-cpp2-target thriftannotation thrifttyperep)
 target_link_libraries(
   thrifttype
   PUBLIC
     Folly::folly
     thriftannotation
+    thrifttyperep
 )
 
 bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
@@ -273,6 +289,8 @@ add_library(
   transport/rocket/server/RocketStreamClientCallback.cpp
   transport/rocket/server/RocketThriftRequests.cpp
   transport/rocket/server/ThriftRocketServerHandler.cpp
+  type/BaseType.cpp
+  type/Protocol.cpp
   type/UniversalName.cpp
   util/Checksum.cpp
   util/DebugString.cpp
@@ -288,6 +306,7 @@ add_dependencies(
   RocketUpgrade-cpp2-target
   thriftannotation
   thriftmetadata
+  thrifttyperep
   thrifttype
 )
 target_link_libraries(
@@ -299,6 +318,7 @@ target_link_libraries(
     thriftmetadata
     thriftfrozen2
     thriftprotocol
+    thrifttyperep
     thrifttype
 )
 
@@ -319,7 +339,7 @@ install(
 
 if (BUILD_SHARED_LIBS)
   set_target_properties(rpcmetadata thriftannotation thriftmetadata
-    thriftfrozen2 thriftprotocol thriftcpp2 thrifttype
+    thriftfrozen2 thriftprotocol thriftcpp2 thrifttyperep thrifttype
     PROPERTIES VERSION ${PACKAGE_VERSION}
     )
 endif()
@@ -330,6 +350,7 @@ install(
     thriftannotation
     thriftmetadata
     thriftfrozen2
+    thrifttyperep
     thrifttype
     thriftprotocol
     thriftcpp2

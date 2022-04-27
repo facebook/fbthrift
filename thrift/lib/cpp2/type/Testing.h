@@ -16,6 +16,8 @@
 
 #include <type_traits>
 
+#include <thrift/lib/cpp2/type/Protocol.h>
+
 namespace apache::thrift::test {
 
 namespace detail {
@@ -39,4 +41,15 @@ constexpr bool same_tag = same_type<Expected, Actual>;
 
 struct TestAdapter;
 
+// Creates a custom protocol, skipping validation.
+inline type::Protocol makeProtocol(std::string name) {
+  type::ProtocolUnion data;
+  data.custom_ref() = std::move(name);
+  return type::Protocol(std::move(data));
+}
+
+constexpr auto kUnknownStdProtocol = static_cast<type::StandardProtocol>(1000);
+inline const type::Protocol& UnknownProtocol() {
+  return type::Protocol::fromStandard<kUnknownStdProtocol>();
+}
 } // namespace apache::thrift::test

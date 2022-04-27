@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <thrift/conformance/if/gen-cpp2/protocol_types.h>
+#include <thrift/conformance/cpp2/Protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/JSONProtocol.h>

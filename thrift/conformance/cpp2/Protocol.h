@@ -21,8 +21,10 @@
 
 #include <folly/CPortability.h>
 #include <thrift/conformance/if/gen-cpp2/protocol_types.h>
+#include <thrift/lib/thrift/gen-cpp2/type_rep_types.h>
 
 namespace apache::thrift::conformance {
+using StandardProtocol = type::StandardProtocol;
 
 /**
  * A serialization protocol.

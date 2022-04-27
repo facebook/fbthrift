@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+include "thrift/lib/thrift/type_rep.thrift"
+
 namespace cpp2 apache.thrift.conformance
 namespace php apache_thrift
 namespace py thrift.conformance.any
@@ -27,8 +29,6 @@ namespace go thrift.conformance.any
 cpp_include "<folly/io/IOBuf.h>"
 cpp_include "<folly/FBString.h>"
 
-include "thrift/conformance/if/protocol.thrift"
-
 // Any encoded thrift value.
 struct Any {
   // The unique name for this type.
@@ -38,7 +38,7 @@ struct Any {
 
   // The standard protocol used or StandardProtocol::Custom.
   // Assumed to be StandardProtocol::Compact, if unset.
-  3: optional protocol.StandardProtocol protocol;
+  3: optional type_rep.StandardProtocol protocol;
   // The name of the custom protocol used, iff
   // protocol == StandardProtocol::Custom.
   4: optional string customProtocol;
