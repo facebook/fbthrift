@@ -16,15 +16,13 @@
 
 %><%^struct:deprecated_tag_incompatible?%><%#struct:thrift_uri%>
  private:
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
+  template <::std::underlying_type_t<::apache::thrift::FieldId> Id>
+  using __fbthrift_fid = std::integral_constant<::std::underlying_type_t<::apache::thrift::FieldId>, Id>;
   <%#struct:fields%>
-  template<> decltype(auto) __fbthrift_get<<%field:key%>>() &       { return <%field:cpp_name%>_ref(); }
-  template<> decltype(auto) __fbthrift_get<<%field:key%>>() const&  { return <%field:cpp_name%>_ref(); }
-  template<> decltype(auto) __fbthrift_get<<%field:key%>>() &&      { return std::move(*this).<%field:cpp_name%>_ref(); }
-  template<> decltype(auto) __fbthrift_get<<%field:key%>>() const&& { return std::move(*this).<%field:cpp_name%>_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<<%field:key%>>) &       { return <%field:cpp_name%>_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<<%field:key%>>) const&  { return <%field:cpp_name%>_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<<%field:key%>>) &&      { return std::move(*this).<%field:cpp_name%>_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<<%field:key%>>) const&& { return std::move(*this).<%field:cpp_name%>_ref(); }
   <%/struct:fields%>
 
  public:

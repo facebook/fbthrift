@@ -921,46 +921,44 @@ class YourStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_my_union), __isset.at(8), __isset.bit(8)};
   }
  private:
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() &&;
-  template<std::underlying_type_t<::apache::thrift::FieldId>> decltype(auto) __fbthrift_get() const&&;
-  template<> decltype(auto) __fbthrift_get<2>() &       { return majorVer_ref(); }
-  template<> decltype(auto) __fbthrift_get<2>() const&  { return majorVer_ref(); }
-  template<> decltype(auto) __fbthrift_get<2>() &&      { return std::move(*this).majorVer_ref(); }
-  template<> decltype(auto) __fbthrift_get<2>() const&& { return std::move(*this).majorVer_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() &       { return package_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() const&  { return package_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() &&      { return std::move(*this).package_ref(); }
-  template<> decltype(auto) __fbthrift_get<1>() const&& { return std::move(*this).package_ref(); }
-  template<> decltype(auto) __fbthrift_get<3>() &       { return annotation_with_quote_ref(); }
-  template<> decltype(auto) __fbthrift_get<3>() const&  { return annotation_with_quote_ref(); }
-  template<> decltype(auto) __fbthrift_get<3>() &&      { return std::move(*this).annotation_with_quote_ref(); }
-  template<> decltype(auto) __fbthrift_get<3>() const&& { return std::move(*this).annotation_with_quote_ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() &       { return class__ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() const&  { return class__ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() &&      { return std::move(*this).class__ref(); }
-  template<> decltype(auto) __fbthrift_get<4>() const&& { return std::move(*this).class__ref(); }
-  template<> decltype(auto) __fbthrift_get<5>() &       { return annotation_with_trailing_comma_ref(); }
-  template<> decltype(auto) __fbthrift_get<5>() const&  { return annotation_with_trailing_comma_ref(); }
-  template<> decltype(auto) __fbthrift_get<5>() &&      { return std::move(*this).annotation_with_trailing_comma_ref(); }
-  template<> decltype(auto) __fbthrift_get<5>() const&& { return std::move(*this).annotation_with_trailing_comma_ref(); }
-  template<> decltype(auto) __fbthrift_get<6>() &       { return empty_annotations_ref(); }
-  template<> decltype(auto) __fbthrift_get<6>() const&  { return empty_annotations_ref(); }
-  template<> decltype(auto) __fbthrift_get<6>() &&      { return std::move(*this).empty_annotations_ref(); }
-  template<> decltype(auto) __fbthrift_get<6>() const&& { return std::move(*this).empty_annotations_ref(); }
-  template<> decltype(auto) __fbthrift_get<7>() &       { return my_enum_ref(); }
-  template<> decltype(auto) __fbthrift_get<7>() const&  { return my_enum_ref(); }
-  template<> decltype(auto) __fbthrift_get<7>() &&      { return std::move(*this).my_enum_ref(); }
-  template<> decltype(auto) __fbthrift_get<7>() const&& { return std::move(*this).my_enum_ref(); }
-  template<> decltype(auto) __fbthrift_get<8>() &       { return cpp_type_annotation_ref(); }
-  template<> decltype(auto) __fbthrift_get<8>() const&  { return cpp_type_annotation_ref(); }
-  template<> decltype(auto) __fbthrift_get<8>() &&      { return std::move(*this).cpp_type_annotation_ref(); }
-  template<> decltype(auto) __fbthrift_get<8>() const&& { return std::move(*this).cpp_type_annotation_ref(); }
-  template<> decltype(auto) __fbthrift_get<9>() &       { return my_union_ref(); }
-  template<> decltype(auto) __fbthrift_get<9>() const&  { return my_union_ref(); }
-  template<> decltype(auto) __fbthrift_get<9>() &&      { return std::move(*this).my_union_ref(); }
-  template<> decltype(auto) __fbthrift_get<9>() const&& { return std::move(*this).my_union_ref(); }
+  template <::std::underlying_type_t<::apache::thrift::FieldId> Id>
+  using __fbthrift_fid = std::integral_constant<::std::underlying_type_t<::apache::thrift::FieldId>, Id>;
+  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) &       { return majorVer_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) const&  { return majorVer_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) &&      { return std::move(*this).majorVer_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) const&& { return std::move(*this).majorVer_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) &       { return package_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) const&  { return package_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) &&      { return std::move(*this).package_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) const&& { return std::move(*this).package_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<3>) &       { return annotation_with_quote_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<3>) const&  { return annotation_with_quote_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<3>) &&      { return std::move(*this).annotation_with_quote_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<3>) const&& { return std::move(*this).annotation_with_quote_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<4>) &       { return class__ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<4>) const&  { return class__ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<4>) &&      { return std::move(*this).class__ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<4>) const&& { return std::move(*this).class__ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<5>) &       { return annotation_with_trailing_comma_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<5>) const&  { return annotation_with_trailing_comma_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<5>) &&      { return std::move(*this).annotation_with_trailing_comma_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<5>) const&& { return std::move(*this).annotation_with_trailing_comma_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<6>) &       { return empty_annotations_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<6>) const&  { return empty_annotations_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<6>) &&      { return std::move(*this).empty_annotations_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<6>) const&& { return std::move(*this).empty_annotations_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<7>) &       { return my_enum_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<7>) const&  { return my_enum_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<7>) &&      { return std::move(*this).my_enum_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<7>) const&& { return std::move(*this).my_enum_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<8>) &       { return cpp_type_annotation_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<8>) const&  { return cpp_type_annotation_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<8>) &&      { return std::move(*this).cpp_type_annotation_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<8>) const&& { return std::move(*this).cpp_type_annotation_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<9>) &       { return my_union_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<9>) const&  { return my_union_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<9>) &&      { return std::move(*this).my_union_ref(); }
+  decltype(auto) __fbthrift_get(__fbthrift_fid<9>) const&& { return std::move(*this).my_union_ref(); }
 
  public:
 
