@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#pragma once
+
 #include <folly/synchronization/CallOnce.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
@@ -28,10 +30,10 @@ class ThriftServer;
 //
 // This is only for the purpose of ResourcePool migration,
 // This should not be used for any custom purpose
-class ExecutorToThreadManagerAdaptor : concurrency::ThreadManager {
+class ExecutorToThreadManagerAdaptor : public concurrency::ThreadManager {
  public:
   explicit ExecutorToThreadManagerAdaptor(
-      folly::Executor& ex, ThriftServer* server = nullptr)
+      folly::Executor& ex, const ThriftServer* server = nullptr)
       : ka_(folly::getKeepAliveToken(ex)), server_(server) {}
 
   // These are the only two interfaces that are implemented
@@ -154,7 +156,7 @@ class ExecutorToThreadManagerAdaptor : concurrency::ThreadManager {
 
  private:
   folly::Executor::KeepAlive<> ka_;
-  ThriftServer* server_;
+  const ThriftServer* server_;
   // logging should only be done once if any as
   // it's quite expensive
   static folly::once_flag recordFlag_;
