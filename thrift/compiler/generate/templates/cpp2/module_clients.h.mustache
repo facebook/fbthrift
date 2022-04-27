@@ -17,41 +17,46 @@
 %><% > Autogen%>
 #pragma once
 
-#include <thrift/lib/cpp2/gen/service_h.h>
+#include <thrift/lib/cpp2/gen/client_h.h>
 
-#include "<%service:include_prefix%><%service:name%>AsyncClient.h"
-#include "<%service:include_prefix%><%service:program_name%>_types.h"
-<%#service:extends%>
-#include "<%service:include_prefix%><%service:name%>.h"
-<%/service:extends%>
-<%#service:thrift_includes%>
+<%#program%>
 #include "<%program:include_prefix%><%program:name%>_types.h"
-<%/service:thrift_includes%>
-<%#service:cpp_includes%>
-#include <%cpp_include%>
-<%/service:cpp_includes%>
-<%^service:interactions?%>
-<%#service:streams?%>
-#include <thrift/lib/cpp2/async/ServerStream.h>
-<%/service:streams?%>
-<%#service:sinks?%>
-#include <thrift/lib/cpp2/async/Sink.h>
-<%/service:sinks?%>
-<%/service:interactions?%>
-<%#service:interactions?%>
-#include <thrift/lib/cpp2/async/ServerStream.h>
-#include <thrift/lib/cpp2/async/Sink.h>
-<%/service:interactions?%>
+<%#program:thrift_includes%>
+#include "<%program:include_prefix%><%program:name%>_clients.h"
+<%/program:thrift_includes%>
 
-namespace folly {
-  class IOBuf;
-  class IOBufQueue;
-}
+<%#program:cpp_includes%>
+// cpp_include's
+#include <%cpp_include%>
+<%/program:cpp_includes%>
+<%/program%>
+
+<%#any_sinks?%>
+// for sinks
+#include <thrift/lib/cpp2/async/ClientSinkBridge.h>
+#include <thrift/lib/cpp2/async/Sink.h>
+<%/any_sinks?%>
+
+<%#any_streams?%>
+// for streams
+#include <thrift/lib/cpp2/async/ClientBufferedStream.h>
+<%/any_streams?%>
+
+<%#any_interactions?%>
+// for interactions
+#include <thrift/lib/cpp2/async/ClientBufferedStream.h>
+#include <thrift/lib/cpp2/async/ClientSinkBridge.h>
+#include <thrift/lib/cpp2/async/Sink.h>
+<%/any_interactions?%>
+
 namespace apache { namespace thrift {
   class Cpp2RequestContext;
-  class BinaryProtocolReader;
-  class CompactProtocolReader;
+  namespace detail { namespace ac { struct ClientRequestContext; }}
   namespace transport { class THeader; }
 }}
 
-<% > service_h/handlers_h%>
+<%#services%>
+<% > service_h/async_client%>
+
+
+<%/services%>

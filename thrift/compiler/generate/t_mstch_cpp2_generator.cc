@@ -221,6 +221,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_structs(t_program const* program);
   void generate_out_of_line_service(t_service const* service);
   void generate_out_of_line_services(const std::vector<t_service*>& services);
+  void generate_inline_services(const std::vector<t_service*>& services);
 
   std::shared_ptr<cpp2_generator_context> context_;
   std::unordered_map<std::string, int32_t> client_name_to_split_count_;
@@ -2224,7 +2225,11 @@ void t_mstch_cpp2_generator::generate_program() {
   }
   generate_structs(program);
   generate_constants(program);
-  generate_out_of_line_services(program->services());
+  if (has_option("single_file_service")) {
+    generate_inline_services(program->services());
+  } else {
+    generate_out_of_line_services(program->services());
+  }
   generate_metadata(program);
   generate_visitation(program);
 }
@@ -2413,6 +2418,47 @@ void t_mstch_cpp2_generator::generate_out_of_line_services(
       context, "module_handlers_out_of_line.h", module_name + "_handlers.h");
   render_to_file(
       context, "module_clients_out_of_line.h", module_name + "_clients.h");
+}
+
+void t_mstch_cpp2_generator::generate_inline_services(
+    const std::vector<t_service*>& services) {
+  mstch::array service_contexts;
+  service_contexts.reserve(services.size());
+  for (t_service const* service : services) {
+    auto service_context = generators_->service_generator_->generate_cached(
+        get_program(), service, generators_, cache_);
+    service_contexts.push_back(std::move(service_context));
+  }
+  auto any_service_has_any_function = [&](auto&& predicate) -> bool {
+    return std::any_of(
+        services.cbegin(), services.cend(), [&](const t_service* service) {
+          auto funcs = service->functions();
+          return std::any_of(
+              funcs.cbegin(), funcs.cend(), [&](auto const& func) {
+                return predicate(func);
+              });
+        });
+  };
+  mstch::map context{
+      {"program", cached_program(get_program())},
+      {"any_sinks?",
+       any_service_has_any_function(std::mem_fn(&t_function::returns_sink))},
+      {"any_streams?",
+       any_service_has_any_function(std::mem_fn(&t_function::returns_stream))},
+      {"any_interactions?",
+       any_service_has_any_function([](const t_function& func) {
+         return func.is_interaction_constructor() ||
+             !func.returned_interaction().empty();
+       })},
+      {"services", std::move(service_contexts)},
+  };
+  const auto& module_name = get_program()->name();
+  render_to_file(context, "module_clients.h", module_name + "_clients.h");
+  render_to_file(context, "module_clients.cpp", module_name + "_clients.cpp");
+  render_to_file(
+      context, "module_handlers-inl.h", module_name + "_handlers-inl.h");
+  render_to_file(context, "module_handlers.h", module_name + "_handlers.h");
+  render_to_file(context, "module_handlers.cpp", module_name + "_handlers.cpp");
 }
 
 std::string t_mstch_cpp2_generator::get_cpp2_namespace(

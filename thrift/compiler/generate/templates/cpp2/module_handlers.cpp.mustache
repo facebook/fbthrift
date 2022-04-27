@@ -16,8 +16,16 @@
 
 %><% > Autogen%>
 
-#include "<%service:include_prefix%><%service:name%>AsyncClient.h"
+<%#program%>
+#include "<%program:include_prefix%><%program:name%>_handlers.h"
+#include "<%program:include_prefix%><%program:name%>_handlers-inl.h"
+#include "<%program:include_prefix%><%program:name%>_metadata.h"
+<%/program%>
 
-#include <thrift/lib/cpp2/gen/client_cpp.h>
+#include <thrift/lib/cpp2/gen/service_cpp.h>
 
-<% > service_cpp/async_client_cpp%>
+<%#services%>
+<% > service_cpp/handlers_cpp%>
+
+
+<%/services%>

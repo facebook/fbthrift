@@ -14,10 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><% > Autogen%>
+%><% > service_h/service_interface%>
 
-#include "<%service:include_prefix%><%service:name%>AsyncClient.h"
+<% > common/namespace_cpp2_begin%>
 
-#include <thrift/lib/cpp2/gen/client_cpp.h>
+<% > service_h/service_null%>
 
-<% > service_cpp/async_client_cpp%>
+
+<% > service_h/async_processor%>
+
+
+<% > common/namespace_cpp2_end%>

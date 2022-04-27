@@ -19,29 +19,33 @@
 
 #include <thrift/lib/cpp2/gen/service_h.h>
 
-#include "<%service:include_prefix%><%service:name%>AsyncClient.h"
-#include "<%service:include_prefix%><%service:program_name%>_types.h"
-<%#service:extends%>
-#include "<%service:include_prefix%><%service:name%>.h"
-<%/service:extends%>
-<%#service:thrift_includes%>
+<%#program%>
 #include "<%program:include_prefix%><%program:name%>_types.h"
-<%/service:thrift_includes%>
-<%#service:cpp_includes%>
+<%#program:thrift_includes%>
+#include "<%program:include_prefix%><%program:name%>_handlers.h"
+<%/program:thrift_includes%>
+
+<%#program:cpp_includes%>
+// cpp_include's
 #include <%cpp_include%>
-<%/service:cpp_includes%>
-<%^service:interactions?%>
-<%#service:streams?%>
-#include <thrift/lib/cpp2/async/ServerStream.h>
-<%/service:streams?%>
-<%#service:sinks?%>
+<%/program:cpp_includes%>
+<%/program%>
+
+<%#any_sinks?%>
+// for sinks
 #include <thrift/lib/cpp2/async/Sink.h>
-<%/service:sinks?%>
-<%/service:interactions?%>
-<%#service:interactions?%>
+<%/any_sinks?%>
+
+<%#any_streams?%>
+// for streams
+#include <thrift/lib/cpp2/async/ServerStream.h>
+<%/any_streams?%>
+
+<%#any_interactions?%>
+// for interactions
 #include <thrift/lib/cpp2/async/ServerStream.h>
 #include <thrift/lib/cpp2/async/Sink.h>
-<%/service:interactions?%>
+<%/any_interactions?%>
 
 namespace folly {
   class IOBuf;
@@ -54,4 +58,8 @@ namespace apache { namespace thrift {
   namespace transport { class THeader; }
 }}
 
+<%#services%>
 <% > service_h/handlers_h%>
+
+
+<%/services%>

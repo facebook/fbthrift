@@ -21,13 +21,4 @@
 
 #include <thrift/lib/cpp2/gen/service_tcc.h>
 
-<% > common/namespace_cpp2_begin%>
-
-<% > service_common/typedefs%>
-<% > service_tcc/process_and_return%>
-
-<%#service:interactions%>
-<% > service_common/typedefs%>
-<% > service_tcc/process_and_return%>
-<%/service:interactions%>
-<% > common/namespace_cpp2_end%>
+<% > service_cpp/service_inl%>
