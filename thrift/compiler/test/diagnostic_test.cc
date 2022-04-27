@@ -16,14 +16,12 @@
 
 #include <thrift/compiler/diagnostic.h>
 
+#include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 
-namespace apache::thrift::compiler {
-namespace {
+using namespace apache::thrift::compiler;
 
-class DiagnosticTest : public ::testing::Test {};
-
-TEST_F(DiagnosticTest, Str) {
+TEST(DiagnosticTest, Str) {
   EXPECT_EQ(
       diagnostic(diagnostic_level::debug, "m", "f", 1, "t").str(),
       "[DEBUG:f:1] m");
@@ -38,9 +36,45 @@ TEST_F(DiagnosticTest, Str) {
       diagnostic(diagnostic_level::warning, "m", "").str(), "[WARNING:] m");
 }
 
-class DiagnosticResultsTest : public ::testing::Test {};
+class DiagnosticsEngineTest : public ::testing::Test {
+ public:
+  source_manager source_mgr;
+  diagnostic_results results;
+  diagnostics_engine diags;
+  source src;
 
-TEST_F(DiagnosticResultsTest, Empty) {
+  DiagnosticsEngineTest()
+      : diags(source_mgr, results),
+        src(source_mgr.add_string("path/to/file.thrift", "")) {}
+};
+
+TEST_F(DiagnosticsEngineTest, KeepDebug) {
+  // Not reported by default.
+  diags.report(src.start, diagnostic_level::debug, "hi");
+  EXPECT_THAT(results.diagnostics(), testing::IsEmpty());
+
+  diags.params().debug = true;
+  diags.report(src.start, diagnostic_level::debug, "hi");
+  EXPECT_THAT(
+      results.diagnostics(),
+      testing::ElementsAre(
+          diagnostic(diagnostic_level::debug, "hi", "path/to/file.thrift", 1)));
+}
+
+TEST_F(DiagnosticsEngineTest, KeepInfo) {
+  // Not reported by default.
+  diags.report(src.start, diagnostic_level::info, "hi");
+  EXPECT_THAT(results.diagnostics(), ::testing::IsEmpty());
+
+  diags.params().info = true;
+  diags.report(src.start, diagnostic_level::info, "hi");
+  EXPECT_THAT(
+      results.diagnostics(),
+      ::testing::ElementsAre(
+          diagnostic(diagnostic_level::info, "hi", "path/to/file.thrift", 1)));
+}
+
+TEST(DiagnosticResultsTest, Empty) {
   diagnostic_results results;
   EXPECT_FALSE(results.has_failure());
   for (int i = 0; i <= static_cast<int>(diagnostic_level::debug); ++i) {
@@ -48,7 +82,7 @@ TEST_F(DiagnosticResultsTest, Empty) {
   }
 }
 
-TEST_F(DiagnosticResultsTest, Count) {
+TEST(DiagnosticResultsTest, Count) {
   diagnostic_results results;
   for (int i = 0; i <= static_cast<int>(diagnostic_level::debug); ++i) {
     auto level = static_cast<diagnostic_level>(i);
@@ -60,6 +94,3 @@ TEST_F(DiagnosticResultsTest, Count) {
     EXPECT_EQ(results.count(static_cast<diagnostic_level>(i)), i + 1);
   }
 }
-
-} // namespace
-} // namespace apache::thrift::compiler

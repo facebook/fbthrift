@@ -63,6 +63,11 @@ class lexer {
     return {location(token_start_), location(ptr_)};
   }
 
+  // Returns the string representation of the last token reported via
+  // `get_next_token` or `lex_handler`. If no token has been reported returns
+  // an empty string.
+  std::string token_text() const { return {token_start_, ptr_}; }
+
   void start_token() { token_start_ = ptr_; }
 
   // Reports a failure if the parsed value cannot fit in the widest supported
@@ -90,11 +95,10 @@ class lexer {
 
   yy::parser::symbol_type get_next_token();
 
-  // Returns the current source location.
+  // Returns the current source location. If a token has been returned via
+  // `get_next_token` or `lex_handler` the returned location points one past
+  // the end of this token. Otherwise it points to the source start.
   source_location location() const { return location(ptr_); }
-
-  // Returns the current token as a string.
-  std::string token_text() const { return {token_start_, ptr_}; }
 };
 
 } // namespace compiler

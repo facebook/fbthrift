@@ -43,30 +43,6 @@ class DiagnosticContextTest : public ::testing::Test {
   t_program program_;
 };
 
-TEST_F(DiagnosticContextTest, KeepDebug) {
-  ctx_.debug(0, "", "hi");
-  // Not reported by default.
-  EXPECT_THAT(results_.diagnostics(), ::testing::IsEmpty());
-  ctx_.params().debug = true;
-  ctx_.debug(0, "", "hi");
-  EXPECT_THAT(
-      results_.diagnostics(),
-      ::testing::ElementsAre(
-          diagnostic{diagnostic_level::debug, "hi", "path/to/file.thrift"}));
-}
-
-TEST_F(DiagnosticContextTest, KeepInfo) {
-  ctx_.info(0, "", "hi");
-  // Not reported by default.
-  EXPECT_THAT(results_.diagnostics(), ::testing::IsEmpty());
-  ctx_.params().info = true;
-  ctx_.info(0, "", "hi");
-  EXPECT_THAT(
-      results_.diagnostics(),
-      ::testing::ElementsAre(
-          diagnostic{diagnostic_level::info, "hi", "path/to/file.thrift"}));
-}
-
 TEST_F(DiagnosticContextTest, WarningLevel) {
   // Strict not reported by default.
   ctx_.warning(0, "", "hi");
@@ -94,38 +70,7 @@ TEST_F(DiagnosticContextTest, WarningLevel) {
           diagnostic{diagnostic_level::warning, "bye", "path/to/file.thrift"}));
 }
 
-TEST_F(DiagnosticContextTest, NodeInfo) {
-  ctx_.info(program_, "hi");
-  // Not reported by default.
-  EXPECT_THAT(results_.diagnostics(), ::testing::IsEmpty());
-  ctx_.params().info = true;
-  ctx_.info(program_, "hi");
-  EXPECT_THAT(
-      results_.diagnostics(),
-      ::testing::ElementsAre(
-          diagnostic{diagnostic_level::info, "hi", "path/to/file.thrift", -1}));
-}
-
-TEST_F(DiagnosticContextTest, NodeInfoWithName) {
-  ctx_.info("DiagName", program_, "hi");
-  // Not reported by default.
-  EXPECT_THAT(results_.diagnostics(), ::testing::IsEmpty());
-  ctx_.params().info = true;
-  ctx_.info("DiagName", program_, "hi");
-  EXPECT_THAT(
-      results_.diagnostics(),
-      ::testing::ElementsAre(diagnostic{
-          diagnostic_level::info,
-          "hi",
-          "path/to/file.thrift",
-          -1,
-          "",
-          "DiagName"}));
-}
-
-class NodeMetadataCacheTest : public ::testing::Test {};
-
-TEST_F(NodeMetadataCacheTest, Cache) {
+TEST(NodeMetadataCacheTest, Cache) {
   node_metadata_cache cache;
   EXPECT_EQ(cache.get<int>(t_base_type::t_bool()), 0);
   EXPECT_EQ(

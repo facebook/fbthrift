@@ -94,8 +94,8 @@ int parsing_driver::get_lineno(source_location loc) {
                                   : 0;
 }
 
-std::string parsing_driver::get_text() const {
-  return lexer_->token_text();
+source_location parsing_driver::location() const {
+  return lexer_->location();
 }
 
 std::unique_ptr<t_program_bundle> parsing_driver::parse() {
@@ -125,15 +125,17 @@ void parsing_driver::parse_file() {
     lexer_ = std::make_unique<lexer>(
         *lex_handler_, ctx_, source_mgr_->add_file(path));
     reset_locations();
-  } catch (std::runtime_error const& ex) {
+  } catch (const std::runtime_error& ex) {
     end_parsing(ex.what());
   }
 
   // Create new scope and scan for includes
-  verbose("Scanning {} for includes\n", path);
+  info("Scanning {} for includes\n", path);
   mode = parsing_mode::INCLUDES;
   try {
-    end_parsing_if(parser_->parse() != 0, "Parser error during include pass.");
+    if (parser_->parse() != 0) {
+      end_parsing("Parser error during include pass.");
+    }
   } catch (const std::string& x) {
     end_parsing(x);
   }
@@ -148,12 +150,12 @@ void parsing_driver::parse_file() {
   for (auto included_program : includes) {
     circular_deps_.insert(path);
 
-    // Fail on circular dependencies
-    end_parsing_if(
-        circular_deps_.count(included_program->path()), [&](auto& o) {
-          o << "Circular dependency found: file `" << included_program->path()
-            << "` is already parsed.";
-        });
+    // Fail on circular dependencies.
+    if (circular_deps_.count(included_program->path()) != 0) {
+      end_parsing(fmt::format(
+          "Circular dependency found: file `{}` is already parsed.",
+          included_program->path()));
+    }
 
     // This must be after the previous circular include check, since the emitted
     // error message above is supposed to reference the parent file name.
@@ -188,9 +190,11 @@ void parsing_driver::parse_file() {
   }
 
   mode = parsing_mode::PROGRAM;
-  verbose("Parsing {} for types\n", path);
+  info("Parsing {} for types\n", path);
   try {
-    end_parsing_if(parser_->parse() != 0, "Parser error during types pass.");
+    if (parser_->parse() != 0) {
+      end_parsing("Parser error during types pass.");
+    }
   } catch (const std::string& x) {
     end_parsing(x);
   }
@@ -229,9 +233,8 @@ std::string parsing_driver::find_include_file(const std::string& filename) {
     try {
       return boost::filesystem::canonical(path).string();
     } catch (const boost::filesystem::filesystem_error& e) {
-      end_parsing([&](auto& o) {
-        o << "Could not find file: " << filename << ". Error: " << e.what();
-      });
+      end_parsing(fmt::format(
+          "Could not find file: {}. Error: {}", filename, e.what()));
     }
   }
 
@@ -248,32 +251,29 @@ std::string parsing_driver::find_include_file(const std::string& filename) {
     }
     if (boost::filesystem::exists(sfilename)) {
       return sfilename.string();
-    } else {
-      debug("Could not find: {}.", filename);
     }
+    debug("Could not find: {}.", filename);
   }
   // File was not found
-  end_parsing(
-      [&](auto& o) { o << "Could not find include file " << filename; });
+  end_parsing(fmt::format("Could not find include file {}", filename));
 }
 
 void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
   if (scope_cache->is_ambiguous_enum_value(name)) {
     std::string possible_enums =
         scope_cache->get_fully_qualified_enum_value_names(name).c_str();
-    std::string msg = "The ambiguous enum `" + name +
-        "` is defined in more than one place. " +
-        "Please refer to this enum using ENUM_NAME.ENUM_VALUE.";
-    if (!possible_enums.empty()) {
-      msg += (" Possible options: " + possible_enums);
-    }
-    warning(msg);
+    warning(
+        location(),
+        "The ambiguous enum `{}` is defined in more than one place. "
+        "Please refer to this enum using ENUM_NAME.ENUM_VALUE.{}",
+        name,
+        possible_enums.empty() ? "" : " Possible options: " + possible_enums);
   }
 }
 
 void parsing_driver::clear_doctext() {
   if (doctext && mode == parsing_mode::PROGRAM) {
-    warning_legacy_strict([&](auto& o) {
+    ctx_.warning_legacy_strict([&](auto& o) {
       o << "Uncaptured doctext at on line " << doctext_lineno << ".";
     });
   }
@@ -434,13 +434,12 @@ bool parsing_driver::require_experimental_feature(const char* feature) {
   assert(feature != std::string("all"));
   if (params.allow_experimental_features.count("all") ||
       params.allow_experimental_features.count(feature)) {
-    warning_legacy_strict([&](auto& o) {
+    ctx_.warning_legacy_strict([&](auto& o) {
       o << "'" << feature << "' is an experimental feature.";
     });
     return true;
   }
-  failure(
-      [&](auto& o) { o << "'" << feature << "' is an experimental feature."; });
+  failure(location(), "'{}' is an experimental feature.", feature);
   return false;
 }
 
@@ -600,10 +599,13 @@ t_type_ref parsing_driver::new_type_ref(
   if (type == nullptr) {
     // TODO(afuller): Remove this special case for const, which requires a
     // specific declaration order.
-    failure_if(is_const, [&](auto& o) {
-      o << "The type '" << name << "' is not defined yet. Types must be "
-        << "defined before the usage in constant values.";
-    });
+    if (is_const) {
+      failure(
+          location(),
+          "The type '{}' is not defined yet. Types must be "
+          "defined before the usage in constant values.",
+          name);
+    }
     // TODO(afuller): Why are interactions special? They should just be another
     // declared type.
     type = scope_cache->find_interaction(name);
@@ -694,8 +696,14 @@ void parsing_driver::set_package(std::string name) {
   if (mode != parsing_mode::PROGRAM) {
     return;
   }
-  failure_if(!program->package().empty(), "Package already specified.");
-  try_or_failure([&] { program->set_package(t_package{std::move(name)}); });
+  if (!program->package().empty()) {
+    failure(location(), "Package already specified.");
+  }
+  try {
+    program->set_package(t_package(std::move(name)));
+  } catch (const std::exception& e) {
+    failure(location(), "{}", e.what());
+  }
 }
 
 const t_type* parsing_driver::add_unnamed_typedef(
@@ -791,9 +799,10 @@ std::unique_ptr<t_const_value> parsing_driver::to_const_value(
     int64_t int_const) {
   if (mode == parsing_mode::PROGRAM && !params.allow_64bit_consts &&
       (int_const < INT32_MIN || int_const > INT32_MAX)) {
-    warning([&](auto& o) {
-      o << "64-bit constant " << int_const << " may not work in all languages";
-    });
+    warning(
+        location(),
+        "64-bit constant {} may not work in all languages",
+        int_const);
   }
 
   auto node = std::make_unique<t_const_value>();
@@ -804,15 +813,15 @@ std::unique_ptr<t_const_value> parsing_driver::to_const_value(
 int64_t parsing_driver::to_int(uint64_t val, bool negative) {
   constexpr uint64_t i64max = std::numeric_limits<int64_t>::max();
   if (negative) {
-    failure_if(mode == parsing_mode::PROGRAM && val > i64max + 1, [&](auto& o) {
-      o << "integer constant -" << val << " is too small";
-    });
+    if (mode == parsing_mode::PROGRAM && val > i64max + 1) {
+      failure(location(), "integer constant -{} is too small", val);
+    }
     return -val;
   }
 
-  failure_if(mode == parsing_mode::PROGRAM && val > i64max, [&](auto& o) {
-    o << "integer constant " << val << " is too large";
-  });
+  if (mode == parsing_mode::PROGRAM && val > i64max) {
+    failure(location(), "integer constant {} is too large", val);
+  }
   return val;
 }
 
@@ -842,9 +851,7 @@ const t_service* parsing_driver::find_service(const std::string& name) {
     if (auto* result = scope_cache->find_service(scoped_name(name))) {
       return result;
     }
-    failure([&](auto& o) {
-      o << "Service \"" << name << "\" has not been defined.";
-    });
+    failure(location(), "Service \"{}\" has not been defined.", name);
   }
   return nullptr;
 }
@@ -877,10 +884,11 @@ std::unique_ptr<t_const_value> parsing_driver::copy_const_value(
 
   // TODO(afuller): Make this an error.
   if (mode == parsing_mode::PROGRAM) {
-    warning([&](auto& o) {
-      o << "The identifier '" << name << "' is not defined yet. Constansts and "
-        << "enums should be defined before using them as default values.";
-    });
+    warning(
+        location(),
+        "The identifier '{}' is not defined yet. Constants and enums should "
+        "be defined before using them as default values.",
+        name);
   }
   return std::make_unique<t_const_value>(name);
 }
@@ -892,10 +900,10 @@ void parsing_driver::set_parsed_definition() {
 }
 
 void parsing_driver::validate_header_location() {
-  failure_if(
-      programs_that_parsed_definition_.find(program->path()) !=
-          programs_that_parsed_definition_.end(),
-      "Headers must be specified before definitions.");
+  if (programs_that_parsed_definition_.find(program->path()) !=
+      programs_that_parsed_definition_.end()) {
+    failure(location(), "Headers must be specified before definitions.");
+  }
 }
 
 void parsing_driver::validate_header_annotations(
@@ -903,13 +911,14 @@ void parsing_driver::validate_header_annotations(
     std::unique_ptr<t_annotations> annotations) {
   // Ideally the failures below have to be handled by a grammar, but it's not
   // expressive enough to avoid conflicts when doing so.
-  failure_if(
-      statement_attrs != nullptr &&
-          statement_attrs->struct_annotations.get() != nullptr,
-      "Structured annotations are not supported for a given entity.");
-  failure_if(
-      annotations != nullptr,
-      "Annotations are not supported for a given entity.");
+  if (statement_attrs && statement_attrs->struct_annotations.get()) {
+    failure(
+        location(),
+        "Structured annotations are not supported for a given entity.");
+  }
+  if (annotations) {
+    failure(location(), "Annotations are not supported for a given entity.");
+  }
 }
 
 void parsing_driver::set_program_annotations(

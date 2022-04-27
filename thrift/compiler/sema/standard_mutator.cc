@@ -115,11 +115,12 @@ void mutate_merge_from(
   }
 
   std::string type_string;
-  if (ctx.try_or_failure([&]() {
-        type_string =
-            merge_from_annotation->get_value_from_structured_annotation("type")
-                .get_string();
-      })) {
+  try {
+    type_string =
+        merge_from_annotation->get_value_from_structured_annotation("type")
+            .get_string();
+  } catch (const std::exception& e) {
+    ctx.failure([&](auto& o) { o << e.what(); });
     return;
   }
   // If the specified type and annotation are from the same program, append

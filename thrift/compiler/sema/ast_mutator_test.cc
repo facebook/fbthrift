@@ -36,7 +36,7 @@ TEST_F(AstMutatorTest, Output) {
   mutator.add_program_visitor([](diagnostic_context& ctx,
                                  mutator_context& mctx,
                                  t_program& program) {
-    ctx.info(program, "test");
+    ctx.report(diagnostic_level::info, program, "test");
     EXPECT_EQ(mctx.current(), &program);
     EXPECT_EQ(mctx.parent(), nullptr);
     EXPECT_EQ(mctx.root(), &program);

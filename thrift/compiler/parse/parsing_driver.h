@@ -41,6 +41,7 @@
 #include <thrift/compiler/ast/t_program_bundle.h>
 #include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_union.h>
+#include <thrift/compiler/diagnostic.h>
 #include <thrift/compiler/parse/t_ref.h>
 #include <thrift/compiler/source_location.h>
 
@@ -129,7 +130,12 @@ class parsing_driver {
   std::unique_ptr<lex_handler_impl> lex_handler_;
   std::unique_ptr<lexer> lexer_;
 
-  std::string get_text() const;
+  // Bison's semantic and location objects.
+  int yylval_ = 0;
+  source_range yylloc_;
+
+  // Returns the current source location, see lexer::location.
+  source_location location() const;
 
  public:
   parsing_params params;
@@ -186,81 +192,37 @@ class parsing_driver {
    */
   std::unique_ptr<t_program_bundle> parse();
 
-  /**
-   * Bison's type.
-   */
-  using YYSTYPE = int;
-  YYSTYPE yylval_ = 0;
-
-  source_range yylloc_;
-
-  /**
-   * Diagnostic message callbacks.
-   */
-  // TODO(afuller): Remove these, and have the parser call the functions on ctx_
-  // directly.
+  // Reports a debug diagnostic at the current location.
   template <typename... T>
-  void debug(fmt::format_string<T...> fmt, T&&... args) {
-    ctx_.debug(
-        get_lineno(), get_text(), fmt::format(fmt, std::forward<T>(args)...));
-  }
-
-  template <typename... T>
-  void verbose(fmt::format_string<T...> fmt, T&&... args) {
-    ctx_.info(
-        get_lineno(), get_text(), fmt::format(fmt, std::forward<T>(args)...));
-  }
-
-  template <typename... Args>
-  void yyerror(Args&&... args) {
+  void debug(fmt::format_string<T...> msg, T&&... args) {
     ctx_.report(
-        diagnostic_level::parse_error,
-        get_lineno(),
-        get_text(),
-        std::forward<Args>(args)...);
+        location(), diagnostic_level::debug, msg, std::forward<T>(args)...);
   }
 
-  template <typename... Args>
-  void warning(Args&&... args) {
-    ctx_.warning(get_lineno(), get_text(), std::forward<Args>(args)...);
+  // Reports an info diagnostic at the current location.
+  template <typename... T>
+  void info(fmt::format_string<T...> msg, T&&... args) {
+    ctx_.report(
+        location(), diagnostic_level::info, msg, std::forward<T>(args)...);
   }
 
-  template <typename... Args>
-  void warning_legacy_strict(Args&&... args) {
-    ctx_.warning_legacy_strict(
-        get_lineno(), get_text(), std::forward<Args>(args)...);
+  template <typename... T>
+  void warning(source_location loc, fmt::format_string<T...> msg, T&&... args) {
+    ctx_.report(loc, diagnostic_level::warning, msg, std::forward<T>(args)...);
   }
 
-  template <typename... Args>
-  void failure(Args&&... args) {
-    ctx_.failure(get_lineno(), get_text(), std::forward<Args>(args)...);
+  void parse_error(source_location loc, fmt::string_view msg) {
+    ctx_.report(loc, diagnostic_level::parse_error, "{}", msg);
   }
 
-  template <typename... Args>
-  bool failure_if(bool cond, Args&&... args) {
-    if (cond) {
-      failure(std::forward<Args>(args)...);
-    }
-    return cond;
+  template <typename... T>
+  void failure(source_location loc, fmt::format_string<T...> msg, T&&... args) {
+    ctx_.report(loc, diagnostic_level::failure, msg, std::forward<T>(args)...);
   }
 
-  template <typename... Args>
-  bool try_or_failure(Args&&... args) {
-    return ctx_.try_or_failure(
-        get_lineno(), get_text(), std::forward<Args>(args)...);
-  }
-
-  template <typename... Args>
-  [[noreturn]] void end_parsing(Args&&... args) {
-    failure(std::forward<Args>(args)...);
+  [[noreturn]] void end_parsing(fmt::string_view msg) {
+    failure(location(), "{}", msg);
     end_parsing();
-  }
-
-  template <typename... Args>
-  void end_parsing_if(Args&&... args) {
-    if (failure_if(std::forward<Args>(args)...)) {
-      end_parsing();
-    }
   }
 
   [[noreturn]] void end_parsing();
@@ -320,22 +282,21 @@ class parsing_driver {
 
   void reset_locations();
 
-  // Get the location of the whole grouping from the locations of the
-  // subexpressions
+  // Computes an enclosing source range for a group of ranges.
   //
   // For a given grammar node, some subexpressions might not exist.
-  // For example, user can omit qualifier when defining a field.
+  // For example, a user can omit qualifier when defining a field.
   // We need to skip locations of such nodes.
-  static source_range compute_location(std::vector<source_range> locations) {
-    assert(!locations.empty());
+  static source_range compute_location(std::vector<source_range> ranges) {
+    assert(!ranges.empty());
     auto empty = [](const source_range& loc) { return loc.begin == loc.end; };
-    auto iter = std::remove_if(locations.begin(), locations.end(), empty);
-    if (iter == locations.begin()) {
-      // The whole grammar node is empty
-      return locations[0];
+    auto iter = std::remove_if(ranges.begin(), ranges.end(), empty);
+    if (iter == ranges.begin()) {
+      // The whole grammar node is empty.
+      return ranges[0];
     }
 
-    return {locations[0].begin, (iter - 1)->end};
+    return {ranges[0].begin, (iter - 1)->end};
   }
 
   // Populate the annotation on the given node.
@@ -461,13 +422,16 @@ class parsing_driver {
   template <typename T>
   T narrow_int(int64_t int_const, const char* name) {
     using limits = std::numeric_limits<T>;
-    failure_if(
-        mode == parsing_mode::PROGRAM &&
-            (int_const < limits::min() || int_const > limits::max()),
-        [&](auto& o) {
-          o << "Integer constant (" << int_const << ") outside the range of "
-            << name << " ([" << limits::min() << ", " << limits::max() << "]).";
-        });
+    if (mode == parsing_mode::PROGRAM &&
+        (int_const < limits::min() || int_const > limits::max())) {
+      failure(
+          location(),
+          "Integer constant {} outside the range of {} ([{}, {}]).",
+          int_const,
+          name,
+          limits::min(),
+          limits::max());
+    }
     return int_const;
   }
 };

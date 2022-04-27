@@ -469,9 +469,10 @@ void validate_adapter_annotation(diagnostic_context& ctx, const t_named& node) {
     return;
   }
 
-  if (ctx.try_or_failure([&]() {
-        adapter_annotation->get_value_from_structured_annotation("name");
-      })) {
+  try {
+    adapter_annotation->get_value_from_structured_annotation("name");
+  } catch (const std::exception& e) {
+    ctx.failure([&](auto& o) { o << e.what(); });
     return;
   }
 
@@ -507,10 +508,12 @@ void validate_box_annotation(
   }
 
   for (const auto& field : node.fields()) {
-    ctx.warning_if(field.has_annotation({"cpp.box", "thrift.box"}), [&](auto& o) {
-      o << "Cpp.box and thrift.box are deprecated. Please use @thrift.Box annotation instead in `"
-        << field.name() << "`.";
-    });
+    if (field.has_annotation({"cpp.box", "thrift.box"})) {
+      ctx.warning([&](auto& o) {
+        o << "Cpp.box and thrift.box are deprecated. Please use @thrift.Box annotation instead in `"
+          << field.name() << "`.";
+      });
+    }
   }
 }
 

@@ -482,11 +482,13 @@ compile_result compile(const std::vector<std::string>& arguments) {
   // Generate it!
   g_stage = "generation";
   ctx.begin_visit(*program->root_program());
-  ctx.try_or_failure(*program->root_program(), [&]() {
+  try {
     if (generate(gparams, program->root_program())) {
       result.retcode = compile_retcode::success;
     }
-  });
+  } catch (const std::exception& e) {
+    ctx.failure(*program->root_program(), [&](auto& o) { o << e.what(); });
+  }
   ctx.end_visit(*program->root_program());
   return result;
 }

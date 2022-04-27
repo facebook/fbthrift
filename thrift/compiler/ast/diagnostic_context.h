@@ -215,27 +215,6 @@ class diagnostic_context : public diagnostics_engine,
     assert(current() != nullptr);
     report(level, current()->lineno(), {}, std::forward<With>(with));
   }
-  template <typename... Args>
-  bool report_if(bool cond, Args&&... args) {
-    if (cond) {
-      report(std::forward<Args>(args)...);
-    }
-    return cond;
-  }
-  template <typename E = std::exception, typename F>
-  bool try_or_report(diagnostic_level level, F&& func) {
-    return try_or_report_impl<E>(std::forward<F>(func), level);
-  }
-  template <typename E = std::exception, typename F>
-  bool try_or_report(diagnostic_level level, const t_node& node, F&& func) {
-    return try_or_report_impl<E>(std::forward<F>(func), level, node);
-  }
-  template <typename E = std::exception, typename F>
-  bool try_or_report(
-      diagnostic_level level, int lineno, std::string token, F&& func) {
-    return try_or_report_impl<E>(
-        std::forward<F>(func), level, lineno, std::move(token));
-  }
 
   template <typename... Args>
   void failure(Args&&... args) {
@@ -243,13 +222,10 @@ class diagnostic_context : public diagnostics_engine,
   }
   template <typename... Args>
   bool failure_if(bool cond, Args&&... args) {
-    return report_if(
-        cond, diagnostic_level::failure, std::forward<Args>(args)...);
-  }
-  template <typename E = std::exception, typename... Args>
-  bool try_or_failure(Args&&... args) {
-    return try_or_report<E>(
-        diagnostic_level::failure, std::forward<Args>(args)...);
+    if (cond) {
+      report(diagnostic_level::failure, std::forward<Args>(args)...);
+    }
+    return cond;
   }
   template <typename... Args>
   void check(bool cond, Args&&... args) {
@@ -260,16 +236,6 @@ class diagnostic_context : public diagnostics_engine,
   void warning(Args&&... args) {
     report(diagnostic_level::warning, std::forward<Args>(args)...);
   }
-  template <typename... Args>
-  bool warning_if(bool cond, Args&&... args) {
-    return report_if(
-        cond, diagnostic_level::warning, std::forward<Args>(args)...);
-  }
-  template <typename E = std::exception, typename... Args>
-  bool try_or_warning(Args&&... args) {
-    return try_or_report<E>(
-        diagnostic_level::warning, std::forward<Args>(args)...);
-  }
 
   template <typename... Args>
   void warning_legacy_strict(Args&&... args) {
@@ -278,37 +244,9 @@ class diagnostic_context : public diagnostics_engine,
     }
     warning(std::forward<Args>(args)...);
   }
-  template <typename... Args>
-  void info(Args&&... args) {
-    report(diagnostic_level::info, std::forward<Args>(args)...);
-  }
-  template <typename... Args>
-  void info_if(bool cond, Args&&... args) {
-    report_if(cond, diagnostic_level::info, std::forward<Args>(args)...);
-  }
-
-  template <typename... Args>
-  void debug(Args&&... args) {
-    report(diagnostic_level::debug, std::forward<Args>(args)...);
-  }
-  template <typename... Args>
-  void debug_if(bool cond, Args&&... args) {
-    report_if(cond, diagnostic_level::debug, std::forward<Args>(args)...);
-  }
 
  private:
   node_metadata_cache cache_;
-
-  template <typename E, typename F, typename... Args>
-  bool try_or_report_impl(F&& func, Args&&... args) {
-    try {
-      func();
-      return false;
-    } catch (const E& e) {
-      report(std::forward<Args>(args)..., e.what());
-    }
-    return true;
-  }
 };
 
 } // namespace compiler

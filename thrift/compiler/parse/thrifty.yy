@@ -1217,12 +1217,8 @@ IntOrLiteral:
 
 %%
 
-/**
- * Method that will be called by the generated parser upon errors.
- */
-void apache::thrift::compiler::yy::parser::error(const location_type&, std::string const& message) {
-  /*
-   * TODO(urielrivas): Pass the location as argument to yyerror.
-   */
-  driver.yyerror(message);
+// Method called on parse errors.
+void apache::thrift::compiler::yy::parser::error(
+    const source_range& range, const std::string& message) {
+  driver.parse_error(range.begin, message);
 }

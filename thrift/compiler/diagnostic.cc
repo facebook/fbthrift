@@ -81,12 +81,15 @@ void diagnostics_engine::do_report(
   if (!params_.should_report(level)) {
     return;
   }
-  auto resolved_loc = resolved_location(loc, *source_mgr_);
+  std::string file_name;
+  unsigned line = 0;
+  if (loc != source_location()) {
+    auto resolved_loc = resolved_location(loc, *source_mgr_);
+    file_name = resolved_loc.file_name();
+    line = resolved_loc.line();
+  }
   report_cb_(
-      {level,
-       std::move(msg),
-       std::string(resolved_loc.file_name()),
-       static_cast<int>(resolved_loc.line())});
+      {level, std::move(msg), std::move(file_name), static_cast<int>(line)});
 }
 
 } // namespace compiler

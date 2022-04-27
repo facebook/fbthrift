@@ -46,7 +46,7 @@ TEST_F(AstValidatorTest, Output) {
   ast_validator validator;
   validator.add_program_visitor(
       [](diagnostic_context& ctx, const t_program& program) {
-        ctx.info(program, "test");
+        ctx.report(diagnostic_level::info, program, "test");
       });
 
   t_program program("path/to/program.thrift");
