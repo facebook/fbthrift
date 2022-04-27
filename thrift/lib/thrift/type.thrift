@@ -22,6 +22,7 @@ cpp_include "<folly/io/IOBuf.h>"
 cpp_include "<folly/FBString.h>"
 cpp_include "thrift/lib/cpp2/type/BaseType.h"
 cpp_include "thrift/lib/cpp2/type/Protocol.h"
+cpp_include "thrift/lib/cpp2/type/Type.h"
 cpp_include "thrift/lib/cpp2/type/UniversalHashAlgorithm.h"
 
 namespace cpp2 apache.thrift.type
@@ -102,7 +103,7 @@ const byte defaultTypeHashBytes = 16;
 
 // The hash algorithms that can be used with type names.
 enum UniversalHashAlgorithm {
-  Sha2_256 = 1,
+  Sha2_256 = 2, // = getFieldId(TypeNameUnion::typeHashPrefixSha2_256).
 } (
   cpp.name = "UniversalHashAlgorithmEnum",
   cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::UniversalHashAlgorithm, ::apache::thrift::type::UniversalHashAlgorithmEnum>",
@@ -113,6 +114,15 @@ enum UniversalHashAlgorithm {
 }
 @thrift.Experimental
 typedef type_rep.ProtocolUnion Protocol (
+  // TODO(arfuller): Add @meta.Erase, which would cause the typedef to be inlined, instead.
+  thrift.uri = "",
+)
+
+@cpp.Adapter{
+  name = "::apache::thrift::InlineAdapter<::apache::thrift::type::Type>",
+}
+@thrift.Experimental
+typedef type_rep.TypeStruct Type (
   // TODO(arfuller): Add @meta.Erase, which would cause the typedef to be inlined, instead.
   thrift.uri = "",
 )

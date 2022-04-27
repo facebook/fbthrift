@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/thrift.thrift"
+
 namespace cpp2 apache.thrift.type
 namespace py3 apache.thrift.type
 namespace php apache_thrift_type
@@ -38,7 +40,53 @@ enum StandardProtocol {
 }
 
 // A union representation of a protocol.
+@thrift.Experimental
 union ProtocolUnion {
   1: StandardProtocol standard;
   2: string custom;
 } (thrift.uri = "facebook.com/thrift/type/Protocol")
+
+// TODO(afuller): Allow 'void' type for union fields.
+// TODO(afuller): Fix scoping validation for enums and add:
+// @thrift.Experimental
+enum Void {
+  NoValue = 0,
+}
+
+// The name of an IDL defined type.
+@thrift.Experimental
+union TypeNameUnion {
+  // The unique Thrift URI for this type.
+  1: string uri;
+  // A prefix of the SHA2-256 hash of the URI.
+  2: binary (cpp.type = "folly::fbstring") typeHashPrefixSha2_256;
+}
+
+// Uninquily identifies a type.
+@thrift.Experimental
+union TypeId {
+  1: Void boolType;
+  2: Void byteType;
+  3: Void i16Type;
+  4: Void i32Type;
+  5: Void i64Type;
+  6: Void floatType;
+  7: Void doubleType;
+  8: Void stringType;
+  9: Void binaryType;
+  10: TypeNameUnion enumType;
+  11: TypeNameUnion structType;
+  12: TypeNameUnion unionType;
+  13: TypeNameUnion exceptionType;
+  14: Void listType;
+  15: Void setType;
+  16: Void mapType;
+} (thrift.uri = "facebook.com/thrift/type/TypeId")
+
+// A concrete type.
+struct TypeStruct {
+  // The type id.
+  1: TypeId id;
+  // The type params, if appropriate.
+  2: list<TypeStruct> params;
+} (thrift.uri = "facebook.com/thrift/type/Type")

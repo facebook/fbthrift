@@ -22,7 +22,7 @@ namespace apache {
 namespace thrift {
 namespace type {
 enum class UniversalHashAlgorithm {
-  Sha2_256 = 1,
+  Sha2_256 = 2,
 };
 
 constexpr int8_t const kMinHashBytes = 8;
