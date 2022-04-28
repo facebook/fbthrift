@@ -117,13 +117,60 @@ public class InstrumentedRpcClient implements RpcClient {
   @Override
   public <T, K> Flux<ClientResponsePayload<K>> singleRequestStreamingResponse(
       ClientRequestPayload<T> payload, RpcOptions options) {
-    return delegate.singleRequestStreamingResponse(payload, options);
+    try {
+      final String name = payload.getRequestRpcMetadata().getName();
+      final long start = System.nanoTime();
+      final InstrumentedClientRequestPayload<T> instrumentedClientRequestPayload =
+          new InstrumentedClientRequestPayload<>(payload, name, thriftClientStats);
+      thriftClientStats.call(name);
+      return delegate
+          .<T, K>singleRequestStreamingResponse(instrumentedClientRequestPayload, options)
+          .doFinally(
+              signalType -> {
+                if (signalType == SignalType.ON_ERROR) {
+                  thriftClientStats.error(name);
+                }
+                thriftClientStats.complete(name, toMicros(System.nanoTime() - start));
+              });
+    } catch (Throwable t) {
+      if (payload != null
+          && payload.getRequestRpcMetadata() != null
+          && payload.getRequestRpcMetadata().getName() != null) {
+        thriftClientStats.error(payload.getRequestRpcMetadata().getName());
+      }
+      return Flux.error(t);
+    }
   }
 
   @Override
   public <T, K> Flux<ClientResponsePayload<K>> streamingRequestStreamingResponse(
       Publisher<ClientRequestPayload<T>> payloads, RpcOptions options) {
-    return delegate.streamingRequestStreamingResponse(payloads, options);
+    return Flux.from(payloads)
+        .switchOnFirst(
+            (signal, clientRequestPayloadFlux) -> {
+              ClientRequestPayload<T> payload = signal.get();
+              try {
+                final String name = payload.getRequestRpcMetadata().getName();
+                final long start = System.nanoTime();
+                thriftClientStats.call(name);
+                return delegate
+                    .<T, K>streamingRequestStreamingResponse(clientRequestPayloadFlux, options)
+                    .doFinally(
+                        signalType -> {
+                          if (signalType == SignalType.ON_ERROR) {
+                            thriftClientStats.error(name);
+                          }
+                          thriftClientStats.complete(name, toMicros(System.nanoTime() - start));
+                        });
+              } catch (Throwable t) {
+                if (payload != null
+                    && payload.getRequestRpcMetadata() != null
+                    && payload.getRequestRpcMetadata().getName() != null) {
+                  thriftClientStats.error(payload.getRequestRpcMetadata().getName());
+                }
+                return Flux.error(t);
+              }
+            });
   }
 
   private static class InstrumentedClientRequestPayload<T> implements ClientRequestPayload<T> {
