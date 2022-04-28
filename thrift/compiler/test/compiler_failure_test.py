@@ -78,28 +78,6 @@ class CompilerFailureTest(unittest.TestCase):
         )
         self.assertEqual(ret, 1)
 
-    def test_neg_enum_value(self):
-        write_file(
-            "foo.thrift",
-            textwrap.dedent(
-                """\
-                enum Foo {
-                    Bar = -1;
-                }
-                """
-            ),
-        )
-        ret, out, err = self.run_thrift("foo.thrift")
-        self.assertEqual(
-            err,
-            "[WARNING:foo.thrift:2] Negative value supplied for enum value `Bar`.\n",
-        )
-        self.assertEqual(ret, 0)
-
-        ret, out, err = self.run_thrift("--allow-neg-enum-vals", "foo.thrift")
-        self.assertEqual(err, "")
-        self.assertEqual(ret, 0)
-
     def test_zero_as_field_id(self):
         write_file(
             "foo.thrift",
@@ -370,8 +348,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:3] Integer constant 2147483648 outside the range of enum values ([-2147483648, 2147483647]).\n"
-            "[WARNING:foo.thrift:3] Negative value supplied for enum value `Baz`.\n",
+            "[FAILURE:foo.thrift:3] Integer constant 2147483648 outside the range of enum values ([-2147483648, 2147483647]).\n",
         )
 
     def test_enum_underflow(self):
@@ -390,8 +367,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:3] Integer constant -2147483649 outside the range of enum values ([-2147483648, 2147483647]).\n"
-            "[WARNING:foo.thrift:2] Negative value supplied for enum value `Bar`.\n",
+            "[FAILURE:foo.thrift:3] Integer constant -2147483649 outside the range of enum values ([-2147483648, 2147483647]).\n",
         )
 
     def assertConstError(self, type, value, expected):

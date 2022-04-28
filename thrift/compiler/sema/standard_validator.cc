@@ -359,10 +359,6 @@ void validate_enum_value(diagnostic_context& ctx, const t_enum_value& node) {
       o << "The enum value, `" << node.name()
         << "`, must have an explicitly assigned value.";
     });
-  } else if (node.get_value() < 0 && !ctx.params().allow_neg_enum_vals) {
-    ctx.warning([&](auto& o) {
-      o << "Negative value supplied for enum value `" << node.name() << "`.";
-    });
   }
 }
 

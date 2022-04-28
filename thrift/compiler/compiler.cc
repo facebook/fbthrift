@@ -94,7 +94,9 @@ void usage() {
       stderr,
       "  --allow-neg-keys  Allow negative field keys (Used to preserve protocol\n"
       "                    compatibility with older .thrift files)\n");
-  fprintf(stderr, "  --allow-neg-enum-vals Allow negative enum vals\n");
+  fprintf(
+      stderr,
+      "  --allow-neg-enum-vals Allow negative enum vals (DEPRECATED)\n");
   fprintf(
       stderr,
       "  --allow-64bit-consts  Do not print warnings about using 64-bit constants\n");
@@ -215,7 +217,7 @@ std::string parseArgs(
     } else if (flag == "allow-neg-keys") {
       pparams.allow_neg_field_keys = true;
     } else if (flag == "allow-neg-enum-vals") {
-      dparams.allow_neg_enum_vals = true;
+      // no-op
     } else if (flag == "allow-64bit-consts") {
       pparams.allow_64bit_consts = true;
     } else if (flag == "record-genfiles") {
