@@ -41,6 +41,7 @@ def _fbthrift_gen_metadata_struct_Foo(metadata_struct: _fbthrift_metadata.Thrift
         ]),
         _fbthrift_metadata.ThriftField(id=10, type=_fbthrift_metadata.ThriftType(t_primitive=_fbthrift_metadata.ThriftPrimitiveType.THRIFT_I64_TYPE), name="adaptedLongField", is_optional=False, structured_annotations=[
             _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="cpp.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="my::Adapter2"),  }),
+            _fbthrift_metadata.ThriftConstStruct(type=_fbthrift_metadata.ThriftStructType(name="python.Adapter"), fields= { "name": _fbthrift_metadata.ThriftConstValue(cv_string="my.Adapter3"), "typeHint": _fbthrift_metadata.ThriftConstValue(cv_string="my.AdaptedType3"),  }),
         ]),
     ]
     struct_dict = dict(metadata_struct.structs)

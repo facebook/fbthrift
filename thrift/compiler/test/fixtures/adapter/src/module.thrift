@@ -37,6 +37,10 @@ typedef list<
 > ListWithElemAdapter
 
 @cpp.Adapter{name = "my::Adapter1"}
+@python.Adapter{
+  name = "my.module.Adapter2",
+  typeHint = "my.another.module.AdaptedType2",
+}
 typedef i64 MyI64
 
 struct Foo {
@@ -88,6 +92,7 @@ struct Foo {
   ) binaryField;
   9: MyI64 longField;
   @cpp.Adapter{name = "my::Adapter2"}
+  @python.Adapter{name = "my.Adapter3", typeHint = "my.AdaptedType3"}
   10: MyI64 adaptedLongField;
 } (
   thrift.uri = "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo",

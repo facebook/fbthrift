@@ -110,6 +110,10 @@ class facebook_thrift_annotation_python_Adapter implements \IThriftSyncStruct, \
           shape(
           )
         ),
+        'facebook_thrift_annotation_Typedef' => facebook_thrift_annotation_Typedef::fromShape(
+          shape(
+          )
+        ),
       ],
       'fields' => dict[
       ],

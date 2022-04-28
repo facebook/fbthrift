@@ -503,6 +503,12 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
                 "name" => "my::Adapter1",
               )
             ),
+            'facebook_thrift_annotation_python_Adapter' => facebook_thrift_annotation_python_Adapter::fromShape(
+              shape(
+                "name" => "my.module.Adapter2",
+                "typeHint" => "my.another.module.AdaptedType2",
+              )
+            ),
           ],
         ),
         'adaptedLongField' => shape(
@@ -512,11 +518,23 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
                 "name" => "my::Adapter2",
               )
             ),
+            'facebook_thrift_annotation_python_Adapter' => facebook_thrift_annotation_python_Adapter::fromShape(
+              shape(
+                "name" => "my.Adapter3",
+                "typeHint" => "my.AdaptedType3",
+              )
+            ),
           ],
           'type' => dict[
             'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
               shape(
                 "name" => "my::Adapter1",
+              )
+            ),
+            'facebook_thrift_annotation_python_Adapter' => facebook_thrift_annotation_python_Adapter::fromShape(
+              shape(
+                "name" => "my.module.Adapter2",
+                "typeHint" => "my.another.module.AdaptedType2",
               )
             ),
           ],
@@ -1104,6 +1122,12 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
             'facebook_thrift_annotation_cpp_Adapter' => facebook_thrift_annotation_cpp_Adapter::fromShape(
               shape(
                 "name" => "my::Adapter1",
+              )
+            ),
+            'facebook_thrift_annotation_python_Adapter' => facebook_thrift_annotation_python_Adapter::fromShape(
+              shape(
+                "name" => "my.module.Adapter2",
+                "typeHint" => "my.another.module.AdaptedType2",
               )
             ),
           ],

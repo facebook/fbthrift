@@ -97,7 +97,7 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
             "adaptedLongField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            my.Adapter3,  # adapter class
         ),
     )
 
