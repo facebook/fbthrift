@@ -455,26 +455,6 @@ class MyUnion final  {
     return value_.myDataItem;
   }
 
-  ::test::fixtures::basic::MyEnum& mutable_myEnum() {
-    assert(type_ == Type::myEnum);
-    return value_.myEnum;
-  }
-
-  ::test::fixtures::basic::MyStruct& mutable_myDataItem() {
-    assert(type_ == Type::myDataItem);
-    return value_.myDataItem;
-  }
-
-  ::test::fixtures::basic::MyEnum move_myEnum() {
-    assert(type_ == Type::myEnum);
-    return std::move(value_.myEnum);
-  }
-
-  ::test::fixtures::basic::MyStruct move_myDataItem() {
-    assert(type_ == Type::myDataItem);
-    return std::move(value_.myDataItem);
-  }
-
   template <typename..., typename T = ::test::fixtures::basic::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myEnum_ref() const& {
     return {value_.myEnum, type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
