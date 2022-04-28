@@ -9,6 +9,7 @@
 #include "thrift/compiler/test/fixtures/terse_write/gen-cpp2/terse_write_types.h"
 
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
+#include <thrift/lib/cpp2/op/Clear.h>
 
 namespace apache { namespace thrift { namespace test {
 

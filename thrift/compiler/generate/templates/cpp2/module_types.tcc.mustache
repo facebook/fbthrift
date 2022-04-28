@@ -20,6 +20,9 @@
 #include "<%program:include_prefix%><%program:name%>_types.h"
 
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
+<%^program:deprecated_tag_incompatible?%>
+#include <thrift/lib/cpp2/op/Clear.h>
+<%/program:deprecated_tag_incompatible?%>
 
 <% > module_types_tcc/declare_enums%>
 <%^program:tablebased?%>

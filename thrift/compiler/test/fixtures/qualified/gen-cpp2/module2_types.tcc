@@ -9,6 +9,7 @@
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module2_types.h"
 
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
+#include <thrift/lib/cpp2/op/Clear.h>
 
 
 namespace apache {

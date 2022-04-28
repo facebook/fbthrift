@@ -25,7 +25,6 @@
 
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/BoxedValuePtr.h>
-#include <thrift/lib/cpp2/op/Clear.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>

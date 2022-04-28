@@ -9,6 +9,7 @@
 #include "thrift/compiler/test/fixtures/visitation/gen-cpp2/module_types.h"
 
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
+#include <thrift/lib/cpp2/op/Clear.h>
 
 namespace test_cpp2 { namespace cpp_reflection {
 
