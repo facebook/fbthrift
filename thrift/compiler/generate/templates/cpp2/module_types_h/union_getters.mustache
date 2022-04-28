@@ -15,6 +15,9 @@
   limitations under the License.
 
 %><%#struct:fields%><%#field:type%>
+<%^struct:legacy_api?%>
+ private:
+<%/struct:legacy_api?%>
   <%^field:boxed_ref?%><%field:cpp_deprecated_accessor_type%><%/field:boxed_ref?%><%#field:boxed_ref?%><%type:cpp_type%><%/field:boxed_ref?%> const& get_<%field:cpp_name%>() const {
     if (type_ != Type::<%field:cpp_name%>) {
       ::apache::thrift::detail::throw_on_bad_field_access();
@@ -26,5 +29,8 @@
     return *value_.<%field:cpp_name%>;
 <%/field:boxed_ref?%>
   }
+<%^struct:legacy_api?%>
+ public:
+<%/struct:legacy_api?%>
 
 <%/field:type%><%/struct:fields%>

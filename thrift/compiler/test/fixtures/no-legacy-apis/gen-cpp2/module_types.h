@@ -416,6 +416,7 @@ class MyUnion final  {
 
   bool operator==(const MyUnion&) const;
   bool operator<(const MyUnion&) const;
+ private:
 
   ::test::fixtures::basic::MyEnum& set_myEnum(::test::fixtures::basic::MyEnum t = ::test::fixtures::basic::MyEnum()) {
     __fbthrift_clear();
@@ -423,6 +424,8 @@ class MyUnion final  {
     ::new (std::addressof(value_.myEnum)) ::test::fixtures::basic::MyEnum(t);
     return value_.myEnum;
   }
+ public:
+ private:
 
   ::test::fixtures::basic::MyStruct& set_myDataItem(::test::fixtures::basic::MyStruct const &t) {
     __fbthrift_clear();
@@ -444,20 +447,25 @@ class MyUnion final  {
     ::new (std::addressof(value_.myDataItem)) ::test::fixtures::basic::MyStruct(std::forward<T>(t)...);
     return value_.myDataItem;
   }
+ public:
 
+ private:
   ::test::fixtures::basic::MyEnum const& get_myEnum() const {
     if (type_ != Type::myEnum) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.myEnum;
   }
+ public:
 
+ private:
   ::test::fixtures::basic::MyStruct const& get_myDataItem() const {
     if (type_ != Type::myDataItem) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.myDataItem;
   }
+ public:
 
   template <typename..., typename T = ::test::fixtures::basic::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myEnum_ref() const& {

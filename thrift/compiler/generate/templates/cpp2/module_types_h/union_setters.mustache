@@ -18,6 +18,9 @@
 <%#field:boxed_ref?%>
  private:
 <%/field:boxed_ref?%>
+<%^field:boxed_ref?%><%^struct:legacy_api?%>
+ private:
+<%/struct:legacy_api?%><%/field:boxed_ref?%>
   <%#type:resolves_to_base_or_enum?%>
 
   <%^type:string_or_binary?%>
@@ -108,4 +111,7 @@
 <%#field:boxed_ref?%>
  public:
 <%/field:boxed_ref?%>
+<%^field:boxed_ref?%><%^struct:legacy_api?%>
+ public:
+<%/struct:legacy_api?%><%/field:boxed_ref?%>
 <%/field:type%><%/struct:fields%>
