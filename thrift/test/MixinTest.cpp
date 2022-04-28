@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,12 @@
  */
 
 #include <folly/portability/GTest.h>
+#include <thrift/test/gen-cpp2/MixinTestStrict_types.h>
 #include <thrift/test/gen-cpp2/MixinTest_types.h>
 
-TEST(Mixin, Simple) {
-  cpp2::Foo s;
+template <class S>
+void mixinSimpleTest() {
+  S s;
   s.m2()->m1()->field1() = "1";
   s.m2()->field2() = "2";
   s.m3()->field3() = "3";
@@ -51,6 +53,11 @@ TEST(Mixin, Simple) {
   s.field6() = "66";
   EXPECT_FALSE(s.u()->field5_ref().has_value());
   EXPECT_EQ(s.u()->field6_ref().value(), "66");
+}
+
+TEST(Mixin, Simple) {
+  mixinSimpleTest<cpp2::Foo>();
+  mixinSimpleTest<thrift::test::strict::Foo>();
 }
 
 TEST(Mixin, WithRefSuffix) {

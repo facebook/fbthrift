@@ -998,9 +998,15 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node mixin_fields() {
     mstch::array fields;
     for (auto i : cpp2::get_mixins_and_members(*strct_)) {
+      const auto suffix =
+          ::apache::thrift::compiler::generate_legacy_api(*strct_) ||
+              i.mixin->type()->is_union()
+          ? "_ref"
+          : "";
       fields.push_back(mstch::map{
           {"mixin:name", i.mixin->get_name()},
-          {"mixin:field_name", i.member->get_name()}});
+          {"mixin:field_name", i.member->get_name()},
+          {"mixin:accessor", i.member->get_name() + suffix}});
     }
     return fields;
   }
