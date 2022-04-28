@@ -15,7 +15,9 @@
 import time
 import unittest
 from datetime import datetime
+from unittest.mock import MagicMock
 
+from thrift.python.adapters.datetime import DatetimeAdapter
 from thrift.python.test.adapter.thrift_types import Bar, Foo
 
 
@@ -37,3 +39,23 @@ class AdapterTest(unittest.TestCase):
         now = datetime.fromtimestamp(int(time.time()))
         bar = Bar(ts=now)
         self.assertEqual(bar.ts, now)
+
+    def test_adapter_called_with_field_id(self) -> None:
+        mock_from_thrift_field = MagicMock(wraps=DatetimeAdapter.from_thrift_field)
+        DatetimeAdapter.from_thrift_field = mock_from_thrift_field
+        mock_to_thrift_field = MagicMock(wraps=DatetimeAdapter.to_thrift_field)
+        DatetimeAdapter.to_thrift_field = mock_to_thrift_field
+
+        now_ts = int(time.time())
+        now = datetime.fromtimestamp(now_ts)
+        foo = Foo(created_at=now)
+        mock_to_thrift_field.assert_called_once_with(now, 1, foo)
+        foo.created_at
+        mock_from_thrift_field.assert_called_once_with(now_ts, 1, foo)
+
+        mock_from_thrift_field.reset_mock()
+        mock_to_thrift_field.reset_mock()
+        bar = Bar(ts=now)
+        mock_to_thrift_field.assert_called_once_with(now, 2, bar)
+        bar.ts
+        mock_from_thrift_field.assert_called_once_with(now_ts, 2, bar)

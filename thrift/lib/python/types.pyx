@@ -373,7 +373,8 @@ cdef class Struct(StructOrUnion):
                 continue
             adapter_class = info.fields[index][5]
             if adapter_class:
-                value = adapter_class.to_thrift_field(value, index, self)
+                field_id = info.fields[index][0]
+                value = adapter_class.to_thrift_field(value, field_id, self)
             set_struct_field(
                 self._fbthrift_data,
                 index,
@@ -398,7 +399,8 @@ cdef class Struct(StructOrUnion):
             else:  # new assigned value
                 adapter_class = info.fields[index][5]
                 if adapter_class:
-                    value = adapter_class.to_thrift_field(value, index, self)
+                    field_id = info.fields[index][0]
+                    value = adapter_class.to_thrift_field(value, field_id, self)
                 value_to_copy = info.type_infos[index].to_internal_data(value)
             set_struct_field(new_inst._fbthrift_data, index, value_to_copy)
         if kwargs:
@@ -611,11 +613,11 @@ cdef class Union(StructOrUnion):
         return self.type.value != 0
 
 
-cdef make_fget_struct(i, adapter_class):
+cdef make_fget_struct(i, field_id, adapter_class):
     if adapter_class:
         return functools.cached_property(lambda self:
             adapter_class.from_thrift_field(
-                (<Struct>self)._fbthrift_get_field_value(i), i, self
+                (<Struct>self)._fbthrift_get_field_value(i), field_id, self
             )
         )
     return functools.cached_property(lambda self: (<Struct>self)._fbthrift_get_field_value(i))
@@ -637,7 +639,7 @@ class StructMeta(type):
         num_fields = len(fields)
         dct["_fbthrift_struct_info"] = StructInfo(name, fields)
         for i, f in enumerate(fields):
-            dct[f[2]] = make_fget_struct(i, f[5])
+            dct[f[2]] = make_fget_struct(i, f[0], f[5])
         return super().__new__(cls, name, (Struct,), dct)
 
     def _fbthrift_fill_spec(cls):
