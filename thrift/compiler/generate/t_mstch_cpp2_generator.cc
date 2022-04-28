@@ -253,6 +253,7 @@ class mstch_cpp2_enum : public mstch_enum {
              &mstch_cpp2_enum::has_fatal_annotations},
             {"enum:fatal_annotations", &mstch_cpp2_enum::fatal_annotations},
             {"enum:legacy_type_id", &mstch_cpp2_enum::get_legacy_type_id},
+            {"enum:legacy_api?", &mstch_cpp2_enum::legacy_api},
         });
   }
   mstch::node is_empty() { return enm_->get_enum_values().empty(); }
@@ -313,6 +314,9 @@ class mstch_cpp2_enum : public mstch_enum {
   }
   mstch::node get_legacy_type_id() {
     return std::to_string(enm_->get_type_id());
+  }
+  mstch::node legacy_api() {
+    return ::apache::thrift::compiler::generate_legacy_api(*enm_);
   }
 };
 

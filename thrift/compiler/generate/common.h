@@ -20,6 +20,7 @@
 #include <unordered_set>
 #include <vector>
 
+#include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_type.h>
@@ -49,6 +50,7 @@ std::unordered_set<const t_type*> collect_types(const t_struct* strct);
  */
 bool generate_legacy_api(const t_program&);
 bool generate_legacy_api(const t_struct&);
+bool generate_legacy_api(const t_enum&);
 
 } // namespace compiler
 } // namespace thrift
