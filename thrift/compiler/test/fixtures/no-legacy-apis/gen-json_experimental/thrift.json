@@ -59,8 +59,8 @@
         "is_union" : false,
         "lineno" : 64
       },
-      "NoLegacyApi" : {
-        "name" : "NoLegacyApi",
+      "NoLegacyAPIs" : {
+        "name" : "NoLegacyAPIs",
         "is_exception" : false,
         "is_union" : false,
         "lineno" : 74

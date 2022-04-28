@@ -71,8 +71,8 @@ struct SerializeInFieldIdOrder {} (
 @scope.Exception
 @scope.Service
 @Experimental
-struct NoLegacyApi {} (
-  thrift.uri = "facebook.com/thrift/annotation/thrift/NoLegacyApi",
+struct NoLegacyAPIs {} (
+  thrift.uri = "facebook.com/thrift/annotation/thrift/NoLegacyAPIs",
 )
 
 @TerseWrite

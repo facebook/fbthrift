@@ -30,7 +30,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'RequiresBackwardCompatibility', 'Experimental', 'Deprecated', 'TerseWrite', 'Box', 'SerializeInFieldIdOrder', 'NoLegacyApi', 'v1']
+__all__ = ['UTF8STRINGS', 'RequiresBackwardCompatibility', 'Experimental', 'Deprecated', 'TerseWrite', 'Box', 'SerializeInFieldIdOrder', 'NoLegacyAPIs', 'v1']
 
 class RequiresBackwardCompatibility:
   """
@@ -374,7 +374,7 @@ class SerializeInFieldIdOrder:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-class NoLegacyApi:
+class NoLegacyAPIs:
 
   thrift_spec = None
   thrift_field_annotations = None
@@ -407,7 +407,7 @@ class NoLegacyApi:
     if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
-    oprot.writeStructBegin('NoLegacyApi')
+    oprot.writeStructBegin('NoLegacyAPIs')
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -554,14 +554,14 @@ SerializeInFieldIdOrder.thrift_struct_annotations = {
 SerializeInFieldIdOrder.thrift_field_annotations = {
 }
 
-all_structs.append(NoLegacyApi)
-NoLegacyApi.thrift_spec = (
+all_structs.append(NoLegacyAPIs)
+NoLegacyAPIs.thrift_spec = (
 )
 
-NoLegacyApi.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/thrift/NoLegacyApi",
+NoLegacyAPIs.thrift_struct_annotations = {
+  "thrift.uri": "facebook.com/thrift/annotation/thrift/NoLegacyAPIs",
 }
-NoLegacyApi.thrift_field_annotations = {
+NoLegacyAPIs.thrift_field_annotations = {
 }
 
 all_structs.append(v1)

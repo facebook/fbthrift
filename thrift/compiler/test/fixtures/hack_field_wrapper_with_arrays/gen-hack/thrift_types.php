@@ -614,10 +614,10 @@ class facebook_thrift_annotation_thrift_SerializeInFieldIdOrder implements \IThr
 
 /**
  * Original thrift struct:-
- * NoLegacyApi
+ * NoLegacyAPIs
  */
-<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/thrift/NoLegacyApi'))>>
-class facebook_thrift_annotation_thrift_NoLegacyApi implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/thrift/NoLegacyAPIs'))>>
+class facebook_thrift_annotation_thrift_NoLegacyAPIs implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -650,13 +650,13 @@ class facebook_thrift_annotation_thrift_NoLegacyApi implements \IThriftSyncStruc
   }
 
   public function getName()[]: string {
-    return 'NoLegacyApi';
+    return 'NoLegacyAPIs';
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
     return tmeta_ThriftStruct::fromShape(
       shape(
-        "name" => "thrift.NoLegacyApi",
+        "name" => "thrift.NoLegacyAPIs",
         "is_union" => false,
       )
     );

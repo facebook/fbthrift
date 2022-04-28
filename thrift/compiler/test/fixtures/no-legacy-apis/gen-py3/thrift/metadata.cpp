@@ -20,7 +20,7 @@ namespace thrift {
   ::apache::thrift::detail::md::StructMetadata<TerseWrite>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Box>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<SerializeInFieldIdOrder>::gen(metadata);
-  ::apache::thrift::detail::md::StructMetadata<NoLegacyApi>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<NoLegacyAPIs>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<v1>::gen(metadata);
   return metadata;
 }

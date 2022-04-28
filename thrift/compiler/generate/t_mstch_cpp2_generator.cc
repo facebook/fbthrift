@@ -26,6 +26,7 @@
 #include <boost/algorithm/string/split.hpp>
 
 #include <thrift/compiler/gen/cpp/type_resolver.h>
+#include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/cpp2/util.h>
@@ -942,6 +943,7 @@ class mstch_cpp2_struct : public mstch_struct {
              &mstch_cpp2_struct::has_fatal_annotations},
             {"struct:fatal_annotations", &mstch_cpp2_struct::fatal_annotations},
             {"struct:legacy_type_id", &mstch_cpp2_struct::get_legacy_type_id},
+            {"struct:legacy_api?", &mstch_cpp2_struct::legacy_api},
             {"struct:metadata_name", &mstch_cpp2_struct::metadata_name},
             {"struct:mixin_fields", &mstch_cpp2_struct::mixin_fields},
             {"struct:num_union_members",
@@ -1191,6 +1193,9 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node get_legacy_type_id() {
     return std::to_string(strct_->get_type_id());
+  }
+  mstch::node legacy_api() {
+    return ::apache::thrift::compiler::generate_legacy_api(*strct_);
   }
   mstch::node metadata_name() {
     return strct_->program()->name() + "_" + strct_->get_name();
@@ -1616,6 +1621,7 @@ class mstch_cpp2_program : public mstch_program {
              &mstch_cpp2_program::cpp_declare_hash},
             {"program:thrift_includes", &mstch_cpp2_program::thrift_includes},
             {"program:frozen_packed?", &mstch_cpp2_program::frozen_packed},
+            {"program:legacy_api?", &mstch_cpp2_program::legacy_api},
             {"program:fatal_languages", &mstch_cpp2_program::fatal_languages},
             {"program:fatal_enums", &mstch_cpp2_program::fatal_enums},
             {"program:fatal_unions", &mstch_cpp2_program::fatal_unions},
@@ -1764,6 +1770,9 @@ class mstch_cpp2_program : public mstch_program {
     return a;
   }
   mstch::node frozen_packed() { return get_option("frozen") == "packed"; }
+  mstch::node legacy_api() {
+    return ::apache::thrift::compiler::generate_legacy_api(*program_);
+  }
   mstch::node fatal_languages() {
     mstch::array a;
     size_t size = program_->namespaces().size();

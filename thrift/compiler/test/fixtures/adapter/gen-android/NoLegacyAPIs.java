@@ -22,21 +22,21 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class NoLegacyApi implements TBase, java.io.Serializable, Cloneable {
-  private static final TStruct STRUCT_DESC = new TStruct("NoLegacyApi");
+public class NoLegacyAPIs implements TBase, java.io.Serializable, Cloneable {
+  private static final TStruct STRUCT_DESC = new TStruct("NoLegacyAPIs");
 
 
-  public NoLegacyApi() {
+  public NoLegacyAPIs() {
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public NoLegacyApi(NoLegacyApi other) {
+  public NoLegacyAPIs(NoLegacyAPIs other) {
   }
 
-  public NoLegacyApi deepCopy() {
-    return new NoLegacyApi(this);
+  public NoLegacyAPIs deepCopy() {
+    return new NoLegacyAPIs(this);
   }
 
   @Override
@@ -45,9 +45,9 @@ public class NoLegacyApi implements TBase, java.io.Serializable, Cloneable {
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof NoLegacyApi))
+    if (!(_that instanceof NoLegacyAPIs))
       return false;
-    NoLegacyApi that = (NoLegacyApi)_that;
+    NoLegacyAPIs that = (NoLegacyAPIs)_that;
 
     return true;
   }
@@ -62,7 +62,7 @@ public class NoLegacyApi implements TBase, java.io.Serializable, Cloneable {
     throw new TException("unimplemented in android immutable structure");
   }
 
-  public static NoLegacyApi deserialize(TProtocol iprot) throws TException {
+  public static NoLegacyAPIs deserialize(TProtocol iprot) throws TException {
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -81,8 +81,8 @@ public class NoLegacyApi implements TBase, java.io.Serializable, Cloneable {
     }
     iprot.readStructEnd();
 
-    NoLegacyApi _that;
-    _that = new NoLegacyApi(
+    NoLegacyAPIs _that;
+    _that = new NoLegacyAPIs(
     );
     _that.validate();
     return _that;

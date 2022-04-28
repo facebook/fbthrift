@@ -138,9 +138,6 @@ class MyStruct final  {
   MyStruct() :
       __fbthrift_field_myIntField() {
   }
-  // FragileConstructor for use in initialization lists only.
-  [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t myIntField__arg, ::std::string myStringField__arg);
 
   MyStruct(MyStruct&&) noexcept;
 
@@ -253,31 +250,6 @@ class MyStruct final  {
   decltype(auto) __fbthrift_get(__fbthrift_fid<2>) const&& { return std::move(*this).myStringField_ref(); }
 
  public:
-
-  ::std::int64_t get_myIntField() const {
-    return __fbthrift_field_myIntField;
-  }
-
-  [[deprecated("Use `FOO.myIntField_ref() = BAR;` instead of `FOO.set_myIntField(BAR);`")]]
-  ::std::int64_t& set_myIntField(::std::int64_t myIntField_) {
-    myIntField_ref() = myIntField_;
-    return __fbthrift_field_myIntField;
-  }
-
-  const ::std::string& get_myStringField() const& {
-    return __fbthrift_field_myStringField;
-  }
-
-  ::std::string get_myStringField() && {
-    return std::move(__fbthrift_field_myStringField);
-  }
-
-  template <typename T_MyStruct_myStringField_struct_setter = ::std::string>
-  [[deprecated("Use `FOO.myStringField_ref() = BAR;` instead of `FOO.set_myStringField(BAR);`")]]
-  ::std::string& set_myStringField(T_MyStruct_myStringField_struct_setter&& myStringField_) {
-    myStringField_ref() = std::forward<T_MyStruct_myStringField_struct_setter>(myStringField_);
-    return __fbthrift_field_myStringField;
-  }
 
   template <class Protocol_>
   unsigned long read(Protocol_* iprot);

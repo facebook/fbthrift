@@ -125,7 +125,7 @@
         }
       }
     },
-    "NoLegacyApi" : {
+    "NoLegacyAPIs" : {
       "lineno" : 74,
       "is_exception" : false,
       "is_union" : false,

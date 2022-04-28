@@ -202,9 +202,11 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
   <% > module_types_h/base_ctor%>
 <%/struct:is_large?%>
 
+<%#struct:legacy_api?%>
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   <%struct:cpp_name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>);
+<%/struct:legacy_api?%>
 
 <%#struct:is_eligible_for_constexpr?%>
   <%struct:cpp_name%>(<%struct:cpp_name%>&&) = default;
@@ -281,7 +283,9 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
 <%/struct:cpp_noncomparable%>
 <%#struct:fields?%>
 <% > module_types_h/field_ref%>
+<%#struct:legacy_api?%>
 <% > module_types_h/getters_setters%>
+<%/struct:legacy_api?%>
 <%/struct:fields?%>
 
   template <class Protocol_>

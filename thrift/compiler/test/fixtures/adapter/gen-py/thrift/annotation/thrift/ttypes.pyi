@@ -168,7 +168,7 @@ class SerializeInFieldIdOrder:
     def __ne__(self, other: __T.Any) -> bool: ...
 
 
-class NoLegacyApi:
+class NoLegacyAPIs:
     thrift_spec: __T.Tuple[__T.Optional[__T.Tuple[int, int, str, __T.Any, __T.Optional[int], int]]]
     thrift_field_annotations: __T.Dict[int, __T.Dict[str, str]]
     thrift_struct_annotations: __T.Dict[str, str]

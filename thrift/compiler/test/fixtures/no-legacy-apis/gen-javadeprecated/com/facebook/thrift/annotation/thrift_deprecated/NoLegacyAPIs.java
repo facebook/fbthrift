@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class NoLegacyApi implements TBase, java.io.Serializable, Cloneable, Comparable<NoLegacyApi> {
-  private static final TStruct STRUCT_DESC = new TStruct("NoLegacyApi");
+public class NoLegacyAPIs implements TBase, java.io.Serializable, Cloneable, Comparable<NoLegacyAPIs> {
+  private static final TStruct STRUCT_DESC = new TStruct("NoLegacyAPIs");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -35,10 +35,10 @@ public class NoLegacyApi implements TBase, java.io.Serializable, Cloneable, Comp
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(NoLegacyApi.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(NoLegacyAPIs.class, metaDataMap);
   }
 
-  public NoLegacyApi() {
+  public NoLegacyAPIs() {
   }
 
   public static class Builder {
@@ -46,8 +46,8 @@ public class NoLegacyApi implements TBase, java.io.Serializable, Cloneable, Comp
     public Builder() {
     }
 
-    public NoLegacyApi build() {
-      NoLegacyApi result = new NoLegacyApi();
+    public NoLegacyAPIs build() {
+      NoLegacyAPIs result = new NoLegacyAPIs();
       return result;
     }
   }
@@ -59,11 +59,11 @@ public class NoLegacyApi implements TBase, java.io.Serializable, Cloneable, Comp
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public NoLegacyApi(NoLegacyApi other) {
+  public NoLegacyAPIs(NoLegacyAPIs other) {
   }
 
-  public NoLegacyApi deepCopy() {
-    return new NoLegacyApi(this);
+  public NoLegacyAPIs deepCopy() {
+    return new NoLegacyAPIs(this);
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -86,9 +86,9 @@ public class NoLegacyApi implements TBase, java.io.Serializable, Cloneable, Comp
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof NoLegacyApi))
+    if (!(_that instanceof NoLegacyAPIs))
       return false;
-    NoLegacyApi that = (NoLegacyApi)_that;
+    NoLegacyAPIs that = (NoLegacyAPIs)_that;
 
     return true;
   }
@@ -99,7 +99,7 @@ public class NoLegacyApi implements TBase, java.io.Serializable, Cloneable, Comp
   }
 
   @Override
-  public int compareTo(NoLegacyApi other) {
+  public int compareTo(NoLegacyAPIs other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -155,7 +155,7 @@ public class NoLegacyApi implements TBase, java.io.Serializable, Cloneable, Comp
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("NoLegacyApi");
+    StringBuilder sb = new StringBuilder("NoLegacyAPIs");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);
