@@ -154,7 +154,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   std::optional<folly::observer::Observer<wangle::SSLContextConfig>>
       sslContextObserver_;
   std::optional<wangle::TLSTicketKeySeeds> ticketSeeds_;
-  folly::observer::CallbackHandle getSSLCallbackHandle();
 
   std::optional<bool> reusePort_;
   std::optional<bool> enableTFO_;
@@ -283,6 +282,9 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   std::optional<instrumentation::ServerTracker> tracker_;
 
   bool quickExitOnShutdownTimeout_ = false;
+
+ protected:
+  folly::observer::CallbackHandle getSSLCallbackHandle();
 
  public:
   /**

@@ -502,6 +502,11 @@ class CppServerWrapper : public ThriftServer {
     // Thrift main loop.  This will run indefinitely, until stop() is
     // called.
 
+    if (auto sslContextObserver = ThriftServer::getSSLConfig()) {
+      // This mirrors what we do in ThriftServer::serve to handle listening for
+      // cert/key changes and reloading SSLContextConfigs.
+      ThriftServer::getSSLCallbackHandle();
+    }
     getServeEventBase()->loopForever();
   }
 
