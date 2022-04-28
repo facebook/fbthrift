@@ -16,9 +16,6 @@ import types
 import typing
 
 from thrift.conformance.any.thrift_types import Any
-
-# pyre-fixme[21]: Could not find name `StandardProtocol` in
-#  `thrift.conformance.protocol.thrift_types` (stubbed).
 from thrift.conformance.protocol.thrift_types import StandardProtocol
 from thrift.python.conformance.universal_name import (
     find_by_universal_hash,
@@ -30,14 +27,11 @@ from thrift.python.serializer import deserialize, serialize_iobuf, Protocol
 from thrift.python.types import StructOrUnion
 
 
-# pyre-fixme[11]: Annotation `StandardProtocol` is not defined as a type.
 def _to_serializer_protocol(protocol: typing.Optional[StandardProtocol]) -> Protocol:
     if protocol is None:
         return Protocol.COMPACT
-    # pyre-fixme[16]: Module `thrift_types` has no attribute `StandardProtocol`.
     if protocol == StandardProtocol.Binary:
         return Protocol.BINARY
-    # pyre-fixme[16]: Module `thrift_types` has no attribute `StandardProtocol`.
     if protocol == StandardProtocol.Compact:
         return Protocol.COMPACT
     raise ValueError(f"Unsupported protocol: {protocol}")

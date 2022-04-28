@@ -14,8 +14,6 @@
 
 import unittest
 
-# pyre-fixme[21]: Could not find name `StandardProtocol` in
-#  `thrift.conformance.protocol.thrift_types` (stubbed).
 from thrift.conformance.protocol.thrift_types import StandardProtocol
 from thrift.python.conformance.any_registry import AnyRegistry
 
@@ -32,10 +30,8 @@ class AnyRegistryTest(unittest.TestCase):
                 "Answer to the Ultimate Question of Life, the Universe, and Everything.": 42
             }
         )
-        # pyre-fixme[16]: Module `thrift_types` has no attribute `StandardProtocol`.
         any_obj = registry.store(original, StandardProtocol.Compact)
         self.assertIsNotNone(any_obj.typeHashPrefixSha2_256)
-        # pyre-fixme[16]: Module `thrift_types` has no attribute `StandardProtocol`.
         self.assertEqual(StandardProtocol.Compact, any_obj.protocol)
         loaded = registry.load(any_obj)
         self.assertEqual(original, loaded)
