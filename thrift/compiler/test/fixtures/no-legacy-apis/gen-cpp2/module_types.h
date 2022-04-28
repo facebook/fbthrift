@@ -152,6 +152,7 @@ class MyStruct final  {
   bool operator==(const MyStruct&) const;
   bool operator<(const MyStruct&) const;
 
+ private:
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myIntField_ref() const& {
     return {this->__fbthrift_field_myIntField, __isset.at(0), __isset.bit(0)};
@@ -171,6 +172,7 @@ class MyStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myIntField_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_myIntField), __isset.at(0), __isset.bit(0)};
   }
+ public:
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myIntField() const& {
@@ -192,6 +194,7 @@ class MyStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_myIntField), __isset.at(0), __isset.bit(0)};
   }
 
+ private:
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myStringField_ref() const& {
     return {this->__fbthrift_field_myStringField, __isset.at(1), __isset.bit(1)};
@@ -211,6 +214,7 @@ class MyStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myStringField_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_myStringField), __isset.at(1), __isset.bit(1)};
   }
+ public:
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myStringField() const& {
