@@ -37,10 +37,10 @@ import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptio
 import {{included_module_path}}.lite_types
 {{/has_types?}}
 {{/program:include_namespaces}}
-{{#program:enums}}
 {{#program:adapter_type_hint_modules}}
 import {{module_path}}
 {{/program:adapter_type_hint_modules}}
+{{#program:enums}}
 
 
 class {{enum:name}}(_fbthrift_py3lite_types.Enum, enum.{{!
