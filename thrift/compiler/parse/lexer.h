@@ -90,9 +90,6 @@ class lexer {
  public:
   lexer(lex_handler& handler, diagnostics_engine& diags, source src);
 
-  lexer(lexer&& other) = default;
-  lexer& operator=(lexer&& other) = default;
-
   yy::parser::symbol_type get_next_token();
 
   // Returns the current source location. If a token has been returned via
