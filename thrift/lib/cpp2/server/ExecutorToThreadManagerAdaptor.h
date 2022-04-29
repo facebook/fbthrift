@@ -28,11 +28,11 @@ class ThriftServer;
 //
 // This is only for the purpose of ResourcePool migration,
 // This should not be used for any custom purpose
-class ExecutorToThreadManagerAdaptor : concurrency::ThreadManager {
+class ExecutorToThreadManagerAdaptor : public concurrency::ThreadManager {
  public:
   explicit ExecutorToThreadManagerAdaptor(
-      folly::Executor& ex, ThriftServer* server = nullptr)
-      : ka_(folly::getKeepAliveToken(ex)), server_(server) {}
+      folly::Executor& ex, const ThriftServer* server = nullptr)
+      : ex_(ex), server_(server) {}
 
   // These are the only two interfaces that are implemented
   void add(
@@ -40,10 +40,10 @@ class ExecutorToThreadManagerAdaptor : concurrency::ThreadManager {
       [[maybe_unused]] int64_t timeout = 0,
       [[maybe_unused]] int64_t expiration = 0,
       [[maybe_unused]] Source source = Source::UPSTREAM) noexcept override {
-    ka_->add([task = std::move(task)]() { task->run(); });
+    ex_.add([task = std::move(task)]() { task->run(); });
   }
 
-  void add(folly::Func f) override { ka_->add(std::move(f)); }
+  void add(folly::Func f) override { ex_.add(std::move(f)); }
 
   void start() override { recordStackTrace("start"); }
 
@@ -149,12 +149,12 @@ class ExecutorToThreadManagerAdaptor : concurrency::ThreadManager {
 
   [[nodiscard]] KeepAlive<> getKeepAlive(
       ExecutionScope, Source) const override {
-    return ka_;
+    return folly::getKeepAliveToken(ex_);
   }
 
  private:
-  folly::Executor::KeepAlive<> ka_;
-  ThriftServer* server_;
+  folly::Executor& ex_;
+  const ThriftServer* server_;
   // logging should only be done once if any as
   // it's quite expensive
   static folly::once_flag recordFlag_;

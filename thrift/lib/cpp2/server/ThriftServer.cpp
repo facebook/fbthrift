@@ -44,6 +44,7 @@
 #include <thrift/lib/cpp2/async/MultiplexAsyncProcessor.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/ExecutorToThreadManagerAdaptor.h>
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/ParallelConcurrencyController.h>
 #include <thrift/lib/cpp2/server/RoundRobinRequestPile.h>
@@ -452,6 +453,18 @@ void ThriftServer::setup() {
           .concurrencyController()
           .value()
           ->setExecutionLimitRequests(getMaxRequests());
+
+      if (resourcePoolSet().hasResourcePool(
+              ResourcePoolHandle::defaultAsync())) {
+        auto exPtr = resourcePoolSet()
+                         .resourcePool(ResourcePoolHandle::defaultAsync())
+                         .executor()
+                         .value();
+        std::lock_guard<std::mutex> lock(threadManagerMutex_);
+        threadManager_ = std::shared_ptr<ExecutorToThreadManagerAdaptor>(
+            new ExecutorToThreadManagerAdaptor(*exPtr, this));
+      }
+
       // During resource pools roll out we want to track services that get
       // enrolled in the roll out.
       THRIFT_SERVER_EVENT(resourcepoolsenabled).log(*this);
@@ -1139,7 +1152,6 @@ void ThriftServer::stopCPUWorkers() {
   // workers after we've stopped the i/o workers.
   if (useResourcePools()) {
     resourcePoolSet().stopAndJoin();
-    CHECK(!threadManager_);
   } else {
     CHECK(threadManager_);
     threadManager_->join();
