@@ -118,6 +118,11 @@ bool generate_legacy_api(const t_enum& e) {
       nullptr;
 }
 
+bool generate_legacy_api(const t_service& s) {
+  return s.program()->inherit_annotation_or_null(s, kNoLegacyAPIsUri) ==
+      nullptr;
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

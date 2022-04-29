@@ -1447,7 +1447,7 @@ class mstch_cpp2_service : public mstch_service {
              &mstch_cpp2_service::parent_service_cpp_name},
             {"service:parent_service_qualified_name",
              &mstch_cpp2_service::parent_service_qualified_name},
-            {"service:reduced_client?", &mstch_service::is_interaction},
+            {"service:reduced_client?", &mstch_cpp2_service::reduced_client},
         });
 
     const auto all_functions = mstch_service::get_functions();
@@ -1509,6 +1509,9 @@ class mstch_cpp2_service : public mstch_service {
   virtual mstch::node parent_service_cpp_name() { return cpp_name(); }
   virtual mstch::node parent_service_qualified_name() {
     return qualified_name();
+  }
+  mstch::node reduced_client() {
+    return service_->is_interaction() || !generate_legacy_api(*service_);
   }
 
  private:
