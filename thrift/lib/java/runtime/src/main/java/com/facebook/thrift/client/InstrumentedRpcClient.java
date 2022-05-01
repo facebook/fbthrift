@@ -53,6 +53,18 @@ public class InstrumentedRpcClient implements RpcClient {
     delegate.close();
   }
 
+  private void handleDoFinally(SignalType signalType, String name, long start) {
+    if (signalType == SignalType.ON_ERROR) {
+      thriftClientStats.error(name);
+    }
+
+    if (signalType == SignalType.CANCEL) {
+      thriftClientStats.cancel(name);
+    }
+
+    thriftClientStats.complete(name, toMicros(System.nanoTime() - start));
+  }
+
   @Override
   public <T> Mono<ClientResponsePayload<T>> singleRequestSingleResponse(
       ClientRequestPayload<T> payload, RpcOptions options) {
@@ -64,13 +76,7 @@ public class InstrumentedRpcClient implements RpcClient {
       thriftClientStats.call(name);
       return delegate
           .singleRequestSingleResponse(instrumentedClientRequestPayload, options)
-          .doFinally(
-              signalType -> {
-                if (signalType == SignalType.ON_ERROR) {
-                  thriftClientStats.error(name);
-                }
-                thriftClientStats.complete(name, toMicros(System.nanoTime() - start));
-              });
+          .doFinally(signalType -> handleDoFinally(signalType, name, start));
     } catch (Throwable t) {
       if (payload != null
           && payload.getRequestRpcMetadata() != null
@@ -92,13 +98,7 @@ public class InstrumentedRpcClient implements RpcClient {
       thriftClientStats.call(name);
       return delegate
           .singleRequestNoResponse(instrumentedClientRequestPayload, options)
-          .doFinally(
-              signalType -> {
-                if (signalType == SignalType.ON_ERROR) {
-                  thriftClientStats.error(name);
-                }
-                thriftClientStats.complete(name, toMicros(System.nanoTime() - start));
-              });
+          .doFinally(signalType -> handleDoFinally(signalType, name, start));
     } catch (Throwable t) {
       if (payload != null
           && payload.getRequestRpcMetadata() != null
@@ -125,13 +125,7 @@ public class InstrumentedRpcClient implements RpcClient {
       thriftClientStats.call(name);
       return delegate
           .<T, K>singleRequestStreamingResponse(instrumentedClientRequestPayload, options)
-          .doFinally(
-              signalType -> {
-                if (signalType == SignalType.ON_ERROR) {
-                  thriftClientStats.error(name);
-                }
-                thriftClientStats.complete(name, toMicros(System.nanoTime() - start));
-              });
+          .doFinally(signalType -> handleDoFinally(signalType, name, start));
     } catch (Throwable t) {
       if (payload != null
           && payload.getRequestRpcMetadata() != null
@@ -155,13 +149,7 @@ public class InstrumentedRpcClient implements RpcClient {
                 thriftClientStats.call(name);
                 return delegate
                     .<T, K>streamingRequestStreamingResponse(clientRequestPayloadFlux, options)
-                    .doFinally(
-                        signalType -> {
-                          if (signalType == SignalType.ON_ERROR) {
-                            thriftClientStats.error(name);
-                          }
-                          thriftClientStats.complete(name, toMicros(System.nanoTime() - start));
-                        });
+                    .doFinally(signalType -> handleDoFinally(signalType, name, start));
               } catch (Throwable t) {
                 if (payload != null
                     && payload.getRequestRpcMetadata() != null

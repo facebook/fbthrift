@@ -30,6 +30,7 @@ public class ThriftClientStats {
   private static final String READS_KEY = ".num_reads.sum";
   private static final String WRITES_KEY = ".num_writes.sum";
   private static final String CALLS_KEY = ".num_calls.sum";
+  private static final String CANCEL_KEY = ".num_cancels.sum";
   private static final String EXCEPTIONS_KEY = ".num_exceptions.sum";
   private static final String READ_TIME = ".time_read_us";
   private static final String WRITE_TIME = ".time_write_us";
@@ -66,6 +67,10 @@ public class ThriftClientStats {
     addHistogramValue(methodName + PROCESS_TIME, processDuration);
   }
 
+  public void cancel(String methodName) {
+    incrementCounterValues(methodName + CANCEL_KEY);
+  }
+
   public void error(String methodName) {
     incrementCounterValues(methodName + EXCEPTIONS_KEY);
   }
@@ -82,54 +87,37 @@ public class ThriftClientStats {
           resultCounters.put(THRIFT_CLIENT + key, Math.round(value.getCount()));
         });
 
-    distributions.forEach(
-        (key, value) -> {
-          double result = value.getAvg();
-          resultCounters.put(
-              THRIFT_CLIENT + key + ".avg", Double.isInfinite(result) ? 0L : Math.round(result));
-
-          result = value.getP90();
-          resultCounters.put(
-              THRIFT_CLIENT + key + ".p90", Double.isInfinite(result) ? 0L : Math.round(result));
-
-          result = value.getP99();
-          resultCounters.put(
-              THRIFT_CLIENT + key + ".p99", Double.isInfinite(result) ? 0L : Math.round(result));
-        });
+    distributions.forEach((key, value) -> addCountersToResults("", key, value, resultCounters));
 
     oneMinuteDistributions.forEach(
-        (key, value) -> {
-          double result = value.getAvg();
-          resultCounters.put(
-              THRIFT_CLIENT + key + ".avg.60", Double.isInfinite(result) ? 0L : Math.round(result));
-
-          result = value.getP90();
-          resultCounters.put(
-              THRIFT_CLIENT + key + ".p90.60", Double.isInfinite(result) ? 0L : Math.round(result));
-
-          result = value.getP99();
-          resultCounters.put(
-              THRIFT_CLIENT + key + ".p99.60", Double.isInfinite(result) ? 0L : Math.round(result));
-        });
+        (key, value) -> addCountersToResults(".60", key, value, resultCounters));
 
     oneHourDistributions.forEach(
-        (key, value) -> {
-          double result = value.getAvg();
-          resultCounters.put(
-              THRIFT_CLIENT + key + ".avg.3600",
-              Double.isInfinite(result) ? 0L : Math.round(result));
-
-          result = value.getP90();
-          resultCounters.put(
-              THRIFT_CLIENT + key + ".p90.3600",
-              Double.isInfinite(result) ? 0L : Math.round(result));
-
-          result = value.getP99();
-          resultCounters.put(
-              THRIFT_CLIENT + key + ".p99.3600",
-              Double.isInfinite(result) ? 0L : Math.round(result));
-        });
+        (key, value) -> addCountersToResults(".3600", key, value, resultCounters));
     return resultCounters;
+  }
+
+  private static void addCountersToResults(
+      String postFix, String key, Distribution value, Map<String, Long> resultCounters) {
+    double result = value.getAvg();
+    double sum = value.getCount();
+
+    resultCounters.put(
+        THRIFT_CLIENT + key + ".sum" + postFix, Double.isInfinite(sum) ? 0L : Math.round(sum));
+
+    resultCounters.put(
+        THRIFT_CLIENT + key + ".avg" + postFix,
+        Double.isInfinite(result) ? 0L : Math.round(result));
+
+    result = value.getP90();
+    resultCounters.put(
+        THRIFT_CLIENT + key + ".p90" + postFix,
+        Double.isInfinite(result) ? 0L : Math.round(result));
+
+    result = value.getP99();
+    resultCounters.put(
+        THRIFT_CLIENT + key + ".p99" + postFix,
+        Double.isInfinite(result) ? 0L : Math.round(result));
   }
 
   private void incrementCounterValues(String key) {
