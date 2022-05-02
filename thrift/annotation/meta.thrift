@@ -54,27 +54,6 @@ namespace py thrift.annotation.meta
 @scope.Struct
 struct Transitive {} (thrift.uri = "facebook.com/thrift/annotation/Transitive")
 
-// A meta-annotation that merges fields from `type` to the struct that it annotates.
-// Note, we only allow merging from a struct type. For example:
-//
-//   struct Fields {
-//     1: i32 field1;
-//   }
-//
-//   @meta.MergeFrom{type = "Fields"}
-//   struct StructWithInjectedFields {}
-//
-// is equivalent to
-//
-//   struct StructWithInjectedFields {
-//     1: i32 field1;
-//   }
-@scope.Struct
-@thrift.Experimental
-struct MergeFrom {
-  1: string type;
-} (thrift.uri = "facebook.com/thrift/annotation/meta/MergeFrom")
-
 // Calls t_struct::set_generated().
 //
 // Useful for testing.
