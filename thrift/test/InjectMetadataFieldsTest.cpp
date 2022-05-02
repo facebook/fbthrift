@@ -17,7 +17,7 @@
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
-#include <thrift/test/gen-cpp2/merge_from_types.h>
+#include <thrift/test/gen-cpp2/inject_metadata_fields_types.h>
 
 namespace apache::thrift::test {
 
@@ -77,42 +77,42 @@ void test_serialize_and_deserialize() {
   EXPECT_EQ(objd.struct_field(), s);
 }
 
-TEST(MergeFrom, SameProgram) {
+TEST(InjectMetadataFields, SameProgram) {
   test_serialize_and_deserialize<
-      merge_from::MergedEmptyStruct1,
-      merge_from::MyEnum,
-      merge_from::MyStruct>();
+      inject_metadata_fields::InjectedEmptyStruct1,
+      inject_metadata_fields::MyEnum,
+      inject_metadata_fields::MyStruct>();
 }
 
-TEST(MergeFrom, DifferentProgram) {
+TEST(InjectMetadataFields, DifferentProgram) {
   test_serialize_and_deserialize<
-      merge_from::MergedEmptyStruct2,
+      inject_metadata_fields::InjectedEmptyStruct2,
       MyEnum,
       MyStruct>();
 }
 
-TEST(MergeFrom, FieldsWithAnnotation1) {
-  merge_from::MergedEmptyStruct3 obj;
+TEST(InjectMetadataFields, FieldsWithAnnotation1) {
+  inject_metadata_fields::InjectedEmptyStruct3 obj;
 
   obj.structured_boxed_field() = 1;
   obj.unstructured_boxed_field() = 2;
 
   auto objs = CompactSerializer::serialize<std::string>(obj);
-  merge_from::MergedEmptyStruct3 objd;
+  inject_metadata_fields::InjectedEmptyStruct3 objd;
   CompactSerializer::deserialize(objs, objd);
 
   objd.structured_boxed_field() = 1;
   objd.unstructured_boxed_field() = 2;
 }
 
-TEST(MergeFrom, FieldsWithAnnotation2) {
-  merge_from::MergedEmptyStruct4 obj;
+TEST(InjectMetadataFields, FieldsWithAnnotation2) {
+  inject_metadata_fields::InjectedEmptyStruct4 obj;
 
   obj.structured_boxed_field() = 1;
   obj.unstructured_boxed_field() = 2;
 
   auto objs = CompactSerializer::serialize<std::string>(obj);
-  merge_from::MergedEmptyStruct4 objd;
+  inject_metadata_fields::InjectedEmptyStruct4 objd;
   CompactSerializer::deserialize(objs, objd);
 
   objd.structured_boxed_field() = 1;

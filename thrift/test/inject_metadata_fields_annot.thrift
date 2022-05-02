@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-include "thrift/annotation/thrift.thrift"
+include "thrift/annotation/internal.thrift"
 include "thrift/annotation/meta.thrift"
+include "thrift/annotation/thrift.thrift"
 
 struct FieldsWithAnnotation {
   @thrift.Box
@@ -23,6 +24,6 @@ struct FieldsWithAnnotation {
   2: optional i64 unstructured_boxed_field (thrift.box);
 }
 
-@meta.MergeFrom{type = "FieldsWithAnnotation"}
+@internal.InjectMetadataFields{type = "FieldsWithAnnotation"}
 @meta.Transitive
-struct TransitiveMergeFrom {}
+struct TransitiveInjectMetadataFields {}

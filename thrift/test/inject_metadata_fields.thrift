@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-include "thrift/annotation/meta.thrift"
+include "thrift/annotation/internal.thrift"
 include "thrift/test/clear.thrift"
-include "thrift/test/merge_from_annot.thrift"
+include "thrift/test/inject_metadata_fields_annot.thrift"
 
-namespace cpp2 apache.thrift.test.merge_from
+namespace cpp2 apache.thrift.test.inject_metadata_fields
 
 enum MyEnum {
   ME0 = 0,
@@ -39,9 +39,9 @@ struct Struct {
   14: MyStruct struct_field;
 }
 
-// A struct that merges fields from another struct in the same program.
-@meta.MergeFrom{type = "Struct"}
-struct MergedEmptyStruct1 {
+// A struct that inejcts fields from another struct in the same program.
+@internal.InjectMetadataFields{type = "Struct"}
+struct InjectedEmptyStruct1 {
   1: bool bool_field;
   2: byte byte_field;
   3: i16 short_field;
@@ -51,9 +51,9 @@ struct MergedEmptyStruct1 {
   7: double double_field;
 }
 
-// A struct that merges fields from another struct in a different program.
-@meta.MergeFrom{type = "clear.StructWithNoDefaultStruct"}
-struct MergedEmptyStruct2 {}
+// A struct that inejcts fields from another struct in a different program.
+@internal.InjectMetadataFields{type = "clear.StructWithNoDefaultStruct"}
+struct InjectedEmptyStruct2 {}
 
 struct FieldsWithAnnotation {
   @thrift.Box
@@ -61,8 +61,8 @@ struct FieldsWithAnnotation {
   2: optional i64 unstructured_boxed_field (thrift.box);
 }
 
-@meta.MergeFrom{type = "FieldsWithAnnotation"}
-struct MergedEmptyStruct3 {}
+@internal.InjectMetadataFields{type = "FieldsWithAnnotation"}
+struct InjectedEmptyStruct3 {}
 
-@merge_from_annot.TransitiveMergeFrom
-struct MergedEmptyStruct4 {}
+@inject_metadata_fields_annot.TransitiveInjectMetadataFields
+struct InjectedEmptyStruct4 {}
