@@ -1818,7 +1818,7 @@ class CompilerFailureTest(unittest.TestCase):
 
         self.assertEqual(ret, 0)
 
-    def test_merge_from_annotation(self):
+    def test_inject_metadata_fields_annotation(self):
         write_file(
             "foo.thrift",
             textwrap.dedent(
@@ -1836,7 +1836,7 @@ class CompilerFailureTest(unittest.TestCase):
             "bar.thrift",
             textwrap.dedent(
                 """\
-                include "thrift/annotation/meta.thrift"
+                include "thrift/annotation/internal.thrift"
 
                 typedef i64 MyI64
 
@@ -1851,20 +1851,20 @@ class CompilerFailureTest(unittest.TestCase):
                     3: required i64 field3;
                 }
 
-                @meta.MergeFrom{type="foo.Fields"}
-                struct Extended1 {}
+                @internal.InjectMetadataFields{type="foo.Fields"}
+                struct Injected1 {}
 
-                @meta.MergeFrom
-                struct Extended2 {}
+                @internal.InjectMetadataFields
+                struct Injected2 {}
 
-                @meta.MergeFrom{type="UnionFields"}
-                struct Extended3 {}
+                @internal.InjectMetadataFields{type="UnionFields"}
+                struct Injected3 {}
 
-                @meta.MergeFrom{type="MyI64"}
-                struct Extended4 {}
+                @internal.InjectMetadataFields{type="MyI64"}
+                struct Injected4 {}
 
-                @meta.MergeFrom{type="Fields"}
-                struct Extended5 {
+                @internal.InjectMetadataFields{type="Fields"}
+                struct Injected5 {
                     1: i64 field1;
                 }
                 """
@@ -1876,14 +1876,14 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:bar.thrift:17] Can not find expected type `foo.Fields` specified in `@meta.MergeFrom`"
-            " in the current scope. Please check the include.\n"
+            "[FAILURE:bar.thrift:17] Can not find expected type `foo.Fields` specified"
+            " in `@internal.InjectMetadataFields` in the current scope. Please check the include.\n"
             "[FAILURE:bar.thrift:20] key `type` not found.\n"
             "[FAILURE:bar.thrift:23] `bar.UnionFields` is not a struct type. "
-            "`@meta.MergeFrom` can be only used with a struct type.\n"
+            "`@internal.InjectMetadataFields` can be only used with a struct type.\n"
             "[FAILURE:bar.thrift:26] `bar.MyI64` is not a struct type. "
-            "`@meta.MergeFrom` can be only used with a struct type.\n"
-            "[FAILURE:bar.thrift:29] Field id `1` is already used in `Extended5`.\n",
+            "`@internal.InjectMetadataFields` can be only used with a struct type.\n"
+            "[FAILURE:bar.thrift:29] Field id `1` is already used in `Injected5`.\n",
         )
 
     def test_set_invalid_elem_type(self):

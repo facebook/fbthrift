@@ -28,6 +28,8 @@ constexpr auto kTerseWriteUri =
 constexpr auto kMergeFromUri = "facebook.com/thrift/annotation/meta/MergeFrom";
 constexpr auto kSetGenerated =
     "facebook.com/thrift/annotation/meta/SetGenerated";
+constexpr auto kInjectMetadataFieldsUri =
+    "facebook.com/thrift/annotation/internal/InjectMetadataFields";
 
 // TODO(afuller): Instead of mutating the AST, readers should look for
 // the interaction level annotation and the validation logic should be moved to
@@ -100,6 +102,63 @@ void mutate_terse_write_annotation_struct(
   }
 }
 
+// TODO(dokwon): Add a standard mutator test for @internal.InjectMetadataFields.
+void mutate_inject_metadata_fields(
+    diagnostic_context& ctx, mutator_context&, t_struct& node) {
+  if (is_transitive_annotation(node)) {
+    return;
+  }
+
+  const t_const* annotation =
+      node.find_structured_annotation_or_null(kInjectMetadataFieldsUri);
+  if (!annotation) {
+    return;
+  }
+
+  std::string type_string;
+  try {
+    type_string =
+        annotation->get_value_from_structured_annotation("type").get_string();
+  } catch (const std::exception& e) {
+    ctx.failure([&](auto& o) { o << e.what(); });
+    return;
+  }
+  // If the specified type and annotation are from the same program, append
+  // the current program name.
+  if (type_string.find(".") == std::string::npos) {
+    type_string = annotation->program()->name() + "." + type_string;
+  }
+
+  const auto* ttype = node.program()->scope()->find_type(type_string);
+  if (!ttype) {
+    ctx.failure([&](auto& o) {
+      o << "Can not find expected type `" << type_string
+        << "` specified in `@internal.InjectMetadataFields` in the current scope."
+        << " Please check the include.";
+    });
+    return;
+  }
+
+  const auto* structured = dynamic_cast<const t_struct*>(ttype);
+  // We only allow injecting fields from a struct type.
+  if (structured == nullptr || ttype->is_union() || ttype->is_exception() ||
+      ttype->is_paramlist()) {
+    ctx.failure([&](auto& o) {
+      o << "`" << type_string << "` is not a struct type."
+        << " `@internal.InjectMetadataFields` can be only used with a struct type.";
+    });
+    return;
+  }
+  for (const auto& field : structured->fields()) {
+    ctx.failure_if(
+        !node.try_append_field(field.clone_DO_NOT_USE()), [&](auto& o) {
+          o << "Field id `" << field.id() << "` is already used in `"
+            << node.name() << "`.";
+        });
+  }
+}
+
+// TODO(dokwon): Remove
 void mutate_merge_from(
     diagnostic_context& ctx, mutator_context&, t_struct& node) {
   // TODO(dokwon): Allow annotating @meta.MergeFrom with @meta.Transitive.
@@ -221,6 +280,7 @@ ast_mutators standard_mutators() {
     main.add_field_visitor(&mutate_terse_write_annotation_field);
     main.add_struct_visitor(&mutate_terse_write_annotation_struct);
     main.add_struct_visitor(&mutate_merge_from);
+    main.add_struct_visitor(&mutate_inject_metadata_fields);
   }
   add_patch_mutators(mutators);
   return mutators;
