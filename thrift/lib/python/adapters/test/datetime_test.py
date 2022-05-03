@@ -15,7 +15,7 @@
 import time
 import unittest
 
-from thrift.python.adapters.datetime import DatetimeAdapter
+from thrift.python.test.adapters.datetime import DatetimeAdapter
 
 
 class DatetimeAdapterTest(unittest.TestCase):

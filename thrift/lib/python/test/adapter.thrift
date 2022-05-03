@@ -20,7 +20,7 @@ include "thrift/annotation/python.thrift"
 
 struct Foo {
   @python.Adapter{
-    name = "thrift.python.adapters.datetime.DatetimeAdapter",
+    name = "thrift.python.test.adapters.datetime.DatetimeAdapter",
     typeHint = "datetime.datetime",
   }
   1: i32 created_at;
@@ -29,7 +29,7 @@ struct Foo {
 union Bar {
   1: string baz;
   @python.Adapter{
-    name = "thrift.python.adapters.datetime.DatetimeAdapter",
+    name = "thrift.python.test.adapters.datetime.DatetimeAdapter",
     typeHint = "datetime.datetime",
   }
   2: i32 ts;
