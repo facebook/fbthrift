@@ -451,7 +451,6 @@ compile_result compile(const std::vector<std::string>& arguments) {
     return result;
   }
   source_manager source_mgr;
-  gparams.context.set_source_manager(source_mgr);
   diagnostic_context ctx(source_mgr, result.detail, std::move(dparams));
 
   // Parse it!

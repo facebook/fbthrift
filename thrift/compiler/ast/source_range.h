@@ -18,6 +18,7 @@
 
 #include <cassert>
 #include <iosfwd>
+#include <stdexcept>
 
 namespace apache {
 namespace thrift {
@@ -111,6 +112,100 @@ class source_loc final {
   }
 
   friend std::ostream& operator<<(std::ostream& os, const source_loc& rhs);
+};
+
+/**
+ * class resolved_source_range
+ *
+ * Source range information of a parsed element.
+ */
+class resolved_source_range final {
+ public:
+  constexpr resolved_source_range() noexcept = default;
+  constexpr resolved_source_range(resolved_source_range const&) noexcept =
+      default;
+
+  constexpr resolved_source_range(
+      const t_program& program,
+      size_t begin_line,
+      size_t begin_column,
+      size_t end_line,
+      size_t end_column) noexcept
+      : program_(&program),
+        begin_line_(begin_line),
+        begin_col_(begin_column),
+        end_line_(end_line),
+        end_col_(end_column) {}
+
+  // Throws std::invalid_argument if begin and end refer to different programs.
+  resolved_source_range(const source_loc& begin, const source_loc& end);
+
+  constexpr source_loc begin() const noexcept {
+    return {*program_, begin_line_, begin_col_};
+  }
+  constexpr source_loc end() const noexcept {
+    return {*program_, end_line_, end_col_};
+  }
+  constexpr const t_program& program() const {
+    assert(program_ != nullptr);
+    return *program_;
+  }
+
+  // If the range is specified/known.
+  constexpr bool has_range() const noexcept { return program_ != nullptr; }
+
+  constexpr explicit operator bool() const noexcept { return has_range(); }
+  constexpr resolved_source_range& operator=(
+      const resolved_source_range& range) noexcept = default;
+
+  // Ordered by `begin` than `end`.
+  int compare(const resolved_source_range& rhs) const noexcept {
+    return compare(*this, rhs);
+  }
+
+ private:
+  const t_program* program_ = nullptr;
+  size_t begin_line_ = 0; // 1-based
+  size_t begin_col_ = 0; // Code units (bytes), 1-based
+  size_t end_line_ = 0; // 1-based
+  size_t end_col_ = 0; // Code units (bytes), 1-based
+
+  friend bool operator==(
+      const resolved_source_range& lhs, const resolved_source_range& rhs) {
+    return lhs.program_ == rhs.program_ && lhs.begin_line_ == rhs.begin_line_ &&
+        lhs.begin_col_ == rhs.begin_col_ && lhs.end_line_ == rhs.end_line_ &&
+        lhs.end_col_ == rhs.end_col_;
+  }
+  friend bool operator!=(
+      const resolved_source_range& lhs,
+      const resolved_source_range& rhs) noexcept {
+    return !(lhs == rhs);
+  }
+
+  static int compare(
+      const resolved_source_range& lhs,
+      const resolved_source_range& rhs) noexcept;
+
+  friend bool operator<(
+      const resolved_source_range& lhs,
+      const resolved_source_range& rhs) noexcept {
+    return compare(lhs, rhs) < 0;
+  }
+  friend bool operator<=(
+      const resolved_source_range& lhs,
+      const resolved_source_range& rhs) noexcept {
+    return compare(lhs, rhs) <= 0;
+  }
+  friend bool operator>(
+      const resolved_source_range& lhs,
+      const resolved_source_range& rhs) noexcept {
+    return compare(lhs, rhs) > 0;
+  }
+  friend bool operator>=(
+      const resolved_source_range& lhs,
+      const resolved_source_range& rhs) noexcept {
+    return compare(lhs, rhs) >= 0;
+  }
 };
 
 } // namespace compiler

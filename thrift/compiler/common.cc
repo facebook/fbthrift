@@ -173,14 +173,15 @@ std::unique_ptr<t_program_bundle> parse_and_mutate_program(
 
 std::pair<std::unique_ptr<t_program_bundle>, diagnostic_results>
 parse_and_mutate_program(
-    source_manager& sm,
     const std::string& filename,
     parsing_params params,
     diagnostic_params dparams) {
+  source_manager source_mgr;
   diagnostic_results results;
-  diagnostic_context ctx(sm, results, std::move(dparams));
+  diagnostic_context ctx(source_mgr, results, std::move(dparams));
   return {
-      parse_and_mutate_program(sm, ctx, filename, std::move(params)), results};
+      parse_and_mutate_program(source_mgr, ctx, filename, std::move(params)),
+      results};
 }
 
 std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(

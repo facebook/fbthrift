@@ -47,8 +47,8 @@ void file_manager::apply_replacements() {
 
 // NOTE: Rely on automated formatting to fix formatting issues.
 void file_manager::remove(const t_annotation& annotation) {
-  size_t begin_offset = annotation.second.src_range.begin.offset();
-  size_t end_offset = annotation.second.src_range.end.offset();
+  auto begin_offset = annotation.second.src_range.begin().offset();
+  auto end_offset = annotation.second.src_range.end().offset();
 
   expand_over_whitespaces(begin_offset, end_offset);
 
@@ -101,10 +101,10 @@ void file_manager::remove_all_annotations(const t_node& node) {
   size_t end_offset = 0;
 
   for (const auto& annotation : node.annotations()) {
-    begin_offset = std::min<size_t>(
-        begin_offset, annotation.second.src_range.begin.offset());
+    begin_offset =
+        std::min(begin_offset, annotation.second.src_range.begin().offset());
     end_offset =
-        std::max<size_t>(end_offset, annotation.second.src_range.end.offset());
+        std::max(end_offset, annotation.second.src_range.end().offset());
   }
 
   expand_over_whitespaces(begin_offset, end_offset);

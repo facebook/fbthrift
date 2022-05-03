@@ -26,10 +26,9 @@ namespace thrift {
 namespace compiler {
 
 t_generation_context::t_generation_context(
-    std::string out_path, bool is_out_path_absolute, source_manager* sm)
+    std::string out_path, bool is_out_path_absolute)
     : out_path_(std::move(out_path)),
-      is_out_path_absolute_(is_out_path_absolute),
-      source_mgr_(sm) {
+      is_out_path_absolute_(is_out_path_absolute) {
   if (!out_path_.empty()) {
     if (!(out_path_.back() == '/' || out_path_.back() == '\\')) {
       out_path_.push_back('/');

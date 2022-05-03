@@ -31,22 +31,15 @@ namespace compiler {
 class t_generation_context {
  public:
   t_generation_context() : out_path_("./"), is_out_path_absolute_(false) {}
-  t_generation_context(
-      std::string out_path,
-      bool is_out_path_absolute,
-      source_manager* sm = nullptr);
+  t_generation_context(std::string out_path, bool is_out_path_absolute);
 
   const std::string& get_out_path() const { return out_path_; }
 
   bool is_out_path_absolute() const { return is_out_path_absolute_; }
 
-  const source_manager* get_source_manager() const { return source_mgr_; }
-  void set_source_manager(source_manager& sm) { source_mgr_ = &sm; }
-
  private:
   std::string out_path_;
   bool is_out_path_absolute_;
-  source_manager* source_mgr_ = nullptr;
 };
 
 class t_generator {

@@ -196,29 +196,11 @@ class diagnostics_engine {
       diagnostic_level level,
       fmt::format_string<T...> msg,
       T&&... args) {
-    do_report(loc, {}, level, fmt::format(msg, std::forward<T>(args)...));
-  }
-
-  template <typename... T>
-  void report(
-      source_location loc,
-      std::string name,
-      diagnostic_level level,
-      fmt::format_string<T...> msg,
-      T&&... args) {
-    do_report(
-        loc,
-        std::move(name),
-        level,
-        fmt::format(msg, std::forward<T>(args)...));
+    do_report(loc, level, fmt::format(msg, std::forward<T>(args)...));
   }
 
  private:
-  void do_report(
-      source_location loc,
-      std::string name,
-      diagnostic_level level,
-      std::string msg);
+  void do_report(source_location loc, diagnostic_level level, std::string msg);
 
   source_manager* source_mgr_;
   std::function<void(diagnostic)> report_cb_;

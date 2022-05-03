@@ -118,7 +118,6 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
  */
 std::pair<std::unique_ptr<t_program_bundle>, diagnostic_results>
 parse_and_mutate_program(
-    source_manager& sm,
     const std::string& filename,
     parsing_params params,
     diagnostic_params dparams = {});

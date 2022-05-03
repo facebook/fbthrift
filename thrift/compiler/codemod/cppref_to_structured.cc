@@ -55,7 +55,7 @@ static void cppref_to_structured(
 
   fm.add_include("thrift/annotation/cpp.thrift");
 
-  const auto field_begin_offset = field.src_range().begin.offset();
+  const auto field_begin_offset = field.src_range().begin().offset();
 
   fm.add(
       {field_begin_offset,
