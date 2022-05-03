@@ -69,6 +69,14 @@ const t_const* find_structured_adapter_annotation(const t_named& node) {
       "facebook.com/thrift/annotation/python/Adapter");
 }
 
+const t_const* find_structured_adapter_annotation(const t_field& field) {
+  if (auto field_annotation = find_structured_adapter_annotation(
+          static_cast<const t_named&>(field))) {
+    return field_annotation;
+  }
+  return find_structured_adapter_annotation(*field.get_type());
+}
+
 const std::string get_annotation_property(
     const t_const* annotation, const std::string& key) {
   if (annotation) {

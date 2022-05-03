@@ -18,12 +18,19 @@ namespace py3 thrift.python.test
 
 include "thrift/annotation/python.thrift"
 
+@python.Adapter{
+  name = "thrift.python.test.adapters.datetime.DatetimeAdapter",
+  typeHint = "datetime.datetime",
+}
+typedef i32 Datetime
+
 struct Foo {
   @python.Adapter{
     name = "thrift.python.test.adapters.datetime.DatetimeAdapter",
     typeHint = "datetime.datetime",
   }
   1: i32 created_at;
+  2: Datetime updated_at;
 }
 
 union Bar {

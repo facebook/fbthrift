@@ -15,6 +15,7 @@ import facebook.thrift.annotation.python.lite_types
 
 import facebook.thrift.annotation.thrift.lite_types
 import my
+import my.module
 
 
 class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -89,7 +90,7 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
             "longField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            my.module.Adapter2,  # adapter class
         ),
         (
             10,  # id
@@ -155,7 +156,7 @@ class Baz(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "longField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            my.module.Adapter2,  # adapter class
         ),
     )
 

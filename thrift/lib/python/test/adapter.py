@@ -59,3 +59,9 @@ class AdapterTest(unittest.TestCase):
         mock_to_thrift_field.assert_called_once_with(now, 2, bar)
         bar.ts
         mock_from_thrift_field.assert_called_once_with(now_ts, 2, bar)
+
+    def test_typedef_field(self) -> None:
+        now = datetime.fromtimestamp(int(time.time()))
+        foo = Foo(updated_at=now)
+        self.assertIsInstance(foo.updated_at, datetime)
+        self.assertEqual(foo.updated_at, now)
