@@ -569,18 +569,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "foo");
     $currentseqid = $this->sendImpl_foo();
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
+    await $this->genAwaitResponse($currentseqid, $rpc_options);
     $this->recvImpl_foo($currentseqid);
     await $this->asyncHandler_->genAfter();
   }
@@ -598,18 +587,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "interact");
     $currentseqid = $this->sendImpl_interact($arg);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
+    await $this->genAwaitResponse($currentseqid, $rpc_options);
     $this->recvImpl_interact($currentseqid);
     await $this->asyncHandler_->genAfter();
   }
@@ -627,18 +605,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "interactFast");
     $currentseqid = $this->sendImpl_interactFast();
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
+    await $this->genAwaitResponse($currentseqid, $rpc_options);
     $response = $this->recvImpl_interactFast($currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
@@ -695,18 +662,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "foo");
     $currentseqid = $this->sendImpl_foo();
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
+    await $this->genAwaitResponse($currentseqid, $rpc_options);
     $this->recvImpl_foo($currentseqid);
     await $this->asyncHandler_->genAfter();
   }
@@ -724,18 +680,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "interact");
     $currentseqid = $this->sendImpl_interact($arg);
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
+    await $this->genAwaitResponse($currentseqid, $rpc_options);
     $this->recvImpl_interact($currentseqid);
     await $this->asyncHandler_->genAfter();
   }
@@ -753,18 +698,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "interactFast");
     $currentseqid = $this->sendImpl_interactFast();
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
+    await $this->genAwaitResponse($currentseqid, $rpc_options);
     $response = $this->recvImpl_interactFast($currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
@@ -853,18 +787,7 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "MyInteraction.frobnicate");
     $currentseqid = $this->sendImpl_frobnicate();
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
+    await $this->genAwaitResponse($currentseqid, $rpc_options);
     $response = $this->recvImpl_frobnicate($currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
@@ -1438,18 +1361,7 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.frobnicate");
     $currentseqid = $this->sendImpl_frobnicate();
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
+    await $this->genAwaitResponse($currentseqid, $rpc_options);
     $response = $this->recvImpl_frobnicate($currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
@@ -2018,18 +1930,7 @@ class MyService_SerialInteraction extends \ThriftClientBase {
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("MyService", "SerialInteraction.frobnicate");
     $currentseqid = $this->sendImpl_frobnicate();
-    $channel = $this->channel_;
-    $out_transport = $this->output_->getTransport();
-    $in_transport = $this->input_->getTransport();
-    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
-      $msg = $out_transport->getBuffer();
-      $out_transport->resetBuffer();
-      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
-      $in_transport->resetBuffer();
-      $in_transport->write($result_msg);
-    } else {
-      await $this->asyncHandler_->genWait($currentseqid);
-    }
+    await $this->genAwaitResponse($currentseqid, $rpc_options);
     $this->recvImpl_frobnicate($currentseqid);
     await $this->asyncHandler_->genAfter();
   }
