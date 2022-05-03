@@ -23,7 +23,6 @@
 
 #include <folly/FileUtil.h>
 
-#include <thrift/compiler/ast/source_range.h>
 #include <thrift/compiler/ast/t_program.h>
 
 namespace apache {

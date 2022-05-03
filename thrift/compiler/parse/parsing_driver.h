@@ -277,9 +277,6 @@ class parsing_driver {
   // and returns false iff not.
   bool require_experimental_feature(const char* feature);
 
-  // Returns the source range object containing the location information.
-  resolved_source_range get_source_range(const source_range& range) const;
-
   void reset_locations();
 
   // Computes an enclosing source range for a group of ranges.

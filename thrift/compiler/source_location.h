@@ -68,6 +68,9 @@ class source_location {
  public:
   source_location() = default;
 
+  // TODO: remove
+  uint_least32_t offset() const { return offset_; }
+
   friend bool operator==(source_location lhs, source_location rhs) {
     return lhs.source_id_ == rhs.source_id_ && lhs.offset_ == rhs.offset_;
   }

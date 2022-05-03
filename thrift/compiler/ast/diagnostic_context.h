@@ -16,19 +16,14 @@
 
 #pragma once
 
-#include <array>
-#include <cstdio>
 #include <functional>
-#include <stack>
 #include <string>
-#include <system_error>
 #include <type_traits>
 #include <typeindex>
 #include <utility>
 
 #include <thrift/compiler/ast/ast_visitor.h>
 #include <thrift/compiler/ast/t_node.h>
-#include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/diagnostic.h>
 
 namespace apache {

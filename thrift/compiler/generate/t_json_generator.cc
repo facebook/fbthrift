@@ -83,11 +83,9 @@ class t_json_generator : public t_concat_generator {
       const std::vector<const t_const*>& annotations);
   void print_node_annotations(
       const t_named& node, bool add_heading_comma, bool add_trailing_comma);
-  void print_source_range(const resolved_source_range& range);
+  void print_source_range(const source_range& range);
 
-  /**
-   * True if we should generate annotations in json representation.
-   */
+  // True if we should generate annotations in json representation.
   bool annotate_;
 };
 
@@ -759,21 +757,39 @@ bool t_json_generator::should_resolve_to_true_type(const t_type* ttype) {
  *
  * @param range The source range
  */
-void t_json_generator::print_source_range(const resolved_source_range& range) {
+void t_json_generator::print_source_range(const source_range& range) {
+  auto source_mgr = context_.get_source_manager();
+  assert(source_mgr);
+
   indent(f_out_) << "\"source_range\" : {" << endl;
   indent_up();
 
+  struct line_column {
+    unsigned line = 0;
+    unsigned column = 0;
+
+    line_column(source_location loc, const source_manager& sm) {
+      if (loc != source_location()) {
+        auto resolved_loc = resolved_location(loc, sm);
+        line = resolved_loc.line();
+        column = resolved_loc.column();
+      }
+    }
+  };
+
+  auto begin_loc = line_column(range.begin, *source_mgr);
   indent(f_out_) << "\"begin\" : {" << endl;
   indent_up();
-  indent(f_out_) << "\"line\" : " << range.begin().line() << "," << endl;
-  indent(f_out_) << "\"column\" : " << range.begin().column() << endl;
+  indent(f_out_) << "\"line\" : " << begin_loc.line << "," << endl;
+  indent(f_out_) << "\"column\" : " << begin_loc.column << endl;
   indent_down();
   indent(f_out_) << "}," << endl;
 
+  auto end_loc = line_column(range.end, *source_mgr);
   indent(f_out_) << "\"end\" : {" << endl;
   indent_up();
-  indent(f_out_) << "\"line\" : " << range.end().line() << "," << endl;
-  indent(f_out_) << "\"column\" : " << range.end().column() << endl;
+  indent(f_out_) << "\"line\" : " << end_loc.line << "," << endl;
+  indent(f_out_) << "\"column\" : " << end_loc.column << endl;
   indent_down();
   indent(f_out_) << "}" << endl;
 

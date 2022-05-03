@@ -94,43 +94,6 @@ std::ostream& operator<<(std::ostream& os, const source_loc& rhs) {
   return os;
 }
 
-resolved_source_range::resolved_source_range(
-    const source_loc& begin, const source_loc& end)
-    : resolved_source_range(
-          begin.program(),
-          begin.line(),
-          begin.column(),
-          end.line(),
-          end.column()) {
-  if (&begin.program() != &end.program()) {
-    throw std::invalid_argument(
-        "A resolved_source_range cannot span programs/files.");
-  }
-}
-
-int resolved_source_range::compare(
-    const resolved_source_range& lhs,
-    const resolved_source_range& rhs) noexcept {
-  // Order by program.
-  if (auto result = compare_programs(lhs.program_, rhs.program_)) {
-    return result;
-  }
-  // Then begin line.
-  if (auto result = cmp(lhs.begin_line_, rhs.begin_line_)) {
-    return result;
-  }
-  // Then begin column.
-  if (auto result = cmp(lhs.begin_col_, rhs.begin_col_)) {
-    return result;
-  }
-  // Then end line.
-  if (auto result = cmp(lhs.end_line_, rhs.end_line_)) {
-    return result;
-  }
-  // Then end column.
-  return cmp(lhs.end_col_, rhs.end_col_);
-}
-
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
