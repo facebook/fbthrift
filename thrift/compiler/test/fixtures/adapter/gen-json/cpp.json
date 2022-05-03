@@ -187,6 +187,24 @@
           "column" : 2
         }
       }
+    },
+    "TriviallyRelocatable" : {
+      "lineno" : 83,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 82,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 85,
+          "column" : 2
+        }
+      }
     }
   }
 }

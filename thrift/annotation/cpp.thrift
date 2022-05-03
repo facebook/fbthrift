@@ -78,3 +78,8 @@ struct PackIsset {
 struct MinimizePadding {} (
   thrift.uri = "facebook.com/thrift/annotation/cpp/MinimizePadding",
 )
+
+@scope.Struct
+struct TriviallyRelocatable {} (
+  thrift.uri = "facebook.com/thrift/annotation/cpp/TriviallyRelocatable",
+)

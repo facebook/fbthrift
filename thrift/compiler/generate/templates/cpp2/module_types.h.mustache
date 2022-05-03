@@ -111,6 +111,9 @@ class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:cpp_name
   <%/struct:exception?%>
 
  public:
+<%#struct:cpp_trivially_relocatable%>
+  using IsRelocatable = std::true_type;
+<%/struct:cpp_trivially_relocatable%>
   using __fbthrift_cpp2_type = <%struct:cpp_name%>;
   static constexpr bool __fbthrift_cpp2_is_union =
     <%#struct:union?%>true<%/struct:union?%><%^struct:union?%>false<%/struct:union?%>;
