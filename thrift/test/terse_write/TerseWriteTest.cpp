@@ -18,6 +18,7 @@
 #include <set>
 #include <vector>
 
+#include <folly/Traits.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -34,11 +35,9 @@ namespace apache::thrift::test {
 template <class T>
 struct TerseWriteTests : ::testing::Test {};
 
-TYPED_TEST_CASE_P(TerseWriteTests);
-TYPED_TEST_P(TerseWriteTests, assign) {
-  TypeParam obj;
-  terse_write::MyStruct s;
-  s.field1() = 1;
+template <typename T>
+void assign_fields(T& obj) {
+  using enum_type = folly::remove_cvref_t<decltype(*obj.enum_field())>;
 
   obj.bool_field() = true;
   obj.byte_field() = 1;
@@ -49,11 +48,36 @@ TYPED_TEST_P(TerseWriteTests, assign) {
   obj.double_field() = 6;
   obj.string_field() = "7";
   obj.binary_field() = "8";
-  obj.enum_field() = terse_write::MyEnum::ME1;
+  obj.enum_field() = enum_type::ME1;
   obj.list_field() = {1};
   obj.set_field() = {1};
   obj.map_field() = std::map<int32_t, int32_t>{{1, 1}};
-  obj.struct_field() = s;
+  obj.struct_field()->field1() = 1;
+}
+
+template <typename T>
+void assign_fields_with_intrinsic_default(T& obj) {
+  using enum_type = folly::remove_cvref_t<decltype(*obj.enum_field())>;
+
+  obj.bool_field() = false;
+  obj.byte_field() = 0;
+  obj.short_field() = 0;
+  obj.int_field() = 0;
+  obj.long_field() = 0;
+  obj.float_field() = 0.0;
+  obj.double_field() = 0.0;
+  obj.string_field() = "";
+  obj.binary_field() = "";
+  obj.enum_field() = enum_type::ME0;
+  obj.list_field()->clear();
+  obj.set_field()->clear();
+  obj.map_field()->clear();
+  obj.struct_field()->field1() = 0;
+}
+
+template <typename T>
+void expect_assigned(const T& obj) {
+  using enum_type = folly::remove_cvref_t<decltype(*obj.enum_field())>;
 
   EXPECT_EQ(obj.bool_field(), true);
   EXPECT_EQ(obj.byte_field(), 1);
@@ -64,13 +88,16 @@ TYPED_TEST_P(TerseWriteTests, assign) {
   EXPECT_EQ(obj.double_field(), 6);
   EXPECT_EQ(obj.string_field(), "7");
   EXPECT_EQ(obj.binary_field(), "8");
-  EXPECT_EQ(obj.enum_field(), terse_write::MyEnum::ME1);
+  EXPECT_EQ(obj.enum_field(), enum_type::ME1);
   EXPECT_FALSE(obj.list_field()->empty());
   EXPECT_FALSE(obj.set_field()->empty());
   EXPECT_FALSE(obj.map_field()->empty());
-  EXPECT_EQ(obj.struct_field(), s);
+  EXPECT_EQ(obj.struct_field()->field1(), 1);
+}
 
-  apache::thrift::clear(obj);
+template <typename T>
+void expect_intrinsic_default(const T& obj) {
+  using enum_type = folly::remove_cvref_t<decltype(*obj.enum_field())>;
 
   EXPECT_EQ(obj.bool_field(), false);
   EXPECT_EQ(obj.byte_field(), 0);
@@ -81,67 +108,32 @@ TYPED_TEST_P(TerseWriteTests, assign) {
   EXPECT_EQ(obj.double_field(), 0);
   EXPECT_EQ(obj.string_field(), "");
   EXPECT_EQ(obj.binary_field(), "");
-  EXPECT_EQ(obj.enum_field(), terse_write::MyEnum::ME0);
+  EXPECT_EQ(obj.enum_field(), enum_type::ME0);
   EXPECT_TRUE(obj.list_field()->empty());
   EXPECT_TRUE(obj.set_field()->empty());
   EXPECT_TRUE(obj.map_field()->empty());
-  EXPECT_EQ(obj.struct_field(), terse_write::MyStruct());
+  EXPECT_TRUE(apache::thrift::empty(*obj.struct_field()));
+}
+
+TYPED_TEST_CASE_P(TerseWriteTests);
+TYPED_TEST_P(TerseWriteTests, assign) {
+  TypeParam obj;
+  assign_fields(obj);
+  expect_assigned(obj);
+  apache::thrift::clear(obj);
+  expect_intrinsic_default(obj);
 }
 
 template <typename ThriftStruct, typename Serializer>
 void create_serialize_and_deserialize_test() {
   ThriftStruct obj;
-  terse_write::MyStruct s;
-  s.field1() = 1;
-
-  obj.bool_field() = true;
-  obj.byte_field() = 1;
-  obj.short_field() = 2;
-  obj.int_field() = 3;
-  obj.long_field() = 4;
-  obj.float_field() = 5;
-  obj.double_field() = 6;
-  obj.string_field() = "7";
-  obj.binary_field() = "8";
-  obj.enum_field() = terse_write::MyEnum::ME1;
-  obj.list_field() = {1};
-  obj.set_field() = {1};
-  obj.map_field() = std::map<int32_t, int32_t>{{1, 1}};
-  obj.struct_field() = s;
-
-  EXPECT_EQ(obj.bool_field(), true);
-  EXPECT_EQ(obj.byte_field(), 1);
-  EXPECT_EQ(obj.short_field(), 2);
-  EXPECT_EQ(obj.int_field(), 3);
-  EXPECT_EQ(obj.long_field(), 4);
-  EXPECT_EQ(obj.float_field(), 5);
-  EXPECT_EQ(obj.double_field(), 6);
-  EXPECT_EQ(obj.string_field(), "7");
-  EXPECT_EQ(obj.binary_field(), "8");
-  EXPECT_EQ(obj.enum_field(), terse_write::MyEnum::ME1);
-  EXPECT_FALSE(obj.list_field()->empty());
-  EXPECT_FALSE(obj.set_field()->empty());
-  EXPECT_FALSE(obj.map_field()->empty());
-  EXPECT_EQ(obj.struct_field(), s);
+  assign_fields(obj);
 
   auto objs = Serializer::template serialize<std::string>(obj);
   ThriftStruct objd;
   Serializer::deserialize(objs, objd);
 
-  EXPECT_EQ(objd.bool_field(), true);
-  EXPECT_EQ(objd.byte_field(), 1);
-  EXPECT_EQ(objd.short_field(), 2);
-  EXPECT_EQ(objd.int_field(), 3);
-  EXPECT_EQ(objd.long_field(), 4);
-  EXPECT_EQ(objd.float_field(), 5);
-  EXPECT_EQ(objd.double_field(), 6);
-  EXPECT_EQ(objd.string_field(), "7");
-  EXPECT_EQ(objd.binary_field(), "8");
-  EXPECT_EQ(objd.enum_field(), terse_write::MyEnum::ME1);
-  EXPECT_FALSE(objd.list_field()->empty());
-  EXPECT_FALSE(objd.set_field()->empty());
-  EXPECT_FALSE(objd.map_field()->empty());
-  EXPECT_EQ(objd.struct_field(), s);
+  expect_assigned(objd);
 }
 
 TYPED_TEST_P(TerseWriteTests, serialize_and_deserialize) {
@@ -155,44 +147,14 @@ template <typename ThriftStruct, typename Serializer>
 void create_serialize_empty_test() {
   ThriftStruct obj;
   terse_write::EmptyStruct empty;
-  terse_write::MyStruct s;
-  s.field1() = 1;
-
-  obj.bool_field() = 1;
-  obj.byte_field() = 2;
-  obj.short_field() = 3;
-  obj.int_field() = 3;
-  obj.long_field() = 4;
-  obj.float_field() = 5;
-  obj.double_field() = 6;
-  obj.string_field() = "7";
-  obj.binary_field() = "8";
-  obj.enum_field() = terse_write::MyEnum::ME1;
-  obj.list_field() = {1};
-  obj.set_field() = {1};
-  obj.map_field() = std::map<int32_t, int32_t>{{1, 1}};
-  obj.struct_field() = s;
+  assign_fields(obj);
 
   auto emptys = Serializer::template serialize<std::string>(empty);
   auto objs = Serializer::template serialize<std::string>(obj);
 
   EXPECT_NE(emptys, objs);
 
-  // Manually assign to intrinsic default.
-  obj.bool_field() = false;
-  obj.byte_field() = 0;
-  obj.short_field() = 0;
-  obj.int_field() = 0;
-  obj.long_field() = 0;
-  obj.float_field() = 0.0;
-  obj.double_field() = 0.0;
-  obj.string_field() = "";
-  obj.binary_field() = "";
-  obj.enum_field() = terse_write::MyEnum::ME0;
-  obj.list_field()->clear();
-  obj.set_field()->clear();
-  obj.map_field()->clear();
-  obj.struct_field()->field1() = 0;
+  assign_fields_with_intrinsic_default(obj);
 
   objs = Serializer::template serialize<std::string>(obj);
 
@@ -211,44 +173,10 @@ TYPED_TEST_P(TerseWriteTests, serialize_empty) {
 
 TYPED_TEST_P(TerseWriteTests, empty) {
   TypeParam obj;
-
   EXPECT_TRUE(apache::thrift::empty(obj));
-
-  terse_write::MyStruct s;
-  s.field1() = 1;
-  obj.bool_field() = 1;
-  obj.byte_field() = 2;
-  obj.short_field() = 3;
-  obj.int_field() = 3;
-  obj.long_field() = 4;
-  obj.float_field() = 5;
-  obj.double_field() = 6;
-  obj.string_field() = "7";
-  obj.binary_field() = "8";
-  obj.enum_field() = terse_write::MyEnum::ME1;
-  obj.list_field() = {1};
-  obj.set_field() = {1};
-  obj.map_field() = std::map<int32_t, int32_t>{{1, 1}};
-  obj.struct_field() = s;
-
+  assign_fields(obj);
   EXPECT_FALSE(apache::thrift::empty(obj));
-
-  // Manually assign to intrinsic default.
-  obj.bool_field() = false;
-  obj.byte_field() = 0;
-  obj.short_field() = 0;
-  obj.int_field() = 0;
-  obj.long_field() = 0;
-  obj.float_field() = 0.0;
-  obj.double_field() = 0.0;
-  obj.string_field() = "";
-  obj.binary_field() = "";
-  obj.enum_field() = terse_write::MyEnum::ME0;
-  obj.list_field()->clear();
-  obj.set_field()->clear();
-  obj.map_field()->clear();
-  obj.struct_field()->field1() = 0;
-
+  assign_fields_with_intrinsic_default(obj);
   EXPECT_TRUE(apache::thrift::empty(obj));
 }
 
