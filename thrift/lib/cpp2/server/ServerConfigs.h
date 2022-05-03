@@ -24,6 +24,7 @@
 #include <folly/lang/Assume.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -38,6 +39,7 @@ using PreprocessResult = std::variant<
     AppOverloadedException>;
 
 class Cpp2ConnContext;
+class Cpp2RequestContext;
 class AdaptiveConcurrencyController;
 class ResourcePoolSet;
 
@@ -190,6 +192,11 @@ class ServerConfigs {
 
   virtual std::shared_ptr<concurrency::ThreadManager> getThreadManager()
       const = 0;
+
+  virtual concurrency::ThreadManager::ExecutionScope getRequestExecutionScope(
+      Cpp2RequestContext*, concurrency::PRIORITY defaultPriority) {
+    return concurrency::ThreadManager::ExecutionScope(defaultPriority);
+  }
 
  private:
   folly::relaxed_atomic<int32_t> activeRequests_{0};

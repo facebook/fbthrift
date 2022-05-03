@@ -420,6 +420,8 @@ class ServerRequest {
   // ResponseChannelRequest::UniquePtr&.
   const ResponseChannelRequest::UniquePtr& request() const { return request_; }
 
+  ResponseChannelRequest::UniquePtr& request() { return request_; }
+
   const std::shared_ptr<folly::RequestContext>& follyRequestContext() const {
     return follyRequestContext_;
   }

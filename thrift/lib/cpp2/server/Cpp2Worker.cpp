@@ -494,6 +494,29 @@ void Cpp2Worker::dispatchRequest(
               errorCode);
           return;
         }
+      } else if (
+          found->metadata.rpcKind &&
+          found->metadata.executorType !=
+              AsyncProcessor::MethodMetadata::ExecutorType::UNKNOWN &&
+          found->metadata.interactionType ==
+              AsyncProcessor::MethodMetadata::InteractionType::NONE &&
+          !cpp2ReqCtx->getInteractionId()) {
+        if (found->metadata.executorType ==
+                AsyncProcessor::MethodMetadata::ExecutorType::ANY &&
+            tm) {
+          cpp2ReqCtx->setRequestExecutionScope(
+              serverConfigs->getRequestExecutionScope(
+                  cpp2ReqCtx,
+                  found->metadata.priority.value_or(concurrency::NORMAL)));
+        }
+        detail::ap::processViaExecuteRequest(
+            processor,
+            std::move(request),
+            std::move(serializedCompressedRequest),
+            found->metadata,
+            protocolId,
+            cpp2ReqCtx,
+            tm);
       } else {
         processor->processSerializedCompressedRequestWithMetadata(
             std::move(request),

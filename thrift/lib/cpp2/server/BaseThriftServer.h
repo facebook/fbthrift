@@ -230,6 +230,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // Cpp2 ProcessorFactory.
   std::shared_ptr<apache::thrift::AsyncProcessorFactory> cpp2Pfac_;
 
+  ServerInterface* applicationServerInterface_{};
+
   // Explicitly set monitoring service interface handler
   std::shared_ptr<MonitoringServerInterface> monitoringServiceHandler_;
 
@@ -1016,11 +1018,28 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       std::shared_ptr<AsyncProcessorFactory> pFac) {
     CHECK(configMutable());
     cpp2Pfac_ = pFac;
+    applicationServerInterface_ = nullptr;
+    for (auto* serviceHandler : cpp2Pfac_->getServiceHandlers()) {
+      if (auto serverInterface =
+              dynamic_cast<ServerInterface*>(serviceHandler)) {
+        applicationServerInterface_ = serverInterface;
+        break;
+      }
+    }
   }
 
   const std::shared_ptr<apache::thrift::AsyncProcessorFactory>&
   getProcessorFactory() const {
     return cpp2Pfac_;
+  }
+
+  concurrency::ThreadManager::ExecutionScope getRequestExecutionScope(
+      Cpp2RequestContext* ctx, concurrency::PRIORITY defaultPriority) override {
+    if (applicationServerInterface_) {
+      return applicationServerInterface_->getRequestExecutionScope(
+          ctx, defaultPriority);
+    }
+    return ServerConfigs::getRequestExecutionScope(ctx, defaultPriority);
   }
 
   /**

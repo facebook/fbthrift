@@ -942,7 +942,6 @@ void nonRecursiveProcessForInteraction(
 
 inline void processViaExecuteRequest(
     AsyncProcessor* processor,
-    ServerInterface* si,
     ResponseChannelRequest::UniquePtr req,
     apache::thrift::SerializedCompressedRequest&& serializedRequest,
     const apache::thrift::AsyncProcessor::MethodMetadata& untypedMethodMetadata,
@@ -953,10 +952,9 @@ inline void processViaExecuteRequest(
       untypedMethodMetadata.executorType !=
       AsyncProcessor::MethodMetadata::ExecutorType::UNKNOWN);
   DCHECK(
-      untypedMethodMetadata.interactionType !=
-      AsyncProcessor::MethodMetadata::InteractionType::UNKNOWN);
+      untypedMethodMetadata.interactionType ==
+      AsyncProcessor::MethodMetadata::InteractionType::NONE);
   DCHECK(untypedMethodMetadata.rpcKind);
-  DCHECK(untypedMethodMetadata.priority);
 
   if (!apache::thrift::GeneratedAsyncProcessor::validateRpcKind(
           req, *untypedMethodMetadata.rpcKind)) {
@@ -964,15 +962,12 @@ inline void processViaExecuteRequest(
   }
 
   folly::Executor::KeepAlive<> executor;
-
   if (untypedMethodMetadata.executorType ==
           AsyncProcessor::MethodMetadata::ExecutorType::ANY &&
       tm) {
-    auto scope =
-        si->getRequestExecutionScope(ctx, *untypedMethodMetadata.priority);
-    ctx->setRequestExecutionScope(std::move(scope));
     executor = tm->getKeepAlive(
-        std::move(scope), concurrency::ThreadManager::Source::INTERNAL);
+        ctx->getRequestExecutionScope(),
+        concurrency::ThreadManager::Source::INTERNAL);
   }
 
   auto task = [serverRequest =
@@ -1046,9 +1041,15 @@ void process(
   if (methodMetadata.interactionType !=
           AsyncProcessor::MethodMetadata::InteractionType::INTERACTION_V1 &&
       !ctx->getInteractionId()) {
+    if (methodMetadata.executorType ==
+            AsyncProcessor::MethodMetadata::ExecutorType::ANY &&
+        tm) {
+      ctx->setRequestExecutionScope(si->getRequestExecutionScope(
+          ctx, methodMetadata.priority.value_or(concurrency::NORMAL)));
+    }
+
     return processViaExecuteRequest(
         processor,
-        si,
         std::move(req),
         std::move(serializedRequest),
         methodMetadata,
