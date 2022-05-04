@@ -424,7 +424,8 @@ void ThriftServer::setup() {
         THRIFT_FLAG(experimental_use_resource_pools);
     if (!useResourcePools()) {
       // We always need a threadmanager for cpp2.
-      LOG(INFO) << "Using thread manager (resource pools not enabled)";
+      LOG(INFO) << "Using thread manager (resource pools not enabled) "
+                << runtimeServerActions_.explain();
       setupThreadManager();
       threadManager_->setExpireCallback([&](std::shared_ptr<Runnable> r) {
         EventTask* task = dynamic_cast<EventTask*>(r.get());
