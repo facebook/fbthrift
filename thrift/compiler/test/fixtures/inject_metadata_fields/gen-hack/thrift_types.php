@@ -561,6 +561,10 @@ class facebook_thrift_annotation_thrift_v1 implements \IThriftSyncStruct {
           shape(
           )
         ),
+        'facebook_thrift_annotation_thrift_NoLegacyAPIs' => facebook_thrift_annotation_thrift_NoLegacyAPIs::fromShape(
+          shape(
+          )
+        ),
         'facebook_thrift_annotation_FbthriftInternalScopeTransitive' => facebook_thrift_annotation_FbthriftInternalScopeTransitive::fromShape(
           shape(
           )

@@ -69,7 +69,7 @@
         "name" : "v1",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 80
+        "lineno" : 81
       }
       },
   "source_path" : "thrift/annotation/thrift",

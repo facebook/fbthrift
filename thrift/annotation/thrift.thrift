@@ -76,5 +76,6 @@ struct NoLegacyAPIs {} (
 )
 
 @TerseWrite
+@NoLegacyAPIs
 @scope.FbthriftInternalScopeTransitive
 struct v1 {}
