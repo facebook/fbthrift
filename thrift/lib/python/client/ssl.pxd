@@ -67,7 +67,7 @@ cdef extern from "thrift/lib/python/client/ssl.h" namespace "::thrift::python::c
         ClientType,
         cProtocol,
         const string& endpoint,
-    )
+    ) except +
 
 
 cdef class SSLContext:

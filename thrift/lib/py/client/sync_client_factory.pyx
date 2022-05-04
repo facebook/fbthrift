@@ -25,6 +25,7 @@ from thrift.python.client cimport ssl as thrift_ssl
 from thrift.python.client.request_channel cimport ClientType as cClientType
 from thrift.python.client.sync_channel_factory cimport create_channel
 from thrift.python.serializer cimport Protocol as cProtocol
+from thrift.transport.TTransport import TTransportException
 
 def get_client(
     clientKlass,
@@ -38,7 +39,10 @@ def get_client(
     thrift_ssl.SSLContext ssl_context=None,
     double ssl_timeout=1,
 ):
-    channel = create_channel(
-        host, port, path, timeout, client_type, protocol, ssl_context, ssl_timeout
-    )
-    return clientKlass(cpp_transport=SyncClient(channel))
+    try:
+        channel = create_channel(
+            host, port, path, timeout, client_type, protocol, ssl_context, ssl_timeout
+        )
+        return clientKlass(cpp_transport=SyncClient(channel))
+    except RuntimeError as re:
+        raise TTransportException(type=TTransportException.NOT_OPEN, message=str(re))

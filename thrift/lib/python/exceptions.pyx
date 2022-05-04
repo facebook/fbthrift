@@ -62,7 +62,7 @@ cdef class LibraryError(Error):
 cdef class TransportError(LibraryError):
     """All Transport Level Errors (TTransportException)"""
 
-    def __init__(self, type, str message, int errno, options):
+    def __init__(TransportError self, TransportErrorType type, str message, int errno, int options):
         super().__init__(type, message, errno, options)
 
     @property

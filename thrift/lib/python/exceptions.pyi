@@ -58,7 +58,7 @@ class TransportErrorType(enum.Enum):
 
 class TransportError(Error):
     def __init__(
-        self, type: ApplicationErrorType, message: str, errno: int, options: int
+        self, type: TransportErrorType, message: str, errno: int, options: int
     ) -> None: ...
     type: TransportErrorType
     message: str
