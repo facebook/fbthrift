@@ -179,18 +179,18 @@ cdef class UnionInfo:
             True,
         )
         self.type_infos = {}
-        self.adapter_classes = {}
+        self.id_to_adapter_classes = {}
         self.name_to_index = {}
 
     cdef void fill(self) except *:
         cdef cDynamicStructInfo* info_ptr = self.cpp_obj.get()
-        for idx, (id, is_unqualified, name, type_info, _, adapter_class) in enumerate(self.fields):
+        for idx, (id, is_unqualified, name, type_info, _, adapter_classes) in enumerate(self.fields):
             # type_info can be a lambda function so types with dependencies
             # won't need to be defined in order
             if callable(type_info):
                 type_info = type_info()
             self.type_infos[id] = type_info
-            self.adapter_classes[id] = adapter_class
+            self.id_to_adapter_classes[id] = adapter_classes
             info_ptr.addFieldInfo(
                 id, is_unqualified, name.encode("utf-8"), getCTypeInfo(type_info)
             )
@@ -371,10 +371,10 @@ cdef class Struct(StructOrUnion):
                 raise TypeError(f"__init__() got an unexpected keyword argument '{name}'")
             if value is None:
                 continue
-            adapter_class = info.fields[index][5]
-            if adapter_class:
+            adapter_classes = info.fields[index][5]
+            if adapter_classes:
                 field_id = info.fields[index][0]
-                value = adapter_class.to_thrift_field(value, field_id, self)
+                value = _to_thrift_field(adapter_classes, value, field_id, self)
             set_struct_field(
                 self._fbthrift_data,
                 index,
@@ -397,10 +397,10 @@ cdef class Struct(StructOrUnion):
                     continue
                 value_to_copy = self._fbthrift_data[index + 1]
             else:  # new assigned value
-                adapter_class = info.fields[index][5]
-                if adapter_class:
+                adapter_classes = info.fields[index][5]
+                if adapter_classes:
                     field_id = info.fields[index][0]
-                    value = adapter_class.to_thrift_field(value, field_id, self)
+                    value = _to_thrift_field(adapter_classes, value, field_id, self)
                 value_to_copy = info.type_infos[index].to_internal_data(value)
             set_struct_field(new_inst._fbthrift_data, index, value_to_copy)
         if kwargs:
@@ -529,9 +529,9 @@ cdef class Union(StructOrUnion):
         Py_DECREF(old_type_value)
         old_value = self._fbthrift_data[1]
         union_info = (<UnionInfo>self._fbthrift_struct_info)
-        adapter_class = union_info.adapter_classes[type_value]
-        if adapter_class:
-            value = adapter_class.to_thrift_field(value, type_value, self)
+        adapter_classes = union_info.id_to_adapter_classes[type_value]
+        if adapter_classes:
+            value = _to_thrift_field(adapter_classes, value, type_value, self)
         value = union_info.type_infos[type_value].to_internal_data(value)
         Py_INCREF(value)
         PyTuple_SET_ITEM(self._fbthrift_data, 1, value)
@@ -613,21 +613,27 @@ cdef class Union(StructOrUnion):
         return self.type.value != 0
 
 
-cdef make_fget_struct(i, field_id, adapter_class):
-    if adapter_class:
+cdef make_fget_struct(i, field_id, adapter_classes):
+    if adapter_classes:
         return functools.cached_property(lambda self:
-            adapter_class.from_thrift_field(
-                (<Struct>self)._fbthrift_get_field_value(i), field_id, self
+            _from_thrift_field(
+                adapter_classes,
+                (<Struct>self)._fbthrift_get_field_value(i),
+                field_id,
+                self,
             )
         )
     return functools.cached_property(lambda self: (<Struct>self)._fbthrift_get_field_value(i))
 
 
-cdef make_fget_union(type_value, adapter_class):
-    if adapter_class:
+cdef make_fget_union(type_value, adapter_classes):
+    if adapter_classes:
         return functools.cached_property(lambda self:
-            adapter_class.from_thrift_field(
-                (<Union>self)._fbthrift_get_field_value(type_value), type_value, self
+            _from_thrift_field(
+                adapter_classes,
+                (<Union>self)._fbthrift_get_field_value(type_value),
+                type_value,
+                self,
             )
         )
     return property(lambda self: (<Union>self)._fbthrift_get_field_value(type_value))
@@ -1122,3 +1128,15 @@ class Enum:
     @staticmethod
     def __get_thrift_name__() -> str:
         return NotImplementedError()
+
+
+cdef _to_thrift_field(tuple adapter_classes, adapted, int field_id, strct):
+    for cls in adapter_classes:
+        adapted = cls.to_thrift_field(adapted, field_id, strct)
+    return adapted
+
+
+cdef _from_thrift_field(tuple adapter_classes, orig, int field_id, strct):
+    for cls in reversed(adapter_classes):
+        orig = cls.from_thrift_field(orig, field_id, strct)
+    return orig

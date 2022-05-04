@@ -18,8 +18,8 @@ import facebook.thrift.annotation.cpp.lite_types
 import facebook.thrift.annotation.python.lite_types
 
 import facebook.thrift.annotation.thrift.lite_types
-import my
 import my.another.module
+import my
 
 
 class Foo(_fbthrift_py3lite_types.Struct):

@@ -22,7 +22,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "MyIntField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -30,7 +30,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "MyStringField",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             3,  # id
@@ -38,7 +38,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "MyDataField",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataItem),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             4,  # id
@@ -46,7 +46,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myEnum",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             5,  # id
@@ -54,7 +54,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "oneway",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             6,  # id
@@ -62,7 +62,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "readonly",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             7,  # id
@@ -70,7 +70,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "idempotent",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             8,  # id
@@ -78,7 +78,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "floatSet",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_float),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -122,7 +122,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "myEnum",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -130,7 +130,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "myStruct",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStruct),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             3,  # id
@@ -138,7 +138,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "myDataItem",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataItem),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             4,  # id
@@ -146,7 +146,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "floatSet",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_float),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -213,7 +213,7 @@ class _fbthrift_MyService_getRandomData_result(metaclass=_fbthrift_py3lite_types
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -226,7 +226,7 @@ class _fbthrift_MyService_sink_args(metaclass=_fbthrift_py3lite_types.StructMeta
             "sink",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -243,7 +243,7 @@ class _fbthrift_MyService_putDataById_args(metaclass=_fbthrift_py3lite_types.Str
             "id",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -251,7 +251,7 @@ class _fbthrift_MyService_putDataById_args(metaclass=_fbthrift_py3lite_types.Str
             "data",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -268,7 +268,7 @@ class _fbthrift_MyService_hasDataById_args(metaclass=_fbthrift_py3lite_types.Str
             "id",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -280,7 +280,7 @@ class _fbthrift_MyService_hasDataById_result(metaclass=_fbthrift_py3lite_types.S
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -293,7 +293,7 @@ class _fbthrift_MyService_getDataById_args(metaclass=_fbthrift_py3lite_types.Str
             "id",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -305,7 +305,7 @@ class _fbthrift_MyService_getDataById_result(metaclass=_fbthrift_py3lite_types.S
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -318,7 +318,7 @@ class _fbthrift_MyService_deleteDataById_args(metaclass=_fbthrift_py3lite_types.
             "id",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -335,7 +335,7 @@ class _fbthrift_MyService_lobDataById_args(metaclass=_fbthrift_py3lite_types.Str
             "id",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -343,7 +343,7 @@ class _fbthrift_MyService_lobDataById_args(metaclass=_fbthrift_py3lite_types.Str
             "data",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -361,7 +361,7 @@ class _fbthrift_MyService_invalid_return_for_hack_result(metaclass=_fbthrift_py3
             "success",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_float),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -374,7 +374,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey0_args(metaclass=_fbthrift_py3
             "key",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -386,7 +386,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey0_result(metaclass=_fbthrift_p
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -399,7 +399,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey1_args(metaclass=_fbthrift_py3
             "key",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -411,7 +411,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey1_result(metaclass=_fbthrift_p
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 

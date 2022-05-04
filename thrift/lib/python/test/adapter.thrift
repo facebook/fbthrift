@@ -24,6 +24,12 @@ include "thrift/annotation/python.thrift"
 }
 typedef i32 Datetime
 
+@python.Adapter{
+  name = "thrift.python.test.adapters.atoi.AtoiAdapter",
+  typeHint = "int",
+}
+typedef string AdaptedInt
+
 struct Foo {
   @python.Adapter{
     name = "thrift.python.test.adapters.datetime.DatetimeAdapter",
@@ -31,6 +37,11 @@ struct Foo {
   }
   1: i32 created_at;
   2: Datetime updated_at;
+  @python.Adapter{
+    name = "thrift.python.test.adapters.datetime.DatetimeAdapter",
+    typeHint = "datetime.datetime",
+  }
+  3: AdaptedInt another_time;
 }
 
 union Bar {

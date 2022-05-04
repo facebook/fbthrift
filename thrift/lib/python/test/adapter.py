@@ -65,3 +65,9 @@ class AdapterTest(unittest.TestCase):
         foo = Foo(updated_at=now)
         self.assertIsInstance(foo.updated_at, datetime)
         self.assertEqual(foo.updated_at, now)
+
+    def test_double_adapters(self) -> None:
+        now = datetime.fromtimestamp(int(time.time()))
+        foo = Foo(another_time=now)
+        self.assertIsInstance(foo.another_time, datetime)
+        self.assertEqual(foo.another_time, now)

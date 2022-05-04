@@ -20,7 +20,7 @@ class MyStructFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myLongField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -28,7 +28,7 @@ class MyStructFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
             "MyByteField",  # name
             _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             3,  # id
@@ -36,7 +36,7 @@ class MyStructFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myStringField",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             4,  # id
@@ -44,7 +44,7 @@ class MyStructFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myFloatField",  # name
             _fbthrift_py3lite_types.typeinfo_float,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -70,7 +70,7 @@ class MyStructMapFloatThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myLongField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -78,7 +78,7 @@ class MyStructMapFloatThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mapListOfFloats",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_float))),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -104,7 +104,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "MyIntField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -112,7 +112,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "MyStringField",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             3,  # id
@@ -120,7 +120,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "MyDataField",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataItem),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             4,  # id
@@ -128,7 +128,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myEnum",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             5,  # id
@@ -136,7 +136,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "MyBoolField",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             6,  # id
@@ -144,7 +144,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "MyByteField",  # name
             _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             7,  # id
@@ -152,7 +152,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "MyShortField",  # name
             _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             8,  # id
@@ -160,7 +160,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "MyLongField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             9,  # id
@@ -168,7 +168,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "MyDoubleField",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             10,  # id
@@ -176,7 +176,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "lDouble",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_double),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             11,  # id
@@ -184,7 +184,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "lShort",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             12,  # id
@@ -192,7 +192,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "lInteger",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             13,  # id
@@ -200,7 +200,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "lLong",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i64),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             14,  # id
@@ -208,7 +208,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "lString",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             15,  # id
@@ -216,7 +216,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "lBool",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_bool),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             16,  # id
@@ -224,7 +224,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "lByte",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_byte),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             17,  # id
@@ -232,7 +232,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mShortString",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             18,  # id
@@ -240,7 +240,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mIntegerString",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             19,  # id
@@ -248,7 +248,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mStringMyStruct",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.StructTypeInfo(MyStruct)),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             20,  # id
@@ -256,7 +256,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mStringBool",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_bool),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             21,  # id
@@ -264,7 +264,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mIntegerInteger",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             22,  # id
@@ -272,7 +272,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mIntegerBool",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_bool),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             23,  # id
@@ -280,7 +280,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "sShort",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             24,  # id
@@ -288,7 +288,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "sMyStruct",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyStruct)),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             25,  # id
@@ -296,7 +296,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "sLong",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i64),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             26,  # id
@@ -304,7 +304,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "sString",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             27,  # id
@@ -312,7 +312,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "sByte",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_byte),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             28,  # id
@@ -320,7 +320,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mListList",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32), _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32)),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -346,7 +346,7 @@ class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "age",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             60,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -354,7 +354,7 @@ class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "name",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             "Batman",  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -380,7 +380,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myLongDFset",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             10,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -388,7 +388,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myLongDF",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             3,  # id
@@ -396,7 +396,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "portDFset",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             3456,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             4,  # id
@@ -404,7 +404,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "portNum",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             5,  # id
@@ -412,7 +412,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myBinaryDFset",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             b"abc",  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             6,  # id
@@ -420,7 +420,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myBinary",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             7,  # id
@@ -428,7 +428,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myByteDFSet",  # name
             _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
             17,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             8,  # id
@@ -436,7 +436,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myByte",  # name
             _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             9,  # id
@@ -444,7 +444,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myDoubleDFset",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             float(99.7678),  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             10,  # id
@@ -452,7 +452,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myDoubleDFZero",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             float(0),  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             12,  # id
@@ -460,7 +460,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myDouble",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             13,  # id
@@ -468,7 +468,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "field3",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string, {15: "a_value", 2: "b_value"}),  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             14,  # id
@@ -476,7 +476,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myList",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.EnumTypeInfo(MyEnum)),  # typeinfo
             lambda: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.EnumTypeInfo(MyEnum), (MyEnum.MyValue1, MyEnum.MyValue1, MyEnum.MyValue2, )),  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             15,  # id
@@ -484,7 +484,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mySet",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             lambda: _fbthrift_py3lite_types.Set(_fbthrift_py3lite_types.typeinfo_string, ("house", "car", "dog", )),  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             16,  # id
@@ -492,7 +492,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "simpleStruct",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(SimpleStruct),  # typeinfo
             lambda: SimpleStruct(age=40, name="John"),  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             17,  # id
@@ -500,7 +500,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "listStructDFset",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct)),  # typeinfo
             lambda: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), (SimpleStruct(age=40, name="IronMan"), SimpleStruct(age=999, name="Thanos"), )),  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             18,  # id
@@ -508,7 +508,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myUnion",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnion),  # typeinfo
             lambda: MyUnion(myEnum=MyEnum.MyValue2),  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             19,  # id
@@ -516,7 +516,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "listUnionDFset",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyUnion)),  # typeinfo
             lambda: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(MyUnion), (MyUnion(myEnum=MyEnum.MyValue2), MyUnion(intValue=123), )),  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             20,  # id
@@ -524,7 +524,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mapNestlistStructDfSet",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct))),  # typeinfo
             lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct)), {1: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), (SimpleStruct(age=40, name="IronMan"), SimpleStruct(age=999, name="Thanos"), )), 2: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), (SimpleStruct(age=28, name="BatMan"), SimpleStruct(age=12, name="Robin"), )), 5: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), (SimpleStruct(age=12, name="RatMan"), SimpleStruct(age=6, name="Catman"), ))}),  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             21,  # id
@@ -532,7 +532,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mapJavaTypeDFset",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_string, {15: "a_value", 2: "b_value"}),  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             22,  # id
@@ -540,7 +540,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "emptyMap",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
             lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_i32, {}),  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             23,  # id
@@ -548,7 +548,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "enumMapDFset",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum))),  # typeinfo
             lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum)), {"SANDY BRIDGE": _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum), {16: MyEnum.MyValue1, 144: MyEnum.MyValue1}), "IVY BRIDGE": _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum), {32: MyEnum.MyValue2, 144: MyEnum.MyValue2}), "HASWELL": _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum), {32: MyEnum.MyValue3, 128: MyEnum.MyValue3, 256: MyEnum.MyValue3})}),  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -574,7 +574,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myLongField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -582,7 +582,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myLongTypeDef",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             3,  # id
@@ -590,7 +590,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myStringField",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             4,  # id
@@ -598,7 +598,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myStringTypedef",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             5,  # id
@@ -606,7 +606,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myMapField",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             6,  # id
@@ -614,7 +614,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myMapTypedef",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             7,  # id
@@ -622,7 +622,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myListField",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_double),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             8,  # id
@@ -630,7 +630,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myListTypedef",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_double),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             9,  # id
@@ -638,7 +638,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
             "myMapListOfTypeDef",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_double))),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -682,7 +682,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "myEnum",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -690,7 +690,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "myStruct",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStruct),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             3,  # id
@@ -698,7 +698,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "myDataItem",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataItem),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             4,  # id
@@ -706,7 +706,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "complexNestedStruct",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(ComplexNestedStruct),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             5,  # id
@@ -714,7 +714,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "longValue",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             6,  # id
@@ -722,7 +722,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "intValue",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -748,7 +748,7 @@ class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "myEnum",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -756,7 +756,7 @@ class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "setFloat",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_float)),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             3,  # id
@@ -764,7 +764,7 @@ class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "myDataItem",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataItem),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             4,  # id
@@ -772,7 +772,7 @@ class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "complexNestedStruct",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(ComplexNestedStruct),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -798,7 +798,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "setOfSetOfInt",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i32)),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -806,7 +806,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "listofListOfListOfListOfEnum",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.EnumTypeInfo(MyEnum))))),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             3,  # id
@@ -814,7 +814,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "listOfListOfMyStruct",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyStruct))),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             4,  # id
@@ -822,7 +822,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "setOfListOfListOfLong",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i64))),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             5,  # id
@@ -830,7 +830,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "setOfSetOfsetOfLong",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i64))),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             6,  # id
@@ -838,7 +838,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mapStructListOfListOfLong",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyStruct)))),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             7,  # id
@@ -846,7 +846,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mKeyStructValInt",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyStruct), _fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             8,  # id
@@ -854,7 +854,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "listOfMapKeyIntValInt",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_i32)),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             9,  # id
@@ -862,7 +862,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "listOfMapKeyStrValList",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyStruct)))),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             10,  # id
@@ -870,7 +870,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mapKeySetValLong",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i32), _fbthrift_py3lite_types.typeinfo_i64),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             11,  # id
@@ -878,7 +878,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mapKeyListValLong",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string), _fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             12,  # id
@@ -886,7 +886,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mapKeyMapValMap",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string), _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string)),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             13,  # id
@@ -894,7 +894,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mapKeySetValMap",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32)), _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string)), _fbthrift_py3lite_types.typeinfo_string)),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             14,  # id
@@ -902,7 +902,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "NestedMaps",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string), _fbthrift_py3lite_types.typeinfo_string), _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string)),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             15,  # id
@@ -910,7 +910,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mapKeyIntValList",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyStruct))),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             16,  # id
@@ -918,7 +918,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mapKeyIntValSet",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_bool)),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             17,  # id
@@ -926,7 +926,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mapKeySetValInt",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_bool), _fbthrift_py3lite_types.EnumTypeInfo(MyEnum)),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             18,  # id
@@ -934,7 +934,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mapKeyListValSet",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32), _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_double, _fbthrift_py3lite_types.typeinfo_string))),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -960,7 +960,7 @@ class TypeRemapped(metaclass=_fbthrift_py3lite_types.StructMeta):
             "lsMap",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -968,7 +968,7 @@ class TypeRemapped(metaclass=_fbthrift_py3lite_types.StructMeta):
             "ioMap",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_i64)),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             3,  # id
@@ -976,7 +976,7 @@ class TypeRemapped(metaclass=_fbthrift_py3lite_types.StructMeta):
             "BigInteger",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             4,  # id
@@ -984,7 +984,7 @@ class TypeRemapped(metaclass=_fbthrift_py3lite_types.StructMeta):
             "binaryTestBuffer",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -1028,7 +1028,7 @@ class reqXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
             "message",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -1036,7 +1036,7 @@ class reqXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
             "errorCode",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -1062,7 +1062,7 @@ class optXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
             "message",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -1070,7 +1070,7 @@ class optXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
             "errorCode",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
@@ -1096,7 +1096,7 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
             "message",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             2,  # id
@@ -1104,7 +1104,7 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
             "listStrings",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             3,  # id
@@ -1112,7 +1112,7 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
             "errorEnum",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             4,  # id
@@ -1120,7 +1120,7 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
             "unionError",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnion),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             5,  # id
@@ -1128,7 +1128,7 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
             "structError",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStruct),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
         (
             6,  # id
@@ -1136,7 +1136,7 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
             "lsMap",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
-            None,  # adapter class
+            None,  # adapter classes
         ),
     )
 
