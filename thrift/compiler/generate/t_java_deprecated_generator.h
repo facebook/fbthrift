@@ -41,7 +41,6 @@ struct StructGenParams {
 
 /**
  * Java code generator.
- *
  */
 class t_java_deprecated_generator : public t_oop_generator {
  public:

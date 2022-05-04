@@ -77,7 +77,10 @@ diagnostic_results::diagnostic_results(
 }
 
 void diagnostics_engine::do_report(
-    source_location loc, diagnostic_level level, std::string msg) {
+    source_location loc,
+    std::string name,
+    diagnostic_level level,
+    std::string msg) {
   if (!params_.should_report(level)) {
     return;
   }
@@ -89,7 +92,12 @@ void diagnostics_engine::do_report(
     line = resolved_loc.line();
   }
   report_cb_(
-      {level, std::move(msg), std::move(file_name), static_cast<int>(line)});
+      {level,
+       std::move(msg),
+       std::move(file_name),
+       static_cast<int>(line),
+       {},
+       std::move(name)});
 }
 
 } // namespace compiler

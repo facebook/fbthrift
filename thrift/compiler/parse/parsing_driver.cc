@@ -454,11 +454,11 @@ void parsing_driver::set_attributes(
     t_named& node,
     std::unique_ptr<t_def_attrs> attrs,
     std::unique_ptr<t_annotations> annots,
-    const source_range& loc) const {
+    const source_range& range) const {
   if (mode != parsing_mode::PROGRAM) {
     return;
   }
-  node.set_src_range(get_source_range(loc));
+  node.set_src_range(range);
   if (attrs != nullptr) {
     if (attrs->doc) {
       node.set_doc(std::move(*attrs->doc));
@@ -481,16 +481,6 @@ void parsing_driver::set_doctext(t_node& node, t_doc doctext) const {
   } else if (doctext) {
     node.set_doc(std::move(*doctext));
   }
-}
-
-resolved_source_range parsing_driver::get_source_range(
-    const source_range& range) const {
-  if (range.begin == source_location()) {
-    return {*program, 0, 0, 0, 0};
-  }
-  auto begin = resolved_location(range.begin, *source_mgr_);
-  auto end = resolved_location(range.end, *source_mgr_);
-  return {*program, begin.line(), begin.column(), end.line(), end.column()};
 }
 
 void parsing_driver::reset_locations() {

@@ -1149,12 +1149,12 @@ Annotation:
   Identifier "=" IntOrLiteral
     {
       driver.debug("Annotation -> Identifier = IntOrLiteral");
-      $$ = new t_annotation{$1, {driver.get_source_range(@$), $3}};
+      $$ = new t_annotation{$1, {@$, $3}};
     }
   | Identifier
     {
       driver.debug("Annotation -> Identifier");
-      $$ = new t_annotation{$1, {driver.get_source_range(@$), "1"}};
+      $$ = new t_annotation{$1, {@$, "1"}};
     }
 
 StructuredAnnotations:

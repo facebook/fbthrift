@@ -26,14 +26,14 @@
 #include <vector>
 
 #include <thrift/compiler/ast/alias_span.h>
-#include <thrift/compiler/ast/source_range.h>
+#include <thrift/compiler/source_location.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
 struct annotation_value {
-  resolved_source_range src_range;
+  source_range src_range;
   std::string value;
 };
 
@@ -47,10 +47,8 @@ class t_node {
  public:
   virtual ~t_node() = default;
 
-  const resolved_source_range& src_range() const { return source_range_; }
-  void set_src_range(const resolved_source_range& source_range) {
-    source_range_ = source_range;
-  }
+  const source_range& src_range() const { return range_; }
+  void set_src_range(const source_range& r) { range_ = r; }
 
   const std::string& doc() const { return doc_; }
   bool has_doc() const { return has_doc_; }
@@ -102,7 +100,7 @@ class t_node {
   void set_annotation(
       const std::string& key,
       const std::string& value = {},
-      const resolved_source_range& range = {}) {
+      const source_range& range = {}) {
     annotations_[key] = {range, value};
   }
 
@@ -134,12 +132,9 @@ class t_node {
   std::string doc_;
   bool has_doc_{false};
 
-  /*
-   * TODO(urielrivas): Remove this lineno_, it will no longer be needed after
-   * source_range.
-   */
-  int lineno_{-1};
-  resolved_source_range source_range_;
+  // TODO: Remove this lineno_, it will no longer be needed after source_range.
+  int lineno_ = -1;
+  source_range range_;
 
   std::map<std::string, annotation_value> annotations_;
   // TODO(afuller): Remove everything below this comment. It is only provideed
