@@ -236,16 +236,8 @@ class MyStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_myStringField), __isset.at(1), __isset.bit(1)};
   }
  private:
-  template <::std::underlying_type_t<::apache::thrift::FieldId> Id>
-  using __fbthrift_fid = std::integral_constant<::std::underlying_type_t<::apache::thrift::FieldId>, Id>;
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) &       { return myIntField_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) const&  { return myIntField_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) &&      { return std::move(*this).myIntField_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) const&& { return std::move(*this).myIntField_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) &       { return myStringField_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) const&  { return myStringField_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) &&      { return std::move(*this).myStringField_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) const&& { return std::move(*this).myStringField_ref(); }
+  static ::apache::thrift::tag::myIntField __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
+  static ::apache::thrift::tag::myStringField __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
 
  public:
 
@@ -506,16 +498,8 @@ class MyUnion final  {
     return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
  private:
-  template <::std::underlying_type_t<::apache::thrift::FieldId> Id>
-  using __fbthrift_fid = std::integral_constant<::std::underlying_type_t<::apache::thrift::FieldId>, Id>;
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) &       { return myEnum_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) const&  { return myEnum_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) &&      { return std::move(*this).myEnum_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) const&& { return std::move(*this).myEnum_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) &       { return myDataItem_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) const&  { return myDataItem_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) &&      { return std::move(*this).myDataItem_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) const&& { return std::move(*this).myDataItem_ref(); }
+  static ::apache::thrift::tag::myEnum __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
+  static ::apache::thrift::tag::myDataItem __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
 
  public:
   Type getType() const { return static_cast<Type>(type_); }

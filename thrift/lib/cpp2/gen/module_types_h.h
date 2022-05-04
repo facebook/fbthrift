@@ -148,6 +148,15 @@ constexpr bool operator>=(const T& lhs, const T& rhs) {
   return !(lhs < rhs);
 }
 
+namespace st {
+
+using field_id_u_t = std::underlying_type_t<FieldId>;
+
+template <field_id_u_t id>
+using field_id_u_c = std::integral_constant<field_id_u_t, id>;
+
+} // namespace st
+
 enum class IssetBitsetOption {
   Unpacked,
   Packed,

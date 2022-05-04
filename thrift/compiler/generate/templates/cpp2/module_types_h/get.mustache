@@ -16,13 +16,8 @@
 
 %><%^struct:deprecated_tag_incompatible?%><%#struct:thrift_uri%>
  private:
-  template <::std::underlying_type_t<::apache::thrift::FieldId> Id>
-  using __fbthrift_fid = std::integral_constant<::std::underlying_type_t<::apache::thrift::FieldId>, Id>;
   <%#struct:fields%>
-  decltype(auto) __fbthrift_get(__fbthrift_fid<<%field:key%>>) &       { return <%field:cpp_name%>_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<<%field:key%>>) const&  { return <%field:cpp_name%>_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<<%field:key%>>) &&      { return std::move(*this).<%field:cpp_name%>_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<<%field:key%>>) const&& { return std::move(*this).<%field:cpp_name%>_ref(); }
+  static ::apache::thrift::tag::<%field:cpp_name%> __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<<%field:key%>>);
   <%/struct:fields%>
 
  public:

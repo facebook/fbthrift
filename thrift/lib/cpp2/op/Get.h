@@ -22,11 +22,32 @@ namespace apache {
 namespace thrift {
 namespace op {
 
+template <FieldId Id>
+struct access_field_by_id_fn {
+ private:
+  using access = apache::thrift::detail::st::struct_private_access;
+
+  using under_t = std::underlying_type_t<FieldId>;
+  static constexpr under_t under = folly::to_underlying(Id);
+  using under_c = std::integral_constant<under_t, under>;
+
+ public:
+  template <
+      typename T,
+      typename...,
+      typename Tag = access::__fbthrift_get<folly::remove_cvref_t<T>, under_c>>
+  FOLLY_ERASE constexpr auto operator()(T&& t) const
+      noexcept(noexcept(access_field<Tag>(static_cast<T&&>(t))))
+          -> decltype(access_field<Tag>(static_cast<T&&>(t))) {
+    return access_field<Tag>(static_cast<T&&>(t));
+  }
+};
+
 // Gets a field by FieldId.
 template <FieldId Id>
-FOLLY_INLINE_VARIABLE constexpr ::apache::thrift::detail::st::
-    struct_private_access::get_fn<Id>
-        getById{};
+FOLLY_INLINE_VARIABLE constexpr access_field_by_id_fn<Id> access_field_by_id{};
+template <FieldId Id>
+static constexpr auto& getById = access_field_by_id<Id>;
 
 } // namespace op
 } // namespace thrift

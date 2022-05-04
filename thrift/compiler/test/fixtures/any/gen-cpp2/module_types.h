@@ -143,12 +143,7 @@ class MyStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_myString), __isset.at(0), __isset.bit(0)};
   }
  private:
-  template <::std::underlying_type_t<::apache::thrift::FieldId> Id>
-  using __fbthrift_fid = std::integral_constant<::std::underlying_type_t<::apache::thrift::FieldId>, Id>;
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) &       { return myString_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) const&  { return myString_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) &&      { return std::move(*this).myString_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) const&& { return std::move(*this).myString_ref(); }
+  static ::apache::thrift::tag::myString __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
 
  public:
 
@@ -370,12 +365,7 @@ class MyUnion final  {
     return {std::move(value_.myString), type_, myString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
  private:
-  template <::std::underlying_type_t<::apache::thrift::FieldId> Id>
-  using __fbthrift_fid = std::integral_constant<::std::underlying_type_t<::apache::thrift::FieldId>, Id>;
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) &       { return myString_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) const&  { return myString_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) &&      { return std::move(*this).myString_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) const&& { return std::move(*this).myString_ref(); }
+  static ::apache::thrift::tag::myString __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
 
  public:
   Type getType() const { return static_cast<Type>(type_); }
@@ -489,12 +479,7 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
     return {static_cast<T&&>(this->myString), __isset.at(0), __isset.bit(0)};
   }
  private:
-  template <::std::underlying_type_t<::apache::thrift::FieldId> Id>
-  using __fbthrift_fid = std::integral_constant<::std::underlying_type_t<::apache::thrift::FieldId>, Id>;
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) &       { return myString_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) const&  { return myString_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) &&      { return std::move(*this).myString_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) const&& { return std::move(*this).myString_ref(); }
+  static ::apache::thrift::tag::myString __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
 
  public:
 

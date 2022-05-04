@@ -119,15 +119,10 @@ struct struct_private_access {
   FOLLY_CREATE_MEMBER_INVOKER(clear_fn, __fbthrift_clear);
   FOLLY_CREATE_MEMBER_INVOKER(empty_fn, __fbthrift_is_empty);
 
-  template <FieldId Id>
-  struct get_fn {
-    template <typename T>
-    decltype(auto) operator()(T&& t) const {
-      return static_cast<T&&>(t).__fbthrift_get(std::integral_constant<
-                                                std::underlying_type_t<FieldId>,
-                                                folly::to_underlying(Id)>{});
-    }
-  };
+  template <typename T, typename Id>
+  static decltype(T::__fbthrift_get(Id{})) __fbthrift_get_();
+  template <typename T, typename Id>
+  using __fbthrift_get = decltype(__fbthrift_get_<T, Id>());
 };
 
 template <typename T, typename = void>

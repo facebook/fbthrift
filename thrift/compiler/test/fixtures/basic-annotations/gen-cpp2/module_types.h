@@ -921,44 +921,15 @@ class YourStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_my_union), __isset.at(8), __isset.bit(8)};
   }
  private:
-  template <::std::underlying_type_t<::apache::thrift::FieldId> Id>
-  using __fbthrift_fid = std::integral_constant<::std::underlying_type_t<::apache::thrift::FieldId>, Id>;
-  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) &       { return majorVer_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) const&  { return majorVer_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) &&      { return std::move(*this).majorVer_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<2>) const&& { return std::move(*this).majorVer_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) &       { return package_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) const&  { return package_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) &&      { return std::move(*this).package_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<1>) const&& { return std::move(*this).package_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<3>) &       { return annotation_with_quote_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<3>) const&  { return annotation_with_quote_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<3>) &&      { return std::move(*this).annotation_with_quote_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<3>) const&& { return std::move(*this).annotation_with_quote_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<4>) &       { return class__ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<4>) const&  { return class__ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<4>) &&      { return std::move(*this).class__ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<4>) const&& { return std::move(*this).class__ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<5>) &       { return annotation_with_trailing_comma_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<5>) const&  { return annotation_with_trailing_comma_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<5>) &&      { return std::move(*this).annotation_with_trailing_comma_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<5>) const&& { return std::move(*this).annotation_with_trailing_comma_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<6>) &       { return empty_annotations_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<6>) const&  { return empty_annotations_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<6>) &&      { return std::move(*this).empty_annotations_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<6>) const&& { return std::move(*this).empty_annotations_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<7>) &       { return my_enum_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<7>) const&  { return my_enum_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<7>) &&      { return std::move(*this).my_enum_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<7>) const&& { return std::move(*this).my_enum_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<8>) &       { return cpp_type_annotation_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<8>) const&  { return cpp_type_annotation_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<8>) &&      { return std::move(*this).cpp_type_annotation_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<8>) const&& { return std::move(*this).cpp_type_annotation_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<9>) &       { return my_union_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<9>) const&  { return my_union_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<9>) &&      { return std::move(*this).my_union_ref(); }
-  decltype(auto) __fbthrift_get(__fbthrift_fid<9>) const&& { return std::move(*this).my_union_ref(); }
+  static ::apache::thrift::tag::majorVer __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
+  static ::apache::thrift::tag::package __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
+  static ::apache::thrift::tag::annotation_with_quote __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
+  static ::apache::thrift::tag::class_ __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
+  static ::apache::thrift::tag::annotation_with_trailing_comma __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
+  static ::apache::thrift::tag::empty_annotations __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<6>);
+  static ::apache::thrift::tag::my_enum __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<7>);
+  static ::apache::thrift::tag::cpp_type_annotation __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<8>);
+  static ::apache::thrift::tag::my_union __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<9>);
 
  public:
 
