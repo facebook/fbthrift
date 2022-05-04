@@ -768,7 +768,7 @@ void parsing_driver::maybe_allocate_field_id(
       ctx_.warning(field, [&](auto& o) {
         o << "Nonpositive field id (" << field.id()
           << ") differs from what is auto-"
-             "assigned by thrift. The id must positive or "
+             "assigned by thrift. The id must be positive or "
           << next_id << ".";
       });
       // Ignore user provided value and auto assign an id.

@@ -93,7 +93,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
+            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what is auto-assigned by thrift. The id must be positive or -1.\n"
             "[WARNING:foo.thrift:2] No field id specified for `field`, resulting protocol may have conflicts or not be backwards compatible!\n",
         )
         self.assertEqual(ret, 0)
@@ -121,7 +121,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
+            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what is auto-assigned by thrift. The id must be positive or -1.\n"
             "[WARNING:foo.thrift:2] No field id specified for `field`, resulting protocol may have conflicts or not be backwards compatible!\n",
         )
         self.assertEqual(ret, 0)
@@ -151,8 +151,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[WARNING:foo.thrift:3] Nonpositive value (-2) not allowed as a field id.\n"
-            "[WARNING:foo.thrift:4] Nonpositive field id (-32) differs from what is auto-assigned by thrift. The id must positive or -3.\n"
-            "[WARNING:foo.thrift:5] Nonpositive field id (-33) differs from what is auto-assigned by thrift. The id must positive or -4.\n"
+            "[WARNING:foo.thrift:4] Nonpositive field id (-32) differs from what is auto-assigned by thrift. The id must be positive or -3.\n"
+            "[WARNING:foo.thrift:5] Nonpositive field id (-33) differs from what is auto-assigned by thrift. The id must be positive or -4.\n"
             "[WARNING:foo.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[WARNING:foo.thrift:4] No field id specified for `f3`, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[WARNING:foo.thrift:5] No field id specified for `f4`, resulting protocol may have conflicts or not be backwards compatible!\n",
@@ -183,7 +183,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[WARNING:foo.thrift:2] Nonpositive field id (-32) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
+            "[WARNING:foo.thrift:2] Nonpositive field id (-32) differs from what is auto-assigned by thrift. The id must be positive or -1.\n"
             "[WARNING:foo.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[WARNING:foo.thrift:3] No field id specified for `f2`, resulting protocol may have conflicts or not be backwards compatible!\n",
         )
@@ -248,8 +248,8 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[FAILURE:overflow.thrift:4] Integer constant 32768 outside the range of field ids ([-32768, 32767]).\n"
-            "[WARNING:overflow.thrift:2] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
-            "[WARNING:overflow.thrift:4] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must positive or -2.\n"
+            "[WARNING:overflow.thrift:2] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must be positive or -1.\n"
+            "[WARNING:overflow.thrift:4] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must be positive or -2.\n"
             "[WARNING:overflow.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[WARNING:overflow.thrift:4] No field id specified for `f3`, resulting protocol may have conflicts or not be backwards compatible!\n",
         )
@@ -258,7 +258,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[FAILURE:underflow.thrift:4] Integer constant -32769 outside the range of field ids ([-32768, 32767]).\n"
-            "[WARNING:underflow.thrift:2] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
+            "[WARNING:underflow.thrift:2] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must be positive or -1.\n"
             '[FAILURE:underflow.thrift:4] Field identifier 32767 for "f6" has already been used.\n'
             "[WARNING:underflow.thrift:2] No field id specified for `f4`, resulting protocol may have conflicts or not be backwards compatible!\n",
         )
