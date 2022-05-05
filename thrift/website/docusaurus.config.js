@@ -68,11 +68,6 @@ const config = {
             position: 'left',
             label: 'Docs',
           },
-          {
-            href: 'https://engineering.fb.com/2014/02/20/open-source/under-the-hood-building-and-open-sourcing-fbthrift/',
-            label: 'Blog',
-            position: 'left'
-          },
           // Please keep GitHub link to the right for consistency.
           {
             href: 'https://github.com/facebook/fbthrift',
