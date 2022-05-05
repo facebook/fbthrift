@@ -18,11 +18,11 @@ constexpr std::size_t const TEnumTraits<::cpp2::Animal>::size;
 folly::Range<::cpp2::Animal const*> const TEnumTraits<::cpp2::Animal>::values = folly::range(TEnumDataStorage<::cpp2::Animal>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::Animal>::names = folly::range(TEnumDataStorage<::cpp2::Animal>::names);
 
-char const* TEnumTraits<::cpp2::Animal>::findName(type value) noexcept {
-  return ::apache::thrift::detail::st::enum_find_name(value);
+bool TEnumTraits<::cpp2::Animal>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::cpp2::Animal>::findValue(char const* name, type* out) noexcept {
+bool TEnumTraits<::cpp2::Animal>::findValue(folly::StringPiece name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 

@@ -18,11 +18,11 @@ constexpr std::size_t const TEnumTraits<::test::fixtures::enumstrict::EmptyEnum>
 folly::Range<::test::fixtures::enumstrict::EmptyEnum const*> const TEnumTraits<::test::fixtures::enumstrict::EmptyEnum>::values = {};
 folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::enumstrict::EmptyEnum>::names = {};
 
-char const* TEnumTraits<::test::fixtures::enumstrict::EmptyEnum>::findName(type value) noexcept {
-  return ::apache::thrift::detail::st::enum_find_name(value);
+bool TEnumTraits<::test::fixtures::enumstrict::EmptyEnum>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::test::fixtures::enumstrict::EmptyEnum>::findValue(char const* name, type* out) noexcept {
+bool TEnumTraits<::test::fixtures::enumstrict::EmptyEnum>::findValue(folly::StringPiece name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
@@ -44,11 +44,11 @@ constexpr std::size_t const TEnumTraits<::test::fixtures::enumstrict::MyEnum>::s
 folly::Range<::test::fixtures::enumstrict::MyEnum const*> const TEnumTraits<::test::fixtures::enumstrict::MyEnum>::values = folly::range(TEnumDataStorage<::test::fixtures::enumstrict::MyEnum>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::enumstrict::MyEnum>::names = folly::range(TEnumDataStorage<::test::fixtures::enumstrict::MyEnum>::names);
 
-char const* TEnumTraits<::test::fixtures::enumstrict::MyEnum>::findName(type value) noexcept {
-  return ::apache::thrift::detail::st::enum_find_name(value);
+bool TEnumTraits<::test::fixtures::enumstrict::MyEnum>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::test::fixtures::enumstrict::MyEnum>::findValue(char const* name, type* out) noexcept {
+bool TEnumTraits<::test::fixtures::enumstrict::MyEnum>::findValue(folly::StringPiece name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
@@ -70,11 +70,11 @@ constexpr std::size_t const TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>
 folly::Range<::test::fixtures::enumstrict::MyBigEnum const*> const TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>::values = folly::range(TEnumDataStorage<::test::fixtures::enumstrict::MyBigEnum>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>::names = folly::range(TEnumDataStorage<::test::fixtures::enumstrict::MyBigEnum>::names);
 
-char const* TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>::findName(type value) noexcept {
-  return ::apache::thrift::detail::st::enum_find_name(value);
+bool TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>::findValue(char const* name, type* out) noexcept {
+bool TEnumTraits<::test::fixtures::enumstrict::MyBigEnum>::findValue(folly::StringPiece name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 

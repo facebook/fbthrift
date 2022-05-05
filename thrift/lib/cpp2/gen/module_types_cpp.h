@@ -42,6 +42,24 @@ namespace st {
 
 template <typename Int>
 struct alignas(folly::cacheline_align_v) enum_find {
+  struct find_name_result {
+    folly::StringPiece result{nullptr, nullptr};
+    find_name_result() = default;
+    explicit constexpr find_name_result(folly::StringPiece r) noexcept
+        : result{r} {}
+    explicit constexpr operator bool() const noexcept {
+      return result.data() != nullptr;
+    }
+  };
+  struct find_value_result {
+    bool found{false};
+    Int result{0};
+    find_value_result() = default;
+    explicit constexpr find_value_result(Int r) noexcept
+        : found{true}, result{r} {}
+    explicit constexpr operator bool() const noexcept { return found; }
+  };
+
   // metadata for the slow path to fill the caches for the fast path
   struct metadata {
     std::size_t const size{};
@@ -100,19 +118,21 @@ struct alignas(folly::cacheline_align_v) enum_find {
     return state.try_lock() && prep_and_unlock();
   }
 
-  FOLLY_ERASE char const* find_name_fast(Int const value) noexcept {
+  FOLLY_ERASE find_name_result find_name_fast(Int const value) noexcept {
+    using result = find_name_result;
     auto const& map = reinterpret_cast<bidi_cache&>(cache).find_name_index;
     auto const found = map.find(value);
-    return found == map.end() ? nullptr : found->second.data();
+    return found == map.end() ? result() : result(found->second);
   }
-  FOLLY_NOINLINE char const* find_name_scan(Int const value) noexcept {
+  FOLLY_NOINLINE find_name_result find_name_scan(Int const value) noexcept {
+    using result = find_name_result;
     // reverse order to simulate loop-map-insert then map-find
     auto const range = folly::range(meta.values, meta.values + meta.size);
     auto const found = range.rfind(value);
-    return found == range.npos ? nullptr : meta.names[found].data();
+    return found == range.npos ? result() : result(meta.names[found]);
   }
   // param order optimizes outline findName by minimizing native instructions
-  FOLLY_NOINLINE static char const* find_name(
+  FOLLY_NOINLINE static find_name_result find_name(
       Int const value, enum_find& self) noexcept {
     // with two likelinesses v.s. one, gets the right code layout
     return FOLLY_LIKELY(self.state.ready()) || FOLLY_LIKELY(self.try_prepare())
@@ -120,26 +140,28 @@ struct alignas(folly::cacheline_align_v) enum_find {
         : self.find_name_scan(value);
   }
 
-  FOLLY_ERASE bool find_value_fast(
-      char const* const name, Int* const out) noexcept {
+  FOLLY_ERASE find_value_result
+  find_value_fast(folly::StringPiece const name) noexcept {
+    using result = find_value_result;
     auto const& map = reinterpret_cast<bidi_cache&>(cache).find_value_index;
     auto const found = map.find(name);
-    return found == map.end() ? false : ((*out = found->second), true);
+    return found == map.end() ? result() : result(found->second);
   }
-  FOLLY_NOINLINE bool find_value_scan(
-      char const* const name, Int* const out) noexcept {
+  FOLLY_NOINLINE find_value_result
+  find_value_scan(folly::StringPiece const name) noexcept {
+    using result = find_value_result;
     // reverse order to simulate loop-map-insert then map-find
     auto const range = folly::range(meta.names, meta.names + meta.size);
     auto const found = range.rfind(name);
-    return found == range.npos ? false : ((*out = meta.values[found]), true);
+    return found == range.npos ? result() : result(meta.values[found]);
   }
   // param order optimizes outline findValue by minimizing native instructions
-  FOLLY_NOINLINE static bool find_value(
-      char const* const name, Int* const out, enum_find& self) noexcept {
+  FOLLY_NOINLINE static find_value_result find_value(
+      folly::StringPiece const name, enum_find& self) noexcept {
     // with two likelinesses v.s. one, gets the right code layout
     return FOLLY_LIKELY(self.state.ready()) || FOLLY_LIKELY(self.try_prepare())
-        ? self.find_value_fast(name, out)
-        : self.find_value_scan(name, out);
+        ? self.find_value_fast(name)
+        : self.find_value_scan(name);
   }
 };
 extern template struct enum_find<int>; // default
@@ -155,15 +177,18 @@ FOLLY_EXPORT FOLLY_ALWAYS_INLINE enum_find<U>& enum_find_instance() {
 }
 
 template <typename E, typename U = std::underlying_type_t<E>>
-FOLLY_ERASE char const* enum_find_name(E const value) noexcept {
-  return enum_find<U>::find_name(U(value), enum_find_instance<E>());
+FOLLY_ERASE bool enum_find_name(
+    E const value, folly::StringPiece* const out) noexcept {
+  auto const r = enum_find<U>::find_name(U(value), enum_find_instance<E>());
+  return r && ((*out = r.result), true);
 }
 
 template <typename E, typename U = std::underlying_type_t<E>>
 FOLLY_ERASE bool enum_find_value(
-    char const* const name, E* const out) noexcept {
+    folly::StringPiece const name, E* const out) noexcept {
   auto const uout = reinterpret_cast<U*>(out);
-  return enum_find<U>::find_value(name, uout, enum_find_instance<E>());
+  auto const r = enum_find<U>::find_value(name, enum_find_instance<E>());
+  return r && ((*uout = r.result), true);
 }
 
 //  copy_field_fn

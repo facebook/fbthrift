@@ -18,11 +18,11 @@ constexpr std::size_t const TEnumTraits<::test::fixtures::basic::MyEnum>::size;
 folly::Range<::test::fixtures::basic::MyEnum const*> const TEnumTraits<::test::fixtures::basic::MyEnum>::values = folly::range(TEnumDataStorage<::test::fixtures::basic::MyEnum>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::basic::MyEnum>::names = folly::range(TEnumDataStorage<::test::fixtures::basic::MyEnum>::names);
 
-char const* TEnumTraits<::test::fixtures::basic::MyEnum>::findName(type value) noexcept {
-  return ::apache::thrift::detail::st::enum_find_name(value);
+bool TEnumTraits<::test::fixtures::basic::MyEnum>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::test::fixtures::basic::MyEnum>::findValue(char const* name, type* out) noexcept {
+bool TEnumTraits<::test::fixtures::basic::MyEnum>::findValue(folly::StringPiece name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
@@ -167,11 +167,11 @@ constexpr std::size_t const TEnumTraits<::test::fixtures::basic::MyUnion::Type>:
 folly::Range<::test::fixtures::basic::MyUnion::Type const*> const TEnumTraits<::test::fixtures::basic::MyUnion::Type>::values = folly::range(TEnumDataStorage<::test::fixtures::basic::MyUnion::Type>::values);
 folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::basic::MyUnion::Type>::names = folly::range(TEnumDataStorage<::test::fixtures::basic::MyUnion::Type>::names);
 
-char const* TEnumTraits<::test::fixtures::basic::MyUnion::Type>::findName(type value) noexcept {
-  return ::apache::thrift::detail::st::enum_find_name(value);
+bool TEnumTraits<::test::fixtures::basic::MyUnion::Type>::findName(type value, folly::StringPiece* out) noexcept {
+  return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::test::fixtures::basic::MyUnion::Type>::findValue(char const* name, type* out) noexcept {
+bool TEnumTraits<::test::fixtures::basic::MyUnion::Type>::findValue(folly::StringPiece name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 }} // apache::thrift

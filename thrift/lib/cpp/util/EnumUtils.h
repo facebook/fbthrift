@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,13 +33,8 @@ namespace util {
 /**
  * Parses an enum name to the enum type
  */
-template <typename String, typename EnumType>
-bool tryParseEnum(const String& name, EnumType* out) {
-  return TEnumTraits<EnumType>::findValue(name.c_str(), out);
-}
-
 template <typename EnumType>
-bool tryParseEnum(const char* name, EnumType* out) {
+bool tryParseEnum(folly::StringPiece name, EnumType* out) {
   return TEnumTraits<EnumType>::findValue(name, out);
 }
 
@@ -49,7 +44,7 @@ bool tryParseEnum(const char* name, EnumType* out) {
  */
 
 template <typename EnumType>
-EnumType enumValueOrThrow(const char* name) {
+EnumType enumValueOrThrow(folly::StringPiece name) {
   EnumType out;
   if (!tryParseEnum(name, &out)) {
     throw std::out_of_range("name not found in enum");
@@ -74,8 +69,10 @@ const char* enumName(EnumType value, const char* defaultName = nullptr) {
  */
 template <typename EnumType>
 std::string enumNameSafe(EnumType value) {
-  const char* name = enumName(value);
-  return name ? name : folly::to<std::string>(static_cast<int32_t>(value));
+  auto under = folly::to_underlying(value);
+  folly::StringPiece name;
+  bool found = TEnumTraits<EnumType>::findName(value, &name);
+  return found ? std::string(name) : folly::to<std::string>(under);
 }
 
 /*

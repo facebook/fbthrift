@@ -115,9 +115,20 @@ template <> struct TEnumTraits<::apache::thrift::test::MyEnum> {
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
-  static char const* findName(type value) noexcept;
-  static bool findValue(char const* name, type* out) noexcept;
+  static bool findName(type value, folly::StringPiece* out) noexcept;
+  static bool findValue(folly::StringPiece name, type* out) noexcept;
 
+#if FOLLY_HAS_STRING_VIEW
+  static bool findName(type value, std::string_view* out) noexcept {
+    folly::StringPiece outp;
+    return findName(value, &outp) && ((*out = outp), true);
+  }
+#endif
+  static char const* findName(type value) noexcept {
+    folly::StringPiece ret;
+    (void)findName(value, &ret);
+    return ret.data();
+  }
   static constexpr type min() { return type::ME0; }
   static constexpr type max() { return type::ME1; }
 };
