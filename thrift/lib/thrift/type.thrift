@@ -103,7 +103,7 @@ const byte defaultTypeHashBytes = 16;
 // The hash algorithms that can be used with type names.
 @thrift.Experimental
 enum UniversalHashAlgorithm {
-  Sha2_256 = 1,
+  Sha2_256 = 2, // = getFieldId(TypeNameUnion::typeHashPrefixSha2_256).
 } (
   cpp.name = "UniversalHashAlgorithmEnum",
   cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::UniversalHashAlgorithm, ::apache::thrift::type::UniversalHashAlgorithmEnum>",
