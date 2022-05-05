@@ -91,7 +91,9 @@ class Cpp2Worker : public IOWorkerContext,
       folly::EventBase* eventBase, ThriftServer* server = nullptr) {
     std::shared_ptr<Cpp2Worker> worker(new Cpp2Worker(server, {}));
     worker->Acceptor::init(nullptr, eventBase);
-    worker->IOWorkerContext::init(*eventBase);
+    if (eventBase) {
+      worker->IOWorkerContext::init(*eventBase);
+    }
     return worker;
   }
 

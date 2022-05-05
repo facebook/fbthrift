@@ -410,8 +410,9 @@ HandlerCallbackBase::~HandlerCallbackBase() {
           "apache::thrift::HandlerCallback not completed"));
       return;
     }
-    assert(eb_ != nullptr);
-    releaseRequest(std::move(req_), eb_, std::move(interaction_));
+    if (getEventBase()) {
+      releaseRequest(std::move(req_), getEventBase(), std::move(interaction_));
+    }
   }
 }
 
@@ -428,7 +429,6 @@ void HandlerCallbackBase::releaseRequest(
 }
 
 folly::EventBase* HandlerCallbackBase::getEventBase() {
-  assert(eb_ != nullptr);
   return eb_;
 }
 
@@ -496,7 +496,7 @@ void HandlerCallbackBase::sendReply(SerializedResponse response) {
       MessageType::T_REPLY,
       reqCtx_->getMethodName());
   payload = transform(std::move(payload));
-  if (getEventBase()->isInEventBaseThread()) {
+  if (getEventBase() && getEventBase()->inRunningEventBaseThread()) {
     QueueReplyInfo(
         std::move(req_), std::move(payload), crc32c)(*getEventBase());
   } else {

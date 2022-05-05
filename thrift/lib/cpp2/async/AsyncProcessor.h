@@ -1623,7 +1623,7 @@ void HandlerCallbackBase::callExceptionInEventBaseThread(F&& f, T&& ex) {
   if (!f) {
     return;
   }
-  if (getEventBase()->isInEventBaseThread()) {
+  if (!getEventBase() || getEventBase()->inRunningEventBaseThread()) {
     f(std::exchange(req_, {}), protoSeqId_, ctx_.get(), ex, reqCtx_);
     ctx_.reset();
   } else {
@@ -1642,11 +1642,15 @@ void HandlerCallbackBase::callExceptionInEventBaseThread(F&& f, T&& ex) {
 template <typename Reply, typename... A>
 void HandlerCallbackBase::putMessageInReplyQueue(
     std::in_place_type_t<Reply> tag, A&&... a) {
+  auto eb = getEventBase();
+  if (!eb) {
+    Reply(std::forward<A>(a)...)(*eb);
+    return;
+  }
   if constexpr (folly::kIsWindows) {
     // TODO(T88449658): We are seeing performance regression on Windows if we
     // use the reply queue. The exact cause is under investigation. Before it is
     // fixed, we can use the default EventBase queue on Windows for now.
-    auto eb = getEventBase();
     eb->runInEventBaseThread(
         [eb, reply = Reply(static_cast<A&&>(a)...)]() mutable { reply(*eb); });
   } else {
