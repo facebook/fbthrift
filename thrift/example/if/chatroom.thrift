@@ -16,6 +16,7 @@
 
 namespace cpp2 example.chatroom
 namespace go example.if.chatroom
+namespace py3 example
 
 struct Message {
   1: string message;
