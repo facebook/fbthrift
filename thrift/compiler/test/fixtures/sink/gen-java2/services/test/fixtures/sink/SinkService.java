@@ -14,6 +14,7 @@ import com.facebook.thrift.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
+import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("SinkService")
@@ -35,6 +36,18 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
+    static ClientBuilder<SinkService> clientBuilder() {
+        return new ClientBuilder<SinkService>() {
+            @Override
+            public SinkService build(Mono<RpcClient> rpcClientMono) {
+                SinkService.Reactive _delegate =
+                    new SinkServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                return new SinkServiceReactiveBlockingWrapper(_delegate);
+            }
+        };
+    }
+
+    @Deprecated
     static SinkService createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -46,6 +59,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
         return new SinkServiceReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static SinkService createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -61,6 +75,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
         return new SinkServiceReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static SinkService createClient(
       final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId) {
@@ -70,6 +85,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
         return new SinkServiceReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static SinkService createClient(
       final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId,
@@ -102,6 +118,18 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
+        static ClientBuilder<SinkService.Async> clientBuilder() {
+            return new ClientBuilder<SinkService.Async>() {
+                @Override
+                public SinkService.Async build(Mono<RpcClient> rpcClientMono) {
+                    SinkService.Reactive _delegate =
+                        new SinkServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                    return new SinkServiceReactiveAsyncWrapper(_delegate);
+                }
+            };
+        }
+
+        @Deprecated
         static SinkService.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -113,6 +141,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
                 return new SinkServiceReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static SinkService.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -128,6 +157,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
                 return new SinkServiceReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static SinkService.Async createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId) {
@@ -137,6 +167,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
                 return new SinkServiceReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static SinkService.Async createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId,
@@ -174,6 +205,16 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
+        static ClientBuilder<SinkService.Reactive> clientBuilder() {
+            return new ClientBuilder<SinkService.Reactive>() {
+                @Override
+                public SinkService.Reactive build(Mono<RpcClient> rpcClientMono) {
+                    return new SinkServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                }
+            };
+        }
+
+        @Deprecated
         static SinkService.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -185,6 +226,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
                     java.util.Collections.emptyMap());
         }
 
+        @Deprecated
         static SinkService.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -199,6 +241,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
                     _persistentHeaders);
         }
 
+        @Deprecated
         static SinkService.Reactive createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId) {
@@ -209,6 +252,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
                     java.util.Collections.emptyMap());
         }
 
+        @Deprecated
         static SinkService.Reactive createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId,

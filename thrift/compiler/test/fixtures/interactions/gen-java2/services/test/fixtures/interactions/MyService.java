@@ -14,6 +14,7 @@ import com.facebook.thrift.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
+import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("MyService")
@@ -35,6 +36,18 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
+    static ClientBuilder<MyService> clientBuilder() {
+        return new ClientBuilder<MyService>() {
+            @Override
+            public MyService build(Mono<RpcClient> rpcClientMono) {
+                MyService.Reactive _delegate =
+                    new MyServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                return new MyServiceReactiveBlockingWrapper(_delegate);
+            }
+        };
+    }
+
+    @Deprecated
     static MyService createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -46,6 +59,7 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
         return new MyServiceReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static MyService createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -61,6 +75,7 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
         return new MyServiceReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static MyService createClient(
       final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId) {
@@ -70,6 +85,7 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
         return new MyServiceReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static MyService createClient(
       final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId,
@@ -102,6 +118,18 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
+        static ClientBuilder<MyService.Async> clientBuilder() {
+            return new ClientBuilder<MyService.Async>() {
+                @Override
+                public MyService.Async build(Mono<RpcClient> rpcClientMono) {
+                    MyService.Reactive _delegate =
+                        new MyServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                    return new MyServiceReactiveAsyncWrapper(_delegate);
+                }
+            };
+        }
+
+        @Deprecated
         static MyService.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -113,6 +141,7 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
                 return new MyServiceReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static MyService.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -128,6 +157,7 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
                 return new MyServiceReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static MyService.Async createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId) {
@@ -137,6 +167,7 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
                 return new MyServiceReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static MyService.Async createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId,
@@ -328,6 +359,16 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
+        static ClientBuilder<MyService.Reactive> clientBuilder() {
+            return new ClientBuilder<MyService.Reactive>() {
+                @Override
+                public MyService.Reactive build(Mono<RpcClient> rpcClientMono) {
+                    return new MyServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                }
+            };
+        }
+
+        @Deprecated
         static MyService.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -339,6 +380,7 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
                     java.util.Collections.emptyMap());
         }
 
+        @Deprecated
         static MyService.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -353,6 +395,7 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
                     _persistentHeaders);
         }
 
+        @Deprecated
         static MyService.Reactive createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId) {
@@ -363,6 +406,7 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
                     java.util.Collections.emptyMap());
         }
 
+        @Deprecated
         static MyService.Reactive createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId,

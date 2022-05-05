@@ -14,6 +14,7 @@ import com.facebook.thrift.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
+import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("MyServicePrioChild")
@@ -35,6 +36,18 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
+    static ClientBuilder<MyServicePrioChild> clientBuilder() {
+        return new ClientBuilder<MyServicePrioChild>() {
+            @Override
+            public MyServicePrioChild build(Mono<RpcClient> rpcClientMono) {
+                MyServicePrioChild.Reactive _delegate =
+                    new MyServicePrioChildReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                return new MyServicePrioChildReactiveBlockingWrapper(_delegate);
+            }
+        };
+    }
+
+    @Deprecated
     static MyServicePrioChild createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -46,6 +59,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
         return new MyServicePrioChildReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static MyServicePrioChild createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -61,6 +75,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
         return new MyServicePrioChildReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static MyServicePrioChild createClient(
       final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId) {
@@ -70,6 +85,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
         return new MyServicePrioChildReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static MyServicePrioChild createClient(
       final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId,
@@ -102,6 +118,18 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
+        static ClientBuilder<MyServicePrioChild.Async> clientBuilder() {
+            return new ClientBuilder<MyServicePrioChild.Async>() {
+                @Override
+                public MyServicePrioChild.Async build(Mono<RpcClient> rpcClientMono) {
+                    MyServicePrioChild.Reactive _delegate =
+                        new MyServicePrioChildReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                    return new MyServicePrioChildReactiveAsyncWrapper(_delegate);
+                }
+            };
+        }
+
+        @Deprecated
         static MyServicePrioChild.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -113,6 +141,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
                 return new MyServicePrioChildReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static MyServicePrioChild.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -128,6 +157,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
                 return new MyServicePrioChildReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static MyServicePrioChild.Async createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId) {
@@ -137,6 +167,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
                 return new MyServicePrioChildReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static MyServicePrioChild.Async createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId,
@@ -199,6 +230,16 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
+        static ClientBuilder<MyServicePrioChild.Reactive> clientBuilder() {
+            return new ClientBuilder<MyServicePrioChild.Reactive>() {
+                @Override
+                public MyServicePrioChild.Reactive build(Mono<RpcClient> rpcClientMono) {
+                    return new MyServicePrioChildReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                }
+            };
+        }
+
+        @Deprecated
         static MyServicePrioChild.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -210,6 +251,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
                     java.util.Collections.emptyMap());
         }
 
+        @Deprecated
         static MyServicePrioChild.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -224,6 +266,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
                     _persistentHeaders);
         }
 
+        @Deprecated
         static MyServicePrioChild.Reactive createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId) {
@@ -234,6 +277,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
                     java.util.Collections.emptyMap());
         }
 
+        @Deprecated
         static MyServicePrioChild.Reactive createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId,

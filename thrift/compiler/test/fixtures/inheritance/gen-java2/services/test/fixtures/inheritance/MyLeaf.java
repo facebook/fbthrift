@@ -14,6 +14,7 @@ import com.facebook.thrift.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
+import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("MyLeaf")
@@ -35,6 +36,18 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
+    static ClientBuilder<MyLeaf> clientBuilder() {
+        return new ClientBuilder<MyLeaf>() {
+            @Override
+            public MyLeaf build(Mono<RpcClient> rpcClientMono) {
+                MyLeaf.Reactive _delegate =
+                    new MyLeafReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                return new MyLeafReactiveBlockingWrapper(_delegate);
+            }
+        };
+    }
+
+    @Deprecated
     static MyLeaf createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -46,6 +59,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
         return new MyLeafReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static MyLeaf createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -61,6 +75,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
         return new MyLeafReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static MyLeaf createClient(
       final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId) {
@@ -70,6 +85,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
         return new MyLeafReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static MyLeaf createClient(
       final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId,
@@ -102,6 +118,18 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
+        static ClientBuilder<MyLeaf.Async> clientBuilder() {
+            return new ClientBuilder<MyLeaf.Async>() {
+                @Override
+                public MyLeaf.Async build(Mono<RpcClient> rpcClientMono) {
+                    MyLeaf.Reactive _delegate =
+                        new MyLeafReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                    return new MyLeafReactiveAsyncWrapper(_delegate);
+                }
+            };
+        }
+
+        @Deprecated
         static MyLeaf.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -113,6 +141,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
                 return new MyLeafReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static MyLeaf.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -128,6 +157,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
                 return new MyLeafReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static MyLeaf.Async createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId) {
@@ -137,6 +167,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
                 return new MyLeafReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static MyLeaf.Async createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId,
@@ -199,6 +230,16 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
+        static ClientBuilder<MyLeaf.Reactive> clientBuilder() {
+            return new ClientBuilder<MyLeaf.Reactive>() {
+                @Override
+                public MyLeaf.Reactive build(Mono<RpcClient> rpcClientMono) {
+                    return new MyLeafReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                }
+            };
+        }
+
+        @Deprecated
         static MyLeaf.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -210,6 +251,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
                     java.util.Collections.emptyMap());
         }
 
+        @Deprecated
         static MyLeaf.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -224,6 +266,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
                     _persistentHeaders);
         }
 
+        @Deprecated
         static MyLeaf.Reactive createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId) {
@@ -234,6 +277,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
                     java.util.Collections.emptyMap());
         }
 
+        @Deprecated
         static MyLeaf.Reactive createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId,

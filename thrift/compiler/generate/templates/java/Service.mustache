@@ -26,6 +26,7 @@ import com.facebook.thrift.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
+import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("{{service:javaCapitalName}}")
@@ -47,6 +48,18 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
+    static ClientBuilder<{{service:javaCapitalName}}> clientBuilder() {
+        return new ClientBuilder<{{service:javaCapitalName}}>() {
+            @Override
+            public {{service:javaCapitalName}} build(Mono<RpcClient> rpcClientMono) {
+                {{service:javaCapitalName}}.Reactive _delegate =
+                    new {{service:javaCapitalName}}ReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                return new {{service:javaCapitalName}}ReactiveBlockingWrapper(_delegate);
+            }
+        };
+    }
+
+    @Deprecated
     static {{service:javaCapitalName}} createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -58,6 +71,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
         return new {{service:javaCapitalName}}ReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static {{service:javaCapitalName}} createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -73,6 +87,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
         return new {{service:javaCapitalName}}ReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static {{service:javaCapitalName}} createClient(
       final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId) {
@@ -82,6 +97,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
         return new {{service:javaCapitalName}}ReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static {{service:javaCapitalName}} createClient(
       final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId,
@@ -114,6 +130,18 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
+        static ClientBuilder<{{service:javaCapitalName}}.Async> clientBuilder() {
+            return new ClientBuilder<{{service:javaCapitalName}}.Async>() {
+                @Override
+                public {{service:javaCapitalName}}.Async build(Mono<RpcClient> rpcClientMono) {
+                    {{service:javaCapitalName}}.Reactive _delegate =
+                        new {{service:javaCapitalName}}ReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                    return new {{service:javaCapitalName}}ReactiveAsyncWrapper(_delegate);
+                }
+            };
+        }
+
+        @Deprecated
         static {{service:javaCapitalName}}.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -125,6 +153,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
                 return new {{service:javaCapitalName}}ReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static {{service:javaCapitalName}}.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -140,6 +169,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
                 return new {{service:javaCapitalName}}ReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static {{service:javaCapitalName}}.Async createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId) {
@@ -149,6 +179,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
                 return new {{service:javaCapitalName}}ReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static {{service:javaCapitalName}}.Async createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId,
@@ -267,6 +298,16 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
+        static ClientBuilder<{{service:javaCapitalName}}.Reactive> clientBuilder() {
+            return new ClientBuilder<{{service:javaCapitalName}}.Reactive>() {
+                @Override
+                public {{service:javaCapitalName}}.Reactive build(Mono<RpcClient> rpcClientMono) {
+                    return new {{service:javaCapitalName}}ReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                }
+            };
+        }
+
+        @Deprecated
         static {{service:javaCapitalName}}.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -278,6 +319,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
                     java.util.Collections.emptyMap());
         }
 
+        @Deprecated
         static {{service:javaCapitalName}}.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -292,6 +334,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
                     _persistentHeaders);
         }
 
+        @Deprecated
         static {{service:javaCapitalName}}.Reactive createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId) {
@@ -302,6 +345,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
                     java.util.Collections.emptyMap());
         }
 
+        @Deprecated
         static {{service:javaCapitalName}}.Reactive createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId,

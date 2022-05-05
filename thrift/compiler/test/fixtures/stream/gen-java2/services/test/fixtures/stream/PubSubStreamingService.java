@@ -14,6 +14,7 @@ import com.facebook.thrift.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
+import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("PubSubStreamingService")
@@ -35,6 +36,18 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
+    static ClientBuilder<PubSubStreamingService> clientBuilder() {
+        return new ClientBuilder<PubSubStreamingService>() {
+            @Override
+            public PubSubStreamingService build(Mono<RpcClient> rpcClientMono) {
+                PubSubStreamingService.Reactive _delegate =
+                    new PubSubStreamingServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                return new PubSubStreamingServiceReactiveBlockingWrapper(_delegate);
+            }
+        };
+    }
+
+    @Deprecated
     static PubSubStreamingService createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -46,6 +59,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
         return new PubSubStreamingServiceReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static PubSubStreamingService createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -61,6 +75,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
         return new PubSubStreamingServiceReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static PubSubStreamingService createClient(
       final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId) {
@@ -70,6 +85,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
         return new PubSubStreamingServiceReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static PubSubStreamingService createClient(
       final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId,
@@ -102,6 +118,18 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
+        static ClientBuilder<PubSubStreamingService.Async> clientBuilder() {
+            return new ClientBuilder<PubSubStreamingService.Async>() {
+                @Override
+                public PubSubStreamingService.Async build(Mono<RpcClient> rpcClientMono) {
+                    PubSubStreamingService.Reactive _delegate =
+                        new PubSubStreamingServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                    return new PubSubStreamingServiceReactiveAsyncWrapper(_delegate);
+                }
+            };
+        }
+
+        @Deprecated
         static PubSubStreamingService.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -113,6 +141,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
                 return new PubSubStreamingServiceReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static PubSubStreamingService.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -128,6 +157,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
                 return new PubSubStreamingServiceReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static PubSubStreamingService.Async createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId) {
@@ -137,6 +167,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
                 return new PubSubStreamingServiceReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static PubSubStreamingService.Async createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId,
@@ -174,6 +205,16 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
+        static ClientBuilder<PubSubStreamingService.Reactive> clientBuilder() {
+            return new ClientBuilder<PubSubStreamingService.Reactive>() {
+                @Override
+                public PubSubStreamingService.Reactive build(Mono<RpcClient> rpcClientMono) {
+                    return new PubSubStreamingServiceReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                }
+            };
+        }
+
+        @Deprecated
         static PubSubStreamingService.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -185,6 +226,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
                     java.util.Collections.emptyMap());
         }
 
+        @Deprecated
         static PubSubStreamingService.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -199,6 +241,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
                     _persistentHeaders);
         }
 
+        @Deprecated
         static PubSubStreamingService.Reactive createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId) {
@@ -209,6 +252,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
                     java.util.Collections.emptyMap());
         }
 
+        @Deprecated
         static PubSubStreamingService.Reactive createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId,

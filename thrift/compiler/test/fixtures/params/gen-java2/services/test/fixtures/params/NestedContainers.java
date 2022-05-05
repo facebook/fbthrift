@@ -14,6 +14,7 @@ import com.facebook.thrift.client.*;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.util.*;
+import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("NestedContainers")
@@ -35,6 +36,18 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
+    static ClientBuilder<NestedContainers> clientBuilder() {
+        return new ClientBuilder<NestedContainers>() {
+            @Override
+            public NestedContainers build(Mono<RpcClient> rpcClientMono) {
+                NestedContainers.Reactive _delegate =
+                    new NestedContainersReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                return new NestedContainersReactiveBlockingWrapper(_delegate);
+            }
+        };
+    }
+
+    @Deprecated
     static NestedContainers createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -46,6 +59,7 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
         return new NestedContainersReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static NestedContainers createClient(
       final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
       final java.net.SocketAddress _socketAddress,
@@ -61,6 +75,7 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
         return new NestedContainersReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static NestedContainers createClient(
       final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId) {
@@ -70,6 +85,7 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
         return new NestedContainersReactiveBlockingWrapper(_delegate);
     }
 
+    @Deprecated
     static NestedContainers createClient(
       final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
       final org.apache.thrift.ProtocolId _protocolId,
@@ -102,6 +118,18 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
+        static ClientBuilder<NestedContainers.Async> clientBuilder() {
+            return new ClientBuilder<NestedContainers.Async>() {
+                @Override
+                public NestedContainers.Async build(Mono<RpcClient> rpcClientMono) {
+                    NestedContainers.Reactive _delegate =
+                        new NestedContainersReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                    return new NestedContainersReactiveAsyncWrapper(_delegate);
+                }
+            };
+        }
+
+        @Deprecated
         static NestedContainers.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -113,6 +141,7 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
                 return new NestedContainersReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static NestedContainers.Async createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -128,6 +157,7 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
                 return new NestedContainersReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static NestedContainers.Async createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId) {
@@ -137,6 +167,7 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
                 return new NestedContainersReactiveAsyncWrapper(_delegate);
         }
 
+        @Deprecated
         static NestedContainers.Async createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId,
@@ -333,6 +364,16 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
+        static ClientBuilder<NestedContainers.Reactive> clientBuilder() {
+            return new ClientBuilder<NestedContainers.Reactive>() {
+                @Override
+                public NestedContainers.Reactive build(Mono<RpcClient> rpcClientMono) {
+                    return new NestedContainersReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
+                }
+            };
+        }
+
+        @Deprecated
         static NestedContainers.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -344,6 +385,7 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
                     java.util.Collections.emptyMap());
         }
 
+        @Deprecated
         static NestedContainers.Reactive createClient(
             final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
             final java.net.SocketAddress _socketAddress,
@@ -358,6 +400,7 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
                     _persistentHeaders);
         }
 
+        @Deprecated
         static NestedContainers.Reactive createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId) {
@@ -368,6 +411,7 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
                     java.util.Collections.emptyMap());
         }
 
+        @Deprecated
         static NestedContainers.Reactive createClient(
             final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
             final org.apache.thrift.ProtocolId _protocolId,
