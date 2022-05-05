@@ -17,7 +17,7 @@ import unittest
 from datetime import datetime
 from unittest.mock import MagicMock
 
-from thrift.python.test.adapter.thrift_types import Bar, Foo
+from thrift.python.test.adapter.thrift_types import AdaptedInt, Bar, Foo, Datetime
 from thrift.python.test.adapters.datetime import DatetimeAdapter
 
 
@@ -71,3 +71,7 @@ class AdapterTest(unittest.TestCase):
         foo = Foo(another_time=now)
         self.assertIsInstance(foo.another_time, datetime)
         self.assertEqual(foo.another_time, now)
+
+    def test_typedefs(self) -> None:
+        self.assertEqual(datetime, Datetime)
+        self.assertEqual(int, AdaptedInt)

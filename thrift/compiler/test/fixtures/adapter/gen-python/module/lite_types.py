@@ -14,6 +14,7 @@ import facebook.thrift.annotation.cpp.lite_types
 import facebook.thrift.annotation.python.lite_types
 
 import facebook.thrift.annotation.thrift.lite_types
+import my.another.module
 import my.module
 import my
 
@@ -312,7 +313,7 @@ _fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
 
 SetWithAdapter = _fbthrift_py3lite_types.SetTypeFactory(_fbthrift_py3lite_types.typeinfo_string)
 ListWithElemAdapter = _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_string)
-MyI64 = int
+MyI64 = my.another.module.AdaptedType2
 StructWithAdapter = Bar
 UnionWithAdapter = Baz
 

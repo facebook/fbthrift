@@ -91,6 +91,47 @@ const std::string extract_module_path(const std::string& fully_qualified_name) {
   return boost::algorithm::join(tokens, ".");
 }
 
+class mstch_python_typedef : public mstch_typedef {
+ public:
+  mstch_python_typedef(
+      t_typedef const* typedf,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos)
+      : mstch_typedef(typedf, std::move(generators), std::move(cache), pos),
+        adapter_annotation_(find_structured_adapter_annotation(*typedf)) {
+    register_methods(
+        this,
+        {
+            {"typedef:has_adapter?", &mstch_python_typedef::has_adapter},
+            {"typedef:adapter_type_hint",
+             &mstch_python_typedef::adapter_type_hint},
+        });
+  }
+
+  mstch::node has_adapter() { return adapter_annotation_ != nullptr; }
+
+  mstch::node adapter_type_hint() {
+    return get_annotation_property(adapter_annotation_, "typeHint");
+  }
+
+ private:
+  const t_const* adapter_annotation_;
+};
+
+class typedef_python_generator : public typedef_generator {
+ public:
+  std::shared_ptr<mstch_base> generate(
+      t_typedef const* typedf,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
+    return std::make_shared<mstch_python_typedef>(
+        typedf, std::move(generators), std::move(cache), pos);
+  }
+};
+
 class mstch_python_type : public mstch_type {
  public:
   mstch_python_type(
@@ -529,6 +570,8 @@ class mstch_python_program : public mstch_program {
       if (auto annotation = find_structured_adapter_annotation(*typedef_def)) {
         extract_module_and_insert_to(
             get_annotation_property(annotation, "name"), adapter_modules_);
+        extract_module_and_insert_to(
+            get_annotation_property(annotation, "typeHint"), adapter_modules_);
         extract_module_and_insert_to(
             get_annotation_property(annotation, "typeHint"),
             adapter_type_hint_modules_);
@@ -1118,6 +1161,8 @@ void t_mstch_python_generator::set_mstch_generators() {
       std::make_unique<const_value_python_generator>());
   generators_->set_type_generator(
       std::make_unique<type_python_generator>(get_program()));
+  generators_->set_typedef_generator(
+      std::make_unique<typedef_python_generator>());
 }
 
 boost::filesystem::path t_mstch_python_generator::package_to_path() {

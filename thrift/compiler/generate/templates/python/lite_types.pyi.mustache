@@ -111,9 +111,8 @@ class {{struct:name}}({{!
 {{#program:typedefs?}}
 
 {{#program:typedefs}}
-{{typedef:name}} = {{#typedef:type}}{{!
-    }}{{> types/typedef_const_pep484_type}}{{!
-}}{{/typedef:type}}
+{{typedef:name}} = {{#typedef:has_adapter?}}{{typedef:adapter_type_hint}}{{/typedef:has_adapter?}}{{!
+}}{{^typedef:has_adapter?}}{{#typedef:type}}{{> types/typedef_const_pep484_type}}{{/typedef:type}}{{/typedef:has_adapter?}}
 {{/program:typedefs}}
 {{/program:typedefs?}}
 {{/program:services?}}
