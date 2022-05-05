@@ -58,7 +58,9 @@ public class TestBlockingBehavior {
                 .setRequestTimeout(Duration.succinctDuration(1, TimeUnit.DAYS)));
 
     client =
-        BlockingTestService.Reactive.createClient(rpcClientFactory, address, ProtocolId.BINARY);
+        BlockingTestService.Reactive.clientBuilder()
+            .setProtocolId(ProtocolId.BINARY)
+            .build(rpcClientFactory, address);
   }
 
   @Test

@@ -131,12 +131,11 @@ public class PingClient {
 
     // NOTE: the follow code can be simplified after a better api is introduced
     final PingService client =
-        PingService.createClient(
-            clientFactory,
-            address,
-            ProtocolId.BINARY,
-            ImmutableMap.of("key1", "val1"),
-            ImmutableMap.of("pkey1", "pval1"));
+        PingService.clientBuilder()
+            .setProtocolId(ProtocolId.BINARY)
+            .setHeaders(ImmutableMap.of("key1", "val1"))
+            .setPersistentHeaders(ImmutableMap.of("pkey1", "pval1"))
+            .build(clientFactory, address);
 
     // Create request object
     PingRequest request = new PingRequest("Foo");
