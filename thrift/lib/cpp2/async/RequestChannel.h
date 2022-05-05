@@ -223,10 +223,10 @@ class RequestChannel : virtual public folly::DelayedDestruction {
   uint64_t checksumSamplingRate_{0};
 };
 
-template <bool oneWay>
-class ClientSyncCallback : public RequestClientCallback {
+template <bool oneWay, bool sync>
+class ClientBatonCallback : public RequestClientCallback {
  public:
-  explicit ClientSyncCallback(ClientReceiveState* rs) : rs_(rs) {}
+  explicit ClientBatonCallback(ClientReceiveState* rs) : rs_(rs) {}
 
   template <typename F>
   void waitUntilDone(folly::EventBase* evb, F&& sendF) {
@@ -268,12 +268,18 @@ class ClientSyncCallback : public RequestClientCallback {
 
   bool isInlineSafe() const override { return true; }
 
-  bool isSync() const override { return true; }
+  bool isSync() const override { return sync; }
 
  private:
   ClientReceiveState* rs_;
   folly::fibers::Baton doneBaton_;
 };
+
+template <bool oneWay>
+using ClientSyncCallback = ClientBatonCallback<oneWay, true>;
+
+template <bool oneWay>
+using ClientCoroCallback = ClientBatonCallback<oneWay, false>;
 
 StreamClientCallback* createStreamClientCallback(
     RequestClientCallback::Ptr requestCallback,

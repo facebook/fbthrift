@@ -80,7 +80,7 @@ class BadInteraction final : public apache::thrift::InteractionHandle {
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
     apache::thrift::ClientReceiveState returnState;
-    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    apache::thrift::ClientCoroCallback<false> callback(&returnState);
     auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
     auto [ctx, header] = fooCtx(rpcOptions);
     using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
@@ -170,7 +170,7 @@ class BadInteraction final : public apache::thrift::InteractionHandle {
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
     apache::thrift::ClientReceiveState returnState;
-    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    apache::thrift::ClientCoroCallback<false> callback(&returnState);
     auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
     auto [ctx, header] = barCtx(rpcOptions);
     using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;

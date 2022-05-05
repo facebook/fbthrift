@@ -77,7 +77,7 @@ class Client<::cpp2::DbMixedStackArguments> : public apache::thrift::GeneratedAs
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
     apache::thrift::ClientReceiveState returnState;
-    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    apache::thrift::ClientCoroCallback<false> callback(&returnState);
     auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
     auto [ctx, header] = getDataByKey0Ctx(rpcOptions);
     using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
@@ -172,7 +172,7 @@ class Client<::cpp2::DbMixedStackArguments> : public apache::thrift::GeneratedAs
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
     apache::thrift::ClientReceiveState returnState;
-    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    apache::thrift::ClientCoroCallback<false> callback(&returnState);
     auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
     auto [ctx, header] = getDataByKey1Ctx(rpcOptions);
     using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;

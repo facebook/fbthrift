@@ -868,7 +868,7 @@ folly::coro::Task<apache::thrift::ClientSink<::std::int32_t, ::std::int32_t>> ap
         co_await folly::coro::co_current_cancellation_token;
   const bool cancellable = cancelToken.canBeCancelled();
   apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  apache::thrift::ClientCoroCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto [ctx, header] = sink_stuffCtx(&rpcOptions);
   using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;

@@ -26,7 +26,7 @@ folly::coro::Task<<% > types/return_type_client%>> <% > service_common/client_cl
         co_await folly::coro::co_current_cancellation_token;
   const bool cancellable = cancelToken.canBeCancelled();
   apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  apache::thrift::ClientCoroCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto [ctx, header] = <%function:cpp_name%>Ctx(&rpcOptions);
   using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;

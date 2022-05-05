@@ -74,7 +74,7 @@ class Client<::cpp2::MyService> : public apache::thrift::GeneratedAsyncClient {
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
     apache::thrift::ClientReceiveState returnState;
-    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    apache::thrift::ClientCoroCallback<false> callback(&returnState);
     auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
     auto [ctx, header] = queryCtx(rpcOptions);
     using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
@@ -167,7 +167,7 @@ class Client<::cpp2::MyService> : public apache::thrift::GeneratedAsyncClient {
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
     apache::thrift::ClientReceiveState returnState;
-    apache::thrift::ClientSyncCallback<false> callback(&returnState);
+    apache::thrift::ClientCoroCallback<false> callback(&returnState);
     auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
     auto [ctx, header] = has_arg_docsCtx(rpcOptions);
     using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;

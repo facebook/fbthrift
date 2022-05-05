@@ -221,8 +221,10 @@ SinkClientCallback* createSinkClientCallback(
           std::move(requestCallback)));
 }
 
-template class ClientSyncCallback<true>;
-template class ClientSyncCallback<false>;
+template class ClientBatonCallback<true, true>;
+template class ClientBatonCallback<true, false>;
+template class ClientBatonCallback<false, true>;
+template class ClientBatonCallback<false, false>;
 
 } // namespace thrift
 } // namespace apache
