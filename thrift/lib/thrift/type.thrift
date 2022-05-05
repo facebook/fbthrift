@@ -97,3 +97,6 @@ enum UniversalHashAlgorithm {
 
 @thrift.Experimental
 typedef type_rep.ProtocolUnion Protocol (thrift.uri = "")
+
+@thrift.Experimental
+typedef type_rep.TypeStruct Type (thrift.uri = "")
