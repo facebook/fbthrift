@@ -94,3 +94,6 @@ enum UniversalHashAlgorithm {
   cpp.name = "UniversalHashAlgorithmEnum",
   cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::UniversalHashAlgorithm, ::apache::thrift::type::UniversalHashAlgorithmEnum>",
 )
+
+@thrift.Experimental
+typedef type_rep.ProtocolUnion Protocol (thrift.uri = "")

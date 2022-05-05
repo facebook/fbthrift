@@ -41,3 +41,24 @@ typedef binary (cpp2.type = "folly::fbstring") ByteString
 // May be used for zero-copy slice of data
 @thrift.Experimental
 typedef binary (cpp2.type = "folly::IOBuf") ByteBuffer
+
+// Standard protocols.
+@thrift.Experimental
+enum StandardProtocol {
+  Custom = 0,
+
+  // Standard protocols.
+  Binary = 1,
+  Compact = 2,
+
+  // Deprecated protocols.
+  Json = 3,
+  SimpleJson = 4,
+}
+
+// A union representation of a protocol.
+@thrift.Experimental
+union ProtocolUnion {
+  1: StandardProtocol standard;
+  2: string custom;
+} (thrift.uri = "facebook.com/thrift/type/Protocol")
