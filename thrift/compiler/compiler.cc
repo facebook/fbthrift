@@ -232,8 +232,6 @@ std::string parseArgs(
         return {};
       }
       gparams.targets.push_back(*arg);
-    } else if (flag == "cpp_use_include_prefix") {
-      g_cpp_use_include_prefix = true;
     } else if (flag == "I") {
       auto* arg = consume_arg("include directory");
       if (arg == nullptr) {

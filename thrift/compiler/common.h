@@ -35,12 +35,6 @@ namespace compiler {
 extern std::string g_stage;
 
 /**
- * Should C++ include statements use path prefixes for other thrift-generated
- * header files
- */
-extern bool g_cpp_use_include_prefix;
-
-/**
  * Global debug state
  */
 extern int g_debug;
