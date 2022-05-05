@@ -32,7 +32,7 @@ using apache::thrift::detail::st::struct_private_access;
 
 // A type tag for a given field id.
 template <typename FieldTag>
-using field_id_t = std::integral_constant<FieldId, type::field_id_v<FieldTag>>;
+using field_id_t = FieldIdTag<type::field_id_v<FieldTag>>;
 
 // Helper for visiting field metadata.
 template <typename List>
@@ -112,7 +112,7 @@ static_assert(
             field_t<FieldId{20}, map<binary_t, binary_t>>>>);
 
 TEST(FieldsTest, Fields) {
-  const std::vector<int> expectedIds = {
+  const std::vector<type::field_id_u_t> expectedIds = {
       2, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20};
   const std::vector<std::type_index> expectedTags = {
       typeid(i32_t),
@@ -135,11 +135,11 @@ TEST(FieldsTest, Fields) {
       typeid(map<string_t, struct_t<::test_cpp2::cpp_reflection::structB>>),
       typeid(map<binary_t, binary_t>)};
 
-  std::vector<int> ids;
+  std::vector<type::field_id_u_t> ids;
   std::vector<std::type_index> tags;
   ForEach<struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>::
       field([&](auto id, auto tag) {
-        ids.emplace_back(folly::to_underlying(id.value));
+        ids.emplace_back(id.value);
         tags.emplace_back(typeid(tag));
       });
   EXPECT_EQ(ids, expectedIds);
@@ -162,7 +162,9 @@ TEST(FieldsTest, Get) {
   test::same_tag<decltype(s.fieldE()), decltype(op::getById<FieldId{5}>(s))>;
 
   ForEach<struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>::
-      id([&](auto id) { op::getById<decltype(id)::value>(s).emplace(); });
+      id([&](auto id) {
+        op::getById<FieldId{decltype(id)::value}>(s).emplace();
+      });
 
   EXPECT_EQ(*s.fieldA(), 0);
   EXPECT_FALSE(s.fieldE()->us_ref());
@@ -184,7 +186,7 @@ TEST(FieldsTest, field_tag_by_id) {
   test::same_tag<field_tag_by_id<StructTag, FieldId{21}>, void>;
   ForEach<struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>::
       field([](auto id, auto tag) {
-        constexpr auto Id = decltype(id)::value;
+        constexpr auto Id = FieldId{decltype(id)::value};
         using Tag = decltype(tag);
         test::same_tag<field_tag_by_id<StructTag, Id>, field_t<Id, Tag>>;
       });

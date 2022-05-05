@@ -921,15 +921,15 @@ class YourStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_my_union), __isset.at(8), __isset.bit(8)};
   }
  private:
-  static ::apache::thrift::tag::majorVer __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::package __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::annotation_with_quote __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
-  static ::apache::thrift::tag::class_ __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
-  static ::apache::thrift::tag::annotation_with_trailing_comma __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
-  static ::apache::thrift::tag::empty_annotations __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<6>);
-  static ::apache::thrift::tag::my_enum __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<7>);
-  static ::apache::thrift::tag::cpp_type_annotation __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<8>);
-  static ::apache::thrift::tag::my_union __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<9>);
+  static ::apache::thrift::tag::majorVer __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::package __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::annotation_with_quote __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::class_ __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::annotation_with_trailing_comma __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
+  static ::apache::thrift::tag::empty_annotations __fbthrift_ident(::apache::thrift::type::field_id_u_c<6>);
+  static ::apache::thrift::tag::my_enum __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
+  static ::apache::thrift::tag::cpp_type_annotation __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
+  static ::apache::thrift::tag::my_union __fbthrift_ident(::apache::thrift::type::field_id_u_c<9>);
 
  public:
 

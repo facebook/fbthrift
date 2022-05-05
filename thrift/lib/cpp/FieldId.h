@@ -17,9 +17,20 @@
 #pragma once
 
 #include <cstdint>
+#include <type_traits>
 
 namespace apache {
 namespace thrift {
-enum class FieldId : int16_t {};
+namespace type {
+using field_id_u_t = int16_t;
+template <field_id_u_t id>
+using field_id_u_c = std::integral_constant<field_id_u_t, id>;
+} // namespace type
+
+enum class FieldId : type::field_id_u_t {};
+
+template <FieldId Id>
+using FieldIdTag = type::field_id_u_c<static_cast<type::field_id_u_t>(Id)>;
+
 } // namespace thrift
 } // namespace apache

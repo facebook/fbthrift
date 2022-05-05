@@ -19,6 +19,7 @@
 #include <fatal/type/search.h>
 #include <fatal/type/slice.h>
 #include <folly/Utility.h>
+#include <thrift/lib/cpp/FieldId.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
@@ -33,7 +34,7 @@ struct field_to_id {
   struct apply;
   template <FieldId Id, class Tag>
   struct apply<field_t<Id, Tag>> {
-    static constexpr auto value = folly::to_underlying(Id);
+    static constexpr auto value = static_cast<field_id_u_t>(Id);
   };
 };
 

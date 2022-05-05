@@ -119,10 +119,10 @@ struct struct_private_access {
   FOLLY_CREATE_MEMBER_INVOKER(clear_fn, __fbthrift_clear);
   FOLLY_CREATE_MEMBER_INVOKER(empty_fn, __fbthrift_is_empty);
 
-  template <typename T, typename Id>
-  static decltype(T::__fbthrift_get(Id{})) __fbthrift_get_();
-  template <typename T, typename Id>
-  using __fbthrift_get = decltype(__fbthrift_get_<T, Id>());
+  template <typename T, FieldId Id>
+  static decltype(T::__fbthrift_ident(FieldIdTag<Id>{})) __fbthrift_ident();
+  template <typename T, FieldId Id>
+  using ident_tag = decltype(__fbthrift_ident<T, Id>());
 };
 
 template <typename T, typename = void>

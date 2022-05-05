@@ -707,8 +707,8 @@ class MyData final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_data2)};
   }
  private:
-  static ::apache::thrift::tag::data1 __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::data2 __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
+  static ::apache::thrift::tag::data1 __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::data2 __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
  public:
 
@@ -1006,8 +1006,8 @@ class MyUnion final  {
     return {std::move(value_.option2), type_, option2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
  private:
-  static ::apache::thrift::tag::option1 __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::option2 __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
+  static ::apache::thrift::tag::option1 __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::option2 __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
  public:
   Type getType() const { return static_cast<Type>(type_); }
@@ -2124,30 +2124,30 @@ class MyStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_unionVal)};
   }
  private:
-  static ::apache::thrift::tag::boolVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::byteVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::i16Val __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
-  static ::apache::thrift::tag::i32Val __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
-  static ::apache::thrift::tag::i64Val __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
-  static ::apache::thrift::tag::floatVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<6>);
-  static ::apache::thrift::tag::doubleVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<7>);
-  static ::apache::thrift::tag::stringVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<8>);
-  static ::apache::thrift::tag::binaryVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<9>);
-  static ::apache::thrift::tag::structVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<10>);
-  static ::apache::thrift::tag::optBoolVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<11>);
-  static ::apache::thrift::tag::optByteVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<12>);
-  static ::apache::thrift::tag::optI16Val __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<13>);
-  static ::apache::thrift::tag::optI32Val __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<14>);
-  static ::apache::thrift::tag::optI64Val __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<15>);
-  static ::apache::thrift::tag::optFloatVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<16>);
-  static ::apache::thrift::tag::optDoubleVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<17>);
-  static ::apache::thrift::tag::optStringVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<18>);
-  static ::apache::thrift::tag::optBinaryVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<19>);
-  static ::apache::thrift::tag::optStructVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<20>);
-  static ::apache::thrift::tag::optListVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<21>);
-  static ::apache::thrift::tag::optSetVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<22>);
-  static ::apache::thrift::tag::optMapVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<23>);
-  static ::apache::thrift::tag::unionVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<30>);
+  static ::apache::thrift::tag::boolVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::byteVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::i16Val __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::i32Val __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::i64Val __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
+  static ::apache::thrift::tag::floatVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<6>);
+  static ::apache::thrift::tag::doubleVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
+  static ::apache::thrift::tag::stringVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
+  static ::apache::thrift::tag::binaryVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<9>);
+  static ::apache::thrift::tag::structVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<10>);
+  static ::apache::thrift::tag::optBoolVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<11>);
+  static ::apache::thrift::tag::optByteVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<12>);
+  static ::apache::thrift::tag::optI16Val __fbthrift_ident(::apache::thrift::type::field_id_u_c<13>);
+  static ::apache::thrift::tag::optI32Val __fbthrift_ident(::apache::thrift::type::field_id_u_c<14>);
+  static ::apache::thrift::tag::optI64Val __fbthrift_ident(::apache::thrift::type::field_id_u_c<15>);
+  static ::apache::thrift::tag::optFloatVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<16>);
+  static ::apache::thrift::tag::optDoubleVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<17>);
+  static ::apache::thrift::tag::optStringVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<18>);
+  static ::apache::thrift::tag::optBinaryVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<19>);
+  static ::apache::thrift::tag::optStructVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<20>);
+  static ::apache::thrift::tag::optListVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<21>);
+  static ::apache::thrift::tag::optSetVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<22>);
+  static ::apache::thrift::tag::optMapVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<23>);
+  static ::apache::thrift::tag::unionVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<30>);
 
  public:
 
@@ -2600,8 +2600,8 @@ class MyDataPatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_data2)};
   }
  private:
-  static ::apache::thrift::tag::data1 __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::data2 __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
+  static ::apache::thrift::tag::data1 __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::data2 __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
  public:
 
@@ -2802,9 +2802,9 @@ class MyDataValuePatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_patch)};
   }
  private:
-  static ::apache::thrift::tag::assign __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::clear __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::patch __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
+  static ::apache::thrift::tag::assign __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
 
  public:
 
@@ -3059,10 +3059,10 @@ class OptionalMyDataValuePatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_patchAfter)};
   }
  private:
-  static ::apache::thrift::tag::clear __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::patch __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
-  static ::apache::thrift::tag::ensure __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
-  static ::apache::thrift::tag::patchAfter __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
+  static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::ensure __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::patchAfter __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
 
  public:
 
@@ -3230,8 +3230,8 @@ class MyUnionPatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_option2)};
   }
  private:
-  static ::apache::thrift::tag::option1 __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::option2 __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
+  static ::apache::thrift::tag::option1 __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::option2 __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
  public:
 
@@ -3476,10 +3476,10 @@ class MyUnionValuePatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_patchAfter)};
   }
  private:
-  static ::apache::thrift::tag::clear __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::patch __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
-  static ::apache::thrift::tag::ensure __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
-  static ::apache::thrift::tag::patchAfter __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
+  static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::ensure __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::patchAfter __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
 
  public:
 
@@ -3743,10 +3743,10 @@ class OptionalMyUnionValuePatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_patchAfter)};
   }
  private:
-  static ::apache::thrift::tag::clear __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::patch __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
-  static ::apache::thrift::tag::ensure __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
-  static ::apache::thrift::tag::patchAfter __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
+  static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::ensure __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::patchAfter __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
 
  public:
 
@@ -4002,10 +4002,10 @@ class MyStructField21PatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_append)};
   }
  private:
-  static ::apache::thrift::tag::assign __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::clear __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::prepend __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
-  static ::apache::thrift::tag::append __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
+  static ::apache::thrift::tag::assign __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::prepend __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::append __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
 
  public:
   const ::std::vector<::std::int16_t>* get_assign() const&;
@@ -4290,10 +4290,10 @@ class OptionalMyStructField21PatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_patchAfter)};
   }
  private:
-  static ::apache::thrift::tag::clear __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::patch __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
-  static ::apache::thrift::tag::ensure __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
-  static ::apache::thrift::tag::patchAfter __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
+  static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::ensure __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::patchAfter __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
 
  public:
 
@@ -4559,10 +4559,10 @@ class MyStructField22PatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_add)};
   }
  private:
-  static ::apache::thrift::tag::assign __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::clear __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::remove __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
-  static ::apache::thrift::tag::add __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
+  static ::apache::thrift::tag::assign __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::remove __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::add __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
 
  public:
   const ::std::set<::std::string>* get_assign() const&;
@@ -4847,10 +4847,10 @@ class OptionalMyStructField22PatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_patchAfter)};
   }
  private:
-  static ::apache::thrift::tag::clear __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::patch __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
-  static ::apache::thrift::tag::ensure __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
-  static ::apache::thrift::tag::patchAfter __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
+  static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::ensure __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::patchAfter __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
 
  public:
 
@@ -5073,9 +5073,9 @@ class MyStructField23PatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_put)};
   }
  private:
-  static ::apache::thrift::tag::assign __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::clear __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::put __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<7>);
+  static ::apache::thrift::tag::assign __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::put __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
 
  public:
   const ::std::map<::std::string, ::std::string>* get_assign() const&;
@@ -5351,10 +5351,10 @@ class OptionalMyStructField23PatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_patchAfter)};
   }
  private:
-  static ::apache::thrift::tag::clear __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::patch __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
-  static ::apache::thrift::tag::ensure __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
-  static ::apache::thrift::tag::patchAfter __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
+  static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::ensure __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::patchAfter __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
 
  public:
 
@@ -6500,30 +6500,30 @@ class MyStructPatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_unionVal)};
   }
  private:
-  static ::apache::thrift::tag::boolVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::byteVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::i16Val __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
-  static ::apache::thrift::tag::i32Val __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
-  static ::apache::thrift::tag::i64Val __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
-  static ::apache::thrift::tag::floatVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<6>);
-  static ::apache::thrift::tag::doubleVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<7>);
-  static ::apache::thrift::tag::stringVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<8>);
-  static ::apache::thrift::tag::binaryVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<9>);
-  static ::apache::thrift::tag::structVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<10>);
-  static ::apache::thrift::tag::optBoolVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<11>);
-  static ::apache::thrift::tag::optByteVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<12>);
-  static ::apache::thrift::tag::optI16Val __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<13>);
-  static ::apache::thrift::tag::optI32Val __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<14>);
-  static ::apache::thrift::tag::optI64Val __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<15>);
-  static ::apache::thrift::tag::optFloatVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<16>);
-  static ::apache::thrift::tag::optDoubleVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<17>);
-  static ::apache::thrift::tag::optStringVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<18>);
-  static ::apache::thrift::tag::optBinaryVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<19>);
-  static ::apache::thrift::tag::optStructVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<20>);
-  static ::apache::thrift::tag::optListVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<21>);
-  static ::apache::thrift::tag::optSetVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<22>);
-  static ::apache::thrift::tag::optMapVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<23>);
-  static ::apache::thrift::tag::unionVal __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<30>);
+  static ::apache::thrift::tag::boolVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::byteVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::i16Val __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::i32Val __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::i64Val __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
+  static ::apache::thrift::tag::floatVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<6>);
+  static ::apache::thrift::tag::doubleVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
+  static ::apache::thrift::tag::stringVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
+  static ::apache::thrift::tag::binaryVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<9>);
+  static ::apache::thrift::tag::structVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<10>);
+  static ::apache::thrift::tag::optBoolVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<11>);
+  static ::apache::thrift::tag::optByteVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<12>);
+  static ::apache::thrift::tag::optI16Val __fbthrift_ident(::apache::thrift::type::field_id_u_c<13>);
+  static ::apache::thrift::tag::optI32Val __fbthrift_ident(::apache::thrift::type::field_id_u_c<14>);
+  static ::apache::thrift::tag::optI64Val __fbthrift_ident(::apache::thrift::type::field_id_u_c<15>);
+  static ::apache::thrift::tag::optFloatVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<16>);
+  static ::apache::thrift::tag::optDoubleVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<17>);
+  static ::apache::thrift::tag::optStringVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<18>);
+  static ::apache::thrift::tag::optBinaryVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<19>);
+  static ::apache::thrift::tag::optStructVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<20>);
+  static ::apache::thrift::tag::optListVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<21>);
+  static ::apache::thrift::tag::optSetVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<22>);
+  static ::apache::thrift::tag::optMapVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<23>);
+  static ::apache::thrift::tag::unionVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<30>);
 
  public:
 
@@ -6724,9 +6724,9 @@ class MyStructValuePatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_patch)};
   }
  private:
-  static ::apache::thrift::tag::assign __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::clear __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::patch __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
+  static ::apache::thrift::tag::assign __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
 
  public:
 
@@ -6981,10 +6981,10 @@ class OptionalMyStructValuePatchStruct final  {
     return ::apache::thrift::terse_field_ref<T&&>{static_cast<T&&>(this->__fbthrift_field_patchAfter)};
   }
  private:
-  static ::apache::thrift::tag::clear __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::patch __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
-  static ::apache::thrift::tag::ensure __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
-  static ::apache::thrift::tag::patchAfter __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
+  static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::ensure __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::patchAfter __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
 
  public:
 

@@ -610,14 +610,14 @@ class MyStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_floatSet), __isset.at(7), __isset.bit(7)};
   }
  private:
-  static ::apache::thrift::tag::MyIntField __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::MyStringField __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::MyDataField __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
-  static ::apache::thrift::tag::myEnum __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
-  static ::apache::thrift::tag::oneway __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
-  static ::apache::thrift::tag::readonly __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<6>);
-  static ::apache::thrift::tag::idempotent __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<7>);
-  static ::apache::thrift::tag::floatSet __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<8>);
+  static ::apache::thrift::tag::MyIntField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::MyStringField __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::MyDataField __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::myEnum __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::oneway __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
+  static ::apache::thrift::tag::readonly __fbthrift_ident(::apache::thrift::type::field_id_u_c<6>);
+  static ::apache::thrift::tag::idempotent __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
+  static ::apache::thrift::tag::floatSet __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
 
  public:
 
@@ -1133,10 +1133,10 @@ class MyUnion final  {
     return {std::move(value_.floatSet), type_, floatSet, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
  private:
-  static ::apache::thrift::tag::myEnum __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::myStruct __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::myDataItem __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
-  static ::apache::thrift::tag::floatSet __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
+  static ::apache::thrift::tag::myEnum __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::myStruct __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::myDataItem __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::floatSet __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
 
  public:
   Type getType() const { return static_cast<Type>(type_); }

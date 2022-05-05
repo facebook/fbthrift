@@ -654,16 +654,16 @@ class Foo final  {
     return {static_cast<T&&>(this->__fbthrift_field_adaptedLongField), __isset.at(9), __isset.bit(9)};
   }
  private:
-  static ::apache::thrift::tag::intField __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::optionalIntField __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::intFieldWithDefault __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
-  static ::apache::thrift::tag::setField __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
-  static ::apache::thrift::tag::optionalSetField __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<5>);
-  static ::apache::thrift::tag::mapField __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<6>);
-  static ::apache::thrift::tag::optionalMapField __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<7>);
-  static ::apache::thrift::tag::binaryField __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<8>);
-  static ::apache::thrift::tag::longField __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<9>);
-  static ::apache::thrift::tag::adaptedLongField __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<10>);
+  static ::apache::thrift::tag::intField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::optionalIntField __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::intFieldWithDefault __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::setField __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::optionalSetField __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
+  static ::apache::thrift::tag::mapField __fbthrift_ident(::apache::thrift::type::field_id_u_c<6>);
+  static ::apache::thrift::tag::optionalMapField __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
+  static ::apache::thrift::tag::binaryField __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
+  static ::apache::thrift::tag::longField __fbthrift_ident(::apache::thrift::type::field_id_u_c<9>);
+  static ::apache::thrift::tag::adaptedLongField __fbthrift_ident(::apache::thrift::type::field_id_u_c<10>);
 
  public:
 

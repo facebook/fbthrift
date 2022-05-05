@@ -17,7 +17,7 @@
 %><%^struct:deprecated_tag_incompatible?%><%#struct:thrift_uri%>
  private:
   <%#struct:fields%>
-  static ::apache::thrift::tag::<%field:cpp_name%> __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<<%field:key%>>);
+  static ::apache::thrift::tag::<%field:cpp_name%> __fbthrift_ident(::apache::thrift::type::field_id_u_c<<%field:key%>>);
   <%/struct:fields%>
 
  public:

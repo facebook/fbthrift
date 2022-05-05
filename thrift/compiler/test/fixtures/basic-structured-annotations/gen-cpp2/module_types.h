@@ -314,8 +314,8 @@ class structured_annotation_inline final  {
     return {static_cast<T&&>(this->__fbthrift_field_name), __isset.at(1), __isset.bit(1)};
   }
  private:
-  static ::apache::thrift::tag::count __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::name __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
+  static ::apache::thrift::tag::count __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
  public:
 
@@ -457,7 +457,7 @@ class structured_annotation_with_default final  {
     return {static_cast<T&&>(this->__fbthrift_field_name), __isset.at(0), __isset.bit(0)};
   }
  private:
-  static ::apache::thrift::tag::name __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
+  static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
  public:
 
@@ -590,7 +590,7 @@ class structured_annotation_forward final  {
     return {static_cast<T&&>(this->__fbthrift_field_count), __isset.at(0), __isset.bit(0)};
   }
  private:
-  static ::apache::thrift::tag::count __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
+  static ::apache::thrift::tag::count __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
  public:
 
@@ -802,9 +802,9 @@ class structured_annotation_recursive final  {
     return {static_cast<T&&>(this->__fbthrift_field_forward), __isset.at(2), __isset.bit(2)};
   }
  private:
-  static ::apache::thrift::tag::name __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::recurse __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::forward __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
+  static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::recurse __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::forward __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
 
  public:
 
@@ -996,8 +996,8 @@ class structured_annotation_nested final  {
     return {static_cast<T&&>(this->__fbthrift_field_nest), __isset.at(1), __isset.bit(1)};
   }
  private:
-  static ::apache::thrift::tag::name __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::nest __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
+  static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::nest __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
  public:
 
@@ -1268,10 +1268,10 @@ class MyStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_annotated_nested), __isset.at(3), __isset.bit(3)};
   }
  private:
-  static ::apache::thrift::tag::annotated_field __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::annotated_type __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
-  static ::apache::thrift::tag::annotated_recursive __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<3>);
-  static ::apache::thrift::tag::annotated_nested __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<4>);
+  static ::apache::thrift::tag::annotated_field __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::annotated_type __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::annotated_recursive __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::annotated_nested __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
 
  public:
 
@@ -1426,7 +1426,7 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
     return {static_cast<T&&>(this->context), __isset.at(0), __isset.bit(0)};
   }
  private:
-  static ::apache::thrift::tag::context __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
+  static ::apache::thrift::tag::context __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
  public:
 
@@ -1718,8 +1718,8 @@ class MyUnion final  {
     return {std::move(value_.second), type_, second, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
  private:
-  static ::apache::thrift::tag::first __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<1>);
-  static ::apache::thrift::tag::second __fbthrift_get(::apache::thrift::detail::st::field_id_u_c<2>);
+  static ::apache::thrift::tag::first __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::second __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
  public:
   Type getType() const { return static_cast<Type>(type_); }
