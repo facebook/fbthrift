@@ -55,10 +55,10 @@ struct Const {} (thrift.uri = "facebook.com/thrift/annotation/Const")
 
 // Due to cython bug, we can not use `Enum` as class name directly
 // https://github.com/cython/cython/issues/2474
-struct FbthriftInternalEnum {}
-typedef FbthriftInternalEnum Enum (
+struct FbthriftInternalEnum {} (
   thrift.uri = "facebook.com/thrift/annotation/Enum",
 )
+typedef FbthriftInternalEnum Enum (thrift.uri = "")
 // Declare our own Transitive, to avoid circular dep with meta.thrift
 struct FbthriftInternalScopeTransitive {} (
   thrift.uri = "facebook.com/thrift/annotation/Transitive",

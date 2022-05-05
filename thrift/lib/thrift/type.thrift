@@ -52,6 +52,7 @@ typedef binary (cpp2.type = "folly::IOBuf") ByteBuffer
 //
 // Similar to lib/cpp/protocol/TType.h, but IDL
 // concepts instead of protocol concepts.
+@thrift.Experimental
 enum BaseType {
   Void = 0,
 
@@ -94,10 +95,13 @@ enum BaseType {
 // collision is 2^(8*{numBytes}/2).
 // Which is ~4.3 billion types for the min, and ~18.45 quintillion
 // types for the default.
+@thrift.Experimental
 const byte minTypeHashBytes = 8;
+@thrift.Experimental
 const byte defaultTypeHashBytes = 16;
 
 // The hash algorithms that can be used with type names.
+@thrift.Experimental
 enum UniversalHashAlgorithm {
   Sha2_256 = 1,
 } (

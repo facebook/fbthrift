@@ -56,13 +56,12 @@ struct allowed_scopes {
 
   explicit allowed_scopes(node_metadata_cache& cache, const t_const& annot) {
     for (const auto* meta_annot : annot.get_type()->structured_annotations()) {
-      const t_type& meta_annot_type = *meta_annot->get_type();
-      if (is_transitive_annotation(meta_annot_type)) {
+      if (is_transitive_annotation(*meta_annot->get_type())) {
         const auto& transitive_scopes =
             cache.get<allowed_scopes>(*meta_annot).types;
         types.insert(transitive_scopes.begin(), transitive_scopes.end());
       }
-      auto itr = uri_map().find(meta_annot->get_type()->uri());
+      auto itr = uri_map().find(meta_annot->get_type()->get_true_type()->uri());
       if (itr != uri_map().end()) {
         types.emplace(itr->second);
       }
@@ -89,7 +88,7 @@ void validate_annotation_scopes(diagnostic_context& ctx, const t_named& node) {
   for (const t_const* annot : node.structured_annotations()) {
     const t_type* annot_type = &*annot->type();
     // Ignore scoping annotations themselves.
-    if (uri_map().find(annot_type->uri()) != uri_map().end()) {
+    if (uri_map().find(annot_type->get_true_type()->uri()) != uri_map().end()) {
       continue;
     }
 

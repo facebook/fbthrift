@@ -1064,6 +1064,7 @@ FbthriftInternalEnum.thrift_spec = (
 )
 
 FbthriftInternalEnum.thrift_struct_annotations = {
+  "thrift.uri": "facebook.com/thrift/annotation/Enum",
 }
 FbthriftInternalEnum.thrift_field_annotations = {
 }

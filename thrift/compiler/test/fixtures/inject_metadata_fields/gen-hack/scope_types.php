@@ -637,6 +637,7 @@ class facebook_thrift_annotation_Const implements \IThriftSyncStruct {
  * Original thrift struct:-
  * FbthriftInternalEnum
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Enum'))>>
 class facebook_thrift_annotation_FbthriftInternalEnum implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
