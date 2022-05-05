@@ -306,20 +306,19 @@ std::string parseArgs(
   return arguments[arg_i];
 }
 
-/**
- * Generate code
- */
+// Generate code.
 bool generate(
     const gen_params& params,
-    t_program* program,
-    std::set<std::string>& already_generated) {
+    t_program& program,
+    std::set<std::string>& already_generated,
+    diagnostics_engine& diags) {
   // Oooohh, recursive code generation, hot!!
   if (params.gen_recurse) {
     // Add the path we are about to generate.
-    already_generated.emplace(program->path());
-    for (const auto& include : program->get_included_programs()) {
+    already_generated.emplace(program.path());
+    for (const auto& include : program.get_included_programs()) {
       if (!already_generated.count(include->path()) &&
-          !generate(params, include, already_generated)) {
+          !generate(params, *include, already_generated, diags)) {
         return false;
       }
     }
@@ -327,10 +326,14 @@ bool generate(
 
   // Generate code!
   try {
-    pverbose("Program: %s\n", program->path().c_str());
+    diags.report(
+        source_location(),
+        diagnostic_level::info,
+        "program: {}",
+        program.path());
 
     if (dump_docs) {
-      dump_docstrings(program);
+      dump_docstrings(&program);
     }
 
     bool success = true;
@@ -341,8 +344,9 @@ bool generate(
     for (auto target : params.targets) {
       auto pos = target.find(':');
       std::string lang = target.substr(0, pos);
-      auto generator = std::unique_ptr<t_generator>{
-          t_generator_registry::get_generator(program, params.context, target)};
+      auto generator =
+          std::unique_ptr<t_generator>{t_generator_registry::get_generator(
+              &program, params.context, target)};
       if (generator == nullptr) {
         continue;
       }
@@ -350,7 +354,7 @@ bool generate(
       validator::diagnostics_t diagnostics;
       validator_list validators(diagnostics);
       generator->fill_validator_list(validators);
-      validators.traverse(program);
+      validators.traverse(&program);
 
       bool has_failure = false;
       for (const auto& d : diagnostics) {
@@ -362,7 +366,12 @@ bool generate(
         continue;
       }
 
-      pverbose("Generating \"%s\"\n", target.c_str());
+      diags.report(
+          source_location(),
+          diagnostic_level::info,
+          "generating \"{}\"",
+          target);
+
       generator->generate_program();
       if (genfile.is_open()) {
         for (const std::string& s : generator->get_genfiles()) {
@@ -380,9 +389,10 @@ bool generate(
   }
 }
 
-bool generate(const gen_params& params, t_program* program) {
+bool generate(
+    const gen_params& params, t_program& program, diagnostics_engine& diags) {
   std::set<std::string> already_generated;
-  return generate(params, program, already_generated);
+  return generate(params, program, already_generated, diags);
 }
 
 std::string get_include_path(
@@ -486,7 +496,7 @@ compile_result compile(const std::vector<std::string>& arguments) {
   g_stage = "generation";
   ctx.begin_visit(*program->root_program());
   try {
-    if (generate(gparams, program->root_program())) {
+    if (generate(gparams, *program->root_program(), ctx)) {
       result.retcode = compile_retcode::success;
     }
   } catch (const std::exception& e) {

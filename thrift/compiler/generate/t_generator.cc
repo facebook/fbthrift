@@ -16,9 +16,11 @@
 
 #include <thrift/compiler/generate/t_generator.h>
 
+#include <stdexcept>
 #include <utility>
 
 #include <boost/algorithm/string/split.hpp>
+#include <fmt/core.h>
 #include <thrift/compiler/common.h>
 
 namespace apache {
@@ -43,13 +45,11 @@ t_generator::t_generator(t_program* program, t_generation_context context)
 }
 
 void t_generator_registry::register_generator(t_generator_factory* factory) {
-  gen_map_t& the_map = get_generator_map();
-  if (the_map.find(factory->get_short_name()) != the_map.end()) {
-    failure(
-        "Duplicate generators for language \"%s\"!\n",
-        factory->get_short_name().c_str());
+  std::string name = factory->get_short_name();
+  if (!get_generator_map().insert(std::make_pair(name, factory)).second) {
+    throw std::logic_error(
+        fmt::format("duplicate generator for language \"{}\"", name));
   }
-  the_map[factory->get_short_name()] = factory;
 }
 
 t_generator* t_generator_registry::get_generator(

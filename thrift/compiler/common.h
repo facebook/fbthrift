@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#ifndef THRIFT_COMPILER_COMMON_
-#define THRIFT_COMPILER_COMMON_ 1
+#pragma once
 
 #include <memory>
 #include <string>
@@ -55,42 +54,6 @@ extern int g_warn;
  * Verbose output
  */
 extern int g_verbose;
-
-/**
- * Obtain the absolute path name given a path for any platform
- *
- * Remarks: This function only works with existing paths but can be
- *          expanded to work with paths that will exist
- */
-std::string compute_absolute_path(const std::string& path);
-
-/**
- * Prints a debug message from the parser.
- *
- * @param fmt C format string followed by additional arguments
- */
-void pdebug(const char* fmt, ...);
-
-/**
- * Prints a verbose output mode message
- *
- * @param fmt C format string followed by additional arguments
- */
-void pverbose(const char* fmt, ...);
-
-/**
- * Prints a warning message
- *
- * @param fmt C format string followed by additional arguments
- */
-void pwarning(int level, const char* fmt, ...);
-
-/**
- * Prints a failure message and exits
- *
- * @param fmt C format string followed by additional arguments
- */
-[[noreturn]] void failure(const char* fmt, ...);
 
 /** Set to true to debug docstring parsing */
 static bool dump_docs = false;
@@ -133,5 +96,3 @@ void mark_file_executable(std::string const& path);
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
-
-#endif

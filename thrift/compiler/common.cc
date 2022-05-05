@@ -64,60 +64,6 @@ char* g_doctext;
  */
 int g_doctext_lineno;
 
-std::string compute_absolute_path(const std::string& path) {
-  boost::filesystem::path abspath{path};
-  try {
-    abspath = boost::filesystem::absolute(abspath);
-    return abspath.string();
-  } catch (const boost::filesystem::filesystem_error& e) {
-    failure("Could not find file: %s. Error: %s", path.c_str(), e.what());
-  }
-}
-
-void pdebug(const char* fmt, ...) {
-  if (g_debug == 0) {
-    return;
-  }
-  va_list args;
-  printf("[PARSE] ");
-  va_start(args, fmt);
-  vprintf(fmt, args);
-  va_end(args);
-  printf("\n");
-}
-
-void pverbose(const char* fmt, ...) {
-  if (g_verbose == 0) {
-    return;
-  }
-  va_list args;
-  va_start(args, fmt);
-  vprintf(fmt, args);
-  va_end(args);
-}
-
-void pwarning(int level, const char* fmt, ...) {
-  if (g_warn < level) {
-    return;
-  }
-  va_list args;
-  fprintf(stderr, "[WARNING:%s] ", g_stage.c_str());
-  va_start(args, fmt);
-  vfprintf(stderr, fmt, args);
-  va_end(args);
-  fprintf(stderr, "\n");
-}
-
-[[noreturn]] void failure(const char* fmt, ...) {
-  va_list args;
-  fprintf(stderr, "[FAILURE:%s] ", g_stage.c_str());
-  va_start(args, fmt);
-  vfprintf(stderr, fmt, args);
-  va_end(args);
-  fprintf(stderr, "\n");
-  exit(1);
-}
-
 void dump_docstrings(t_program* program) {
   std::string progdoc = program->get_doc();
   if (!progdoc.empty()) {
