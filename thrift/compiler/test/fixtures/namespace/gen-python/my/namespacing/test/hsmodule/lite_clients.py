@@ -7,7 +7,7 @@
 
 import typing as _typing
 
-import py3lite_module_root.apache.thrift.metadata.lite_types as _fbthrift_metadata
+import apache.thrift.metadata.lite_types as _fbthrift_metadata
 import folly.iobuf as _fbthrift_iobuf
 from thrift.python.client import (
     AsyncClient as _fbthrift_py3lite_AsyncClient,

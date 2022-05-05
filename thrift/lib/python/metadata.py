@@ -127,6 +127,7 @@ class ThriftTypeProxy:
             assert isinstance(val, ThriftMapType)
             return ThriftMapProxy(val, thriftMeta)
         elif thriftType.type is ThriftType.Type.t_enum:
+            val = thriftType.value
             assert isinstance(thriftType, ThriftEnum)
             specialType = ThriftTypeProxy(
                 thriftMeta.enums[thriftType.value.name], thriftMeta

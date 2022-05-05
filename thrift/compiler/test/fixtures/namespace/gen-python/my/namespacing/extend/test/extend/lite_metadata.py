@@ -4,7 +4,7 @@
 # DO NOT EDIT
 #  @generated
 #
-import py3lite_module_root.apache.thrift.metadata.lite_types as _fbthrift_metadata
+import apache.thrift.metadata.lite_types as _fbthrift_metadata
 
 
 import py3lite_module_root.my.namespacing.test.hsmodule.lite_metadata
