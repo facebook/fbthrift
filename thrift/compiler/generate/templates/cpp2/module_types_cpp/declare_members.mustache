@@ -144,7 +144,7 @@ bool <%struct:cpp_name%>::__fbthrift_is_empty() const {
   return<%#struct:fields%><%#field:type%><%!
   %><%#field:optional?%> !(<% > module_types_tcc/optional_has_value%>)<%^last?%> &&<%/last?%><%/field:optional?%><%!
   %><%#field:deprecated_terse_writes?%> !(<% > module_types_tcc/deprecated_terse_has_value %>)<%^last?%> &&<%/last?%><%/field:deprecated_terse_writes?%><%!
-  %><%#field:terse_write?%> !(<% > module_types_tcc/terse_has_value %>)<%^last?%> &&<%/last?%><%/field:terse_write?%><%!
+  %><%#field:terse?%> !(<% > module_types_tcc/terse_has_value %>)<%^last?%> &&<%/last?%><%/field:terse?%><%!
   %><%#last?%>;<%/last?%>
 <%/field:type%><%/struct:fields%>
 <%/struct:fields?%>

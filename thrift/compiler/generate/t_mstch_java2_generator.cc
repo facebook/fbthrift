@@ -586,16 +586,11 @@ class mstch_java2_field : public mstch_field {
           &mstch_java2_field::get_structured_adapter_class_name},
          {"field:typeClassName",
           &mstch_java2_field::get_structured_type_class_name},
-         {"field:terse_write?", &mstch_java2_field::terse_write},
          {"field:hasAdapter?", &mstch_java2_field::is_typedef_adapter}});
   }
 
   int32_t nestedDepth = 0;
   bool isNestedContainerFlag = false;
-
-  mstch::node terse_write() {
-    return field_->get_req() == t_field::e_req::terse;
-  }
 
   mstch::node is_typedef_adapter() {
     auto type = field_->get_type();

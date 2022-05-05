@@ -649,7 +649,6 @@ class mstch_cpp2_field : public mstch_field {
             {"field:enum_has_value", &mstch_cpp2_field::enum_has_value},
             {"field:deprecated_terse_writes?",
              &mstch_cpp2_field::deprecated_terse_writes},
-            {"field:terse_write?", &mstch_cpp2_field::terse_write},
             {"field:fatal_annotations?",
              &mstch_cpp2_field::has_fatal_annotations},
             {"field:fatal_annotations", &mstch_cpp2_field::fatal_annotations},
@@ -818,9 +817,6 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node deprecated_terse_writes() {
     return has_option("terse_writes") && cpp2::deprecated_terse_writes(field_);
-  }
-  mstch::node terse_write() {
-    return field_->get_req() == t_field::e_req::terse;
   }
   mstch::node zero_copy_arg() {
     switch (field_->get_type()->get_type_value()) {

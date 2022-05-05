@@ -132,6 +132,7 @@ mstch::map t_mstch_generator::dump(const t_field& field, int32_t index) {
       {"required?", req == t_field::e_req::required},
       {"optional?", req == t_field::e_req::optional},
       {"opt_in_req_out?", req == t_field::e_req::opt_in_req_out},
+      {"terse?", req == t_field::e_req::terse},
       {"annotations", dump_elems(field.annotations())},
   };
 
