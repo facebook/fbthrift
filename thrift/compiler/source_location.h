@@ -39,7 +39,7 @@ class source_manager {
   };
   // This is a deque to make sure that file_name is not reallocated when
   // sources_ grows.
-  std::vector<source_info> sources_;
+  std::deque<source_info> sources_;
 
   friend class resolved_location;
 
