@@ -170,8 +170,6 @@ class AsyncProcessorMethodResolutionTestP
 } // namespace
 
 TEST_P(AsyncProcessorMethodResolutionTestP, CreateMethodMetadataNotSupported) {
-  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(
-      /* Not yet supported for resource pools, maybe never? */);
   auto service = std::make_shared<ChildHandlerWithMetadata>(
       [](auto&&) -> CreateMethodMetadataResult { return {}; });
   auto runner = makeServer(service);
@@ -197,8 +195,6 @@ TEST_P(AsyncProcessorMethodResolutionTestP, MistypedMetadataDeathTest) {
     // Opt-mode causes UB instead of dying
     return;
   }
-  SKIP_IF(useResourcePoolsFlagsSet())
-      << "No metadata check with resource pools";
   folly::SingletonVault::singleton()->destroyInstances();
   folly::SingletonVault::singleton()->reenableInstances();
   auto runTest = [&](auto&& callback) {
@@ -328,8 +324,6 @@ TEST_P(AsyncProcessorMethodResolutionTestP, Wildcard) {
 }
 
 TEST_P(AsyncProcessorMethodResolutionTestP, Interaction) {
-  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(
-      /* Interaction not yet supported in resource pools */);
   if (transportType() != TransportType::ROCKET) {
     // Interactions are only supported on rocket
     return;

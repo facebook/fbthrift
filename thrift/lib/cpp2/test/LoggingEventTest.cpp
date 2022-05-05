@@ -41,6 +41,7 @@ using apache::thrift::ThriftServer;
 using apache::thrift::instrumentation::ServerTracker;
 
 constexpr std::string_view kServe = "serve";
+constexpr std::string_view kResourcePoolsEnabled = "resourcepoolsenabled";
 // Note not setting a ssl config is seen as a manual override
 constexpr std::string_view kNonTls = "non_tls.manual_policy";
 constexpr std::string_view kNewConnection = "new_connection";
@@ -74,6 +75,8 @@ class TestEventRegistry : public LoggingEventRegistry {
  public:
   TestEventRegistry() {
     serverEventMap_[kServe] = makeHandler<TestServerEventHandler>();
+    serverEventMap_[kResourcePoolsEnabled] =
+        makeHandler<TestServerEventHandler>();
     connectionEventMap_[kNonTls] = makeHandler<TestConnectionEventHandler>();
     connectionEventMap_[kNewConnection] =
         makeHandler<TestConnectionEventHandler>();
@@ -210,6 +213,9 @@ class TestServiceHandler : public apache::thrift::test::TestServiceSvIf {
 
 TEST_F(ServerEventLogTest, serverTest) {
   expectServerEventCall(kServe, 1);
+  if (apache::thrift::useResourcePools()) {
+    expectServerEventCall(kResourcePoolsEnabled, 1);
+  }
   auto handler = std::make_shared<TestServiceHandler>();
   apache::thrift::ScopedServerInterfaceThread server(handler);
 }

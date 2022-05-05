@@ -506,8 +506,6 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequests) {
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsRestartServer) {
-  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(
-      /* restart lifecycle not supported yet */);
   if (this->isH2Transport()) {
     return;
   }

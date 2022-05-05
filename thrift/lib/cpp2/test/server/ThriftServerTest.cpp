@@ -1178,7 +1178,6 @@ bool blockWhile(F&& f, Duration duration = 1s) {
 } // namespace
 
 TEST_P(HeaderOrRocket, ThreadManagerAdapterOverSimpleTMUpstreamPriorities) {
-  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* ThreadManager features */);
   class TestInterface : public TestServiceSvIf {
    public:
     TestInterface() {}
@@ -1230,7 +1229,6 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterOverSimpleTMUpstreamPriorities) {
 
 TEST_P(
     HeaderOrRocket, ThreadManagerAdapterOverMeteredExecutorUpstreamPriorities) {
-  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* ThreadManager features */);
   class TestInterface : public TestServiceSvIf {
    public:
     explicit TestInterface(int& testCounter) : testCounter_(testCounter) {}
@@ -1415,7 +1413,6 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterSinglePool) {
 }
 
 TEST_P(HeaderOrRocket, StickyToThreadPool) {
-  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* ThreadManager features */);
   int callCount{0};
   class TestInterface : public TestServiceSvIf {
     int& callCount_;
@@ -1668,7 +1665,6 @@ INSTANTIATE_TEST_CASE_P(
     testing::Values(TransportType::Header, TransportType::Rocket));
 
 TEST_P(OverloadTest, Test) {
-  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* isOverloaded and preprocess */);
   class BlockInterface : public TestServiceSvIf {
    public:
     folly::Baton<> block;
@@ -2760,7 +2756,7 @@ TEST(ThriftServer, ClientOnlyTimeouts) {
 }
 
 TEST(ThriftServerTest, QueueTimeHeaderTest) {
-  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* ThreadManager feattures */);
+  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* ThreadManager features */);
   using namespace ::testing;
   // Tests that queue time metadata is returned in the THeader when
   // queueing delay on server side is greater than pre-defined threshold.
@@ -2975,7 +2971,6 @@ TEST_F(WriteBatchingTest, IntervalTest) {
 }
 
 TEST_P(HeaderOrRocket, PreprocessHeaders) {
-  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(/* callback set past configuration  */);
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
   folly::EventBase base;
   auto client = makeClient(runner, &base);

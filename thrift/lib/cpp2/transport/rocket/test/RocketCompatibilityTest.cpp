@@ -153,7 +153,6 @@ TEST_F(RocketCompatibilityTest, RequestResponse_Saturation) {
 }
 
 TEST_F(RocketCompatibilityTest, RequestResponse_IsOverloaded) {
-  THRIFT_OMIT_TEST_WITH_RESOURCE_POOLS(); // isOverloaded
   compatibilityTest_->TestRequestResponse_IsOverloaded();
 }
 
