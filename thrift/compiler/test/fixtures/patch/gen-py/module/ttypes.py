@@ -3482,7 +3482,7 @@ MyDataPatch.thrift_spec = (
 )
 
 MyDataPatch.thrift_struct_annotations = {
-  "cpp.adapter": "::apache::thrift::op::detail::StructuredPatchAdapter",
+  "cpp.adapter": "::apache::thrift::op::detail::StructPatchAdapter",
   "cpp.detail.adapted_alias": "",
   "cpp.name": "MyDataPatchStruct",
 }
@@ -3512,7 +3512,7 @@ MyDataValuePatch.thrift_spec = (
 )
 
 MyDataValuePatch.thrift_struct_annotations = {
-  "cpp.adapter": "::apache::thrift::op::detail::StructPatchAdapter",
+  "cpp.adapter": "::apache::thrift::op::detail::StructValuePatchAdapter",
   "cpp.detail.adapted_alias": "",
   "cpp.name": "MyDataValuePatchStruct",
 }
@@ -3585,7 +3585,7 @@ MyUnionPatch.thrift_spec = (
 )
 
 MyUnionPatch.thrift_struct_annotations = {
-  "cpp.adapter": "::apache::thrift::op::detail::StructuredPatchAdapter",
+  "cpp.adapter": "::apache::thrift::op::detail::UnionPatchAdapter",
   "cpp.detail.adapted_alias": "",
   "cpp.name": "MyUnionPatchStruct",
 }
@@ -3617,7 +3617,7 @@ MyUnionValuePatch.thrift_spec = (
 )
 
 MyUnionValuePatch.thrift_struct_annotations = {
-  "cpp.adapter": "::apache::thrift::op::detail::UnionPatchAdapter",
+  "cpp.adapter": "::apache::thrift::op::detail::UnionValuePatchAdapter",
   "cpp.detail.adapted_alias": "",
   "cpp.name": "MyUnionValuePatchStruct",
 }
@@ -3717,7 +3717,7 @@ MyStructPatch.thrift_spec = (
 )
 
 MyStructPatch.thrift_struct_annotations = {
-  "cpp.adapter": "::apache::thrift::op::detail::StructuredPatchAdapter",
+  "cpp.adapter": "::apache::thrift::op::detail::StructPatchAdapter",
   "cpp.detail.adapted_alias": "",
   "cpp.name": "MyStructPatchStruct",
 }
@@ -4007,7 +4007,7 @@ MyStructValuePatch.thrift_spec = (
 )
 
 MyStructValuePatch.thrift_struct_annotations = {
-  "cpp.adapter": "::apache::thrift::op::detail::StructPatchAdapter",
+  "cpp.adapter": "::apache::thrift::op::detail::StructValuePatchAdapter",
   "cpp.detail.adapted_alias": "",
   "cpp.name": "MyStructValuePatchStruct",
 }

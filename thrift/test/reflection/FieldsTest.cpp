@@ -148,22 +148,25 @@ TEST(FieldsTest, Fields) {
 
 TEST(FieldsTest, Get) {
   test_cpp2::cpp_reflection::struct3 s;
+  using Tag = type::struct_t<test_cpp2::cpp_reflection::struct3>;
 
   s.fieldA() = 10;
-  EXPECT_EQ(op::getById<FieldId{2}>(s), 10);
-  op::getById<FieldId{2}>(s) = 20;
+  EXPECT_EQ((op::getById<Tag, FieldId{2}>(s)), 10);
+  op::getById<Tag, FieldId{2}>(s) = 20;
   EXPECT_EQ(*s.fieldA(), 20);
-  test::same_tag<decltype(s.fieldA()), decltype(op::getById<FieldId{2}>(s))>;
+  test::
+      same_tag<decltype(s.fieldA()), decltype(op::getById<Tag, FieldId{2}>(s))>;
 
   s.fieldE()->ui_ref() = 10;
-  EXPECT_EQ(op::getById<FieldId{5}>(s)->ui_ref(), 10);
-  op::getById<FieldId{5}>(s)->us_ref() = "20";
+  EXPECT_EQ((op::getById<Tag, FieldId{5}>(s)->ui_ref()), 10);
+  op::getById<Tag, FieldId{5}>(s)->us_ref() = "20";
   EXPECT_EQ(s.fieldE()->us_ref(), "20");
-  test::same_tag<decltype(s.fieldE()), decltype(op::getById<FieldId{5}>(s))>;
+  test::
+      same_tag<decltype(s.fieldE()), decltype(op::getById<Tag, FieldId{5}>(s))>;
 
   ForEach<struct_private_access::fields<test_cpp2::cpp_reflection::struct3>>::
       id([&](auto id) {
-        op::getById<FieldId{decltype(id)::value}>(s).emplace();
+        op::getById<Tag, FieldId{decltype(id)::value}>(s).emplace();
       });
 
   EXPECT_EQ(*s.fieldA(), 0);
@@ -194,22 +197,25 @@ TEST(FieldsTest, field_tag_by_id) {
 
 TEST(UnionFieldsTest, Get) {
   test_cpp2::cpp_reflection::union1 u;
+  using Tag = type::union_t<test_cpp2::cpp_reflection::union1>;
 
-  EXPECT_THROW(*op::getById<FieldId{1}>(u), bad_field_access);
+  EXPECT_THROW((*op::getById<Tag, FieldId{1}>(u)), bad_field_access);
 
   u.ui_ref() = 10;
-  EXPECT_EQ(op::getById<FieldId{1}>(u), 10);
-  EXPECT_THROW(*op::getById<FieldId{2}>(u), bad_field_access);
-  test::same_tag<decltype(u.ui_ref()), decltype(op::getById<FieldId{1}>(u))>;
+  EXPECT_EQ((op::getById<Tag, FieldId{1}>(u)), 10);
+  EXPECT_THROW((*op::getById<Tag, FieldId{2}>(u)), bad_field_access);
+  test::
+      same_tag<decltype(u.ui_ref()), decltype(op::getById<Tag, FieldId{1}>(u))>;
 
-  op::getById<FieldId{1}>(u) = 20;
+  op::getById<Tag, FieldId{1}>(u) = 20;
   EXPECT_EQ(u.ui_ref(), 20);
-  EXPECT_EQ(op::getById<FieldId{1}>(u), 20);
+  EXPECT_EQ((op::getById<Tag, FieldId{1}>(u)), 20);
 
   u.us_ref() = "foo";
-  EXPECT_EQ(op::getById<FieldId{3}>(u), "foo");
-  test::same_tag<decltype(u.us_ref()), decltype(op::getById<FieldId{3}>(u))>;
-  EXPECT_THROW(*op::getById<FieldId{1}>(u), bad_field_access);
+  EXPECT_EQ((*op::getById<Tag, FieldId{3}>(u)), "foo");
+  test::
+      same_tag<decltype(u.us_ref()), decltype(op::getById<Tag, FieldId{3}>(u))>;
+  EXPECT_THROW((*op::getById<Tag, FieldId{1}>(u)), bad_field_access);
 }
 
 } // namespace apache::thrift::type

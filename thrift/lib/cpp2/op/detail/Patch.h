@@ -145,9 +145,10 @@ using NumberPatchAdapter = PatchAdapter<NumberPatch>;
 using StringPatchAdapter = PatchAdapter<StringPatch>;
 
 // Adapters for structred types.
-using StructuredPatchAdapter = PatchAdapter<StructuredPatch>;
 using StructPatchAdapter = PatchAdapter<StructPatch>;
+using StructValuePatchAdapter = PatchAdapter<StructValuePatch>;
 using UnionPatchAdapter = PatchAdapter<UnionPatch>;
+using UnionValuePatchAdapter = PatchAdapter<UnionValuePatch>;
 
 // Adapters for containers.
 using ListPatchAdapter = PatchAdapter<ListPatch>;

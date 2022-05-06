@@ -17,25 +17,27 @@
 #pragma once
 
 #include <thrift/lib/cpp/FieldId.h>
-#include <thrift/lib/cpp2/op/detail/Get.h>
+#include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/type/Tag.h>
 
 namespace apache {
 namespace thrift {
 namespace op {
+namespace detail {
 
-template <typename Tag, FieldId Id>
-struct GetById {
-  template <typename T>
-  FOLLY_ERASE constexpr decltype(auto) operator()(T&& t) const
-      noexcept(noexcept(detail::get<Id>(Tag{}, static_cast<T&&>(t)))) {
-    return detail::get<Id>(Tag{}, static_cast<T&&>(t));
-  }
-};
+// TODO(afuller): Add more overloads.
+template <
+    FieldId Id,
+    typename...,
+    typename T,
+    typename IdentTag = thrift::detail::st::struct_private_access::
+        ident_tag<folly::remove_cvref_t<T>, Id>>
+FOLLY_ERASE constexpr decltype(auto) get(type::structured_c, T&& t) noexcept(
+    noexcept(access_field<IdentTag>(static_cast<T&&>(t)))) {
+  return access_field<IdentTag>(static_cast<T&&>(t));
+}
 
-// Gets a field by FieldId.
-template <typename Tag, FieldId Id>
-FOLLY_INLINE_VARIABLE constexpr GetById<Tag, Id> getById{};
-
+} // namespace detail
 } // namespace op
 } // namespace thrift
 } // namespace apache

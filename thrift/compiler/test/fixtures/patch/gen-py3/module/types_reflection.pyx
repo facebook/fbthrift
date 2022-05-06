@@ -405,7 +405,7 @@ cdef __StructSpec get_reflection__MyDataPatch():
         name="MyDataPatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::StructuredPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """MyDataPatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::StructPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """MyDataPatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -442,7 +442,7 @@ cdef __StructSpec get_reflection__MyDataValuePatch():
         name="MyDataValuePatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::StructPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """MyDataValuePatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::StructValuePatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """MyDataValuePatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -552,7 +552,7 @@ cdef __StructSpec get_reflection__MyUnionPatch():
         name="MyUnionPatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::StructuredPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """MyUnionPatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::UnionPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """MyUnionPatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -589,7 +589,7 @@ cdef __StructSpec get_reflection__MyUnionValuePatch():
         name="MyUnionValuePatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::UnionPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """MyUnionValuePatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::UnionValuePatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """MyUnionValuePatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -711,7 +711,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         name="MyStructPatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::StructuredPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """MyStructPatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::StructPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """MyStructPatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
@@ -1366,7 +1366,7 @@ cdef __StructSpec get_reflection__MyStructValuePatch():
         name="MyStructValuePatch",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.adapter""": """::apache::thrift::op::detail::StructPatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """MyStructValuePatchStruct""",        },
+            """cpp.adapter""": """::apache::thrift::op::detail::StructValuePatchAdapter""",            """cpp.detail.adapted_alias""": "1",            """cpp.name""": """MyStructValuePatchStruct""",        },
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(

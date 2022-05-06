@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/op/Get.h>
 #include <thrift/lib/cpp2/op/detail/BasePatch.h>
 #include <thrift/lib/cpp2/type/Field.h>
+#include <thrift/lib/cpp2/type/NativeType.h>
 
 namespace apache {
 namespace thrift {
@@ -26,40 +27,44 @@ namespace op {
 namespace detail {
 
 // Helpers for unpacking and folding field tags.
-template <FieldId Id, typename P, typename T>
-void applyFieldPatch(const P& patch, T& val) {
-  op::getById<Id>(patch)->apply(op::getById<Id>(val));
+template <typename Tag, FieldId Id, typename P, typename T>
+void applySubPatch(const P& patch, T& val) {
+  op::getById<Tag, Id>(patch)->apply(op::getById<Tag, Id>(val));
 }
-template <FieldId Id, typename P1, typename P2>
-void mergeFieldPatch(P1& lhs, const P2& rhs) {
-  op::getById<Id>(lhs)->merge(*op::getById<Id>(rhs));
+template <typename Tag, FieldId Id, typename P1, typename P2>
+void mergeSubPatch(P1& lhs, const P2& rhs) {
+  op::getById<Tag, Id>(lhs)->merge(*op::getById<Tag, Id>(rhs));
 }
-template <FieldId Id, typename P, typename T>
-void forwardFromFields(T&& from, P& to) {
-  *op::getById<Id>(to) = op::getById<Id>(std::forward<T>(from));
+template <typename Tag, FieldId Id, typename P, typename T>
+void forwardFromSubPatch(T&& from, P& to) {
+  *op::getById<Tag, Id>(to) = op::getById<Tag, Id>(std::forward<T>(from));
 }
-template <typename F>
+template <
+    typename Tag,
+    typename T = type::native_type<Tag>,
+    typename F = thrift::detail::st::struct_private_access::fields<T>>
 struct FieldPatch;
-template <typename... FieldTags>
-struct FieldPatch<type::fields<FieldTags...>> {
-  template <typename P, typename T>
+template <typename Tag, typename T, typename... FieldTags>
+struct FieldPatch<Tag, T, type::fields<FieldTags...>> {
+  template <typename P>
   static void apply(const P& patch, T& val) {
-    (..., applyFieldPatch<type::field_id_v<FieldTags>>(patch, val));
+    (..., applySubPatch<Tag, type::field_id_v<FieldTags>>(patch, val));
   }
   template <typename P1, typename P2>
   static void merge(P1& lhs, const P2& rhs) {
-    (..., mergeFieldPatch<type::field_id_v<FieldTags>>(lhs, rhs));
+    (..., mergeSubPatch<Tag, type::field_id_v<FieldTags>>(lhs, rhs));
   }
-  template <typename T, typename P>
+  template <typename P>
   static void forwardFrom(T&& from, P& to) {
     (...,
-     forwardFromFields<type::field_id_v<FieldTags>>(std::forward<T>(from), to));
+     forwardFromSubPatch<Tag, type::field_id_v<FieldTags>>(
+         std::forward<T>(from), to));
   }
 };
 
 // Requires Patch have fields with ids 1:1 with the fields they patch.
-template <typename Patch>
-class StructuredPatch : public BasePatch<Patch, StructuredPatch<Patch>> {
+template <template <typename> class TTag, typename Patch>
+class StructuredPatch : public BasePatch<Patch, StructuredPatch<TTag, Patch>> {
   using Base = BasePatch<Patch, StructuredPatch>;
 
  public:
@@ -83,25 +88,22 @@ class StructuredPatch : public BasePatch<Patch, StructuredPatch<Patch>> {
 
   template <typename T>
   void assignFrom(T&& val) {
-    FieldPatch<T>::forwardFrom(std::forward<T>(val), data_);
+    FieldPatch<TTag<T>>::forwardFrom(std::forward<T>(val), data_);
   }
 
   template <typename T>
   void apply(T& val) const {
-    FieldPatch<T>::apply(data_, val);
+    FieldPatch<TTag<T>>::apply(data_, val);
   }
 
   template <typename U>
   void merge(U&& next) {
-    FieldPatch<Patch>::merge(data_, std::forward<U>(next).toThrift());
+    FieldPatch<type::struct_t<Patch>>::merge(
+        data_, std::forward<U>(next).toThrift());
   }
 
  private:
   using Base::data_;
-  template <typename T>
-  using Fields = ::apache::thrift::detail::st::struct_private_access::fields<T>;
-  template <typename T>
-  using FieldPatch = detail::FieldPatch<Fields<T>>;
 
   friend bool operator==(
       const StructuredPatch& lhs, const StructuredPatch& rhs) {
@@ -125,13 +127,19 @@ class StructuredPatch : public BasePatch<Patch, StructuredPatch<Patch>> {
   }
 };
 
+template <typename Patch>
+using StructPatch = StructuredPatch<type::struct_t, Patch>;
+template <typename Patch>
+using UnionPatch = StructuredPatch<type::union_t, Patch>;
+
 // Patch must have the following fields:
 //   optional T assign;
 //   bool clear;
 //   P patch;
 template <typename Patch>
-class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
-  using Base = BaseClearValuePatch<Patch, StructPatch>;
+class StructValuePatch
+    : public BaseClearValuePatch<Patch, StructValuePatch<Patch>> {
+  using Base = BaseClearValuePatch<Patch, StructValuePatch>;
   using T = typename Base::value_type;
 
  public:
@@ -166,9 +174,6 @@ class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
   using Base::applyAssign;
   using Base::data_;
   using Base::mergeAssignAndClear;
-  using Base::resetAnd;
-  using Fields = ::apache::thrift::detail::st::struct_private_access::fields<T>;
-  using FieldPatch = detail::FieldPatch<Fields>;
 
   patch_type& ensurePatch() {
     if (data_.assign().has_value()) {
@@ -192,8 +197,8 @@ class StructPatch : public BaseClearValuePatch<Patch, StructPatch<Patch>> {
 //   P patchAfter;
 // Where P is the patch type for the union type T.
 template <typename Patch>
-class UnionPatch : public BaseEnsurePatch<Patch, UnionPatch<Patch>> {
-  using Base = BaseEnsurePatch<Patch, UnionPatch>;
+class UnionValuePatch : public BaseEnsurePatch<Patch, UnionValuePatch<Patch>> {
+  using Base = BaseEnsurePatch<Patch, UnionValuePatch>;
   using T = typename Base::value_type;
   using P = typename Base::value_patch_type;
 
@@ -203,8 +208,8 @@ class UnionPatch : public BaseEnsurePatch<Patch, UnionPatch<Patch>> {
   using Base::apply;
 
   template <typename U = T>
-  FOLLY_NODISCARD static UnionPatch createEnsure(U&& _default) {
-    UnionPatch patch;
+  FOLLY_NODISCARD static UnionValuePatch createEnsure(U&& _default) {
+    UnionValuePatch patch;
     patch.ensure(std::forward<U>(_default));
     return patch;
   }

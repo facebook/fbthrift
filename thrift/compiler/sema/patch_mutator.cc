@@ -262,7 +262,8 @@ void generate_struct_patch(
     auto& generator = patch_generator::get_for(ctx, mctx);
 
     // Add a 'structured patch' and 'struct value patch' using it.
-    auto& struct_patch = generator.add_structured_patch(*annot, node);
+    auto& struct_patch =
+        generator.add_structured_patch(*annot, node, "StructPatchAdapter");
     auto& patch = generator.add_struct_value_patch(*annot, node, struct_patch);
 
     // Add an 'optional patch' based on the added patch type.
@@ -277,7 +278,8 @@ void generate_union_patch(
     auto& generator = patch_generator::get_for(ctx, mctx);
 
     // Add a 'structured patch' and 'union value patch' using it.
-    auto& struct_patch = generator.add_structured_patch(*annot, node);
+    auto& struct_patch =
+        generator.add_structured_patch(*annot, node, "UnionPatchAdapter");
     auto& patch = generator.add_union_value_patch(*annot, node, struct_patch);
 
     // Add an 'optional patch' based on the added patch type.
@@ -322,12 +324,12 @@ t_struct& patch_generator::add_union_value_patch(
   gen.ensure(value_type);
   // TODO(afuller): Add 'maybeEnsure'.
   gen.patchAfter(patch_type);
-  gen.set_adapter("UnionPatchAdapter");
+  gen.set_adapter("UnionValuePatchAdapter");
   return gen;
 }
 
 t_struct& patch_generator::add_structured_patch(
-    const t_const& annot, t_structured& orig) {
+    const t_const& annot, t_structured& orig, const char* adapter) {
   StructGen gen{annot, gen_suffix_struct(annot, orig, "Patch")};
   for (const auto& field : orig.fields()) {
     if (t_type_ref patch_type = find_patch_type(annot, orig, field)) {
@@ -336,7 +338,7 @@ t_struct& patch_generator::add_structured_patch(
       ctx_.warning(field, "Could not resolve patch type for field.");
     }
   }
-  gen.set_adapter("StructuredPatchAdapter");
+  gen.set_adapter(adapter);
   return gen;
 }
 
@@ -346,7 +348,7 @@ t_struct& patch_generator::add_struct_value_patch(
   gen.assign(value_type);
   gen.clear();
   gen.patch(patch_type);
-  gen.set_adapter("StructPatchAdapter");
+  gen.set_adapter("StructValuePatchAdapter");
   return gen;
 }
 
