@@ -619,8 +619,7 @@ t_type_ref parsing_driver::new_type_ref(
   // However, this actually breaks dynamic casts and t_type::is_* calls.
   // TODO(afuller): Resolve *all* types in a second pass.
   return t_type_ref(*add_placeholder_typedef(
-      std::make_unique<t_placeholder_typedef>(
-          program, std::move(name), scope_cache),
+      std::make_unique<t_placeholder_typedef>(program, std::move(name)),
       std::move(annotations)));
 }
 

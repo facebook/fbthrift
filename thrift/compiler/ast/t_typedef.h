@@ -21,7 +21,6 @@
 
 #include <thrift/compiler/ast/alias_span.h>
 #include <thrift/compiler/ast/t_const.h>
-#include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
@@ -87,7 +86,7 @@ class t_typedef : public t_type {
   // TODO(afuller): Remove everything below here, as it is just provided for
   // backwards compatibility.
  public:
-  t_typedef(t_program* program, const t_type* type, std::string name, t_scope*)
+  t_typedef(t_program* program, const t_type* type, std::string name, void*)
       : t_typedef(program, std::move(name), t_type_ref::from_req_ptr(type)) {}
 
   const t_type* get_type() const { return type_.get_type(); }
@@ -112,9 +111,8 @@ class t_typedef : public t_type {
 // the order of IDL declarations.
 class t_placeholder_typedef final : public t_typedef {
  public:
-  t_placeholder_typedef(
-      t_program* program, const std::string& name, t_scope* scope)
-      : t_typedef(program, std::move(name), {}), scope_(scope) {}
+  t_placeholder_typedef(t_program* program, std::string name)
+      : t_typedef(program, std::move(name), {}) {}
 
   /**
    * Resolve and find the actual type that the symbolic name refers to.
@@ -123,9 +121,6 @@ class t_placeholder_typedef final : public t_typedef {
   bool resolve();
 
   std::string get_full_name() const override { return type_->get_full_name(); }
-
- private:
-  t_scope* scope_;
 };
 
 } // namespace compiler
