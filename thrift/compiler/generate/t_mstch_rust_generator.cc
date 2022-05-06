@@ -278,7 +278,7 @@ enum class FieldKind { Box, Arc, Inline };
 bool node_is_boxed(const t_named& node) {
   return node.has_annotation("rust.box") || node.has_annotation("thrift.box") ||
       node.find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/thrift/Box");
+          "facebook.com/thrift/annotation/Box");
 }
 
 bool node_is_arced(const t_named& node) {

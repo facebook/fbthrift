@@ -101,8 +101,7 @@ std::unordered_set<const t_type*> collect_types(const t_struct* strct) {
   return types;
 }
 
-const char* kNoLegacyAPIsUri =
-    "facebook.com/thrift/annotation/thrift/NoLegacyAPIs";
+const char* kNoLegacyAPIsUri = "facebook.com/thrift/annotation/NoLegacyAPIs";
 
 bool generate_legacy_api(const t_program& p) {
   return p.find_structured_annotation_or_null(kNoLegacyAPIsUri) == nullptr;

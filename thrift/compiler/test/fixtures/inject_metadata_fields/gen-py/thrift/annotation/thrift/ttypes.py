@@ -489,7 +489,7 @@ RequiresBackwardCompatibility.thrift_spec = (
 )
 
 RequiresBackwardCompatibility.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/thrift/RequiresBackwardCompatibility",
+  "thrift.uri": "facebook.com/thrift/annotation/RequiresBackwardCompatibility",
 }
 RequiresBackwardCompatibility.thrift_field_annotations = {
 }
@@ -511,6 +511,7 @@ Experimental.thrift_spec = (
 )
 
 Experimental.thrift_struct_annotations = {
+  "thrift.uri": "facebook.com/thrift/annotation/Experimental",
 }
 Experimental.thrift_field_annotations = {
 }
@@ -529,7 +530,7 @@ TerseWrite.thrift_spec = (
 )
 
 TerseWrite.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/thrift/TerseWrite",
+  "thrift.uri": "facebook.com/thrift/annotation/TerseWrite",
 }
 TerseWrite.thrift_field_annotations = {
 }
@@ -539,7 +540,7 @@ Box.thrift_spec = (
 )
 
 Box.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/thrift/Box",
+  "thrift.uri": "facebook.com/thrift/annotation/Box",
 }
 Box.thrift_field_annotations = {
 }
@@ -549,7 +550,7 @@ SerializeInFieldIdOrder.thrift_spec = (
 )
 
 SerializeInFieldIdOrder.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/thrift/SerializeInFieldIdOrder",
+  "thrift.uri": "facebook.com/thrift/annotation/SerializeInFieldIdOrder",
 }
 SerializeInFieldIdOrder.thrift_field_annotations = {
 }
@@ -559,7 +560,7 @@ NoLegacyAPIs.thrift_spec = (
 )
 
 NoLegacyAPIs.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/thrift/NoLegacyAPIs",
+  "thrift.uri": "facebook.com/thrift/annotation/NoLegacyAPIs",
 }
 NoLegacyAPIs.thrift_field_annotations = {
 }

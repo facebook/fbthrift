@@ -24,8 +24,7 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-constexpr auto kTerseWriteUri =
-    "facebook.com/thrift/annotation/thrift/TerseWrite";
+constexpr auto kTerseWriteUri = "facebook.com/thrift/annotation/TerseWrite";
 constexpr auto kSetGenerated =
     "facebook.com/thrift/annotation/meta/SetGenerated";
 constexpr auto kInjectMetadataFieldsUri =

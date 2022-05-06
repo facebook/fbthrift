@@ -32,13 +32,13 @@ namespace py thrift.annotation.thrift
 @scope.Exception
 struct RequiresBackwardCompatibility {
   1: bool field_name = false;
-} (
-  thrift.uri = "facebook.com/thrift/annotation/thrift/RequiresBackwardCompatibility",
-)
+} (thrift.uri = "facebook.com/thrift/annotation/RequiresBackwardCompatibility")
 
 // Indicates a definition may change in backwards incompatible ways.
 @scope.Definition
-struct Experimental {}
+struct Experimental {} (
+  thrift.uri = "facebook.com/thrift/annotation/Experimental",
+)
 
 // Indicates a definition should no longer be used.
 @Experimental // TODO(afuller): Hook up to code gen.
@@ -49,12 +49,10 @@ struct Deprecated {}
 @scope.Field
 @scope.Struct
 @Experimental
-struct TerseWrite {} (
-  thrift.uri = "facebook.com/thrift/annotation/thrift/TerseWrite",
-)
+struct TerseWrite {} (thrift.uri = "facebook.com/thrift/annotation/TerseWrite")
 
 @scope.Field
-struct Box {} (thrift.uri = "facebook.com/thrift/annotation/thrift/Box")
+struct Box {} (thrift.uri = "facebook.com/thrift/annotation/Box")
 
 // Option to serialize thrift struct in ascending field id order.
 // This can potentially make serialized data size smaller in compact protocol,
@@ -62,7 +60,7 @@ struct Box {} (thrift.uri = "facebook.com/thrift/annotation/thrift/Box")
 @scope.Struct
 @Experimental
 struct SerializeInFieldIdOrder {} (
-  thrift.uri = "facebook.com/thrift/annotation/thrift/SerializeInFieldIdOrder",
+  thrift.uri = "facebook.com/thrift/annotation/SerializeInFieldIdOrder",
 )
 
 @scope.Program
@@ -72,7 +70,7 @@ struct SerializeInFieldIdOrder {} (
 @scope.Service
 @Experimental
 struct NoLegacyAPIs {} (
-  thrift.uri = "facebook.com/thrift/annotation/thrift/NoLegacyAPIs",
+  thrift.uri = "facebook.com/thrift/annotation/NoLegacyAPIs",
 )
 
 @TerseWrite

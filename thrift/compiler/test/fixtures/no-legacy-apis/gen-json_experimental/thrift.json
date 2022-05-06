@@ -33,7 +33,7 @@
         "name" : "Experimental",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 41
+        "lineno" : 39
       },
       "Deprecated" : {
         "name" : "Deprecated",
@@ -51,25 +51,25 @@
         "name" : "Box",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 57
+        "lineno" : 55
       },
       "SerializeInFieldIdOrder" : {
         "name" : "SerializeInFieldIdOrder",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 64
+        "lineno" : 62
       },
       "NoLegacyAPIs" : {
         "name" : "NoLegacyAPIs",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 74
+        "lineno" : 72
       },
       "v1" : {
         "name" : "v1",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 81
+        "lineno" : 79
       }
       },
   "source_path" : "thrift/annotation/thrift",

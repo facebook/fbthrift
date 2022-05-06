@@ -2502,7 +2502,7 @@ void t_hack_generator::generate_php_struct_spec(
   indent_up();
   const auto fields =
       tstruct->find_structured_annotation_or_null(
-          "facebook.com/thrift/annotation/thrift/SerializeInFieldIdOrder")
+          "facebook.com/thrift/annotation/SerializeInFieldIdOrder")
       ? tstruct->fields_id_order()
       : tstruct->fields().copy();
   for (const auto* field_ptr : fields) {

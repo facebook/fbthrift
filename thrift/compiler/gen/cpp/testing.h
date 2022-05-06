@@ -58,7 +58,7 @@ struct adapter_builder : private structured_annotation_builder {
 struct box_builder : private structured_annotation_builder {
   explicit box_builder(t_program* p)
       : structured_annotation_builder(
-            p, "Box", "facebook.com/thrift/annotation/thrift/Box") {}
+            p, "Box", "facebook.com/thrift/annotation/Box") {}
 
   std::unique_ptr<t_const> make() & {
     auto map = std::make_unique<t_const_value>();

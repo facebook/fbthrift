@@ -10,7 +10,7 @@
  * Original thrift struct:-
  * RequiresBackwardCompatibility
  */
-<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/thrift/RequiresBackwardCompatibility'))>>
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/RequiresBackwardCompatibility'))>>
 class facebook_thrift_annotation_thrift_RequiresBackwardCompatibility implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -106,6 +106,7 @@ class facebook_thrift_annotation_thrift_RequiresBackwardCompatibility implements
  * Original thrift struct:-
  * Experimental
  */
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Experimental'))>>
 class facebook_thrift_annotation_thrift_Experimental implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -232,7 +233,7 @@ class facebook_thrift_annotation_thrift_Deprecated implements \IThriftSyncStruct
  * Original thrift struct:-
  * TerseWrite
  */
-<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/thrift/TerseWrite'))>>
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/TerseWrite'))>>
 class facebook_thrift_annotation_thrift_TerseWrite implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -306,7 +307,7 @@ class facebook_thrift_annotation_thrift_TerseWrite implements \IThriftSyncStruct
  * Original thrift struct:-
  * Box
  */
-<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/thrift/Box'))>>
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Box'))>>
 class facebook_thrift_annotation_thrift_Box implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -368,7 +369,7 @@ class facebook_thrift_annotation_thrift_Box implements \IThriftSyncStruct {
  * Original thrift struct:-
  * SerializeInFieldIdOrder
  */
-<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/thrift/SerializeInFieldIdOrder'))>>
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/SerializeInFieldIdOrder'))>>
 class facebook_thrift_annotation_thrift_SerializeInFieldIdOrder implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
@@ -434,7 +435,7 @@ class facebook_thrift_annotation_thrift_SerializeInFieldIdOrder implements \IThr
  * Original thrift struct:-
  * NoLegacyAPIs
  */
-<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/thrift/NoLegacyAPIs'))>>
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/NoLegacyAPIs'))>>
 class facebook_thrift_annotation_thrift_NoLegacyAPIs implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
