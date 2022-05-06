@@ -17,6 +17,7 @@ __property__ = property  # sometimes `property` is used as a field name
 import thrift.annotation.cpp.ttypes
 import thrift.annotation.python.ttypes
 import thrift.annotation.thrift.ttypes
+import thrift.annotation.hack.ttypes
 import my
 
 UTF8STRINGS: bool
@@ -263,7 +264,9 @@ class StructWithFieldAdapter:
 
 
 SetWithAdapter = __T.Set[str]
+StringWithAdapter = str
 ListWithElemAdapter = __T.List[str]
 MyI64 = int
+MyI32 = int
 StructWithAdapter = my.Adapter2.Type
 UnionWithAdapter = my.Adapter2.Type

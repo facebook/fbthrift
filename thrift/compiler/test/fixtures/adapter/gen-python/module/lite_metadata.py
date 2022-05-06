@@ -9,6 +9,8 @@ import apache.thrift.metadata.lite_types as _fbthrift_metadata
 
 import facebook.thrift.annotation.cpp.lite_metadata
 
+import facebook.thrift.annotation.hack.lite_metadata
+
 import facebook.thrift.annotation.python.lite_metadata
 
 import facebook.thrift.annotation.thrift.lite_metadata

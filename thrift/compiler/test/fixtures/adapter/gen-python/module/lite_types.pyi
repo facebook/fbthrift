@@ -15,6 +15,8 @@ import thrift.python.exceptions as _fbthrift_py3lite_exceptions
 
 import facebook.thrift.annotation.cpp.lite_types
 
+import facebook.thrift.annotation.hack.lite_types
+
 import facebook.thrift.annotation.python.lite_types
 
 import facebook.thrift.annotation.thrift.lite_types
@@ -146,8 +148,10 @@ class StructWithFieldAdapter(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[my.AdaptedType1, int, int, int]]]: ...
 
 SetWithAdapter = _typing.Set[str]
+StringWithAdapter = str
 ListWithElemAdapter = _typing.List[str]
 MyI64 = my.another.module.AdaptedType2
+MyI32 = int
 StructWithAdapter = Bar
 UnionWithAdapter = Baz
 

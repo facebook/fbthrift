@@ -16,10 +16,11 @@ import sys
 if sys.version_info[0] >= 3:
   long = int
 
-from .ttypes import UTF8STRINGS, Foo, Baz, Bar, StructWithFieldAdapter, SetWithAdapter, ListWithElemAdapter, MyI64, StructWithAdapter, UnionWithAdapter
+from .ttypes import UTF8STRINGS, Foo, Baz, Bar, StructWithFieldAdapter, SetWithAdapter, StringWithAdapter, ListWithElemAdapter, MyI64, MyI32, StructWithAdapter, UnionWithAdapter
 import thrift.annotation.cpp.ttypes
 import thrift.annotation.python.ttypes
 import thrift.annotation.thrift.ttypes
+import thrift.annotation.hack.ttypes
 
 import my
 

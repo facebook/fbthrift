@@ -27,6 +27,7 @@ from thrift.py3.client cimport cClientWrapper
 cimport module.types as _module_types
 
 cimport facebook.thrift.annotation.cpp.types as _facebook_thrift_annotation_cpp_types
+cimport facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hack_types
 cimport facebook.thrift.annotation.python.types as _facebook_thrift_annotation_python_types
 cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
 

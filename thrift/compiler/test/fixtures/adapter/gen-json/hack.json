@@ -1,0 +1,102 @@
+{
+  "__fbthrift": {"@generated": 0},
+  "thrift_module" : "hack",
+  "structs" : {
+    "FieldWrapper" : {
+      "lineno" : 39,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 41,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 41,
+              "column" : 17
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 38,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 42,
+          "column" : 68
+        }
+      }
+    },
+    "Adapter" : {
+      "lineno" : 55,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 57,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 57,
+              "column" : 17
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 53,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 58,
+          "column" : 63
+        }
+      }
+    },
+    "SkipCodegen" : {
+      "lineno" : 62,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "reason" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 63,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 63,
+              "column" : 19
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 60,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 64,
+          "column" : 67
+        }
+      }
+    }
+  }
+}

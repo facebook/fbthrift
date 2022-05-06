@@ -15,6 +15,7 @@ from typing_extensions import Final
 import sys
 import itertools
 import facebook.thrift.annotation.cpp.types as _facebook_thrift_annotation_cpp_types
+import facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hack_types
 import facebook.thrift.annotation.python.types as _facebook_thrift_annotation_python_types
 import facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
 
@@ -287,7 +288,9 @@ class List__Foo(_typing.Sequence[Foo], _typing.Hashable):
 
 
 SetWithAdapter = Set__string
+StringWithAdapter = str
 ListWithElemAdapter = List__string
 MyI64 = int
+MyI32 = int
 StructWithAdapter = Bar
 UnionWithAdapter = Baz

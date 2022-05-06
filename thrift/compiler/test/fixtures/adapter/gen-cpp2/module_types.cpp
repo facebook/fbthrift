@@ -743,6 +743,7 @@ FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 3, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 4, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
   ::apache::thrift::adapt_detail::validateAdapter<my::Adapter2, ::std::set<::std::string>>();
+  ::apache::thrift::adapt_detail::validateAdapter<my::Adapter1, ::std::string>();
   ::apache::thrift::adapt_detail::validateAdapter<my::Adapter2, ::cpp2::Bar>();
   ::apache::thrift::adapt_detail::validateAdapter<my::Adapter2, ::cpp2::Baz>();
 }

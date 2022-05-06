@@ -13,6 +13,7 @@
 #include "thrift/annotation/gen-cpp2/cpp_types.h"
 #include "thrift/annotation/gen-cpp2/python_types.h"
 #include "thrift/annotation/gen-cpp2/thrift_types.h"
+#include "thrift/annotation/gen-cpp2/hack_types.h"
 #include "adapter_dependency.h"
 
 namespace apache {
@@ -163,8 +164,10 @@ class StructWithFieldAdapter;
 // BEGIN typedefs
 namespace cpp2 {
 typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::set<::std::string>> SetWithAdapter;
-typedef ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>> ListWithElemAdapter;
+typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> StringWithAdapter;
+typedef ::std::vector<::cpp2::StringWithAdapter> ListWithElemAdapter;
 typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> MyI64;
+typedef ::std::int32_t MyI32;
 typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Bar> StructWithAdapter;
 typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Baz> UnionWithAdapter;
 

@@ -19,3 +19,4 @@
 #include "thrift/annotation/gen-cpp2/cpp_types_custom_protocol.h"
 #include "thrift/annotation/gen-cpp2/python_types_custom_protocol.h"
 #include "thrift/annotation/gen-cpp2/thrift_types_custom_protocol.h"
+#include "thrift/annotation/gen-cpp2/hack_types_custom_protocol.h"

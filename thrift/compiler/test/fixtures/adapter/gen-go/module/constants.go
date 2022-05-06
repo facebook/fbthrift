@@ -13,6 +13,7 @@ import (
 	cpp0 "thrift/annotation/cpp"
 	python1 "thrift/annotation/python"
 	thrift2 "thrift/annotation/thrift"
+	hack3 "thrift/annotation/hack"
 
 )
 
@@ -26,6 +27,7 @@ var _ = context.Background
 var _ = cpp0.GoUnusedProtection__
 var _ = python1.GoUnusedProtection__
 var _ = thrift2.GoUnusedProtection__
+var _ = hack3.GoUnusedProtection__
 
 func init() {
 }

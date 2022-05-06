@@ -25,18 +25,13 @@ import com.facebook.thrift.protocol.*;
 public class Adapter implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("Adapter");
   private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)1);
-  private static final TField TYPE_HINT_FIELD_DESC = new TField("typeHint", TType.STRING, (short)2);
 
   public final String name;
-  public final String typeHint;
   public static final int NAME = 1;
-  public static final int TYPEHINT = 2;
 
   public Adapter(
-      String name,
-      String typeHint) {
+      String name) {
     this.name = name;
-    this.typeHint = typeHint;
   }
 
   /**
@@ -47,11 +42,6 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable {
       this.name = TBaseHelper.deepCopy(other.name);
     } else {
       this.name = null;
-    }
-    if (other.isSetTypeHint()) {
-      this.typeHint = TBaseHelper.deepCopy(other.typeHint);
-    } else {
-      this.typeHint = null;
     }
   }
 
@@ -68,15 +58,6 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable {
     return this.name != null;
   }
 
-  public String getTypeHint() {
-    return this.typeHint;
-  }
-
-  // Returns true if field typeHint is set (has been assigned a value) and false otherwise
-  public boolean isSetTypeHint() {
-    return this.typeHint != null;
-  }
-
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -89,14 +70,12 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetName(), that.isSetName(), this.name, that.name)) { return false; }
 
-    if (!TBaseHelper.equalsNobinary(this.isSetTypeHint(), that.isSetTypeHint(), this.typeHint, that.typeHint)) { return false; }
-
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {name, typeHint});
+    return Arrays.deepHashCode(new Object[] {name});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -106,7 +85,6 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable {
 
   public static Adapter deserialize(TProtocol iprot) throws TException {
     String tmp_name = null;
-    String tmp_typeHint = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -124,13 +102,6 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
-        case TYPEHINT:
-          if (__field.type == TType.STRING) {
-            tmp_typeHint = iprot.readString();
-          } else {
-            TProtocolUtil.skip(iprot, __field.type);
-          }
-          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -142,7 +113,6 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable {
     Adapter _that;
     _that = new Adapter(
       tmp_name
-      ,tmp_typeHint
     );
     _that.validate();
     return _that;
@@ -155,11 +125,6 @@ public class Adapter implements TBase, java.io.Serializable, Cloneable {
     if (this.name != null) {
       oprot.writeFieldBegin(NAME_FIELD_DESC);
       oprot.writeString(this.name);
-      oprot.writeFieldEnd();
-    }
-    if (this.typeHint != null) {
-      oprot.writeFieldBegin(TYPE_HINT_FIELD_DESC);
-      oprot.writeString(this.typeHint);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

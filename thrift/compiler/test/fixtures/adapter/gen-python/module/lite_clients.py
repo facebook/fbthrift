@@ -19,6 +19,7 @@ import thrift.python.types as _fbthrift_py3lite_types
 import module.lite_types
 import module.lite_metadata
 import facebook.thrift.annotation.cpp.lite_types
+import facebook.thrift.annotation.hack.lite_types
 import facebook.thrift.annotation.python.lite_types
 import facebook.thrift.annotation.thrift.lite_types
 

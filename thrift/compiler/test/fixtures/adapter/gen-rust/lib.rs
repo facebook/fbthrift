@@ -14,9 +14,13 @@ pub mod types {
 
     pub type SetWithAdapter = ::std::collections::BTreeSet<::std::string::String>;
 
-    pub type ListWithElemAdapter = ::std::vec::Vec<::std::string::String>;
+    pub type StringWithAdapter = ::std::string::String;
+
+    pub type ListWithElemAdapter = ::std::vec::Vec<crate::types::StringWithAdapter>;
 
     pub type MyI64 = ::std::primitive::i64;
+
+    pub type MyI32 = ::std::primitive::i32;
 
     pub type StructWithAdapter = crate::types::Bar;
 
@@ -81,6 +85,8 @@ pub mod types {
         #[doc(hidden)]
         pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
+
+
 
 
 
@@ -580,6 +586,7 @@ pub mod dependencies {
     pub use cpp as cpp;
     pub use python as python;
     pub use thrift as thrift;
+    pub use hack as hack;
 }
 
 pub mod services {
@@ -588,7 +595,7 @@ pub mod services {
         #[derive(Clone, Debug)]
         pub enum FuncExn {
             #[doc(hidden)]
-            Success(::std::primitive::i32),
+            Success(crate::types::MyI32),
             ApplicationException(::fbthrift::ApplicationException),
         }
 
@@ -747,7 +754,7 @@ pub mod client {
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
             use ::futures::FutureExt as _;
@@ -797,7 +804,7 @@ pub mod client {
             arg_arg1: &::std::primitive::str,
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>>;
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>>;
     }
 
     pub trait ServiceExt<T>: Service
@@ -810,7 +817,7 @@ pub mod client {
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>>;
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>>;
     }
 
     struct Args_Service_func<'a> {
@@ -853,7 +860,7 @@ pub mod client {
             arg_arg1: &::std::primitive::str,
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
             let rpc_options = T::RpcOptions::default();
             self._func_impl(
                 arg_arg1,
@@ -879,7 +886,7 @@ pub mod client {
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
             self._func_impl(
                 arg_arg1,
                 arg_arg2,
@@ -899,7 +906,7 @@ pub mod client {
             arg_arg1: &::std::primitive::str,
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
             self.as_ref().func(
                 arg_arg1,
                 arg_arg2,
@@ -921,7 +928,7 @@ pub mod client {
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
             rpc_options: T::RpcOptions,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
             <Self as ::std::convert::AsRef<dyn ServiceExt<T>>>::as_ref(self).func_with_rpc_opts(
                 arg_arg1,
                 arg_arg2,
@@ -1037,10 +1044,10 @@ pub mod server {
     pub trait Service: ::std::marker::Send + ::std::marker::Sync + 'static {
         async fn func(
             &self,
-            _arg1: ::std::string::String,
+            _arg1: crate::types::StringWithAdapter,
             _arg2: ::std::string::String,
             _arg3: crate::types::Foo,
-        ) -> ::std::result::Result<::std::primitive::i32, crate::services::service::FuncExn> {
+        ) -> ::std::result::Result<crate::types::MyI32, crate::services::service::FuncExn> {
             ::std::result::Result::Err(crate::services::service::FuncExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
                     "Service",
@@ -1057,10 +1064,10 @@ pub mod server {
     {
         async fn func(
             &self,
-            arg1: ::std::string::String,
+            arg1: crate::types::StringWithAdapter,
             arg2: ::std::string::String,
             arg3: crate::types::Foo,
-        ) -> ::std::result::Result<::std::primitive::i32, crate::services::service::FuncExn> {
+        ) -> ::std::result::Result<crate::types::MyI32, crate::services::service::FuncExn> {
             (**self).func(
                 arg1, 
                 arg2, 
@@ -1078,7 +1085,7 @@ pub mod server {
     }
 
     struct Args_Service_func {
-        arg1: ::std::string::String,
+        arg1: crate::types::StringWithAdapter,
         arg2: ::std::string::String,
         arg3: crate::types::Foo,
     }
@@ -1483,9 +1490,9 @@ pub mod mock {
             arg_arg1: &::std::primitive::str,
             arg_arg2: &::std::primitive::str,
             arg_arg3: &crate::types::Foo,
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
             let mut closure = self.func.closure.lock().unwrap();
-            let closure: &mut dyn ::std::ops::FnMut(::std::string::String, ::std::string::String, crate::types::Foo) -> _ = &mut **closure;
+            let closure: &mut dyn ::std::ops::FnMut(crate::types::StringWithAdapter, ::std::string::String, crate::types::Foo) -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure(arg_arg1.to_owned(), arg_arg2.to_owned(), arg_arg3.clone())))
         }
     }
@@ -1495,8 +1502,8 @@ pub mod mock {
 
             pub struct func<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
-                    dyn ::std::ops::FnMut(::std::string::String, ::std::string::String, crate::types::Foo) -> ::std::result::Result<
-                        ::std::primitive::i32,
+                    dyn ::std::ops::FnMut(crate::types::StringWithAdapter, ::std::string::String, crate::types::Foo) -> ::std::result::Result<
+                        crate::types::MyI32,
                         crate::errors::service::FuncError,
                     > + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 >>,
@@ -1505,7 +1512,7 @@ pub mod mock {
             impl<'mock> func<'mock> {
                 pub fn unimplemented() -> Self {
                     func {
-                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::string::String, _: ::std::string::String, _: crate::types::Foo| panic!(
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: crate::types::StringWithAdapter, _: ::std::string::String, _: crate::types::Foo| panic!(
                             "{}::{} is not mocked",
                             "Service",
                             "func",
@@ -1513,16 +1520,16 @@ pub mod mock {
                     }
                 }
 
-                pub fn ret(&self, value: ::std::primitive::i32) {
-                    self.mock(move |_: ::std::string::String, _: ::std::string::String, _: crate::types::Foo| value.clone());
+                pub fn ret(&self, value: crate::types::MyI32) {
+                    self.mock(move |_: crate::types::StringWithAdapter, _: ::std::string::String, _: crate::types::Foo| value.clone());
                 }
 
-                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::string::String, ::std::string::String, crate::types::Foo) -> ::std::primitive::i32 + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(crate::types::StringWithAdapter, ::std::string::String, crate::types::Foo) -> crate::types::MyI32 + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |arg1, arg2, arg3| ::std::result::Result::Ok(mock(arg1, arg2, arg3)));
                 }
 
-                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::string::String, ::std::string::String, crate::types::Foo) -> ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(crate::types::StringWithAdapter, ::std::string::String, crate::types::Foo) -> ::std::result::Result<crate::types::MyI32, crate::errors::service::FuncError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
                     *closure = ::std::boxed::Box::new(move |arg1, arg2, arg3| mock(arg1, arg2, arg3));
                 }
@@ -1533,7 +1540,7 @@ pub mod mock {
                     E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 {
                     let mut closure = self.closure.lock().unwrap();
-                    *closure = ::std::boxed::Box::new(move |_: ::std::string::String, _: ::std::string::String, _: crate::types::Foo| ::std::result::Result::Err(exception.clone().into()));
+                    *closure = ::std::boxed::Box::new(move |_: crate::types::StringWithAdapter, _: ::std::string::String, _: crate::types::Foo| ::std::result::Result::Err(exception.clone().into()));
                 }
             }
         }
@@ -1548,7 +1555,7 @@ pub mod errors {
         pub type FuncError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::service::FuncExn> for
-            ::std::result::Result<::std::primitive::i32, FuncError>
+            ::std::result::Result<crate::types::MyI32, FuncError>
         {
             fn from(e: crate::services::service::FuncExn) -> Self {
                 match e {

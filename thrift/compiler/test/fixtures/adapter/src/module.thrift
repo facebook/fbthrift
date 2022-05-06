@@ -22,19 +22,19 @@ namespace java.swift test.fixtures.adapter
 include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/python.thrift"
 include "thrift/annotation/thrift.thrift"
+include "thrift/annotation/hack.thrift"
 
 typedef set<string> (
   hack.adapter = '\Adapter2',
   cpp.adapter = 'my::Adapter2',
   py.adapter = 'my.Adapter2',
 ) SetWithAdapter
-typedef list<
-  string (
-    hack.adapter = '\Adapter1',
-    cpp.adapter = 'my::Adapter1',
-    py.adapter = 'my.Adapter1',
-  )
-> ListWithElemAdapter
+typedef string (
+  hack.adapter = '\Adapter1',
+  cpp.adapter = 'my::Adapter1',
+  py.adapter = 'my.Adapter1',
+) StringWithAdapter
+typedef list<StringWithAdapter> ListWithElemAdapter
 
 @cpp.Adapter{name = "my::Adapter1"}
 @python.Adapter{
@@ -42,6 +42,8 @@ typedef list<
   typeHint = "my.another.module.AdaptedType2",
 }
 typedef i64 MyI64
+
+typedef i32 (hack.adapter = '\Adapter1') MyI32
 
 struct Foo {
   1: i32 (
@@ -190,13 +192,8 @@ typedef Baz (
 ) UnionWithAdapter
 
 service Service {
-  i32 (
-    hack.adapter = '\Adapter1',
-    cpp.adapter = 'my::Adapter1',
-    py.adapter = 'my.Adapter1',
-  ) func(
-    1: string (
-      hack.adapter = '\Adapter2',
+  MyI32 (cpp.adapter = 'my::Adapter1', py.adapter = 'my.Adapter1') func(
+    1: StringWithAdapter (
       cpp.adapter = 'my::Adapter2',
       py.adapter = 'my.Adapter2',
     ) arg1,

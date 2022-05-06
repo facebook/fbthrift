@@ -19,6 +19,7 @@ if sys.version_info[0] >= 3:
 import thrift.annotation.cpp.ttypes
 import thrift.annotation.python.ttypes
 import thrift.annotation.thrift.ttypes
+import thrift.annotation.hack.ttypes
 
 import my
 
@@ -38,7 +39,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Foo', 'Baz', 'Bar', 'StructWithFieldAdapter', 'SetWithAdapter', 'ListWithElemAdapter', 'MyI64', 'StructWithAdapter', 'UnionWithAdapter']
+__all__ = ['UTF8STRINGS', 'Foo', 'Baz', 'Bar', 'StructWithFieldAdapter', 'SetWithAdapter', 'StringWithAdapter', 'ListWithElemAdapter', 'MyI64', 'MyI32', 'StructWithAdapter', 'UnionWithAdapter']
 
 class Foo:
   """
@@ -1055,8 +1056,10 @@ class StructWithFieldAdapter:
   __hash__ = object.__hash__
 
 SetWithAdapter = UnimplementedTypedef()
+StringWithAdapter = UnimplementedTypedef()
 ListWithElemAdapter = UnimplementedTypedef()
 MyI64 = UnimplementedTypedef()
+MyI32 = UnimplementedTypedef()
 StructWithAdapter = my.Adapter2.Type
 UnionWithAdapter = my.Adapter2.Type
 all_structs.append(Foo)

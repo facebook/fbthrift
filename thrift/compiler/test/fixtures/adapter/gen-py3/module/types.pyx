@@ -55,6 +55,8 @@ import weakref as __weakref
 import builtins as _builtins
 cimport facebook.thrift.annotation.cpp.types as _facebook_thrift_annotation_cpp_types
 import facebook.thrift.annotation.cpp.types as _facebook_thrift_annotation_cpp_types
+cimport facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hack_types
+import facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hack_types
 cimport facebook.thrift.annotation.python.types as _facebook_thrift_annotation_python_types
 import facebook.thrift.annotation.python.types as _facebook_thrift_annotation_python_types
 cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
@@ -907,8 +909,6 @@ cdef class List__string(thrift.py3.types.List):
     cdef shared_ptr[vector[string]] _make_instance(object items) except *:
         cdef shared_ptr[vector[string]] c_inst = make_shared[vector[string]]()
         if items is not None:
-            if isinstance(items, str):
-                raise TypeError("If you really want to pass a string into a _typing.Sequence[str] field, explicitly convert it first.")
             for item in items:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
@@ -1134,7 +1134,9 @@ cdef class List__Foo(thrift.py3.types.List):
 Sequence.register(List__Foo)
 
 SetWithAdapter = Set__string
+StringWithAdapter = str
 ListWithElemAdapter = List__string
 MyI64 = int
+MyI32 = int
 StructWithAdapter = Bar
 UnionWithAdapter = Baz

@@ -7,8 +7,10 @@
  */
 
 type SetWithAdapter = \Adapter2::THackType;
+type StringWithAdapter = \Adapter1::THackType;
 type ListWithElemAdapter = Vector<\Adapter1::THackType>;
 type MyI64 = int;
+type MyI32 = \Adapter1::THackType;
 type StructWithAdapter = \Adapter2::THackType;
 type UnionWithAdapter = \Adapter2::THackType;
 /**
@@ -361,7 +363,16 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
                                             shape(
                                               "valueType" => tmeta_ThriftType::fromShape(
                                                 shape(
-                                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                                    shape(
+                                                      "name" => "module.StringWithAdapter",
+                                                      "underlyingType" => tmeta_ThriftType::fromShape(
+                                                        shape(
+                                                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                                        )
+                                                      ),
+                                                    )
+                                                  ),
                                                 )
                                               ),
                                             )
@@ -411,7 +422,16 @@ class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
                                             shape(
                                               "valueType" => tmeta_ThriftType::fromShape(
                                                 shape(
-                                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                                    shape(
+                                                      "name" => "module.StringWithAdapter",
+                                                      "underlyingType" => tmeta_ThriftType::fromShape(
+                                                        shape(
+                                                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                                        )
+                                                      ),
+                                                    )
+                                                  ),
                                                 )
                                               ),
                                             )
@@ -1053,7 +1073,16 @@ class Baz implements \IThriftSyncStruct, \IThriftUnion<BazEnum>, \IThriftShapish
                                             shape(
                                               "valueType" => tmeta_ThriftType::fromShape(
                                                 shape(
-                                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                                    shape(
+                                                      "name" => "module.StringWithAdapter",
+                                                      "underlyingType" => tmeta_ThriftType::fromShape(
+                                                        shape(
+                                                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                                        )
+                                                      ),
+                                                    )
+                                                  ),
                                                 )
                                               ),
                                             )

@@ -13,6 +13,7 @@ import (
 	cpp0 "thrift/annotation/cpp"
 	python1 "thrift/annotation/python"
 	thrift2 "thrift/annotation/thrift"
+	hack3 "thrift/annotation/hack"
 
 )
 
@@ -26,12 +27,13 @@ var _ = context.Background
 var _ = cpp0.GoUnusedProtection__
 var _ = python1.GoUnusedProtection__
 var _ = thrift2.GoUnusedProtection__
+var _ = hack3.GoUnusedProtection__
 type Service interface {
   // Parameters:
   //  - Arg1
   //  - Arg2
   //  - Arg3
-  Func(arg1 string, arg2 string, arg3 *Foo) (_r int32, err error)
+  Func(arg1 StringWithAdapter, arg2 string, arg3 *Foo) (_r MyI32, err error)
 }
 
 type ServiceClientInterface interface {
@@ -40,7 +42,7 @@ type ServiceClientInterface interface {
   //  - Arg1
   //  - Arg2
   //  - Arg3
-  Func(arg1 string, arg2 string, arg3 *Foo) (_r int32, err error)
+  Func(arg1 StringWithAdapter, arg2 string, arg3 *Foo) (_r MyI32, err error)
 }
 
 type ServiceClient struct {
@@ -76,7 +78,7 @@ func NewServiceClientProtocol(prot thrift.Protocol) *ServiceClient {
 //  - Arg1
 //  - Arg2
 //  - Arg3
-func (p *ServiceClient) Func(arg1 string, arg2 string, arg3 *Foo) (_r int32, err error) {
+func (p *ServiceClient) Func(arg1 StringWithAdapter, arg2 string, arg3 *Foo) (_r MyI32, err error) {
   args := ServiceFuncArgs{
     Arg1 : arg1,
     Arg2 : arg2,
@@ -88,7 +90,7 @@ func (p *ServiceClient) Func(arg1 string, arg2 string, arg3 *Foo) (_r int32, err
 }
 
 
-func (p *ServiceClient) recvFunc() (value int32, err error) {
+func (p *ServiceClient) recvFunc() (value MyI32, err error) {
   var __result ServiceFuncResult
   err = p.CC.RecvMsg("func", &__result)
   if err != nil { return }
@@ -137,7 +139,7 @@ func NewServiceThreadsafeClientProtocol(prot thrift.Protocol) *ServiceThreadsafe
 //  - Arg1
 //  - Arg2
 //  - Arg3
-func (p *ServiceThreadsafeClient) Func(arg1 string, arg2 string, arg3 *Foo) (_r int32, err error) {
+func (p *ServiceThreadsafeClient) Func(arg1 StringWithAdapter, arg2 string, arg3 *Foo) (_r MyI32, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   args := ServiceFuncArgs{
@@ -151,7 +153,7 @@ func (p *ServiceThreadsafeClient) Func(arg1 string, arg2 string, arg3 *Foo) (_r 
 }
 
 
-func (p *ServiceThreadsafeClient) recvFunc() (value int32, err error) {
+func (p *ServiceThreadsafeClient) recvFunc() (value MyI32, err error) {
   var __result ServiceFuncResult
   err = p.CC.RecvMsg("func", &__result)
   if err != nil { return }
@@ -184,7 +186,7 @@ func NewServiceChannelClient(channel thrift.RequestChannel) *ServiceChannelClien
 //  - Arg1
 //  - Arg2
 //  - Arg3
-func (p *ServiceChannelClient) Func(ctx context.Context, arg1 string, arg2 string, arg3 *Foo) (_r int32, err error) {
+func (p *ServiceChannelClient) Func(ctx context.Context, arg1 StringWithAdapter, arg2 string, arg3 *Foo) (_r MyI32, err error) {
   args := ServiceFuncArgs{
     Arg1 : arg1,
     Arg2 : arg2,
@@ -228,10 +230,10 @@ func (p *ServiceProcessor) FunctionServiceMap() map[string]string {
 }
 
 func NewServiceProcessor(handler Service) *ServiceProcessor {
-  self17 := &ServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
-  self17.processorMap["func"] = &serviceProcessorFunc{handler:handler}
-  self17.functionServiceMap["func"] = "Service"
-  return self17
+  self18 := &ServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
+  self18.processorMap["func"] = &serviceProcessorFunc{handler:handler}
+  self18.functionServiceMap["func"] = "Service"
+  return self18
 }
 
 type serviceProcessorFunc struct {
@@ -298,7 +300,7 @@ func (p *serviceProcessorFunc) Run(argStruct thrift.Struct) (thrift.WritableStru
 //  - Arg3
 type ServiceFuncArgs struct {
   thrift.IRequest
-  Arg1 string `thrift:"arg1,1" db:"arg1" json:"arg1"`
+  Arg1 StringWithAdapter `thrift:"arg1,1" db:"arg1" json:"arg1"`
   Arg2 string `thrift:"arg2,2" db:"arg2" json:"arg2"`
   Arg3 *Foo `thrift:"arg3,3" db:"arg3" json:"arg3"`
 }
@@ -310,7 +312,7 @@ func NewServiceFuncArgs() *ServiceFuncArgs {
 }
 
 
-func (p *ServiceFuncArgs) GetArg1() string {
+func (p *ServiceFuncArgs) GetArg1() StringWithAdapter {
   return p.Arg1
 }
 
@@ -346,7 +348,7 @@ func (p ServiceFuncArgsBuilder) Emit() *ServiceFuncArgs{
   }
 }
 
-func (s *ServiceFuncArgsBuilder) Arg1(arg1 string) *ServiceFuncArgsBuilder {
+func (s *ServiceFuncArgsBuilder) Arg1(arg1 StringWithAdapter) *ServiceFuncArgsBuilder {
   s.obj.Arg1 = arg1
   return s
 }
@@ -361,7 +363,7 @@ func (s *ServiceFuncArgsBuilder) Arg3(arg3 *Foo) *ServiceFuncArgsBuilder {
   return s
 }
 
-func (s *ServiceFuncArgs) SetArg1(arg1 string) *ServiceFuncArgs {
+func (s *ServiceFuncArgs) SetArg1(arg1 StringWithAdapter) *ServiceFuncArgs {
   s.Arg1 = arg1
   return s
 }
@@ -420,7 +422,8 @@ func (p *ServiceFuncArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 1: ", err)
   } else {
-    p.Arg1 = v
+    temp := StringWithAdapter(v)
+    p.Arg1 = temp
   }
   return nil
 }
@@ -506,15 +509,15 @@ func (p *ServiceFuncArgs) String() string {
 //  - Success
 type ServiceFuncResult struct {
   thrift.IResponse
-  Success *int32 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
+  Success *MyI32 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewServiceFuncResult() *ServiceFuncResult {
   return &ServiceFuncResult{}
 }
 
-var ServiceFuncResult_Success_DEFAULT int32
-func (p *ServiceFuncResult) GetSuccess() int32 {
+var ServiceFuncResult_Success_DEFAULT MyI32
+func (p *ServiceFuncResult) GetSuccess() MyI32 {
   if !p.IsSetSuccess() {
     return ServiceFuncResult_Success_DEFAULT
   }
@@ -540,12 +543,12 @@ func (p ServiceFuncResultBuilder) Emit() *ServiceFuncResult{
   }
 }
 
-func (s *ServiceFuncResultBuilder) Success(success *int32) *ServiceFuncResultBuilder {
+func (s *ServiceFuncResultBuilder) Success(success *MyI32) *ServiceFuncResultBuilder {
   s.obj.Success = success
   return s
 }
 
-func (s *ServiceFuncResult) SetSuccess(success *int32) *ServiceFuncResult {
+func (s *ServiceFuncResult) SetSuccess(success *MyI32) *ServiceFuncResult {
   s.Success = success
   return s
 }
@@ -586,7 +589,8 @@ func (p *ServiceFuncResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
   } else {
-    p.Success = &v
+    temp := MyI32(v)
+    p.Success = &temp
   }
   return nil
 }
