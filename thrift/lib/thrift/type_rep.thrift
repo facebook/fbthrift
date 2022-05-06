@@ -15,6 +15,7 @@
  */
 
 include "thrift/annotation/thrift.thrift"
+include "thrift/annotation/java.thrift"
 
 cpp_include "<folly/io/IOBuf.h>"
 cpp_include "<folly/FBString.h>"
@@ -33,6 +34,10 @@ namespace py thrift.lib.thrift.type_rep
 //
 // Each language can map this type into a customized memory efficient object
 @thrift.Experimental
+@java.Adapter{
+  adapterClassName = "com.facebook.thrift.adapter.common.UnpooledByteBufTypeAdapter",
+  typeClassName = "io.netty.buffer.ByteBuf",
+}
 typedef binary (cpp2.type = "folly::fbstring") ByteString
 
 // Typedef for binary data
@@ -40,6 +45,10 @@ typedef binary (cpp2.type = "folly::fbstring") ByteString
 // Each language can map this type into a customized memory efficient object
 // May be used for zero-copy slice of data
 @thrift.Experimental
+@java.Adapter{
+  adapterClassName = "com.facebook.thrift.adapter.common.UnpooledByteBufTypeAdapter",
+  typeClassName = "io.netty.buffer.ByteBuf",
+}
 typedef binary (cpp2.type = "folly::IOBuf") ByteBuffer
 
 // Standard protocols.
