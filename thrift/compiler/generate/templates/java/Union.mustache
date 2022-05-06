@@ -40,6 +40,9 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
     {{#struct:fields}}
     public static final int _{{field:javaAllCapsName}} = {{field:key}};
     private static final TField {{field:javaTFieldName}} = new TField("{{field:javaName}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
+    {{#field:hasAdapter?}}
+    private static final com.facebook.thrift.adapter.TypeAdapter<{{field:typeClassName}}> _{{field:javaName}}_Adapter = new {{field:adapterClassName}}();
+    {{/field:hasAdapter?}}
     {{/struct:fields}}
 
     static {
@@ -70,7 +73,7 @@ public final class {{struct:javaCapitalName}} implements com.facebook.thrift.pay
 
     {{> ThriftFieldAnnotation}}
 
-    public {{#field:type}}{{> Type}}{{/field:type}} {{> GetterName}}() {
+    public {{> FieldType}} {{> GetterName}}() {
         if (this.id != {{field:key}}) {
             throw new IllegalStateException("Not a {{field:name}} element!");
         }
