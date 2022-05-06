@@ -41,6 +41,10 @@ class t_service;
  */
 class t_scope {
  public:
+  // Get a (poteinally unresolve) reference to given type, declared in the given
+  // program.
+  t_type_ref ref_type(const t_program& program, const std::string& name);
+
   void add_type(std::string name, const t_type* type) {
     types_[std::move(name)] = type;
   }

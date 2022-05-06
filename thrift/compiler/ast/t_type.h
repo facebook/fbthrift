@@ -234,6 +234,8 @@ class t_type_ref final {
   // Returns true the type reference has not been initalized.
   bool empty() const noexcept { return type_ == nullptr; }
   explicit operator bool() const { return !empty(); }
+  // Returns true if the type has been resolved.
+  bool resolved() const noexcept;
 
   // Helpers for constructing from pointers.
   static t_type_ref from_ptr(const t_type* type) { return t_type_ref(type); }
@@ -273,6 +275,7 @@ class t_type_ref final {
  public:
   const t_type* get_type() const { return type_; }
   static t_type_ref for_placeholder(t_placeholder_typedef& unresolve_type);
+  t_placeholder_typedef* get_unresolve_type() { return unresolve_type_; }
 };
 
 } // namespace compiler

@@ -390,13 +390,6 @@ class parsing_driver {
       std::unique_ptr<t_typedef> node,
       std::unique_ptr<t_annotations> annotations);
 
-  // Adds an placeholder typedef to the program.
-  // TODO(afuller): Remove the need for these by adding a explicit t_type_ref
-  // node that can be resolved in a second passover the ast.
-  t_type_ref add_placeholder_typedef(
-      std::unique_ptr<t_placeholder_typedef> node,
-      std::unique_ptr<t_annotations> annotations);
-
   // Automatic numbering for field ids.
   //
   // Field id are assigned starting from -1 and working their way down.

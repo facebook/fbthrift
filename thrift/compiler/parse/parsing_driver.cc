@@ -573,46 +573,27 @@ t_type_ref parsing_driver::new_type_ref(
     return {};
   }
 
-  // Try to resolve the type.
-  const t_type* type = scope_cache->find_type(name);
-  if (type == nullptr) {
-    type = scope_cache->find_type(program->scope_name(name));
-  }
-  if (type == nullptr) {
-    // TODO(afuller): Remove this special case for const, which requires a
-    // specific declaration order.
-    if (is_const) {
-      failure(
-          location(),
-          "The type '{}' is not defined yet. Types must be "
-          "defined before the usage in constant values.",
-          name);
-    }
-    // TODO(afuller): Why are interactions special? They should just be another
-    // declared type.
-    type = scope_cache->find_interaction(name);
-    if (type == nullptr) {
-      type = scope_cache->find_interaction(program->scope_name(name));
-    }
+  t_type_ref result = scope_cache->ref_type(*program, name);
+
+  // TODO(afuller): Remove this special case for const, which requires a
+  // specific declaration order.
+  if (!result.resolved() && is_const) {
+    failure(
+        location(),
+        "The type '{}' is not defined yet. Types must be "
+        "defined before the usage in constant values.",
+        name);
   }
 
-  if (type != nullptr) {
-    // We found the type!
-    return new_type_ref(*type, std::move(annotations));
+  if (auto* node = result.get_unresolve_type()) { // A newly created ph.
+    node->set_lineno(get_lineno());
+    set_annotations(node, std::move(annotations));
+  } else if (annotations != nullptr) { // Oh no!
+    // TODO(afuller): Remove support for annotations on type references.
+    return new_type_ref(result.deref(), std::move(annotations));
   }
 
-  /*
-   Either this type isn't yet declared, or it's never
-   declared. Either way allow it and we'll figure it out
-   during generation.
-  */
-  // NOTE(afuller): This assumes that, since the type was referenced by name, it
-  // is safe to create a dummy typedef to use as a proxy for the original type.
-  // However, this actually breaks dynamic casts and t_type::is_* calls.
-  // TODO(afuller): Resolve *all* types in a second pass.
-  return add_placeholder_typedef(
-      std::make_unique<t_placeholder_typedef>(program, std::move(name)),
-      std::move(annotations));
+  return result;
 }
 
 void parsing_driver::set_functions(
@@ -694,14 +675,6 @@ const t_type* parsing_driver::add_unnamed_typedef(
   set_annotations(node.get(), std::move(annotations));
   program->add_unnamed_typedef(std::move(node));
   return result;
-}
-
-t_type_ref parsing_driver::add_placeholder_typedef(
-    std::unique_ptr<t_placeholder_typedef> node,
-    std::unique_ptr<t_annotations> annotations) {
-  node->set_lineno(get_lineno());
-  set_annotations(node.get(), std::move(annotations));
-  return scope_cache->add_placeholder_typedef(std::move(node));
 }
 
 void parsing_driver::allocate_field_id(t_field_id& next_id, t_field& field) {

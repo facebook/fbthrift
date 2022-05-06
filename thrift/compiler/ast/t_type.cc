@@ -88,6 +88,11 @@ const t_type* t_type::get_true_type() const {
       this, [](const t_type* type) { return !type->is_typedef(); });
 }
 
+bool t_type_ref::resolved() const noexcept {
+  return !empty() &&
+      (unresolve_type_ == nullptr || unresolve_type_->type().resolved());
+}
+
 const t_type& t_type_ref::deref() {
   if (unresolve_type_ != nullptr) { // Try to resolve.
     if (!unresolve_type_->resolve()) {

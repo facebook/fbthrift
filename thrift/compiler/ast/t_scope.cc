@@ -22,6 +22,7 @@
 
 #include <thrift/compiler/ast/t_const.h>
 #include <thrift/compiler/ast/t_enum_value.h>
+#include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_scope.h>
 
 namespace apache {
@@ -55,6 +56,41 @@ std::vector<std::string> split_string_by_periods(const std::string& str) {
 }
 
 } // namespace
+
+t_type_ref t_scope::ref_type(
+    const t_program& program, const std::string& name) {
+  // Try to resolve the type.
+  const t_type* type = find_type(name);
+  if (type == nullptr) {
+    type = find_type(program.scope_name(name));
+  }
+  // TODO(afuller): Why are interactions special? They should just be another
+  // declared type.
+  if (type == nullptr) {
+    type = find_interaction(name);
+  }
+  if (type == nullptr) {
+    type = find_interaction(program.scope_name(name));
+  }
+
+  if (type != nullptr) {
+    return *type; // We found the type!
+  }
+
+  /*
+   Either this type isn't yet declared, or it's never
+   declared. Either way allow it and we'll figure it out
+   during generation.
+  */
+  // NOTE(afuller): This assumes that, since the type was referenced by name, it
+  // is safe to create a dummy typedef to use as a proxy for the original type.
+  // However, this actually breaks dynamic casts.
+  // TODO(afuller): Merge t_placeholder_typedef into t_type_ref and remove const
+  // cast.
+  auto ph = std::make_unique<t_placeholder_typedef>(
+      const_cast<t_program*>(&program), name);
+  return add_placeholder_typedef(std::move(ph));
+}
 
 void t_scope::add_constant(std::string name, const t_const* constant) {
   if (constant && constant->get_value()->is_enum()) {
