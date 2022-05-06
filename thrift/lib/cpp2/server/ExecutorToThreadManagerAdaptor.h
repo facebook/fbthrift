@@ -30,9 +30,7 @@ class ThriftServer;
 // This should not be used for any custom purpose
 class ExecutorToThreadManagerAdaptor : public concurrency::ThreadManager {
  public:
-  explicit ExecutorToThreadManagerAdaptor(
-      folly::Executor& ex, const ThriftServer* server = nullptr)
-      : ex_(ex), server_(server) {}
+  explicit ExecutorToThreadManagerAdaptor(folly::Executor& ex) : ex_(ex) {}
 
   // These are the only two interfaces that are implemented
   void add(
@@ -45,105 +43,64 @@ class ExecutorToThreadManagerAdaptor : public concurrency::ThreadManager {
 
   void add(folly::Func f) override { ex_.add(std::move(f)); }
 
-  void start() override { recordStackTrace("start"); }
+  void start() override {}
 
-  void stop() override { recordStackTrace("stop"); }
+  void stop() override {}
 
-  void join() override { recordStackTrace("join"); }
+  void join() override {}
 
-  STATE state() const override {
-    recordStackTrace("state");
-    return concurrency::ThreadManager::STARTED;
-  }
+  STATE state() const override { return concurrency::ThreadManager::STARTED; }
 
   std::shared_ptr<concurrency::ThreadFactory> threadFactory() const override {
-    recordStackTrace("threadFactory");
     return std::shared_ptr<concurrency::ThreadFactory>(
         new concurrency::PosixThreadFactory());
   }
 
-  void threadFactory(std::shared_ptr<concurrency::ThreadFactory>) override {
-    recordStackTrace("threadFactory");
-  }
+  void threadFactory(std::shared_ptr<concurrency::ThreadFactory>) override {}
 
   std::string getNamePrefix() const override {
     return "rp.executor_to_thread_manager_adaptor";
   }
 
-  void setNamePrefix(const std::string&) override {
-    recordStackTrace("setNamePrefix");
-  }
+  void setNamePrefix(const std::string&) override {}
 
-  void addWorker(size_t) override { recordStackTrace("addWorker"); }
+  void addWorker(size_t) override {}
 
-  void removeWorker(size_t) override { recordStackTrace("removeWorker"); }
+  void removeWorker(size_t) override {}
 
-  size_t idleWorkerCount() const override {
-    recordStackTrace("idleWorkerCount");
-    return 0;
-  }
+  size_t idleWorkerCount() const override { return 0; }
 
-  size_t workerCount() const override {
-    recordStackTrace("workerCount");
-    return 0;
-  }
+  size_t workerCount() const override { return 0; }
 
-  size_t pendingTaskCount() const override {
-    recordStackTrace("pendingTaskCount");
-    return 0;
-  }
+  size_t pendingTaskCount() const override { return 0; }
 
-  size_t pendingUpstreamTaskCount() const override {
-    recordStackTrace("pendingUpstreamTaskCount");
-    return 0;
-  }
+  size_t pendingUpstreamTaskCount() const override { return 0; }
 
-  size_t totalTaskCount() const override {
-    recordStackTrace("totalTaskCount");
-    return 0;
-  }
+  size_t totalTaskCount() const override { return 0; }
 
-  size_t expiredTaskCount() override {
-    recordStackTrace("expiredTaskCount");
-    return 0;
-  }
+  size_t expiredTaskCount() override { return 0; }
 
-  void remove(std::shared_ptr<concurrency::Runnable>) override {
-    recordStackTrace("remove");
-  }
+  void remove(std::shared_ptr<concurrency::Runnable>) override {}
 
   std::shared_ptr<concurrency::Runnable> removeNextPending() override {
-    recordStackTrace("removeNextPending");
     return nullptr;
   }
 
-  void clearPending() override { recordStackTrace("clearPending"); }
+  void clearPending() override {}
 
-  void enableCodel(bool) override { recordStackTrace("enableCodel"); }
+  void enableCodel(bool) override {}
 
-  folly::Codel* getCodel() override {
-    recordStackTrace("getCodel");
-    return nullptr;
-  }
+  folly::Codel* getCodel() override { return nullptr; }
 
-  void setExpireCallback(ExpireCallback) override {
-    recordStackTrace("setExpireCallback");
-  }
+  void setExpireCallback(ExpireCallback) override {}
 
-  void setCodelCallback(ExpireCallback) override {
-    recordStackTrace("setCodelCallback");
-  }
+  void setCodelCallback(ExpireCallback) override {}
 
-  void setThreadInitCallback(InitCallback) override {
-    recordStackTrace("setThreadInitCallback");
-  }
+  void setThreadInitCallback(InitCallback) override {}
 
-  void addTaskObserver(std::shared_ptr<Observer>) override {
-    recordStackTrace("addTaskObserver");
-  }
+  void addTaskObserver(std::shared_ptr<Observer>) override {}
 
   std::chrono::nanoseconds getUsedCpuTime() const override {
-    recordStackTrace("getUsedCpuTime");
     return std::chrono::nanoseconds();
   }
 
@@ -154,12 +111,6 @@ class ExecutorToThreadManagerAdaptor : public concurrency::ThreadManager {
 
  private:
   folly::Executor& ex_;
-  const ThriftServer* server_;
-  // logging should only be done once if any as
-  // it's quite expensive
-  static folly::once_flag recordFlag_;
-
-  void recordStackTrace(std::string) const;
 };
 
 } // namespace apache::thrift

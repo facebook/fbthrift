@@ -469,7 +469,7 @@ void ThriftServer::setup() {
                          .value();
         std::lock_guard<std::mutex> lock(threadManagerMutex_);
         threadManager_ = std::shared_ptr<ExecutorToThreadManagerAdaptor>(
-            new ExecutorToThreadManagerAdaptor(*exPtr, this));
+            new ExecutorToThreadManagerAdaptor(*exPtr));
       }
 
       // During resource pools roll out we want to track services that get
