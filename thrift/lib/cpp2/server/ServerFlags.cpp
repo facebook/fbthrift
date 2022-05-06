@@ -50,7 +50,6 @@ void requireResourcePools() {
 }
 
 bool useResourcePools() {
-  // If Gflag is turned on, we will just ignore the rest enablements
   static bool gFlag = FLAGS_thrift_experimental_use_resource_pools;
   static bool thriftFlag = THRIFT_FLAG(experimental_use_resource_pools);
   static bool firstResult =
