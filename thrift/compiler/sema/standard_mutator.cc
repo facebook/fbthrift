@@ -105,6 +105,8 @@ void mutate_terse_write_annotation_struct(
 // TODO(dokwon): Add a standard mutator test for @internal.InjectMetadataFields.
 void mutate_inject_metadata_fields(
     diagnostic_context& ctx, mutator_context&, t_struct& node) {
+  // TODO(dokwon): Currently field injection doesn't work for structs used as
+  // transitive annotations. Skipping as a workaround.
   if (is_transitive_annotation(node)) {
     return;
   }
