@@ -63,7 +63,7 @@ class GeneratePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
           shape(
           )
         ),
@@ -150,7 +150,7 @@ class GenerateOptionalPatch implements \IThriftSyncStruct, \IThriftShapishSyncSt
           shape(
           )
         ),
-        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
           shape(
           )
         ),
@@ -290,7 +290,7 @@ class BoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
           shape(
           )
         ),
@@ -440,7 +440,7 @@ class BytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
           shape(
           )
         ),
@@ -600,7 +600,7 @@ class I16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
           shape(
           )
         ),
@@ -760,7 +760,7 @@ class I32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
           shape(
           )
         ),
@@ -920,7 +920,7 @@ class I64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
           shape(
           )
         ),
@@ -1070,7 +1070,7 @@ class FloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
           shape(
           )
         ),
@@ -1220,7 +1220,7 @@ class DoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
           shape(
           )
         ),
@@ -1420,7 +1420,7 @@ class StringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
           shape(
           )
         ),
@@ -1555,7 +1555,7 @@ class BinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
           shape(
           )
         ),
@@ -1772,7 +1772,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -1785,7 +1785,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -2023,7 +2023,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -2036,7 +2036,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -2279,7 +2279,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -2292,7 +2292,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -2535,7 +2535,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -2548,7 +2548,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -2791,7 +2791,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -2804,7 +2804,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -3042,7 +3042,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -3055,7 +3055,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -3293,7 +3293,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -3306,7 +3306,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -3544,7 +3544,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -3557,7 +3557,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -3795,7 +3795,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),
@@ -3808,7 +3808,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
               shape(
               )
             ),
-            'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+            'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
               shape(
               )
             ),

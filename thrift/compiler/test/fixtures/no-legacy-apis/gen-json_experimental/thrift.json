@@ -2,12 +2,12 @@
   "__fbthrift": "@generated",
   "thrift_module" : "thrift",
   "namespaces": {
-    "cpp2": "facebook.thrift.annotation.thrift",
+    "cpp2": "facebook.thrift.annotation",
     "go": "thrift.annotation.thrift",
-    "java": "com.facebook.thrift.annotation.thrift_deprecated",
-    "java.swift": "com.facebook.thrift.annotation.thrift",
-    "java2": "com.facebook.thrift.annotation.thrift",
-    "php": "facebook_thrift_annotation_thrift",
+    "java": "com.facebook.thrift.annotation_deprecated",
+    "java.swift": "com.facebook.thrift.annotation",
+    "java2": "com.facebook.thrift.annotation",
+    "php": "facebook_thrift_annotation",
     "py": "thrift.annotation.thrift",
     "py.asyncio": "facebook_thrift_asyncio.annotation.thrift",
     "py3": "facebook.thrift.annotation"

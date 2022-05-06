@@ -14,9 +14,7 @@
 namespace facebook {
 namespace thrift {
 namespace annotation {
-namespace thrift {
 ::apache::thrift::metadata::ThriftMetadata thrift_getThriftModuleMetadata();
 } // namespace facebook
 } // namespace thrift
 } // namespace annotation
-} // namespace thrift

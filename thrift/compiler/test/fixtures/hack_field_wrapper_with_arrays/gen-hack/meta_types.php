@@ -154,7 +154,7 @@ class facebook_thrift_annotation_SetGenerated implements \IThriftSyncStruct, \IT
           shape(
           )
         ),
-        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
           shape(
           )
         ),

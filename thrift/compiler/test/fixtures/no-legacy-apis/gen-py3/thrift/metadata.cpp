@@ -10,7 +10,6 @@
 namespace facebook {
 namespace thrift {
 namespace annotation {
-namespace thrift {
 ::apache::thrift::metadata::ThriftMetadata thrift_getThriftModuleMetadata() {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
@@ -27,4 +26,3 @@ namespace thrift {
 } // namespace facebook
 } // namespace thrift
 } // namespace annotation
-} // namespace thrift

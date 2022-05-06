@@ -82,7 +82,7 @@ class facebook_thrift_annotation_InjectMetadataFields implements \IThriftSyncStr
           shape(
           )
         ),
-        'facebook_thrift_annotation_thrift_Experimental' => facebook_thrift_annotation_thrift_Experimental::fromShape(
+        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
           shape(
           )
         ),
