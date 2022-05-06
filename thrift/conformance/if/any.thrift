@@ -28,13 +28,14 @@ cpp_include "<folly/io/IOBuf.h>"
 cpp_include "<folly/FBString.h>"
 
 include "thrift/conformance/if/protocol.thrift"
+include "thrift/lib/thrift/type_rep.thrift"
 
 // Any encoded thrift value.
 struct Any {
   // The unique name for this type.
   1: optional string type;
   // A prefix of the SHA2-256 hash of the unique type name.
-  2: optional binary (cpp.type = "folly::fbstring") typeHashPrefixSha2_256;
+  2: optional type_rep.ByteString typeHashPrefixSha2_256;
 
   // The standard protocol used or StandardProtocol::Custom.
   // Assumed to be StandardProtocol::Compact, if unset.
@@ -46,5 +47,5 @@ struct Any {
   // The encoded value.
   // TODO(afuller): Consider switching to std::unique_ptr<folly::IOBuf> to make
   // moves cheaper (profile to see if this is better).
-  5: binary (cpp.type = "folly::IOBuf") data;
+  5: type_rep.ByteBuffer data;
 } (rust.ord)
