@@ -32,6 +32,7 @@ get_property(meta-cpp2-SOURCES GLOBAL PROPERTY meta-cpp2-SOURCES)
 get_property(python-cpp2-SOURCES GLOBAL PROPERTY python-cpp2-SOURCES)
 get_property(scope-cpp2-SOURCES GLOBAL PROPERTY scope-cpp2-SOURCES)
 get_property(thrift-cpp2-SOURCES GLOBAL PROPERTY thrift-cpp2-SOURCES)
+get_property(any_rep-cpp2-SOURCES GLOBAL PROPERTY any_rep-cpp2-SOURCES)
 get_property(RpcMetadata-cpp2-SOURCES GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES)
 get_property(metadata-cpp2-SOURCES GLOBAL PROPERTY metadata-cpp2-SOURCES)
 get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
@@ -140,6 +141,23 @@ target_link_libraries(
   PUBLIC
     Folly::folly
     thriftannotation
+    thrifttyperep
+)
+
+bypass_source_check("${any_rep-cpp2-SOURCES}")
+add_library(
+  thriftanyrep
+
+  ${any_rep-cpp2-SOURCES}
+)
+add_dependencies(thriftanyrep any_rep-cpp2-target thriftannotation thrifttype
+  thrifttyperep)
+target_link_libraries(
+  thriftanyrep
+  PUBLIC
+    Folly::folly
+    thriftannotation
+    thrifttype
     thrifttyperep
 )
 
@@ -306,6 +324,7 @@ add_dependencies(
   thriftmetadata
   thrifttyperep
   thrifttype
+  thriftanyrep
 )
 target_link_libraries(
   thriftcpp2
@@ -318,6 +337,7 @@ target_link_libraries(
     thriftprotocol
     thrifttyperep
     thrifttype
+    thriftanyrep
 )
 
 # Install includes
@@ -350,6 +370,7 @@ install(
     thriftfrozen2
     thrifttyperep
     thrifttype
+    thriftanyrep
     thriftprotocol
     thriftcpp2
   EXPORT fbthrift-exports

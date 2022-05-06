@@ -13,6 +13,17 @@
 # limitations under the License.
 
 thrift_generate(
+  "any_rep" #file_name
+  "" #services
+  "cpp2" #language
+  "no_metadata" #options
+  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
+  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
+  "thrift/lib/thrift" #include_prefix
+  THRIFT_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}
+)
+
+thrift_generate(
   "reflection" #file_name
   "" #services
   "cpp2" #language
@@ -89,6 +100,7 @@ thrift_generate(
   THRIFT_INCLUDE_DIRECTORIES ${CMAKE_SOURCE_DIR}
 )
 
+set_property(GLOBAL PROPERTY any_rep-cpp2-SOURCES ${any_rep-cpp2-SOURCES})
 set_property(GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES
   ${RpcMetadata-cpp2-SOURCES})
 set_property(GLOBAL PROPERTY frozen-cpp2-SOURCES ${frozen-cpp2-SOURCES})
