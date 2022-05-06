@@ -53,10 +53,7 @@
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
-        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
-            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
-            }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
-        }}>> + ::std::marker::Send + 'static>> {
+        ) -> {{>lib/client_return_type}} {
             let mut closure = self.{{function:rust_name}}.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut({{!
                 }}{{#function:args}}{{!
