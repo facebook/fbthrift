@@ -199,11 +199,10 @@ void parsing_driver::parse_file() {
     end_parsing(x);
   }
 
-  for (auto td : program->placeholder_typedefs()) {
-    if (!td->resolve()) {
-      ctx_.failure(*td, [&](auto& o) {
-        o << "Type `" << td->name() << "` not defined.";
-      });
+  for (auto& td : scope_cache->placeholder_typedefs()) {
+    if (!td.resolve()) {
+      ctx_.failure(
+          td, [&](auto& o) { o << "Type `" << td.name() << "` not defined."; });
     }
   }
   ctx_.end_visit(*program);
@@ -710,7 +709,7 @@ const t_type* parsing_driver::add_placeholder_typedef(
   const t_type* result(node.get());
   node->set_lineno(get_lineno());
   set_annotations(node.get(), std::move(annotations));
-  program->add_placeholder_typedef(std::move(node));
+  scope_cache->add_placeholder_typedef(std::move(node));
   return result;
 }
 

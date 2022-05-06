@@ -21,6 +21,10 @@
 #include <unordered_set>
 #include <utility>
 
+#include <thrift/compiler/ast/node_list.h>
+#include <thrift/compiler/ast/t_type.h>
+#include <thrift/compiler/ast/t_typedef.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
@@ -28,7 +32,6 @@ namespace compiler {
 class t_const;
 class t_interaction;
 class t_service;
-class t_type;
 
 /**
  * This represents a scope used for looking up types, services and other AST
@@ -78,7 +81,20 @@ class t_scope {
   // Dumps the content of type map to stdout.
   void dump() const;
 
+  void add_placeholder_typedef(std::unique_ptr<t_placeholder_typedef> ptd) {
+    assert(ptd != nullptr);
+    placeholder_typedefs_.emplace_back(std::move(ptd));
+  }
+  node_list_view<t_placeholder_typedef> placeholder_typedefs() {
+    return placeholder_typedefs_;
+  }
+  node_list_view<const t_placeholder_typedef> placeholder_typedefs() const {
+    return placeholder_typedefs_;
+  }
+
  private:
+  node_list<t_placeholder_typedef> placeholder_typedefs_;
+
   template <typename T>
   static const T* find_or_null(
       const std::unordered_map<std::string, const T*>& map,

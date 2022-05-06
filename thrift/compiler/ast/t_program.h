@@ -94,12 +94,6 @@ class t_program : public t_named {
     type_insts_.emplace_back(std::move(type_inst));
   }
 
-  void add_placeholder_typedef(std::unique_ptr<t_placeholder_typedef> ptd) {
-    assert(ptd != nullptr);
-    placeholder_typedefs_.push_back(ptd.get());
-    nodes_.push_back(std::move(ptd));
-  }
-
   void add_unnamed_typedef(std::unique_ptr<t_typedef> td) {
     assert(td != nullptr);
     nodes_.push_back(std::move(td));
@@ -126,9 +120,6 @@ class t_program : public t_named {
   const std::vector<t_exception*>& exceptions() const { return exceptions_; }
   const std::vector<t_struct*>& objects() const { return objects_; }
   const std::vector<t_service*>& services() const { return services_; }
-  const std::vector<t_placeholder_typedef*>& placeholder_typedefs() const {
-    return placeholder_typedefs_;
-  }
   const std::vector<t_interaction*>& interactions() const {
     return interactions_;
   }
@@ -260,7 +251,6 @@ class t_program : public t_named {
   std::vector<t_service*> services_;
   std::vector<t_include*> includes_;
   std::vector<t_interaction*> interactions_;
-  std::vector<t_placeholder_typedef*> placeholder_typedefs_;
   std::vector<t_struct*> objects_; // structs_ + exceptions_
 
   std::string path_; // initialized in ctor init-list
