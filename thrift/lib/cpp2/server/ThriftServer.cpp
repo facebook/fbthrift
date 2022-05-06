@@ -443,6 +443,12 @@ void ThriftServer::setup() {
           }
         }
       });
+
+      // Log the case when we tried to use resource pools and disabled it
+      // because of run-time holdouts.
+      if (runtimeServerActions_.resourcePoolFlagSet) {
+        THRIFT_SERVER_EVENT(resourcepoolsruntimedisallowed).log(*this);
+      }
     } else {
       LOG(INFO) << "Using resource pools";
       runtimeServerActions_.resourcePoolEnabled = true;
