@@ -271,6 +271,7 @@ add_library(
   server/MonitoringMethodNames.cpp
   server/ParallelConcurrencyController.cpp
   server/ExecutorToThreadManagerAdaptor.cpp
+  server/ThreadManagerLoggingWrapper.cpp
   server/RequestDebugLog.cpp
   server/RequestPileBase.cpp
   server/RequestPileInterface.cpp

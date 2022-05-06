@@ -194,11 +194,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   /**
    * Get the flags used to support migrations and rollouts.
    */
-  const RuntimeServerActions& getRuntimeServerActions() const {
-    return runtimeServerActions_;
-  }
-
-  RuntimeServerActions& getRuntimeServerActions() {
+  RuntimeServerActions& getRuntimeServerActions() const {
     return runtimeServerActions_;
   }
 
@@ -465,7 +461,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   //! Flags used to track certain actions of thrift servers to help support
   //! migrations and rollouts.
-  RuntimeServerActions runtimeServerActions_;
+  mutable RuntimeServerActions runtimeServerActions_;
 
   /**
    * The thread manager used for sync calls.
