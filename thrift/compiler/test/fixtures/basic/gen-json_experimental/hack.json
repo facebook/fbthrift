@@ -29,20 +29,35 @@
         "is_union" : false,
         "lineno" : 39
       },
-      "SkipCodegen" : {
-        "name" : "SkipCodegen",
+      "Adapter" : {
+        "name" : "Adapter",
         "fields" : {
-          "reason" : {
-            "name" : "reason",
+          "name" : {
+            "name" : "name",
             "key" : 1,
-            "lineno" : 47,
+            "lineno" : 57,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 46
+        "lineno" : 55
+      },
+      "SkipCodegen" : {
+        "name" : "SkipCodegen",
+        "fields" : {
+          "reason" : {
+            "name" : "reason",
+            "key" : 1,
+            "lineno" : 63,
+            "required" : "opt-in-req-out",
+            "type" : "string"
+          }
+        },
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 62
       }
       },
   "source_path" : "thrift/annotation/hack",

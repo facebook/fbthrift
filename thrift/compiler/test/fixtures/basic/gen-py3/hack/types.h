@@ -30,6 +30,16 @@ void reset_field<::facebook::thrift::annotation::hack::FieldWrapper>(
 }
 
 template<>
+void reset_field<::facebook::thrift::annotation::hack::Adapter>(
+    ::facebook::thrift::annotation::hack::Adapter& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.name_ref().copy_from(default_inst<::facebook::thrift::annotation::hack::Adapter>().name_ref());
+      return;
+  }
+}
+
+template<>
 void reset_field<::facebook::thrift::annotation::hack::SkipCodegen>(
     ::facebook::thrift::annotation::hack::SkipCodegen& obj, uint16_t index) {
   switch (index) {
@@ -42,6 +52,16 @@ void reset_field<::facebook::thrift::annotation::hack::SkipCodegen>(
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::hack::FieldWrapper>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::hack::Adapter>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

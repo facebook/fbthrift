@@ -41,6 +41,22 @@ struct FieldWrapper {
   1: string name;
 } (thrift.uri = "facebook.com/thrift/annotation/hack/FieldWrapper")
 
+// An annotation that applies a Hack adapter to types. For example:
+// @hack.Adapter{name="\TimestampAdapter"}
+// typedef i64 Timestamp;
+//
+//   struct User {
+//     1: Timestamp account_creation_time;
+//   }
+//
+// Here the field `account_creation_time` will have type TimestampAdapter::THackType instead of i64.
+@scope.Typedef
+@scope.Field
+struct Adapter {
+  // The name of a Hack adapter class
+  1: string name;
+} (thrift.uri = "facebook.com/thrift/annotation/hack/Adapter")
+
 @scope.Field
 @scope.Function
 struct SkipCodegen {
