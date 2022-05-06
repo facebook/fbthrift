@@ -23,6 +23,19 @@ namespace apache {
 namespace thrift {
 namespace op {
 
+template <typename Tag, typename IdentTag>
+struct GetByIdent {
+  template <typename T>
+  FOLLY_ERASE constexpr decltype(auto) operator()(T&& t) const
+      noexcept(noexcept(detail::get<IdentTag>(Tag{}, static_cast<T&&>(t)))) {
+    return detail::get<IdentTag>(Tag{}, static_cast<T&&>(t));
+  }
+};
+
+// Gets a field by identifier tag.
+template <typename Tag, typename IdentTag>
+FOLLY_INLINE_VARIABLE constexpr GetByIdent<Tag, IdentTag> getByIdent{};
+
 template <typename Tag, FieldId Id>
 struct GetById {
   template <typename T>

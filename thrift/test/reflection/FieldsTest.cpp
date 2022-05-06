@@ -149,6 +149,9 @@ TEST(FieldsTest, Fields) {
 TEST(FieldsTest, Get) {
   test_cpp2::cpp_reflection::struct3 s;
   using Tag = type::struct_t<test_cpp2::cpp_reflection::struct3>;
+  EXPECT_EQ(
+      &(*op::getById<Tag, FieldId{2}>(s)),
+      &(*op::getByIdent<Tag, tag::fieldA>(s)));
 
   s.fieldA() = 10;
   EXPECT_EQ((op::getById<Tag, FieldId{2}>(s)), 10);
@@ -217,6 +220,8 @@ TEST(UnionFieldsTest, Get) {
   EXPECT_THROW((*op::getById<Tag, FieldId{2}>(u)), bad_field_access);
   test::
       same_tag<decltype(u.ui_ref()), decltype(op::getById<Tag, FieldId{1}>(u))>;
+  EXPECT_EQ(
+      &(*op::getById<Tag, FieldId{1}>(u)), &(*op::getByIdent<Tag, tag::ui>(u)));
 
   op::getById<Tag, FieldId{1}>(u) = 20;
   EXPECT_EQ(u.ui_ref(), 20);

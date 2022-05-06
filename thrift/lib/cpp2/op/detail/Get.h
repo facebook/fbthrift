@@ -26,6 +26,11 @@ namespace op {
 namespace detail {
 
 // TODO(afuller): Add more overloads.
+template <typename IdentTag, typename..., typename T>
+FOLLY_ERASE constexpr decltype(auto) get(type::structured_c, T&& t) noexcept(
+    noexcept(access_field<IdentTag>(static_cast<T&&>(t)))) {
+  return access_field<IdentTag>(static_cast<T&&>(t));
+}
 template <
     FieldId Id,
     typename...,
