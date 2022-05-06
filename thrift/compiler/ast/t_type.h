@@ -33,6 +33,7 @@ namespace thrift {
 namespace compiler {
 
 class t_program;
+class t_placeholder_typedef;
 
 /**
  * Generic representation of a thrift type.
@@ -218,13 +219,17 @@ class t_type_ref final {
   /* implicit */ t_type_ref(const t_type& type) : t_type_ref(&type) {}
   /* implicit */ t_type_ref(t_type&&) = delete;
 
+  // Returns the type being referenced, resolving it if need be.
+  //
+  // Throws a std::runtime_error if the type has not been set could not be
+  // resolved.
+  const t_type& deref();
+
   // Returns the resolved type being referenced.
   //
   // Throws a std::runtime_error if the type has not been set, or an unresolved
   // t_placeholder_typedef is encountered.
-  const t_type& deref() const;
-  const t_type* operator->() const { return &deref(); }
-  const t_type& operator*() const { return deref(); }
+  const t_type& deref() const { return deref_or_throw(); }
 
   // Returns true the type reference has not been initalized.
   bool empty() const noexcept { return type_ == nullptr; }
@@ -239,19 +244,35 @@ class t_type_ref final {
     return from_ptr(type);
   }
 
+  // Smart pointer-like operators.
+  const t_type* operator->() { return &deref(); }
+  const t_type& operator*() { return deref(); }
+  const t_type* operator->() const { return &deref(); }
+  const t_type& operator*() const { return deref(); }
+
  private:
   friend class t_placeholder_typedef;
   const t_type* type_ = nullptr;
+  // The placeholder we have write access to, if we need to resolve the type
+  // before derefing.
+  // Note: It is not thread safe to access this value if 'this' is const.
+  // TODO(afuller): Move all lazy type resolution logic here, and delete
+  // t_placeholder_typedef.
+  t_placeholder_typedef* unresolve_type_ = nullptr;
+  explicit t_type_ref(const t_type& type, t_placeholder_typedef& unresolve_type)
+      : type_(&type), unresolve_type_(&unresolve_type) {}
 
   // Note: Use from_ptr or from_req_ptr for public access.
   explicit t_type_ref(const t_type* type) : type_(type) {}
 
   void set_type(const t_type* type) { type_ = type; }
+  const t_type& deref_or_throw() const;
 
   // TODO(afuller): Remove everything below this comment. It is only provided
   // for backwards compatibility.
  public:
   const t_type* get_type() const { return type_; }
+  static t_type_ref for_placeholder(t_placeholder_typedef& unresolve_type);
 };
 
 } // namespace compiler

@@ -390,10 +390,10 @@ class parsing_driver {
       std::unique_ptr<t_typedef> node,
       std::unique_ptr<t_annotations> annotations);
 
-  // Adds an placeholder typedef to the program
+  // Adds an placeholder typedef to the program.
   // TODO(afuller): Remove the need for these by adding a explicit t_type_ref
   // node that can be resolved in a second passover the ast.
-  const t_type* add_placeholder_typedef(
+  t_type_ref add_placeholder_typedef(
       std::unique_ptr<t_placeholder_typedef> node,
       std::unique_ptr<t_annotations> annotations);
 

@@ -88,7 +88,18 @@ const t_type* t_type::get_true_type() const {
       this, [](const t_type* type) { return !type->is_typedef(); });
 }
 
-const t_type& t_type_ref::deref() const {
+const t_type& t_type_ref::deref() {
+  if (unresolve_type_ != nullptr) { // Try to resolve.
+    if (!unresolve_type_->resolve()) {
+      throw std::runtime_error(
+          "Could not resolve type: " + unresolve_type_->get_full_name());
+    }
+    unresolve_type_ = nullptr;
+  }
+  return deref_or_throw();
+}
+
+const t_type& t_type_ref::deref_or_throw() const {
   if (type_ == nullptr) {
     throw std::runtime_error("t_type_ref has no type.");
   }
@@ -96,6 +107,10 @@ const t_type& t_type_ref::deref() const {
     return ph->type().deref();
   }
   return *type_;
+}
+
+t_type_ref t_type_ref::for_placeholder(t_placeholder_typedef& unresolve_type) {
+  return t_type_ref{unresolve_type, unresolve_type};
 }
 
 } // namespace compiler

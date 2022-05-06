@@ -617,9 +617,9 @@ t_type_ref parsing_driver::new_type_ref(
   // is safe to create a dummy typedef to use as a proxy for the original type.
   // However, this actually breaks dynamic casts and t_type::is_* calls.
   // TODO(afuller): Resolve *all* types in a second pass.
-  return t_type_ref(*add_placeholder_typedef(
+  return add_placeholder_typedef(
       std::make_unique<t_placeholder_typedef>(program, std::move(name)),
-      std::move(annotations)));
+      std::move(annotations));
 }
 
 void parsing_driver::set_functions(
@@ -703,14 +703,12 @@ const t_type* parsing_driver::add_unnamed_typedef(
   return result;
 }
 
-const t_type* parsing_driver::add_placeholder_typedef(
+t_type_ref parsing_driver::add_placeholder_typedef(
     std::unique_ptr<t_placeholder_typedef> node,
     std::unique_ptr<t_annotations> annotations) {
-  const t_type* result(node.get());
   node->set_lineno(get_lineno());
   set_annotations(node.get(), std::move(annotations));
-  scope_cache->add_placeholder_typedef(std::move(node));
-  return result;
+  return scope_cache->add_placeholder_typedef(std::move(node));
 }
 
 void parsing_driver::allocate_field_id(t_field_id& next_id, t_field& field) {

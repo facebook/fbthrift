@@ -81,9 +81,12 @@ class t_scope {
   // Dumps the content of type map to stdout.
   void dump() const;
 
-  void add_placeholder_typedef(std::unique_ptr<t_placeholder_typedef> ptd) {
+  t_type_ref add_placeholder_typedef(
+      std::unique_ptr<t_placeholder_typedef> ptd) {
     assert(ptd != nullptr);
+    auto result = t_type_ref::for_placeholder(*ptd);
     placeholder_typedefs_.emplace_back(std::move(ptd));
+    return result;
   }
   node_list_view<t_placeholder_typedef> placeholder_typedefs() {
     return placeholder_typedefs_;
