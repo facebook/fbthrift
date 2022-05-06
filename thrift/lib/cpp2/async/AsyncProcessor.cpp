@@ -432,7 +432,7 @@ folly::EventBase* HandlerCallbackBase::getEventBase() {
   return eb_;
 }
 
-concurrency::ThreadManager* HandlerCallbackBase::getThreadManager() {
+concurrency::ThreadManager* HandlerCallbackBase::getThreadManager_deprecated() {
   if (reqCtx_) {
     if (auto connCtx = reqCtx_->getConnectionContext()) {
       if (auto workerCtx = connCtx->getWorkerContext()) {
@@ -445,9 +445,13 @@ concurrency::ThreadManager* HandlerCallbackBase::getThreadManager() {
   return nullptr;
 }
 
+folly::Executor* HandlerCallbackBase::getThreadManager() {
+  return getHandlerExecutor();
+}
+
 folly::Executor* HandlerCallbackBase::getHandlerExecutor() {
   if (!executor_) {
-    return getThreadManager();
+    return getThreadManager_deprecated();
   }
   return executor_.get();
 }
@@ -583,7 +587,7 @@ bool HandlerCallbackBase::fulfillTilePromise(std::unique_ptr<Tile> ptr) {
   auto fn = [ctx = reqCtx_,
              interaction = std::move(interaction_),
              ptr = std::move(ptr),
-             tm = getThreadManager(),
+             tm = getThreadManager_deprecated(),
              eb = eb_]() mutable {
     TilePtr tile{ptr.release(), eb};
     DCHECK(dynamic_cast<TilePromise*>(interaction.get()));

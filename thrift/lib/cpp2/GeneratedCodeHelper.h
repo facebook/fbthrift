@@ -1547,7 +1547,7 @@ class AsyncTmPrep {
  public:
   AsyncTmPrep(ServerInterface* si, CallbackBase* callback) : si_{si} {
     si->setEventBase(callback->getEventBase());
-    if (auto threadManager = callback->getThreadManager();
+    if (auto threadManager = callback->getThreadManager_deprecated();
         threadManager != nullptr) {
       si->setThreadManager(threadManager);
     }

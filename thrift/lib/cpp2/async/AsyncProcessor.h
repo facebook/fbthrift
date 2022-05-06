@@ -1180,7 +1180,11 @@ class HandlerCallbackBase {
 
   folly::EventBase* getEventBase();
 
-  concurrency::ThreadManager* getThreadManager();
+  [[deprecated("use getHandlerExecutor()")]] folly::Executor*
+  getThreadManager();
+
+  [[deprecated("use getHandlerExecutor()")]] concurrency::ThreadManager*
+  getThreadManager_deprecated();
 
   folly::Executor* getHandlerExecutor();
 
@@ -1611,7 +1615,7 @@ void GeneratedAsyncProcessor::processInThread(
 template <class F>
 void HandlerCallbackBase::runFuncInQueue(F&& func, bool) {
   assert(getEventBase()->isInEventBaseThread());
-  getThreadManager()->add(
+  getThreadManager_deprecated()->add(
       concurrency::FunctionRunner::create(std::forward<F>(func)),
       0, // timeout
       0, // expiration

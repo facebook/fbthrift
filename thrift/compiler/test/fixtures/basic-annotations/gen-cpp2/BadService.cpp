@@ -126,7 +126,7 @@ void apache::thrift::ServiceHandler<::cpp2::GoodService>::BadInteractionIf::asyn
 #if FOLLY_HAS_COROUTINES
         __fbthrift_invocation_foo.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::CoroParam, std::memory_order_relaxed);
         apache::thrift::RequestParams params{callback->getRequestContext(),
-          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
+          callback->getThreadManager_deprecated(), callback->getEventBase(), callback->getHandlerExecutor()};
         auto task = co_foo(params);
         apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
@@ -145,7 +145,7 @@ void apache::thrift::ServiceHandler<::cpp2::GoodService>::BadInteractionIf::asyn
       case apache::thrift::detail::si::InvocationType::CoroParam:
       {
         apache::thrift::RequestParams params{callback->getRequestContext(),
-          callback->getThreadManager(), callback->getEventBase(), callback->getHandlerExecutor()};
+          callback->getThreadManager_deprecated(), callback->getEventBase(), callback->getHandlerExecutor()};
         auto task = co_foo(params);
         apache::thrift::detail::si::async_tm_coro(std::move(callback), std::move(task));
         return;
