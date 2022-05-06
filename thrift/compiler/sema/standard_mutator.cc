@@ -16,6 +16,7 @@
 
 #include <thrift/compiler/sema/standard_mutator.h>
 
+#include <thrift/compiler/lib/cpp2/util.h>
 #include <thrift/compiler/sema/patch_mutator.h>
 #include <thrift/compiler/sema/standard_mutator_stage.h>
 
@@ -149,8 +150,18 @@ void mutate_inject_metadata_fields(
     return;
   }
   for (const auto& field : structured->fields()) {
+    t_field_id injected_id;
+    try {
+      injected_id = cpp2::get_internal_injected_field_id(field.id());
+    } catch (const std::exception& e) {
+      ctx.failure([&](auto& o) { o << e.what(); });
+      // Iterate all fields to find more failure.
+      continue;
+    }
+    std::unique_ptr<t_field> cloned_field = field.clone_DO_NOT_USE();
+    cloned_field->set_injected_id(injected_id);
     ctx.failure_if(
-        !node.try_append_field(field.clone_DO_NOT_USE()), [&](auto& o) {
+        !node.try_append_field(std::move(cloned_field)), [&](auto& o) {
           o << "Field id `" << field.id() << "` is already used in `"
             << node.name() << "`.";
         });

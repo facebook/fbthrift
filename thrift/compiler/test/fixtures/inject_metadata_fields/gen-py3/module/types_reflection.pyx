@@ -64,7 +64,7 @@ cdef __StructSpec get_reflection__FieldsInjectedToEmptyStruct():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=100,
+            id=-1100,
             name="injected_field",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -101,7 +101,7 @@ cdef __StructSpec get_reflection__FieldsInjectedToStruct():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=100,
+            id=-1100,
             name="injected_field",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -138,7 +138,7 @@ cdef __StructSpec get_reflection__FieldsInjectedWithIncludedStruct():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=100,
+            id=-1100,
             name="injected_field",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -150,7 +150,7 @@ cdef __StructSpec get_reflection__FieldsInjectedWithIncludedStruct():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=101,
+            id=-1101,
             name="injected_structured_annotation_field",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,
@@ -162,7 +162,7 @@ cdef __StructSpec get_reflection__FieldsInjectedWithIncludedStruct():
     )
     spec.add_field(
         __FieldSpec._fbthrift_create(
-            id=102,
+            id=-1102,
             name="injected_unstructured_annotation_field",
             type=str,
             kind=__NumberType.NOT_A_NUMBER,

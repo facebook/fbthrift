@@ -31,7 +31,7 @@ struct VisitByFieldId<::cpp2::FieldsInjectedToEmptyStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
-    case 100:
+    case -1100:
       return f(0, static_cast<T&&>(t).injected_field_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::FieldsInjectedToEmptyStruct");
@@ -46,7 +46,7 @@ struct VisitByFieldId<::cpp2::FieldsInjectedToStruct> {
     switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).string_field_ref());
-    case 100:
+    case -1100:
       return f(1, static_cast<T&&>(t).injected_field_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::FieldsInjectedToStruct");
@@ -61,11 +61,11 @@ struct VisitByFieldId<::cpp2::FieldsInjectedWithIncludedStruct> {
     switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).string_field_ref());
-    case 100:
+    case -1100:
       return f(1, static_cast<T&&>(t).injected_field_ref());
-    case 101:
+    case -1101:
       return f(2, static_cast<T&&>(t).injected_structured_annotation_field_ref());
-    case 102:
+    case -1102:
       return f(3, static_cast<T&&>(t).injected_unstructured_annotation_field_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::FieldsInjectedWithIncludedStruct");

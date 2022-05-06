@@ -158,7 +158,7 @@ pub mod types {
     {
         fn write(&self, p: &mut P) {
             p.write_struct_begin("FieldsInjectedToEmptyStruct");
-            p.write_field_begin("injected_field", ::fbthrift::TType::String, 100);
+            p.write_field_begin("injected_field", ::fbthrift::TType::String, -1100);
             ::fbthrift::Serialize::write(&self.injected_field, p);
             p.write_field_end();
             p.write_field_stop();
@@ -172,7 +172,7 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("injected_field", ::fbthrift::TType::String, 100),
+                ::fbthrift::Field::new("injected_field", ::fbthrift::TType::String, -1100),
             ];
             let mut field_injected_field = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -180,7 +180,7 @@ pub mod types {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
                 match (fty, fid as ::std::primitive::i32) {
                     (::fbthrift::TType::Stop, _) => break,
-                    (::fbthrift::TType::String, 100) => field_injected_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, -1100) => field_injected_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -230,7 +230,7 @@ pub mod types {
             p.write_field_begin("string_field", ::fbthrift::TType::String, 1);
             ::fbthrift::Serialize::write(&self.string_field, p);
             p.write_field_end();
-            p.write_field_begin("injected_field", ::fbthrift::TType::String, 100);
+            p.write_field_begin("injected_field", ::fbthrift::TType::String, -1100);
             ::fbthrift::Serialize::write(&self.injected_field, p);
             p.write_field_end();
             p.write_field_stop();
@@ -244,7 +244,7 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("injected_field", ::fbthrift::TType::String, 100),
+                ::fbthrift::Field::new("injected_field", ::fbthrift::TType::String, -1100),
                 ::fbthrift::Field::new("string_field", ::fbthrift::TType::String, 1),
             ];
             let mut field_string_field = ::std::option::Option::None;
@@ -255,7 +255,7 @@ pub mod types {
                 match (fty, fid as ::std::primitive::i32) {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::String, 1) => field_string_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::String, 100) => field_injected_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, -1100) => field_injected_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -310,16 +310,16 @@ pub mod types {
             p.write_field_begin("string_field", ::fbthrift::TType::String, 1);
             ::fbthrift::Serialize::write(&self.string_field, p);
             p.write_field_end();
-            p.write_field_begin("injected_field", ::fbthrift::TType::String, 100);
+            p.write_field_begin("injected_field", ::fbthrift::TType::String, -1100);
             ::fbthrift::Serialize::write(&self.injected_field, p);
             p.write_field_end();
             if let ::std::option::Option::Some(some) = &self.injected_structured_annotation_field {
-                p.write_field_begin("injected_structured_annotation_field", ::fbthrift::TType::String, 101);
+                p.write_field_begin("injected_structured_annotation_field", ::fbthrift::TType::String, -1101);
                 ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
             if let ::std::option::Option::Some(some) = &self.injected_unstructured_annotation_field {
-                p.write_field_begin("injected_unstructured_annotation_field", ::fbthrift::TType::String, 102);
+                p.write_field_begin("injected_unstructured_annotation_field", ::fbthrift::TType::String, -1102);
                 ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
@@ -334,9 +334,9 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("injected_field", ::fbthrift::TType::String, 100),
-                ::fbthrift::Field::new("injected_structured_annotation_field", ::fbthrift::TType::String, 101),
-                ::fbthrift::Field::new("injected_unstructured_annotation_field", ::fbthrift::TType::String, 102),
+                ::fbthrift::Field::new("injected_field", ::fbthrift::TType::String, -1100),
+                ::fbthrift::Field::new("injected_structured_annotation_field", ::fbthrift::TType::String, -1101),
+                ::fbthrift::Field::new("injected_unstructured_annotation_field", ::fbthrift::TType::String, -1102),
                 ::fbthrift::Field::new("string_field", ::fbthrift::TType::String, 1),
             ];
             let mut field_string_field = ::std::option::Option::None;
@@ -349,9 +349,9 @@ pub mod types {
                 match (fty, fid as ::std::primitive::i32) {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::String, 1) => field_string_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::String, 100) => field_injected_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::String, 101) => field_injected_structured_annotation_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::String, 102) => field_injected_unstructured_annotation_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, -1100) => field_injected_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, -1101) => field_injected_structured_annotation_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, -1102) => field_injected_unstructured_annotation_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;

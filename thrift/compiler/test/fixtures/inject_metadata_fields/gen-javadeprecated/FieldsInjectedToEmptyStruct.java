@@ -24,10 +24,10 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class FieldsInjectedToEmptyStruct implements TBase, java.io.Serializable, Cloneable, Comparable<FieldsInjectedToEmptyStruct> {
   private static final TStruct STRUCT_DESC = new TStruct("FieldsInjectedToEmptyStruct");
-  private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)100);
+  private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)-1100);
 
   public String injected_field;
-  public static final int INJECTED_FIELD = 100;
+  public static final int INJECTED_FIELD = -1100;
 
   // isset id assignments
 

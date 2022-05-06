@@ -1867,6 +1867,18 @@ class CompilerFailureTest(unittest.TestCase):
                 struct Injected5 {
                     1: i64 field1;
                 }
+
+                // If a field is explicitly assigned with field id 0,
+                // the field id gets implicitly converted -1.
+                struct BoundaryFields {
+                    -1: i64 underflow;
+                    1: i64 lower_boundary;
+                    999: i64 upper_boundary;
+                    1000: i64 overflow;
+                }
+
+                @internal.InjectMetadataFields{type="BoundaryFields"}
+                struct Injected6 {}
                 """
             ),
         )
@@ -1876,6 +1888,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
+            "[WARNING:bar.thrift:36] Nonpositive value (-1) not allowed as a field id.\n"
             "[FAILURE:bar.thrift:17] Can not find expected type `foo.Fields` specified"
             " in `@internal.InjectMetadataFields` in the current scope. Please check the include.\n"
             "[FAILURE:bar.thrift:20] key `type` not found.\n"
@@ -1883,7 +1896,9 @@ class CompilerFailureTest(unittest.TestCase):
             "`@internal.InjectMetadataFields` can be only used with a struct type.\n"
             "[FAILURE:bar.thrift:26] `bar.MyI64` is not a struct type. "
             "`@internal.InjectMetadataFields` can be only used with a struct type.\n"
-            "[FAILURE:bar.thrift:29] Field id `1` is already used in `Injected5`.\n",
+            "[FAILURE:bar.thrift:43] Field id `-1` does not mapped to valid internal id.\n"
+            "[FAILURE:bar.thrift:43] Field id `1000` does not mapped to valid internal id.\n"
+            "[FAILURE:bar.thrift] Field `field1` is already defined for `Injected5`.\n",
         )
 
     def test_set_invalid_elem_type(self):

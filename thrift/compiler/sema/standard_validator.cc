@@ -430,10 +430,11 @@ void validate_field_id(diagnostic_context& ctx, const t_field& node) {
           << "`";
       });
 
-  ctx.failure_if(node.id() < t_field::min_id, [&](auto& o) {
-    o << "Reserved field id (" << node.id() << ") cannot be used for `"
-      << node.name() << "`.";
-  });
+  ctx.failure_if(
+      !node.is_injected() && node.id() < t_field::min_id, [&](auto& o) {
+        o << "Reserved field id (" << node.id() << ") cannot be used for `"
+          << node.name() << "`.";
+      });
 }
 
 void validate_compatibility_with_lazy_field(

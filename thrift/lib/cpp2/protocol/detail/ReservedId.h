@@ -27,6 +27,8 @@ enum class ReservedId : int16_t {
   kExpectedRandomNumber = -32766, // Lazy deserialization
   kActualRandomNumber = -32765, // Lazy deserialization
   kXxh3Checksum = -32764, // Lazy deserialization
+  kInjectMetadataFieldsLastId = -2000, // @internal.InjectMetadataFields
+  kInjectMetadataFieldsStartId = -1000, // @internal.InjectMetadataFields
 };
 } // namespace detail
 } // namespace thrift

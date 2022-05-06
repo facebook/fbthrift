@@ -74,6 +74,12 @@ class t_field final : public t_named {
   const t_type_ref& type() const { return type_; }
   t_field_id id() const { return id_; }
   boost::optional<t_field_id> explicit_id() const { return explicit_id_; }
+  bool is_injected() const { return injected_; }
+  void set_injected_id(t_field_id id) {
+    id_ = id;
+    explicit_id_ = id;
+    injected_ = true;
+  }
 
   const t_const_value* default_value() const { return value_.get(); }
   void set_default_value(std::unique_ptr<t_const_value> value) {
@@ -117,6 +123,8 @@ class t_field final : public t_named {
 
   t_field_qualifier qual_ = {};
   std::unique_ptr<t_const_value> value_;
+
+  bool injected_{};
 
   // TODO(afuller): Delete everything below here. It is only provided for
   // backwards compatibility.

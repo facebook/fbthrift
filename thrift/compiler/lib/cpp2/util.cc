@@ -27,6 +27,9 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
 
+#include <fmt/core.h>
+
+#include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_list.h>
 #include <thrift/compiler/ast/t_map.h>
 #include <thrift/compiler/ast/t_node.h>
@@ -502,6 +505,16 @@ bool deprecated_terse_writes(const t_field* field) {
   return field->get_req() == t_field::e_req::opt_in_req_out &&
       (is_cpp_ref_unique_either(field) ||
        (!t->is_struct() && !t->is_xception()));
+}
+
+t_field_id get_internal_injected_field_id(t_field_id id) {
+  t_field_id internal_id = kInjectMetadataFieldsStartId - id;
+  if (internal_id > kInjectMetadataFieldsStartId ||
+      internal_id <= kInjectMetadataFieldsLastId) {
+    throw std::runtime_error(
+        fmt::format("Field id `{}` does not mapped to valid internal id.", id));
+  }
+  return internal_id;
 }
 
 } // namespace cpp2

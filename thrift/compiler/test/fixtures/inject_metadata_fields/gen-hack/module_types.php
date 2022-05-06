@@ -96,23 +96,23 @@ class FieldsInjectedToEmptyStruct implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
-    100 => shape(
+    -1100 => shape(
       'var' => 'injected_field',
       'type' => \TType::STRING,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
-    'injected_field' => 100,
+    'injected_field' => -1100,
   ];
 
   const type TConstructorShape = shape(
     ?'injected_field' => ?string,
   );
 
-  const int STRUCTURAL_ID = 8264058527515912971;
+  const int STRUCTURAL_ID = 4521072312993129309;
   /**
    * Original thrift field:-
-   * 100: string injected_field
+   * -1100: string injected_field
    */
   public string $injected_field;
 
@@ -141,7 +141,7 @@ class FieldsInjectedToEmptyStruct implements \IThriftSyncStruct {
         "fields" => vec[
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 100,
+              "id" => -1100,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
@@ -188,14 +188,14 @@ class FieldsInjectedToStruct implements \IThriftSyncStruct {
       'var' => 'string_field',
       'type' => \TType::STRING,
     ),
-    100 => shape(
+    -1100 => shape(
       'var' => 'injected_field',
       'type' => \TType::STRING,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'string_field' => 1,
-    'injected_field' => 100,
+    'injected_field' => -1100,
   ];
 
   const type TConstructorShape = shape(
@@ -203,7 +203,7 @@ class FieldsInjectedToStruct implements \IThriftSyncStruct {
     ?'injected_field' => ?string,
   );
 
-  const int STRUCTURAL_ID = 5990477315205863582;
+  const int STRUCTURAL_ID = 6883092442816482656;
   /**
    * Original thrift field:-
    * 1: string string_field
@@ -211,7 +211,7 @@ class FieldsInjectedToStruct implements \IThriftSyncStruct {
   public string $string_field;
   /**
    * Original thrift field:-
-   * 100: string injected_field
+   * -1100: string injected_field
    */
   public string $injected_field;
 
@@ -253,7 +253,7 @@ class FieldsInjectedToStruct implements \IThriftSyncStruct {
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 100,
+              "id" => -1100,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
@@ -300,24 +300,24 @@ class FieldsInjectedWithIncludedStruct implements \IThriftSyncStruct {
       'var' => 'string_field',
       'type' => \TType::STRING,
     ),
-    100 => shape(
+    -1100 => shape(
       'var' => 'injected_field',
       'type' => \TType::STRING,
     ),
-    101 => shape(
+    -1101 => shape(
       'var' => 'injected_structured_annotation_field',
       'type' => \TType::STRING,
     ),
-    102 => shape(
+    -1102 => shape(
       'var' => 'injected_unstructured_annotation_field',
       'type' => \TType::STRING,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'string_field' => 1,
-    'injected_field' => 100,
-    'injected_structured_annotation_field' => 101,
-    'injected_unstructured_annotation_field' => 102,
+    'injected_field' => -1100,
+    'injected_structured_annotation_field' => -1101,
+    'injected_unstructured_annotation_field' => -1102,
   ];
 
   const type TConstructorShape = shape(
@@ -327,7 +327,7 @@ class FieldsInjectedWithIncludedStruct implements \IThriftSyncStruct {
     ?'injected_unstructured_annotation_field' => ?string,
   );
 
-  const int STRUCTURAL_ID = 7196602199216567092;
+  const int STRUCTURAL_ID = 1871478197671938632;
   /**
    * Original thrift field:-
    * 1: string string_field
@@ -335,17 +335,17 @@ class FieldsInjectedWithIncludedStruct implements \IThriftSyncStruct {
   public string $string_field;
   /**
    * Original thrift field:-
-   * 100: string injected_field
+   * -1100: string injected_field
    */
   public string $injected_field;
   /**
    * Original thrift field:-
-   * 101: string injected_structured_annotation_field
+   * -1101: string injected_structured_annotation_field
    */
   public ?string $injected_structured_annotation_field;
   /**
    * Original thrift field:-
-   * 102: string injected_unstructured_annotation_field
+   * -1102: string injected_unstructured_annotation_field
    */
   public ?string $injected_unstructured_annotation_field;
 
@@ -391,7 +391,7 @@ class FieldsInjectedWithIncludedStruct implements \IThriftSyncStruct {
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 100,
+              "id" => -1100,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
@@ -402,7 +402,7 @@ class FieldsInjectedWithIncludedStruct implements \IThriftSyncStruct {
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 101,
+              "id" => -1101,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
@@ -414,7 +414,7 @@ class FieldsInjectedWithIncludedStruct implements \IThriftSyncStruct {
           ),
           tmeta_ThriftField::fromShape(
             shape(
-              "id" => 102,
+              "id" => -1102,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
                   "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,

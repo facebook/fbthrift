@@ -327,5 +327,13 @@ TEST_F(UtilTest, lpt_slit) {
       {8, 8, 5}, {9, 7, 4, 1}, {10, 6, 2, 2}, {20, 1}};
   EXPECT_EQ(res4, res4_expected);
 }
+
+TEST_F(UtilTest, get_internal_injected_field_id) {
+  EXPECT_THROW(cpp2::get_internal_injected_field_id(-1), std::runtime_error);
+  EXPECT_EQ(cpp2::get_internal_injected_field_id(0), -1000);
+  EXPECT_EQ(cpp2::get_internal_injected_field_id(999), -1999);
+  EXPECT_THROW(cpp2::get_internal_injected_field_id(1000), std::runtime_error);
+}
+
 } // namespace
 } // namespace apache::thrift::compiler

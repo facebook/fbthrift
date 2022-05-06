@@ -25,12 +25,12 @@ import com.facebook.thrift.protocol.*;
 public class FieldsInjectedToStruct implements TBase, java.io.Serializable, Cloneable, Comparable<FieldsInjectedToStruct> {
   private static final TStruct STRUCT_DESC = new TStruct("FieldsInjectedToStruct");
   private static final TField STRING_FIELD_FIELD_DESC = new TField("string_field", TType.STRING, (short)1);
-  private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)100);
+  private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)-1100);
 
   public String string_field;
   public String injected_field;
   public static final int STRING_FIELD = 1;
-  public static final int INJECTED_FIELD = 100;
+  public static final int INJECTED_FIELD = -1100;
 
   // isset id assignments
 
@@ -284,14 +284,14 @@ public class FieldsInjectedToStruct implements TBase, java.io.Serializable, Clon
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.string_field != null) {
-      oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
-      oprot.writeString(this.string_field);
-      oprot.writeFieldEnd();
-    }
     if (this.injected_field != null) {
       oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
       oprot.writeString(this.injected_field);
+      oprot.writeFieldEnd();
+    }
+    if (this.string_field != null) {
+      oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
+      oprot.writeString(this.string_field);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

@@ -26,9 +26,9 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
     @ThriftConstructor
     public FieldsInjectedWithIncludedStruct(
         @com.facebook.swift.codec.ThriftField(value=1, name="string_field", requiredness=Requiredness.NONE) final String stringField,
-        @com.facebook.swift.codec.ThriftField(value=100, name="injected_field", requiredness=Requiredness.NONE) final String injectedField,
-        @com.facebook.swift.codec.ThriftField(value=101, name="injected_structured_annotation_field", requiredness=Requiredness.OPTIONAL) final String injectedStructuredAnnotationField,
-        @com.facebook.swift.codec.ThriftField(value=102, name="injected_unstructured_annotation_field", requiredness=Requiredness.OPTIONAL) final String injectedUnstructuredAnnotationField
+        @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE) final String injectedField,
+        @com.facebook.swift.codec.ThriftField(value=-1101, name="injected_structured_annotation_field", isLegacyId=true, requiredness=Requiredness.OPTIONAL) final String injectedStructuredAnnotationField,
+        @com.facebook.swift.codec.ThriftField(value=-1102, name="injected_unstructured_annotation_field", isLegacyId=true, requiredness=Requiredness.OPTIONAL) final String injectedUnstructuredAnnotationField
     ) {
         this.stringField = stringField;
         this.injectedField = injectedField;
@@ -59,7 +59,7 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
     
         public String getStringField() { return stringField; }
     
-            @com.facebook.swift.codec.ThriftField(value=100, name="injected_field", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)
         public Builder setInjectedField(String injectedField) {
             this.injectedField = injectedField;
             return this;
@@ -67,7 +67,7 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
     
         public String getInjectedField() { return injectedField; }
     
-            @com.facebook.swift.codec.ThriftField(value=101, name="injected_structured_annotation_field", requiredness=Requiredness.OPTIONAL)
+            @com.facebook.swift.codec.ThriftField(value=-1101, name="injected_structured_annotation_field", isLegacyId=true, requiredness=Requiredness.OPTIONAL)
         public Builder setInjectedStructuredAnnotationField(String injectedStructuredAnnotationField) {
             this.injectedStructuredAnnotationField = injectedStructuredAnnotationField;
             return this;
@@ -75,7 +75,7 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
     
         public String getInjectedStructuredAnnotationField() { return injectedStructuredAnnotationField; }
     
-            @com.facebook.swift.codec.ThriftField(value=102, name="injected_unstructured_annotation_field", requiredness=Requiredness.OPTIONAL)
+            @com.facebook.swift.codec.ThriftField(value=-1102, name="injected_unstructured_annotation_field", isLegacyId=true, requiredness=Requiredness.OPTIONAL)
         public Builder setInjectedUnstructuredAnnotationField(String injectedUnstructuredAnnotationField) {
             this.injectedUnstructuredAnnotationField = injectedUnstructuredAnnotationField;
             return this;
@@ -110,27 +110,27 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
     public static final int _STRING_FIELD = 1;
     private static final TField STRING_FIELD_FIELD_DESC = new TField("string_field", TType.STRING, (short)1);
         private final String injectedField;
-    public static final int _INJECTED_FIELD = 100;
-    private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)100);
+    public static final int _INJECTED_FIELD = -1100;
+    private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)-1100);
         private final String injectedStructuredAnnotationField;
-    public static final int _INJECTED_STRUCTURED_ANNOTATION_FIELD = 101;
-    private static final TField INJECTED_STRUCTURED_ANNOTATION_FIELD_FIELD_DESC = new TField("injected_structured_annotation_field", TType.STRING, (short)101);
+    public static final int _INJECTED_STRUCTURED_ANNOTATION_FIELD = -1101;
+    private static final TField INJECTED_STRUCTURED_ANNOTATION_FIELD_FIELD_DESC = new TField("injected_structured_annotation_field", TType.STRING, (short)-1101);
         private final String injectedUnstructuredAnnotationField;
-    public static final int _INJECTED_UNSTRUCTURED_ANNOTATION_FIELD = 102;
-    private static final TField INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC = new TField("injected_unstructured_annotation_field", TType.STRING, (short)102);
+    public static final int _INJECTED_UNSTRUCTURED_ANNOTATION_FIELD = -1102;
+    private static final TField INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC = new TField("injected_unstructured_annotation_field", TType.STRING, (short)-1102);
     static {
       NAMES_TO_IDS.put("stringField", 1);
       THRIFT_NAMES_TO_IDS.put("string_field", 1);
       FIELD_METADATA.put(1, STRING_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("injectedField", 100);
-      THRIFT_NAMES_TO_IDS.put("injected_field", 100);
-      FIELD_METADATA.put(100, INJECTED_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("injectedStructuredAnnotationField", 101);
-      THRIFT_NAMES_TO_IDS.put("injected_structured_annotation_field", 101);
-      FIELD_METADATA.put(101, INJECTED_STRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
-      NAMES_TO_IDS.put("injectedUnstructuredAnnotationField", 102);
-      THRIFT_NAMES_TO_IDS.put("injected_unstructured_annotation_field", 102);
-      FIELD_METADATA.put(102, INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("injectedField", -1100);
+      THRIFT_NAMES_TO_IDS.put("injected_field", -1100);
+      FIELD_METADATA.put(-1100, INJECTED_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("injectedStructuredAnnotationField", -1101);
+      THRIFT_NAMES_TO_IDS.put("injected_structured_annotation_field", -1101);
+      FIELD_METADATA.put(-1101, INJECTED_STRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("injectedUnstructuredAnnotationField", -1102);
+      THRIFT_NAMES_TO_IDS.put("injected_unstructured_annotation_field", -1102);
+      FIELD_METADATA.put(-1102, INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
     }
     
     @Nullable
@@ -139,17 +139,17 @@ public final class FieldsInjectedWithIncludedStruct implements com.facebook.thri
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=100, name="injected_field", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)
     public String getInjectedField() { return injectedField; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=101, name="injected_structured_annotation_field", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=-1101, name="injected_structured_annotation_field", isLegacyId=true, requiredness=Requiredness.OPTIONAL)
     public String getInjectedStructuredAnnotationField() { return injectedStructuredAnnotationField; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=102, name="injected_unstructured_annotation_field", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=-1102, name="injected_unstructured_annotation_field", isLegacyId=true, requiredness=Requiredness.OPTIONAL)
     public String getInjectedUnstructuredAnnotationField() { return injectedUnstructuredAnnotationField; }
     
     @java.lang.Override

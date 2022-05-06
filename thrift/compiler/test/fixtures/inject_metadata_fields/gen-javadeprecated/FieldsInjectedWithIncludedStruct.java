@@ -25,18 +25,18 @@ import com.facebook.thrift.protocol.*;
 public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializable, Cloneable, Comparable<FieldsInjectedWithIncludedStruct> {
   private static final TStruct STRUCT_DESC = new TStruct("FieldsInjectedWithIncludedStruct");
   private static final TField STRING_FIELD_FIELD_DESC = new TField("string_field", TType.STRING, (short)1);
-  private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)100);
-  private static final TField INJECTED_STRUCTURED_ANNOTATION_FIELD_FIELD_DESC = new TField("injected_structured_annotation_field", TType.STRING, (short)101);
-  private static final TField INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC = new TField("injected_unstructured_annotation_field", TType.STRING, (short)102);
+  private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)-1100);
+  private static final TField INJECTED_STRUCTURED_ANNOTATION_FIELD_FIELD_DESC = new TField("injected_structured_annotation_field", TType.STRING, (short)-1101);
+  private static final TField INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC = new TField("injected_unstructured_annotation_field", TType.STRING, (short)-1102);
 
   public String string_field;
   public String injected_field;
   public String injected_structured_annotation_field;
   public String injected_unstructured_annotation_field;
   public static final int STRING_FIELD = 1;
-  public static final int INJECTED_FIELD = 100;
-  public static final int INJECTED_STRUCTURED_ANNOTATION_FIELD = 101;
-  public static final int INJECTED_UNSTRUCTURED_ANNOTATION_FIELD = 102;
+  public static final int INJECTED_FIELD = -1100;
+  public static final int INJECTED_STRUCTURED_ANNOTATION_FIELD = -1101;
+  public static final int INJECTED_UNSTRUCTURED_ANNOTATION_FIELD = -1102;
 
   // isset id assignments
 
@@ -430,15 +430,12 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
-    if (this.string_field != null) {
-      oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
-      oprot.writeString(this.string_field);
-      oprot.writeFieldEnd();
-    }
-    if (this.injected_field != null) {
-      oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
-      oprot.writeString(this.injected_field);
-      oprot.writeFieldEnd();
+    if (this.injected_unstructured_annotation_field != null) {
+      if (isSetInjected_unstructured_annotation_field()) {
+        oprot.writeFieldBegin(INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
+        oprot.writeString(this.injected_unstructured_annotation_field);
+        oprot.writeFieldEnd();
+      }
     }
     if (this.injected_structured_annotation_field != null) {
       if (isSetInjected_structured_annotation_field()) {
@@ -447,12 +444,15 @@ public class FieldsInjectedWithIncludedStruct implements TBase, java.io.Serializ
         oprot.writeFieldEnd();
       }
     }
-    if (this.injected_unstructured_annotation_field != null) {
-      if (isSetInjected_unstructured_annotation_field()) {
-        oprot.writeFieldBegin(INJECTED_UNSTRUCTURED_ANNOTATION_FIELD_FIELD_DESC);
-        oprot.writeString(this.injected_unstructured_annotation_field);
-        oprot.writeFieldEnd();
-      }
+    if (this.injected_field != null) {
+      oprot.writeFieldBegin(INJECTED_FIELD_FIELD_DESC);
+      oprot.writeString(this.injected_field);
+      oprot.writeFieldEnd();
+    }
+    if (this.string_field != null) {
+      oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
+      oprot.writeString(this.string_field);
+      oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();

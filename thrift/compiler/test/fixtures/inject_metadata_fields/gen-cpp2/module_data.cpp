@@ -26,7 +26,7 @@ const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::FieldsInjecte
   "injected_field",
 }};
 const std::array<int16_t, 1> TStructDataStorage<::cpp2::FieldsInjectedToEmptyStruct>::fields_ids = {{
-  100,
+  -1100,
 }};
 const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::FieldsInjectedToEmptyStruct>::fields_types = {{
   TType::T_STRING,
@@ -38,7 +38,7 @@ const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::FieldsInjecte
 }};
 const std::array<int16_t, 2> TStructDataStorage<::cpp2::FieldsInjectedToStruct>::fields_ids = {{
   1,
-  100,
+  -1100,
 }};
 const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::FieldsInjectedToStruct>::fields_types = {{
   TType::T_STRING,
@@ -53,9 +53,9 @@ const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::FieldsInjecte
 }};
 const std::array<int16_t, 4> TStructDataStorage<::cpp2::FieldsInjectedWithIncludedStruct>::fields_ids = {{
   1,
-  100,
-  101,
-  102,
+  -1100,
+  -1101,
+  -1102,
 }};
 const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::FieldsInjectedWithIncludedStruct>::fields_types = {{
   TType::T_STRING,

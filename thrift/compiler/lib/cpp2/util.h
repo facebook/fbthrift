@@ -39,6 +39,11 @@ namespace thrift {
 namespace compiler {
 namespace cpp2 {
 
+// Internal negative id range for metadata injection defined in
+// `fbcode/thrift/lib/cpp2/protocol/detail/ReservedId.h`.
+const t_field_id kInjectMetadataFieldsStartId = -1000;
+const t_field_id kInjectMetadataFieldsLastId = -2000;
+
 template <typename Node>
 const std::string& get_name(const Node* node) {
   return gen::cpp::namespace_resolver::get_cpp_name(*node);
@@ -262,6 +267,8 @@ auto lpt_split(std::vector<T> vec, size_t k, F size) {
 
   return ret;
 }
+
+t_field_id get_internal_injected_field_id(t_field_id id);
 
 } // namespace cpp2
 } // namespace compiler

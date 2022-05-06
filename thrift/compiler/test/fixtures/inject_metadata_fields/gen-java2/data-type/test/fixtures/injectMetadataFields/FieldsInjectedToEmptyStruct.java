@@ -25,7 +25,7 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
 
     @ThriftConstructor
     public FieldsInjectedToEmptyStruct(
-        @com.facebook.swift.codec.ThriftField(value=100, name="injected_field", requiredness=Requiredness.NONE) final String injectedField
+        @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE) final String injectedField
     ) {
         this.injectedField = injectedField;
     }
@@ -39,7 +39,7 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
     
         private String injectedField = null;
     
-        @com.facebook.swift.codec.ThriftField(value=100, name="injected_field", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)
         public Builder setInjectedField(String injectedField) {
             this.injectedField = injectedField;
             return this;
@@ -65,16 +65,16 @@ public final class FieldsInjectedToEmptyStruct implements com.facebook.thrift.pa
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("FieldsInjectedToEmptyStruct");
     private final String injectedField;
-    public static final int _INJECTED_FIELD = 100;
-    private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)100);
+    public static final int _INJECTED_FIELD = -1100;
+    private static final TField INJECTED_FIELD_FIELD_DESC = new TField("injected_field", TType.STRING, (short)-1100);
     static {
-      NAMES_TO_IDS.put("injectedField", 100);
-      THRIFT_NAMES_TO_IDS.put("injected_field", 100);
-      FIELD_METADATA.put(100, INJECTED_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("injectedField", -1100);
+      THRIFT_NAMES_TO_IDS.put("injected_field", -1100);
+      FIELD_METADATA.put(-1100, INJECTED_FIELD_FIELD_DESC);
     }
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=100, name="injected_field", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=-1100, name="injected_field", isLegacyId=true, requiredness=Requiredness.NONE)
     public String getInjectedField() { return injectedField; }
     
     @java.lang.Override
