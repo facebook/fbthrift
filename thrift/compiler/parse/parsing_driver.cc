@@ -576,7 +576,7 @@ t_type_ref parsing_driver::new_type_ref(
   // Try to resolve the type.
   const t_type* type = scope_cache->find_type(name);
   if (type == nullptr) {
-    type = scope_cache->find_type(program->name() + "." + name);
+    type = scope_cache->find_type(program->scope_name(name));
   }
   if (type == nullptr) {
     // TODO(afuller): Remove this special case for const, which requires a
@@ -592,7 +592,7 @@ t_type_ref parsing_driver::new_type_ref(
     // declared type.
     type = scope_cache->find_interaction(name);
     if (type == nullptr) {
-      type = scope_cache->find_interaction(program->name() + "." + name);
+      type = scope_cache->find_interaction(program->scope_name(name));
     }
   }
 
@@ -631,21 +631,21 @@ t_ref<t_named> parsing_driver::add_def(std::unique_ptr<t_named> node) {
   // Add to scope.
   // TODO(afuller): Move program level scope management to t_program.
   if (auto* tnode = dynamic_cast<t_interaction*>(node.get())) {
-    scope_cache->add_interaction(scoped_name(*node), tnode);
+    scope_cache->add_interaction(program->scope_name(*node), tnode);
   } else if (auto* tnode = dynamic_cast<t_service*>(node.get())) {
-    scope_cache->add_service(scoped_name(*node), tnode);
+    scope_cache->add_service(program->scope_name(*node), tnode);
   } else if (auto* tnode = dynamic_cast<t_const*>(node.get())) {
-    scope_cache->add_constant(scoped_name(*node), tnode);
+    scope_cache->add_constant(program->scope_name(*node), tnode);
   } else if (auto* tnode = dynamic_cast<t_enum*>(node.get())) {
-    scope_cache->add_type(scoped_name(*node), tnode);
+    scope_cache->add_type(program->scope_name(*node), tnode);
     // Register enum value names in scope.
     for (const auto& value : tnode->consts()) {
       // TODO(afuller): Remove ability to access unscoped enum values.
-      scope_cache->add_constant(scoped_name(value), &value);
-      scope_cache->add_constant(scoped_name(*node, value), &value);
+      scope_cache->add_constant(program->scope_name(value), &value);
+      scope_cache->add_constant(program->scope_name(*node, value), &value);
     }
   } else if (auto* tnode = dynamic_cast<t_type*>(node.get())) {
-    scope_cache->add_type(scoped_name(*node), tnode);
+    scope_cache->add_type(program->scope_name(*node), tnode);
   } else {
     throw std::logic_error("Unsupported declaration.");
   }
@@ -827,7 +827,7 @@ const t_service* parsing_driver::find_service(const std::string& name) {
     if (auto* result = scope_cache->find_service(name)) {
       return result;
     }
-    if (auto* result = scope_cache->find_service(scoped_name(name))) {
+    if (auto* result = scope_cache->find_service(program->scope_name(name))) {
       return result;
     }
     failure(location(), "Service \"{}\" has not been defined.", name);
@@ -840,8 +840,9 @@ const t_const* parsing_driver::find_const(const std::string& name) {
   if (const t_const* constant = scope_cache->find_constant(name)) {
     return constant;
   }
-  if (const t_const* constant = scope_cache->find_constant(scoped_name(name))) {
-    validate_not_ambiguous_enum(scoped_name(name));
+  if (const t_const* constant =
+          scope_cache->find_constant(program->scope_name(name))) {
+    validate_not_ambiguous_enum(program->scope_name(name));
     return constant;
   }
   return nullptr;

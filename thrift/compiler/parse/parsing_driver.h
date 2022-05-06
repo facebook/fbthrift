@@ -397,16 +397,6 @@ class parsing_driver {
       std::unique_ptr<t_placeholder_typedef> node,
       std::unique_ptr<t_annotations> annotations);
 
-  std::string scoped_name(const t_named& node) {
-    return scoped_name(node.name());
-  }
-  std::string scoped_name(const std::string& name) {
-    return program->name() + "." + name;
-  }
-  std::string scoped_name(const t_named& owner, const t_named& node) {
-    return program->name() + "." + owner.get_name() + "." + node.get_name();
-  }
-
   // Automatic numbering for field ids.
   //
   // Field id are assigned starting from -1 and working their way down.

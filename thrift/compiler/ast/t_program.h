@@ -232,6 +232,17 @@ class t_program : public t_named {
    */
   size_t get_byte_offset(size_t line, size_t line_offset = 0) const noexcept;
 
+  // Helpers for constrcuting program scoped names.
+  std::string scope_name(const std::string& defname) const {
+    return name() + "." + defname;
+  }
+  std::string scope_name(const t_named& owner, const t_named& node) const {
+    return name() + "." + owner.name() + "." + node.name();
+  }
+  std::string scope_name(const t_named& node) const {
+    return scope_name(node.name());
+  }
+
  private:
   t_package package_;
 
