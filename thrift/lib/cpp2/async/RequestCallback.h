@@ -238,6 +238,10 @@ class RequestClientCallback {
   // If true, the transport can safely run this callback on its internal thread.
   // Should only be used for Thrift internal callbacks.
   virtual bool isInlineSafe() const { return false; }
+
+  // If available, returns an executor of the calling code. If provided, this
+  // executor can be used by the channel.
+  virtual folly::Executor::KeepAlive<> getExecutor() const { return {}; }
 };
 
 class RequestCallback : public RequestClientCallback {

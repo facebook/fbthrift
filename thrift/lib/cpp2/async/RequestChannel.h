@@ -226,7 +226,9 @@ class RequestChannel : virtual public folly::DelayedDestruction {
 template <bool oneWay, bool sync>
 class ClientBatonCallback : public RequestClientCallback {
  public:
-  explicit ClientBatonCallback(ClientReceiveState* rs) : rs_(rs) {}
+  explicit ClientBatonCallback(
+      ClientReceiveState* rs, folly::Executor* executor = {})
+      : rs_(rs), executor_(executor) {}
 
   template <typename F>
   void waitUntilDone(folly::EventBase* evb, F&& sendF) {
@@ -270,9 +272,14 @@ class ClientBatonCallback : public RequestClientCallback {
 
   bool isSync() const override { return sync; }
 
+  folly::Executor::KeepAlive<> getExecutor() const override {
+    return executor_;
+  }
+
  private:
   ClientReceiveState* rs_;
   folly::fibers::Baton doneBaton_;
+  folly::Executor* executor_{};
 };
 
 template <bool oneWay>
