@@ -51,4 +51,8 @@ struct MyStruct {
   23: optional map<string, string> optMapVal;
 
   30: StructPatchTestInclude.MyUnion unionVal;
+  31: LateDefStruct lateStructVal;
 }
+
+// Intentionally defined after MyStruct, so it's patch types are generated after MyStruct's.
+struct LateDefStruct {}

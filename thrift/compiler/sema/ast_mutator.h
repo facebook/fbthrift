@@ -88,7 +88,8 @@ struct ast_mutators {
     ctx.begin_visit(*bundle.root_program());
     for (auto& td : bundle.root_program()->scope()->placeholder_typedefs()) {
       failure |= ctx.failure_if(!td.resolve(), td, [&](auto& o) {
-        o << "Type `" << td.name() << "` not defined.";
+        o << (td.generated() ? "Expected generated type" : "Type");
+        o << " `" << td.name() << "` not defined.";
       });
     }
     ctx.end_visit(*bundle.root_program());
