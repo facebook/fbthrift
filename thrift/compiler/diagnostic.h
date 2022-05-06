@@ -183,6 +183,8 @@ class diagnostics_engine {
 
   diagnostic_params& params() { return params_; }
   const diagnostic_params& params() const { return params_; }
+  source_manager& source_mgr() { return *source_mgr_; }
+  const source_manager& source_mgr() const { return *source_mgr_; }
 
   void report(diagnostic diag) {
     if (params_.should_report(diag.level())) {

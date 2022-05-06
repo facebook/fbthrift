@@ -65,9 +65,34 @@ struct ast_mutators {
   }
 
   void operator()(diagnostic_context& ctx, t_program_bundle& bundle) {
+    // Best effort try to egarly resolve types.
+    // NOTE: It is allowed to reference types that haven't been generated yet,
+    // so it is ok if this fails. The call after applying mutators will catch
+    // any real issues.
+    auto best_effort = diagnostic_context::ignore_all(ctx.source_mgr());
+    resolve_all_types(best_effort, bundle);
     for (auto& stage : stages) {
       stage.mutate(ctx, bundle);
     }
+    // We have no more mutators, so all type references **must** resolve.
+    resolve_all_types(ctx, bundle);
+  }
+
+ private:
+  // Tries to resolve any unresolved type references, returning true if
+  // successful.
+  //
+  // Any failures are reported to ctx.
+  bool resolve_all_types(diagnostic_context& ctx, t_program_bundle& bundle) {
+    bool failure = false;
+    ctx.begin_visit(*bundle.root_program());
+    for (auto& td : bundle.root_program()->scope()->placeholder_typedefs()) {
+      failure |= ctx.failure_if(!td.resolve(), td, [&](auto& o) {
+        o << "Type `" << td.name() << "` not defined.";
+      });
+    }
+    ctx.end_visit(*bundle.root_program());
+    return !failure;
   }
 };
 

@@ -198,13 +198,6 @@ void parsing_driver::parse_file() {
   } catch (const std::string& x) {
     end_parsing(x);
   }
-
-  for (auto& td : scope_cache->placeholder_typedefs()) {
-    if (!td.resolve()) {
-      ctx_.failure(
-          td, [&](auto& o) { o << "Type `" << td.name() << "` not defined."; });
-    }
-  }
   ctx_.end_visit(*program);
 }
 
