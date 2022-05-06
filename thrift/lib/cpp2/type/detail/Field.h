@@ -16,18 +16,52 @@
 
 #pragma once
 
+#include <tuple>
+
 #include <fatal/type/search.h>
-#include <fatal/type/slice.h>
 #include <folly/Utility.h>
 #include <thrift/lib/cpp/FieldId.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
 
+// TODO(afuller): Migrate to a folly version once available.
+#if defined(__has_builtin)
+#if __has_builtin(__type_pack_element)
+#define FBTHRIFT_HAS_TYPE_PACK_ELEMENT
+#endif
+#endif
+
 namespace apache {
 namespace thrift {
 namespace type {
 namespace detail {
+
+template <typename Fields>
+struct fields_size;
+template <template <typename...> class F, typename... Fs>
+struct fields_size<F<Fs...>> {
+  static constexpr auto value = sizeof...(Fs);
+};
+template <typename Ts, std::size_t I, bool Valid = true>
+struct field_at {
+  using type = void;
+};
+template <typename... Fs, std::size_t I>
+struct field_at<fields<Fs...>, I, true> {
+#ifdef FBTHRIFT_HAS_TYPE_PACK_ELEMENT
+  using type = __type_pack_element<I, Fs...>;
+#else
+  using type = std::tuple_element_t<I, std::tuple<Fs...>>;
+#endif
+};
+template <typename Ts, std::size_t I>
+using field_at_t = typename field_at<Ts, I, (I < fields_size<Ts>::value)>::type;
+
+template <typename StructTag>
+using struct_fields =
+    ::apache::thrift::detail::st::struct_private_access::fields<
+        native_type<StructTag>>;
 
 struct field_to_id {
   template <class>
@@ -48,20 +82,23 @@ struct field_to_tag {
 };
 
 template <class StructTag, FieldId Id>
-class field_tag {
+struct field_tag_by_id {
  private:
-  using fields = ::apache::thrift::detail::st::struct_private_access::fields<
-      native_type<StructTag>>;
-  using sorted_fields = fatal::sort_by<fields, field_to_id>;
+  using sorted_fields = fatal::sort_by<struct_fields<StructTag>, field_to_id>;
   static constexpr auto index() {
-    auto ret = fatal::size<fields>::value; // return size(fields) if not found
+    auto ret = fatal::size<sorted_fields>::value;
     fatal::sorted_search<sorted_fields, field_to_id>(
         Id, [&](auto index) { ret = index.value; });
     return ret;
   }
 
  public:
-  using type = fatal::try_at<sorted_fields, index(), void>;
+  using type = field_at_t<sorted_fields, index()>;
+};
+
+template <class StructTag, size_t Ordinal>
+struct field_tag_by_ord {
+  using type = field_at_t<struct_fields<StructTag>, Ordinal - 1>;
 };
 
 } // namespace detail

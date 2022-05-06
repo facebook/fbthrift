@@ -195,6 +195,17 @@ TEST(FieldsTest, field_tag_by_id) {
       });
 }
 
+TEST(FieldsTest, field_id_by_ordinal) {
+  using StructTag = struct_t<test_cpp2::cpp_reflection::struct3>;
+  test::same_tag<field_tag_by_ordinal<StructTag, 0>, void>;
+  EXPECT_EQ(field_size_v<StructTag>, 19);
+  test::same_tag<field_tag_by_ordinal<StructTag, 20>, void>;
+  EXPECT_EQ((field_id_by_ordinal_v<StructTag, 1>), FieldId{2});
+  EXPECT_EQ((field_id_by_ordinal_v<StructTag, 2>), FieldId{1});
+  EXPECT_EQ((field_id_by_ordinal_v<StructTag, 3>), FieldId{3});
+  EXPECT_EQ((field_id_by_ordinal_v<StructTag, 19>), FieldId{20});
+}
+
 TEST(UnionFieldsTest, Get) {
   test_cpp2::cpp_reflection::union1 u;
   using Tag = type::union_t<test_cpp2::cpp_reflection::union1>;

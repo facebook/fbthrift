@@ -24,12 +24,18 @@ namespace thrift {
 namespace type {
 
 // The type tag for the given type::field_t.
-template <typename Tag>
-using field_type_tag = typename detail::field_to_tag::apply<Tag>::type;
+template <typename FieldTag>
+using field_type_tag = typename detail::field_to_tag::apply<FieldTag>::type;
 
 // The FieldId for the given type::field_t
-template <typename Tag>
-constexpr FieldId field_id_v = FieldId(detail::field_to_id::apply<Tag>::value);
+template <typename FieldTag>
+FOLLY_INLINE_VARIABLE constexpr FieldId field_id_v =
+    FieldId(detail::field_to_id::apply<FieldTag>::value);
+
+// The number of fields in the given struct.
+template <typename StructTag>
+FOLLY_INLINE_VARIABLE constexpr int16_t field_size_v =
+    detail::fields_size<detail::struct_fields<StructTag>>::value;
 
 // field_tag_t<StructTag, Id> is an alias for the field_t of the field in given
 // thrift struct where corresponding field id == Id, or for void if there is no
@@ -37,8 +43,20 @@ constexpr FieldId field_id_v = FieldId(detail::field_to_id::apply<Tag>::value);
 //
 // Compile-time complexity: O(logN) (With O(NlogN) preparation per TU that used
 // this alias since fatal::sort<fields> will be instantiated once in each TU)
-template <class StructTag, FieldId Id>
-using field_tag_by_id = typename detail::field_tag<StructTag, Id>::type;
+template <typename StructTag, FieldId Id>
+using field_tag_by_id = typename detail::field_tag_by_id<StructTag, Id>::type;
+
+template <typename StructTag, int16_t Ordinal>
+using field_tag_by_ordinal =
+    typename detail::field_tag_by_ord<StructTag, Ordinal>::type;
+
+template <typename Structured, int16_t Ordinal>
+FOLLY_INLINE_VARIABLE constexpr FieldId field_id_by_ordinal_v =
+    field_id_v<field_tag_by_ordinal<Structured, Ordinal>>;
+
+template <typename Structured, int16_t Ordinal>
+using field_type_tag_by_ordinal =
+    field_type_tag<field_tag_by_ordinal<Structured, Ordinal>>;
 
 } // namespace type
 } // namespace thrift
