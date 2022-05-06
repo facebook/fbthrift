@@ -15,9 +15,11 @@
  */
 
 include "thrift/lib/thrift/type_rep.thrift"
+include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
 
 cpp_include "<thrift/lib/cpp2/type/BaseType.h>"
+cpp_include "<thrift/lib/cpp2/type/Protocol.h>"
 cpp_include "<thrift/lib/cpp2/type/UniversalHashAlgorithm.h>"
 
 namespace cpp2 apache.thrift.type
@@ -95,6 +97,9 @@ enum UniversalHashAlgorithm {
   cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::UniversalHashAlgorithm, ::apache::thrift::type::UniversalHashAlgorithmEnum>",
 )
 
+@cpp.Adapter{
+  name = "::apache::thrift::InlineAdapter<::apache::thrift::type::Protocol>",
+}
 @thrift.Experimental
 typedef type_rep.ProtocolUnion Protocol (thrift.uri = "")
 

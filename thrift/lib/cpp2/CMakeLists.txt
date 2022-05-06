@@ -307,6 +307,7 @@ add_library(
   transport/rocket/server/RocketStreamClientCallback.cpp
   transport/rocket/server/RocketThriftRequests.cpp
   transport/rocket/server/ThriftRocketServerHandler.cpp
+  type/Protocol.cpp
   type/UniversalName.cpp
   util/Checksum.cpp
   util/DebugString.cpp

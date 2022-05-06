@@ -428,5 +428,18 @@ struct StaticCastAdapter {
   }
 };
 
+// An adapter for types that know how to adapt themselves.
+template <typename T>
+struct InlineAdapter {
+  template <typename U>
+  static decltype(auto) toThrift(U&& obj) {
+    return std::forward<U>(obj).toThrift();
+  }
+  template <typename U>
+  static T fromThrift(U&& val) {
+    return T{std::forward<U>(val)};
+  }
+};
+
 } // namespace thrift
 } // namespace apache
