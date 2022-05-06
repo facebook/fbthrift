@@ -14,8 +14,8 @@
 # limitations under the License.
 
 import unittest
+from unittest import mock
 
-import mock
 from thrift.async_common import AsyncioRpcConnectionContext
 
 
