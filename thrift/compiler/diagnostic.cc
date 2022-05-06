@@ -53,9 +53,6 @@ std::ostream& operator<<(std::ostream& os, const diagnostic& e) {
     os << ":" << e.lineno();
   }
   os << "] ";
-  if (e.level() == diagnostic_level::parse_error && !e.token().empty()) {
-    os << "(last token was '" << e.token() << "')\n";
-  }
   os << e.message();
   if (!e.name().empty()) {
     return os << " [" << e.name() << "]";
@@ -96,7 +93,7 @@ void diagnostics_engine::do_report(
        std::move(msg),
        std::move(file_name),
        static_cast<int>(line),
-       {},
+       legacy_token(),
        std::move(name)});
 }
 

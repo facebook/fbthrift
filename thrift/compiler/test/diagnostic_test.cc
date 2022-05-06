@@ -23,10 +23,10 @@ using namespace apache::thrift::compiler;
 
 TEST(DiagnosticTest, Str) {
   EXPECT_EQ(
-      diagnostic(diagnostic_level::debug, "m", "f", 1, "t").str(),
+      diagnostic(diagnostic_level::debug, "m", "f", 1, legacy_token()).str(),
       "[DEBUG:f:1] m");
   EXPECT_EQ(
-      diagnostic(diagnostic_level::failure, "m", "f", 0, "t").str(),
+      diagnostic(diagnostic_level::failure, "m", "f", 0, legacy_token()).str(),
       "[FAILURE:f] m");
   EXPECT_EQ(
       diagnostic(diagnostic_level::info, "m", "f", 1).str(), "[INFO:f:1] m");
