@@ -1615,11 +1615,15 @@ void GeneratedAsyncProcessor::processInThread(
 template <class F>
 void HandlerCallbackBase::runFuncInQueue(F&& func, bool) {
   assert(getEventBase()->isInEventBaseThread());
-  getThreadManager_deprecated()->add(
-      concurrency::FunctionRunner::create(std::forward<F>(func)),
-      0, // timeout
-      0, // expiration
-      true); // upstream
+  if (auto threadManager = getThreadManager_deprecated()) {
+    threadManager->add(
+        concurrency::FunctionRunner::create(std::forward<F>(func)),
+        0, // timeout
+        0, // expiration
+        true); // upstream
+  } else {
+    getHandlerExecutor()->add(std::forward<F>(func));
+  }
 }
 
 template <typename F, typename T>
