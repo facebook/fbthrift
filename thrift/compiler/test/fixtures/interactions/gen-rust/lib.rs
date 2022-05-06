@@ -1388,7 +1388,7 @@ pub mod services {
                 ];
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt = InteractExn::Success(());
+                let mut alt = ::std::option::Option::None;
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
                     match ((fty, fid as ::std::primitive::i32), once) {
@@ -1398,7 +1398,7 @@ pub mod services {
                         }
                         ((::fbthrift::TType::Void, 0i32), false) => {
                             once = true;
-                            alt = InteractExn::Success(::fbthrift::Deserialize::read(p)?);
+                            alt = ::std::option::Option::Some(InteractExn::Success(::fbthrift::Deserialize::read(p)?));
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
@@ -1416,7 +1416,13 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                ::std::result::Result::Ok(alt)
+                alt.ok_or_else(||
+                    ::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::MissingResult,
+                        format!("Empty union {}", "InteractExn"),
+                    )
+                    .into(),
+                )
             }
         }
 

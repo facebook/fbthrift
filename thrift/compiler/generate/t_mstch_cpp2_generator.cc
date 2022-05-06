@@ -1378,11 +1378,6 @@ class mstch_cpp2_function : public mstch_function {
              &mstch_cpp2_function::stack_arguments},
             {"function:created_interaction",
              &mstch_cpp2_function::created_interaction},
-            {"function:creates_interaction?",
-             &mstch_cpp2_function::creates_interaction},
-            {"function:in_or_creates_interaction?",
-             &mstch_cpp2_function::in_or_creates_interaction},
-            {"function:void?", &mstch_cpp2_function::is_void},
             {"function:sync_returns_by_outparam?",
              &mstch_cpp2_function::sync_returns_by_outparam},
         });
@@ -1399,19 +1394,8 @@ class mstch_cpp2_function : public mstch_function {
   mstch::node stack_arguments() {
     return cpp2::is_stack_arguments(cache_->parsed_options_, *function_);
   }
-  mstch::node creates_interaction() {
-    return !function_->returned_interaction().empty();
-  }
   mstch::node created_interaction() {
     return cpp2::get_name(function_->returned_interaction().get_type());
-  }
-  mstch::node in_or_creates_interaction() {
-    return !function_->returned_interaction().empty() ||
-        function_->is_interaction_member();
-  }
-  mstch::node is_void() {
-    return function_->return_type().deref().is_void() &&
-        !function_->returned_interaction();
   }
   mstch::node sync_returns_by_outparam() {
     return mstch_cpp2_type::is_complex_return(

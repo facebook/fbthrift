@@ -1162,6 +1162,11 @@ class mstch_function : public mstch_base {
             {"function:structured_annotations",
              &mstch_function::structured_annotations},
             {"function:qualifier", &mstch_function::qualifier},
+            {"function:creates_interaction?",
+             &mstch_function::creates_interaction},
+            {"function:in_or_creates_interaction?",
+             &mstch_function::in_or_creates_interaction},
+            {"function:void?", &mstch_function::is_void},
         });
   }
 
@@ -1225,6 +1230,18 @@ class mstch_function : public mstch_base {
       default:
         return std::string("Unspecified");
     }
+  }
+
+  mstch::node creates_interaction() {
+    return !function_->returned_interaction().empty();
+  }
+  mstch::node in_or_creates_interaction() {
+    return !function_->returned_interaction().empty() ||
+        function_->is_interaction_member();
+  }
+  mstch::node is_void() {
+    return function_->return_type().deref().is_void() &&
+        !function_->returned_interaction();
   }
 
  protected:

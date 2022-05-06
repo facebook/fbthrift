@@ -693,7 +693,6 @@ class mstch_rust_function : public mstch_function {
             {"function:rust_name", &mstch_rust_function::rust_name},
             {"function:upcamel", &mstch_rust_function::rust_upcamel},
             {"function:index", &mstch_rust_function::rust_index},
-            {"function:void?", &mstch_rust_function::rust_void},
             {"function:uniqueExceptions",
              &mstch_rust_function::rust_unique_exceptions},
             {"function:uniqueStreamExceptions",
@@ -725,7 +724,6 @@ class mstch_rust_function : public mstch_function {
     return upcamel_name;
   }
   mstch::node rust_index() { return index_; }
-  mstch::node rust_void() { return function_->get_returntype()->is_void(); }
   mstch::node rust_unique_exceptions() {
     return rust_make_unique_exceptions(function_->get_xceptions());
   }
