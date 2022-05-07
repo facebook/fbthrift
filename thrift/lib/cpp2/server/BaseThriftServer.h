@@ -49,6 +49,7 @@
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
 #include <thrift/lib/cpp2/server/ServerFlags.h>
 #include <thrift/lib/cpp2/server/StatusServerInterface.h>
+#include <thrift/lib/cpp2/server/ThreadManagerLoggingWrapper.h>
 
 THRIFT_FLAG_DECLARE_int64(server_default_socket_queue_timeout_ms);
 THRIFT_FLAG_DECLARE_int64(server_default_queue_timeout_ms);
@@ -468,6 +469,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   mutable std::mutex threadManagerMutex_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
+  // we need to make the wrapper stick to the server because the users calling
+  // getThreadManager are relying on the server to maintatin the tm lifetime
+  std::shared_ptr<apache::thrift::ThreadManagerLoggingWrapper>
+      tmLoggingWrapper_;
 
   // If set, the thread factory that should be used to create worker threads.
   std::shared_ptr<concurrency::ThreadFactory> threadFactory_;
@@ -694,7 +699,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   std::shared_ptr<concurrency::ThreadManager> getThreadManager()
       const override {
     std::lock_guard<std::mutex> lock(threadManagerMutex_);
-    return threadManager_;
+    return tmLoggingWrapper_;
   }
 
   /**
