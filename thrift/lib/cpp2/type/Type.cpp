@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/type/AnyType.h>
+#include <thrift/lib/cpp2/type/Type.h>
 
 #include <thrift/lib/cpp2/type/UniversalName.h>
 
@@ -22,7 +22,7 @@ namespace apache {
 namespace thrift {
 namespace type {
 
-std::string&& AnyType::checkName(std::string&& name) {
+std::string&& Type::checkName(std::string&& name) {
   validateUniversalName(name);
   return std::move(name);
 }

@@ -106,7 +106,7 @@ class AnyBase {
   template <typename Tag>
   using AnyData = AnyData<Tag, folly::like_t<I, native_type<Tag>>>;
 
-  constexpr const AnyType& type() const { return type_; }
+  constexpr const Type& type() const { return type_; }
 
   bool empty() const noexcept { return data_.empty(); }
   void clear() noexcept { data_.clear(); }
@@ -117,7 +117,7 @@ class AnyBase {
   }
 
   // Dynamic type constructor.
-  AnyBase(AnyType&& type, Holder&& data) noexcept
+  AnyBase(Type&& type, Holder&& data) noexcept
       : type_(std::move(type)), data_(std::move(data)) {}
 
   // Inplace constructor.
@@ -168,7 +168,7 @@ class AnyBase {
   }
 
  private:
-  AnyType type_;
+  Type type_;
   Holder data_ = AnyData<void_t>{};
 };
 

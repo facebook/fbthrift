@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/type/AnyType.h>
+#include <thrift/lib/cpp2/type/Type.h>
 
 #include <list>
 #include <stdexcept>
@@ -30,17 +30,17 @@
 namespace apache::thrift::type {
 namespace {
 
-struct AnyTypeTestCase {
-  AnyType type;
+struct TypeTestCase {
+  Type type;
   BaseType expected_type;
 };
 
 template <typename Tag, typename... Args>
-AnyTypeTestCase test(Args&&... args) {
-  return {AnyType::create<Tag>(std::forward<Args>(args)...), base_type_v<Tag>};
+TypeTestCase test(Args&&... args) {
+  return {Type::create<Tag>(std::forward<Args>(args)...), base_type_v<Tag>};
 }
 
-std::vector<AnyTypeTestCase> getUniqueNonContainerTypes() {
+std::vector<TypeTestCase> getUniqueNonContainerTypes() {
   return {
       test<void_t>(),
       test<bool_t>(),
@@ -67,10 +67,10 @@ std::vector<AnyTypeTestCase> getUniqueNonContainerTypes() {
   };
 }
 
-std::vector<AnyTypeTestCase> getUniqueContainerTypesOf(
-    const std::vector<AnyTypeTestCase>& keys,
-    const std::vector<AnyTypeTestCase>& values) {
-  std::vector<AnyTypeTestCase> result;
+std::vector<TypeTestCase> getUniqueContainerTypesOf(
+    const std::vector<TypeTestCase>& keys,
+    const std::vector<TypeTestCase>& values) {
+  std::vector<TypeTestCase> result;
   for (const auto& val : values) {
     result.emplace_back(test<list_c>(val.type));
   }
@@ -83,14 +83,14 @@ std::vector<AnyTypeTestCase> getUniqueContainerTypesOf(
   return result;
 }
 
-std::vector<AnyTypeTestCase> getUniqueTypes() {
+std::vector<TypeTestCase> getUniqueTypes() {
   auto unique = getUniqueNonContainerTypes();
   auto uniqueContainer = getUniqueContainerTypesOf(unique, unique);
   unique.insert(unique.end(), uniqueContainer.begin(), uniqueContainer.end());
   return unique;
 }
 
-TEST(AnyTypeTest, Equality) {
+TEST(TypeTest, Equality) {
   auto unique = getUniqueTypes();
   EXPECT_FALSE(unique.empty());
   for (size_t i = 0; i < unique.size(); ++i) {
@@ -101,7 +101,7 @@ TEST(AnyTypeTest, Equality) {
   }
 }
 
-TEST(AnyTypeTest, BaseType) {
+TEST(TypeTest, BaseType) {
   auto unique = getUniqueTypes();
   for (const auto& test : unique) {
     EXPECT_EQ(test.type.base_type(), test.expected_type);
@@ -116,80 +116,59 @@ struct MyStruct {
 
 struct MyAdapter {};
 
-TEST(AnyTypeTest, Create) {
+TEST(TypeTest, Create) {
   EXPECT_EQ(
-      AnyType::create<list<i16_t>>(),
-      AnyType::create<list_c>(AnyType::create<i16_t>()));
+      Type::create<list<i16_t>>(), Type::create<list_c>(Type::create<i16_t>()));
 
   EXPECT_EQ(
-      AnyType::create<set<i16_t>>(),
-      AnyType::create<set_c>(AnyType::create<i16_t>()));
+      Type::create<set<i16_t>>(), Type::create<set_c>(Type::create<i16_t>()));
   EXPECT_EQ(
-      AnyType::create<set<list<i16_t>>>(),
-      AnyType::create<set_c>(AnyType::create<list<i16_t>>()));
+      Type::create<set<list<i16_t>>>(),
+      Type::create<set_c>(Type::create<list<i16_t>>()));
 
   EXPECT_EQ(
-      (AnyType::create<map<string_t, binary_t>>()),
-      AnyType::create<map_c>(
-          AnyType::create<string_t>(), AnyType::create<binary_t>()));
+      (Type::create<map<string_t, binary_t>>()),
+      Type::create<map_c>(Type::create<string_t>(), Type::create<binary_t>()));
   EXPECT_EQ(
-      (AnyType::create<map<set<string_t>, list<binary_t>>>()),
-      AnyType::create<map_c>(
-          AnyType::create<set<string_t>>(), AnyType::create<list<binary_t>>()));
+      (Type::create<map<set<string_t>, list<binary_t>>>()),
+      Type::create<map_c>(
+          Type::create<set<string_t>>(), Type::create<list<binary_t>>()));
   EXPECT_EQ(
-      AnyType::create<struct_t<MyStruct>>(),
-      AnyType::create<struct_c>("domain.com/my/package/MyStruct"));
+      Type::create<struct_t<MyStruct>>(),
+      Type::create<struct_c>("domain.com/my/package/MyStruct"));
   EXPECT_EQ(
-      AnyType::create<union_t<MyStruct>>(),
-      AnyType::create<union_c>("domain.com/my/package/MyStruct"));
+      Type::create<union_t<MyStruct>>(),
+      Type::create<union_c>("domain.com/my/package/MyStruct"));
   EXPECT_EQ(
-      AnyType::create<exception_t<MyStruct>>(),
-      AnyType::create<exception_c>("domain.com/my/package/MyStruct"));
+      Type::create<exception_t<MyStruct>>(),
+      Type::create<exception_c>("domain.com/my/package/MyStruct"));
 }
 
-TEST(AnyTypeTest, Adapted) {
+TEST(TypeTest, Adapted) {
   // Adapted is ignored.
   EXPECT_EQ(
-      (AnyType::create<adapted<MyAdapter, void_t>>()),
-      AnyType::create<void_t>());
+      (Type::create<adapted<MyAdapter, void_t>>()), Type::create<void_t>());
 }
 
-TEST(AnyTypeTest, CppType) {
+TEST(TypeTest, CppType) {
   // CppType is ignored.
-  EXPECT_EQ(
-      (AnyType::create<cpp_type<void, void_t>>()), AnyType::create<void_t>());
+  EXPECT_EQ((Type::create<cpp_type<void, void_t>>()), Type::create<void_t>());
 }
 
-TEST(AnyTypeTest, CustomContainer) {
-  detail::AnyTypeHelper<cpp_type<std::list<int32_t>, list<i32_t>>>::make_type();
-
-  // Custom container type is ignored.
-  EXPECT_EQ(
-      (AnyType::create<cpp_type<std::list<int32_t>, list<i32_t>>>()),
-      AnyType::create<list<i32_t>>());
-  EXPECT_EQ(
-      (AnyType::create<cpp_type<std::set<int32_t>, set<i32_t>>>()),
-      AnyType::create<set<i32_t>>());
-  EXPECT_EQ(
-      (AnyType::create<
-          cpp_type<std::map<int32_t, int32_t>, map<i32_t, i32_t>>>()),
-      (AnyType::create<map<i32_t, i32_t>>()));
-}
-
-TEST(AnyTypeTest, ImplicitConversion) {
-  EXPECT_EQ(list<i16_t>{}, AnyType::create<list_c>(i16_t{}));
-  AnyType type = i16_t{};
-  EXPECT_EQ(type, AnyType::create<i16_t>());
+TEST(TypeTest, ImplicitConversion) {
+  EXPECT_EQ(list<i16_t>{}, Type::create<list_c>(i16_t{}));
+  Type type = i16_t{};
+  EXPECT_EQ(type, Type::create<i16_t>());
   type = void_t{};
-  EXPECT_NE(type, AnyType::create<i16_t>());
-  EXPECT_EQ(type, AnyType());
+  EXPECT_NE(type, Type::create<i16_t>());
+  EXPECT_EQ(type, Type());
 }
 
-TEST(AnyTypeTest, NameValidation) {
-  EXPECT_THROW(AnyType::create<enum_c>("BadName"), std::invalid_argument);
-  EXPECT_THROW(AnyType::create<struct_c>("BadName"), std::invalid_argument);
-  EXPECT_THROW(AnyType::create<union_c>("BadName"), std::invalid_argument);
-  EXPECT_THROW(AnyType::create<exception_c>("BadName"), std::invalid_argument);
+TEST(TypeTest, NameValidation) {
+  EXPECT_THROW(Type::create<enum_c>("BadName"), std::invalid_argument);
+  EXPECT_THROW(Type::create<struct_c>("BadName"), std::invalid_argument);
+  EXPECT_THROW(Type::create<union_c>("BadName"), std::invalid_argument);
+  EXPECT_THROW(Type::create<exception_c>("BadName"), std::invalid_argument);
 }
 
 } // namespace

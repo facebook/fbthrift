@@ -23,12 +23,12 @@
 #include <folly/portability/GTest.h>
 #include <thrift/conformance/if/gen-cpp2/object_fatal_all.h>
 #include <thrift/conformance/if/gen-cpp2/object_types.h>
-#include <thrift/lib/cpp2/type/AnyType.h>
 #include <thrift/lib/cpp2/type/BaseType.h>
 #include <thrift/lib/cpp2/type/Name.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Testing.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
+#include <thrift/lib/cpp2/type/Type.h>
 #include <thrift/lib/thrift/gen-cpp2/type_fatal_all.h>
 #include <thrift/lib/thrift/gen-cpp2/type_types.h>
 
@@ -44,7 +44,7 @@ void testContains() {
       is_concrete_v<Tag> &&
       // TODO(afuller): Support concrete named types.
       !named_types::contains<Tag>()) {
-    EXPECT_EQ(Types::contains(AnyType::create<Tag>().base_type()), Expected);
+    EXPECT_EQ(Types::contains(Type::create<Tag>().base_type()), Expected);
   }
 }
 

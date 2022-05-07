@@ -23,8 +23,8 @@
 #include <folly/lang/Exception.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 #include <thrift/lib/cpp2/op/Compare.h>
-#include <thrift/lib/cpp2/type/AnyType.h>
 #include <thrift/lib/cpp2/type/Traits.h>
+#include <thrift/lib/cpp2/type/Type.h>
 
 namespace apache {
 namespace thrift {
@@ -33,7 +33,7 @@ namespace detail {
 
 // Runtime type information for a Thrift type.
 struct ThriftTypeInfo {
-  const AnyType thriftType;
+  const Type thriftType;
   const std::type_info& cppType;
 
   // ThriftTypeInfo type-erased ~v-table.
