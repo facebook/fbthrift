@@ -32,7 +32,7 @@ import org.apache.thrift.protocol.TSet;
 import org.apache.thrift.protocol.TStruct;
 import org.apache.thrift.protocol.TType;
 
-final class ByteBufTCompactProtocol extends ByteBufTProtocol {
+public final class ByteBufTCompactProtocol extends ByteBufTProtocol {
 
   private static final TStruct ANONYMOUS_STRUCT = new TStruct("");
   private static final TField TSTOP = new TField("", TType.STOP, (short) 0);

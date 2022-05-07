@@ -31,7 +31,7 @@ import org.apache.thrift.protocol.TSet;
 import org.apache.thrift.protocol.TStruct;
 import org.apache.thrift.protocol.TType;
 
-final class ByteBufTBinaryProtocol extends ByteBufTProtocol {
+public final class ByteBufTBinaryProtocol extends ByteBufTProtocol {
   private static final int VERSION_MASK = 0xffff0000;
   private static final int VERSION_1 = 0x80010000;
   private static final TStruct ANONYMOUS_STRUCT = new TStruct();

@@ -261,7 +261,7 @@ public final class SerializerUtil {
     }
   }
 
-  private static ByteBufTProtocol toByteBufProtocol(
+  public static ByteBufTProtocol toByteBufProtocol(
       SerializationProtocol protocol, ByteBuf byteBuf) {
     switch (protocol) {
       case TJSON:
