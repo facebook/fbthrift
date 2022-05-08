@@ -43,10 +43,13 @@ namespace {
 using ::testing::UnorderedElementsAre;
 
 class StandardValidatorTest : public ::testing::Test {
+ public:
+  StandardValidatorTest()
+      : loc(source_mgr.add_string("/path/to/file.thrift", "").start) {}
+
  protected:
   std::vector<diagnostic> validate(
       diagnostic_params params = diagnostic_params::keep_all()) {
-    source_manager source_mgr;
     diagnostic_results results;
     diagnostic_context ctx(source_mgr, results, std::move(params));
     standard_validator()(ctx, program_);
@@ -71,6 +74,8 @@ class StandardValidatorTest : public ::testing::Test {
     return {diagnostic_level::warning, msg, "/path/to/file.thrift", lineno};
   }
 
+  source_manager source_mgr;
+  source_location loc;
   t_program program_{"/path/to/file.thrift"};
 };
 
@@ -364,6 +369,7 @@ TEST_F(StandardValidatorTest, FieldId) {
       std::make_unique<t_field>(t_base_type::t_i64(), "neg_id", -1));
   auto f = std::make_unique<t_field>(t_base_type::t_i64(), "implicit_id");
   f->set_implicit_id(-2);
+  f->set_src_range({loc, loc});
   tstruct->append(std::move(f));
 
   program_.add_struct(std::move(tstruct));
@@ -372,7 +378,7 @@ TEST_F(StandardValidatorTest, FieldId) {
       UnorderedElementsAre(
           failure(-1, "Zero value (0) not allowed as a field id for `zero_id`"),
           warning(
-              -1,
+              1,
               "No field id specified for `implicit_id`, resulting protocol may have conflicts or not be backwards compatible!")));
 }
 

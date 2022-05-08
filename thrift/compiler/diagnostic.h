@@ -163,6 +163,17 @@ struct diagnostic_params {
   static diagnostic_params keep_all() { return {true, true, 2}; }
 };
 
+// A source location used in diagnostic reporting functions to support AST nodes
+// without adding a dependency on AST.
+struct diagnostic_location {
+  source_location loc;
+
+  diagnostic_location(source_location l) : loc(l) {}
+
+  template <typename T>
+  diagnostic_location(const T& locatable) : loc(locatable.src_range().begin) {}
+};
+
 // A class used by the Thrift compiler to report diagnostics.
 class diagnostics_engine {
  public:
@@ -195,25 +206,39 @@ class diagnostics_engine {
 
   template <typename... T>
   void report(
-      source_location loc,
+      diagnostic_location loc,
       diagnostic_level level,
       fmt::format_string<T...> msg,
       T&&... args) {
-    do_report(loc, {}, level, fmt::format(msg, std::forward<T>(args)...));
+    do_report(loc.loc, {}, level, fmt::format(msg, std::forward<T>(args)...));
   }
 
   template <typename... T>
   void report(
-      source_location loc,
+      diagnostic_location loc,
       std::string name,
       diagnostic_level level,
       fmt::format_string<T...> msg,
       T&&... args) {
     do_report(
-        loc,
+        loc.loc,
         std::move(name),
         level,
         fmt::format(msg, std::forward<T>(args)...));
+  }
+
+  template <typename... T>
+  void warning(
+      diagnostic_location loc, fmt::format_string<T...> msg, T&&... args) {
+    report(loc.loc, diagnostic_level::warning, msg, std::forward<T>(args)...);
+  }
+
+  template <typename... T>
+  void warning_legacy_strict(
+      diagnostic_location loc, fmt::format_string<T...> msg, T&&... args) {
+    if (params().warn_level >= 2) {
+      warning(loc.loc, msg, std::forward<T>(args)...);
+    }
   }
 
  private:

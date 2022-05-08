@@ -97,11 +97,11 @@ void validate_annotation_scopes(diagnostic_context& ctx, const t_named& node) {
 
     if (allowed.types.empty()) {
       // Warn that the annotation isn't marked as such.
-      ctx.warning_legacy_strict(*annot, [&](auto& o) {
-        o << "Using `" << annot_type->name()
-          << "` as an annotation, even though it has not been enabled for any "
-             "annotation scope.";
-      });
+      ctx.warning_legacy_strict(
+          annot->src_range().begin,
+          "Using `{}` as an annotation, even though it has not been enabled "
+          "for any annotation scope.",
+          annot_type->name());
     } else if (allowed.types.find(typeid(node)) == allowed.types.end()) {
       // Type mismatch.
       ctx.failure(*annot, [&](auto& o) {

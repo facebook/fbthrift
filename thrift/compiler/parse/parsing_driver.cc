@@ -122,8 +122,9 @@ void parsing_driver::parse_file() {
   assert(!ctx_.visiting());
   ctx_.begin_visit(*program);
   try {
-    lexer_ = std::make_unique<lexer>(
-        *lex_handler_, ctx_, source_mgr_->add_file(path));
+    source src = source_mgr_->add_file(path);
+    lexer_ = std::make_unique<lexer>(*lex_handler_, ctx_, src);
+    program->set_src_range({src.start, src.start});
     reset_locations();
   } catch (const std::runtime_error& ex) {
     end_parsing(ex.what());
@@ -265,9 +266,8 @@ void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
 
 void parsing_driver::clear_doctext() {
   if (doctext && mode == parsing_mode::PROGRAM) {
-    ctx_.warning_legacy_strict([&](auto& o) {
-      o << "Uncaptured doctext at on line " << doctext_lineno << ".";
-    });
+    ctx_.warning_legacy_strict(
+        location(), "uncaptured doctext on line {}", doctext_lineno);
   }
 
   doctext = boost::none;
@@ -426,9 +426,8 @@ bool parsing_driver::require_experimental_feature(const char* feature) {
   assert(feature != std::string("all"));
   if (params.allow_experimental_features.count("all") ||
       params.allow_experimental_features.count(feature)) {
-    ctx_.warning_legacy_strict([&](auto& o) {
-      o << "'" << feature << "' is an experimental feature.";
-    });
+    ctx_.warning_legacy_strict(
+        location(), "'{}' is an experimental feature", feature);
     return true;
   }
   failure(location(), "'{}' is an experimental feature.", feature);
@@ -480,11 +479,12 @@ void parsing_driver::reset_locations() {
 }
 
 std::unique_ptr<t_const> parsing_driver::new_struct_annotation(
-    std::unique_ptr<t_const_value> const_struct) {
+    std::unique_ptr<t_const_value> const_struct, const source_range& range) {
   auto ttype = const_struct->ttype(); // Copy the t_type_ref.
   auto result = std::make_unique<t_const>(
       program, std::move(ttype), "", std::move(const_struct));
   result->set_lineno(get_lineno());
+  result->set_src_range(range);
   return result;
 }
 
@@ -635,7 +635,7 @@ t_ref<t_named> parsing_driver::add_def(std::unique_ptr<t_named> node) {
   return result;
 }
 
-void parsing_driver::add_include(std::string name) {
+void parsing_driver::add_include(std::string name, const source_range& range) {
   if (mode != parsing_mode::INCLUDES) {
     return;
   }
@@ -644,12 +644,14 @@ void parsing_driver::add_include(std::string name) {
   assert(!path.empty()); // Should have throw an exception if not found.
 
   if (program_cache.find(path) == program_cache.end()) {
-    auto included_program = program->add_include(path, name, get_lineno());
+    auto included_program =
+        program->add_include(path, name, get_lineno(), range);
     program_cache[path] = included_program.get();
     program_bundle->add_program(std::move(included_program));
   } else {
     auto include = std::make_unique<t_include>(program_cache[path]);
     include->set_lineno(get_lineno());
+    include->set_src_range(range);
     program->add_include(std::move(include));
   }
 }
@@ -710,29 +712,26 @@ void parsing_driver::maybe_allocate_field_id(
        * protocol compatibility.
        */
       if (field.id() != next_id) {
-        /*
-         * warn if the user-specified negative value isn't what
-         * thrift would have auto-assigned.
-         */
-        ctx_.warning(field, [&](auto& o) {
-          o << "Nonpositive field id (" << field.id()
-            << ") differs from what would "
-            << "be auto-assigned by thrift (" << next_id << ").";
-        });
+        ctx_.warning(
+            field,
+            "Nonpositive field id ({}) differs from what would be "
+            "auto-assigned by thrift ({}).",
+            field.id(),
+            next_id);
       }
     } else if (field.id() == next_id) {
-      ctx_.warning(field, [&](auto& o) {
-        o << "Nonpositive value (" << field.id()
-          << ") not allowed as a field id.";
-      });
+      ctx_.warning(
+          field,
+          "Nonpositive value ({}) not allowed as a field id.",
+          field.id());
     } else {
       // TODO(afuller): Make ignoring the user provided value a failure.
-      ctx_.warning(field, [&](auto& o) {
-        o << "Nonpositive field id (" << field.id()
-          << ") differs from what is auto-"
-             "assigned by thrift. The id must be positive or "
-          << next_id << ".";
-      });
+      ctx_.warning(
+          field,
+          "Nonpositive field id ({}) differs from what is auto-assigned by "
+          "thrift. The id must be positive or {}.",
+          field.id(),
+          next_id);
       // Ignore user provided value and auto assign an id.
       allocate_field_id(next_id, field);
     }

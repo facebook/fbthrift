@@ -38,7 +38,9 @@ namespace {
 
 class ScopeValidatorTest : public ::testing::Test {
  public:
-  ScopeValidatorTest() : program{"path/to/file.thrift"} {
+  ScopeValidatorTest()
+      : loc(source_mgr.add_string("path/to/file.thrift", "").start),
+        program{"path/to/file.thrift"} {
     program.set_name("MyProgram");
     scopeProgram.set_uri("facebook.com/thrift/annotation/Program");
     scopeStruct.set_uri("facebook.com/thrift/annotation/Struct");
@@ -99,7 +101,7 @@ class ScopeValidatorTest : public ::testing::Test {
   }
 
   void annotateWithAll(t_named& node) {
-    for (auto* annot : all_annots) {
+    for (const auto* annot : all_annots) {
       node.add_structured_annotation(inst(annot));
     }
     node.add_structured_annotation(inst(&annotUnscoped));
@@ -140,19 +142,23 @@ class ScopeValidatorTest : public ::testing::Test {
   t_struct annotMyNonTransitiveStructured{
       nullptr, "MyNonTransitiveStructuredAnnot"};
   t_struct annotMyNestedStructured{nullptr, "MyNestedStructuredAnnot"};
-  std::vector<const t_struct*> all_annots;
+  std::vector<t_struct*> all_annots;
 
+  source_manager source_mgr;
+  source_location loc;
   t_program program{"path/to/file.thrift"};
 
   std::unique_ptr<t_const> inst(const t_struct* ttype) {
     auto value = std::make_unique<t_const_value>();
     value->set_map();
     value->set_ttype(t_type_ref::from_ptr(ttype));
-    return std::make_unique<t_const>(&program, ttype, "", std::move(value));
+    auto result =
+        std::make_unique<t_const>(&program, ttype, "", std::move(value));
+    result->set_src_range({loc, loc});
+    return result;
   }
 
   diagnostic_results validate(const t_named& node) {
-    source_manager source_mgr;
     diagnostic_results results;
     diagnostic_context ctx(source_mgr, results, diagnostic_params::keep_all());
     ctx.begin_visit(program);
@@ -179,7 +185,7 @@ class ScopeValidatorTest : public ::testing::Test {
         diagnostic_level::warning,
         "Using `UnscopedAnnot` as an annotation, even though it has not been enabled for any annotation scope.",
         "path/to/file.thrift",
-        -1);
+        1);
     EXPECT_THAT(result.diagnostics(), ::testing::ContainerEq(expected));
   }
 };
@@ -270,7 +276,7 @@ TEST_F(ScopeValidatorTest, StructWithNonTransitiveStructuredScope) {
       {diagnostic_level::warning,
        "Using `MyNonTransitiveStructuredAnnot` as an annotation, even though it has not been enabled for any annotation scope.",
        "path/to/file.thrift",
-       -1}};
+       1}};
   EXPECT_THAT(result.diagnostics(), ::testing::ContainerEq(expected));
 }
 
@@ -282,7 +288,7 @@ TEST_F(ScopeValidatorTest, FieldWithNonTransitiveStructuredScope) {
       {diagnostic_level::warning,
        "Using `MyNonTransitiveStructuredAnnot` as an annotation, even though it has not been enabled for any annotation scope.",
        "path/to/file.thrift",
-       -1}};
+       1}};
   EXPECT_THAT(result.diagnostics(), ::testing::ContainerEq(expected));
 }
 } // namespace

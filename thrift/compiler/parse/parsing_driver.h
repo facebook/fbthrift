@@ -301,7 +301,7 @@ class parsing_driver {
       t_node* node, std::unique_ptr<t_annotations> annotations);
 
   std::unique_ptr<t_const> new_struct_annotation(
-      std::unique_ptr<t_const_value> const_struct);
+      std::unique_ptr<t_const_value> const_struct, const source_range& range);
 
   std::unique_ptr<t_throws> new_throws(
       std::unique_ptr<t_field_list> exceptions);
@@ -340,7 +340,7 @@ class parsing_driver {
   // Adds a definition to the program.
   t_ref<t_named> add_def(std::unique_ptr<t_named> node);
 
-  void add_include(std::string name);
+  void add_include(std::string name, const source_range& range);
   void set_package(std::string name);
 
   t_field_id to_field_id(int64_t int_const) {

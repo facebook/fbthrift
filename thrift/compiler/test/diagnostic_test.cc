@@ -21,7 +21,7 @@
 
 using namespace apache::thrift::compiler;
 
-TEST(DiagnosticTest, Str) {
+TEST(DiagnosticTest, str) {
   EXPECT_EQ(
       diagnostic(diagnostic_level::debug, "m", "f", 1, legacy_token()).str(),
       "[DEBUG:f:1] m");
@@ -48,7 +48,7 @@ class DiagnosticsEngineTest : public ::testing::Test {
         src(source_mgr.add_string("path/to/file.thrift", "")) {}
 };
 
-TEST_F(DiagnosticsEngineTest, KeepDebug) {
+TEST_F(DiagnosticsEngineTest, keep_debug) {
   // Not reported by default.
   diags.report(src.start, diagnostic_level::debug, "hi");
   EXPECT_THAT(results.diagnostics(), testing::IsEmpty());
@@ -61,7 +61,7 @@ TEST_F(DiagnosticsEngineTest, KeepDebug) {
           diagnostic(diagnostic_level::debug, "hi", "path/to/file.thrift", 1)));
 }
 
-TEST_F(DiagnosticsEngineTest, KeepInfo) {
+TEST_F(DiagnosticsEngineTest, keep_info) {
   // Not reported by default.
   diags.report(src.start, diagnostic_level::info, "hi");
   EXPECT_THAT(results.diagnostics(), ::testing::IsEmpty());
@@ -74,7 +74,35 @@ TEST_F(DiagnosticsEngineTest, KeepInfo) {
           diagnostic(diagnostic_level::info, "hi", "path/to/file.thrift", 1)));
 }
 
-TEST(DiagnosticResultsTest, Empty) {
+TEST_F(DiagnosticsEngineTest, warning_level) {
+  // Strict not reported by default.
+  diags.warning(src.start, "hi");
+  diags.warning_legacy_strict(src.start, "bye");
+  EXPECT_THAT(
+      results.diagnostics(),
+      ::testing::ElementsAre(diagnostic(
+          diagnostic_level::warning, "hi", "path/to/file.thrift", 1)));
+  results = {};
+
+  // Not reported.
+  diags.params().warn_level = 0;
+  diags.warning(src.start, "hi");
+  diags.warning_legacy_strict(src.start, "bye");
+  EXPECT_THAT(results.diagnostics(), ::testing::IsEmpty());
+
+  // Both reported.
+  diags.params().warn_level = 2;
+  diags.warning(src.start, "hi");
+  diags.warning_legacy_strict(src.start, "bye");
+  EXPECT_THAT(
+      results.diagnostics(),
+      ::testing::ElementsAre(
+          diagnostic(diagnostic_level::warning, "hi", "path/to/file.thrift", 1),
+          diagnostic(
+              diagnostic_level::warning, "bye", "path/to/file.thrift", 1)));
+}
+
+TEST(DiagnosticResultsTest, empty) {
   diagnostic_results results;
   EXPECT_FALSE(results.has_failure());
   for (int i = 0; i <= static_cast<int>(diagnostic_level::debug); ++i) {
@@ -82,7 +110,7 @@ TEST(DiagnosticResultsTest, Empty) {
   }
 }
 
-TEST(DiagnosticResultsTest, Count) {
+TEST(DiagnosticResultsTest, count) {
   diagnostic_results results;
   for (int i = 0; i <= static_cast<int>(diagnostic_level::debug); ++i) {
     auto level = static_cast<diagnostic_level>(i);

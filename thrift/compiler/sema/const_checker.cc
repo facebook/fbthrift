@@ -98,9 +98,9 @@ class const_checker {
     ctx_.failure(node_, std::forward<Args>(args)...);
   }
 
-  template <typename... Args>
-  void warning(Args&&... args) {
-    ctx_.warning(node_, std::forward<Args>(args)...);
+  template <typename... T>
+  void warning(fmt::format_string<T...> msg, T&&... args) {
+    ctx_.warning(node_, msg, std::forward<T>(args)...);
   }
 
   void report_value_precision() {
@@ -125,10 +125,11 @@ class const_checker {
   }
 
   void report_type_mismatch_warning(const char* expected) {
-    warning([&](auto& o) {
-      o << "type error: const `" << name_ << "` was declared as " << expected
-        << ". This will become an error in future versions of thrift.";
-    });
+    warning(
+        "type error: const `{}` was declared as {}. This will become an error "
+        "in future versions of thrift.",
+        name_,
+        expected);
   }
 
   // For CV_INTEGER, an overflow of int64_t is checked in the parser;
@@ -233,12 +234,11 @@ class const_checker {
     }
 
     if (type->find_value(value->get_integer()) == nullptr) {
-      warning([&](auto& o) {
-        o << "type error: const `" << name_ << "` was declared as enum `"
-          << type->name()
-          << "` with a value"
-             " not of that enum.";
-      });
+      warning(
+          "type error: const `{}` was declared as enum `{}` with a value not "
+          "of that enum.",
+          name_,
+          type->name());
     }
   }
 
@@ -296,9 +296,7 @@ class const_checker {
   void check_map(const t_map* type, const t_const_value* value) {
     if (value->get_type() == t_const_value::CV_LIST &&
         value->get_list().empty()) {
-      warning([&](auto& o) {
-        o << "type error: map `" << name_ << "` initialized with empty list.";
-      });
+      warning("type error: map `{}` initialized with empty list.", name_);
       return;
     }
     if (value->get_type() != t_const_value::CV_MAP) {
@@ -316,9 +314,7 @@ class const_checker {
   void check_list(const t_list* type, const t_const_value* value) {
     if (value->get_type() == t_const_value::CV_MAP &&
         value->get_map().empty()) {
-      warning([&](auto& o) {
-        o << "type error: list `" << name_ << "` initialized with empty map.";
-      });
+      warning("type error: list `{}` initialized with empty map.", name_);
       return;
     }
     if (value->get_type() != t_const_value::CV_LIST) {
@@ -331,9 +327,7 @@ class const_checker {
   void check_set(const t_set* type, const t_const_value* value) {
     if (value->get_type() == t_const_value::CV_MAP &&
         value->get_map().empty()) {
-      warning([&](auto& o) {
-        o << "type error: set `" << name_ << "` initialized with empty map.";
-      });
+      warning("type error: set `{}` initialized with empty map.", name_);
       return;
     }
     if (value->get_type() != t_const_value::CV_LIST) {

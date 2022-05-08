@@ -328,10 +328,10 @@ void validate_ref_field_attributes(
 
   if (node.qualifier() != t_field_qualifier::optional &&
       dynamic_cast<const t_union*>(ctx.parent()) == nullptr) {
-    ctx.warning([&](auto& o) {
-      o << "`cpp.ref` field `" << node.name()
-        << "` must be optional if it is recursive.";
-    });
+    ctx.warning(
+        node,
+        "`cpp.ref` field `{}` must be optional if it is recursive.",
+        node.name());
   }
 }
 
@@ -415,11 +415,11 @@ void validate_uri_uniqueness(diagnostic_context& ctx, const t_program& prog) {
 
 void validate_field_id(diagnostic_context& ctx, const t_field& node) {
   if (node.explicit_id() != node.id()) {
-    ctx.warning([&](auto& o) {
-      o << "No field id specified for `" << node.name()
-        << "`, resulting protocol may"
-        << " have conflicts or not be backwards compatible!";
-    });
+    ctx.warning(
+        node,
+        "No field id specified for `{}`, resulting protocol may have conflicts "
+        "or not be backwards compatible!",
+        node.name());
   }
 
   ctx.failure_if(
@@ -506,10 +506,11 @@ void validate_box_annotation(
 
   for (const auto& field : node.fields()) {
     if (field.has_annotation({"cpp.box", "thrift.box"})) {
-      ctx.warning([&](auto& o) {
-        o << "Cpp.box and thrift.box are deprecated. Please use @thrift.Box annotation instead in `"
-          << field.name() << "`.";
-      });
+      ctx.warning(
+          field,
+          "cpp.box and thrift.box are deprecated. Please use @thrift.Box "
+          "annotation instead in `{}`.",
+          field.name());
     }
   }
 }
@@ -528,11 +529,11 @@ void validate_ref_unique_and_box_annotation(
             << node.name() << "` with @cpp.Adapter.";
         });
       } else {
-        ctx.warning([&](auto& o) {
-          o << "cpp.ref, cpp2.ref "
-            << "are deprecated. Please use @thrift.Box annotation instead in `"
-            << node.name() << "`.";
-        });
+        ctx.warning(
+            node,
+            "cpp.ref, cpp2.ref are deprecated. Please use @thrift.Box "
+            "annotation instead in `{}`.",
+            node.name());
       }
     }
     if (node.has_annotation({"cpp.ref_type", "cpp2.ref_type"})) {
@@ -543,11 +544,12 @@ void validate_ref_unique_and_box_annotation(
             << node.name() << "` with @cpp.Adapter.";
         });
       } else {
-        ctx.warning([&](auto& o) {
-          o << "cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
-            << "are deprecated. Please use @thrift.Box annotation instead in `"
-            << node.name() << "`.";
-        });
+        ctx.warning(
+            node,
+            "cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
+            "are deprecated. Please use @thrift.Box annotation instead in "
+            "`{}`.",
+            node.name());
       }
     }
     if (node.find_structured_annotation_or_null(kCppRefUri) != nullptr) {
@@ -558,11 +560,11 @@ void validate_ref_unique_and_box_annotation(
             << node.name() << "` with @cpp.Adapter.";
         });
       } else {
-        ctx.warning([&](auto& o) {
-          o << "@cpp.Ref{type = cpp.RefType.Unique} "
-            << "is deprecated. Please use @thrift.Box annotation instead in `"
-            << node.name() << "`.";
-        });
+        ctx.warning(
+            node,
+            "@cpp.Ref{{type = cpp.RefType.Unique}} is deprecated. Please use "
+            "@thrift.Box annotation instead in `{}`.",
+            node.name());
       }
     }
   }
@@ -593,10 +595,11 @@ void validate_exception_php_annotations(
   for (const auto& annotation : annotations) {
     if (node.get_field_by_name(annotation) != nullptr &&
         strcmp(annotation, node.get_annotation(annotation).c_str()) != 0) {
-      ctx.warning([&](auto& o) {
-        o << "Some generators (e.g. PHP) will ignore annotation '" << annotation
-          << "' as it is also used as field";
-      });
+      ctx.warning(
+          node,
+          "Some generators (e.g. PHP) will ignore annotation '{}' as it is "
+          "also used as field",
+          annotation);
     }
   }
 

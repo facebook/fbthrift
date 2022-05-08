@@ -394,7 +394,7 @@ Header:
   tok_include tok_literal
     {
       driver.debug("Header -> tok_include tok_literal");
-      driver.add_include(std::move($2));
+      driver.add_include(std::move($2), {@1.begin, @2.end});
       $$ = t_header_type::standard;
     }
 | tok_package tok_literal
@@ -764,6 +764,8 @@ Exception:
         "Identifier {{ FieldList }}");
       // TODO(afuller): Correct resulting source_loc.begin when safety qualifier is omitted.
       $$ = new t_exception(driver.program, std::move($5));
+      @$ = driver.compute_location({@1, @2, @3, @4, @8});
+      $$->set_src_range(@$);
       $$->set_safety($1);
       $$->set_kind($2);
       $$->set_blame($3);
@@ -913,6 +915,7 @@ Field:
       $$->set_qualifier($2);
       $$->set_default_value(own($5));
       $$->set_lineno(driver.get_lineno(@4.end));
+      $$->set_src_range(@$);
     }
 
 FieldAnnotated:
@@ -1183,7 +1186,7 @@ StructuredAnnotation:
   "@" ConstStruct
     {
       driver.debug("StructuredAnnotation => @ConstStruct");
-      $$ = driver.new_struct_annotation(own($2)).release();
+      $$ = driver.new_struct_annotation(own($2), {@1.begin, @2.end}).release();
     }
 | "@" ConstStructType
     {
@@ -1191,7 +1194,7 @@ StructuredAnnotation:
       auto value = std::make_unique<t_const_value>();
       value->set_map();
       value->set_ttype(std::move($2));
-      $$ = driver.new_struct_annotation(std::move(value)).release();
+      $$ = driver.new_struct_annotation(std::move(value), {@1.begin, @2.end}).release();
     }
 
 IntOrLiteral:

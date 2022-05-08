@@ -191,7 +191,10 @@ class t_program : public t_named {
    * @param lineno       - The line number of the include statement
    */
   std::unique_ptr<t_program> add_include(
-      std::string path, std::string include_site, int lineno);
+      std::string path,
+      std::string include_site,
+      int lineno,
+      const source_range& range);
 
   void add_include(std::unique_ptr<t_include> include) {
     includes_.push_back(include.get());

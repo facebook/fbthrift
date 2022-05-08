@@ -99,16 +99,7 @@ class diagnostic_context : public diagnostics_engine,
       decltype(std::declval<With&>()(std::declval<std::ostream&>()));
 
  public:
-  explicit diagnostic_context(
-      source_manager& sm,
-      std::function<void(diagnostic)> report_cb,
-      diagnostic_params params = {})
-      : diagnostics_engine(sm, std::move(report_cb), std::move(params)) {}
-  explicit diagnostic_context(
-      source_manager& sm,
-      diagnostic_results& results,
-      diagnostic_params params = {})
-      : diagnostics_engine(sm, results, std::move(params)) {}
+  using diagnostics_engine::diagnostics_engine;
 
   static diagnostic_context ignore_all(source_manager& sm) {
     return diagnostic_context(
@@ -222,19 +213,6 @@ class diagnostic_context : public diagnostics_engine,
   template <typename... Args>
   void check(bool cond, Args&&... args) {
     failure_if(!cond, std::forward<Args>(args)...);
-  }
-
-  template <typename... Args>
-  void warning(Args&&... args) {
-    report(diagnostic_level::warning, std::forward<Args>(args)...);
-  }
-
-  template <typename... Args>
-  void warning_legacy_strict(Args&&... args) {
-    if (params().warn_level < 2) {
-      return;
-    }
-    warning(std::forward<Args>(args)...);
   }
 
  private:
