@@ -49,3 +49,12 @@ struct Any {
   // moves cheaper (profile to see if this is better).
   5: type_rep.ByteBuffer data;
 } (rust.ord)
+
+// Typedef for Any.
+// LazyAny provides higher level APIs and hides all internal complexity of Any.
+// LazyAny should be used instead of Any.
+@java.Adapter{
+  adapterClassName = "com.facebook.thrift.any.LazyAnyAdapter",
+  typeClassName = "com.facebook.thrift.any.LazyAny",
+}
+typedef Any LazyAny
