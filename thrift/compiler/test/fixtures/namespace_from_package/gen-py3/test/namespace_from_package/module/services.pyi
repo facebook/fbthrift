@@ -10,7 +10,7 @@ import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
 from abc import abstractmethod, ABCMeta
 
-import test.namespace_from_package.module.module.types as _test_namespace_from_package_module_module_types
+import test.namespace_from_package.module.types as _test_namespace_from_package_module_types
 
 _TestServiceInterfaceT = _typing.TypeVar('_TestServiceInterfaceT', bound='TestServiceInterface')
 

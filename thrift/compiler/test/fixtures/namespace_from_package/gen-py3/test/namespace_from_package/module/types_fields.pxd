@@ -39,17 +39,17 @@ from thrift.py3.types cimport (
 from folly.optional cimport cOptional as __cOptional
 
 
-cimport test.namespace_from_package.module.module.types as _test_namespace_from_package_module_module_types
+cimport test.namespace_from_package.module.types as _test_namespace_from_package_module_types
 
 
 
 ctypedef void (*__Foo_FieldsSetterFunc)(__Foo_FieldsSetter, object) except *
 
 cdef class __Foo_FieldsSetter(__StructFieldsSetter):
-    cdef _test_namespace_from_package_module_module_types.cFoo* _struct_cpp_obj
+    cdef _test_namespace_from_package_module_types.cFoo* _struct_cpp_obj
     cdef cumap[__cstring_view, __Foo_FieldsSetterFunc] _setters
 
     @staticmethod
-    cdef __Foo_FieldsSetter _fbthrift_create(_test_namespace_from_package_module_module_types.cFoo* struct_cpp_obj)
+    cdef __Foo_FieldsSetter _fbthrift_create(_test_namespace_from_package_module_types.cFoo* struct_cpp_obj)
     cdef void _set_field_0(self, _fbthrift_value) except *
 

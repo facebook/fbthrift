@@ -51,10 +51,10 @@ import folly.iobuf as _fbthrift_iobuf
 from folly.iobuf cimport move as move_iobuf
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
-cimport test.namespace_from_package.module.module.types as _test_namespace_from_package_module_module_types
-import test.namespace_from_package.module.module.types as _test_namespace_from_package_module_module_types
+cimport test.namespace_from_package.module.types as _test_namespace_from_package_module_types
+import test.namespace_from_package.module.types as _test_namespace_from_package_module_types
 
-cimport test.namespace_from_package.module.module.services_reflection as _services_reflection
+cimport test.namespace_from_package.module.services_reflection as _services_reflection
 
 import asyncio
 import functools
@@ -62,7 +62,7 @@ import sys
 import traceback
 import types as _py_types
 
-from test.namespace_from_package.module.module.services_wrapper cimport cTestServiceInterface
+from test.namespace_from_package.module.services_wrapper cimport cTestServiceInterface
 
 
 

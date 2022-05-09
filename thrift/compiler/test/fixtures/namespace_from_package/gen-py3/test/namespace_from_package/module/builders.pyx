@@ -5,7 +5,7 @@
 #  @generated
 #
 cdef class Foo_Builder(thrift.py3.builder.StructBuilder):
-    _struct_type = _test_namespace_from_package_module_module_types.Foo
+    _struct_type = _test_namespace_from_package_module_types.Foo
 
     def __iter__(self):
         yield "MyInt", self.MyInt

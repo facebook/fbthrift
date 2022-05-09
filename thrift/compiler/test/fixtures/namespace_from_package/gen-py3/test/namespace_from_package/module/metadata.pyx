@@ -13,7 +13,7 @@ from apache.thrift.metadata.types cimport (
     ThriftMetadata,
 )
 
-from test.namespace_from_package.module.module.metadata cimport cGetThriftModuleMetadata
+from test.namespace_from_package.module.metadata cimport cGetThriftModuleMetadata
 
 def getThriftModuleMetadata():
     cdef shared_ptr[cThriftMetadata] metadata

@@ -7,4 +7,4 @@
 
 # lint-ignore-every F403 This is just a temporary measure
 # lint-ignore-every F401
-from test.namespace_from_package.module.module.lite_services import *  # noqa F403 F401
+from test.namespace_from_package.module.lite_metadata import *  # noqa F403 F401

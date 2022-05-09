@@ -12,7 +12,7 @@ import thrift.py3.common
 import typing as _typing
 from types import TracebackType
 
-import test.namespace_from_package.module.module.types as _test_namespace_from_package_module_module_types
+import test.namespace_from_package.module.types as _test_namespace_from_package_module_types
 
 
 _TestServiceT = _typing.TypeVar('_TestServiceT', bound='TestService')

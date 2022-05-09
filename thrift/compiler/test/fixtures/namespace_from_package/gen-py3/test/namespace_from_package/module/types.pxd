@@ -39,7 +39,7 @@ from thrift.py3.common cimport (
 )
 from folly.optional cimport cOptional as __cOptional
 
-cimport test.namespace_from_package.module.module.types_fields as _fbthrift_types_fields
+cimport test.namespace_from_package.module.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/module/types.h":
   pass

@@ -16,8 +16,8 @@ from thrift.python.client import (
 )
 import thrift.python.exceptions as _fbthrift_py3lite_exceptions
 import thrift.python.types as _fbthrift_py3lite_types
-import test.namespace_from_package.module.module.lite_types
-import test.namespace_from_package.module.module.lite_metadata
+import test.namespace_from_package.module.lite_types
+import test.namespace_from_package.module.lite_metadata
 
 
 class TestService(_fbthrift_py3lite_Client["TestService.Async", "TestService.Sync"]):
@@ -27,7 +27,7 @@ class TestService(_fbthrift_py3lite_Client["TestService.Async", "TestService.Syn
 
     @staticmethod
     def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
-        return test.namespace_from_package.module.module.lite_metadata.gen_metadata_service_TestService()
+        return test.namespace_from_package.module.lite_metadata.gen_metadata_service_TestService()
 
     class Async(_fbthrift_py3lite_AsyncClient):
         @staticmethod
@@ -36,7 +36,7 @@ class TestService(_fbthrift_py3lite_Client["TestService.Async", "TestService.Syn
 
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
-            return test.namespace_from_package.module.module.lite_metadata.gen_metadata_service_TestService()
+            return test.namespace_from_package.module.lite_metadata.gen_metadata_service_TestService()
 
         async def init(
             self,
@@ -45,9 +45,9 @@ class TestService(_fbthrift_py3lite_Client["TestService.Async", "TestService.Syn
             resp = await self._send_request(
                 "TestService",
                 "init",
-                test.namespace_from_package.module.module.lite_types._fbthrift_TestService_init_args(
+                test.namespace_from_package.module.lite_types._fbthrift_TestService_init_args(
                     int1=int1,),
-                test.namespace_from_package.module.module.lite_types._fbthrift_TestService_init_result,
+                test.namespace_from_package.module.lite_types._fbthrift_TestService_init_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:
@@ -65,7 +65,7 @@ class TestService(_fbthrift_py3lite_Client["TestService.Async", "TestService.Syn
 
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
-            return test.namespace_from_package.module.module.lite_metadata.gen_metadata_service_TestService()
+            return test.namespace_from_package.module.lite_metadata.gen_metadata_service_TestService()
 
         def init(
             self,
@@ -74,9 +74,9 @@ class TestService(_fbthrift_py3lite_Client["TestService.Async", "TestService.Syn
             resp = self._send_request(
                 "TestService",
                 "init",
-                test.namespace_from_package.module.module.lite_types._fbthrift_TestService_init_args(
+                test.namespace_from_package.module.lite_types._fbthrift_TestService_init_args(
                     int1=int1,),
-                test.namespace_from_package.module.module.lite_types._fbthrift_TestService_init_result,
+                test.namespace_from_package.module.lite_types._fbthrift_TestService_init_result,
             )
             # shortcut to success path for non-void returns
             if resp.success is not None:

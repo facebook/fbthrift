@@ -15,7 +15,7 @@ from thrift.py3.reflection cimport (
 )
 
 
-cimport test.namespace_from_package.module.module.types as _test_namespace_from_package_module_module_types
+cimport test.namespace_from_package.module.types as _test_namespace_from_package_module_types
 
 from thrift.py3.types cimport (
     constant_shared_ptr,
@@ -24,9 +24,9 @@ from thrift.py3.types cimport (
 
 
 cdef __StructSpec get_reflection__Foo():
-    cdef _test_namespace_from_package_module_module_types.Foo defaults = _test_namespace_from_package_module_module_types.Foo._fbthrift_create(
-        constant_shared_ptr[_test_namespace_from_package_module_module_types.cFoo](
-            default_inst[_test_namespace_from_package_module_module_types.cFoo]()
+    cdef _test_namespace_from_package_module_types.Foo defaults = _test_namespace_from_package_module_types.Foo._fbthrift_create(
+        constant_shared_ptr[_test_namespace_from_package_module_types.cFoo](
+            default_inst[_test_namespace_from_package_module_types.cFoo]()
         )
     )
     cdef __StructSpec spec = __StructSpec._fbthrift_create(

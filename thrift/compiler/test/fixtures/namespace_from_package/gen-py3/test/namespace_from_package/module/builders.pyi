@@ -11,7 +11,7 @@ import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.builder
 
 
-import test.namespace_from_package.module.module.types as _test_namespace_from_package_module_module_types
+import test.namespace_from_package.module.types as _test_namespace_from_package_module_types
 
 
 class Foo_Builder(thrift.py3.builder.StructBuilder):

@@ -14,7 +14,7 @@ from thrift.py3.reflection cimport (
 import folly.iobuf as _fbthrift_iobuf
 
 
-cimport test.namespace_from_package.module.module.types as _test_namespace_from_package_module_module_types
+cimport test.namespace_from_package.module.types as _test_namespace_from_package_module_types
 
 
 cdef __InterfaceSpec get_reflection__TestService(bint for_clients):

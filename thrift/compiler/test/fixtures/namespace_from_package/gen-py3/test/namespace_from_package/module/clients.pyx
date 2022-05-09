@@ -47,12 +47,12 @@ import sys
 import types as _py_types
 from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_shield, InvalidStateError as asyncio_InvalidStateError
 
-cimport test.namespace_from_package.module.module.types as _test_namespace_from_package_module_module_types
-import test.namespace_from_package.module.module.types as _test_namespace_from_package_module_module_types
+cimport test.namespace_from_package.module.types as _test_namespace_from_package_module_types
+import test.namespace_from_package.module.types as _test_namespace_from_package_module_types
 
-cimport test.namespace_from_package.module.module.services_reflection as _services_reflection
+cimport test.namespace_from_package.module.services_reflection as _services_reflection
 
-from test.namespace_from_package.module.module.clients_wrapper cimport cTestServiceAsyncClient, cTestServiceClientWrapper
+from test.namespace_from_package.module.clients_wrapper cimport cTestServiceAsyncClient, cTestServiceClientWrapper
 
 
 cdef void TestService_init_callback(

@@ -16,7 +16,7 @@ namespace module {
 TestServiceWrapper::TestServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
-    import_test__namespace_from_package__module__module__services();
+    import_test__namespace_from_package__module__services();
   }
 
 

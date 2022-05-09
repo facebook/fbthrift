@@ -24,7 +24,7 @@ cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
 from thrift.py3.client cimport cClientWrapper
 
-cimport test.namespace_from_package.module.module.types as _test_namespace_from_package_module_module_types
+cimport test.namespace_from_package.module.types as _test_namespace_from_package_module_types
 
 
 cdef extern from "src/gen-cpp2/TestService.h" namespace "::test::namespace_from_package::module":
