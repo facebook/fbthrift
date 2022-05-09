@@ -304,7 +304,18 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey0");
     $currentseqid = $this->sendImpl_getDataByKey0($key);
-    await $this->genAwaitResponse($currentseqid, $rpc_options);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $response = $this->recvImpl_getDataByKey0($currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
@@ -323,7 +334,18 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey1");
     $currentseqid = $this->sendImpl_getDataByKey1($key);
-    await $this->genAwaitResponse($currentseqid, $rpc_options);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $response = $this->recvImpl_getDataByKey1($currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
@@ -347,7 +369,18 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey0");
     $currentseqid = $this->sendImpl_getDataByKey0($key);
-    await $this->genAwaitResponse($currentseqid, $rpc_options);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $response = $this->recvImpl_getDataByKey0($currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
@@ -366,7 +399,18 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey1");
     $currentseqid = $this->sendImpl_getDataByKey1($key);
-    await $this->genAwaitResponse($currentseqid, $rpc_options);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
     $response = $this->recvImpl_getDataByKey1($currentseqid);
     await $this->asyncHandler_->genAfter();
     return $response;
