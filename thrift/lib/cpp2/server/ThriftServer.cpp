@@ -449,9 +449,6 @@ void ThriftServer::setup() {
       if (runtimeServerActions_.resourcePoolFlagSet) {
         THRIFT_SERVER_EVENT(resourcepoolsruntimedisallowed).log(*this);
       }
-
-      tmLoggingWrapper_ =
-          std::make_shared<ThreadManagerLoggingWrapper>(threadManager_, this);
     } else {
       LOG(INFO) << "Using resource pools";
       runtimeServerActions_.resourcePoolEnabled = true;

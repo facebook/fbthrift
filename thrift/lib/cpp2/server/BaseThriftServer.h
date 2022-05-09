@@ -527,6 +527,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     CHECK(configMutable());
     std::lock_guard<std::mutex> lock(threadManagerMutex_);
     threadManager_ = threadManager;
+    tmLoggingWrapper_ =
+        std::make_shared<ThreadManagerLoggingWrapper>(threadManager_, this);
   }
 
   getHandlerFunc getHandler_;
