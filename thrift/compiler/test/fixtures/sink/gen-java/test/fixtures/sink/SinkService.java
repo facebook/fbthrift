@@ -36,7 +36,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
-    static ClientBuilder<SinkService> clientBuilder() {
+    static com.facebook.thrift.client.ClientBuilder<SinkService> clientBuilder() {
         return new ClientBuilder<SinkService>() {
             @Override
             public SinkService build(Mono<RpcClient> rpcClientMono) {
@@ -118,7 +118,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<SinkService.Async> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<SinkService.Async> clientBuilder() {
             return new ClientBuilder<SinkService.Async>() {
                 @Override
                 public SinkService.Async build(Mono<RpcClient> rpcClientMono) {
@@ -205,7 +205,7 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<SinkService.Reactive> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<SinkService.Reactive> clientBuilder() {
             return new ClientBuilder<SinkService.Reactive>() {
                 @Override
                 public SinkService.Reactive build(Mono<RpcClient> rpcClientMono) {

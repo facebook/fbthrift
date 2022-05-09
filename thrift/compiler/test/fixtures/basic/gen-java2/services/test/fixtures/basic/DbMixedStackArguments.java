@@ -36,7 +36,7 @@ public interface DbMixedStackArguments extends java.io.Closeable, com.facebook.t
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
-    static ClientBuilder<DbMixedStackArguments> clientBuilder() {
+    static com.facebook.thrift.client.ClientBuilder<DbMixedStackArguments> clientBuilder() {
         return new ClientBuilder<DbMixedStackArguments>() {
             @Override
             public DbMixedStackArguments build(Mono<RpcClient> rpcClientMono) {
@@ -118,7 +118,7 @@ public interface DbMixedStackArguments extends java.io.Closeable, com.facebook.t
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<DbMixedStackArguments.Async> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<DbMixedStackArguments.Async> clientBuilder() {
             return new ClientBuilder<DbMixedStackArguments.Async>() {
                 @Override
                 public DbMixedStackArguments.Async build(Mono<RpcClient> rpcClientMono) {
@@ -268,7 +268,7 @@ public interface DbMixedStackArguments extends java.io.Closeable, com.facebook.t
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<DbMixedStackArguments.Reactive> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<DbMixedStackArguments.Reactive> clientBuilder() {
             return new ClientBuilder<DbMixedStackArguments.Reactive>() {
                 @Override
                 public DbMixedStackArguments.Reactive build(Mono<RpcClient> rpcClientMono) {

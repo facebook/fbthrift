@@ -36,7 +36,7 @@ public interface Raiser extends java.io.Closeable, com.facebook.thrift.util.Bloc
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
-    static ClientBuilder<Raiser> clientBuilder() {
+    static com.facebook.thrift.client.ClientBuilder<Raiser> clientBuilder() {
         return new ClientBuilder<Raiser>() {
             @Override
             public Raiser build(Mono<RpcClient> rpcClientMono) {
@@ -118,7 +118,7 @@ public interface Raiser extends java.io.Closeable, com.facebook.thrift.util.Bloc
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<Raiser.Async> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<Raiser.Async> clientBuilder() {
             return new ClientBuilder<Raiser.Async>() {
                 @Override
                 public Raiser.Async build(Mono<RpcClient> rpcClientMono) {
@@ -328,7 +328,7 @@ public interface Raiser extends java.io.Closeable, com.facebook.thrift.util.Bloc
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<Raiser.Reactive> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<Raiser.Reactive> clientBuilder() {
             return new ClientBuilder<Raiser.Reactive>() {
                 @Override
                 public Raiser.Reactive build(Mono<RpcClient> rpcClientMono) {

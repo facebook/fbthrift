@@ -36,7 +36,7 @@ public interface Service extends java.io.Closeable, com.facebook.thrift.util.Blo
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
-    static ClientBuilder<Service> clientBuilder() {
+    static com.facebook.thrift.client.ClientBuilder<Service> clientBuilder() {
         return new ClientBuilder<Service>() {
             @Override
             public Service build(Mono<RpcClient> rpcClientMono) {
@@ -118,7 +118,7 @@ public interface Service extends java.io.Closeable, com.facebook.thrift.util.Blo
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<Service.Async> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<Service.Async> clientBuilder() {
             return new ClientBuilder<Service.Async>() {
                 @Override
                 public Service.Async build(Mono<RpcClient> rpcClientMono) {
@@ -248,7 +248,7 @@ public interface Service extends java.io.Closeable, com.facebook.thrift.util.Blo
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<Service.Reactive> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<Service.Reactive> clientBuilder() {
             return new ClientBuilder<Service.Reactive>() {
                 @Override
                 public Service.Reactive build(Mono<RpcClient> rpcClientMono) {

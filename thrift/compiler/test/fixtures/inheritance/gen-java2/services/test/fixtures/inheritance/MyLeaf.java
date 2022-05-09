@@ -36,7 +36,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
-    static ClientBuilder<MyLeaf> clientBuilder() {
+    static com.facebook.thrift.client.ClientBuilder<MyLeaf> clientBuilder() {
         return new ClientBuilder<MyLeaf>() {
             @Override
             public MyLeaf build(Mono<RpcClient> rpcClientMono) {
@@ -118,7 +118,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<MyLeaf.Async> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<MyLeaf.Async> clientBuilder() {
             return new ClientBuilder<MyLeaf.Async>() {
                 @Override
                 public MyLeaf.Async build(Mono<RpcClient> rpcClientMono) {
@@ -230,7 +230,7 @@ public interface MyLeaf extends java.io.Closeable, com.facebook.thrift.util.Bloc
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<MyLeaf.Reactive> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<MyLeaf.Reactive> clientBuilder() {
             return new ClientBuilder<MyLeaf.Reactive>() {
                 @Override
                 public MyLeaf.Reactive build(Mono<RpcClient> rpcClientMono) {

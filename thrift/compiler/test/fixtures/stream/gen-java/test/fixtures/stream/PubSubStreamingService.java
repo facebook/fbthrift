@@ -36,7 +36,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
-    static ClientBuilder<PubSubStreamingService> clientBuilder() {
+    static com.facebook.thrift.client.ClientBuilder<PubSubStreamingService> clientBuilder() {
         return new ClientBuilder<PubSubStreamingService>() {
             @Override
             public PubSubStreamingService build(Mono<RpcClient> rpcClientMono) {
@@ -118,7 +118,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<PubSubStreamingService.Async> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<PubSubStreamingService.Async> clientBuilder() {
             return new ClientBuilder<PubSubStreamingService.Async>() {
                 @Override
                 public PubSubStreamingService.Async build(Mono<RpcClient> rpcClientMono) {
@@ -205,7 +205,7 @@ public interface PubSubStreamingService extends java.io.Closeable, com.facebook.
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<PubSubStreamingService.Reactive> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<PubSubStreamingService.Reactive> clientBuilder() {
             return new ClientBuilder<PubSubStreamingService.Reactive>() {
                 @Override
                 public PubSubStreamingService.Reactive build(Mono<RpcClient> rpcClientMono) {

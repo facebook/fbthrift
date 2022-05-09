@@ -36,7 +36,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
-    static ClientBuilder<MyServicePrioChild> clientBuilder() {
+    static com.facebook.thrift.client.ClientBuilder<MyServicePrioChild> clientBuilder() {
         return new ClientBuilder<MyServicePrioChild>() {
             @Override
             public MyServicePrioChild build(Mono<RpcClient> rpcClientMono) {
@@ -118,7 +118,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<MyServicePrioChild.Async> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<MyServicePrioChild.Async> clientBuilder() {
             return new ClientBuilder<MyServicePrioChild.Async>() {
                 @Override
                 public MyServicePrioChild.Async build(Mono<RpcClient> rpcClientMono) {
@@ -230,7 +230,7 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<MyServicePrioChild.Reactive> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<MyServicePrioChild.Reactive> clientBuilder() {
             return new ClientBuilder<MyServicePrioChild.Reactive>() {
                 @Override
                 public MyServicePrioChild.Reactive build(Mono<RpcClient> rpcClientMono) {

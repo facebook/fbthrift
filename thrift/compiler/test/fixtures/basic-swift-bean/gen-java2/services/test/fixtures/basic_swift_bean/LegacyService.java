@@ -36,7 +36,7 @@ public interface LegacyService extends java.io.Closeable, com.facebook.thrift.ut
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
-    static ClientBuilder<LegacyService> clientBuilder() {
+    static com.facebook.thrift.client.ClientBuilder<LegacyService> clientBuilder() {
         return new ClientBuilder<LegacyService>() {
             @Override
             public LegacyService build(Mono<RpcClient> rpcClientMono) {
@@ -118,7 +118,7 @@ public interface LegacyService extends java.io.Closeable, com.facebook.thrift.ut
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<LegacyService.Async> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<LegacyService.Async> clientBuilder() {
             return new ClientBuilder<LegacyService.Async>() {
                 @Override
                 public LegacyService.Async build(Mono<RpcClient> rpcClientMono) {
@@ -242,7 +242,7 @@ public interface LegacyService extends java.io.Closeable, com.facebook.thrift.ut
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<LegacyService.Reactive> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<LegacyService.Reactive> clientBuilder() {
             return new ClientBuilder<LegacyService.Reactive>() {
                 @Override
                 public LegacyService.Reactive build(Mono<RpcClient> rpcClientMono) {

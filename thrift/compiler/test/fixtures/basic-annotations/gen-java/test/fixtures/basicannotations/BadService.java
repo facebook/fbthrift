@@ -36,7 +36,7 @@ public interface BadService extends java.io.Closeable, com.facebook.thrift.util.
         return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
     }
 
-    static ClientBuilder<BadService> clientBuilder() {
+    static com.facebook.thrift.client.ClientBuilder<BadService> clientBuilder() {
         return new ClientBuilder<BadService>() {
             @Override
             public BadService build(Mono<RpcClient> rpcClientMono) {
@@ -118,7 +118,7 @@ public interface BadService extends java.io.Closeable, com.facebook.thrift.util.
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<BadService.Async> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<BadService.Async> clientBuilder() {
             return new ClientBuilder<BadService.Async>() {
                 @Override
                 public BadService.Async build(Mono<RpcClient> rpcClientMono) {
@@ -246,7 +246,7 @@ public interface BadService extends java.io.Closeable, com.facebook.thrift.util.
             return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
-        static ClientBuilder<BadService.Reactive> clientBuilder() {
+        static com.facebook.thrift.client.ClientBuilder<BadService.Reactive> clientBuilder() {
             return new ClientBuilder<BadService.Reactive>() {
                 @Override
                 public BadService.Reactive build(Mono<RpcClient> rpcClientMono) {
