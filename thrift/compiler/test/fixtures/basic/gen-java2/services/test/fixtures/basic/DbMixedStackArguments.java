@@ -47,58 +47,6 @@ public interface DbMixedStackArguments extends java.io.Closeable, com.facebook.t
         };
     }
 
-    @Deprecated
-    static DbMixedStackArguments createClient(
-      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-      final java.net.SocketAddress _socketAddress,
-      final org.apache.thrift.ProtocolId _protocolId) {
-        DbMixedStackArguments.Reactive _delegate = Reactive.createClient(
-            _rpcClientFactory,
-            _socketAddress,
-            _protocolId);
-        return new DbMixedStackArgumentsReactiveBlockingWrapper(_delegate);
-    }
-
-    @Deprecated
-    static DbMixedStackArguments createClient(
-      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-      final java.net.SocketAddress _socketAddress,
-      final org.apache.thrift.ProtocolId _protocolId,
-      final java.util.Map<String, String> _headers,
-      final java.util.Map<String, String> _persistentHeaders) {
-        DbMixedStackArguments.Reactive _delegate = Reactive.createClient(
-            _rpcClientFactory,
-            _socketAddress,
-            _protocolId,
-            _headers,
-            _persistentHeaders);
-        return new DbMixedStackArgumentsReactiveBlockingWrapper(_delegate);
-    }
-
-    @Deprecated
-    static DbMixedStackArguments createClient(
-      final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-      final org.apache.thrift.ProtocolId _protocolId) {
-        DbMixedStackArguments.Reactive _delegate = Reactive.createClient(
-            _rpcClientMono,
-            _protocolId);
-        return new DbMixedStackArgumentsReactiveBlockingWrapper(_delegate);
-    }
-
-    @Deprecated
-    static DbMixedStackArguments createClient(
-      final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-      final org.apache.thrift.ProtocolId _protocolId,
-      final java.util.Map<String, String> _headers,
-      final java.util.Map<String, String> _persistentHeaders) {
-        DbMixedStackArguments.Reactive _delegate = Reactive.createClient(
-            _rpcClientMono,
-            _protocolId,
-            _headers,
-            _persistentHeaders);
-        return new DbMixedStackArgumentsReactiveBlockingWrapper(_delegate);
-    }
-
     @com.facebook.swift.service.ThriftService("DbMixedStackArguments")
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
@@ -127,58 +75,6 @@ public interface DbMixedStackArguments extends java.io.Closeable, com.facebook.t
                     return new DbMixedStackArgumentsReactiveAsyncWrapper(_delegate);
                 }
             };
-        }
-
-        @Deprecated
-        static DbMixedStackArguments.Async createClient(
-            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-            final java.net.SocketAddress _socketAddress,
-            final org.apache.thrift.ProtocolId _protocolId) {
-                DbMixedStackArguments.Reactive _delegate = Reactive.createClient(
-                    _rpcClientFactory,
-                    _socketAddress,
-                    _protocolId);
-                return new DbMixedStackArgumentsReactiveAsyncWrapper(_delegate);
-        }
-
-        @Deprecated
-        static DbMixedStackArguments.Async createClient(
-            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-            final java.net.SocketAddress _socketAddress,
-            final org.apache.thrift.ProtocolId _protocolId,
-            final java.util.Map<String, String> _headers,
-            final java.util.Map<String, String> _persistentHeaders) {
-                DbMixedStackArguments.Reactive _delegate = Reactive.createClient(
-                    _rpcClientFactory,
-                    _socketAddress,
-                    _protocolId,
-                    _headers,
-                    _persistentHeaders);
-                return new DbMixedStackArgumentsReactiveAsyncWrapper(_delegate);
-        }
-
-        @Deprecated
-        static DbMixedStackArguments.Async createClient(
-            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-            final org.apache.thrift.ProtocolId _protocolId) {
-                DbMixedStackArguments.Reactive _delegate = Reactive.createClient(
-                    _rpcClientMono,
-                    _protocolId);
-                return new DbMixedStackArgumentsReactiveAsyncWrapper(_delegate);
-        }
-
-        @Deprecated
-        static DbMixedStackArguments.Async createClient(
-            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-            final org.apache.thrift.ProtocolId _protocolId,
-            final java.util.Map<String, String> _headers,
-            final java.util.Map<String, String> _persistentHeaders) {
-                DbMixedStackArguments.Reactive _delegate = Reactive.createClient(
-                    _rpcClientMono,
-                    _protocolId,
-                    _headers,
-                    _persistentHeaders);
-                return new DbMixedStackArgumentsReactiveAsyncWrapper(_delegate);
         }
 
         @java.lang.Override void close();
@@ -275,58 +171,6 @@ public interface DbMixedStackArguments extends java.io.Closeable, com.facebook.t
                     return new DbMixedStackArgumentsReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
                 }
             };
-        }
-
-        @Deprecated
-        static DbMixedStackArguments.Reactive createClient(
-            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-            final java.net.SocketAddress _socketAddress,
-            final org.apache.thrift.ProtocolId _protocolId) {
-                return new DbMixedStackArgumentsReactiveClient(
-                    _protocolId,
-                    _rpcClientFactory.createRpcClient(_socketAddress),
-                    java.util.Collections.emptyMap(),
-                    java.util.Collections.emptyMap());
-        }
-
-        @Deprecated
-        static DbMixedStackArguments.Reactive createClient(
-            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-            final java.net.SocketAddress _socketAddress,
-            final org.apache.thrift.ProtocolId _protocolId,
-            final java.util.Map<String, String> _headers,
-            final java.util.Map<String, String> _persistentHeaders
-            ) {
-                return new DbMixedStackArgumentsReactiveClient(
-                    _protocolId,
-                    _rpcClientFactory.createRpcClient(_socketAddress),
-                    _headers,
-                    _persistentHeaders);
-        }
-
-        @Deprecated
-        static DbMixedStackArguments.Reactive createClient(
-            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-            final org.apache.thrift.ProtocolId _protocolId) {
-                return new DbMixedStackArgumentsReactiveClient(
-                    _protocolId,
-                    _rpcClientMono,
-                    java.util.Collections.emptyMap(),
-                    java.util.Collections.emptyMap());
-        }
-
-        @Deprecated
-        static DbMixedStackArguments.Reactive createClient(
-            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-            final org.apache.thrift.ProtocolId _protocolId,
-            final java.util.Map<String, String> _headers,
-            final java.util.Map<String, String> _persistentHeaders
-            ) {
-                return new DbMixedStackArgumentsReactiveClient(
-                    _protocolId,
-                    _rpcClientMono,
-                    _headers,
-                    _persistentHeaders);
         }
 
         @ThriftMethod(value = "getDataByKey0")

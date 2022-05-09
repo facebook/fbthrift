@@ -59,58 +59,6 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
         };
     }
 
-    @Deprecated
-    static {{service:javaCapitalName}} createClient(
-      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-      final java.net.SocketAddress _socketAddress,
-      final org.apache.thrift.ProtocolId _protocolId) {
-        {{service:javaCapitalName}}.Reactive _delegate = Reactive.createClient(
-            _rpcClientFactory,
-            _socketAddress,
-            _protocolId);
-        return new {{service:javaCapitalName}}ReactiveBlockingWrapper(_delegate);
-    }
-
-    @Deprecated
-    static {{service:javaCapitalName}} createClient(
-      final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-      final java.net.SocketAddress _socketAddress,
-      final org.apache.thrift.ProtocolId _protocolId,
-      final java.util.Map<String, String> _headers,
-      final java.util.Map<String, String> _persistentHeaders) {
-        {{service:javaCapitalName}}.Reactive _delegate = Reactive.createClient(
-            _rpcClientFactory,
-            _socketAddress,
-            _protocolId,
-            _headers,
-            _persistentHeaders);
-        return new {{service:javaCapitalName}}ReactiveBlockingWrapper(_delegate);
-    }
-
-    @Deprecated
-    static {{service:javaCapitalName}} createClient(
-      final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-      final org.apache.thrift.ProtocolId _protocolId) {
-        {{service:javaCapitalName}}.Reactive _delegate = Reactive.createClient(
-            _rpcClientMono,
-            _protocolId);
-        return new {{service:javaCapitalName}}ReactiveBlockingWrapper(_delegate);
-    }
-
-    @Deprecated
-    static {{service:javaCapitalName}} createClient(
-      final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-      final org.apache.thrift.ProtocolId _protocolId,
-      final java.util.Map<String, String> _headers,
-      final java.util.Map<String, String> _persistentHeaders) {
-        {{service:javaCapitalName}}.Reactive _delegate = Reactive.createClient(
-            _rpcClientMono,
-            _protocolId,
-            _headers,
-            _persistentHeaders);
-        return new {{service:javaCapitalName}}ReactiveBlockingWrapper(_delegate);
-    }
-
     @com.facebook.swift.service.ThriftService("{{service:javaCapitalName}}")
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Async{{/service:extends}} {
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
@@ -139,58 +87,6 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
                     return new {{service:javaCapitalName}}ReactiveAsyncWrapper(_delegate);
                 }
             };
-        }
-
-        @Deprecated
-        static {{service:javaCapitalName}}.Async createClient(
-            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-            final java.net.SocketAddress _socketAddress,
-            final org.apache.thrift.ProtocolId _protocolId) {
-                {{service:javaCapitalName}}.Reactive _delegate = Reactive.createClient(
-                    _rpcClientFactory,
-                    _socketAddress,
-                    _protocolId);
-                return new {{service:javaCapitalName}}ReactiveAsyncWrapper(_delegate);
-        }
-
-        @Deprecated
-        static {{service:javaCapitalName}}.Async createClient(
-            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-            final java.net.SocketAddress _socketAddress,
-            final org.apache.thrift.ProtocolId _protocolId,
-            final java.util.Map<String, String> _headers,
-            final java.util.Map<String, String> _persistentHeaders) {
-                {{service:javaCapitalName}}.Reactive _delegate = Reactive.createClient(
-                    _rpcClientFactory,
-                    _socketAddress,
-                    _protocolId,
-                    _headers,
-                    _persistentHeaders);
-                return new {{service:javaCapitalName}}ReactiveAsyncWrapper(_delegate);
-        }
-
-        @Deprecated
-        static {{service:javaCapitalName}}.Async createClient(
-            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-            final org.apache.thrift.ProtocolId _protocolId) {
-                {{service:javaCapitalName}}.Reactive _delegate = Reactive.createClient(
-                    _rpcClientMono,
-                    _protocolId);
-                return new {{service:javaCapitalName}}ReactiveAsyncWrapper(_delegate);
-        }
-
-        @Deprecated
-        static {{service:javaCapitalName}}.Async createClient(
-            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-            final org.apache.thrift.ProtocolId _protocolId,
-            final java.util.Map<String, String> _headers,
-            final java.util.Map<String, String> _persistentHeaders) {
-                {{service:javaCapitalName}}.Reactive _delegate = Reactive.createClient(
-                    _rpcClientMono,
-                    _protocolId,
-                    _headers,
-                    _persistentHeaders);
-                return new {{service:javaCapitalName}}ReactiveAsyncWrapper(_delegate);
         }
 
         @java.lang.Override void close();
@@ -305,58 +201,6 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
                     return new {{service:javaCapitalName}}ReactiveClient(protocolId, rpcClientMono, headers, persistentHeaders);
                 }
             };
-        }
-
-        @Deprecated
-        static {{service:javaCapitalName}}.Reactive createClient(
-            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-            final java.net.SocketAddress _socketAddress,
-            final org.apache.thrift.ProtocolId _protocolId) {
-                return new {{service:javaCapitalName}}ReactiveClient(
-                    _protocolId,
-                    _rpcClientFactory.createRpcClient(_socketAddress),
-                    java.util.Collections.emptyMap(),
-                    java.util.Collections.emptyMap());
-        }
-
-        @Deprecated
-        static {{service:javaCapitalName}}.Reactive createClient(
-            final com.facebook.thrift.client.RpcClientFactory _rpcClientFactory,
-            final java.net.SocketAddress _socketAddress,
-            final org.apache.thrift.ProtocolId _protocolId,
-            final java.util.Map<String, String> _headers,
-            final java.util.Map<String, String> _persistentHeaders
-            ) {
-                return new {{service:javaCapitalName}}ReactiveClient(
-                    _protocolId,
-                    _rpcClientFactory.createRpcClient(_socketAddress),
-                    _headers,
-                    _persistentHeaders);
-        }
-
-        @Deprecated
-        static {{service:javaCapitalName}}.Reactive createClient(
-            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-            final org.apache.thrift.ProtocolId _protocolId) {
-                return new {{service:javaCapitalName}}ReactiveClient(
-                    _protocolId,
-                    _rpcClientMono,
-                    java.util.Collections.emptyMap(),
-                    java.util.Collections.emptyMap());
-        }
-
-        @Deprecated
-        static {{service:javaCapitalName}}.Reactive createClient(
-            final reactor.core.publisher.Mono<com.facebook.thrift.client.RpcClient> _rpcClientMono,
-            final org.apache.thrift.ProtocolId _protocolId,
-            final java.util.Map<String, String> _headers,
-            final java.util.Map<String, String> _persistentHeaders
-            ) {
-                return new {{service:javaCapitalName}}ReactiveClient(
-                    _protocolId,
-                    _rpcClientMono,
-                    _headers,
-                    _persistentHeaders);
         }
 
         {{#service:singleRequestFunctions}}
