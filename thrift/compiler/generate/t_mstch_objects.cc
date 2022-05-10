@@ -296,11 +296,11 @@ mstch::node mstch_type::get_sink_final_reponse_type() {
 
 mstch::node mstch_type::get_sink_first_response_type() {
   if (type_->is_sink()) {
-    return generators_->type_generator_->generate(
-        dynamic_cast<const t_sink*>(type_)->get_first_response_type(),
-        generators_,
-        cache_,
-        pos_);
+    if (const auto sinkresponse =
+            dynamic_cast<const t_sink*>(type_)->get_first_response_type()) {
+      return generators_->type_generator_->generate(
+          sinkresponse, generators_, cache_, pos_);
+    }
   }
   return mstch::node();
 }
@@ -318,12 +318,12 @@ mstch::node mstch_type::get_stream_elem_type() {
 
 mstch::node mstch_type::get_stream_first_response_type() {
   if (resolved_type_->is_streamresponse()) {
-    return generators_->type_generator_->generate(
-        dynamic_cast<const t_stream_response*>(resolved_type_)
-            ->get_first_response_type(),
-        generators_,
-        cache_,
-        pos_);
+    if (const auto streamresponse =
+            dynamic_cast<const t_stream_response*>(resolved_type_)
+                ->get_first_response_type()) {
+      return generators_->type_generator_->generate(
+          streamresponse, generators_, cache_, pos_);
+    }
   }
   return mstch::node();
 }
