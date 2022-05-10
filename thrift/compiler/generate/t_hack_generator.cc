@@ -1277,7 +1277,7 @@ void t_hack_generator::close_generator() {
 void t_hack_generator::generate_typedef(const t_typedef* ttypedef) {
   if (typedef_) {
     f_types_ << "type " << ttypedef->get_name() << " = "
-             << type_to_typehint(ttypedef->get_type()) << ";\n";
+             << type_to_typehint(ttypedef) << ";\n";
   }
 }
 
@@ -3703,10 +3703,9 @@ void t_hack_generator::generate_php_field_wrapper_methods(
 
 void t_hack_generator::generate_php_struct_field_methods(
     std::ofstream& out, const t_field* field, bool is_exception) {
-  const t_type* t = field->get_type();
-  t = t->get_true_type();
+  const t_type* t = field->get_type()->get_true_type();
   if (is_exception && field->name() == "code" && t->is_enum()) {
-    std::string enum_type = type_to_typehint(t);
+    std::string enum_type = type_to_typehint(field->get_type());
     out << "\n";
     out << indent() << "public function setCodeAsEnum(" << enum_type
         << " $code)[write_props]: void {\n";
@@ -3806,7 +3805,8 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
     const std::string& name,
     bool is_default_assignment) {
   const t_type* t = field.type()->get_true_type();
-  const auto true_type = type_to_typehint(t, false, false, false, false);
+  const auto hack_typehint =
+      type_to_typehint(field.type().get_type(), false, false, false, false);
   std::string dval = "";
   bool is_exception = tstruct->is_exception();
   if (field.default_value() != nullptr &&
@@ -3854,7 +3854,7 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
     if (const auto* field_wrapper = find_hack_wrapper(field)) {
       out << indent() << "$this->" << field_name << " = " << *field_wrapper
           << "::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<" << (nullable ? "?" : "")
-          << true_type << ", " << hack_name(name, tstruct->program(), true)
+          << hack_typehint << ", " << hack_name(name, tstruct->program(), true)
           << ">(" << (nullable ? "null" : dval) << ", " << field.get_key()
           << ", $this);\n";
     } else if (!nullable) {
