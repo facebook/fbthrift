@@ -6811,7 +6811,7 @@ void t_hack_generator::_generate_service_client_child_fn(
 
   indent(out) << "$rpc_options = $this->getAndResetOptions() ?? "
               << (tservice->is_interaction()
-                      ? "new RpcOptions()"
+                      ? "new \\RpcOptions()"
                       : "\\ThriftClientBase::defaultOptions()")
               << ";\n";
   if (tservice->is_interaction()) {
@@ -6908,7 +6908,7 @@ void t_hack_generator::_generate_service_client_stream_child_fn(
 
   indent(out) << "$rpc_options = $this->getAndResetOptions() ?? "
               << (tservice->is_interaction()
-                      ? "new RpcOptions()"
+                      ? "new \\RpcOptions()"
                       : "\\ThriftClientBase::defaultOptions()")
               << ";\n";
   if (tservice->is_interaction()) {
@@ -7015,7 +7015,7 @@ void t_hack_generator::_generate_service_client_sink_child_fn(
 
   indent(out) << "$rpc_options = $this->getAndResetOptions() ?? "
               << (tservice->is_interaction()
-                      ? "new RpcOptions()"
+                      ? "new \\RpcOptions()"
                       : "\\ThriftClientBase::defaultOptions()")
               << ";\n";
   if (tservice->is_interaction()) {

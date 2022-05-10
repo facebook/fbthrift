@@ -268,7 +268,7 @@ class BadService_BadInteraction extends \ThriftClientBase {
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
-    $rpc_options = $this->getAndResetOptions() ?? new RpcOptions();
+    $rpc_options = $this->getAndResetOptions() ?? new \RpcOptions();
     $rpc_options = $rpc_options->setInteractionId($this->interactionId);
     await $this->asyncHandler_->genBefore("BadService", "BadInteraction.foo");
     $currentseqid = $this->sendImpl_foo();
