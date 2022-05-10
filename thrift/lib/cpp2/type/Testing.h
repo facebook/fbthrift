@@ -50,6 +50,6 @@ inline type::Protocol makeProtocol(std::string name) {
 
 constexpr auto kUnknownStdProtocol = static_cast<type::StandardProtocol>(1000);
 inline const type::Protocol& UnknownProtocol() {
-  return type::Protocol::fromStandard<kUnknownStdProtocol>();
+  return type::Protocol::get<kUnknownStdProtocol>();
 }
 } // namespace apache::thrift::test

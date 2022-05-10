@@ -29,7 +29,7 @@ void testStandardProtocol(std::string_view expectedName) {
   SCOPED_TRACE(expectedName);
 
   // 3 ways to get the protocol all return the same value.
-  const auto& protocol = Protocol::fromStandard<StdProtocol>();
+  const auto& protocol = Protocol::get<StdProtocol>();
   EXPECT_EQ(Protocol(StdProtocol), protocol);
   const auto asCustom = makeProtocol(std::string(expectedName));
   EXPECT_NE(asCustom, protocol);
@@ -58,7 +58,7 @@ TEST(ProtocolTest, Empty) {
 
   EXPECT_EQ(empty, kNoProtocol);
   EXPECT_EQ(empty, makeProtocol(""));
-  EXPECT_EQ(empty, Protocol::fromStandard<StandardProtocol::Custom>());
+  EXPECT_EQ(empty, Protocol::get<StandardProtocol::Custom>());
 
   EXPECT_NE(empty, makeProtocol("Custom"));
   EXPECT_THROW(validateProtocol(makeProtocol("Custom")), std::invalid_argument);
@@ -86,17 +86,15 @@ TEST(ProtocolTest, ValidateProtocol) {
 
 TEST(ProtocolTest, FromName) {
   EXPECT_EQ(
-      Protocol::fromName("Binary"),
-      Protocol::fromStandard<StandardProtocol::Binary>());
+      Protocol::fromName("Binary"), Protocol::get<StandardProtocol::Binary>());
   EXPECT_EQ(
       Protocol::fromName("Compact"),
-      Protocol::fromStandard<StandardProtocol::Compact>());
+      Protocol::get<StandardProtocol::Compact>());
   EXPECT_EQ(
-      Protocol::fromName("Json"),
-      Protocol::fromStandard<StandardProtocol::Json>());
+      Protocol::fromName("Json"), Protocol::get<StandardProtocol::Json>());
   EXPECT_EQ(
       Protocol::fromName("SimpleJson"),
-      Protocol::fromStandard<StandardProtocol::SimpleJson>());
+      Protocol::get<StandardProtocol::SimpleJson>());
 
   // Case sensitive.
   EXPECT_THROW(Protocol::fromName("binary"), std::invalid_argument);

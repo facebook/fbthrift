@@ -53,7 +53,7 @@ class Protocol : public detail::Wrap<ProtocolUnion, union_t<ProtocolUnion>> {
   //
   // The address of this value cannot be used for equality.
   template <StandardProtocol P>
-  static FOLLY_EXPORT const Protocol& fromStandard() noexcept {
+  static FOLLY_EXPORT const Protocol& get() noexcept {
     static const auto* kValue = new Protocol(P);
     return *kValue;
   }
