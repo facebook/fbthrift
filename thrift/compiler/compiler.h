@@ -43,7 +43,7 @@ struct compile_result {
  * returns the program bundle.
  */
 std::unique_ptr<t_program_bundle> parse_and_get_program(
-    const std::vector<std::string>& arguments);
+    source_manager& sm, const std::vector<std::string>& arguments);
 
 /**
  * Runs the Thrift compiler with the specified (command-line) arguments.

@@ -430,7 +430,7 @@ std::string get_include_path(
 } // namespace
 
 std::unique_ptr<t_program_bundle> parse_and_get_program(
-    const std::vector<std::string>& arguments) {
+    source_manager& sm, const std::vector<std::string>& arguments) {
   // Parse arguments.
   parsing_params pparams;
   gen_params gparams;
@@ -440,10 +440,8 @@ std::unique_ptr<t_program_bundle> parse_and_get_program(
   if (filename.empty()) {
     return {};
   }
-  source_manager source_mgr;
-  auto ctx = diagnostic_context::ignore_all(source_mgr);
-  return parse_and_mutate_program(
-      source_mgr, ctx, filename, std::move(pparams));
+  auto ctx = diagnostic_context::ignore_all(sm);
+  return parse_and_mutate_program(sm, ctx, filename, std::move(pparams));
 }
 
 compile_result compile(const std::vector<std::string>& arguments) {

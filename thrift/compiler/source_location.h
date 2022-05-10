@@ -18,6 +18,7 @@
 
 #include <stdint.h>
 
+#include <cstdint>
 #include <deque>
 #include <string>
 #include <vector>
@@ -28,32 +29,10 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-struct source;
+class source_manager;
 
-class source_manager {
- private:
-  struct source_info {
-    std::string file_name;
-    std::vector<char> text;
-    std::vector<uint_least32_t> line_offsets;
-  };
-  // This is a deque to make sure that file_name is not reallocated when
-  // sources_ grows.
-  std::deque<source_info> sources_;
-
-  friend class resolved_location;
-
-  source add_source(std::string file_name, std::vector<char> text);
-
- public:
-  // Adds a file source.
-  source add_file(std::string file_name);
-
-  // Adds a string source; file_name is used for source locations.
-  source add_string(std::string file_name, std::string src);
-};
-
-// A lightweight source location that can be resolved via source_manager.
+// A lightweight source location that can be resolved via `source_manager` into
+// `resolved_location` that provides the file name, line and column.
 class source_location {
  private:
   uint_least32_t source_id_ = 0;
@@ -66,10 +45,8 @@ class source_location {
       : source_id_(source_id), offset_(offset) {}
 
  public:
+  // Creates a location that doesn't refer to any source.
   source_location() = default;
-
-  // TODO: remove
-  uint_least32_t offset() const { return offset_; }
 
   friend bool operator==(source_location lhs, source_location rhs) {
     return lhs.source_id_ == rhs.source_id_ && lhs.offset_ == rhs.offset_;
@@ -108,9 +85,52 @@ class resolved_location {
   unsigned column() const { return column_; }
 };
 
+// A view of a source owned by `source_manager`.
 struct source {
-  source_location start;
-  fmt::string_view text;
+  source_location start; // The source start location.
+  fmt::string_view text; // The source text including a terminating '\0'.
+};
+
+// A source manager that caches sources in memory, loads files and enables
+// resolution of offset-based source locations into file names, lines and
+// columns.
+class source_manager {
+ private:
+  struct source_info {
+    std::string file_name;
+    std::vector<char> text;
+    std::vector<uint_least32_t> line_offsets;
+  };
+  // This is a deque to make sure that file_name is not reallocated when
+  // sources_ grows.
+  std::deque<source_info> sources_;
+
+  const source_info* get_source(uint_least32_t source_id) const {
+    return source_id > 0 && source_id <= sources_.size()
+        ? &sources_[source_id - 1]
+        : nullptr;
+  }
+
+  friend class resolved_location;
+
+  source add_source(std::string file_name, std::vector<char> text);
+
+ public:
+  // Adds a file source.
+  source add_file(std::string file_name);
+
+  // Adds a string source; file_name is used for source locations.
+  source add_string(std::string file_name, std::string src);
+
+  // Returns the start location of a source containing the specified location.
+  // It is a member function in case we add clang-like compression of locations.
+  source_location get_source_start(source_location loc) const {
+    return {loc.source_id_, 0};
+  }
+
+  // Returns a pointer to the source text at the specified location or nullptr
+  // if the location is invalid.
+  const char* get_text(source_location loc) const;
 };
 
 } // namespace compiler

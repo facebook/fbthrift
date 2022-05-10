@@ -98,12 +98,17 @@ source source_manager::add_string(std::string file_name, std::string src) {
       std::move(file_name), std::vector<char>(start, start + src.size() + 1));
 }
 
+const char* source_manager::get_text(source_location loc) const {
+  const source_info* source = get_source(loc.source_id_);
+  return source ? &source->text[loc.offset_] : nullptr;
+}
+
 resolved_location::resolved_location(
     source_location loc, const source_manager& sm) {
-  assert(loc.source_id_ != 0 && loc.source_id_ <= sm.sources_.size());
-  const source_manager::source_info& source = sm.sources_[loc.source_id_ - 1];
-  file_name_ = source.file_name.c_str();
-  const std::vector<uint_least32_t>& line_offsets = source.line_offsets;
+  const source_manager::source_info* source = sm.get_source(loc.source_id_);
+  assert(source);
+  file_name_ = source->file_name.c_str();
+  const std::vector<uint_least32_t>& line_offsets = source->line_offsets;
   auto it =
       std::upper_bound(line_offsets.begin(), line_offsets.end(), loc.offset_);
   line_ = it != line_offsets.end() ? it - line_offsets.begin()

@@ -42,13 +42,14 @@ TEST(FileManagerTest, replacement_less_than) {
 
 // Basic test of apply_replacements functionality, without traversing AST.
 TEST(FileManagerTest, apply_replacements_test) {
-  auto program = dedent_and_parse_to_program(R"(
+  auto source_mgr = source_manager();
+  auto program = dedent_and_parse_to_program(source_mgr, R"(
     struct A {
       1: optional A a (cpp.ref);
     } (cpp.noexcept_move)
   )");
 
-  codemod::file_manager fm(*program);
+  codemod::file_manager fm(source_mgr, *program);
 
   fm.add(
       {program->get_byte_offset(2, 2),

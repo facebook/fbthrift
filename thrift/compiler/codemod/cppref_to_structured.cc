@@ -55,7 +55,7 @@ static void cppref_to_structured(
 
   fm.add_include("thrift/annotation/cpp.thrift");
 
-  const auto field_begin_offset = field.src_range().begin.offset();
+  const auto field_begin_offset = fm.to_offset(field.src_range().begin);
 
   fm.add(
       {field_begin_offset,
@@ -75,8 +75,9 @@ static void cppref_to_structured(
 }
 
 int main(int argc, char** argv) {
-  auto program_bundle =
-      parse_and_get_program(std::vector<std::string>(argv, argv + argc));
+  auto source_mgr = source_manager();
+  auto program_bundle = parse_and_get_program(
+      source_mgr, std::vector<std::string>(argv, argv + argc));
 
   if (!program_bundle) {
     return 0;
@@ -91,7 +92,7 @@ int main(int argc, char** argv) {
     }
   }
 
-  codemod::file_manager fm(*program);
+  codemod::file_manager fm(source_mgr, *program);
 
   const_ast_visitor visitor;
   visitor.add_field_visitor(folly::partial(cppref_to_structured, std::ref(fm)));

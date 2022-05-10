@@ -25,11 +25,11 @@
 #include <thrift/compiler/util.h>
 
 std::shared_ptr<t_program> dedent_and_parse_to_program(
-    std::string thrift_content) {
-  auto tempFile = std::make_shared<const folly::test::TemporaryFile>();
-  const auto path = tempFile->path().string();
-  std::ofstream(path) << strip_left_margin(thrift_content);
+    source_manager& sm, std::string source) {
+  auto temp_file = std::make_shared<const folly::test::TemporaryFile>();
+  const auto path = temp_file->path().string();
+  std::ofstream(path) << strip_left_margin(source);
   auto bundle = folly::to_shared_ptr(
-      parse_and_get_program({"UNNAMED", "--gen", "mstch_cpp2", path}));
-  return {bundle->root_program(), [bundle, tempFile](auto) {}};
+      parse_and_get_program(sm, {"UNNAMED", "--gen", "mstch_cpp2", path}));
+  return {bundle->root_program(), [bundle, temp_file](auto) {}};
 }

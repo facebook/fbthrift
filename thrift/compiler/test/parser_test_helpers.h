@@ -69,4 +69,4 @@ inline std::unique_ptr<t_enum> create_fake_enum(
  * Helper function to parse thrift content to t_program
  */
 std::shared_ptr<t_program> dedent_and_parse_to_program(
-    std::string thrift_content);
+    source_manager& sm, std::string source);

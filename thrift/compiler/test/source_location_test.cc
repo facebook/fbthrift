@@ -45,6 +45,22 @@ TEST(SourceLocationTest, add_string) {
   EXPECT_EQ(fmt::string_view(text.c_str(), text.size() + 1), source.text);
 }
 
+TEST(SourceLocationTest, get_source_start) {
+  auto sm = source_manager();
+  auto source = sm.add_string("path/to/file", "test");
+  auto loc = source.start + 2;
+  EXPECT_NE(loc, source.start);
+  EXPECT_EQ(sm.get_source_start(loc), source.start);
+}
+
+TEST(SourceLocationTest, get_text) {
+  auto sm = source_manager();
+  auto source = sm.add_string("path/to/file", "test");
+  auto text = source.text.data();
+  EXPECT_EQ(sm.get_text(source.start), text);
+  EXPECT_EQ(sm.get_text(source.start + 2), text + 2);
+}
+
 TEST(SourceLocationTest, stable_file_name) {
   auto sm = source_manager();
   auto source = sm.add_string("f1", "");

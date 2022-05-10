@@ -52,7 +52,8 @@ struct replacement {
  */
 class file_manager {
  public:
-  explicit file_manager(const t_program& program) : program_(&program) {
+  file_manager(source_manager& sm, const t_program& program)
+      : source_mgr_(sm), program_(&program) {
     if (!folly::readFile(program_->path().c_str(), old_content_)) {
       throw std::runtime_error("Could not read file: " + program_->path());
     }
@@ -78,6 +79,12 @@ class file_manager {
   // Removes all annotations from a given t_node.
   void remove_all_annotations(const t_node& node);
 
+  // Converts the source location to offset.
+  size_t to_offset(source_location loc) const {
+    auto start = source_mgr_.get_source_start(loc);
+    return source_mgr_.get_text(loc) - source_mgr_.get_text(start);
+  }
+
  private:
   // Gets the line number of the first include in program's includes_.
   size_t get_last_include_offset() const;
@@ -86,6 +93,7 @@ class file_manager {
   void expand_over_whitespaces(
       size_t& begin_offset, size_t& end_offset) const noexcept;
 
+  source_manager source_mgr_;
   const t_program* program_;
   std::string old_content_;
   std::set<replacement> replacements_;
