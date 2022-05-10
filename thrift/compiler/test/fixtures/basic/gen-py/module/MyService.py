@@ -1917,9 +1917,7 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = ping_args()
       result = self._fbthrift_cpp_transport._send_request("MyService", "ping", args, ping_result)
-      if result.success is not None:
-        return result.success
-      raise TApplicationException(TApplicationException.MISSING_RESULT)
+      return None
     self.send_ping()
     self.recv_ping()
 
@@ -1982,9 +1980,7 @@ class Client(Iface):
       args = sink_args()
       args.sink = sink
       result = self._fbthrift_cpp_transport._send_request("MyService", "sink", args, sink_result)
-      if result.success is not None:
-        return result.success
-      raise TApplicationException(TApplicationException.MISSING_RESULT)
+      return None
     self.send_sink(sink)
     self.recv_sink()
 
@@ -2019,9 +2015,7 @@ class Client(Iface):
       args.id = id
       args.data = data
       result = self._fbthrift_cpp_transport._send_request("MyService", "putDataById", args, putDataById_result)
-      if result.success is not None:
-        return result.success
-      raise TApplicationException(TApplicationException.MISSING_RESULT)
+      return None
     self.send_putDataById(id, data)
     self.recv_putDataById()
 
@@ -2129,9 +2123,7 @@ class Client(Iface):
       args = deleteDataById_args()
       args.id = id
       result = self._fbthrift_cpp_transport._send_request("MyService", "deleteDataById", args, deleteDataById_result)
-      if result.success is not None:
-        return result.success
-      raise TApplicationException(TApplicationException.MISSING_RESULT)
+      return None
     self.send_deleteDataById(id)
     self.recv_deleteDataById()
 
@@ -2166,9 +2158,7 @@ class Client(Iface):
       args.id = id
       args.data = data
       result = self._fbthrift_cpp_transport._send_request("MyService", "lobDataById", args, lobDataById_result)
-      if result.success is not None:
-        return result.success
-      raise TApplicationException(TApplicationException.MISSING_RESULT)
+      return None
     self.send_lobDataById(id, data)
 
   def send_lobDataById(self, id=None, data=None):

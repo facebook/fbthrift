@@ -681,9 +681,7 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = foo_args()
       result = self._fbthrift_cpp_transport._send_request("MyService", "foo", args, foo_result)
-      if result.success is not None:
-        return result.success
-      raise TApplicationException(TApplicationException.MISSING_RESULT)
+      return None
     self.send_foo()
     self.recv_foo()
 
@@ -715,9 +713,7 @@ class Client(Iface):
       args = interact_args()
       args.arg = arg
       result = self._fbthrift_cpp_transport._send_request("MyService", "interact", args, interact_result)
-      if result.success is not None:
-        return result.success
-      raise TApplicationException(TApplicationException.MISSING_RESULT)
+      return None
     self.send_interact(arg)
     self.recv_interact()
 

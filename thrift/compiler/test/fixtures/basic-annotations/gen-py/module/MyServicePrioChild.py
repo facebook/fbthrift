@@ -283,9 +283,7 @@ class Client(module.MyServicePrioParent.Client, Iface):
     if (self._fbthrift_cpp_transport):
       args = pang_args()
       result = self._fbthrift_cpp_transport._send_request("MyServicePrioChild", "pang", args, pang_result)
-      if result.success is not None:
-        return result.success
-      raise TApplicationException(TApplicationException.MISSING_RESULT)
+      return None
     self.send_pang()
     self.recv_pang()
 

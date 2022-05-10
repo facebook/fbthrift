@@ -2414,9 +2414,11 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
       f_service_ << indent()
                  << "result = self._fbthrift_cpp_transport._send_request(\""
                  << tservice->get_name() << "\", \"" << (*f_iter)->get_name()
-                 << "\", args, " << (*f_iter)->get_name() << "_result)" << endl
-                 << indent() << "if result.success is not None:" << endl
-                 << indent() << "  return result.success" << endl;
+                 << "\", args, " << (*f_iter)->get_name() << "_result)" << endl;
+      if (!(*f_iter)->get_returntype()->is_void()) {
+        f_service_ << indent() << "if result.success is not None:" << endl
+                   << indent() << "  return result.success" << endl;
+      }
 
       for (const auto& ex : (*f_iter)->get_xceptions()->get_members()) {
         auto name = rename_reserved_keywords(ex->get_name());
@@ -2424,10 +2426,15 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
                    << " is not None:" << endl
                    << indent() << "  raise result." << name << endl;
       }
-      f_service_
-          << indent()
-          << "raise TApplicationException(TApplicationException.MISSING_RESULT)"
-          << endl;
+
+      if ((*f_iter)->get_returntype()->is_void()) {
+        f_service_ << indent() << "return None" << endl;
+      } else {
+        f_service_
+            << indent()
+            << "raise TApplicationException(TApplicationException.MISSING_RESULT)"
+            << endl;
+      }
       indent_down();
     }
 

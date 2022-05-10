@@ -535,9 +535,7 @@ class Client(Iface):
       args.s = s
       args.i = i
       result = self._fbthrift_cpp_transport._send_request("MyService", "query", args, query_result)
-      if result.success is not None:
-        return result.success
-      raise TApplicationException(TApplicationException.MISSING_RESULT)
+      return None
     self.send_query(s, i)
     self.recv_query()
 
@@ -573,9 +571,7 @@ class Client(Iface):
       args.s = s
       args.i = i
       result = self._fbthrift_cpp_transport._send_request("MyService", "has_arg_docs", args, has_arg_docs_result)
-      if result.success is not None:
-        return result.success
-      raise TApplicationException(TApplicationException.MISSING_RESULT)
+      return None
     self.send_has_arg_docs(s, i)
     self.recv_has_arg_docs()
 

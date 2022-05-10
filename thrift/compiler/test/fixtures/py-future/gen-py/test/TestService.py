@@ -636,9 +636,7 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = sleep_args()
       result = self._fbthrift_cpp_transport._send_request("TestService", "sleep", args, sleep_result)
-      if result.success is not None:
-        return result.success
-      raise TApplicationException(TApplicationException.MISSING_RESULT)
+      return None
     self.send_sleep()
     self.recv_sleep()
 

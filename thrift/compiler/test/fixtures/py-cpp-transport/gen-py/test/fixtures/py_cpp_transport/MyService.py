@@ -458,9 +458,7 @@ class Client(Iface):
     if (self._fbthrift_cpp_transport):
       args = ping_args()
       result = self._fbthrift_cpp_transport._send_request("MyService", "ping", args, ping_result)
-      if result.success is not None:
-        return result.success
-      raise TApplicationException(TApplicationException.MISSING_RESULT)
+      return None
     self.send_ping()
     self.recv_ping()
 
