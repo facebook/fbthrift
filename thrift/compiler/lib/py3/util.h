@@ -20,9 +20,16 @@
 #include <string>
 #include <unordered_set>
 
+#include <thrift/compiler/ast/t_program.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
+
+inline std::vector<std::string> get_py3_namespace(const t_program* prog) {
+  return prog->gen_namespace_or_default(
+      "py3", [] { return std::vector<std::string>{}; });
+}
 
 inline const std::unordered_set<std::string>& get_python_reserved_names() {
   static const std::unordered_set<std::string> keywords = {

@@ -39,17 +39,13 @@ namespace compiler {
 
 namespace {
 
-std::vector<std::string> get_py3_namespace(const t_program* prog) {
-  return split_namespace(prog->get_namespace("py3"));
-}
-
 std::string get_py3_namespace_with_name_and_prefix(
     const t_program* prog, const std::string& prefix) {
   std::ostringstream ss;
   if (!prefix.empty()) {
     ss << prefix << ".";
   }
-  for (const auto& name : split_namespace(prog->get_namespace("py3"))) {
+  for (const auto& name : get_py3_namespace(prog)) {
     ss << name << ".";
   }
   ss << prog->name();
@@ -1025,18 +1021,16 @@ class no_reserved_key_in_namespace_validator : virtual public validator {
 
  private:
   void validate(t_program* const prog) {
-    const auto& py3_namespace = prog->get_namespace("py3");
-    if (py3_namespace.empty()) {
+    auto namespace_tokens = get_py3_namespace(prog);
+    if (namespace_tokens.empty()) {
       return;
     }
-
-    std::vector<std::string> namespace_tokens = split_namespace(py3_namespace);
     for (const auto& field_name : namespace_tokens) {
       if (get_python_reserved_names().find(field_name) !=
           get_python_reserved_names().end()) {
         std::ostringstream ss;
-        ss << "Namespace '" << py3_namespace << "' contains reserved keyword '"
-           << field_name << "'";
+        ss << "Namespace '" << boost::algorithm::join(namespace_tokens, ".")
+           << "' contains reserved keyword '" << field_name << "'";
         add_error(boost::none, ss.str());
       }
     }
@@ -1166,8 +1160,8 @@ void t_mstch_python_generator::set_mstch_generators() {
 }
 
 boost::filesystem::path t_mstch_python_generator::package_to_path() {
-  auto package = get_program()->get_namespace("py3");
-  return boost::algorithm::replace_all_copy(package, ".", "/");
+  auto package = get_py3_namespace(get_program());
+  return boost::algorithm::join(package, "/");
 }
 
 void t_mstch_python_generator::generate_file(
