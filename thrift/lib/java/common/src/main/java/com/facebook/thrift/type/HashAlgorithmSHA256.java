@@ -44,7 +44,9 @@ public class HashAlgorithmSHA256 implements HashAlgorithm {
     try {
       MessageDigest digest = MessageDigest.getInstance("SHA-256");
       return Unpooled.wrappedBuffer(
-          digest.digest((THRIFT_SCHEME + uri).getBytes(StandardCharsets.UTF_8)));
+          digest.digest((THRIFT_SCHEME + uri).getBytes(StandardCharsets.UTF_8)),
+          0,
+          getDefaultHashBytes());
     } catch (NoSuchAlgorithmException e) {
       throw new RuntimeException(e);
     }

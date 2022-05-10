@@ -28,26 +28,57 @@ import com.facebook.thrift.util.SerializerUtil;
 import com.facebook.thrift.util.resources.RpcResources;
 import com.google.common.base.Strings;
 import io.netty.buffer.ByteBuf;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.apache.thrift.conformance.Any;
 import org.apache.thrift.conformance.StandardProtocol;
 
 /** LazyAny implementation that contains Any object. Any is created via Builder object. */
 public abstract class LazyAny<T> {
+
+  /** Map for custom serializer */
+  protected static final Map<String, Function<Object, ByteBuf>> serializers =
+      new ConcurrentHashMap<>();
+
+  /** Map for custom deserializer */
+  protected static final Map<String, BiFunction<Class, ByteBuf, Object>> deserializers =
+      new ConcurrentHashMap<>();
+
+  /**
+   * Registers a serializer for a custom protocol. Before using a customer protocol, a serializer
+   * must be registered.
+   *
+   * @param name Name of the custom protocol
+   * @param serializer Serializer as a {@link Function} which serialize a given Object to a {@link
+   *     ByteBuf}
+   */
+  public static void registerSerializer(String name, Function<Object, ByteBuf> serializer) {
+    serializers.put(name, serializer);
+  }
+
+  /**
+   * Registers a deserializer for a custom protocol. Before using a customer protocol, a
+   * deserializer must be registered.
+   *
+   * @param name Name of the custom protocol
+   * @param deserializer Deserializer as a {@link BiFunction} which creates an Object from a given
+   *     Class name and serialized {@link ByteBuf}.
+   */
+  public static void registerDeserializer(
+      String name, BiFunction<Class, ByteBuf, Object> deserializer) {
+    deserializers.put(name, deserializer);
+  }
+
   public abstract <T> T get();
 
   public abstract Any getAny();
 
   @Override
   public final int hashCode() {
-    Any any = getAny();
-
-    if (any == null) {
-      return 0;
-    }
-
-    return any.hashCode();
+    return getAny().hashCode();
   }
 
   @Override
@@ -61,10 +92,6 @@ public abstract class LazyAny<T> {
     }
 
     Any any = getAny();
-    if (any == null) {
-      return false;
-    }
-
     LazyAny other = (LazyAny) obj;
     return any.equals(other.getAny());
   }
@@ -84,45 +111,59 @@ public abstract class LazyAny<T> {
 
     private int numberOfBytes = HashAlgorithmSHA256.INSTANCE.getMinHashBytes();
 
+    /** LazyAny builder */
     public Builder() {}
 
     public Builder(T value) {
       this.value = value;
     }
 
+    /** Payload of Any */
     public Builder<T> setValue(T value) {
       this.value = value;
       return this;
     }
 
+    /**
+     * Serialization protocol of Any payload when standard protocol is used. When set, custom
+     * protocol should not be set.
+     */
     public Builder<T> setProtocol(SerializationProtocol serializationProtocol) {
       this.serializationProtocol = serializationProtocol;
       return this;
     }
 
+    /**
+     * Custom serialization protocol of Any payload. When set, serialization protocol should not be
+     * set.
+     */
     public Builder<T> setCustomProtocol(String customProtocol) {
       this.customProtocol = customProtocol;
       return this;
     }
 
+    /**
+     * Any uses 8 bytes of hash for the object type. This is default behavior when not set. Either
+     * useHash or useUri must be set.
+     */
     public Builder<T> useHashPrefix() {
       this.useHashPrefix = true;
       return this;
     }
 
+    /**
+     * Any uses numberOfBytes bytes of hash for the object type. Either useHash or useUri must be
+     * set.
+     */
     public Builder<T> useHashPrefix(int numberOfBytes) {
       this.useHashPrefix = true;
       this.numberOfBytes = numberOfBytes;
       return this;
     }
 
+    /** Any uses uri for the object type. Either useHash or useUri must be set. */
     public Builder<T> useUri() {
       this.useUri = true;
-      return this;
-    }
-
-    public Builder<T> setSerializer(Function<Object, ByteBuf> serializer) {
-      this.serializer = serializer;
       return this;
     }
 
@@ -150,7 +191,7 @@ public abstract class LazyAny<T> {
         throw new IllegalArgumentException("When using hash prefix must select one or more bytes");
       }
 
-      if (!Strings.isNullOrEmpty(customProtocol) && serializer == null) {
+      if (!Strings.isNullOrEmpty(customProtocol) && !serializers.containsKey(customProtocol)) {
         throw new IllegalArgumentException(
             "When using a custom protocol you must provide a serializer");
       }
@@ -160,7 +201,6 @@ public abstract class LazyAny<T> {
         if (serializationProtocol == null) {
           this.serializationProtocol = SerializationProtocol.TCompact;
         }
-
         switch (serializationProtocol) {
           case TCompact:
             standardProtocol = StandardProtocol.COMPACT;
@@ -187,10 +227,11 @@ public abstract class LazyAny<T> {
           serializer = generateSerializer((Writer) value, serializationProtocol);
         } else if (serializer == null) {
           throw new IllegalArgumentException(
-              "You must set a serializer if the value is not of ThriftSerializable or Writer");
+              "You must register a serializer if the value is not of ThriftSerializable or Writer");
         }
       } else {
         standardProtocol = StandardProtocol.CUSTOM;
+        serializer = serializers.get(customProtocol);
       }
 
       return new UnserializedLazyAny(

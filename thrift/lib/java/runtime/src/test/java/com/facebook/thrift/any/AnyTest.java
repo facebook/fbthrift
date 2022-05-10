@@ -16,9 +16,7 @@
 
 package com.facebook.thrift.any;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import com.facebook.thrift.protocol.ByteBufTProtocol;
 import com.facebook.thrift.test.universalname.TestRequest;
@@ -186,16 +184,36 @@ public class AnyTest {
   }
 
   private static ByteBuf customSerializer(Object o) {
-    return Unpooled.wrappedBuffer(o.toString().getBytes());
+    byte[] bytes = new byte[7];
+    TestRequest r = (TestRequest) o;
+    bytes[0] = r.isABool() ? (byte) 1 : (byte) 0;
+    bytes[1] = (byte) ((r.getALong() % 255));
+    bytes[2] = (byte) ((r.getALong() / 255));
+    System.arraycopy(r.getAString().getBytes(), 0, bytes, 3, 4);
+
+    return Unpooled.wrappedBuffer(bytes);
+  }
+
+  private static Object customDeserializer(Class clazz, ByteBuf byteBuf) {
+    byte[] bytes = ByteBufUtil.getBytes(byteBuf);
+    boolean bool = bytes[0] == 0 ? false : true;
+    long longVal = bytes[1] + ((int) bytes[2]) * 255;
+    String st = new String(bytes, 3, 4);
+    return new TestRequest(bool, longVal, st);
+  }
+
+  private static ByteBuf customLongSerializer(Object o) {
+    return Unpooled.wrappedBuffer(String.valueOf(o).getBytes());
   }
 
   @Test
   public void testCustomProtocol() {
+    LazyAny.registerSerializer("custom-protocol", AnyTest::customSerializer);
+
     LazyAny lazyAny =
         new LazyAny.Builder<>()
             .setValue(createSampleRequest())
             .setCustomProtocol("custom-protocol")
-            .setSerializer(AnyTest::customSerializer)
             .build();
 
     ByteBufTProtocol protocol = serialize(lazyAny);
@@ -204,7 +222,38 @@ public class AnyTest {
     assertNull(any.getType());
     assertNotNull(any.getTypeHashPrefixSha2256());
     assertEquals("custom-protocol", any.getCustomProtocol());
-    assertEquals(true, new String(any.getData().array()).contains("1050"));
+    assertEquals(true, new String(any.getData().array(), 3, 4).contains("test"));
+  }
+
+  @Test
+  public void testCustomProtocolDeserialization() {
+    LazyAny.registerSerializer("custom-protocol", AnyTest::customSerializer);
+    LazyAny.registerDeserializer("custom-protocol", AnyTest::customDeserializer);
+
+    LazyAny lazyAny =
+        new LazyAny.Builder<>()
+            .setValue(createSampleRequest())
+            .setCustomProtocol("custom-protocol")
+            .build();
+
+    ByteBufTProtocol protocol = serialize(lazyAny);
+
+    TestRequest received = (TestRequest) deserialize(protocol);
+
+    assertEquals(1050, received.getALong());
+    assertEquals("test", received.getAString());
+  }
+
+  @Test
+  public void testNoCustomProtocol() {
+    expectedException.expect(IllegalStateException.class);
+    expectedException.expectMessage("Custom protocol deserializer not registered");
+    LazyAny.registerSerializer("cp1", AnyTest::customSerializer);
+    LazyAny lazyAny =
+        new LazyAny.Builder<>().setValue(createSampleRequest()).setCustomProtocol("cp1").build();
+
+    ByteBufTProtocol protocol = serialize(lazyAny);
+    deserialize(protocol);
   }
 
   @Test
@@ -249,24 +298,76 @@ public class AnyTest {
   @Test
   public void testMissingCustomSerializer() {
     expectedException.expect(IllegalArgumentException.class);
-    expectedException.expectMessage("You must set a serializer");
+    expectedException.expectMessage("You must register a serializer");
     TypeRegistry.add(new Type(new UniversalName("foo.com/a/b"), Integer.class, null));
     new LazyAny.Builder<>().setValue(Integer.MAX_VALUE).build();
   }
 
   @Test
   public void testPreferType() {
+    LazyAny.registerSerializer("c1", AnyTest::customLongSerializer);
     TypeRegistry.add(new Type(new UniversalName("f.c/a/b"), Long.class, null));
     LazyAny lazyAny =
-        new LazyAny.Builder<>()
-            .setValue(Long.MAX_VALUE)
-            .setSerializer(AnyTest::customSerializer)
-            .build();
+        new LazyAny.Builder<>().setValue(Long.MAX_VALUE).setCustomProtocol("c1").build();
 
     ByteBufTProtocol protocol = serialize(lazyAny);
 
     Any any = Any.read0(protocol);
     assertNotNull(any.getType());
     assertNull(any.getTypeHashPrefixSha2256());
+  }
+
+  @Test
+  public void testCachedValue() {
+    TestRequest req = createSampleRequest();
+    LazyAny lazyAny = new LazyAny.Builder<>().setValue(req).build();
+
+    LazyAnyAdapter adapter = new LazyAnyAdapter();
+    ByteBuf dest = RpcResources.getUnpooledByteBufAllocator().buffer();
+    ByteBufTProtocol protocol =
+        SerializerUtil.toByteBufProtocol(SerializationProtocol.TBinary, dest);
+    adapter.toThrift(lazyAny, protocol);
+
+    // deserialize it
+    SerializedLazyAny any = (SerializedLazyAny) adapter.fromThrift(protocol);
+    TestRequest received = (TestRequest) any.get();
+    assertEquals(null, any.getAny().getCustomProtocol());
+
+    assertEquals(req, received);
+    // Check if the references are the same with the cached one
+    assertTrue(any.get() == received);
+    dest.clear();
+    assertTrue(any.get() == received);
+  }
+
+  @Test
+  public void testEquals() {
+    TestRequest req = createSampleRequest();
+    LazyAny lazyAny1 = new LazyAny.Builder<>().setValue(req).build();
+    LazyAny lazyAny2 = new LazyAny.Builder<>().setValue(req).build();
+    assertEquals(lazyAny1, lazyAny1);
+    assertEquals(lazyAny1, lazyAny2);
+    assertNotEquals(lazyAny1, req);
+    assertEquals(lazyAny1.hashCode(), lazyAny2.hashCode());
+  }
+
+  @Test
+  public void testZeroHashBytes() {
+    expectedException.expect(IllegalArgumentException.class);
+    expectedException.expectMessage("select one or more bytes");
+    new LazyAny.Builder<>(createSampleRequest()).useHashPrefix(0).build();
+  }
+
+  @Test
+  public void testNullSerializationProtocol() {
+    LazyAny lazyAny =
+        new LazyAny.Builder<>().setValue(createSampleRequest()).setProtocol(null).build();
+
+    LazyAnyAdapter adapter = new LazyAnyAdapter();
+    ByteBufTProtocol protocol = createTProtocol(SerializationProtocol.TBinary);
+    adapter.toThrift(lazyAny, protocol);
+
+    Any any = Any.read0(protocol);
+    assertEquals(StandardProtocol.COMPACT, any.getProtocol());
   }
 }

@@ -24,12 +24,10 @@ import com.facebook.thrift.test.any.Image;
 import com.facebook.thrift.test.any.Position;
 import com.facebook.thrift.test.any.Rectangle;
 import com.facebook.thrift.test.any.SolidColor;
-import com.facebook.thrift.test.universalname.TestRequest;
 import com.facebook.thrift.util.SerializationProtocol;
 import com.facebook.thrift.util.SerializerUtil;
 import com.facebook.thrift.util.resources.RpcResources;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
@@ -73,6 +71,7 @@ public class LazyAnyTest {
                     .build())
             .build();
 
+    // todo: Type Adapters is not support in container types. Fix the test when supported.
     List<LazyAny> list = Arrays.asList(circle, rect);
 
     //    Drawing drawing = new Drawing.Builder().setName("draw1").setShapes(list).build();
@@ -89,52 +88,5 @@ public class LazyAnyTest {
     //
     //    assertEquals(
     //        5, ((Circle) new SerializedLazyAny(received.getShapes().get(0)).get()).getRadius());
-  }
-
-  private Circle createObject() {
-    return new Circle.Builder().setColor(2).setRadius(5).build();
-  }
-
-  private static ByteBuf customSerializer(Object o) {
-    return Unpooled.wrappedBuffer(o.toString().getBytes());
-  }
-
-  @Test
-  public void testEquals() {
-    LazyAny<TestRequest> lazyAny = new LazyAny.Builder<>(createObject()).build();
-    LazyAny<TestRequest> lazyAny2 = new LazyAny.Builder<>(createObject()).build();
-
-    assertEquals(lazyAny, lazyAny2);
-    assertEquals(lazyAny.hashCode(), lazyAny2.hashCode());
-
-    lazyAny =
-        new LazyAny.Builder<>(createObject())
-            .setProtocol(SerializationProtocol.TCompact)
-            .useUri()
-            .build();
-
-    lazyAny2 =
-        new LazyAny.Builder<>(createObject())
-            .setProtocol(SerializationProtocol.TCompact)
-            .useUri()
-            .build();
-    assertEquals(lazyAny, lazyAny2);
-    assertEquals(lazyAny.hashCode(), lazyAny2.hashCode());
-
-    lazyAny =
-        new LazyAny.Builder<>()
-            .setValue(createObject())
-            .setCustomProtocol("custom-protocol")
-            .setSerializer(LazyAnyTest::customSerializer)
-            .build();
-
-    lazyAny2 =
-        new LazyAny.Builder<>()
-            .setValue(createObject())
-            .setCustomProtocol("custom-protocol")
-            .setSerializer(LazyAnyTest::customSerializer)
-            .build();
-    assertEquals(lazyAny, lazyAny2);
-    assertEquals(lazyAny.hashCode(), lazyAny2.hashCode());
   }
 }

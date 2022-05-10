@@ -19,6 +19,7 @@ package com.facebook.thrift.any;
 import com.facebook.thrift.type.Type;
 import com.facebook.thrift.type.TypeRegistry;
 import com.facebook.thrift.type.UniversalName;
+import com.facebook.thrift.type.UniversalNameCache;
 import com.facebook.thrift.util.SerializationProtocol;
 import com.facebook.thrift.util.SerializerUtil;
 import java.util.Objects;
@@ -45,24 +46,20 @@ public class SerializedLazyAny<T> extends LazyAny<T> {
       return (T) lazyValue;
     }
 
-    if (getStandardProtocol() == StandardProtocol.CUSTOM) {
+    if (usingCustomProtocol() && !deserializers.containsKey(any.getCustomProtocol())) {
       throw new IllegalStateException(
-          "This method does not support getting with a custom protocol");
+          "Custom protocol deserializer not registered, " + any.getCustomProtocol());
     }
 
-    return get(SerializerUtil.toByteBufProtocol(getSerializationProtocol(), any.getData()));
+    return getValue();
   }
 
-  private StandardProtocol getStandardProtocol() {
-    if (any.getProtocol() == null) {
-      return StandardProtocol.COMPACT;
-    } else {
-      return any.getProtocol();
-    }
+  private boolean usingCustomProtocol() {
+    return any.getProtocol() == StandardProtocol.CUSTOM;
   }
 
   private SerializationProtocol getSerializationProtocol() {
-    switch (getStandardProtocol()) {
+    switch (any.getProtocol()) {
       case JSON:
         return SerializationProtocol.TJSON;
       case BINARY:
@@ -71,9 +68,8 @@ public class SerializedLazyAny<T> extends LazyAny<T> {
         return SerializationProtocol.TCompact;
       case SIMPLE_JSON:
         return SerializationProtocol.TSimpleJSONBase64;
-      default:
-        return null;
     }
+    throw new IllegalArgumentException("Unsupported serialization protocol " + any.getProtocol());
   }
 
   @Override
@@ -82,7 +78,7 @@ public class SerializedLazyAny<T> extends LazyAny<T> {
   }
 
   @SuppressWarnings("unchecked")
-  private <T> T get(TProtocol protocol) {
+  private <T> T getValue() {
     synchronized (this) {
       if (lazyValue == null) {
         Type type = null;
@@ -94,16 +90,28 @@ public class SerializedLazyAny<T> extends LazyAny<T> {
           type = TypeRegistry.findByHashPrefix(any.getTypeHashPrefixSha2256());
         }
 
-        Objects.requireNonNull(type, "unable to find type for any to deserialize struct");
+        Objects.requireNonNull(type, "Unable to find type for any to deserialize struct");
 
-        lazyValue = type.getReader().read(protocol);
+        if (usingCustomProtocol()) {
+          lazyValue =
+              deserializers.get(any.getCustomProtocol()).apply(type.getClazz(), any.getData());
+        } else {
+          TProtocol protocol =
+              SerializerUtil.toByteBufProtocol(getSerializationProtocol(), any.getData());
+          lazyValue = type.getReader().read(protocol);
+        }
       }
+
       return (T) lazyValue;
     }
   }
 
   Type findByType(String type) {
-    UniversalName universalName = new UniversalName(type);
+    UniversalName universalName = UniversalNameCache.get(type);
+    if (universalName == null) {
+      universalName = new UniversalName(type);
+      UniversalNameCache.put(type, universalName);
+    }
     return TypeRegistry.findByUniversalName(universalName);
   }
 }

@@ -18,6 +18,7 @@ package com.facebook.thrift.type;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class UniversalName {
@@ -47,13 +48,12 @@ public class UniversalName {
    * @param algorithm Hash algorithm.
    * @throws InvalidUniversalNameURIException If the uri syntax is invalid.
    */
-  public UniversalName(String uri, HashAlgorithm algorithm)
-      throws InvalidUniversalNameURIException {
+  public UniversalName(String uri, HashAlgorithm algorithm) {
     if (!namePattern.matcher(uri).matches()) {
       throw new InvalidUniversalNameURIException(uri);
     }
-    this.uri = uri;
-    this.algorithm = algorithm;
+    this.uri = Objects.requireNonNull(uri, "Uri must not be null");
+    this.algorithm = Objects.requireNonNull(algorithm, "Algorithm must not be null");
     this.hash = algorithm.generateHash(uri);
   }
 
@@ -63,7 +63,7 @@ public class UniversalName {
    * @param uri uri of the universal name.
    * @throws InvalidUniversalNameURIException If the uri syntax is invalid.
    */
-  public UniversalName(String uri) throws InvalidUniversalNameURIException {
+  public UniversalName(String uri) {
     this(uri, HashAlgorithmSHA256.INSTANCE);
   }
 
@@ -72,7 +72,7 @@ public class UniversalName {
   }
 
   public ByteBuf getHashBytes() {
-    return getHashPrefixBytes(this.algorithm.getDefaultHashBytes());
+    return hash;
   }
 
   public String getHashPrefix(int size) {

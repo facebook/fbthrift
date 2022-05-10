@@ -22,6 +22,7 @@ import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
@@ -107,8 +108,13 @@ public final class TypeRegistry {
    * @param prefix prefix as byte array
    * @return Type
    * @throws AmbiguousUniversalNameException if the prefix return more than one Type.
+   * @throws IllegalArgumentException if the prefix is empty or null
    */
-  public static Type findByHashPrefix(ByteBuf prefix) throws AmbiguousUniversalNameException {
+  public static Type findByHashPrefix(ByteBuf prefix) {
+    if (!Objects.requireNonNull(prefix).isReadable()) {
+      throw new IllegalArgumentException("Prefix must be at least one byte, it is empty or null");
+    }
+
     if (cache.containsKey(prefix)) {
       return cache.get(prefix);
     }
@@ -134,8 +140,10 @@ public final class TypeRegistry {
    *
    * @param hexPrefix as hexadecimal string
    * @return Type
+   * @throws AmbiguousUniversalNameException if the prefix return more than one Type.
+   * @throws IllegalArgumentException if the prefix is empty or null
    */
-  public static Type findByHashPrefix(String hexPrefix) throws AmbiguousUniversalNameException {
+  public static Type findByHashPrefix(String hexPrefix) {
     return findByHashPrefix(Unpooled.wrappedBuffer(ByteBufUtil.decodeHexDump(hexPrefix)));
   }
 
