@@ -590,12 +590,38 @@ class t_hack_generator : public t_oop_generator {
   }
 
   const std::string* find_hack_adapter(const t_type* type) {
-    return t_typedef::get_first_annotation_or_null(type, {"hack.adapter"});
+    auto annotation =
+        t_typedef::get_first_annotation_or_null(type, {"hack.adapter"});
+    if (annotation) {
+      return annotation;
+    }
+    if (const auto annotation =
+            t_typedef::get_first_structured_annotation_or_null(
+                type, "facebook.com/thrift/annotation/hack/Adapter")) {
+      for (const auto& item : annotation->value()->get_map()) {
+        if (item.first->get_string() == "name") {
+          return &item.second->get_string();
+        }
+      }
+    }
+    return nullptr;
   }
 
   const std::string* find_hack_wrapper(const t_field& node) {
     if (const auto annotation = node.find_structured_annotation_or_null(
             "facebook.com/thrift/annotation/hack/FieldWrapper")) {
+      for (const auto& item : annotation->value()->get_map()) {
+        if (item.first->get_string() == "name") {
+          return &item.second->get_string();
+        }
+      }
+    }
+    return nullptr;
+  }
+
+  const std::string* find_hack_field_adapter(const t_field& node) {
+    if (const auto annotation = node.find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/hack/Adapter")) {
       for (const auto& item : annotation->value()->get_map()) {
         if (item.first->get_string() == "name") {
           return &item.second->get_string();
@@ -2525,6 +2551,9 @@ void t_hack_generator::generate_php_struct_spec(
     if (find_hack_wrapper(field)) {
       indent(out) << "'is_wrapped' => true,\n";
     }
+    if (const auto* adapter = find_hack_field_adapter(field)) {
+      indent(out) << "'adapter' => " << *adapter << "::class,\n";
+    }
     generate_php_type_spec(out, &t);
     indent_down();
     indent(out) << "),\n";
@@ -2574,7 +2603,12 @@ void t_hack_generator::generate_php_struct_shape_spec(
     const t_type* t = field.get_type();
     // Compute typehint before resolving typedefs to avoid missing any adapter
     // annotations.
-    std::string typehint = type_to_typehint(t, false, !is_constructor_shape);
+    std::string typehint;
+    if (const auto field_adapter = find_hack_field_adapter(field)) {
+      typehint = *field_adapter + "::THackType";
+    } else {
+      typehint = type_to_typehint(t, false, !is_constructor_shape);
+    }
 
     std::string dval = "";
     if (field.default_value() != nullptr &&
@@ -3522,7 +3556,12 @@ void t_hack_generator::generate_php_union_methods(
       continue;
     }
     const auto& fieldName = field.name();
-    auto typehint = type_to_typehint(field.get_type());
+    std::string typehint;
+    if (const auto* adapter = find_hack_field_adapter(field)) {
+      typehint = *adapter + "::THackType";
+    } else {
+      typehint = type_to_typehint(field.get_type());
+    }
 
     // set_<fieldName>()
     indent(out) << "public function set_" << fieldName << "(" << typehint
@@ -3804,9 +3843,21 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
     ThriftStructType type,
     const std::string& name,
     bool is_default_assignment) {
+  std::string adapter;
+  if (const auto* annotation = find_hack_field_adapter(field)) {
+    adapter = *annotation;
+  } else if (const auto* annotation = find_hack_adapter(field.get_type())) {
+    adapter = *annotation;
+  }
+
   const t_type* t = field.type()->get_true_type();
-  const auto hack_typehint =
-      type_to_typehint(field.type().get_type(), false, false, false, false);
+  std::string hack_typehint;
+  if (!adapter.empty()) {
+    hack_typehint = adapter + "::THackType";
+  } else {
+    hack_typehint = type_to_typehint(field.get_type());
+  }
+  type_to_typehint(field.type().get_type(), false, false, false, false);
   std::string dval = "";
   bool is_exception = tstruct->is_exception();
   if (field.default_value() != nullptr &&
@@ -3832,8 +3883,8 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
     dval = render_default_value(t);
   }
   if (dval != "null") {
-    if (const auto* adapter = find_hack_adapter(field.get_type())) {
-      dval = *adapter + "::fromThrift(" + dval + ")";
+    if (!adapter.empty()) {
+      dval = adapter + "::fromThrift(" + dval + ")";
     }
   }
 
@@ -3892,8 +3943,13 @@ void t_hack_generator::generate_php_struct_constructor(
     if (skip_codegen(&field)) {
       continue;
     }
-    out << delim << "?" << type_to_typehint(field.get_type()) << " $"
-        << field.name() << " = null";
+    std::string typehint;
+    if (const auto* adapter = find_hack_field_adapter(field)) {
+      typehint = *adapter + "::THackType";
+    } else {
+      typehint = type_to_typehint(field.get_type());
+    }
+    out << delim << "?" << typehint << " $" << field.name() << " = null";
     delim = ", ";
   }
   out << indent() << ")[] {\n";
@@ -4322,6 +4378,19 @@ void t_hack_generator::generate_adapter_type_checks(
       adapter_types_.emplace(
           *adapter,
           type_to_typehint(t, false, false, false, /* ignore_adapter */ true));
+    }
+  }
+
+  for (const auto& field : tstruct->fields()) {
+    if (const auto* adapter = find_hack_field_adapter(field)) {
+      adapter_types_.emplace(
+          *adapter,
+          type_to_typehint(
+              field.get_type(),
+              false,
+              false,
+              false,
+              /* ignore_adapter */ true));
     }
   }
 
@@ -5693,12 +5762,21 @@ std::string t_hack_generator::field_to_typehint(
     bool shape,
     bool immutable_collections,
     bool ignore_adapter) {
-  std::string typehint = type_to_typehint(
-      tfield.get_type(),
-      is_type_nullable,
-      shape,
-      immutable_collections,
-      ignore_adapter);
+  std::string typehint;
+  if (!ignore_adapter) {
+    // Check the adapter before resolving typedefs.
+    if (const auto* adapter = find_hack_field_adapter(tfield)) {
+      typehint = *adapter + "::THackType";
+    }
+  }
+  if (typehint.empty()) {
+    typehint = type_to_typehint(
+        tfield.get_type(),
+        is_type_nullable,
+        shape,
+        immutable_collections,
+        ignore_adapter);
+  }
   if (const auto* field_wrapper = find_hack_wrapper(tfield)) {
     typehint = *field_wrapper + "<" + (is_field_nullable ? "?" : "") +
         typehint + ", " + struct_class_name + ">";
