@@ -50,8 +50,8 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
     cdef cppclass EnumMetadata[T]:
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
-    cdef cppclass cMyEnum "::cpp2::MyEnum":
+cdef extern from "src/gen-cpp2/module_types.h" namespace "::test::fixtures::basic":
+    cdef cppclass cMyEnum "::test::fixtures::basic::MyEnum":
         pass
 
 
@@ -69,9 +69,9 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
     cdef cppclass StructMetadata[T]:
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
-cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test::fixtures::basic":
 
-    cdef cppclass cMyStruct "::cpp2::MyStruct":
+    cdef cppclass cMyStruct "::test::fixtures::basic::MyStruct":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
@@ -90,7 +90,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[cset[float]] floatSet_ref()
 
 
-    cdef cppclass cMyDataItem "::cpp2::MyDataItem":
+    cdef cppclass cMyDataItem "::test::fixtures::basic::MyDataItem":
         cMyDataItem() except +
         cMyDataItem(const cMyDataItem&) except +
         bint operator==(cMyDataItem&)
@@ -100,14 +100,14 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyDataItem&)
         bint operator>=(cMyDataItem&)
 
-    cdef enum cMyUnion__type "::cpp2::MyUnion::Type":
-        cMyUnion__type___EMPTY__ "::cpp2::MyUnion::Type::__EMPTY__",
-        cMyUnion__type_myEnum "::cpp2::MyUnion::Type::myEnum",
-        cMyUnion__type_myStruct "::cpp2::MyUnion::Type::myStruct",
-        cMyUnion__type_myDataItem "::cpp2::MyUnion::Type::myDataItem",
-        cMyUnion__type_floatSet "::cpp2::MyUnion::Type::floatSet",
+    cdef enum cMyUnion__type "::test::fixtures::basic::MyUnion::Type":
+        cMyUnion__type___EMPTY__ "::test::fixtures::basic::MyUnion::Type::__EMPTY__",
+        cMyUnion__type_myEnum "::test::fixtures::basic::MyUnion::Type::myEnum",
+        cMyUnion__type_myStruct "::test::fixtures::basic::MyUnion::Type::myStruct",
+        cMyUnion__type_myDataItem "::test::fixtures::basic::MyUnion::Type::myDataItem",
+        cMyUnion__type_floatSet "::test::fixtures::basic::MyUnion::Type::floatSet",
 
-    cdef cppclass cMyUnion "::cpp2::MyUnion":
+    cdef cppclass cMyUnion "::test::fixtures::basic::MyUnion":
         cMyUnion() except +
         cMyUnion(const cMyUnion&) except +
         bint operator==(cMyUnion&)

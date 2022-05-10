@@ -28,15 +28,15 @@ cimport module.types as _module_types
 
 cimport facebook.thrift.annotation.hack.types as _facebook_thrift_annotation_hack_types
 
-cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
-  cdef cppclass cMyServiceAsyncClient "::cpp2::MyServiceAsyncClient":
+cdef extern from "src/gen-cpp2/MyService.h" namespace "::test::fixtures::basic":
+  cdef cppclass cMyServiceAsyncClient "::test::fixtures::basic::MyServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyServiceClientWrapper] move(unique_ptr[cMyServiceClientWrapper])
 
-cdef extern from "src/gen-cpp2/DbMixedStackArguments.h" namespace "::cpp2":
-  cdef cppclass cDbMixedStackArgumentsAsyncClient "::cpp2::DbMixedStackArgumentsAsyncClient":
+cdef extern from "src/gen-cpp2/DbMixedStackArguments.h" namespace "::test::fixtures::basic":
+  cdef cppclass cDbMixedStackArgumentsAsyncClient "::test::fixtures::basic::DbMixedStackArgumentsAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
@@ -46,8 +46,8 @@ cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::
   cdef cppclass cTProcessorEventHandler "apache::thrift::TProcessorEventHandler":
     pass
 
-cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
-  cdef cppclass cMyServiceClientWrapper "::cpp2::MyServiceClientWrapper":
+cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::test::fixtures::basic":
+  cdef cppclass cMyServiceClientWrapper "::test::fixtures::basic::MyServiceClientWrapper":
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
@@ -70,7 +70,7 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
     cFollyFuture[cset[float]] invalid_return_for_hack(cRpcOptions, )
 
 
-  cdef cppclass cDbMixedStackArgumentsClientWrapper "::cpp2::DbMixedStackArgumentsClientWrapper":
+  cdef cppclass cDbMixedStackArgumentsClientWrapper "::test::fixtures::basic::DbMixedStackArgumentsClientWrapper":
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 

@@ -25,29 +25,28 @@ namespace compiler {
 namespace gen {
 namespace cpp {
 
-namespace {
-
-static bool is_dot(char const c) {
-  return c == '.';
+std::vector<std::string>
+namespace_resolver::gen_namespace_components_from_package(
+    const t_package& package) {
+  if (package.empty()) {
+    return {};
+  }
+  std::vector<std::string> ret = {package.domain()[0]};
+  auto&& path = package.path();
+  ret.insert(ret.end(), path.begin(), path.end());
+  return ret;
 }
-
-} // namespace
 
 std::vector<std::string> namespace_resolver::gen_namespace_components(
     const t_program& program) {
-  auto const& cpp2 = program.get_namespace("cpp2");
-  auto const& cpp = program.get_namespace("cpp");
-
-  std::vector<std::string> components;
-  if (!cpp2.empty()) {
-    boost::algorithm::split(components, cpp2, is_dot);
-  } else if (!cpp.empty()) {
-    boost::algorithm::split(components, cpp, is_dot);
-    components.push_back("cpp2");
-  } else {
+  auto components = program.gen_namespace_or_default("cpp2", [&program] {
+    return gen_namespace_components_from_package(program.package());
+  });
+  if (components.empty()) {
+    components = program.gen_namespace_or_default(
+        "cpp", [] { return std::vector<std::string>{}; });
     components.push_back("cpp2");
   }
-
   return components;
 }
 

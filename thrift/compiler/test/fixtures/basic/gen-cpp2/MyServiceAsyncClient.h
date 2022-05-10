@@ -17,13 +17,13 @@ namespace apache { namespace thrift {
   namespace transport { class THeader; }
 }}
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic {
 class MyService;
-} // cpp2
+}}} // test::fixtures::basic
 namespace apache::thrift {
 
 template <>
-class Client<::cpp2::MyService> : public apache::thrift::GeneratedAsyncClient {
+class Client<::test::fixtures::basic::MyService> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -863,6 +863,6 @@ class Client<::cpp2::MyService> : public apache::thrift::GeneratedAsyncClient {
 
 } // namespace apache::thrift
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic {
 using MyServiceAsyncClient = ::apache::thrift::Client<MyService>;
-} // cpp2
+}}} // test::fixtures::basic

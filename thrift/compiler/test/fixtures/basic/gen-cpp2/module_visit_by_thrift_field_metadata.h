@@ -14,18 +14,18 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByFieldId<::cpp2::MyDataItem> {
+struct VisitByFieldId<::test::fixtures::basic::MyDataItem> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
     default:
-      throwInvalidThriftId(fieldId, "::cpp2::MyDataItem");
+      throwInvalidThriftId(fieldId, "::test::fixtures::basic::MyDataItem");
     }
   }
 };
 
 template <>
-struct VisitByFieldId<::cpp2::MyStruct> {
+struct VisitByFieldId<::test::fixtures::basic::MyStruct> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
@@ -46,13 +46,13 @@ struct VisitByFieldId<::cpp2::MyStruct> {
     case 8:
       return f(7, static_cast<T&&>(t).floatSet_ref());
     default:
-      throwInvalidThriftId(fieldId, "::cpp2::MyStruct");
+      throwInvalidThriftId(fieldId, "::test::fixtures::basic::MyStruct");
     }
   }
 };
 
 template <>
-struct VisitByFieldId<::cpp2::MyUnion> {
+struct VisitByFieldId<::test::fixtures::basic::MyUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
@@ -65,7 +65,7 @@ struct VisitByFieldId<::cpp2::MyUnion> {
     case 4:
       return f(3, static_cast<T&&>(t).floatSet_ref());
     default:
-      throwInvalidThriftId(fieldId, "::cpp2::MyUnion");
+      throwInvalidThriftId(fieldId, "::test::fixtures::basic::MyUnion");
     }
   }
 };

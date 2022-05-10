@@ -181,6 +181,10 @@ class t_program : public t_named {
    */
   const std::string& get_namespace(const std::string& language) const;
 
+  std::vector<std::string> gen_namespace_or_default(
+      const std::string& language,
+      std::function<std::vector<std::string>()> gen) const;
+
   /**
    * This creates a new program for every thrift file in an
    * include statement and sets their include_prefix by parsing

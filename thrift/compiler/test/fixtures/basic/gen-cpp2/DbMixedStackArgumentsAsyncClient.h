@@ -17,13 +17,13 @@ namespace apache { namespace thrift {
   namespace transport { class THeader; }
 }}
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic {
 class DbMixedStackArguments;
-} // cpp2
+}}} // test::fixtures::basic
 namespace apache::thrift {
 
 template <>
-class Client<::cpp2::DbMixedStackArguments> : public apache::thrift::GeneratedAsyncClient {
+class Client<::test::fixtures::basic::DbMixedStackArguments> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -230,6 +230,6 @@ class Client<::cpp2::DbMixedStackArguments> : public apache::thrift::GeneratedAs
 
 } // namespace apache::thrift
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic {
 using DbMixedStackArgumentsAsyncClient = ::apache::thrift::Client<DbMixedStackArguments>;
-} // cpp2
+}}} // test::fixtures::basic

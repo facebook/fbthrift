@@ -2,7 +2,6 @@
   "__fbthrift": "@generated",
   "thrift_module" : "module",
   "namespaces": {
-    "cpp2": "test.namespace_from_package_without_module_name",
     "go": "namespace_from_package_without_module_name.module",
     "hs": "NamespaceFromPackageWithoutModuleName",
     "java": "dev.test.namespace_from_package_without_module_name_deprecated",

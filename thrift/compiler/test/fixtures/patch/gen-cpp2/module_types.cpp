@@ -16,11 +16,11 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyData>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::MyData>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyData>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::MyData>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -33,7 +33,7 @@ void TccStructTraits<::cpp2::MyData>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* MyData::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyData";
@@ -113,17 +113,17 @@ template uint32_t MyData::serializedSize<>(apache::thrift::CompactProtocolWriter
 template uint32_t MyData::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyUnion>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::MyUnion>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyUnion>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::MyUnion>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -138,19 +138,19 @@ void TccStructTraits<::cpp2::MyUnion>::translateFieldName(
 
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits<::cpp2::MyUnion::Type>::size;
-folly::Range<::cpp2::MyUnion::Type const*> const TEnumTraits<::cpp2::MyUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::MyUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::names);
+constexpr std::size_t const TEnumTraits<::test::fixtures::patch::MyUnion::Type>::size;
+folly::Range<::test::fixtures::patch::MyUnion::Type const*> const TEnumTraits<::test::fixtures::patch::MyUnion::Type>::values = folly::range(TEnumDataStorage<::test::fixtures::patch::MyUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::patch::MyUnion::Type>::names = folly::range(TEnumDataStorage<::test::fixtures::patch::MyUnion::Type>::names);
 
-bool TEnumTraits<::cpp2::MyUnion::Type>::findName(type value, folly::StringPiece* out) noexcept {
+bool TEnumTraits<::test::fixtures::patch::MyUnion::Type>::findName(type value, folly::StringPiece* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(folly::StringPiece name, type* out) noexcept {
+bool TEnumTraits<::test::fixtures::patch::MyUnion::Type>::findValue(folly::StringPiece name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 }} // apache::thrift
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* MyUnion::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyUnion";
@@ -222,17 +222,17 @@ template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::MyStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::MyStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -245,7 +245,7 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* MyStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStruct";
@@ -331,7 +331,7 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
 }
 
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, bool boolVal__arg, ::std::int8_t byteVal__arg, ::std::int16_t i16Val__arg, ::std::int32_t i32Val__arg, ::std::int64_t i64Val__arg, float floatVal__arg, double doubleVal__arg, ::std::string stringVal__arg, ::folly::IOBuf binaryVal__arg, ::cpp2::MyData structVal__arg, bool optBoolVal__arg, ::std::int8_t optByteVal__arg, ::std::int16_t optI16Val__arg, ::std::int32_t optI32Val__arg, ::std::int64_t optI64Val__arg, float optFloatVal__arg, double optDoubleVal__arg, ::std::string optStringVal__arg, ::folly::IOBuf optBinaryVal__arg, ::cpp2::MyData optStructVal__arg, ::std::vector<::std::int16_t> optListVal__arg, ::std::set<::std::string> optSetVal__arg, ::std::map<::std::string, ::std::string> optMapVal__arg, ::cpp2::MyUnion unionVal__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, bool boolVal__arg, ::std::int8_t byteVal__arg, ::std::int16_t i16Val__arg, ::std::int32_t i32Val__arg, ::std::int64_t i64Val__arg, float floatVal__arg, double doubleVal__arg, ::std::string stringVal__arg, ::folly::IOBuf binaryVal__arg, ::test::fixtures::patch::MyData structVal__arg, bool optBoolVal__arg, ::std::int8_t optByteVal__arg, ::std::int16_t optI16Val__arg, ::std::int32_t optI32Val__arg, ::std::int64_t optI64Val__arg, float optFloatVal__arg, double optDoubleVal__arg, ::std::string optStringVal__arg, ::folly::IOBuf optBinaryVal__arg, ::test::fixtures::patch::MyData optStructVal__arg, ::std::vector<::std::int16_t> optListVal__arg, ::std::set<::std::string> optSetVal__arg, ::std::map<::std::string, ::std::string> optMapVal__arg, ::test::fixtures::patch::MyUnion unionVal__arg) :
     __fbthrift_field_boolVal(std::move(boolVal__arg)),
     __fbthrift_field_byteVal(std::move(byteVal__arg)),
     __fbthrift_field_i16Val(std::move(i16Val__arg)),
@@ -586,19 +586,19 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   return false;
 }
 
-const ::cpp2::MyData& MyStruct::get_structVal() const& {
+const ::test::fixtures::patch::MyData& MyStruct::get_structVal() const& {
   return __fbthrift_field_structVal;
 }
 
-::cpp2::MyData MyStruct::get_structVal() && {
+::test::fixtures::patch::MyData MyStruct::get_structVal() && {
   return std::move(__fbthrift_field_structVal);
 }
 
-const ::cpp2::MyData* MyStruct::get_optStructVal() const& {
+const ::test::fixtures::patch::MyData* MyStruct::get_optStructVal() const& {
   return optStructVal_ref().has_value() ? std::addressof(__fbthrift_field_optStructVal) : nullptr;
 }
 
-::cpp2::MyData* MyStruct::get_optStructVal() & {
+::test::fixtures::patch::MyData* MyStruct::get_optStructVal() & {
   return optStructVal_ref().has_value() ? std::addressof(__fbthrift_field_optStructVal) : nullptr;
 }
 
@@ -626,11 +626,11 @@ const ::std::map<::std::string, ::std::string>* MyStruct::get_optMapVal() const&
   return optMapVal_ref().has_value() ? std::addressof(__fbthrift_field_optMapVal) : nullptr;
 }
 
-const ::cpp2::MyUnion& MyStruct::get_unionVal() const& {
+const ::test::fixtures::patch::MyUnion& MyStruct::get_unionVal() const& {
   return __fbthrift_field_unionVal;
 }
 
-::cpp2::MyUnion MyStruct::get_unionVal() && {
+::test::fixtures::patch::MyUnion MyStruct::get_unionVal() && {
   return std::move(__fbthrift_field_unionVal);
 }
 
@@ -677,32 +677,32 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
         ::apache::thrift::type_class::structure,
-        ::cpp2::MyData>,
+        ::test::fixtures::patch::MyData>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
         ::apache::thrift::type_class::structure,
-        ::cpp2::MyData>,
+        ::test::fixtures::patch::MyData>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
         ::apache::thrift::type_class::variant,
-        ::cpp2::MyUnion>,
+        ::test::fixtures::patch::MyUnion>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyDataPatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::MyDataPatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyDataPatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::MyDataPatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -715,7 +715,7 @@ void TccStructTraits<::cpp2::MyDataPatchStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* MyDataPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyDataPatch";
@@ -822,17 +822,17 @@ static_assert(
         ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyDataValuePatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::MyDataValuePatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyDataValuePatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::MyDataValuePatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -845,7 +845,7 @@ void TccStructTraits<::cpp2::MyDataValuePatchStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* MyDataValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyDataValuePatch";
@@ -879,7 +879,7 @@ MyDataValuePatchStruct& MyDataValuePatchStruct::operator=(FOLLY_MAYBE_UNUSED MyD
 }
 
 
-MyDataValuePatchStruct::MyDataValuePatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyData> assign__arg, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyDataPatchStruct> patch__arg) :
+MyDataValuePatchStruct::MyDataValuePatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyData> assign__arg, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyDataPatchStruct> patch__arg) :
     __fbthrift_field_assign(std::move(assign__arg)),
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)) {
@@ -954,26 +954,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyDataValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::cpp2::MyData>,
+        ::test::fixtures::patch::MyData>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyDataValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyDataPatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyDataPatchStruct>>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::OptionalMyDataValuePatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::OptionalMyDataValuePatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::OptionalMyDataValuePatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::OptionalMyDataValuePatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -986,7 +986,7 @@ void TccStructTraits<::cpp2::OptionalMyDataValuePatchStruct>::translateFieldName
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* OptionalMyDataValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyDataValuePatch";
@@ -1025,7 +1025,7 @@ OptionalMyDataValuePatchStruct& OptionalMyDataValuePatchStruct::operator=(FOLLY_
 }
 
 
-OptionalMyDataValuePatchStruct::OptionalMyDataValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::cpp2::MyDataValuePatchStruct> patch__arg, ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyData> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::cpp2::MyDataValuePatchStruct> patchAfter__arg) :
+OptionalMyDataValuePatchStruct::OptionalMyDataValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct> patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyData> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct> patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -1111,32 +1111,32 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyDataValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::cpp2::MyDataValuePatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyDataValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::cpp2::MyData>,
+        ::test::fixtures::patch::MyData>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyDataValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::cpp2::MyDataValuePatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct>>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyUnionPatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::MyUnionPatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyUnionPatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::MyUnionPatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -1149,7 +1149,7 @@ void TccStructTraits<::cpp2::MyUnionPatchStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* MyUnionPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyUnionPatch";
@@ -1256,17 +1256,17 @@ static_assert(
         ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct>>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyUnionValuePatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::MyUnionValuePatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyUnionValuePatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::MyUnionValuePatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -1279,7 +1279,7 @@ void TccStructTraits<::cpp2::MyUnionValuePatchStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* MyUnionValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyUnionValuePatch";
@@ -1318,7 +1318,7 @@ MyUnionValuePatchStruct& MyUnionValuePatchStruct::operator=(FOLLY_MAYBE_UNUSED M
 }
 
 
-MyUnionValuePatchStruct::MyUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionPatchStruct> patch__arg, ::cpp2::MyUnion ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionPatchStruct> patchAfter__arg) :
+MyUnionValuePatchStruct::MyUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::MyUnionPatchStruct> patch__arg, ::test::fixtures::patch::MyUnion ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::MyUnionPatchStruct> patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -1381,11 +1381,11 @@ bool MyUnionValuePatchStruct::operator<(const MyUnionValuePatchStruct& rhs) cons
   return false;
 }
 
-const ::cpp2::MyUnion& MyUnionValuePatchStruct::get_ensure() const& {
+const ::test::fixtures::patch::MyUnion& MyUnionValuePatchStruct::get_ensure() const& {
   return __fbthrift_field_ensure;
 }
 
-::cpp2::MyUnion MyUnionValuePatchStruct::get_ensure() && {
+::test::fixtures::patch::MyUnion MyUnionValuePatchStruct::get_ensure() && {
   return std::move(__fbthrift_field_ensure);
 }
 
@@ -1411,32 +1411,32 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnionValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionPatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::MyUnionPatchStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnionValuePatchStruct,
         ::apache::thrift::type_class::variant,
-        ::cpp2::MyUnion>,
+        ::test::fixtures::patch::MyUnion>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnionValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::cpp2::MyUnionPatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionPatchAdapter, ::test::fixtures::patch::MyUnionPatchStruct>>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::OptionalMyUnionValuePatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::OptionalMyUnionValuePatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::OptionalMyUnionValuePatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::OptionalMyUnionValuePatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -1449,7 +1449,7 @@ void TccStructTraits<::cpp2::OptionalMyUnionValuePatchStruct>::translateFieldNam
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* OptionalMyUnionValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyUnionValuePatch";
@@ -1488,7 +1488,7 @@ OptionalMyUnionValuePatchStruct& OptionalMyUnionValuePatchStruct::operator=(FOLL
 }
 
 
-OptionalMyUnionValuePatchStruct::OptionalMyUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::cpp2::MyUnionValuePatchStruct> patch__arg, ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyUnion> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::cpp2::MyUnionValuePatchStruct> patchAfter__arg) :
+OptionalMyUnionValuePatchStruct::OptionalMyUnionValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct> patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyUnion> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct> patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -1574,32 +1574,32 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyUnionValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::cpp2::MyUnionValuePatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyUnionValuePatchStruct,
         ::apache::thrift::type_class::variant,
-        ::cpp2::MyUnion>,
+        ::test::fixtures::patch::MyUnion>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyUnionValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::cpp2::MyUnionValuePatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct>>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyStructField21PatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::MyStructField21PatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyStructField21PatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::MyStructField21PatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -1612,7 +1612,7 @@ void TccStructTraits<::cpp2::MyStructField21PatchStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* MyStructField21PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructField21Patch";
@@ -1745,17 +1745,17 @@ template uint32_t MyStructField21PatchStruct::serializedSize<>(apache::thrift::C
 template uint32_t MyStructField21PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::OptionalMyStructField21PatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::OptionalMyStructField21PatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::OptionalMyStructField21PatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::OptionalMyStructField21PatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -1768,7 +1768,7 @@ void TccStructTraits<::cpp2::OptionalMyStructField21PatchStruct>::translateField
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* OptionalMyStructField21PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructField21Patch";
@@ -1810,7 +1810,7 @@ OptionalMyStructField21PatchStruct& OptionalMyStructField21PatchStruct::operator
 }
 
 
-OptionalMyStructField21PatchStruct::OptionalMyStructField21PatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::cpp2::MyStructField21PatchStruct> patch__arg, ::std::vector<::std::int16_t> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::cpp2::MyStructField21PatchStruct> patchAfter__arg) :
+OptionalMyStructField21PatchStruct::OptionalMyStructField21PatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::test::fixtures::patch::MyStructField21PatchStruct> patch__arg, ::std::vector<::std::int16_t> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::test::fixtures::patch::MyStructField21PatchStruct> patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -1906,26 +1906,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructField21PatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::cpp2::MyStructField21PatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::test::fixtures::patch::MyStructField21PatchStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructField21PatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::cpp2::MyStructField21PatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::ListPatchAdapter, ::test::fixtures::patch::MyStructField21PatchStruct>>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyStructField22PatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::MyStructField22PatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyStructField22PatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::MyStructField22PatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -1938,7 +1938,7 @@ void TccStructTraits<::cpp2::MyStructField22PatchStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* MyStructField22PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructField22Patch";
@@ -2071,17 +2071,17 @@ template uint32_t MyStructField22PatchStruct::serializedSize<>(apache::thrift::C
 template uint32_t MyStructField22PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::OptionalMyStructField22PatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::OptionalMyStructField22PatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::OptionalMyStructField22PatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::OptionalMyStructField22PatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -2094,7 +2094,7 @@ void TccStructTraits<::cpp2::OptionalMyStructField22PatchStruct>::translateField
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* OptionalMyStructField22PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructField22Patch";
@@ -2136,7 +2136,7 @@ OptionalMyStructField22PatchStruct& OptionalMyStructField22PatchStruct::operator
 }
 
 
-OptionalMyStructField22PatchStruct::OptionalMyStructField22PatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::cpp2::MyStructField22PatchStruct> patch__arg, ::std::set<::std::string> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::cpp2::MyStructField22PatchStruct> patchAfter__arg) :
+OptionalMyStructField22PatchStruct::OptionalMyStructField22PatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::test::fixtures::patch::MyStructField22PatchStruct> patch__arg, ::std::set<::std::string> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::test::fixtures::patch::MyStructField22PatchStruct> patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -2232,26 +2232,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructField22PatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::cpp2::MyStructField22PatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::test::fixtures::patch::MyStructField22PatchStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructField22PatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::cpp2::MyStructField22PatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::SetPatchAdapter, ::test::fixtures::patch::MyStructField22PatchStruct>>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyStructField23PatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::MyStructField23PatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyStructField23PatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::MyStructField23PatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -2264,7 +2264,7 @@ void TccStructTraits<::cpp2::MyStructField23PatchStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* MyStructField23PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructField23Patch";
@@ -2377,17 +2377,17 @@ template uint32_t MyStructField23PatchStruct::serializedSize<>(apache::thrift::C
 template uint32_t MyStructField23PatchStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::OptionalMyStructField23PatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::OptionalMyStructField23PatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::OptionalMyStructField23PatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::OptionalMyStructField23PatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -2400,7 +2400,7 @@ void TccStructTraits<::cpp2::OptionalMyStructField23PatchStruct>::translateField
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* OptionalMyStructField23PatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructField23Patch";
@@ -2442,7 +2442,7 @@ OptionalMyStructField23PatchStruct& OptionalMyStructField23PatchStruct::operator
 }
 
 
-OptionalMyStructField23PatchStruct::OptionalMyStructField23PatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::cpp2::MyStructField23PatchStruct> patch__arg, ::std::map<::std::string, ::std::string> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::cpp2::MyStructField23PatchStruct> patchAfter__arg) :
+OptionalMyStructField23PatchStruct::OptionalMyStructField23PatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::test::fixtures::patch::MyStructField23PatchStruct> patch__arg, ::std::map<::std::string, ::std::string> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::test::fixtures::patch::MyStructField23PatchStruct> patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -2538,26 +2538,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructField23PatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::cpp2::MyStructField23PatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::test::fixtures::patch::MyStructField23PatchStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructField23PatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::cpp2::MyStructField23PatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::MapPatchAdapter, ::test::fixtures::patch::MyStructField23PatchStruct>>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyStructPatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::MyStructPatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyStructPatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::MyStructPatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -2570,7 +2570,7 @@ void TccStructTraits<::cpp2::MyStructPatchStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* MyStructPatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructPatch";
@@ -2713,7 +2713,7 @@ MyStructPatchStruct& MyStructPatchStruct::operator=(FOLLY_MAYBE_UNUSED MyStructP
 }
 
 
-MyStructPatchStruct::MyStructPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::BoolPatchAdapter, ::apache::thrift::op::BoolPatchStruct> boolVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::BytePatchStruct> byteVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I16PatchStruct> i16Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct> i32Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I64PatchStruct> i64Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::FloatPatchStruct> floatVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::DoublePatchStruct> doubleVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct> stringVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::op::BinaryPatchStruct> binaryVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::cpp2::MyDataValuePatchStruct> structVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBoolPatchStruct> optBoolVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBytePatchStruct> optByteVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI16PatchStruct> optI16Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI32PatchStruct> optI32Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI64PatchStruct> optI64Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalFloatPatchStruct> optFloatVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalDoublePatchStruct> optDoubleVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalStringPatchStruct> optStringVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBinaryPatchStruct> optBinaryVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::cpp2::OptionalMyDataValuePatchStruct> optStructVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::cpp2::OptionalMyStructField21PatchStruct> optListVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::cpp2::OptionalMyStructField22PatchStruct> optSetVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::cpp2::OptionalMyStructField23PatchStruct> optMapVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::cpp2::MyUnionValuePatchStruct> unionVal__arg) :
+MyStructPatchStruct::MyStructPatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::BoolPatchAdapter, ::apache::thrift::op::BoolPatchStruct> boolVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::BytePatchStruct> byteVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I16PatchStruct> i16Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I32PatchStruct> i32Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::I64PatchStruct> i64Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::FloatPatchStruct> floatVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::NumberPatchAdapter, ::apache::thrift::op::DoublePatchStruct> doubleVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StringPatchAdapter, ::apache::thrift::op::StringPatchStruct> stringVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::AssignPatchAdapter, ::apache::thrift::op::BinaryPatchStruct> binaryVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct> structVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBoolPatchStruct> optBoolVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBytePatchStruct> optByteVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI16PatchStruct> optI16Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI32PatchStruct> optI32Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalI64PatchStruct> optI64Val__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalFloatPatchStruct> optFloatVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalDoublePatchStruct> optDoubleVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalStringPatchStruct> optStringVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::apache::thrift::op::OptionalBinaryPatchStruct> optBinaryVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyDataValuePatchStruct> optStructVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField21PatchStruct> optListVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField22PatchStruct> optSetVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField23PatchStruct> optMapVal__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct> unionVal__arg) :
     __fbthrift_field_boolVal(std::move(boolVal__arg)),
     __fbthrift_field_byteVal(std::move(byteVal__arg)),
     __fbthrift_field_i16Val(std::move(i16Val__arg)),
@@ -3074,7 +3074,7 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::cpp2::MyDataValuePatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyDataValuePatchStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
@@ -3134,44 +3134,44 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::cpp2::OptionalMyDataValuePatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyDataValuePatchStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::cpp2::OptionalMyStructField21PatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField21PatchStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::cpp2::OptionalMyStructField22PatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField22PatchStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::cpp2::OptionalMyStructField23PatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructField23PatchStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructPatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::cpp2::MyUnionValuePatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::UnionValuePatchAdapter, ::test::fixtures::patch::MyUnionValuePatchStruct>>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyStructValuePatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::MyStructValuePatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyStructValuePatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::MyStructValuePatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -3184,7 +3184,7 @@ void TccStructTraits<::cpp2::MyStructValuePatchStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* MyStructValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/MyStructValuePatch";
@@ -3218,7 +3218,7 @@ MyStructValuePatchStruct& MyStructValuePatchStruct::operator=(FOLLY_MAYBE_UNUSED
 }
 
 
-MyStructValuePatchStruct::MyStructValuePatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyStruct> assign__arg, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyStructPatchStruct> patch__arg) :
+MyStructValuePatchStruct::MyStructValuePatchStruct(apache::thrift::FragileConstructor, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyStruct> assign__arg, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyStructPatchStruct> patch__arg) :
     __fbthrift_field_assign(std::move(assign__arg)),
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)) {
@@ -3293,26 +3293,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::cpp2::MyStruct>,
+        ::test::fixtures::patch::MyStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStructValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::cpp2::MyStructPatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructPatchAdapter, ::test::fixtures::patch::MyStructPatchStruct>>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::patch
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::OptionalMyStructValuePatchStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::patch::OptionalMyStructValuePatchStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::OptionalMyStructValuePatchStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::patch::OptionalMyStructValuePatchStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -3325,7 +3325,7 @@ void TccStructTraits<::cpp2::OptionalMyStructValuePatchStruct>::translateFieldNa
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace patch {
 
 const char* OptionalMyStructValuePatchStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/patch/OptionalMyStructValuePatch";
@@ -3364,7 +3364,7 @@ OptionalMyStructValuePatchStruct& OptionalMyStructValuePatchStruct::operator=(FO
 }
 
 
-OptionalMyStructValuePatchStruct::OptionalMyStructValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::cpp2::MyStructValuePatchStruct> patch__arg, ::apache::thrift::detail::boxed_value_ptr<::cpp2::MyStruct> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::cpp2::MyStructValuePatchStruct> patchAfter__arg) :
+OptionalMyStructValuePatchStruct::OptionalMyStructValuePatchStruct(apache::thrift::FragileConstructor, bool clear__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyStructValuePatchStruct> patch__arg, ::apache::thrift::detail::boxed_value_ptr<::test::fixtures::patch::MyStruct> ensure__arg, ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyStructValuePatchStruct> patchAfter__arg) :
     __fbthrift_field_clear(std::move(clear__arg)),
     __fbthrift_field_patch(std::move(patch__arg)),
     __fbthrift_field_ensure(std::move(ensure__arg)),
@@ -3450,68 +3450,68 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::cpp2::MyStructValuePatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyStructValuePatchStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::cpp2::MyStruct>,
+        ::test::fixtures::patch::MyStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         OptionalMyStructValuePatchStruct,
         ::apache::thrift::type_class::structure,
-        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::cpp2::MyStructValuePatchStruct>>,
+        ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::StructValuePatchAdapter, ::test::fixtures::patch::MyStructValuePatchStruct>>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::patch
 
-namespace cpp2 { namespace {
+namespace test { namespace fixtures { namespace patch { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StringPatchAdapter, 1, ::apache::thrift::op::StringPatchStruct, ::cpp2::MyDataPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 2, ::apache::thrift::op::I32PatchStruct, ::cpp2::MyDataPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructPatchAdapter, 3, ::cpp2::MyDataPatchStruct, ::cpp2::MyDataValuePatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructValuePatchAdapter, 3, ::cpp2::MyDataValuePatchStruct, ::cpp2::OptionalMyDataValuePatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructValuePatchAdapter, 5, ::cpp2::MyDataValuePatchStruct, ::cpp2::OptionalMyDataValuePatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StringPatchAdapter, 1, ::apache::thrift::op::StringPatchStruct, ::cpp2::MyUnionPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 2, ::apache::thrift::op::I32PatchStruct, ::cpp2::MyUnionPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionPatchAdapter, 3, ::cpp2::MyUnionPatchStruct, ::cpp2::MyUnionValuePatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionPatchAdapter, 5, ::cpp2::MyUnionPatchStruct, ::cpp2::MyUnionValuePatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionValuePatchAdapter, 3, ::cpp2::MyUnionValuePatchStruct, ::cpp2::OptionalMyUnionValuePatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionValuePatchAdapter, 5, ::cpp2::MyUnionValuePatchStruct, ::cpp2::OptionalMyUnionValuePatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::ListPatchAdapter, 3, ::cpp2::MyStructField21PatchStruct, ::cpp2::OptionalMyStructField21PatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::ListPatchAdapter, 5, ::cpp2::MyStructField21PatchStruct, ::cpp2::OptionalMyStructField21PatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::SetPatchAdapter, 3, ::cpp2::MyStructField22PatchStruct, ::cpp2::OptionalMyStructField22PatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::SetPatchAdapter, 5, ::cpp2::MyStructField22PatchStruct, ::cpp2::OptionalMyStructField22PatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::MapPatchAdapter, 3, ::cpp2::MyStructField23PatchStruct, ::cpp2::OptionalMyStructField23PatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::MapPatchAdapter, 5, ::cpp2::MyStructField23PatchStruct, ::cpp2::OptionalMyStructField23PatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::BoolPatchAdapter, 1, ::apache::thrift::op::BoolPatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 2, ::apache::thrift::op::BytePatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 3, ::apache::thrift::op::I16PatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 4, ::apache::thrift::op::I32PatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 5, ::apache::thrift::op::I64PatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 6, ::apache::thrift::op::FloatPatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 7, ::apache::thrift::op::DoublePatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StringPatchAdapter, 8, ::apache::thrift::op::StringPatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::AssignPatchAdapter, 9, ::apache::thrift::op::BinaryPatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructValuePatchAdapter, 10, ::cpp2::MyDataValuePatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 11, ::apache::thrift::op::OptionalBoolPatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 12, ::apache::thrift::op::OptionalBytePatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 13, ::apache::thrift::op::OptionalI16PatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 14, ::apache::thrift::op::OptionalI32PatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 15, ::apache::thrift::op::OptionalI64PatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 16, ::apache::thrift::op::OptionalFloatPatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 17, ::apache::thrift::op::OptionalDoublePatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 18, ::apache::thrift::op::OptionalStringPatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 19, ::apache::thrift::op::OptionalBinaryPatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 20, ::cpp2::OptionalMyDataValuePatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 21, ::cpp2::OptionalMyStructField21PatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 22, ::cpp2::OptionalMyStructField22PatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 23, ::cpp2::OptionalMyStructField23PatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionValuePatchAdapter, 30, ::cpp2::MyUnionValuePatchStruct, ::cpp2::MyStructPatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructPatchAdapter, 3, ::cpp2::MyStructPatchStruct, ::cpp2::MyStructValuePatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructValuePatchAdapter, 3, ::cpp2::MyStructValuePatchStruct, ::cpp2::OptionalMyStructValuePatchStruct>();
-  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructValuePatchAdapter, 5, ::cpp2::MyStructValuePatchStruct, ::cpp2::OptionalMyStructValuePatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StringPatchAdapter, 1, ::apache::thrift::op::StringPatchStruct, ::test::fixtures::patch::MyDataPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 2, ::apache::thrift::op::I32PatchStruct, ::test::fixtures::patch::MyDataPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructPatchAdapter, 3, ::test::fixtures::patch::MyDataPatchStruct, ::test::fixtures::patch::MyDataValuePatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructValuePatchAdapter, 3, ::test::fixtures::patch::MyDataValuePatchStruct, ::test::fixtures::patch::OptionalMyDataValuePatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructValuePatchAdapter, 5, ::test::fixtures::patch::MyDataValuePatchStruct, ::test::fixtures::patch::OptionalMyDataValuePatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StringPatchAdapter, 1, ::apache::thrift::op::StringPatchStruct, ::test::fixtures::patch::MyUnionPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 2, ::apache::thrift::op::I32PatchStruct, ::test::fixtures::patch::MyUnionPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionPatchAdapter, 3, ::test::fixtures::patch::MyUnionPatchStruct, ::test::fixtures::patch::MyUnionValuePatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionPatchAdapter, 5, ::test::fixtures::patch::MyUnionPatchStruct, ::test::fixtures::patch::MyUnionValuePatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionValuePatchAdapter, 3, ::test::fixtures::patch::MyUnionValuePatchStruct, ::test::fixtures::patch::OptionalMyUnionValuePatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionValuePatchAdapter, 5, ::test::fixtures::patch::MyUnionValuePatchStruct, ::test::fixtures::patch::OptionalMyUnionValuePatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::ListPatchAdapter, 3, ::test::fixtures::patch::MyStructField21PatchStruct, ::test::fixtures::patch::OptionalMyStructField21PatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::ListPatchAdapter, 5, ::test::fixtures::patch::MyStructField21PatchStruct, ::test::fixtures::patch::OptionalMyStructField21PatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::SetPatchAdapter, 3, ::test::fixtures::patch::MyStructField22PatchStruct, ::test::fixtures::patch::OptionalMyStructField22PatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::SetPatchAdapter, 5, ::test::fixtures::patch::MyStructField22PatchStruct, ::test::fixtures::patch::OptionalMyStructField22PatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::MapPatchAdapter, 3, ::test::fixtures::patch::MyStructField23PatchStruct, ::test::fixtures::patch::OptionalMyStructField23PatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::MapPatchAdapter, 5, ::test::fixtures::patch::MyStructField23PatchStruct, ::test::fixtures::patch::OptionalMyStructField23PatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::BoolPatchAdapter, 1, ::apache::thrift::op::BoolPatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 2, ::apache::thrift::op::BytePatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 3, ::apache::thrift::op::I16PatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 4, ::apache::thrift::op::I32PatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 5, ::apache::thrift::op::I64PatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 6, ::apache::thrift::op::FloatPatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::NumberPatchAdapter, 7, ::apache::thrift::op::DoublePatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StringPatchAdapter, 8, ::apache::thrift::op::StringPatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::AssignPatchAdapter, 9, ::apache::thrift::op::BinaryPatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructValuePatchAdapter, 10, ::test::fixtures::patch::MyDataValuePatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 11, ::apache::thrift::op::OptionalBoolPatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 12, ::apache::thrift::op::OptionalBytePatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 13, ::apache::thrift::op::OptionalI16PatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 14, ::apache::thrift::op::OptionalI32PatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 15, ::apache::thrift::op::OptionalI64PatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 16, ::apache::thrift::op::OptionalFloatPatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 17, ::apache::thrift::op::OptionalDoublePatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 18, ::apache::thrift::op::OptionalStringPatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 19, ::apache::thrift::op::OptionalBinaryPatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 20, ::test::fixtures::patch::OptionalMyDataValuePatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 21, ::test::fixtures::patch::OptionalMyStructField21PatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 22, ::test::fixtures::patch::OptionalMyStructField22PatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::OptionalPatchAdapter, 23, ::test::fixtures::patch::OptionalMyStructField23PatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::UnionValuePatchAdapter, 30, ::test::fixtures::patch::MyUnionValuePatchStruct, ::test::fixtures::patch::MyStructPatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructPatchAdapter, 3, ::test::fixtures::patch::MyStructPatchStruct, ::test::fixtures::patch::MyStructValuePatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructValuePatchAdapter, 3, ::test::fixtures::patch::MyStructValuePatchStruct, ::test::fixtures::patch::OptionalMyStructValuePatchStruct>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<::apache::thrift::op::detail::StructValuePatchAdapter, 5, ::test::fixtures::patch::MyStructValuePatchStruct, ::test::fixtures::patch::OptionalMyStructValuePatchStruct>();
 }
-}} // cpp2
+}}}} // test::fixtures::patch

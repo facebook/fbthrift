@@ -12,124 +12,124 @@
 namespace apache {
 namespace thrift {
 
-const std::array<::cpp2::MyEnum, 2> TEnumDataStorage<::cpp2::MyEnum>::values = {{
+const std::array<::test::fixtures::basic-structured-annotations::MyEnum, 2> TEnumDataStorage<::test::fixtures::basic-structured-annotations::MyEnum>::values = {{
   type::UNKNOWN,
   type::ONE,
 }};
-const std::array<folly::StringPiece, 2> TEnumDataStorage<::cpp2::MyEnum>::names = {{
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::test::fixtures::basic-structured-annotations::MyEnum>::names = {{
   "UNKNOWN",
   "ONE",
 }};
 
-const std::array<::cpp2::MyUnion::Type, 2> TEnumDataStorage<::cpp2::MyUnion::Type>::values = {{
+const std::array<::test::fixtures::basic-structured-annotations::MyUnion::Type, 2> TEnumDataStorage<::test::fixtures::basic-structured-annotations::MyUnion::Type>::values = {{
   type::first,
   type::second,
 }};
-const std::array<folly::StringPiece, 2> TEnumDataStorage<::cpp2::MyUnion::Type>::names = {{
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::test::fixtures::basic-structured-annotations::MyUnion::Type>::names = {{
   "first",
   "second",
 }};
 
-const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::structured_annotation_inline>::fields_names = {{
+const std::array<folly::StringPiece, 2> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_inline>::fields_names = {{
   "count",
   "name",
 }};
-const std::array<int16_t, 2> TStructDataStorage<::cpp2::structured_annotation_inline>::fields_ids = {{
+const std::array<int16_t, 2> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_inline>::fields_ids = {{
   1,
   2,
 }};
-const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::structured_annotation_inline>::fields_types = {{
+const std::array<protocol::TType, 2> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_inline>::fields_types = {{
   TType::T_I64,
   TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::structured_annotation_with_default>::fields_names = {{
+const std::array<folly::StringPiece, 1> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_with_default>::fields_names = {{
   "name",
 }};
-const std::array<int16_t, 1> TStructDataStorage<::cpp2::structured_annotation_with_default>::fields_ids = {{
+const std::array<int16_t, 1> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_with_default>::fields_ids = {{
   1,
 }};
-const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::structured_annotation_with_default>::fields_types = {{
+const std::array<protocol::TType, 1> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_with_default>::fields_types = {{
   TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::structured_annotation_forward>::fields_names = {{
+const std::array<folly::StringPiece, 1> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_forward>::fields_names = {{
   "count",
 }};
-const std::array<int16_t, 1> TStructDataStorage<::cpp2::structured_annotation_forward>::fields_ids = {{
+const std::array<int16_t, 1> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_forward>::fields_ids = {{
   1,
 }};
-const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::structured_annotation_forward>::fields_types = {{
+const std::array<protocol::TType, 1> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_forward>::fields_types = {{
   TType::T_I64,
 }};
 
-const std::array<folly::StringPiece, 3> TStructDataStorage<::cpp2::structured_annotation_recursive>::fields_names = {{
+const std::array<folly::StringPiece, 3> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_recursive>::fields_names = {{
   "name",
   "recurse",
   "forward",
 }};
-const std::array<int16_t, 3> TStructDataStorage<::cpp2::structured_annotation_recursive>::fields_ids = {{
+const std::array<int16_t, 3> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_recursive>::fields_ids = {{
   1,
   2,
   3,
 }};
-const std::array<protocol::TType, 3> TStructDataStorage<::cpp2::structured_annotation_recursive>::fields_types = {{
+const std::array<protocol::TType, 3> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_recursive>::fields_types = {{
   TType::T_STRING,
   TType::T_STRUCT,
   TType::T_STRUCT,
 }};
 
-const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::structured_annotation_nested>::fields_names = {{
+const std::array<folly::StringPiece, 2> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_nested>::fields_names = {{
   "name",
   "nest",
 }};
-const std::array<int16_t, 2> TStructDataStorage<::cpp2::structured_annotation_nested>::fields_ids = {{
+const std::array<int16_t, 2> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_nested>::fields_ids = {{
   1,
   2,
 }};
-const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::structured_annotation_nested>::fields_types = {{
+const std::array<protocol::TType, 2> TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_nested>::fields_types = {{
   TType::T_STRING,
   TType::T_STRUCT,
 }};
 
-const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::test::fixtures::basic-structured-annotations::MyStruct>::fields_names = {{
   "annotated_field",
   "annotated_type",
   "annotated_recursive",
   "annotated_nested",
 }};
-const std::array<int16_t, 4> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
+const std::array<int16_t, 4> TStructDataStorage<::test::fixtures::basic-structured-annotations::MyStruct>::fields_ids = {{
   1,
   2,
   3,
   4,
 }};
-const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
+const std::array<protocol::TType, 4> TStructDataStorage<::test::fixtures::basic-structured-annotations::MyStruct>::fields_types = {{
   TType::T_I64,
   TType::T_STRING,
   TType::T_STRING,
   TType::T_I64,
 }};
 
-const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::MyException>::fields_names = {{
+const std::array<folly::StringPiece, 1> TStructDataStorage<::test::fixtures::basic-structured-annotations::MyException>::fields_names = {{
   "context",
 }};
-const std::array<int16_t, 1> TStructDataStorage<::cpp2::MyException>::fields_ids = {{
+const std::array<int16_t, 1> TStructDataStorage<::test::fixtures::basic-structured-annotations::MyException>::fields_ids = {{
   1,
 }};
-const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::MyException>::fields_types = {{
+const std::array<protocol::TType, 1> TStructDataStorage<::test::fixtures::basic-structured-annotations::MyException>::fields_types = {{
   TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::MyUnion>::fields_names = {{
+const std::array<folly::StringPiece, 2> TStructDataStorage<::test::fixtures::basic-structured-annotations::MyUnion>::fields_names = {{
   "first",
   "second",
 }};
-const std::array<int16_t, 2> TStructDataStorage<::cpp2::MyUnion>::fields_ids = {{
+const std::array<int16_t, 2> TStructDataStorage<::test::fixtures::basic-structured-annotations::MyUnion>::fields_ids = {{
   1,
   2,
 }};
-const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::MyUnion>::fields_types = {{
+const std::array<protocol::TType, 2> TStructDataStorage<::test::fixtures::basic-structured-annotations::MyUnion>::fields_types = {{
   TType::T_STRING,
   TType::T_I64,
 }};

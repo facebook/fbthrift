@@ -14,14 +14,14 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct ForEachField<::cpp2::MyDataItem> {
+struct ForEachField<::test::fixtures::basic::MyDataItem> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
   }
 };
 
 template <>
-struct ForEachField<::cpp2::MyStruct> {
+struct ForEachField<::test::fixtures::basic::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).MyIntField_ref()...);
@@ -36,7 +36,7 @@ struct ForEachField<::cpp2::MyStruct> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyUnion> {
+struct ForEachField<::test::fixtures::basic::MyUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).myEnum_ref()...);

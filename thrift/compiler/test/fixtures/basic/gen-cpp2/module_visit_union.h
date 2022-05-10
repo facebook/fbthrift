@@ -14,7 +14,7 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitUnion<::cpp2::MyUnion> {
+struct VisitUnion<::test::fixtures::basic::MyUnion> {
   template <typename F, typename T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, T&& t) const {
     using Union = std::remove_reference_t<T>;

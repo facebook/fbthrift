@@ -14,21 +14,21 @@
 
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits<::cpp2::MyEnum>::size;
-folly::Range<::cpp2::MyEnum const*> const TEnumTraits<::cpp2::MyEnum>::values = folly::range(TEnumDataStorage<::cpp2::MyEnum>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::MyEnum>::names = folly::range(TEnumDataStorage<::cpp2::MyEnum>::names);
+constexpr std::size_t const TEnumTraits<::test::fixtures::basic::MyEnum>::size;
+folly::Range<::test::fixtures::basic::MyEnum const*> const TEnumTraits<::test::fixtures::basic::MyEnum>::values = folly::range(TEnumDataStorage<::test::fixtures::basic::MyEnum>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::basic::MyEnum>::names = folly::range(TEnumDataStorage<::test::fixtures::basic::MyEnum>::names);
 
-bool TEnumTraits<::cpp2::MyEnum>::findName(type value, folly::StringPiece* out) noexcept {
+bool TEnumTraits<::test::fixtures::basic::MyEnum>::findName(type value, folly::StringPiece* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::cpp2::MyEnum>::findValue(folly::StringPiece name, type* out) noexcept {
+bool TEnumTraits<::test::fixtures::basic::MyEnum>::findValue(folly::StringPiece name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
 }} // apache::thrift
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic {
 #ifndef ANDROID
 FOLLY_PUSH_WARNING
 FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
@@ -36,17 +36,17 @@ const _MyEnum_EnumMapFactory::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES = _My
 const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES = _MyEnum_EnumMapFactory::makeNamesToValuesMap();
 FOLLY_POP_WARNING
 #endif
-} // cpp2
+}}} // test::fixtures::basic
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
+void TccStructTraits<::test::fixtures::basic::MyDataItem>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyDataItem>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::basic::MyDataItem>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -59,7 +59,7 @@ void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic {
 
 const char* MyDataItem::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic/MyDataItem";
@@ -108,17 +108,17 @@ template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWr
 template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-} // cpp2
+}}} // test::fixtures::basic
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::basic::MyStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::basic::MyStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -131,7 +131,7 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic {
 
 const char* MyStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic/MyStruct";
@@ -176,7 +176,7 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
 }
 
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg, ::std::set<float> floatSet__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::test::fixtures::basic::MyDataItem MyDataField__arg, ::test::fixtures::basic::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg, ::std::set<float> floatSet__arg) :
     __fbthrift_field_MyIntField(std::move(MyIntField__arg)),
     __fbthrift_field_MyStringField(std::move(MyStringField__arg)),
     __fbthrift_field_MyDataField(std::move(MyDataField__arg)),
@@ -200,7 +200,7 @@ void MyStruct::__fbthrift_clear() {
   // clear all fields
   this->__fbthrift_field_MyIntField = ::std::int64_t();
   this->__fbthrift_field_MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->__fbthrift_field_myEnum = ::cpp2::MyEnum();
+  this->__fbthrift_field_myEnum = ::test::fixtures::basic::MyEnum();
   this->__fbthrift_field_oneway = bool();
   this->__fbthrift_field_readonly = bool();
   this->__fbthrift_field_idempotent = bool();
@@ -274,11 +274,11 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   return false;
 }
 
-const ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
+const ::test::fixtures::basic::MyDataItem& MyStruct::get_MyDataField() const& {
   return __fbthrift_field_MyDataField;
 }
 
-::cpp2::MyDataItem MyStruct::get_MyDataField() && {
+::test::fixtures::basic::MyDataItem MyStruct::get_MyDataField() && {
   return std::move(__fbthrift_field_MyDataField);
 }
 
@@ -317,20 +317,20 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
         ::apache::thrift::type_class::structure,
-        ::cpp2::MyDataItem>,
+        ::test::fixtures::basic::MyDataItem>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::basic
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyUnion>::translateFieldName(
+void TccStructTraits<::test::fixtures::basic::MyUnion>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyUnion>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::basic::MyUnion>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -345,19 +345,19 @@ void TccStructTraits<::cpp2::MyUnion>::translateFieldName(
 
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits<::cpp2::MyUnion::Type>::size;
-folly::Range<::cpp2::MyUnion::Type const*> const TEnumTraits<::cpp2::MyUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::MyUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::names);
+constexpr std::size_t const TEnumTraits<::test::fixtures::basic::MyUnion::Type>::size;
+folly::Range<::test::fixtures::basic::MyUnion::Type const*> const TEnumTraits<::test::fixtures::basic::MyUnion::Type>::values = folly::range(TEnumDataStorage<::test::fixtures::basic::MyUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::basic::MyUnion::Type>::names = folly::range(TEnumDataStorage<::test::fixtures::basic::MyUnion::Type>::names);
 
-bool TEnumTraits<::cpp2::MyUnion::Type>::findName(type value, folly::StringPiece* out) noexcept {
+bool TEnumTraits<::test::fixtures::basic::MyUnion::Type>::findName(type value, folly::StringPiece* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(folly::StringPiece name, type* out) noexcept {
+bool TEnumTraits<::test::fixtures::basic::MyUnion::Type>::findValue(folly::StringPiece name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 }} // apache::thrift
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic {
 
 const char* MyUnion::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic/MyUnion";
@@ -446,18 +446,18 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnion,
         ::apache::thrift::type_class::structure,
-        ::cpp2::MyStruct>,
+        ::test::fixtures::basic::MyStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnion,
         ::apache::thrift::type_class::structure,
-        ::cpp2::MyDataItem>,
+        ::test::fixtures::basic::MyDataItem>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::basic
 
-namespace cpp2 { namespace {
+namespace test { namespace fixtures { namespace basic { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}} // cpp2
+}}}} // test::fixtures::basic

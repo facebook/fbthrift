@@ -22,7 +22,9 @@
 #include <set>
 #include <vector>
 
-namespace cpp2 {
+namespace test {
+namespace fixtures {
+namespace basic {
 
 class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
@@ -70,4 +72,6 @@ class DbMixedStackArgumentsClientWrapper : public ::thrift::py3::ClientWrapper {
 };
 
 
-} // namespace cpp2
+} // namespace test
+} // namespace fixtures
+} // namespace basic

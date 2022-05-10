@@ -18,13 +18,13 @@ namespace apache { namespace thrift {
   namespace transport { class THeader; }
 }}
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 class MyService;
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 namespace apache::thrift {
 
 template <>
-class Client<::cpp2::MyService> : public apache::thrift::GeneratedAsyncClient {
+class Client<::test::fixtures::basic-structured-annotations::MyService> : public apache::thrift::GeneratedAsyncClient {
  public:
   using apache::thrift::GeneratedAsyncClient::GeneratedAsyncClient;
 
@@ -43,37 +43,37 @@ class Client<::cpp2::MyService> : public apache::thrift::GeneratedAsyncClient {
   void firstImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions = false);
  public:
 
-  virtual void sync_first(::cpp2::annotated_inline_string& _return);
-  virtual void sync_first(apache::thrift::RpcOptions& rpcOptions, ::cpp2::annotated_inline_string& _return);
+  virtual void sync_first(::test::fixtures::basic-structured-annotations::annotated_inline_string& _return);
+  virtual void sync_first(apache::thrift::RpcOptions& rpcOptions, ::test::fixtures::basic-structured-annotations::annotated_inline_string& _return);
 
-  virtual folly::Future<::cpp2::annotated_inline_string> future_first();
-  virtual folly::SemiFuture<::cpp2::annotated_inline_string> semifuture_first();
-  virtual folly::Future<::cpp2::annotated_inline_string> future_first(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<::cpp2::annotated_inline_string> semifuture_first(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair<::cpp2::annotated_inline_string, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_first(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<std::pair<::cpp2::annotated_inline_string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_first(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<::test::fixtures::basic-structured-annotations::annotated_inline_string> future_first();
+  virtual folly::SemiFuture<::test::fixtures::basic-structured-annotations::annotated_inline_string> semifuture_first();
+  virtual folly::Future<::test::fixtures::basic-structured-annotations::annotated_inline_string> future_first(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<::test::fixtures::basic-structured-annotations::annotated_inline_string> semifuture_first(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<::test::fixtures::basic-structured-annotations::annotated_inline_string, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_first(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<::test::fixtures::basic-structured-annotations::annotated_inline_string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_first(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
 #if __clang__
   template <int = 0>
-  folly::coro::Task<::cpp2::annotated_inline_string> co_first() {
+  folly::coro::Task<::test::fixtures::basic-structured-annotations::annotated_inline_string> co_first() {
     return co_first<false>(nullptr);
   }
   template <int = 0>
-  folly::coro::Task<::cpp2::annotated_inline_string> co_first(apache::thrift::RpcOptions& rpcOptions) {
+  folly::coro::Task<::test::fixtures::basic-structured-annotations::annotated_inline_string> co_first(apache::thrift::RpcOptions& rpcOptions) {
     return co_first<true>(&rpcOptions);
   }
 #else
-  folly::coro::Task<::cpp2::annotated_inline_string> co_first() {
+  folly::coro::Task<::test::fixtures::basic-structured-annotations::annotated_inline_string> co_first() {
     co_return co_await folly::coro::detachOnCancel(semifuture_first());
   }
-  folly::coro::Task<::cpp2::annotated_inline_string> co_first(apache::thrift::RpcOptions& rpcOptions) {
+  folly::coro::Task<::test::fixtures::basic-structured-annotations::annotated_inline_string> co_first(apache::thrift::RpcOptions& rpcOptions) {
     co_return co_await folly::coro::detachOnCancel(semifuture_first(rpcOptions));
   }
 #endif
  private:
   template <bool hasRpcOptions>
-  folly::coro::Task<::cpp2::annotated_inline_string> co_first(apache::thrift::RpcOptions* rpcOptions) {
+  folly::coro::Task<::test::fixtures::basic-structured-annotations::annotated_inline_string> co_first(apache::thrift::RpcOptions* rpcOptions) {
     const folly::CancellationToken& cancelToken =
         co_await folly::coro::co_current_cancellation_token;
     const bool cancellable = cancelToken.canBeCancelled();
@@ -110,7 +110,7 @@ class Client<::cpp2::MyService> : public apache::thrift::GeneratedAsyncClient {
         rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
-    ::cpp2::annotated_inline_string _return;
+    ::test::fixtures::basic-structured-annotations::annotated_inline_string _return;
     if (auto ew = recv_wrapped_first(_return, returnState)) {
       co_yield folly::coro::co_error(std::move(ew));
     }
@@ -122,11 +122,11 @@ class Client<::cpp2::MyService> : public apache::thrift::GeneratedAsyncClient {
   virtual void first(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
 
 
-  static folly::exception_wrapper recv_wrapped_first(::cpp2::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_first(::cpp2::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_first(::test::fixtures::basic-structured-annotations::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_first(::test::fixtures::basic-structured-annotations::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_first(::cpp2::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_first(::cpp2::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_first(::test::fixtures::basic-structured-annotations::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_first(::test::fixtures::basic-structured-annotations::annotated_inline_string& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_, typename RpcOptions>
   void firstT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
@@ -231,6 +231,6 @@ class Client<::cpp2::MyService> : public apache::thrift::GeneratedAsyncClient {
 
 } // namespace apache::thrift
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 using MyServiceAsyncClient = ::apache::thrift::Client<MyService>;
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations

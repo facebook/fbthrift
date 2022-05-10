@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <boost/algorithm/string.hpp>
 #include <thrift/compiler/ast/t_program.h>
 
 #include <cctype>
@@ -65,6 +66,19 @@ const std::string& t_program::get_namespace(const std::string& language) const {
   auto pos = namespaces_.find(language);
   static const auto& kEmpty = *new std::string();
   return (pos != namespaces_.end() ? pos->second : kEmpty);
+}
+
+std::vector<std::string> t_program::gen_namespace_or_default(
+    const std::string& language,
+    std::function<std::vector<std::string>()> gen) const {
+  auto pos = namespaces_.find(language);
+  if (pos != namespaces_.end()) {
+    std::vector<std::string> ret;
+    split(ret, pos->second, boost::algorithm::is_any_of("."));
+    return ret;
+  }
+
+  return gen();
 }
 
 std::unique_ptr<t_program> t_program::add_include(

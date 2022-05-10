@@ -24,7 +24,7 @@ namespace apache { namespace thrift {
   namespace transport { class THeader; }
 }}
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 class MyService;
 class MyServiceAsyncProcessor;
 
@@ -33,11 +33,11 @@ class MyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 
 namespace apache::thrift {
 template <>
-class ServiceHandler<::cpp2::MyService> : public apache::thrift::ServerInterface {
+class ServiceHandler<::test::fixtures::basic-structured-annotations::MyService> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyService"; }
 
@@ -45,36 +45,36 @@ class ServiceHandler<::cpp2::MyService> : public apache::thrift::ServerInterface
     return "test.dev/fixtures/basic-structured-annotations/MyService";
   }
 
-  typedef ::cpp2::MyServiceAsyncProcessor ProcessorType;
+  typedef ::test::fixtures::basic-structured-annotations::MyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
  private:
   std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> getServiceRequestInfoMap() const;
  public:
 
-  virtual void first(::cpp2::annotated_inline_string& /*_return*/);
-  virtual folly::Future<std::unique_ptr<::cpp2::annotated_inline_string>> future_first();
-  virtual folly::SemiFuture<std::unique_ptr<::cpp2::annotated_inline_string>> semifuture_first();
-  virtual void async_tm_first(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::cpp2::annotated_inline_string>>> callback);
+  virtual void first(::test::fixtures::basic-structured-annotations::annotated_inline_string& /*_return*/);
+  virtual folly::Future<std::unique_ptr<::test::fixtures::basic-structured-annotations::annotated_inline_string>> future_first();
+  virtual folly::SemiFuture<std::unique_ptr<::test::fixtures::basic-structured-annotations::annotated_inline_string>> semifuture_first();
+  virtual void async_tm_first(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::test::fixtures::basic-structured-annotations::annotated_inline_string>>> callback);
   virtual bool second(::std::int64_t /*count*/);
   virtual folly::Future<bool> future_second(::std::int64_t p_count);
   virtual folly::SemiFuture<bool> semifuture_second(::std::int64_t p_count);
   virtual void async_tm_second(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_count);
  private:
-  static ::cpp2::MyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::test::fixtures::basic-structured-annotations::MyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_first{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_second{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 } // namespace apache::thrift
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 using MyServiceSvIf = ::apache::thrift::ServiceHandler<MyService>;
-} // cpp2
-namespace cpp2 {
+}}} // test::fixtures::basic-structured-annotations
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 class MyServiceSvNull : public MyServiceSvIf {
  public:
-  void first(::cpp2::annotated_inline_string& /*_return*/) override;
+  void first(::test::fixtures::basic-structured-annotations::annotated_inline_string& /*_return*/) override;
   bool second(::std::int64_t /*count*/) override;
 };
 
@@ -84,7 +84,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  ::apache::thrift::ServiceHandler<::cpp2::MyService>* iface_;
+  ::apache::thrift::ServiceHandler<::test::fixtures::basic-structured-annotations::MyService>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -104,7 +104,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <typename ProtocolIn_, typename ProtocolOut_>
   void executeRequest_first(apache::thrift::ServerRequest&& serverRequest);
   template <class ProtocolIn_, class ProtocolOut_>
-  static apache::thrift::SerializedResponse return_first(apache::thrift::ContextStack* ctx, ::cpp2::annotated_inline_string const& _return);
+  static apache::thrift::SerializedResponse return_first(apache::thrift::ContextStack* ctx, ::test::fixtures::basic-structured-annotations::annotated_inline_string const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_first(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -116,9 +116,9 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_second(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  MyServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::MyService>* iface) :
+  MyServiceAsyncProcessor(::apache::thrift::ServiceHandler<::test::fixtures::basic-structured-annotations::MyService>* iface) :
       iface_(iface) {}
   ~MyServiceAsyncProcessor() override {}
 };
 
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations

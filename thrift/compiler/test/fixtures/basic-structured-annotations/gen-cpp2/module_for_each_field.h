@@ -14,7 +14,7 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct ForEachField<::cpp2::structured_annotation_inline> {
+struct ForEachField<::test::fixtures::basic-structured-annotations::structured_annotation_inline> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).count_ref()...);
@@ -23,7 +23,7 @@ struct ForEachField<::cpp2::structured_annotation_inline> {
 };
 
 template <>
-struct ForEachField<::cpp2::structured_annotation_with_default> {
+struct ForEachField<::test::fixtures::basic-structured-annotations::structured_annotation_with_default> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).name_ref()...);
@@ -31,7 +31,7 @@ struct ForEachField<::cpp2::structured_annotation_with_default> {
 };
 
 template <>
-struct ForEachField<::cpp2::structured_annotation_forward> {
+struct ForEachField<::test::fixtures::basic-structured-annotations::structured_annotation_forward> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).count_ref()...);
@@ -39,7 +39,7 @@ struct ForEachField<::cpp2::structured_annotation_forward> {
 };
 
 template <>
-struct ForEachField<::cpp2::structured_annotation_recursive> {
+struct ForEachField<::test::fixtures::basic-structured-annotations::structured_annotation_recursive> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).name_ref()...);
@@ -49,7 +49,7 @@ struct ForEachField<::cpp2::structured_annotation_recursive> {
 };
 
 template <>
-struct ForEachField<::cpp2::structured_annotation_nested> {
+struct ForEachField<::test::fixtures::basic-structured-annotations::structured_annotation_nested> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).name_ref()...);
@@ -58,7 +58,7 @@ struct ForEachField<::cpp2::structured_annotation_nested> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyStruct> {
+struct ForEachField<::test::fixtures::basic-structured-annotations::MyStruct> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).annotated_field_ref()...);
@@ -69,7 +69,7 @@ struct ForEachField<::cpp2::MyStruct> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyException> {
+struct ForEachField<::test::fixtures::basic-structured-annotations::MyException> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).context_ref()...);
@@ -77,7 +77,7 @@ struct ForEachField<::cpp2::MyException> {
 };
 
 template <>
-struct ForEachField<::cpp2::MyUnion> {
+struct ForEachField<::test::fixtures::basic-structured-annotations::MyUnion> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
     f(0, static_cast<T&&>(t).first_ref()...);

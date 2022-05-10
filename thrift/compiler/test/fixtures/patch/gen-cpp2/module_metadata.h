@@ -20,92 +20,92 @@ namespace detail {
 namespace md {
 
 template <>
-class StructMetadata<::cpp2::MyData> {
+class StructMetadata<::test::fixtures::patch::MyData> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyUnion> {
+class StructMetadata<::test::fixtures::patch::MyUnion> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyStruct> {
+class StructMetadata<::test::fixtures::patch::MyStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyDataPatchStruct> {
+class StructMetadata<::test::fixtures::patch::MyDataPatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyDataValuePatchStruct> {
+class StructMetadata<::test::fixtures::patch::MyDataValuePatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::OptionalMyDataValuePatchStruct> {
+class StructMetadata<::test::fixtures::patch::OptionalMyDataValuePatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyUnionPatchStruct> {
+class StructMetadata<::test::fixtures::patch::MyUnionPatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyUnionValuePatchStruct> {
+class StructMetadata<::test::fixtures::patch::MyUnionValuePatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::OptionalMyUnionValuePatchStruct> {
+class StructMetadata<::test::fixtures::patch::OptionalMyUnionValuePatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyStructField21PatchStruct> {
+class StructMetadata<::test::fixtures::patch::MyStructField21PatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::OptionalMyStructField21PatchStruct> {
+class StructMetadata<::test::fixtures::patch::OptionalMyStructField21PatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyStructField22PatchStruct> {
+class StructMetadata<::test::fixtures::patch::MyStructField22PatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::OptionalMyStructField22PatchStruct> {
+class StructMetadata<::test::fixtures::patch::OptionalMyStructField22PatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyStructField23PatchStruct> {
+class StructMetadata<::test::fixtures::patch::MyStructField23PatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::OptionalMyStructField23PatchStruct> {
+class StructMetadata<::test::fixtures::patch::OptionalMyStructField23PatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyStructPatchStruct> {
+class StructMetadata<::test::fixtures::patch::MyStructPatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyStructValuePatchStruct> {
+class StructMetadata<::test::fixtures::patch::MyStructValuePatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::OptionalMyStructValuePatchStruct> {
+class StructMetadata<::test::fixtures::patch::OptionalMyStructValuePatchStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };

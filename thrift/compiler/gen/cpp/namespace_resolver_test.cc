@@ -74,6 +74,12 @@ TEST_F(NamespaceResolverTest, get_namespace_none) {
   EXPECT_EQ("::cpp2", namespaces_.get_namespace(p));
 }
 
+TEST_F(NamespaceResolverTest, get_namespace_from_package) {
+  t_program p("path/to/program.thrift");
+  p.set_package(t_package("foo.bar/path/to/program"));
+  EXPECT_EQ("::foo::path::to::program", namespaces_.get_namespace(p));
+}
+
 TEST_F(NamespaceResolverTest, gen_namespaced_name) {
   t_program p("path/to/program.thrift");
   p.set_namespace("cpp2", "foo.bar");

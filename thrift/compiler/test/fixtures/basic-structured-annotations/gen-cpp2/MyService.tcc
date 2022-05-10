@@ -10,9 +10,9 @@
 
 #include <thrift/lib/cpp2/gen/service_tcc.h>
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 typedef apache::thrift::ThriftPresult<false> MyService_first_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::cpp2::annotated_inline_string*>> MyService_first_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::string, ::test::fixtures::basic-structured-annotations::annotated_inline_string*>> MyService_first_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::integral, ::std::int64_t*>> MyService_second_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, bool*>> MyService_second_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -30,7 +30,7 @@ void MyServiceAsyncProcessor::executeRequest_first(apache::thrift::ServerRequest
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ::cpp2::MyService_first_pargs args;
+  ::test::fixtures::basic-structured-annotations::MyService_first_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.first", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "first", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -47,7 +47,7 @@ void MyServiceAsyncProcessor::executeRequest_first(apache::thrift::ServerRequest
   }
   auto requestPileNotification = apache::thrift::detail::ServerRequestHelper::requestPileNotification(serverRequest);
   auto concurrencyControllerNotification = apache::thrift::detail::ServerRequestHelper::concurrencyControllerNotification(serverRequest);
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::cpp2::annotated_inline_string>>>(
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::test::fixtures::basic-structured-annotations::annotated_inline_string>>>(
     apache::thrift::detail::ServerRequestHelper::request(std::move(serverRequest))
     , std::move(ctxStack)
     , return_first<ProtocolIn_,ProtocolOut_>
@@ -63,10 +63,10 @@ void MyServiceAsyncProcessor::executeRequest_first(apache::thrift::ServerRequest
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_first(apache::thrift::ContextStack* ctx, ::cpp2::annotated_inline_string const& _return) {
+apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_first(apache::thrift::ContextStack* ctx, ::test::fixtures::basic-structured-annotations::annotated_inline_string const& _return) {
   ProtocolOut_ prot;
-  ::cpp2::MyService_first_presult result;
-  result.get<0>().value = const_cast<::cpp2::annotated_inline_string*>(&_return);
+  ::test::fixtures::basic-structured-annotations::MyService_first_presult result;
+  result.get<0>().value = const_cast<::test::fixtures::basic-structured-annotations::annotated_inline_string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
 }
@@ -99,7 +99,7 @@ void MyServiceAsyncProcessor::executeRequest_second(apache::thrift::ServerReques
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ::cpp2::MyService_second_pargs args;
+  ::test::fixtures::basic-structured-annotations::MyService_second_pargs args;
   ::std::int64_t uarg_count{0};
   args.get<0>().value = &uarg_count;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.second", serverRequest.requestContext()));
@@ -136,7 +136,7 @@ void MyServiceAsyncProcessor::executeRequest_second(apache::thrift::ServerReques
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_second(apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
-  ::cpp2::MyService_second_presult result;
+  ::test::fixtures::basic-structured-annotations::MyService_second_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -156,4 +156,4 @@ void MyServiceAsyncProcessor::throw_wrapped_second(apache::thrift::ResponseChann
 }
 
 
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations

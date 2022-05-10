@@ -10,39 +10,39 @@
 #include "thrift/compiler/test/fixtures/basic/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::cpp2::MyService>::getProcessor() {
-  return std::make_unique<::cpp2::MyServiceAsyncProcessor>(this);
+std::unique_ptr<apache::thrift::AsyncProcessor> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::getProcessor() {
+  return std::make_unique<::test::fixtures::basic::MyServiceAsyncProcessor>(this);
 }
 
-apache::thrift::ServiceHandler<::cpp2::MyService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::cpp2::MyService>::createMethodMetadata() {
-  return ::apache::thrift::detail::ap::createMethodMetadataMap<::cpp2::MyServiceAsyncProcessor>(getServiceRequestInfoMap().value().get());
+apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::CreateMethodMetadataResult apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<::test::fixtures::basic::MyServiceAsyncProcessor>(getServiceRequestInfoMap().value().get());
 }
 
-std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::cpp2::MyService>::getServiceRequestInfoMap() const {
+std::optional<std::reference_wrapper<apache::thrift::ServiceRequestInfoMap const>> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::getServiceRequestInfoMap() const {
   return __fbthrift_serviceInfoHolder.requestInfoMap();
 }
 
-::cpp2::MyServiceServiceInfoHolder apache::thrift::ServiceHandler<::cpp2::MyService>::__fbthrift_serviceInfoHolder;
+::test::fixtures::basic::MyServiceServiceInfoHolder apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::__fbthrift_serviceInfoHolder;
 
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::ping() {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::ping() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("ping");
 }
 
-folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_ping() {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::semifuture_ping() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_ping.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   ping();
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::future_ping() {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::future_ping() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_ping.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_ping(), getInternalKeepAlive());
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::async_tm_ping(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -84,11 +84,11 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_ping(std::uniqu
   }
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::getRandomData(::std::string& /*_return*/) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::getRandomData(::std::string& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("getRandomData");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_getRandomData() {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::semifuture_getRandomData() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_getRandomData.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -96,13 +96,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::cpp2::MyService>::future_getRandomData() {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::future_getRandomData() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_getRandomData.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_getRandomData(), getInternalKeepAlive());
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::async_tm_getRandomData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -145,24 +145,24 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_getRandomData(s
   }
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::sink(::std::int64_t /*sink*/) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::sink(::std::int64_t /*sink*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("sink");
 }
 
-folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_sink(::std::int64_t p_sink) {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::semifuture_sink(::std::int64_t p_sink) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_sink.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   sink(p_sink);
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::future_sink(::std::int64_t p_sink) {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::future_sink(::std::int64_t p_sink) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_sink.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_sink(p_sink), getInternalKeepAlive());
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_sink(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_sink) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::async_tm_sink(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_sink) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -204,24 +204,24 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_sink(std::uniqu
   }
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::putDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::putDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("putDataById");
 }
 
-folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::semifuture_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_putDataById.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   putDataById(p_id, std::move(p_data));
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::future_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::future_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_putDataById.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_putDataById(p_id, std::move(p_data)), getInternalKeepAlive());
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -263,23 +263,23 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_putDataById(std
   }
 }
 
-bool apache::thrift::ServiceHandler<::cpp2::MyService>::hasDataById(::std::int64_t /*id*/) {
+bool apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::hasDataById(::std::int64_t /*id*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("hasDataById");
 }
 
-folly::SemiFuture<bool> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_hasDataById(::std::int64_t p_id) {
+folly::SemiFuture<bool> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::semifuture_hasDataById(::std::int64_t p_id) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_hasDataById.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   return hasDataById(p_id);
 }
 
-folly::Future<bool> apache::thrift::ServiceHandler<::cpp2::MyService>::future_hasDataById(::std::int64_t p_id) {
+folly::Future<bool> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::future_hasDataById(::std::int64_t p_id) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_hasDataById.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_hasDataById(p_id), getInternalKeepAlive());
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_id) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::async_tm_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, ::std::int64_t p_id) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -320,11 +320,11 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_hasDataById(std
   }
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::getDataById(::std::string& /*_return*/, ::std::int64_t /*id*/) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::getDataById(::std::string& /*_return*/, ::std::int64_t /*id*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("getDataById");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_getDataById(::std::int64_t p_id) {
+folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::semifuture_getDataById(::std::int64_t p_id) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_getDataById.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::string>();
@@ -332,13 +332,13 @@ folly::SemiFuture<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::cpp2::MyService>::future_getDataById(::std::int64_t p_id) {
+folly::Future<std::unique_ptr<::std::string>> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::future_getDataById(::std::int64_t p_id) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_getDataById.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_getDataById(p_id), getInternalKeepAlive());
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int64_t p_id) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::async_tm_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, ::std::int64_t p_id) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -381,24 +381,24 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_getDataById(std
   }
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::deleteDataById(::std::int64_t /*id*/) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::deleteDataById(::std::int64_t /*id*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("deleteDataById");
 }
 
-folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_deleteDataById(::std::int64_t p_id) {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::semifuture_deleteDataById(::std::int64_t p_id) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_deleteDataById.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   deleteDataById(p_id);
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::future_deleteDataById(::std::int64_t p_id) {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::future_deleteDataById(::std::int64_t p_id) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_deleteDataById.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_deleteDataById(p_id), getInternalKeepAlive());
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_deleteDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_id) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::async_tm_deleteDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_id) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -440,24 +440,24 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_deleteDataById(
   }
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("lobDataById");
 }
 
-folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::semifuture_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_lobDataById.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   lobDataById(p_id, std::move(p_data));
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::future_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::future_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_lobDataById.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_lobDataById(p_id, std::move(p_data)), getInternalKeepAlive());
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -498,11 +498,11 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_lobDataById(std
   }
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::invalid_return_for_hack(::std::set<float>& /*_return*/) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::invalid_return_for_hack(::std::set<float>& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("invalid_return_for_hack");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::set<float>>> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_invalid_return_for_hack() {
+folly::SemiFuture<std::unique_ptr<::std::set<float>>> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::semifuture_invalid_return_for_hack() {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_invalid_return_for_hack.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
   auto ret = std::make_unique<::std::set<float>>();
@@ -510,13 +510,13 @@ folly::SemiFuture<std::unique_ptr<::std::set<float>>> apache::thrift::ServiceHan
   return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::set<float>>> apache::thrift::ServiceHandler<::cpp2::MyService>::future_invalid_return_for_hack() {
+folly::Future<std::unique_ptr<::std::set<float>>> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::future_invalid_return_for_hack() {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_invalid_return_for_hack.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
   return apache::thrift::detail::si::future(semifuture_invalid_return_for_hack(), getInternalKeepAlive());
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_invalid_return_for_hack(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<float>>>> callback) {
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::async_tm_invalid_return_for_hack(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<float>>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -560,7 +560,7 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_invalid_return_
 }
 
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic {
 
 void MyServiceSvNull::ping() {
   return;
@@ -598,7 +598,7 @@ const char* MyServiceAsyncProcessor::getServiceName() {
 }
 
 void MyServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen(response);
 }
 
 void MyServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -730,4 +730,4 @@ apache::thrift::ServiceRequestInfoMap MyServiceServiceInfoHolder::staticRequestI
 
   return requestInfoMap;
 }
-} // cpp2
+}}} // test::fixtures::basic

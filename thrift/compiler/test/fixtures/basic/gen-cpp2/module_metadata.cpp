@@ -25,21 +25,21 @@ using ThriftService = ::apache::thrift::metadata::ThriftService;
 using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
-void EnumMetadata<::cpp2::MyEnum>::gen(ThriftMetadata& metadata) {
+void EnumMetadata<::test::fixtures::basic::MyEnum>::gen(ThriftMetadata& metadata) {
   auto res = metadata.enums()->emplace("module.MyEnum", ::apache::thrift::metadata::ThriftEnum{});
   if (!res.second) {
     return;
   }
   ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
   enum_metadata.name() = "module.MyEnum";
-  using EnumTraits = TEnumTraits<::cpp2::MyEnum>;
+  using EnumTraits = TEnumTraits<::test::fixtures::basic::MyEnum>;
   for (std::size_t i = 0; i != EnumTraits::size; ++i) {
     enum_metadata.elements()->emplace(static_cast<int32_t>(EnumTraits::values[i]), EnumTraits::names[i].str());
   }
 }
 
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::MyDataItem>::gen(ThriftMetadata& metadata) {
+StructMetadata<::test::fixtures::basic::MyDataItem>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.MyDataItem", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -50,7 +50,7 @@ StructMetadata<::cpp2::MyDataItem>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
+StructMetadata<::test::fixtures::basic::MyStruct>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -62,8 +62,8 @@ StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
   module_MyStruct_fields[] = {
     {1, "MyIntField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "MyStringField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
-    {3, "MyDataField", false, std::make_unique<Typedef>("module.MyDataItem", std::make_unique<Struct<::cpp2::MyDataItem>>("module.MyDataItem"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
-    {4, "myEnum", false, std::make_unique<Enum<::cpp2::MyEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}},
+    {3, "MyDataField", false, std::make_unique<Typedef>("module.MyDataItem", std::make_unique<Struct<::test::fixtures::basic::MyDataItem>>("module.MyDataItem"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {4, "myEnum", false, std::make_unique<Enum<::test::fixtures::basic::MyEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}},
     {5, "oneway", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {6, "readonly", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {7, "idempotent", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
@@ -81,7 +81,7 @@ StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 const ::apache::thrift::metadata::ThriftStruct&
-StructMetadata<::cpp2::MyUnion>::gen(ThriftMetadata& metadata) {
+StructMetadata<::test::fixtures::basic::MyUnion>::gen(ThriftMetadata& metadata) {
   auto res = metadata.structs()->emplace("module.MyUnion", ::apache::thrift::metadata::ThriftStruct{});
   if (!res.second) {
     return res.first->second;
@@ -91,9 +91,9 @@ StructMetadata<::cpp2::MyUnion>::gen(ThriftMetadata& metadata) {
   module_MyUnion.is_union() = true;
   static const EncodedThriftField
   module_MyUnion_fields[] = {
-    {1, "myEnum", false, std::make_unique<Enum<::cpp2::MyEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}},
-    {2, "myStruct", false, std::make_unique<Struct<::cpp2::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
-    {3, "myDataItem", false, std::make_unique<Struct<::cpp2::MyDataItem>>("module.MyDataItem"), std::vector<ThriftConstStruct>{}},
+    {1, "myEnum", false, std::make_unique<Enum<::test::fixtures::basic::MyEnum>>("module.MyEnum"), std::vector<ThriftConstStruct>{}},
+    {2, "myStruct", false, std::make_unique<Struct<::test::fixtures::basic::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}},
+    {3, "myDataItem", false, std::make_unique<Struct<::test::fixtures::basic::MyDataItem>>("module.MyDataItem"), std::vector<ThriftConstStruct>{}},
     {4, "floatSet", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE)), std::vector<ThriftConstStruct>{*cvStruct("hack.SkipCodegen", {{"reason", cvString(R"(Invalid key type)")}}).cv_struct_ref(), }},
   };
   for (const auto& f : module_MyUnion_fields) {
@@ -108,7 +108,7 @@ StructMetadata<::cpp2::MyUnion>::gen(ThriftMetadata& metadata) {
   return res.first->second;
 }
 
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_ping(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_ping(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name() = "ping";
@@ -117,7 +117,7 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_p
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_getRandomData(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_getRandomData(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name() = "getRandomData";
@@ -126,7 +126,7 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_g
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_sink(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_sink(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name() = "sink";
@@ -142,7 +142,7 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_s
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_putDataById(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_putDataById(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name() = "putDataById";
@@ -165,7 +165,7 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_p
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_hasDataById(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_hasDataById(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name() = "hasDataById";
@@ -181,7 +181,7 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_h
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_getDataById(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_getDataById(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name() = "getDataById";
@@ -197,7 +197,7 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_g
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_deleteDataById(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_deleteDataById(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name() = "deleteDataById";
@@ -213,7 +213,7 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_d
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_lobDataById(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_lobDataById(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name() = "lobDataById";
@@ -236,7 +236,7 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_l
   func.is_oneway() = true;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_invalid_return_for_hack(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_invalid_return_for_hack(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name() = "invalid_return_for_hack";
@@ -247,7 +247,7 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_i
   service.functions()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata(), *response.services());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -257,20 +257,20 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen(:
   response.context() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_MyService;
   module_MyService.name() = "module.MyService";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_ping,
-    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_getRandomData,
-    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_sink,
-    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_putDataById,
-    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_hasDataById,
-    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_getDataById,
-    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_deleteDataById,
-    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_lobDataById,
-    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>>::gen_invalid_return_for_hack,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_ping,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_getRandomData,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_sink,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_putDataById,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_hasDataById,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_getDataById,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_deleteDataById,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_lobDataById,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_invalid_return_for_hack,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_MyService);
@@ -286,7 +286,7 @@ const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<
   context.module() = std::move(module);
   return &context;
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>>::gen_getDataByKey0(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::DbMixedStackArguments>>::gen_getDataByKey0(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name() = "getDataByKey0";
@@ -302,7 +302,7 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArgume
   func.is_oneway() = false;
   service.functions()->push_back(std::move(func));
 }
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>>::gen_getDataByKey1(ThriftMetadata& metadata, ThriftService& service) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::DbMixedStackArguments>>::gen_getDataByKey1(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name() = "getDataByKey1";
@@ -319,7 +319,7 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArgume
   service.functions()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::DbMixedStackArguments>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata(), *response.services());
   DCHECK(self != nullptr);
   // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
@@ -329,13 +329,13 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArgume
   response.context() = std::move(context);
 }
 
-const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
+const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::DbMixedStackArguments>>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_DbMixedStackArguments;
   module_DbMixedStackArguments.name() = "module.DbMixedStackArguments";
   static const ThriftFunctionGenerator functions[] = {
-    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>>::gen_getDataByKey0,
-    ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>>::gen_getDataByKey1,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::DbMixedStackArguments>>::gen_getDataByKey0,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::DbMixedStackArguments>>::gen_getDataByKey1,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_DbMixedStackArguments);

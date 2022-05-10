@@ -14,21 +14,21 @@
 
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits<::cpp2::MyEnum>::size;
-folly::Range<::cpp2::MyEnum const*> const TEnumTraits<::cpp2::MyEnum>::values = folly::range(TEnumDataStorage<::cpp2::MyEnum>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::MyEnum>::names = folly::range(TEnumDataStorage<::cpp2::MyEnum>::names);
+constexpr std::size_t const TEnumTraits<::test::fixtures::basic-structured-annotations::MyEnum>::size;
+folly::Range<::test::fixtures::basic-structured-annotations::MyEnum const*> const TEnumTraits<::test::fixtures::basic-structured-annotations::MyEnum>::values = folly::range(TEnumDataStorage<::test::fixtures::basic-structured-annotations::MyEnum>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::basic-structured-annotations::MyEnum>::names = folly::range(TEnumDataStorage<::test::fixtures::basic-structured-annotations::MyEnum>::names);
 
-bool TEnumTraits<::cpp2::MyEnum>::findName(type value, folly::StringPiece* out) noexcept {
+bool TEnumTraits<::test::fixtures::basic-structured-annotations::MyEnum>::findName(type value, folly::StringPiece* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::cpp2::MyEnum>::findValue(folly::StringPiece name, type* out) noexcept {
+bool TEnumTraits<::test::fixtures::basic-structured-annotations::MyEnum>::findValue(folly::StringPiece name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 
 }} // apache::thrift
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 #ifndef ANDROID
 FOLLY_PUSH_WARNING
 FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
@@ -36,17 +36,17 @@ const _MyEnum_EnumMapFactory::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES = _My
 const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES = _MyEnum_EnumMapFactory::makeNamesToValuesMap();
 FOLLY_POP_WARNING
 #endif
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::structured_annotation_inline>::translateFieldName(
+void TccStructTraits<::test::fixtures::basic-structured-annotations::structured_annotation_inline>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::structured_annotation_inline>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_inline>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -59,7 +59,7 @@ void TccStructTraits<::cpp2::structured_annotation_inline>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 const char* structured_annotation_inline::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/structured_annotation_inline";
@@ -144,17 +144,17 @@ template uint32_t structured_annotation_inline::serializedSize<>(apache::thrift:
 template uint32_t structured_annotation_inline::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::structured_annotation_with_default>::translateFieldName(
+void TccStructTraits<::test::fixtures::basic-structured-annotations::structured_annotation_with_default>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::structured_annotation_with_default>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_with_default>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -167,7 +167,7 @@ void TccStructTraits<::cpp2::structured_annotation_with_default>::translateField
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 const char* structured_annotation_with_default::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/structured_annotation_with_default";
@@ -240,17 +240,17 @@ template uint32_t structured_annotation_with_default::serializedSize<>(apache::t
 template uint32_t structured_annotation_with_default::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::structured_annotation_forward>::translateFieldName(
+void TccStructTraits<::test::fixtures::basic-structured-annotations::structured_annotation_forward>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::structured_annotation_forward>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_forward>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -263,7 +263,7 @@ void TccStructTraits<::cpp2::structured_annotation_forward>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 const char* structured_annotation_forward::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/structured_annotation_forward";
@@ -323,17 +323,17 @@ template uint32_t structured_annotation_forward::serializedSize<>(apache::thrift
 template uint32_t structured_annotation_forward::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::structured_annotation_recursive>::translateFieldName(
+void TccStructTraits<::test::fixtures::basic-structured-annotations::structured_annotation_recursive>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::structured_annotation_recursive>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_recursive>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -346,7 +346,7 @@ void TccStructTraits<::cpp2::structured_annotation_recursive>::translateFieldNam
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 const char* structured_annotation_recursive::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/structured_annotation_recursive";
@@ -370,7 +370,7 @@ structured_annotation_recursive& structured_annotation_recursive::operator=(FOLL
 }
 
 
-structured_annotation_recursive::structured_annotation_recursive(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_recursive recurse__arg, ::cpp2::structured_annotation_forward forward__arg) :
+structured_annotation_recursive::structured_annotation_recursive(apache::thrift::FragileConstructor, ::std::string name__arg, ::test::fixtures::basic-structured-annotations::structured_annotation_recursive recurse__arg, ::test::fixtures::basic-structured-annotations::structured_annotation_forward forward__arg) :
     __fbthrift_field_name(std::move(name__arg)),
     __fbthrift_field_recurse(std::move(recurse__arg)),
     __fbthrift_field_forward(std::move(forward__arg)) {
@@ -424,19 +424,19 @@ bool structured_annotation_recursive::operator<(const structured_annotation_recu
   return false;
 }
 
-const ::cpp2::structured_annotation_recursive& structured_annotation_recursive::get_recurse() const& {
+const ::test::fixtures::basic-structured-annotations::structured_annotation_recursive& structured_annotation_recursive::get_recurse() const& {
   return __fbthrift_field_recurse;
 }
 
-::cpp2::structured_annotation_recursive structured_annotation_recursive::get_recurse() && {
+::test::fixtures::basic-structured-annotations::structured_annotation_recursive structured_annotation_recursive::get_recurse() && {
   return std::move(__fbthrift_field_recurse);
 }
 
-const ::cpp2::structured_annotation_forward& structured_annotation_recursive::get_forward() const& {
+const ::test::fixtures::basic-structured-annotations::structured_annotation_forward& structured_annotation_recursive::get_forward() const& {
   return __fbthrift_field_forward;
 }
 
-::cpp2::structured_annotation_forward structured_annotation_recursive::get_forward() && {
+::test::fixtures::basic-structured-annotations::structured_annotation_forward structured_annotation_recursive::get_forward() && {
   return std::move(__fbthrift_field_forward);
 }
 
@@ -462,26 +462,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structured_annotation_recursive,
         ::apache::thrift::type_class::structure,
-        ::cpp2::structured_annotation_recursive>,
+        ::test::fixtures::basic-structured-annotations::structured_annotation_recursive>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structured_annotation_recursive,
         ::apache::thrift::type_class::structure,
-        ::cpp2::structured_annotation_forward>,
+        ::test::fixtures::basic-structured-annotations::structured_annotation_forward>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::structured_annotation_nested>::translateFieldName(
+void TccStructTraits<::test::fixtures::basic-structured-annotations::structured_annotation_nested>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::structured_annotation_nested>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::basic-structured-annotations::structured_annotation_nested>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -494,7 +494,7 @@ void TccStructTraits<::cpp2::structured_annotation_nested>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 const char* structured_annotation_nested::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/structured_annotation_nested";
@@ -516,7 +516,7 @@ structured_annotation_nested& structured_annotation_nested::operator=(FOLLY_MAYB
 }
 
 
-structured_annotation_nested::structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_with_default nest__arg) :
+structured_annotation_nested::structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg, ::test::fixtures::basic-structured-annotations::structured_annotation_with_default nest__arg) :
     __fbthrift_field_name(std::move(name__arg)),
     __fbthrift_field_nest(std::move(nest__arg)) {
   __isset.set(folly::index_constant<0>(), true);
@@ -561,11 +561,11 @@ bool structured_annotation_nested::operator<(const structured_annotation_nested&
   return false;
 }
 
-const ::cpp2::structured_annotation_with_default& structured_annotation_nested::get_nest() const& {
+const ::test::fixtures::basic-structured-annotations::structured_annotation_with_default& structured_annotation_nested::get_nest() const& {
   return __fbthrift_field_nest;
 }
 
-::cpp2::structured_annotation_with_default structured_annotation_nested::get_nest() && {
+::test::fixtures::basic-structured-annotations::structured_annotation_with_default structured_annotation_nested::get_nest() && {
   return std::move(__fbthrift_field_nest);
 }
 
@@ -590,20 +590,20 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structured_annotation_nested,
         ::apache::thrift::type_class::structure,
-        ::cpp2::structured_annotation_with_default>,
+        ::test::fixtures::basic-structured-annotations::structured_annotation_with_default>,
     "inconsistent use of json option");
 
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
+void TccStructTraits<::test::fixtures::basic-structured-annotations::MyStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyStruct>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::basic-structured-annotations::MyStruct>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -616,7 +616,7 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 const char* MyStruct::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/MyStruct";
@@ -642,7 +642,7 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
 }
 
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_field__arg, ::cpp2::annotated_inline_string annotated_type__arg, ::std::string annotated_recursive__arg, ::std::int64_t annotated_nested__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_field__arg, ::test::fixtures::basic-structured-annotations::annotated_inline_string annotated_type__arg, ::std::string annotated_recursive__arg, ::std::int64_t annotated_nested__arg) :
     __fbthrift_field_annotated_field(std::move(annotated_field__arg)),
     __fbthrift_field_annotated_type(std::move(annotated_type__arg)),
     __fbthrift_field_annotated_recursive(std::move(annotated_recursive__arg)),
@@ -725,17 +725,17 @@ template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWrit
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyException>::translateFieldName(
+void TccStructTraits<::test::fixtures::basic-structured-annotations::MyException>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyException>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::basic-structured-annotations::MyException>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -748,7 +748,7 @@ void TccStructTraits<::cpp2::MyException>::translateFieldName(
 } // namespace thrift
 } // namespace apache
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 const char* MyException::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/MyException";
@@ -827,17 +827,17 @@ template uint32_t MyException::serializedSize<>(apache::thrift::CompactProtocolW
 template uint32_t MyException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 
 namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyUnion>::translateFieldName(
+void TccStructTraits<::test::fixtures::basic-structured-annotations::MyUnion>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
     apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyUnion>;
+  using data = apache::thrift::TStructDataStorage<::test::fixtures::basic-structured-annotations::MyUnion>;
   static const st::translate_field_name_table table{
       data::fields_size,
       data::fields_names.data(),
@@ -852,19 +852,19 @@ void TccStructTraits<::cpp2::MyUnion>::translateFieldName(
 
 namespace apache { namespace thrift {
 
-constexpr std::size_t const TEnumTraits<::cpp2::MyUnion::Type>::size;
-folly::Range<::cpp2::MyUnion::Type const*> const TEnumTraits<::cpp2::MyUnion::Type>::values = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::values);
-folly::Range<folly::StringPiece const*> const TEnumTraits<::cpp2::MyUnion::Type>::names = folly::range(TEnumDataStorage<::cpp2::MyUnion::Type>::names);
+constexpr std::size_t const TEnumTraits<::test::fixtures::basic-structured-annotations::MyUnion::Type>::size;
+folly::Range<::test::fixtures::basic-structured-annotations::MyUnion::Type const*> const TEnumTraits<::test::fixtures::basic-structured-annotations::MyUnion::Type>::values = folly::range(TEnumDataStorage<::test::fixtures::basic-structured-annotations::MyUnion::Type>::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::test::fixtures::basic-structured-annotations::MyUnion::Type>::names = folly::range(TEnumDataStorage<::test::fixtures::basic-structured-annotations::MyUnion::Type>::names);
 
-bool TEnumTraits<::cpp2::MyUnion::Type>::findName(type value, folly::StringPiece* out) noexcept {
+bool TEnumTraits<::test::fixtures::basic-structured-annotations::MyUnion::Type>::findName(type value, folly::StringPiece* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_name(value, out);
 }
 
-bool TEnumTraits<::cpp2::MyUnion::Type>::findValue(folly::StringPiece name, type* out) noexcept {
+bool TEnumTraits<::test::fixtures::basic-structured-annotations::MyUnion::Type>::findValue(folly::StringPiece name, type* out) noexcept {
   return ::apache::thrift::detail::st::enum_find_value(name, out);
 }
 }} // apache::thrift
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 const char* MyUnion::__fbthrift_thrift_uri() {
   return "test.dev/fixtures/basic-structured-annotations/MyUnion";
@@ -936,9 +936,9 @@ template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWrite
 template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 
-namespace cpp2 { namespace {
+namespace test { namespace fixtures { namespace basic-structured-annotations { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}} // cpp2
+}}}} // test::fixtures::basic-structured-annotations

@@ -20,7 +20,7 @@ namespace py3 {
 
 template<>
 const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
-    ::cpp2::MyUnion::Type>::namesmap() {
+    ::test::fixtures::patch::MyUnion::Type>::namesmap() {
   static const folly::Indestructible<NamesMap> pairs {
     {
     }
@@ -30,424 +30,424 @@ const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
 
 
 template<>
-void reset_field<::cpp2::MyData>(
-    ::cpp2::MyData& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::MyData>(
+    ::test::fixtures::patch::MyData& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.data1_ref().copy_from(default_inst<::cpp2::MyData>().data1_ref());
+      obj.data1_ref().copy_from(default_inst<::test::fixtures::patch::MyData>().data1_ref());
       return;
     case 1:
-      obj.data2_ref().copy_from(default_inst<::cpp2::MyData>().data2_ref());
+      obj.data2_ref().copy_from(default_inst<::test::fixtures::patch::MyData>().data2_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::MyStruct>(
-    ::cpp2::MyStruct& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::MyStruct>(
+    ::test::fixtures::patch::MyStruct& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.boolVal_ref().copy_from(default_inst<::cpp2::MyStruct>().boolVal_ref());
+      obj.boolVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().boolVal_ref());
       return;
     case 1:
-      obj.byteVal_ref().copy_from(default_inst<::cpp2::MyStruct>().byteVal_ref());
+      obj.byteVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().byteVal_ref());
       return;
     case 2:
-      obj.i16Val_ref().copy_from(default_inst<::cpp2::MyStruct>().i16Val_ref());
+      obj.i16Val_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().i16Val_ref());
       return;
     case 3:
-      obj.i32Val_ref().copy_from(default_inst<::cpp2::MyStruct>().i32Val_ref());
+      obj.i32Val_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().i32Val_ref());
       return;
     case 4:
-      obj.i64Val_ref().copy_from(default_inst<::cpp2::MyStruct>().i64Val_ref());
+      obj.i64Val_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().i64Val_ref());
       return;
     case 5:
-      obj.floatVal_ref().copy_from(default_inst<::cpp2::MyStruct>().floatVal_ref());
+      obj.floatVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().floatVal_ref());
       return;
     case 6:
-      obj.doubleVal_ref().copy_from(default_inst<::cpp2::MyStruct>().doubleVal_ref());
+      obj.doubleVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().doubleVal_ref());
       return;
     case 7:
-      obj.stringVal_ref().copy_from(default_inst<::cpp2::MyStruct>().stringVal_ref());
+      obj.stringVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().stringVal_ref());
       return;
     case 8:
-      obj.binaryVal_ref().copy_from(default_inst<::cpp2::MyStruct>().binaryVal_ref());
+      obj.binaryVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().binaryVal_ref());
       return;
     case 9:
-      obj.structVal_ref().copy_from(default_inst<::cpp2::MyStruct>().structVal_ref());
+      obj.structVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().structVal_ref());
       return;
     case 10:
-      obj.optBoolVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optBoolVal_ref());
+      obj.optBoolVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().optBoolVal_ref());
       return;
     case 11:
-      obj.optByteVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optByteVal_ref());
+      obj.optByteVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().optByteVal_ref());
       return;
     case 12:
-      obj.optI16Val_ref().copy_from(default_inst<::cpp2::MyStruct>().optI16Val_ref());
+      obj.optI16Val_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().optI16Val_ref());
       return;
     case 13:
-      obj.optI32Val_ref().copy_from(default_inst<::cpp2::MyStruct>().optI32Val_ref());
+      obj.optI32Val_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().optI32Val_ref());
       return;
     case 14:
-      obj.optI64Val_ref().copy_from(default_inst<::cpp2::MyStruct>().optI64Val_ref());
+      obj.optI64Val_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().optI64Val_ref());
       return;
     case 15:
-      obj.optFloatVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optFloatVal_ref());
+      obj.optFloatVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().optFloatVal_ref());
       return;
     case 16:
-      obj.optDoubleVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optDoubleVal_ref());
+      obj.optDoubleVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().optDoubleVal_ref());
       return;
     case 17:
-      obj.optStringVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optStringVal_ref());
+      obj.optStringVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().optStringVal_ref());
       return;
     case 18:
-      obj.optBinaryVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optBinaryVal_ref());
+      obj.optBinaryVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().optBinaryVal_ref());
       return;
     case 19:
-      obj.optStructVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optStructVal_ref());
+      obj.optStructVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().optStructVal_ref());
       return;
     case 20:
-      obj.optListVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optListVal_ref());
+      obj.optListVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().optListVal_ref());
       return;
     case 21:
-      obj.optSetVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optSetVal_ref());
+      obj.optSetVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().optSetVal_ref());
       return;
     case 22:
-      obj.optMapVal_ref().copy_from(default_inst<::cpp2::MyStruct>().optMapVal_ref());
+      obj.optMapVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().optMapVal_ref());
       return;
     case 23:
-      obj.unionVal_ref().copy_from(default_inst<::cpp2::MyStruct>().unionVal_ref());
+      obj.unionVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStruct>().unionVal_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::MyDataPatch>(
-    ::cpp2::MyDataPatch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::MyDataPatch>(
+    ::test::fixtures::patch::MyDataPatch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.data1_ref().copy_from(default_inst<::cpp2::MyDataPatch>().data1_ref());
+      obj.data1_ref().copy_from(default_inst<::test::fixtures::patch::MyDataPatch>().data1_ref());
       return;
     case 1:
-      obj.data2_ref().copy_from(default_inst<::cpp2::MyDataPatch>().data2_ref());
+      obj.data2_ref().copy_from(default_inst<::test::fixtures::patch::MyDataPatch>().data2_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::MyDataValuePatch>(
-    ::cpp2::MyDataValuePatch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::MyDataValuePatch>(
+    ::test::fixtures::patch::MyDataValuePatch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.assign_ref().copy_from(default_inst<::cpp2::MyDataValuePatch>().assign_ref());
+      obj.assign_ref().copy_from(default_inst<::test::fixtures::patch::MyDataValuePatch>().assign_ref());
       return;
     case 1:
-      obj.clear_ref().copy_from(default_inst<::cpp2::MyDataValuePatch>().clear_ref());
+      obj.clear_ref().copy_from(default_inst<::test::fixtures::patch::MyDataValuePatch>().clear_ref());
       return;
     case 2:
-      obj.patch_ref().copy_from(default_inst<::cpp2::MyDataValuePatch>().patch_ref());
+      obj.patch_ref().copy_from(default_inst<::test::fixtures::patch::MyDataValuePatch>().patch_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::OptionalMyDataValuePatch>(
-    ::cpp2::OptionalMyDataValuePatch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::OptionalMyDataValuePatch>(
+    ::test::fixtures::patch::OptionalMyDataValuePatch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.clear_ref().copy_from(default_inst<::cpp2::OptionalMyDataValuePatch>().clear_ref());
+      obj.clear_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyDataValuePatch>().clear_ref());
       return;
     case 1:
-      obj.patch_ref().copy_from(default_inst<::cpp2::OptionalMyDataValuePatch>().patch_ref());
+      obj.patch_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyDataValuePatch>().patch_ref());
       return;
     case 2:
-      obj.ensure_ref().copy_from(default_inst<::cpp2::OptionalMyDataValuePatch>().ensure_ref());
+      obj.ensure_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyDataValuePatch>().ensure_ref());
       return;
     case 3:
-      obj.patchAfter_ref().copy_from(default_inst<::cpp2::OptionalMyDataValuePatch>().patchAfter_ref());
+      obj.patchAfter_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyDataValuePatch>().patchAfter_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::MyUnionPatch>(
-    ::cpp2::MyUnionPatch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::MyUnionPatch>(
+    ::test::fixtures::patch::MyUnionPatch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.option1_ref().copy_from(default_inst<::cpp2::MyUnionPatch>().option1_ref());
+      obj.option1_ref().copy_from(default_inst<::test::fixtures::patch::MyUnionPatch>().option1_ref());
       return;
     case 1:
-      obj.option2_ref().copy_from(default_inst<::cpp2::MyUnionPatch>().option2_ref());
+      obj.option2_ref().copy_from(default_inst<::test::fixtures::patch::MyUnionPatch>().option2_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::MyUnionValuePatch>(
-    ::cpp2::MyUnionValuePatch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::MyUnionValuePatch>(
+    ::test::fixtures::patch::MyUnionValuePatch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.clear_ref().copy_from(default_inst<::cpp2::MyUnionValuePatch>().clear_ref());
+      obj.clear_ref().copy_from(default_inst<::test::fixtures::patch::MyUnionValuePatch>().clear_ref());
       return;
     case 1:
-      obj.patch_ref().copy_from(default_inst<::cpp2::MyUnionValuePatch>().patch_ref());
+      obj.patch_ref().copy_from(default_inst<::test::fixtures::patch::MyUnionValuePatch>().patch_ref());
       return;
     case 2:
-      obj.ensure_ref().copy_from(default_inst<::cpp2::MyUnionValuePatch>().ensure_ref());
+      obj.ensure_ref().copy_from(default_inst<::test::fixtures::patch::MyUnionValuePatch>().ensure_ref());
       return;
     case 3:
-      obj.patchAfter_ref().copy_from(default_inst<::cpp2::MyUnionValuePatch>().patchAfter_ref());
+      obj.patchAfter_ref().copy_from(default_inst<::test::fixtures::patch::MyUnionValuePatch>().patchAfter_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::OptionalMyUnionValuePatch>(
-    ::cpp2::OptionalMyUnionValuePatch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::OptionalMyUnionValuePatch>(
+    ::test::fixtures::patch::OptionalMyUnionValuePatch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.clear_ref().copy_from(default_inst<::cpp2::OptionalMyUnionValuePatch>().clear_ref());
+      obj.clear_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyUnionValuePatch>().clear_ref());
       return;
     case 1:
-      obj.patch_ref().copy_from(default_inst<::cpp2::OptionalMyUnionValuePatch>().patch_ref());
+      obj.patch_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyUnionValuePatch>().patch_ref());
       return;
     case 2:
-      obj.ensure_ref().copy_from(default_inst<::cpp2::OptionalMyUnionValuePatch>().ensure_ref());
+      obj.ensure_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyUnionValuePatch>().ensure_ref());
       return;
     case 3:
-      obj.patchAfter_ref().copy_from(default_inst<::cpp2::OptionalMyUnionValuePatch>().patchAfter_ref());
+      obj.patchAfter_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyUnionValuePatch>().patchAfter_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::MyStructPatch>(
-    ::cpp2::MyStructPatch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::MyStructPatch>(
+    ::test::fixtures::patch::MyStructPatch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.boolVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().boolVal_ref());
+      obj.boolVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().boolVal_ref());
       return;
     case 1:
-      obj.byteVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().byteVal_ref());
+      obj.byteVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().byteVal_ref());
       return;
     case 2:
-      obj.i16Val_ref().copy_from(default_inst<::cpp2::MyStructPatch>().i16Val_ref());
+      obj.i16Val_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().i16Val_ref());
       return;
     case 3:
-      obj.i32Val_ref().copy_from(default_inst<::cpp2::MyStructPatch>().i32Val_ref());
+      obj.i32Val_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().i32Val_ref());
       return;
     case 4:
-      obj.i64Val_ref().copy_from(default_inst<::cpp2::MyStructPatch>().i64Val_ref());
+      obj.i64Val_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().i64Val_ref());
       return;
     case 5:
-      obj.floatVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().floatVal_ref());
+      obj.floatVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().floatVal_ref());
       return;
     case 6:
-      obj.doubleVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().doubleVal_ref());
+      obj.doubleVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().doubleVal_ref());
       return;
     case 7:
-      obj.stringVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().stringVal_ref());
+      obj.stringVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().stringVal_ref());
       return;
     case 8:
-      obj.binaryVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().binaryVal_ref());
+      obj.binaryVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().binaryVal_ref());
       return;
     case 9:
-      obj.structVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().structVal_ref());
+      obj.structVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().structVal_ref());
       return;
     case 10:
-      obj.optBoolVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optBoolVal_ref());
+      obj.optBoolVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().optBoolVal_ref());
       return;
     case 11:
-      obj.optByteVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optByteVal_ref());
+      obj.optByteVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().optByteVal_ref());
       return;
     case 12:
-      obj.optI16Val_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optI16Val_ref());
+      obj.optI16Val_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().optI16Val_ref());
       return;
     case 13:
-      obj.optI32Val_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optI32Val_ref());
+      obj.optI32Val_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().optI32Val_ref());
       return;
     case 14:
-      obj.optI64Val_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optI64Val_ref());
+      obj.optI64Val_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().optI64Val_ref());
       return;
     case 15:
-      obj.optFloatVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optFloatVal_ref());
+      obj.optFloatVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().optFloatVal_ref());
       return;
     case 16:
-      obj.optDoubleVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optDoubleVal_ref());
+      obj.optDoubleVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().optDoubleVal_ref());
       return;
     case 17:
-      obj.optStringVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optStringVal_ref());
+      obj.optStringVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().optStringVal_ref());
       return;
     case 18:
-      obj.optBinaryVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optBinaryVal_ref());
+      obj.optBinaryVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().optBinaryVal_ref());
       return;
     case 19:
-      obj.optStructVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optStructVal_ref());
+      obj.optStructVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().optStructVal_ref());
       return;
     case 20:
-      obj.optListVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optListVal_ref());
+      obj.optListVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().optListVal_ref());
       return;
     case 21:
-      obj.optSetVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optSetVal_ref());
+      obj.optSetVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().optSetVal_ref());
       return;
     case 22:
-      obj.optMapVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().optMapVal_ref());
+      obj.optMapVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().optMapVal_ref());
       return;
     case 23:
-      obj.unionVal_ref().copy_from(default_inst<::cpp2::MyStructPatch>().unionVal_ref());
+      obj.unionVal_ref().copy_from(default_inst<::test::fixtures::patch::MyStructPatch>().unionVal_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::MyStructField21Patch>(
-    ::cpp2::MyStructField21Patch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::MyStructField21Patch>(
+    ::test::fixtures::patch::MyStructField21Patch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.assign_ref().copy_from(default_inst<::cpp2::MyStructField21Patch>().assign_ref());
+      obj.assign_ref().copy_from(default_inst<::test::fixtures::patch::MyStructField21Patch>().assign_ref());
       return;
     case 1:
-      obj.clear_ref().copy_from(default_inst<::cpp2::MyStructField21Patch>().clear_ref());
+      obj.clear_ref().copy_from(default_inst<::test::fixtures::patch::MyStructField21Patch>().clear_ref());
       return;
     case 2:
-      obj.prepend_ref().copy_from(default_inst<::cpp2::MyStructField21Patch>().prepend_ref());
+      obj.prepend_ref().copy_from(default_inst<::test::fixtures::patch::MyStructField21Patch>().prepend_ref());
       return;
     case 3:
-      obj.append_ref().copy_from(default_inst<::cpp2::MyStructField21Patch>().append_ref());
+      obj.append_ref().copy_from(default_inst<::test::fixtures::patch::MyStructField21Patch>().append_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::OptionalMyStructField21Patch>(
-    ::cpp2::OptionalMyStructField21Patch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::OptionalMyStructField21Patch>(
+    ::test::fixtures::patch::OptionalMyStructField21Patch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.clear_ref().copy_from(default_inst<::cpp2::OptionalMyStructField21Patch>().clear_ref());
+      obj.clear_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructField21Patch>().clear_ref());
       return;
     case 1:
-      obj.patch_ref().copy_from(default_inst<::cpp2::OptionalMyStructField21Patch>().patch_ref());
+      obj.patch_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructField21Patch>().patch_ref());
       return;
     case 2:
-      obj.ensure_ref().copy_from(default_inst<::cpp2::OptionalMyStructField21Patch>().ensure_ref());
+      obj.ensure_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructField21Patch>().ensure_ref());
       return;
     case 3:
-      obj.patchAfter_ref().copy_from(default_inst<::cpp2::OptionalMyStructField21Patch>().patchAfter_ref());
+      obj.patchAfter_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructField21Patch>().patchAfter_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::MyStructField22Patch>(
-    ::cpp2::MyStructField22Patch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::MyStructField22Patch>(
+    ::test::fixtures::patch::MyStructField22Patch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.assign_ref().copy_from(default_inst<::cpp2::MyStructField22Patch>().assign_ref());
+      obj.assign_ref().copy_from(default_inst<::test::fixtures::patch::MyStructField22Patch>().assign_ref());
       return;
     case 1:
-      obj.clear_ref().copy_from(default_inst<::cpp2::MyStructField22Patch>().clear_ref());
+      obj.clear_ref().copy_from(default_inst<::test::fixtures::patch::MyStructField22Patch>().clear_ref());
       return;
     case 2:
-      obj.remove_ref().copy_from(default_inst<::cpp2::MyStructField22Patch>().remove_ref());
+      obj.remove_ref().copy_from(default_inst<::test::fixtures::patch::MyStructField22Patch>().remove_ref());
       return;
     case 3:
-      obj.add_ref().copy_from(default_inst<::cpp2::MyStructField22Patch>().add_ref());
+      obj.add_ref().copy_from(default_inst<::test::fixtures::patch::MyStructField22Patch>().add_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::OptionalMyStructField22Patch>(
-    ::cpp2::OptionalMyStructField22Patch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::OptionalMyStructField22Patch>(
+    ::test::fixtures::patch::OptionalMyStructField22Patch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.clear_ref().copy_from(default_inst<::cpp2::OptionalMyStructField22Patch>().clear_ref());
+      obj.clear_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructField22Patch>().clear_ref());
       return;
     case 1:
-      obj.patch_ref().copy_from(default_inst<::cpp2::OptionalMyStructField22Patch>().patch_ref());
+      obj.patch_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructField22Patch>().patch_ref());
       return;
     case 2:
-      obj.ensure_ref().copy_from(default_inst<::cpp2::OptionalMyStructField22Patch>().ensure_ref());
+      obj.ensure_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructField22Patch>().ensure_ref());
       return;
     case 3:
-      obj.patchAfter_ref().copy_from(default_inst<::cpp2::OptionalMyStructField22Patch>().patchAfter_ref());
+      obj.patchAfter_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructField22Patch>().patchAfter_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::MyStructField23Patch>(
-    ::cpp2::MyStructField23Patch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::MyStructField23Patch>(
+    ::test::fixtures::patch::MyStructField23Patch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.assign_ref().copy_from(default_inst<::cpp2::MyStructField23Patch>().assign_ref());
+      obj.assign_ref().copy_from(default_inst<::test::fixtures::patch::MyStructField23Patch>().assign_ref());
       return;
     case 1:
-      obj.clear_ref().copy_from(default_inst<::cpp2::MyStructField23Patch>().clear_ref());
+      obj.clear_ref().copy_from(default_inst<::test::fixtures::patch::MyStructField23Patch>().clear_ref());
       return;
     case 2:
-      obj.put_ref().copy_from(default_inst<::cpp2::MyStructField23Patch>().put_ref());
+      obj.put_ref().copy_from(default_inst<::test::fixtures::patch::MyStructField23Patch>().put_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::OptionalMyStructField23Patch>(
-    ::cpp2::OptionalMyStructField23Patch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::OptionalMyStructField23Patch>(
+    ::test::fixtures::patch::OptionalMyStructField23Patch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.clear_ref().copy_from(default_inst<::cpp2::OptionalMyStructField23Patch>().clear_ref());
+      obj.clear_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructField23Patch>().clear_ref());
       return;
     case 1:
-      obj.patch_ref().copy_from(default_inst<::cpp2::OptionalMyStructField23Patch>().patch_ref());
+      obj.patch_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructField23Patch>().patch_ref());
       return;
     case 2:
-      obj.ensure_ref().copy_from(default_inst<::cpp2::OptionalMyStructField23Patch>().ensure_ref());
+      obj.ensure_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructField23Patch>().ensure_ref());
       return;
     case 3:
-      obj.patchAfter_ref().copy_from(default_inst<::cpp2::OptionalMyStructField23Patch>().patchAfter_ref());
+      obj.patchAfter_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructField23Patch>().patchAfter_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::MyStructValuePatch>(
-    ::cpp2::MyStructValuePatch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::MyStructValuePatch>(
+    ::test::fixtures::patch::MyStructValuePatch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.assign_ref().copy_from(default_inst<::cpp2::MyStructValuePatch>().assign_ref());
+      obj.assign_ref().copy_from(default_inst<::test::fixtures::patch::MyStructValuePatch>().assign_ref());
       return;
     case 1:
-      obj.clear_ref().copy_from(default_inst<::cpp2::MyStructValuePatch>().clear_ref());
+      obj.clear_ref().copy_from(default_inst<::test::fixtures::patch::MyStructValuePatch>().clear_ref());
       return;
     case 2:
-      obj.patch_ref().copy_from(default_inst<::cpp2::MyStructValuePatch>().patch_ref());
+      obj.patch_ref().copy_from(default_inst<::test::fixtures::patch::MyStructValuePatch>().patch_ref());
       return;
   }
 }
 
 template<>
-void reset_field<::cpp2::OptionalMyStructValuePatch>(
-    ::cpp2::OptionalMyStructValuePatch& obj, uint16_t index) {
+void reset_field<::test::fixtures::patch::OptionalMyStructValuePatch>(
+    ::test::fixtures::patch::OptionalMyStructValuePatch& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.clear_ref().copy_from(default_inst<::cpp2::OptionalMyStructValuePatch>().clear_ref());
+      obj.clear_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructValuePatch>().clear_ref());
       return;
     case 1:
-      obj.patch_ref().copy_from(default_inst<::cpp2::OptionalMyStructValuePatch>().patch_ref());
+      obj.patch_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructValuePatch>().patch_ref());
       return;
     case 2:
-      obj.ensure_ref().copy_from(default_inst<::cpp2::OptionalMyStructValuePatch>().ensure_ref());
+      obj.ensure_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructValuePatch>().ensure_ref());
       return;
     case 3:
-      obj.patchAfter_ref().copy_from(default_inst<::cpp2::OptionalMyStructValuePatch>().patchAfter_ref());
+      obj.patchAfter_ref().copy_from(default_inst<::test::fixtures::patch::OptionalMyStructValuePatch>().patchAfter_ref());
       return;
   }
 }
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyData>::namesmap() {
+    ::test::fixtures::patch::MyData>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -457,7 +457,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyUnion>::namesmap() {
+    ::test::fixtures::patch::MyUnion>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -467,7 +467,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyStruct>::namesmap() {
+    ::test::fixtures::patch::MyStruct>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -477,7 +477,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyDataPatch>::namesmap() {
+    ::test::fixtures::patch::MyDataPatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -487,7 +487,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyDataValuePatch>::namesmap() {
+    ::test::fixtures::patch::MyDataValuePatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -497,7 +497,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::OptionalMyDataValuePatch>::namesmap() {
+    ::test::fixtures::patch::OptionalMyDataValuePatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -507,7 +507,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyUnionPatch>::namesmap() {
+    ::test::fixtures::patch::MyUnionPatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -517,7 +517,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyUnionValuePatch>::namesmap() {
+    ::test::fixtures::patch::MyUnionValuePatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -527,7 +527,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::OptionalMyUnionValuePatch>::namesmap() {
+    ::test::fixtures::patch::OptionalMyUnionValuePatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -537,7 +537,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyStructPatch>::namesmap() {
+    ::test::fixtures::patch::MyStructPatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -547,7 +547,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyStructField21Patch>::namesmap() {
+    ::test::fixtures::patch::MyStructField21Patch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -557,7 +557,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::OptionalMyStructField21Patch>::namesmap() {
+    ::test::fixtures::patch::OptionalMyStructField21Patch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -567,7 +567,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyStructField22Patch>::namesmap() {
+    ::test::fixtures::patch::MyStructField22Patch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -577,7 +577,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::OptionalMyStructField22Patch>::namesmap() {
+    ::test::fixtures::patch::OptionalMyStructField22Patch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -587,7 +587,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyStructField23Patch>::namesmap() {
+    ::test::fixtures::patch::MyStructField23Patch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -597,7 +597,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::OptionalMyStructField23Patch>::namesmap() {
+    ::test::fixtures::patch::OptionalMyStructField23Patch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -607,7 +607,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::MyStructValuePatch>::namesmap() {
+    ::test::fixtures::patch::MyStructValuePatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -617,7 +617,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::cpp2::OptionalMyStructValuePatch>::namesmap() {
+    ::test::fixtures::patch::OptionalMyStructValuePatch>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

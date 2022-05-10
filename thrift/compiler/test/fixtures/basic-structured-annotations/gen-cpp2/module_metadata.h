@@ -13,9 +13,11 @@
 #include "thrift/compiler/test/fixtures/basic-structured-annotations/gen-cpp2/included_metadata.h"
 #include "thrift/compiler/test/fixtures/basic-structured-annotations/gen-cpp2/namespaced_metadata.h"
 
-namespace cpp2 {
+namespace test {
+namespace fixtures {
+namespace basic-structured-annotations {
 class MyService;
-} // namespace cpp2
+}}} // namespace test::fixtures::basic-structured-annotations
 
 namespace apache {
 namespace thrift {
@@ -23,57 +25,57 @@ namespace detail {
 namespace md {
 
 template <>
-class EnumMetadata<::cpp2::MyEnum> {
+class EnumMetadata<::test::fixtures::basic-structured-annotations::MyEnum> {
  public:
   static void gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::structured_annotation_inline> {
+class StructMetadata<::test::fixtures::basic-structured-annotations::structured_annotation_inline> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::structured_annotation_with_default> {
+class StructMetadata<::test::fixtures::basic-structured-annotations::structured_annotation_with_default> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::structured_annotation_forward> {
+class StructMetadata<::test::fixtures::basic-structured-annotations::structured_annotation_forward> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::structured_annotation_recursive> {
+class StructMetadata<::test::fixtures::basic-structured-annotations::structured_annotation_recursive> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::structured_annotation_nested> {
+class StructMetadata<::test::fixtures::basic-structured-annotations::structured_annotation_nested> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyStruct> {
+class StructMetadata<::test::fixtures::basic-structured-annotations::MyStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyException> {
+class StructMetadata<::test::fixtures::basic-structured-annotations::MyException> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyUnion> {
+class StructMetadata<::test::fixtures::basic-structured-annotations::MyUnion> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class ExceptionMetadata<::cpp2::MyException> {
+class ExceptionMetadata<::test::fixtures::basic-structured-annotations::MyException> {
  public:
   static void gen(ThriftMetadata& metadata);
 };
 template <>
-class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic-structured-annotations::MyService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:

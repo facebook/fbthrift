@@ -23,7 +23,7 @@ namespace apache { namespace thrift {
   namespace transport { class THeader; }
 }}
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic {
 class DbMixedStackArguments;
 class DbMixedStackArgumentsAsyncProcessor;
 
@@ -32,11 +32,11 @@ class DbMixedStackArgumentsServiceInfoHolder : public apache::thrift::ServiceInf
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
-} // cpp2
+}}} // test::fixtures::basic
 
 namespace apache::thrift {
 template <>
-class ServiceHandler<::cpp2::DbMixedStackArguments> : public apache::thrift::ServerInterface {
+class ServiceHandler<::test::fixtures::basic::DbMixedStackArguments> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "DbMixedStackArguments"; }
 
@@ -44,7 +44,7 @@ class ServiceHandler<::cpp2::DbMixedStackArguments> : public apache::thrift::Ser
     return "test.dev/fixtures/basic/DbMixedStackArguments";
   }
 
-  typedef ::cpp2::DbMixedStackArgumentsAsyncProcessor ProcessorType;
+  typedef ::test::fixtures::basic::DbMixedStackArgumentsAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
  private:
@@ -60,17 +60,17 @@ class ServiceHandler<::cpp2::DbMixedStackArguments> : public apache::thrift::Ser
   virtual folly::SemiFuture<std::unique_ptr<::std::string>> semifuture_getDataByKey1(std::unique_ptr<::std::string> p_key);
   virtual void async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_key);
  private:
-  static ::cpp2::DbMixedStackArgumentsServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::test::fixtures::basic::DbMixedStackArgumentsServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_getDataByKey0{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_getDataByKey1{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 } // namespace apache::thrift
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic {
 using DbMixedStackArgumentsSvIf = ::apache::thrift::ServiceHandler<DbMixedStackArguments>;
-} // cpp2
-namespace cpp2 {
+}}} // test::fixtures::basic
+namespace test { namespace fixtures { namespace basic {
 class DbMixedStackArgumentsSvNull : public DbMixedStackArgumentsSvIf {
  public:
   void getDataByKey0(::std::string& /*_return*/, std::unique_ptr<::std::string> /*key*/) override;
@@ -83,7 +83,7 @@ class DbMixedStackArgumentsAsyncProcessor : public ::apache::thrift::GeneratedAs
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  ::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>* iface_;
+  ::apache::thrift::ServiceHandler<::test::fixtures::basic::DbMixedStackArguments>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -115,9 +115,9 @@ class DbMixedStackArgumentsAsyncProcessor : public ::apache::thrift::GeneratedAs
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_getDataByKey1(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  DbMixedStackArgumentsAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>* iface) :
+  DbMixedStackArgumentsAsyncProcessor(::apache::thrift::ServiceHandler<::test::fixtures::basic::DbMixedStackArguments>* iface) :
       iface_(iface) {}
   ~DbMixedStackArgumentsAsyncProcessor() override {}
 };
 
-} // cpp2
+}}} // test::fixtures::basic

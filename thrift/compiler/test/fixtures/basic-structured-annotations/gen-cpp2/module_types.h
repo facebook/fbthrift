@@ -103,7 +103,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(second);
 } // namespace apache
 
 // BEGIN declare_enums
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 enum class MyEnum {
   UNKNOWN = 0,
@@ -113,20 +113,20 @@ enum class MyEnum {
 
 
 
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 
 namespace std {
-template<> struct hash<::cpp2::MyEnum> :
-  ::apache::thrift::detail::enum_hash<::cpp2::MyEnum> {};
+template<> struct hash<::test::fixtures::basic-structured-annotations::MyEnum> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::basic-structured-annotations::MyEnum> {};
 } // std
 
 namespace apache { namespace thrift {
 
 
-template <> struct TEnumDataStorage<::cpp2::MyEnum>;
+template <> struct TEnumDataStorage<::test::fixtures::basic-structured-annotations::MyEnum>;
 
-template <> struct TEnumTraits<::cpp2::MyEnum> {
-  using type = ::cpp2::MyEnum;
+template <> struct TEnumTraits<::test::fixtures::basic-structured-annotations::MyEnum> {
+  using type = ::test::fixtures::basic-structured-annotations::MyEnum;
 
   static constexpr std::size_t const size = 2;
   static folly::Range<type const*> const values;
@@ -153,7 +153,7 @@ template <> struct TEnumTraits<::cpp2::MyEnum> {
 
 }} // apache::thrift
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 
 using _MyEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnum>;
 #ifndef ANDROID
@@ -162,11 +162,11 @@ extern const _MyEnum_EnumMapFactory::ValuesToNamesMapType _MyEnum_VALUES_TO_NAME
 [[deprecated("use apache::thrift::TEnumTraits")]]
 extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES;
 #endif
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 
 // END declare_enums
 // BEGIN forward_declare
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 class structured_annotation_inline;
 class structured_annotation_with_default;
 class structured_annotation_forward;
@@ -175,25 +175,25 @@ class structured_annotation_nested;
 class MyStruct;
 class MyException;
 class MyUnion;
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 // END forward_declare
 // BEGIN typedefs
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 typedef ::std::string annotated_with_default_string;
 typedef ::std::string annotated_inline_string;
 typedef ::std::int64_t annotated_inline_i64;
 
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+}}} // test::fixtures::basic-structured-annotations
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 class structured_annotation_inline final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -379,8 +379,8 @@ unsigned long structured_annotation_inline::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+}}} // test::fixtures::basic-structured-annotations
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 class structured_annotation_with_default final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -511,8 +511,8 @@ unsigned long structured_annotation_with_default::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+}}} // test::fixtures::basic-structured-annotations
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 class structured_annotation_forward final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -639,8 +639,8 @@ unsigned long structured_annotation_forward::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+}}} // test::fixtures::basic-structured-annotations
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 class structured_annotation_recursive final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -651,8 +651,8 @@ class structured_annotation_recursive final  {
   static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::cpp2::structured_annotation_recursive>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::cpp2::structured_annotation_forward>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::test::fixtures::basic-structured-annotations::structured_annotation_recursive>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::test::fixtures::basic-structured-annotations::structured_annotation_forward>>
   >;
 
   void __fbthrift_clear();
@@ -670,7 +670,7 @@ class structured_annotation_recursive final  {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  structured_annotation_recursive(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_recursive recurse__arg, ::cpp2::structured_annotation_forward forward__arg);
+  structured_annotation_recursive(apache::thrift::FragileConstructor, ::std::string name__arg, ::test::fixtures::basic-structured-annotations::structured_annotation_recursive recurse__arg, ::test::fixtures::basic-structured-annotations::structured_annotation_forward forward__arg);
 
   structured_annotation_recursive(structured_annotation_recursive&&) noexcept;
 
@@ -682,9 +682,9 @@ class structured_annotation_recursive final  {
  private:
   ::std::string __fbthrift_field_name;
  private:
-  ::cpp2::structured_annotation_recursive __fbthrift_field_recurse;
+  ::test::fixtures::basic-structured-annotations::structured_annotation_recursive __fbthrift_field_recurse;
  private:
-  ::cpp2::structured_annotation_forward __fbthrift_field_forward;
+  ::test::fixtures::basic-structured-annotations::structured_annotation_forward __fbthrift_field_forward;
  private:
   apache::thrift::detail::isset_bitset<3, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
@@ -733,82 +733,82 @@ class structured_annotation_recursive final  {
     return {static_cast<T&&>(this->__fbthrift_field_name), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_recursive>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> recurse_ref() const& {
     return {this->__fbthrift_field_recurse, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_recursive>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> recurse_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_recurse), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_recursive>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> recurse_ref() & {
     return {this->__fbthrift_field_recurse, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_recursive>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> recurse_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_recurse), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_recursive>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> recurse() const& {
     return {this->__fbthrift_field_recurse, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_recursive>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> recurse() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_recurse), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_recursive>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> recurse() & {
     return {this->__fbthrift_field_recurse, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_recursive>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> recurse() && {
     return {static_cast<T&&>(this->__fbthrift_field_recurse), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_forward>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> forward_ref() const& {
     return {this->__fbthrift_field_forward, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_forward>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> forward_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_forward), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_forward>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> forward_ref() & {
     return {this->__fbthrift_field_forward, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_forward>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> forward_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_forward), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_forward>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> forward() const& {
     return {this->__fbthrift_field_forward, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_forward>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> forward() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_forward), __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_forward>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> forward() & {
     return {this->__fbthrift_field_forward, __isset.at(2), __isset.bit(2)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_forward>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> forward() && {
     return {static_cast<T&&>(this->__fbthrift_field_forward), __isset.at(2), __isset.bit(2)};
   }
@@ -833,21 +833,21 @@ class structured_annotation_recursive final  {
     name_ref() = std::forward<T_structured_annotation_recursive_name_struct_setter>(name_);
     return __fbthrift_field_name;
   }
-  const ::cpp2::structured_annotation_recursive& get_recurse() const&;
-  ::cpp2::structured_annotation_recursive get_recurse() &&;
+  const ::test::fixtures::basic-structured-annotations::structured_annotation_recursive& get_recurse() const&;
+  ::test::fixtures::basic-structured-annotations::structured_annotation_recursive get_recurse() &&;
 
-  template <typename T_structured_annotation_recursive_recurse_struct_setter = ::cpp2::structured_annotation_recursive>
+  template <typename T_structured_annotation_recursive_recurse_struct_setter = ::test::fixtures::basic-structured-annotations::structured_annotation_recursive>
   [[deprecated("Use `FOO.recurse_ref() = BAR;` instead of `FOO.set_recurse(BAR);`")]]
-  ::cpp2::structured_annotation_recursive& set_recurse(T_structured_annotation_recursive_recurse_struct_setter&& recurse_) {
+  ::test::fixtures::basic-structured-annotations::structured_annotation_recursive& set_recurse(T_structured_annotation_recursive_recurse_struct_setter&& recurse_) {
     recurse_ref() = std::forward<T_structured_annotation_recursive_recurse_struct_setter>(recurse_);
     return __fbthrift_field_recurse;
   }
-  const ::cpp2::structured_annotation_forward& get_forward() const&;
-  ::cpp2::structured_annotation_forward get_forward() &&;
+  const ::test::fixtures::basic-structured-annotations::structured_annotation_forward& get_forward() const&;
+  ::test::fixtures::basic-structured-annotations::structured_annotation_forward get_forward() &&;
 
-  template <typename T_structured_annotation_recursive_forward_struct_setter = ::cpp2::structured_annotation_forward>
+  template <typename T_structured_annotation_recursive_forward_struct_setter = ::test::fixtures::basic-structured-annotations::structured_annotation_forward>
   [[deprecated("Use `FOO.forward_ref() = BAR;` instead of `FOO.set_forward(BAR);`")]]
-  ::cpp2::structured_annotation_forward& set_forward(T_structured_annotation_recursive_forward_struct_setter&& forward_) {
+  ::test::fixtures::basic-structured-annotations::structured_annotation_forward& set_forward(T_structured_annotation_recursive_forward_struct_setter&& forward_) {
     forward_ref() = std::forward<T_structured_annotation_recursive_forward_struct_setter>(forward_);
     return __fbthrift_field_forward;
   }
@@ -876,8 +876,8 @@ unsigned long structured_annotation_recursive::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+}}} // test::fixtures::basic-structured-annotations
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 class structured_annotation_nested final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -888,7 +888,7 @@ class structured_annotation_nested final  {
   static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::cpp2::structured_annotation_with_default>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::test::fixtures::basic-structured-annotations::structured_annotation_with_default>>
   >;
 
   void __fbthrift_clear();
@@ -906,7 +906,7 @@ class structured_annotation_nested final  {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_with_default nest__arg);
+  structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg, ::test::fixtures::basic-structured-annotations::structured_annotation_with_default nest__arg);
 
   structured_annotation_nested(structured_annotation_nested&&) noexcept;
 
@@ -918,7 +918,7 @@ class structured_annotation_nested final  {
  private:
   ::std::string __fbthrift_field_name;
  private:
-  ::cpp2::structured_annotation_with_default __fbthrift_field_nest;
+  ::test::fixtures::basic-structured-annotations::structured_annotation_with_default __fbthrift_field_nest;
  private:
   apache::thrift::detail::isset_bitset<2, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
@@ -967,42 +967,42 @@ class structured_annotation_nested final  {
     return {static_cast<T&&>(this->__fbthrift_field_name), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_with_default>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> nest_ref() const& {
     return {this->__fbthrift_field_nest, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_with_default>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> nest_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_nest), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_with_default>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> nest_ref() & {
     return {this->__fbthrift_field_nest, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_with_default>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> nest_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_nest), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_with_default>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> nest() const& {
     return {this->__fbthrift_field_nest, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_with_default>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> nest() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_nest), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_with_default>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> nest() & {
     return {this->__fbthrift_field_nest, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::structured_annotation_with_default>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> nest() && {
     return {static_cast<T&&>(this->__fbthrift_field_nest), __isset.at(1), __isset.bit(1)};
   }
@@ -1026,12 +1026,12 @@ class structured_annotation_nested final  {
     name_ref() = std::forward<T_structured_annotation_nested_name_struct_setter>(name_);
     return __fbthrift_field_name;
   }
-  const ::cpp2::structured_annotation_with_default& get_nest() const&;
-  ::cpp2::structured_annotation_with_default get_nest() &&;
+  const ::test::fixtures::basic-structured-annotations::structured_annotation_with_default& get_nest() const&;
+  ::test::fixtures::basic-structured-annotations::structured_annotation_with_default get_nest() &&;
 
-  template <typename T_structured_annotation_nested_nest_struct_setter = ::cpp2::structured_annotation_with_default>
+  template <typename T_structured_annotation_nested_nest_struct_setter = ::test::fixtures::basic-structured-annotations::structured_annotation_with_default>
   [[deprecated("Use `FOO.nest_ref() = BAR;` instead of `FOO.set_nest(BAR);`")]]
-  ::cpp2::structured_annotation_with_default& set_nest(T_structured_annotation_nested_nest_struct_setter&& nest_) {
+  ::test::fixtures::basic-structured-annotations::structured_annotation_with_default& set_nest(T_structured_annotation_nested_nest_struct_setter&& nest_) {
     nest_ref() = std::forward<T_structured_annotation_nested_nest_struct_setter>(nest_);
     return __fbthrift_field_nest;
   }
@@ -1060,8 +1060,8 @@ unsigned long structured_annotation_nested::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+}}} // test::fixtures::basic-structured-annotations
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1094,7 +1094,7 @@ class MyStruct final  {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_field__arg, ::cpp2::annotated_inline_string annotated_type__arg, ::std::string annotated_recursive__arg, ::std::int64_t annotated_nested__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_field__arg, ::test::fixtures::basic-structured-annotations::annotated_inline_string annotated_type__arg, ::std::string annotated_recursive__arg, ::std::int64_t annotated_nested__arg);
 
   MyStruct(MyStruct&&) noexcept;
 
@@ -1106,7 +1106,7 @@ class MyStruct final  {
  private:
   ::std::int64_t __fbthrift_field_annotated_field;
  private:
-  ::cpp2::annotated_inline_string __fbthrift_field_annotated_type;
+  ::test::fixtures::basic-structured-annotations::annotated_inline_string __fbthrift_field_annotated_type;
  private:
   ::std::string __fbthrift_field_annotated_recursive;
  private:
@@ -1159,42 +1159,42 @@ class MyStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_annotated_field), __isset.at(0), __isset.bit(0)};
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_type_ref() const& {
     return {this->__fbthrift_field_annotated_type, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_type_ref() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_annotated_type), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> annotated_type_ref() & {
     return {this->__fbthrift_field_annotated_type, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_type_ref() && {
     return {static_cast<T&&>(this->__fbthrift_field_annotated_type), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_type() const& {
     return {this->__fbthrift_field_annotated_type, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_type() const&& {
     return {static_cast<const T&&>(this->__fbthrift_field_annotated_type), __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> annotated_type() & {
     return {this->__fbthrift_field_annotated_type, __isset.at(1), __isset.bit(1)};
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_type() && {
     return {static_cast<T&&>(this->__fbthrift_field_annotated_type), __isset.at(1), __isset.bit(1)};
   }
@@ -1296,17 +1296,17 @@ class MyStruct final  {
     return __fbthrift_field_annotated_field;
   }
 
-  const ::cpp2::annotated_inline_string& get_annotated_type() const& {
+  const ::test::fixtures::basic-structured-annotations::annotated_inline_string& get_annotated_type() const& {
     return __fbthrift_field_annotated_type;
   }
 
-  ::cpp2::annotated_inline_string get_annotated_type() && {
+  ::test::fixtures::basic-structured-annotations::annotated_inline_string get_annotated_type() && {
     return std::move(__fbthrift_field_annotated_type);
   }
 
-  template <typename T_MyStruct_annotated_type_struct_setter = ::cpp2::annotated_inline_string>
+  template <typename T_MyStruct_annotated_type_struct_setter = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   [[deprecated("Use `FOO.annotated_type_ref() = BAR;` instead of `FOO.set_annotated_type(BAR);`")]]
-  ::cpp2::annotated_inline_string& set_annotated_type(T_MyStruct_annotated_type_struct_setter&& annotated_type_) {
+  ::test::fixtures::basic-structured-annotations::annotated_inline_string& set_annotated_type(T_MyStruct_annotated_type_struct_setter&& annotated_type_) {
     annotated_type_ref() = std::forward<T_MyStruct_annotated_type_struct_setter>(annotated_type_);
     return __fbthrift_field_annotated_type;
   }
@@ -1360,8 +1360,8 @@ unsigned long MyStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+}}} // test::fixtures::basic-structured-annotations
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 class FOLLY_EXPORT MyException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1466,7 +1466,7 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   uint32_t write(Protocol_* prot_) const;
 
   const char* what() const noexcept override {
-    return "::cpp2::MyException";
+    return "::test::fixtures::basic-structured-annotations::MyException";
   }
 
  private:
@@ -1484,8 +1484,8 @@ unsigned long MyException::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+}}} // test::fixtures::basic-structured-annotations
+namespace test { namespace fixtures { namespace basic-structured-annotations {
 class MyUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1618,8 +1618,8 @@ class MyUnion final  {
     apache::thrift::clear(*this);
   }
   union storage_type {
-    ::cpp2::annotated_inline_string first;
-    ::cpp2::annotated_inline_i64 second;
+    ::test::fixtures::basic-structured-annotations::annotated_inline_string first;
+    ::test::fixtures::basic-structured-annotations::annotated_inline_i64 second;
 
     storage_type() {}
     ~storage_type() {}
@@ -1628,103 +1628,103 @@ class MyUnion final  {
   bool operator==(const MyUnion&) const;
   bool operator<(const MyUnion&) const;
 
-  ::cpp2::annotated_inline_string& set_first(::cpp2::annotated_inline_string const &t) {
+  ::test::fixtures::basic-structured-annotations::annotated_inline_string& set_first(::test::fixtures::basic-structured-annotations::annotated_inline_string const &t) {
     __fbthrift_clear();
     type_ = Type::first;
-    ::new (std::addressof(value_.first)) ::cpp2::annotated_inline_string(t);
+    ::new (std::addressof(value_.first)) ::test::fixtures::basic-structured-annotations::annotated_inline_string(t);
     return value_.first;
   }
 
-  ::cpp2::annotated_inline_string& set_first(::cpp2::annotated_inline_string&& t) {
+  ::test::fixtures::basic-structured-annotations::annotated_inline_string& set_first(::test::fixtures::basic-structured-annotations::annotated_inline_string&& t) {
     __fbthrift_clear();
     type_ = Type::first;
-    ::new (std::addressof(value_.first)) ::cpp2::annotated_inline_string(std::move(t));
+    ::new (std::addressof(value_.first)) ::test::fixtures::basic-structured-annotations::annotated_inline_string(std::move(t));
     return value_.first;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::annotated_inline_string, T...>> ::cpp2::annotated_inline_string& set_first(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::basic-structured-annotations::annotated_inline_string, T...>> ::test::fixtures::basic-structured-annotations::annotated_inline_string& set_first(T&&... t) {
     __fbthrift_clear();
     type_ = Type::first;
-    ::new (std::addressof(value_.first)) ::cpp2::annotated_inline_string(std::forward<T>(t)...);
+    ::new (std::addressof(value_.first)) ::test::fixtures::basic-structured-annotations::annotated_inline_string(std::forward<T>(t)...);
     return value_.first;
   }
 
-  ::cpp2::annotated_inline_i64& set_second(::cpp2::annotated_inline_i64 t = ::cpp2::annotated_inline_i64()) {
+  ::test::fixtures::basic-structured-annotations::annotated_inline_i64& set_second(::test::fixtures::basic-structured-annotations::annotated_inline_i64 t = ::test::fixtures::basic-structured-annotations::annotated_inline_i64()) {
     __fbthrift_clear();
     type_ = Type::second;
-    ::new (std::addressof(value_.second)) ::cpp2::annotated_inline_i64(t);
+    ::new (std::addressof(value_.second)) ::test::fixtures::basic-structured-annotations::annotated_inline_i64(t);
     return value_.second;
   }
 
-  ::cpp2::annotated_inline_string const& get_first() const {
+  ::test::fixtures::basic-structured-annotations::annotated_inline_string const& get_first() const {
     if (type_ != Type::first) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.first;
   }
 
-  ::cpp2::annotated_inline_i64 const& get_second() const {
+  ::test::fixtures::basic-structured-annotations::annotated_inline_i64 const& get_second() const {
     if (type_ != Type::second) {
       ::apache::thrift::detail::throw_on_bad_field_access();
     }
     return value_.second;
   }
 
-  ::cpp2::annotated_inline_string& mutable_first() {
+  ::test::fixtures::basic-structured-annotations::annotated_inline_string& mutable_first() {
     assert(type_ == Type::first);
     return value_.first;
   }
 
-  ::cpp2::annotated_inline_i64& mutable_second() {
+  ::test::fixtures::basic-structured-annotations::annotated_inline_i64& mutable_second() {
     assert(type_ == Type::second);
     return value_.second;
   }
 
-  ::cpp2::annotated_inline_string move_first() {
+  ::test::fixtures::basic-structured-annotations::annotated_inline_string move_first() {
     assert(type_ == Type::first);
     return std::move(value_.first);
   }
 
-  ::cpp2::annotated_inline_i64 move_second() {
+  ::test::fixtures::basic-structured-annotations::annotated_inline_i64 move_second() {
     assert(type_ == Type::second);
     return std::move(value_.second);
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> first_ref() const& {
     return {value_.first, type_, first, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> first_ref() const&& {
     return {std::move(value_.first), type_, first, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> first_ref() & {
     return {value_.first, type_, first, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_string>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> first_ref() && {
     return {std::move(value_.first), type_, first, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = ::cpp2::annotated_inline_i64>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_i64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> second_ref() const& {
     return {value_.second, type_, second, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_i64>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_i64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> second_ref() const&& {
     return {std::move(value_.second), type_, second, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_i64>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_i64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> second_ref() & {
     return {value_.second, type_, second, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::cpp2::annotated_inline_i64>
+  template <typename..., typename T = ::test::fixtures::basic-structured-annotations::annotated_inline_i64>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> second_ref() && {
     return {std::move(value_.second), type_, second, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -1767,14 +1767,14 @@ unsigned long MyUnion::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
+}}} // test::fixtures::basic-structured-annotations
 
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage<::cpp2::MyUnion::Type>;
+template <> struct TEnumDataStorage<::test::fixtures::basic-structured-annotations::MyUnion::Type>;
 
-template <> struct TEnumTraits<::cpp2::MyUnion::Type> {
-  using type = ::cpp2::MyUnion::Type;
+template <> struct TEnumTraits<::test::fixtures::basic-structured-annotations::MyUnion::Type> {
+  using type = ::test::fixtures::basic-structured-annotations::MyUnion::Type;
 
   static constexpr std::size_t const size = 2;
   static folly::Range<type const*> const values;

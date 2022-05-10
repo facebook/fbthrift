@@ -9,7 +9,9 @@
 #include <src/gen-py3/module/services_api.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
-namespace cpp2 {
+namespace test {
+namespace fixtures {
+namespace basic {
 
 MyServiceWrapper::MyServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
@@ -301,4 +303,6 @@ folly::SemiFuture<folly::Unit> DbMixedStackArgumentsWrapper::semifuture_onStopRe
   );
   return std::move(future);
 }
-} // namespace cpp2
+} // namespace test
+} // namespace fixtures
+} // namespace basic

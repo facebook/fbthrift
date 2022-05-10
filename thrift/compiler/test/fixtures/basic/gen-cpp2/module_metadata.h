@@ -12,12 +12,16 @@
 #include "thrift/compiler/test/fixtures/basic/gen-cpp2/module_types.h"
 #include "thrift/annotation/gen-cpp2/hack_metadata.h"
 
-namespace cpp2 {
+namespace test {
+namespace fixtures {
+namespace basic {
 class MyService;
-} // namespace cpp2
-namespace cpp2 {
+}}} // namespace test::fixtures::basic
+namespace test {
+namespace fixtures {
+namespace basic {
 class DbMixedStackArguments;
-} // namespace cpp2
+}}} // namespace test::fixtures::basic
 
 namespace apache {
 namespace thrift {
@@ -25,27 +29,27 @@ namespace detail {
 namespace md {
 
 template <>
-class EnumMetadata<::cpp2::MyEnum> {
+class EnumMetadata<::test::fixtures::basic::MyEnum> {
  public:
   static void gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyDataItem> {
+class StructMetadata<::test::fixtures::basic::MyDataItem> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyStruct> {
+class StructMetadata<::test::fixtures::basic::MyStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class StructMetadata<::cpp2::MyUnion> {
+class StructMetadata<::test::fixtures::basic::MyUnion> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:
@@ -65,7 +69,7 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::MyService>> {
   static void gen_invalid_return_for_hack(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
-class ServiceMetadata<::apache::thrift::ServiceHandler<::cpp2::DbMixedStackArguments>> {
+class ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::DbMixedStackArguments>> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);
  private:

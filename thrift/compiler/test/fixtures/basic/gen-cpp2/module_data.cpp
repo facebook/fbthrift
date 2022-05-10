@@ -12,36 +12,36 @@
 namespace apache {
 namespace thrift {
 
-const std::array<::cpp2::MyEnum, 2> TEnumDataStorage<::cpp2::MyEnum>::values = {{
+const std::array<::test::fixtures::basic::MyEnum, 2> TEnumDataStorage<::test::fixtures::basic::MyEnum>::values = {{
   type::MyValue1,
   type::MyValue2,
 }};
-const std::array<folly::StringPiece, 2> TEnumDataStorage<::cpp2::MyEnum>::names = {{
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::test::fixtures::basic::MyEnum>::names = {{
   "MyValue1",
   "MyValue2",
 }};
 
-const std::array<::cpp2::MyUnion::Type, 4> TEnumDataStorage<::cpp2::MyUnion::Type>::values = {{
+const std::array<::test::fixtures::basic::MyUnion::Type, 4> TEnumDataStorage<::test::fixtures::basic::MyUnion::Type>::values = {{
   type::myEnum,
   type::myStruct,
   type::myDataItem,
   type::floatSet,
 }};
-const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::MyUnion::Type>::names = {{
+const std::array<folly::StringPiece, 4> TEnumDataStorage<::test::fixtures::basic::MyUnion::Type>::names = {{
   "myEnum",
   "myStruct",
   "myDataItem",
   "floatSet",
 }};
 
-const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::MyDataItem>::fields_names = {{
+const std::array<folly::StringPiece, 0> TStructDataStorage<::test::fixtures::basic::MyDataItem>::fields_names = {{
 }};
-const std::array<int16_t, 0> TStructDataStorage<::cpp2::MyDataItem>::fields_ids = {{
+const std::array<int16_t, 0> TStructDataStorage<::test::fixtures::basic::MyDataItem>::fields_ids = {{
 }};
-const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::MyDataItem>::fields_types = {{
+const std::array<protocol::TType, 0> TStructDataStorage<::test::fixtures::basic::MyDataItem>::fields_types = {{
 }};
 
-const std::array<folly::StringPiece, 8> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
+const std::array<folly::StringPiece, 8> TStructDataStorage<::test::fixtures::basic::MyStruct>::fields_names = {{
   "MyIntField",
   "MyStringField",
   "MyDataField",
@@ -51,7 +51,7 @@ const std::array<folly::StringPiece, 8> TStructDataStorage<::cpp2::MyStruct>::fi
   "idempotent",
   "floatSet",
 }};
-const std::array<int16_t, 8> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
+const std::array<int16_t, 8> TStructDataStorage<::test::fixtures::basic::MyStruct>::fields_ids = {{
   1,
   2,
   3,
@@ -61,7 +61,7 @@ const std::array<int16_t, 8> TStructDataStorage<::cpp2::MyStruct>::fields_ids = 
   7,
   8,
 }};
-const std::array<protocol::TType, 8> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
+const std::array<protocol::TType, 8> TStructDataStorage<::test::fixtures::basic::MyStruct>::fields_types = {{
   TType::T_I64,
   TType::T_STRING,
   TType::T_STRUCT,
@@ -72,19 +72,19 @@ const std::array<protocol::TType, 8> TStructDataStorage<::cpp2::MyStruct>::field
   TType::T_SET,
 }};
 
-const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::MyUnion>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::test::fixtures::basic::MyUnion>::fields_names = {{
   "myEnum",
   "myStruct",
   "myDataItem",
   "floatSet",
 }};
-const std::array<int16_t, 4> TStructDataStorage<::cpp2::MyUnion>::fields_ids = {{
+const std::array<int16_t, 4> TStructDataStorage<::test::fixtures::basic::MyUnion>::fields_ids = {{
   1,
   2,
   3,
   4,
 }};
-const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::MyUnion>::fields_types = {{
+const std::array<protocol::TType, 4> TStructDataStorage<::test::fixtures::basic::MyUnion>::fields_types = {{
   TType::T_I32,
   TType::T_STRUCT,
   TType::T_STRUCT,

@@ -60,9 +60,9 @@ cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::det
     cdef cppclass StructMetadata[T]:
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
-cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test::fixtures::patch":
 
-    cdef cppclass cMyData "::cpp2::MyData":
+    cdef cppclass cMyData "::test::fixtures::patch::MyData":
         cMyData() except +
         cMyData(const cMyData&) except +
         bint operator==(cMyData&)
@@ -72,12 +72,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyData&)
         bint operator>=(cMyData&)
 
-    cdef enum cMyUnion__type "::cpp2::MyUnion::Type":
-        cMyUnion__type___EMPTY__ "::cpp2::MyUnion::Type::__EMPTY__",
-        cMyUnion__type_option1 "::cpp2::MyUnion::Type::option1",
-        cMyUnion__type_option2 "::cpp2::MyUnion::Type::option2",
+    cdef enum cMyUnion__type "::test::fixtures::patch::MyUnion::Type":
+        cMyUnion__type___EMPTY__ "::test::fixtures::patch::MyUnion::Type::__EMPTY__",
+        cMyUnion__type_option1 "::test::fixtures::patch::MyUnion::Type::option1",
+        cMyUnion__type_option2 "::test::fixtures::patch::MyUnion::Type::option2",
 
-    cdef cppclass cMyUnion "::cpp2::MyUnion":
+    cdef cppclass cMyUnion "::test::fixtures::patch::MyUnion":
         cMyUnion() except +
         cMyUnion(const cMyUnion&) except +
         bint operator==(cMyUnion&)
@@ -93,7 +93,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cint32_t& set_option2(const cint32_t&)
 
 
-    cdef cppclass cMyStruct "::cpp2::MyStruct":
+    cdef cppclass cMyStruct "::test::fixtures::patch::MyStruct":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
@@ -117,7 +117,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cmap[string,string]] optMapVal_ref()
 
 
-    cdef cppclass cMyDataPatch "::cpp2::MyDataPatch":
+    cdef cppclass cMyDataPatch "::test::fixtures::patch::MyDataPatch":
         cMyDataPatch() except +
         cMyDataPatch(const cMyDataPatch&) except +
         bint operator==(cMyDataPatch&)
@@ -128,7 +128,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cMyDataPatch&)
 
 
-    cdef cppclass cMyDataValuePatch "::cpp2::MyDataValuePatch":
+    cdef cppclass cMyDataValuePatch "::test::fixtures::patch::MyDataValuePatch":
         cMyDataValuePatch() except +
         cMyDataValuePatch(const cMyDataValuePatch&) except +
         bint operator==(cMyDataValuePatch&)
@@ -140,7 +140,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cMyData] assign_ref()
 
 
-    cdef cppclass cOptionalMyDataValuePatch "::cpp2::OptionalMyDataValuePatch":
+    cdef cppclass cOptionalMyDataValuePatch "::test::fixtures::patch::OptionalMyDataValuePatch":
         cOptionalMyDataValuePatch() except +
         cOptionalMyDataValuePatch(const cOptionalMyDataValuePatch&) except +
         bint operator==(cOptionalMyDataValuePatch&)
@@ -152,7 +152,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cMyData] ensure_ref()
 
 
-    cdef cppclass cMyUnionPatch "::cpp2::MyUnionPatch":
+    cdef cppclass cMyUnionPatch "::test::fixtures::patch::MyUnionPatch":
         cMyUnionPatch() except +
         cMyUnionPatch(const cMyUnionPatch&) except +
         bint operator==(cMyUnionPatch&)
@@ -163,7 +163,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cMyUnionPatch&)
 
 
-    cdef cppclass cMyUnionValuePatch "::cpp2::MyUnionValuePatch":
+    cdef cppclass cMyUnionValuePatch "::test::fixtures::patch::MyUnionValuePatch":
         cMyUnionValuePatch() except +
         cMyUnionValuePatch(const cMyUnionValuePatch&) except +
         bint operator==(cMyUnionValuePatch&)
@@ -174,7 +174,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cMyUnionValuePatch&)
 
 
-    cdef cppclass cOptionalMyUnionValuePatch "::cpp2::OptionalMyUnionValuePatch":
+    cdef cppclass cOptionalMyUnionValuePatch "::test::fixtures::patch::OptionalMyUnionValuePatch":
         cOptionalMyUnionValuePatch() except +
         cOptionalMyUnionValuePatch(const cOptionalMyUnionValuePatch&) except +
         bint operator==(cOptionalMyUnionValuePatch&)
@@ -186,7 +186,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cMyUnion] ensure_ref()
 
 
-    cdef cppclass cMyStructPatch "::cpp2::MyStructPatch":
+    cdef cppclass cMyStructPatch "::test::fixtures::patch::MyStructPatch":
         cMyStructPatch() except +
         cMyStructPatch(const cMyStructPatch&) except +
         bint operator==(cMyStructPatch&)
@@ -197,7 +197,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cMyStructPatch&)
 
 
-    cdef cppclass cMyStructField21Patch "::cpp2::MyStructField21Patch":
+    cdef cppclass cMyStructField21Patch "::test::fixtures::patch::MyStructField21Patch":
         cMyStructField21Patch() except +
         cMyStructField21Patch(const cMyStructField21Patch&) except +
         bint operator==(cMyStructField21Patch&)
@@ -209,7 +209,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[vector[cint16_t]] assign_ref()
 
 
-    cdef cppclass cOptionalMyStructField21Patch "::cpp2::OptionalMyStructField21Patch":
+    cdef cppclass cOptionalMyStructField21Patch "::test::fixtures::patch::OptionalMyStructField21Patch":
         cOptionalMyStructField21Patch() except +
         cOptionalMyStructField21Patch(const cOptionalMyStructField21Patch&) except +
         bint operator==(cOptionalMyStructField21Patch&)
@@ -221,7 +221,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[vector[cint16_t]] ensure_ref()
 
 
-    cdef cppclass cMyStructField22Patch "::cpp2::MyStructField22Patch":
+    cdef cppclass cMyStructField22Patch "::test::fixtures::patch::MyStructField22Patch":
         cMyStructField22Patch() except +
         cMyStructField22Patch(const cMyStructField22Patch&) except +
         bint operator==(cMyStructField22Patch&)
@@ -233,7 +233,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cset[string]] assign_ref()
 
 
-    cdef cppclass cOptionalMyStructField22Patch "::cpp2::OptionalMyStructField22Patch":
+    cdef cppclass cOptionalMyStructField22Patch "::test::fixtures::patch::OptionalMyStructField22Patch":
         cOptionalMyStructField22Patch() except +
         cOptionalMyStructField22Patch(const cOptionalMyStructField22Patch&) except +
         bint operator==(cOptionalMyStructField22Patch&)
@@ -245,7 +245,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cset[string]] ensure_ref()
 
 
-    cdef cppclass cMyStructField23Patch "::cpp2::MyStructField23Patch":
+    cdef cppclass cMyStructField23Patch "::test::fixtures::patch::MyStructField23Patch":
         cMyStructField23Patch() except +
         cMyStructField23Patch(const cMyStructField23Patch&) except +
         bint operator==(cMyStructField23Patch&)
@@ -257,7 +257,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cmap[string,string]] assign_ref()
 
 
-    cdef cppclass cOptionalMyStructField23Patch "::cpp2::OptionalMyStructField23Patch":
+    cdef cppclass cOptionalMyStructField23Patch "::test::fixtures::patch::OptionalMyStructField23Patch":
         cOptionalMyStructField23Patch() except +
         cOptionalMyStructField23Patch(const cOptionalMyStructField23Patch&) except +
         bint operator==(cOptionalMyStructField23Patch&)
@@ -269,7 +269,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cmap[string,string]] ensure_ref()
 
 
-    cdef cppclass cMyStructValuePatch "::cpp2::MyStructValuePatch":
+    cdef cppclass cMyStructValuePatch "::test::fixtures::patch::MyStructValuePatch":
         cMyStructValuePatch() except +
         cMyStructValuePatch(const cMyStructValuePatch&) except +
         bint operator==(cMyStructValuePatch&)
@@ -281,7 +281,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cMyStruct] assign_ref()
 
 
-    cdef cppclass cOptionalMyStructValuePatch "::cpp2::OptionalMyStructValuePatch":
+    cdef cppclass cOptionalMyStructValuePatch "::test::fixtures::patch::OptionalMyStructValuePatch":
         cOptionalMyStructValuePatch() except +
         cOptionalMyStructValuePatch(const cOptionalMyStructValuePatch&) except +
         bint operator==(cOptionalMyStructValuePatch&)

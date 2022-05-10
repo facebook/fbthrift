@@ -12,133 +12,133 @@
 
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage<::cpp2::MyUnion::Type> {
-  using type = ::cpp2::MyUnion::Type;
+template <> struct TEnumDataStorage<::test::fixtures::patch::MyUnion::Type> {
+  using type = ::test::fixtures::patch::MyUnion::Type;
   static constexpr const std::size_t size = 2;
   static const std::array<type, size> values;
   static const std::array<folly::StringPiece, size> names;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyData> {
+template <> struct TStructDataStorage<::test::fixtures::patch::MyData> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyUnion> {
+template <> struct TStructDataStorage<::test::fixtures::patch::MyUnion> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::MyStruct> {
   static constexpr const std::size_t fields_size = 24;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyDataPatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::MyDataPatchStruct> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyDataValuePatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::MyDataValuePatchStruct> {
   static constexpr const std::size_t fields_size = 3;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::OptionalMyDataValuePatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::OptionalMyDataValuePatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyUnionPatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::MyUnionPatchStruct> {
   static constexpr const std::size_t fields_size = 2;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyUnionValuePatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::MyUnionValuePatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::OptionalMyUnionValuePatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::OptionalMyUnionValuePatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyStructField21PatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::MyStructField21PatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::OptionalMyStructField21PatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::OptionalMyStructField21PatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyStructField22PatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::MyStructField22PatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::OptionalMyStructField22PatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::OptionalMyStructField22PatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyStructField23PatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::MyStructField23PatchStruct> {
   static constexpr const std::size_t fields_size = 3;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::OptionalMyStructField23PatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::OptionalMyStructField23PatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyStructPatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::MyStructPatchStruct> {
   static constexpr const std::size_t fields_size = 24;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::MyStructValuePatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::MyStructValuePatchStruct> {
   static constexpr const std::size_t fields_size = 3;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
-template <> struct TStructDataStorage<::cpp2::OptionalMyStructValuePatchStruct> {
+template <> struct TStructDataStorage<::test::fixtures::patch::OptionalMyStructValuePatchStruct> {
   static constexpr const std::size_t fields_size = 4;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;

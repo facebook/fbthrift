@@ -23,7 +23,7 @@ namespace apache { namespace thrift {
   namespace transport { class THeader; }
 }}
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic {
 class MyService;
 class MyServiceAsyncProcessor;
 
@@ -32,11 +32,11 @@ class MyServiceServiceInfoHolder : public apache::thrift::ServiceInfoHolder {
    apache::thrift::ServiceRequestInfoMap const& requestInfoMap() const override;
    static apache::thrift::ServiceRequestInfoMap staticRequestInfoMap();
 };
-} // cpp2
+}}} // test::fixtures::basic
 
 namespace apache::thrift {
 template <>
-class ServiceHandler<::cpp2::MyService> : public apache::thrift::ServerInterface {
+class ServiceHandler<::test::fixtures::basic::MyService> : public apache::thrift::ServerInterface {
  public:
   std::string_view getGeneratedName() const override { return "MyService"; }
 
@@ -44,7 +44,7 @@ class ServiceHandler<::cpp2::MyService> : public apache::thrift::ServerInterface
     return "test.dev/fixtures/basic/MyService";
   }
 
-  typedef ::cpp2::MyServiceAsyncProcessor ProcessorType;
+  typedef ::test::fixtures::basic::MyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
  private:
@@ -88,7 +88,7 @@ class ServiceHandler<::cpp2::MyService> : public apache::thrift::ServerInterface
   virtual folly::SemiFuture<std::unique_ptr<::std::set<float>>> semifuture_invalid_return_for_hack();
   virtual void async_tm_invalid_return_for_hack(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<float>>>> callback);
  private:
-  static ::cpp2::MyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
+  static ::test::fixtures::basic::MyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_ping{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_getRandomData{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_sink{apache::thrift::detail::si::InvocationType::AsyncTm};
@@ -102,10 +102,10 @@ class ServiceHandler<::cpp2::MyService> : public apache::thrift::ServerInterface
 
 } // namespace apache::thrift
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic {
 using MyServiceSvIf = ::apache::thrift::ServiceHandler<MyService>;
-} // cpp2
-namespace cpp2 {
+}}} // test::fixtures::basic
+namespace test { namespace fixtures { namespace basic {
 class MyServiceSvNull : public MyServiceSvIf {
  public:
   void ping() override;
@@ -125,7 +125,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
-  ::apache::thrift::ServiceHandler<::cpp2::MyService>* iface_;
+  ::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>* iface_;
  public:
   // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
   // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
@@ -209,9 +209,9 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_invalid_return_for_hack(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
-  MyServiceAsyncProcessor(::apache::thrift::ServiceHandler<::cpp2::MyService>* iface) :
+  MyServiceAsyncProcessor(::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>* iface) :
       iface_(iface) {}
   ~MyServiceAsyncProcessor() override {}
 };
 
-} // cpp2
+}}} // test::fixtures::basic

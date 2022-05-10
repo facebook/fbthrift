@@ -7,7 +7,9 @@
 
 #include "src/gen-py3/module/metadata.h"
 
-namespace cpp2 {
+namespace test {
+namespace fixtures {
+namespace patch {
 ::apache::thrift::metadata::ThriftMetadata module_getThriftModuleMetadata() {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
@@ -31,4 +33,6 @@ namespace cpp2 {
   ::apache::thrift::detail::md::StructMetadata<OptionalMyStructValuePatch>::gen(metadata);
   return metadata;
 }
-} // namespace cpp2
+} // namespace test
+} // namespace fixtures
+} // namespace patch

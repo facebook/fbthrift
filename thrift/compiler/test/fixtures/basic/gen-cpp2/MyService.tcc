@@ -10,7 +10,7 @@
 
 #include <thrift/lib/cpp2/gen/service_tcc.h>
 
-namespace cpp2 {
+namespace test { namespace fixtures { namespace basic {
 typedef apache::thrift::ThriftPresult<false> MyService_ping_pargs;
 typedef apache::thrift::ThriftPresult<true> MyService_ping_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_getRandomData_pargs;
@@ -43,7 +43,7 @@ void MyServiceAsyncProcessor::executeRequest_ping(apache::thrift::ServerRequest&
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ::cpp2::MyService_ping_pargs args;
+  ::test::fixtures::basic::MyService_ping_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.ping", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "ping", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -78,7 +78,7 @@ void MyServiceAsyncProcessor::executeRequest_ping(apache::thrift::ServerRequest&
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_ping(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  ::cpp2::MyService_ping_presult result;
+  ::test::fixtures::basic::MyService_ping_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -110,7 +110,7 @@ void MyServiceAsyncProcessor::executeRequest_getRandomData(apache::thrift::Serve
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ::cpp2::MyService_getRandomData_pargs args;
+  ::test::fixtures::basic::MyService_getRandomData_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.getRandomData", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "getRandomData", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -145,7 +145,7 @@ void MyServiceAsyncProcessor::executeRequest_getRandomData(apache::thrift::Serve
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_getRandomData(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  ::cpp2::MyService_getRandomData_presult result;
+  ::test::fixtures::basic::MyService_getRandomData_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -179,7 +179,7 @@ void MyServiceAsyncProcessor::executeRequest_sink(apache::thrift::ServerRequest&
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ::cpp2::MyService_sink_pargs args;
+  ::test::fixtures::basic::MyService_sink_pargs args;
   ::std::int64_t uarg_sink{0};
   args.get<0>().value = &uarg_sink;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.sink", serverRequest.requestContext()));
@@ -216,7 +216,7 @@ void MyServiceAsyncProcessor::executeRequest_sink(apache::thrift::ServerRequest&
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_sink(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  ::cpp2::MyService_sink_presult result;
+  ::test::fixtures::basic::MyService_sink_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -248,7 +248,7 @@ void MyServiceAsyncProcessor::executeRequest_putDataById(apache::thrift::ServerR
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ::cpp2::MyService_putDataById_pargs args;
+  ::test::fixtures::basic::MyService_putDataById_pargs args;
   ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   auto uarg_data = std::make_unique<::std::string>();
@@ -287,7 +287,7 @@ void MyServiceAsyncProcessor::executeRequest_putDataById(apache::thrift::ServerR
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_putDataById(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  ::cpp2::MyService_putDataById_presult result;
+  ::test::fixtures::basic::MyService_putDataById_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -319,7 +319,7 @@ void MyServiceAsyncProcessor::executeRequest_hasDataById(apache::thrift::ServerR
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ::cpp2::MyService_hasDataById_pargs args;
+  ::test::fixtures::basic::MyService_hasDataById_pargs args;
   ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.hasDataById", serverRequest.requestContext()));
@@ -356,7 +356,7 @@ void MyServiceAsyncProcessor::executeRequest_hasDataById(apache::thrift::ServerR
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_hasDataById(apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
-  ::cpp2::MyService_hasDataById_presult result;
+  ::test::fixtures::basic::MyService_hasDataById_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -390,7 +390,7 @@ void MyServiceAsyncProcessor::executeRequest_getDataById(apache::thrift::ServerR
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ::cpp2::MyService_getDataById_pargs args;
+  ::test::fixtures::basic::MyService_getDataById_pargs args;
   ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.getDataById", serverRequest.requestContext()));
@@ -427,7 +427,7 @@ void MyServiceAsyncProcessor::executeRequest_getDataById(apache::thrift::ServerR
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_getDataById(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
-  ::cpp2::MyService_getDataById_presult result;
+  ::test::fixtures::basic::MyService_getDataById_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -461,7 +461,7 @@ void MyServiceAsyncProcessor::executeRequest_deleteDataById(apache::thrift::Serv
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ::cpp2::MyService_deleteDataById_pargs args;
+  ::test::fixtures::basic::MyService_deleteDataById_pargs args;
   ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.deleteDataById", serverRequest.requestContext()));
@@ -498,7 +498,7 @@ void MyServiceAsyncProcessor::executeRequest_deleteDataById(apache::thrift::Serv
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_deleteDataById(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
-  ::cpp2::MyService_deleteDataById_presult result;
+  ::test::fixtures::basic::MyService_deleteDataById_presult result;
   return serializeResponse(&prot, ctx, result);
 }
 
@@ -530,7 +530,7 @@ void MyServiceAsyncProcessor::executeRequest_lobDataById(apache::thrift::ServerR
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ::cpp2::MyService_lobDataById_pargs args;
+  ::test::fixtures::basic::MyService_lobDataById_pargs args;
   ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
   auto uarg_data = std::make_unique<::std::string>();
@@ -574,7 +574,7 @@ void MyServiceAsyncProcessor::executeRequest_invalid_return_for_hack(apache::thr
   // make sure getRequestContext is null
   // so async calls don't accidentally use it
   iface_->setRequestContext(nullptr);
-  ::cpp2::MyService_invalid_return_for_hack_pargs args;
+  ::test::fixtures::basic::MyService_invalid_return_for_hack_pargs args;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.invalid_return_for_hack", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "invalid_return_for_hack", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -609,7 +609,7 @@ void MyServiceAsyncProcessor::executeRequest_invalid_return_for_hack(apache::thr
 template <class ProtocolIn_, class ProtocolOut_>
 apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_invalid_return_for_hack(apache::thrift::ContextStack* ctx, ::std::set<float> const& _return) {
   ProtocolOut_ prot;
-  ::cpp2::MyService_invalid_return_for_hack_presult result;
+  ::test::fixtures::basic::MyService_invalid_return_for_hack_presult result;
   result.get<0>().value = const_cast<::std::set<float>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse(&prot, ctx, result);
@@ -629,4 +629,4 @@ void MyServiceAsyncProcessor::throw_wrapped_invalid_return_for_hack(apache::thri
 }
 
 
-} // cpp2
+}}} // test::fixtures::basic
