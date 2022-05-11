@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -283,6 +283,8 @@ class ThreadManager : public virtual folly::Executor {
 
   virtual void enableCodel(bool) = 0;
 
+  virtual bool codelEnabled() const = 0;
+
   virtual folly::Codel* getCodel() = 0;
 
   /**
@@ -362,6 +364,7 @@ class PriorityThreadManager : public ThreadManager {
 
   uint8_t getNumPriorities() const override { return N_PRIORITIES; }
 
+  using ThreadManager::codelEnabled;
   using ThreadManager::getCodel;
   virtual folly::Codel* getCodel(PRIORITY priority) = 0;
 
@@ -456,6 +459,7 @@ class ThreadManagerExecutorAdapter : public ThreadManager,
   void setCodelCallback(ExpireCallback /*expireCallback*/) override {}
   void setThreadInitCallback(InitCallback /*initCallback*/) override {}
   void enableCodel(bool) override {}
+  bool codelEnabled() const override { return false; }
   folly::Codel* getCodel() override { return nullptr; }
 
   [[nodiscard]] KeepAlive<> getKeepAlive(
@@ -512,6 +516,7 @@ class SimpleThreadManager : public ThreadManager,
   std::shared_ptr<Runnable> removeNextPending() override;
   void clearPending() override;
   void enableCodel(bool) override;
+  bool codelEnabled() const override;
   folly::Codel* getCodel() override;
   void setExpireCallback(ExpireCallback expireCallback) override;
   void setCodelCallback(ExpireCallback expireCallback) override;

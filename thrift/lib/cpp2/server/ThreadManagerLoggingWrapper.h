@@ -116,6 +116,8 @@ class ThreadManagerLoggingWrapper : public concurrency::ThreadManager {
     tm_->enableCodel(e);
   }
 
+  bool codelEnabled() const override { return tm_->codelEnabled(); }
+
   folly::Codel* getCodel() override {
     recordStackTrace("getCodel");
     return tm_->getCodel();

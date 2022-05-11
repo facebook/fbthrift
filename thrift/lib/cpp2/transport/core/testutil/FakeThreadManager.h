@@ -151,6 +151,11 @@ class FakeThreadManager : public apache::thrift::concurrency::ThreadManager {
     LOG(FATAL) << "Method not implemented in this fake object";
   }
 
+  bool codelEnabled() const override {
+    LOG(FATAL) << "Method not implemented in this fake object";
+    return false;
+  }
+
   folly::Codel* getCodel() override {
     LOG(FATAL) << "Method not implemented in this fake object";
     return nullptr;

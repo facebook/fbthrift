@@ -90,6 +90,8 @@ class ExecutorToThreadManagerAdaptor : public concurrency::ThreadManager {
 
   void enableCodel(bool) override {}
 
+  bool codelEnabled() const override { return false; }
+
   folly::Codel* getCodel() override { return nullptr; }
 
   void setExpireCallback(ExpireCallback) override {}

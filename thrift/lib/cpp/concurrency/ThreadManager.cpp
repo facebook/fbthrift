@@ -324,6 +324,7 @@ class ThreadManager::Impl : public ThreadManager,
   }
 
   void enableCodel(bool) override;
+  bool codelEnabled() const override;
   folly::Codel* getCodel() override;
 
   // Methods to be invoked by workers
@@ -546,6 +547,9 @@ void SimpleThreadManager::clearPending() {
 }
 void SimpleThreadManager::enableCodel(bool value) {
   return impl_->enableCodel(value);
+}
+bool SimpleThreadManager::codelEnabled() const {
+  return impl_->codelEnabled();
 }
 folly::Codel* SimpleThreadManager::getCodel() {
   return impl_->getCodel();
@@ -1031,6 +1035,10 @@ void ThreadManager::Impl::enableCodel(bool enabled) {
   codelEnabled_ = enabled || FLAGS_codel_enabled;
 }
 
+bool ThreadManager::Impl::codelEnabled() const {
+  return codelEnabled_;
+}
+
 folly::Codel* ThreadManager::Impl::getCodel() {
   return &codel_;
 }
@@ -1287,6 +1295,15 @@ class PriorityThreadManager::PriorityImpl
     for (const auto& m : managers_) {
       m->enableCodel(enabled);
     }
+  }
+
+  bool codelEnabled() const override {
+    for (const auto& m : managers_) {
+      if (m->codelEnabled()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   folly::Codel* getCodel() override { return getCodel(NORMAL); }
