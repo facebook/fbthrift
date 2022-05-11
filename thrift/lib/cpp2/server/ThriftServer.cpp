@@ -467,9 +467,8 @@ void ThriftServer::setup() {
                          .resourcePool(ResourcePoolHandle::defaultAsync())
                          .executor()
                          .value();
-        std::lock_guard<std::mutex> lock(threadManagerMutex_);
-        threadManager_ = std::shared_ptr<ExecutorToThreadManagerAdaptor>(
-            new ExecutorToThreadManagerAdaptor(*exPtr));
+        auto extm = std::make_shared<ExecutorToThreadManagerAdaptor>(*exPtr);
+        setThreadManagerInternal(extm);
       }
 
       // During resource pools roll out we want to track services that get
