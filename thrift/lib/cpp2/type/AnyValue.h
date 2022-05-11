@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/type/Traits.h>
+#include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Type.h>
 #include <thrift/lib/cpp2/type/detail/AnyData.h>
 
@@ -30,7 +30,7 @@ class AnyValue : public detail::AnyValueBase {
 
  public:
   // The null, nil, None, falsum (or whatever you want to call it) value.
-  constexpr AnyValue() noexcept = default;
+  AnyValue() = default;
 
   template <typename Tag, typename... Args>
   static AnyValue create(Args&&... args) {

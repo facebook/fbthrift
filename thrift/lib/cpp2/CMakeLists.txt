@@ -309,6 +309,7 @@ add_library(
   transport/rocket/server/ThriftRocketServerHandler.cpp
   type/BaseType.cpp
   type/Protocol.cpp
+  type/Type.cpp
   type/UniversalName.cpp
   util/Checksum.cpp
   util/DebugString.cpp

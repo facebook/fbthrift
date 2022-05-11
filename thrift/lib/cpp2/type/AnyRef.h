@@ -24,8 +24,8 @@
 
 #include <folly/CPortability.h>
 #include <folly/lang/Exception.h>
+#include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/Tag.h>
-#include <thrift/lib/cpp2/type/Traits.h>
 #include <thrift/lib/cpp2/type/detail/ThriftTypeInfo.h>
 
 namespace apache {

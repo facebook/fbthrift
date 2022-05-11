@@ -22,7 +22,7 @@
 #include <folly/Traits.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 #include <thrift/lib/cpp2/op/Compare.h>
-#include <thrift/lib/cpp2/type/Traits.h>
+#include <thrift/lib/cpp2/type/NativeType.h>
 
 namespace apache {
 namespace thrift {
@@ -126,7 +126,7 @@ class AnyBase {
       : type_(t), data_(AnyData<Tag>{{std::forward<Args&&>(args)...}}) {}
 
   // Configure to be an abstract base class with value semantics.
-  constexpr AnyBase() noexcept = default;
+  constexpr AnyBase() = default;
   AnyBase(const AnyBase&) = default;
   AnyBase(AnyBase&&) noexcept = default;
   ~AnyBase() = default;
