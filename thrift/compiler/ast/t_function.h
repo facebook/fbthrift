@@ -51,10 +51,9 @@ class t_function final : public t_named {
    * @param name             - The symbolic name of the function
    */
   t_function(t_program* program, t_type_ref return_type, std::string name)
-      : t_function(
-            std::move(return_type),
-            std::move(name),
-            std::make_unique<t_paramlist>(program)) {}
+      : t_named(std::move(name)),
+        return_type_(return_type),
+        paramlist_(std::make_unique<t_paramlist>(program)) {}
 
   const t_type_ref& return_type() const { return return_type_; }
   void set_return_type(t_type_ref ret) { return_type_ = std::move(ret); }
@@ -127,24 +126,12 @@ class t_function final : public t_named {
   const t_throws* get_xceptions() const {
     return t_throws::or_empty(exceptions());
   }
-  const t_throws* get_stream_xceptions() const {
-    return t_throws::or_empty(stream_exceptions_);
-  }
-  const t_throws* get_sink_xceptions() const {
-    return t_throws::or_empty(sink_exceptions_);
-  }
-  const t_throws* get_sink_final_response_xceptions() const {
-    return t_throws::or_empty(sink_final_response_exceptions_);
-  }
+  const t_throws* get_stream_xceptions() const;
+  const t_throws* get_sink_xceptions() const;
+  const t_throws* get_sink_final_response_xceptions() const;
   bool is_oneway() const { return qualifier_ == t_function_qualifier::one_way; }
   bool returns_stream() const { return return_type_->is_streamresponse(); }
   bool returns_sink() const { return return_type_->is_sink(); }
-
- private:
-  // Extracted from return type for easy access.
-  const t_throws* stream_exceptions_ = nullptr;
-  const t_throws* sink_exceptions_ = nullptr;
-  const t_throws* sink_final_response_exceptions_ = nullptr;
 };
 
 using t_function_list = node_list<t_function>;

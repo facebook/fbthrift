@@ -34,21 +34,29 @@ t_function::t_function(
       return_type_(std::move(return_type)),
       paramlist_(std::move(paramlist)),
       qualifier_(qualifier) {
-  // Grab stream related exceptions from return type, for easy access.
-  // TODO(afuller): Remove these if possible.
+  assert(paramlist_);
+}
+
+const t_throws* t_function::get_stream_xceptions() const {
   if (const auto* tstream_resp =
           dynamic_cast<const t_stream_response*>(return_type_.get_type())) {
-    stream_exceptions_ = tstream_resp->exceptions();
-  } else if (
-      const auto* tsink =
+    return t_throws::or_empty(tstream_resp->exceptions());
+  }
+  return t_throws::no_exceptions();
+}
+const t_throws* t_function::get_sink_xceptions() const {
+  if (const auto* tsink =
           dynamic_cast<const t_sink*>(return_type_.get_type())) {
-    sink_exceptions_ = tsink->sink_exceptions();
-    sink_final_response_exceptions_ = tsink->final_response_exceptions();
+    return t_throws::or_empty(tsink->sink_exceptions());
   }
-
-  if (paramlist_ == nullptr) {
-    throw std::runtime_error("Param list is required");
+  return t_throws::no_exceptions();
+}
+const t_throws* t_function::get_sink_final_response_xceptions() const {
+  if (const auto* tsink =
+          dynamic_cast<const t_sink*>(return_type_.get_type())) {
+    return t_throws::or_empty(tsink->final_response_exceptions());
   }
+  return t_throws::no_exceptions();
 }
 
 } // namespace compiler

@@ -867,11 +867,7 @@ Performs:
       std::string name = ret.get_type()
           ? "create" + ret.get_type()->get_name()
           : "<interaction placeholder>";
-      $$ = new t_function(
-        std::move(ret),
-        std::move(name),
-        std::make_unique<t_paramlist>(driver.program)
-      );
+      $$ = new t_function(driver.program, std::move(ret), std::move(name));
       $$->set_lineno(driver.get_lineno());
       $$->set_is_interaction_constructor();
     }
