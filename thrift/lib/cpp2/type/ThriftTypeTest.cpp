@@ -49,6 +49,7 @@ static_assert(!is_concrete_v<container_c>);
 static_assert(!is_concrete_v<list_c>);
 static_assert(!is_concrete_v<set_c>);
 static_assert(!is_concrete_v<map_c>);
+static_assert(!is_concrete_v<service_c>);
 
 static_assert(is_concrete_v<void_t>);
 static_assert(is_concrete_v<bool_t>);
@@ -65,6 +66,7 @@ static_assert(is_concrete_v<enum_t<int>>);
 static_assert(is_concrete_v<struct_t<int>>);
 static_assert(is_concrete_v<union_t<int>>);
 static_assert(is_concrete_v<exception_t<int>>);
+static_assert(is_concrete_v<service_t<int>>);
 
 static_assert(!is_concrete_v<list<int>>);
 static_assert(is_concrete_v<list<void_t>>);
@@ -106,6 +108,7 @@ static_assert(is_thrift_type_tag_v<container_c>);
 static_assert(is_thrift_type_tag_v<list_c>);
 static_assert(is_thrift_type_tag_v<set_c>);
 static_assert(is_thrift_type_tag_v<map_c>);
+static_assert(is_thrift_type_tag_v<service_c>);
 
 static_assert(is_thrift_type_tag_v<void_t>);
 static_assert(is_thrift_type_tag_v<bool_t>);
@@ -122,6 +125,7 @@ static_assert(is_thrift_type_tag_v<enum_t<int>>);
 static_assert(is_thrift_type_tag_v<struct_t<int>>);
 static_assert(is_thrift_type_tag_v<union_t<int>>);
 static_assert(is_thrift_type_tag_v<exception_t<int>>);
+static_assert(is_thrift_type_tag_v<service_t<int>>);
 
 static_assert(!is_thrift_type_tag_v<list<int>>);
 static_assert(is_thrift_type_tag_v<list<void_t>>);
@@ -163,6 +167,7 @@ static_assert(is_abstract_v<container_c>);
 static_assert(is_abstract_v<list_c>);
 static_assert(is_abstract_v<set_c>);
 static_assert(is_abstract_v<map_c>);
+static_assert(is_abstract_v<service_c>);
 
 static_assert(!is_abstract_v<void_t>);
 static_assert(!is_abstract_v<bool_t>);
@@ -179,6 +184,7 @@ static_assert(!is_abstract_v<enum_t<int>>);
 static_assert(!is_abstract_v<struct_t<int>>);
 static_assert(!is_abstract_v<union_t<int>>);
 static_assert(!is_abstract_v<exception_t<int>>);
+static_assert(!is_abstract_v<service_t<int>>);
 
 static_assert(!is_abstract_v<list<int>>);
 static_assert(!is_abstract_v<list<void_t>>);
@@ -218,6 +224,7 @@ static_assert(is_a_v<struct_c, struct_except_c>);
 static_assert(is_a_v<struct_t<int>, struct_except_c>);
 static_assert(is_a_v<exception_c, struct_except_c>);
 static_assert(is_a_v<exception_t<int>, struct_except_c>);
+static_assert(is_a_v<service_t<int>, service_c>);
 
 // Uncomment to produce expected compile time errors.
 // static_assert(is_a_v<int, int>);

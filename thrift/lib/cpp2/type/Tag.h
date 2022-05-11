@@ -48,6 +48,7 @@ struct container_c : all_c {}; // all container types.
 struct list_c : container_c {}; // all `list` types
 struct set_c : container_c {}; // all `set` types
 struct map_c : container_c {}; // all `map` types
+struct service_c {}; // all `service` types
 
 // Type tags for types that are always concrete (_t suffix).
 struct void_t {};
@@ -96,7 +97,7 @@ template <
 struct cpp_type : Tag {};
 
 template <typename T> // the generated C++ type
-struct service_t {};
+struct service_t : service_c {};
 
 template <FieldId Id, typename Tag>
 struct field_t;

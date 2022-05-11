@@ -44,6 +44,7 @@ list_c testOverload(list_c);
 // Intentionally omitted.
 // set_c testOverload(set_c);
 map_c testOverload(map_c);
+service_c testOverload(service_c);
 
 void_t testOverload(void_t);
 
@@ -66,6 +67,7 @@ enum_t<Specialized> testOverload(enum_t<Specialized>);
 struct_t<Specialized> testOverload(struct_t<Specialized>);
 union_t<Specialized> testOverload(union_t<Specialized>);
 exception_t<Specialized> testOverload(exception_t<Specialized>);
+service_t<Specialized> testOverload(service_t<Specialized>);
 
 template <typename ListT>
 cpp_type<list<Specialized>, ListT> testOverload(
@@ -160,6 +162,13 @@ static_assert(
 static_assert(same_tag<
               list_c,
               decltype(testOverload(cpp_type<TestAdapter, list<enum_c>>{}))>);
+
+static_assert(same_tag<service_c, decltype(testOverload(service_c{}))>);
+static_assert(
+    same_tag<service_c, decltype(testOverload(service_t<General>{}))>);
+static_assert(same_tag<
+              service_t<Specialized>,
+              decltype(testOverload(service_t<Specialized>{}))>);
 
 } // namespace
 } // namespace apache::thrift::type

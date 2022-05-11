@@ -158,6 +158,8 @@ template <typename T>
 struct is_concrete<union_t<T>> : std::true_type {};
 template <typename T>
 struct is_concrete<exception_t<T>> : std::true_type {};
+template <typename T>
+struct is_concrete<service_t<T>> : std::true_type {};
 
 template <typename ValTag>
 struct is_concrete<list<ValTag>> : folly::bool_constant<is_concrete_v<ValTag>> {
@@ -208,6 +210,8 @@ template <>
 struct is_thrift_type_tag<set_c> : std::true_type {};
 template <>
 struct is_thrift_type_tag<map_c> : std::true_type {};
+template <>
+struct is_thrift_type_tag<service_c> : std::true_type {};
 
 template <typename ValTag>
 struct is_thrift_type_tag<list<ValTag>>
