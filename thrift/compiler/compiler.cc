@@ -47,6 +47,7 @@
 #include <thrift/compiler/mutator/mutator.h>
 #include <thrift/compiler/parse/parsing_driver.h>
 #include <thrift/compiler/platform.h>
+#include <thrift/compiler/sema/standard_mutator.h>
 #include <thrift/compiler/sema/standard_validator.h>
 #include <thrift/compiler/validator/validator.h>
 
@@ -330,10 +331,6 @@ bool generate(
         "program: {}",
         program.path());
 
-    if (dump_docs) {
-      dump_docstrings(&program);
-    }
-
     bool success = true;
     std::ofstream genfile;
     if (!params.genfile.empty()) {
@@ -428,6 +425,46 @@ std::string get_include_path(
 }
 
 } // namespace
+
+std::unique_ptr<t_program_bundle> parse_and_mutate_program(
+    source_manager& sm,
+    diagnostic_context& ctx,
+    const std::string& filename,
+    parsing_params params) {
+  parsing_driver driver(sm, ctx, filename, std::move(params));
+  auto program = driver.parse();
+  if (program != nullptr) {
+    standard_mutators()(ctx, *program);
+  }
+  return program;
+}
+
+std::pair<std::unique_ptr<t_program_bundle>, diagnostic_results>
+parse_and_mutate_program(
+    source_manager& sm,
+    const std::string& filename,
+    parsing_params params,
+    diagnostic_params dparams) {
+  diagnostic_results results;
+  diagnostic_context ctx(sm, results, std::move(dparams));
+  return {
+      parse_and_mutate_program(sm, ctx, filename, std::move(params)), results};
+}
+
+std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
+    const std::string& filename,
+    parsing_params pparams,
+    diagnostic_params dparams) {
+  source_manager source_mgr;
+  diagnostic_results results;
+  diagnostic_context ctx(source_mgr, results, std::move(dparams));
+  auto program =
+      parse_and_mutate_program(source_mgr, ctx, filename, std::move(pparams));
+  for (const auto& diag : results.diagnostics()) {
+    std::cerr << diag << "\n";
+  }
+  return program;
+}
 
 std::unique_ptr<t_program_bundle> parse_and_get_program(
     source_manager& sm, const std::vector<std::string>& arguments) {

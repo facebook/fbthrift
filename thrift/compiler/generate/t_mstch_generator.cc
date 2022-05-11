@@ -25,7 +25,6 @@
 
 #include <thrift/compiler/detail/mustache/mstch.h>
 
-#include <thrift/compiler/common.h>
 #include <thrift/compiler/filesystem.h>
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/generate/templates.h>

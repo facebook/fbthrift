@@ -21,7 +21,6 @@
 
 #include <boost/algorithm/string/split.hpp>
 #include <fmt/core.h>
-#include <thrift/compiler/common.h>
 
 namespace apache {
 namespace thrift {

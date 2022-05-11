@@ -21,6 +21,7 @@
 #include <vector>
 
 #include <thrift/compiler/diagnostic.h>
+#include <thrift/compiler/parse/parsing_driver.h>
 
 namespace apache {
 namespace thrift {
@@ -37,6 +38,34 @@ struct compile_result {
   compile_retcode retcode = compile_retcode::failure;
   diagnostic_results detail;
 };
+
+/**
+ * Parse with the given parameters, and dump all the diagnostic messages
+ * returned.
+ *
+ * If the parsing fails, nullptr is returned.
+ */
+std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
+    const std::string& filename,
+    parsing_params pparams,
+    diagnostic_params dparams = {});
+
+/**
+ * Parse and mutate with the given parameters
+ *
+ * If the parsing fails, nullptr is returned for the program bundle.
+ */
+std::pair<std::unique_ptr<t_program_bundle>, diagnostic_results>
+parse_and_mutate_program(
+    source_manager& sm,
+    const std::string& filename,
+    parsing_params params,
+    diagnostic_params dparams = {});
+std::unique_ptr<t_program_bundle> parse_and_mutate_program(
+    source_manager& sm,
+    diagnostic_context& ctx,
+    const std::string& filename,
+    parsing_params params);
 
 /**
  * Runs the Thrift parser with the specified (command-line) arguments and
