@@ -87,26 +87,41 @@ def _fbthrift_gen_metadata_service_PubSubStreamingService(metadata_struct: _fbth
      # i32_to
 
 
-    
+     # elem
+     # response  # return value
+
+
      # foo
 
 
-    
+     # elem
+     # response  # return value
+
+
      # foo
 
     new_struct = _fbthrift_gen_metadata_exception_FooEx(new_struct) # e
 
-    
+     # elem
+     # response  # return value
+
+
      # foo
 
     new_struct = _fbthrift_gen_metadata_exception_FooEx(new_struct) # e
 
-    
+     # elem
+     # response  # return value
+
+
      # i32_from
      # i32_to
 
 
-    
+     # elem
+     # response  # return value
+
+
     return new_struct
 
 

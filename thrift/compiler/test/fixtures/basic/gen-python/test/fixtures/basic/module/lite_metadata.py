@@ -183,39 +183,57 @@ def _fbthrift_gen_metadata_service_MyService(metadata_struct: _fbthrift_metadata
 
 
 
-    
+     # return value
 
 
-    
+
+
+     # return value
+
+
      # sink
 
 
-    
+     # return value
+
+
      # id
      # data
 
 
-    
+     # return value
+
+
      # id
 
 
-    
+     # return value
+
+
      # id
 
 
-    
+     # return value
+
+
      # id
 
 
-    
+     # return value
+
+
      # id
      # data
 
 
-    
+     # return value
 
 
-    
+
+
+     # return value
+
+
     return new_struct
 
 def gen_metadata_service_DbMixedStackArguments() -> _fbthrift_metadata.ThriftMetadata:
@@ -250,11 +268,15 @@ def _fbthrift_gen_metadata_service_DbMixedStackArguments(metadata_struct: _fbthr
      # key
 
 
-    
+     # return value
+
+
      # key
 
 
-    
+     # return value
+
+
     return new_struct
 
 

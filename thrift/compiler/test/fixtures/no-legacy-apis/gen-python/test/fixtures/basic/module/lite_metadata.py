@@ -90,7 +90,9 @@ def _fbthrift_gen_metadata_service_MyService(metadata_struct: _fbthrift_metadata
     new_struct = _fbthrift_gen_metadata_struct_MyUnion(new_struct) # u
 
 
-    
+    new_struct = _fbthrift_gen_metadata_struct_MyStruct(new_struct) # return value
+
+
     return new_struct
 
 

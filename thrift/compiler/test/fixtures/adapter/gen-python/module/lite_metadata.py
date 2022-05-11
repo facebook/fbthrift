@@ -234,7 +234,9 @@ def _fbthrift_gen_metadata_service_Service(metadata_struct: _fbthrift_metadata.T
     new_struct = _fbthrift_gen_metadata_struct_Foo(new_struct) # arg3
 
 
-    
+     # return value
+
+
     return new_struct
 
 

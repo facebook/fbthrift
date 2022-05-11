@@ -199,22 +199,30 @@ def _fbthrift_gen_metadata_service_Raiser(metadata_struct: _fbthrift_metadata.Th
 
 
 
-    
+     # return value
+
+
 
     new_struct = _fbthrift_gen_metadata_exception_Banal(new_struct) # b
     new_struct = _fbthrift_gen_metadata_exception_Fiery(new_struct) # f
     new_struct = _fbthrift_gen_metadata_exception_Serious(new_struct) # s
 
-    
+     # return value
 
 
-    
+
+
+     # return value
+
+
 
     new_struct = _fbthrift_gen_metadata_exception_Fiery(new_struct) # f
     new_struct = _fbthrift_gen_metadata_exception_Banal(new_struct) # b
     new_struct = _fbthrift_gen_metadata_exception_Serious(new_struct) # s
 
-    
+     # return value
+
+
     return new_struct
 
 

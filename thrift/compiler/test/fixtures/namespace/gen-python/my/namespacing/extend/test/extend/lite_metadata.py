@@ -37,7 +37,9 @@ def _fbthrift_gen_metadata_service_ExtendTestService(metadata_struct: _fbthrift_
     new_struct = py3lite_module_root.my.namespacing.test.hsmodule.lite_metadata._fbthrift_gen_metadata_struct_HsFoo(new_struct) # struct1
 
 
-    
+     # return value
+
+
     return new_struct
 
 

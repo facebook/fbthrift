@@ -58,7 +58,9 @@ def _fbthrift_gen_metadata_service_TestService(metadata_struct: _fbthrift_metada
      # int1
 
 
-    
+     # return value
+
+
     return new_struct
 
 

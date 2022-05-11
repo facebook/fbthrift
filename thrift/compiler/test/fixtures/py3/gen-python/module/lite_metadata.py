@@ -461,173 +461,258 @@ def _fbthrift_gen_metadata_service_SimpleService(metadata_struct: _fbthrift_meta
 
 
 
-    
+     # return value
+
+
      # num
 
 
-    
+     # return value
 
 
-    
+
+
+     # return value
+
+
      # first
      # second
 
 
-    
+     # return value
+
+
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct) # simple_struct
 
 
-    
+     # return value
+
+
      # input
 
 
-    
+     # return value
+
+
      # input
 
 
-    
+     # return value
+
+
      # input
 
 
-    
+     # return value
+
+
      # input
 
 
-    
+     # return value
+
+
      # input
 
 
-    
+     # return value
+
+
 
     new_struct = _fbthrift_gen_metadata_exception_SimpleException(new_struct) # se
 
-    
+     # return value
 
 
-    
+
+
+     # return value
+
+
      # numbers
 
 
-    
+     # return value
+
+
      # numbers
 
 
-    
+     # return value
+
+
      # numbers
 
 
-    
+     # return value
+
+
      # words
 
 
-    
+     # return value
+
+
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct) # items
 
 
-    
+     # return value
+
+
      # numbers
 
 
-    
+     # return value
+
+
      # words
      # word
 
 
-    
+     # return value
+
+
      # key
      # val  # words
      # key
 
 
-    
+     # return value
+
+
      # key
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct) # val  # items
 
 
-    
+     # return value
+
+
      # key
      # val  # items
 
 
-    
+     # return value
+
+
     new_struct = _fbthrift_gen_metadata_struct_ComplexStruct(new_struct) # counter
 
 
-    
+     # return value
+
+
     new_struct = _fbthrift_gen_metadata_struct_ComplexStruct(new_struct) # counter
 
 
-    
+     # return value
 
 
-    
+
+
+    new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct) # return value
+
+
      # n
 
 
-    
+     # return value
+
+
      # words
 
 
-    
+     # return value
+
+
      # words
 
 
-    
+     # key
+     # val  # return value
+
+
     new_struct = _fbthrift_gen_metadata_enum_AnEnum(new_struct) # in_enum
 
 
-    
+    new_struct = _fbthrift_gen_metadata_enum_AnEnum(new_struct) # return value
+
+
      # num_lists
      # num_items
 
 
-    
+     # return value
+
+
      # sentence
 
 
-    
+     # key
+     # key
+     # val  # val  # return value
+
+
      # some_words
 
 
-    
+     # return value
+
+
      # key
     new_struct = _fbthrift_gen_metadata_struct_SimpleStruct(new_struct) # val  # struct_map
 
 
-    
+     # return value
+
+
      # word_chars
 
 
-    
+     # return value
+
+
      # sets
 
 
-    
+     # return value
+
+
      # key
      # val  # string_map
 
 
-    
+     # return value
+
+
      # key
 
 
-    
+     # return value
+
+
      # something
 
 
-    
+     # return value
+
+
      # binaries
 
 
-    
+     # return value
+
+
     new_struct = _fbthrift_gen_metadata_enum_AnEnum(new_struct) # the_enum
 
 
-    
+    new_struct = _fbthrift_gen_metadata_enum_AnEnum(new_struct) # return value
+
+
     new_struct = _fbthrift_gen_metadata_struct_BinaryUnion(new_struct) # u
 
 
-    
+    new_struct = _fbthrift_gen_metadata_struct_BinaryUnionStruct(new_struct) # return value
+
+
     return new_struct
 
 def gen_metadata_service_DerivedService() -> _fbthrift_metadata.ThriftMetadata:
@@ -654,7 +739,9 @@ def _fbthrift_gen_metadata_service_DerivedService(metadata_struct: _fbthrift_met
 
 
 
-    
+     # return value
+
+
     return new_struct
 
 def gen_metadata_service_RederivedService() -> _fbthrift_metadata.ThriftMetadata:
@@ -681,7 +768,9 @@ def _fbthrift_gen_metadata_service_RederivedService(metadata_struct: _fbthrift_m
 
 
 
-    
+     # return value
+
+
     return new_struct
 
 

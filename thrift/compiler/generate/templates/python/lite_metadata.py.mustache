@@ -131,14 +131,14 @@ def _fbthrift_gen_metadata_service_{{service:name}}({{!
     {{#service:functions}}{{^function:starts_interaction?}}
 
     {{#function:args}}
-    {{#field:type}}{{> metadata/recursive_call }}{{/field:type}} # {{field:name}}
+    {{#field:type}}{{> metadata/recursive_call }} # {{field:name}}{{/field:type}}
     {{/function:args}}
 
     {{#function:exceptions}}
-    {{#field:type}}{{> metadata/recursive_call }}{{/field:type}} # {{field:name}}
+    {{#field:type}}{{> metadata/recursive_call }} # {{field:name}}{{/field:type}}
     {{/function:exceptions}}
 
-    {{#function:return_type}}{{> metadata/recursive_call }}{{/field:return_type}} # return value
+    {{#function:return_type}}{{> metadata/recursive_call }} # return value{{/function:return_type}}
 
     {{/function:starts_interaction?}}{{/service:functions}}
 
