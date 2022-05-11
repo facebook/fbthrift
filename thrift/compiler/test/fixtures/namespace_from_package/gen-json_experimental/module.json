@@ -3,9 +3,10 @@
   "thrift_module" : "module",
   "namespaces": {
     "go": "namespace_from_package.module",
+    "hack": "namespace_from_package.module",
     "hs": "DefaultNamespace.module",
     "java": "dev.test.namespace_from_package.module_deprecated",
-    "php": "test.namespace_from_package.module",
+    "php": "namespace_from_package.module",
     "py": "namespace_from_package.module",
     "py.asyncio": "test.namespace_from_package.module",
     "rust": "test.namespace_from_package.module"
@@ -17,21 +18,21 @@
           "MyInt" : {
             "name" : "MyInt",
             "key" : 1,
-            "lineno" : 32,
+            "lineno" : 33,
             "required" : "opt-in-req-out",
             "type" : "i64"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 31
+        "lineno" : 32
       }
       },
   "services" :
   {
       "TestService" : {
         "name" : "TestService",
-        "lineno" : 35,
+        "lineno" : 36,
         "functions" : {
           "init" : {
             "name" : "init",
@@ -40,12 +41,12 @@
                 "name" : "int1",
                 "type" : "i64",
                 "key" : 1,
-                "lineno" : 36,
+                "lineno" : 37,
                 "required" : "opt-in-req-out"
               }
             },
             "returnType" : "i64",
-            "lineno" : 36
+            "lineno" : 37
           }
         }
       }

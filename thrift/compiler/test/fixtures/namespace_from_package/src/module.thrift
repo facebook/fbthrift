@@ -18,7 +18,8 @@ package "test.dev/namespace_from_package/module"
 
 // namespace cpp2 test.namespace_from_package.module
 // namespace py3 test.namespace_from_package
-namespace php test.namespace_from_package.module
+namespace hack namespace_from_package.module
+namespace php namespace_from_package.module
 // namespace java2 dev.test.namespace_from_package.module
 // namespace java.swift dev.test.namespace_from_package.module
 namespace java dev.test.namespace_from_package.module_deprecated

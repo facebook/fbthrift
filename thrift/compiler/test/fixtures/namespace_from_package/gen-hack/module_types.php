@@ -6,12 +6,14 @@
  *  @generated
  */
 
+namespace namespace_from_package\module;
+
 /**
  * Original thrift struct:-
  * Foo
  */
 <<\ThriftTypeInfo(shape('uri' => 'test.dev/namespace_from_package/module/Foo'))>>
-class test.namespace_from_package.module_Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+class Foo implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -57,16 +59,16 @@ class test.namespace_from_package.module_Foo implements \IThriftSyncStruct, \ITh
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.Foo",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                 )
               ),
               "name" => "MyInt",

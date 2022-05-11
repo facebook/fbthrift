@@ -6,6 +6,8 @@
  *  @generated
  */
 
+namespace namespace_from_package\module;
+
 /**
  * Original thrift service:-
  * TestService
@@ -65,7 +67,7 @@ trait TestServiceClientBase {
 
   protected function sendImpl_init(int $int1): int {
     $currentseqid = $this->getNextSequenceID();
-    $args = test.namespace_from_package.module_TestService_init_args::fromShape(shape(
+    $args = \namespace_from_package\module\TestService_init_args::fromShape(shape(
       'int1' => $int1,
     ));
     try {
@@ -108,10 +110,10 @@ trait TestServiceClientBase {
     try {
       $this->eventHandler_->preRecv('init', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'test.namespace_from_package.module_TestService_init_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_binary($this->input_, '\namespace_from_package\module\TestService_init_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'test.namespace_from_package.module_TestService_init_result', Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_compact($this->input_, '\namespace_from_package\module\TestService_init_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -130,7 +132,7 @@ trait TestServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = test.namespace_from_package.module_TestService_init_result::withDefaultValues();
+        $result = \namespace_from_package\module\TestService_init_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
@@ -254,18 +256,18 @@ abstract class TestServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     $this->eventHandler_->preRead($handler_ctx, 'init', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, 'test.namespace_from_package.module_TestService_init_args');
+      $args = \thrift_protocol_read_binary_struct($input, '\namespace_from_package\module\TestService_init_args');
     } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, 'test.namespace_from_package.module_TestService_init_args');
+      $args = \thrift_protocol_read_compact_struct($input, '\namespace_from_package\module\TestService_init_args');
     } else {
-      $args = test.namespace_from_package.module_TestService_init_args::withDefaultValues();
+      $args = \namespace_from_package\module\TestService_init_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'init', $args);
-    $result = test.namespace_from_package.module_TestService_init_result::withDefaultValues();
+    $result = \namespace_from_package\module\TestService_init_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'test.namespace_from_package.module_TestService', 'init', $args);
+      $this->eventHandler_->preExec($handler_ctx, '\namespace_from_package\module\TestService', 'init', $args);
       $result->success = await $this->handler->init($args->int1);
       $this->eventHandler_->postExec($handler_ctx, 'init', $result);
     } catch (\Exception $ex) {
@@ -342,18 +344,18 @@ abstract class TestServiceSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->preRead($handler_ctx, 'init', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, 'test.namespace_from_package.module_TestService_init_args');
+      $args = \thrift_protocol_read_binary_struct($input, '\namespace_from_package\module\TestService_init_args');
     } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, 'test.namespace_from_package.module_TestService_init_args');
+      $args = \thrift_protocol_read_compact_struct($input, '\namespace_from_package\module\TestService_init_args');
     } else {
-      $args = test.namespace_from_package.module_TestService_init_args::withDefaultValues();
+      $args = \namespace_from_package\module\TestService_init_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'init', $args);
-    $result = test.namespace_from_package.module_TestService_init_result::withDefaultValues();
+    $result = \namespace_from_package\module\TestService_init_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'test.namespace_from_package.module_TestService', 'init', $args);
+      $this->eventHandler_->preExec($handler_ctx, '\namespace_from_package\module\TestService', 'init', $args);
       $result->success = $this->handler->init($args->int1);
       $this->eventHandler_->postExec($handler_ctx, 'init', $result);
     } catch (\Exception $ex) {
@@ -423,7 +425,7 @@ class TestServiceProcessor extends TestServiceSyncProcessor {}
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class test.namespace_from_package.module_TestService_init_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+class TestService_init_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -465,16 +467,16 @@ class test.namespace_from_package.module_TestService_init_args implements \IThri
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.init_args",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                 )
               ),
               "name" => "int1",
@@ -523,7 +525,7 @@ class test.namespace_from_package.module_TestService_init_args implements \IThri
 
 }
 
-class test.namespace_from_package.module_TestService_init_result implements \IThriftSyncStruct {
+class TestService_init_result implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -562,16 +564,16 @@ class test.namespace_from_package.module_TestService_init_result implements \ITh
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.TestService_init_result",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 0,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                 )
               ),
               "name" => "success",
@@ -611,25 +613,25 @@ class test.namespace_from_package.module_TestService_init_result implements \ITh
 
 class TestServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
-    return tmeta_ThriftService::fromShape(
+    return \tmeta_ThriftService::fromShape(
       shape(
         "name" => "module.TestService",
         "functions" => vec[
-          tmeta_ThriftFunction::fromShape(
+          \tmeta_ThriftFunction::fromShape(
             shape(
               "name" => "init",
-              "return_type" => tmeta_ThriftType::fromShape(
+              "return_type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                 )
               ),
               "arguments" => vec[
-                tmeta_ThriftField::fromShape(
+                \tmeta_ThriftField::fromShape(
                   shape(
                     "id" => 1,
-                    "type" => tmeta_ThriftType::fromShape(
+                    "type" => \tmeta_ThriftType::fromShape(
                       shape(
-                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                       )
                     ),
                     "name" => "int1",
