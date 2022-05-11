@@ -30,11 +30,11 @@ TEST(AnyTest, BaseApi) {
   builder.protocol() = StandardProtocol::Compact;
   builder.data() = folly::IOBuf::wrapBufferAsValue("hi", 2);
 
-  AnyData any = createAny(builder);
-  EXPECT_EQ(*any.type(), Type::create<i16_t>());
-  EXPECT_EQ(*any.protocol(), Protocol::get<StandardProtocol::Compact>());
-  EXPECT_EQ(any.data()->data(), builder.data()->data());
-  EXPECT_EQ(any.data()->length(), 2);
+  AnyData any(builder);
+  EXPECT_EQ(any.type(), Type::create<i16_t>());
+  EXPECT_EQ(any.protocol(), Protocol::get<StandardProtocol::Compact>());
+  EXPECT_EQ(any.data().data(), builder.data()->data());
+  EXPECT_EQ(any.data().length(), 2);
 }
 
 } // namespace

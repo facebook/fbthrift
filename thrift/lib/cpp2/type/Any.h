@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <thrift/lib/cpp2/type/detail/Wrap.h>
 #include <thrift/lib/thrift/gen-cpp2/any_rep_types.h>
 
 namespace apache {
@@ -40,20 +41,25 @@ using SemiAny = SemiAnyStruct;
 
 // A serilaized Any value, with all the required information to deserilize the
 // value.
-//
-// TODO(afuller): Add native wrappers.
-using AnyData = AnyStruct;
+class AnyData : public detail::Wrap<AnyStruct> {
+  using Base = detail::Wrap<AnyStruct>;
 
-// Validate that the SemiAny is complete, and return the associated AnyData
-// represenation.
-// TODO(afuller): Validation.
-inline AnyData createAny(SemiAny semiAny) {
-  AnyData result;
-  result.type() = std::move(*semiAny.type());
-  result.protocol() = std::move(*semiAny.protocol());
-  result.data() = std::move(*semiAny.data());
-  return result;
-}
+ public:
+  using Base::Base;
+
+  // Validate that the SemiAny is complete, and return the associated AnyData
+  // represenation.
+  explicit AnyData(SemiAny semiAny) {
+    // TODO(afuller): Validation.
+    data_.type() = std::move(*semiAny.type());
+    data_.protocol() = std::move(*semiAny.protocol());
+    data_.data() = std::move(*semiAny.data());
+  }
+
+  const Type& type() const { return *data_.type(); }
+  const Protocol& protocol() const { return *data_.protocol(); }
+  const folly::IOBuf& data() const { return *data_.data(); }
+};
 
 } // namespace type
 } // namespace thrift
