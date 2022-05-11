@@ -32,10 +32,10 @@ const std::string* t_typedef::get_first_annotation_or_null(
 }
 
 const t_const* t_typedef::get_first_structured_annotation_or_null(
-    const t_type* type, const char* name) {
+    const t_type* type, const char* uri) {
   const t_const* result = nullptr;
-  find_type_if(type, [&result, name](const t_type* type) {
-    return (result = type->find_structured_annotation_or_null(name)) != nullptr;
+  find_type_if(type, [&result, uri](const t_type* type) {
+    return (result = type->find_structured_annotation_or_null(uri)) != nullptr;
   });
   return result;
 }

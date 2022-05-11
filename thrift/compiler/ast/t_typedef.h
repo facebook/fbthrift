@@ -71,7 +71,7 @@ class t_typedef : public t_type {
   // Finds the first matching structured annoation in the typedef's hierarchy.
   // Return null if not found.
   static const t_const* get_first_structured_annotation_or_null(
-      const t_type* type, const char* name);
+      const t_type* type, const char* uri);
 
   std::string get_full_name() const override {
     // TODO(afuller): Just return name() as, unlike a t_placeholder_typedef, the
