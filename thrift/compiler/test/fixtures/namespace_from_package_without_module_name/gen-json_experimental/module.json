@@ -5,8 +5,6 @@
     "go": "namespace_from_package_without_module_name.module",
     "hs": "NamespaceFromPackageWithoutModuleName",
     "java": "dev.test.namespace_from_package_without_module_name_deprecated",
-    "java.swift": "dev.test.namespace_from_package_without_module_name",
-    "java2": "dev.test.namespace_from_package_without_module_name",
     "php": "test.namespace_from_package_without_module_name",
     "py": "namespace_from_package_without_module_name.module",
     "py.asyncio": "test.namespace_from_package_without_module_name.module",

@@ -21,6 +21,8 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
+#include <thrift/compiler/ast/t_program.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
@@ -57,6 +59,12 @@ std::string quote_java_string(const std::string& unescaped);
  * that package. Example: "foo.bar.baz" -> "foo/bar/baz"
  */
 std::string package_to_path(std::string package);
+
+/**
+ * Generate java namespace from package
+ * Example: "meta.com/foo/bar" -> ["com", "meta", "foo", "bar"]
+ */
+std::vector<std::string> gen_namespace_from_package(const t_package& package);
 
 } // namespace java
 } // namespace compiler
