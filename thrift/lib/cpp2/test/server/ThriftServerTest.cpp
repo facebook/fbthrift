@@ -3348,6 +3348,27 @@ TEST(ThriftServer, RocketOnly) {
   }
 }
 
+// verifying that getThreadManager calls are valid
+// in both ResourcePool and non-resorucePool scenario
+TEST(ThriftServer, getThreadManager) {
+  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
+  auto tm = runner.getThriftServer().getThreadManager();
+
+  folly::Baton b;
+
+  int a = 0;
+
+  auto fun = [&a, &b]() {
+    ++a;
+    b.post();
+  };
+
+  tm->add(fun);
+  b.wait();
+
+  EXPECT_EQ(a, 1);
+}
+
 TEST_P(HeaderOrRocket, setMaxReuqestsToOne) {
   ScopedServerInterfaceThread runner(
       std::make_shared<TestInterface>(), "::1", 0, [](auto&& server) {
