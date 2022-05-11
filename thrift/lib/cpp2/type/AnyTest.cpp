@@ -26,7 +26,9 @@ namespace {
 
 TEST(AnyTest, BaseApi) {
   SemiAny builder;
+  EXPECT_THROW(AnyData{builder}, std::runtime_error);
   builder.type() = i16_t{};
+  EXPECT_THROW(AnyData{builder}, std::runtime_error);
   builder.protocol() = StandardProtocol::Compact;
   builder.data() = folly::IOBuf::wrapBufferAsValue("hi", 2);
 
@@ -35,6 +37,9 @@ TEST(AnyTest, BaseApi) {
   EXPECT_EQ(any.protocol(), Protocol::get<StandardProtocol::Compact>());
   EXPECT_EQ(any.data().data(), builder.data()->data());
   EXPECT_EQ(any.data().length(), 2);
+
+  builder.type() = {};
+  EXPECT_THROW(AnyData{builder}, std::runtime_error);
 }
 
 } // namespace

@@ -47,14 +47,9 @@ class AnyData : public detail::Wrap<AnyStruct> {
  public:
   using Base::Base;
 
-  // Validate that the SemiAny is complete, and return the associated AnyData
-  // represenation.
-  explicit AnyData(SemiAny semiAny) {
-    // TODO(afuller): Validation.
-    data_.type() = std::move(*semiAny.type());
-    data_.protocol() = std::move(*semiAny.protocol());
-    data_.data() = std::move(*semiAny.data());
-  }
+  // Throws an std::runtime_error if the SemiAny is missing the type or
+  // protocol.
+  explicit AnyData(SemiAny semiAny);
 
   const Type& type() const { return *data_.type(); }
   const Protocol& protocol() const { return *data_.protocol(); }
