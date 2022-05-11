@@ -10,7 +10,6 @@
     "php": "test.namespace_from_package.module",
     "py": "namespace_from_package.module",
     "py.asyncio": "test.namespace_from_package.module",
-    "py3": "test.namespace_from_package",
     "rust": "test.namespace_from_package.module"
   },  "structs" :
   {

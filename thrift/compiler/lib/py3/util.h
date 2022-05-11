@@ -21,14 +21,22 @@
 #include <unordered_set>
 
 #include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/gen/cpp/namespace_resolver.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
 inline std::vector<std::string> get_py3_namespace(const t_program* prog) {
-  return prog->gen_namespace_or_default(
-      "py3", [] { return std::vector<std::string>{}; });
+  return prog->gen_namespace_or_default("py3", [&prog] {
+    auto ret =
+        gen::cpp::namespace_resolver::gen_namespace_components_from_package(
+            prog->package());
+    if (!ret.empty() && ret.back() == prog->name()) {
+      ret.pop_back();
+    }
+    return ret;
+  });
 }
 
 inline const std::unordered_set<std::string>& get_python_reserved_names() {

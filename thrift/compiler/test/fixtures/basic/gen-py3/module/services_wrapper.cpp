@@ -16,7 +16,7 @@ namespace basic {
 MyServiceWrapper::MyServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
-    import_module__services();
+    import_test__fixtures__basic__module__services();
   }
 
 
@@ -236,7 +236,7 @@ folly::SemiFuture<folly::Unit> MyServiceWrapper::semifuture_onStopRequested() {
 DbMixedStackArgumentsWrapper::DbMixedStackArgumentsWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
-    import_module__services();
+    import_test__fixtures__basic__module__services();
   }
 
 
