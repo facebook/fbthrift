@@ -310,6 +310,7 @@ add_library(
   type/BaseType.cpp
   type/Protocol.cpp
   type/Type.cpp
+  type/TypeRegistry.cpp
   type/UniversalName.cpp
   util/Checksum.cpp
   util/DebugString.cpp
