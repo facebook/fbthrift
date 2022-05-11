@@ -5,3 +5,5 @@ mstch_py3 src/module.thrift
 mstch_py3 src/extend.thrift
 mstch_python:root_module_prefix=py3lite_module_root src/module.thrift
 mstch_python:root_module_prefix=py3lite_module_root src/extend.thrift
+mstch_py3 src/emptyns.thrift
+mstch_python src/emptyns.thrift

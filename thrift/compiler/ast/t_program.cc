@@ -74,7 +74,9 @@ std::vector<std::string> t_program::gen_namespace_or_default(
   auto pos = namespaces_.find(language);
   if (pos != namespaces_.end()) {
     std::vector<std::string> ret;
-    split(ret, pos->second, boost::algorithm::is_any_of("."));
+    if (!pos->second.empty()) {
+      split(ret, pos->second, boost::algorithm::is_any_of("."));
+    }
     return ret;
   }
 
