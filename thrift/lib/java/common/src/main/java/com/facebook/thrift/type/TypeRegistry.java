@@ -20,11 +20,10 @@ import com.google.common.annotations.VisibleForTesting;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,13 +31,13 @@ public final class TypeRegistry {
   private static final Logger LOGGER = LoggerFactory.getLogger(TypeRegistry.class);
 
   /** Sorted map for universal name hash to Type */
-  private static final TreeMap<ByteBuf, Type> hashMap = new TreeMap<>();
+  private static final ConcurrentSkipListMap<ByteBuf, Type> hashMap = new ConcurrentSkipListMap<>();
 
   /** Local cache for sorted map. */
   private static final Map<ByteBuf, Type> cache = new ConcurrentHashMap<>();
 
   /** Hash map for class name to Type */
-  private static final Map<Class, Type> classMap = new HashMap<>();
+  private static final Map<Class, Type> classMap = new ConcurrentHashMap<>();
 
   private TypeRegistry() {}
 
@@ -49,7 +48,7 @@ public final class TypeRegistry {
    *
    * @param type
    */
-  private static synchronized void validate(Type type) {
+  private static void validate(Type type) {
     Class clazz = type.getClazz();
     UniversalName universalName = type.getUniversalName();
 
@@ -75,6 +74,20 @@ public final class TypeRegistry {
   }
 
   /**
+   * Validate and add the type.
+   *
+   * @param type Type info containing universal name, class name and other metadata.
+   */
+  private static synchronized void addType(Type type) {
+    validate(type);
+
+    hashMap.put(type.getUniversalName().getHashBytes(), type);
+    classMap.put(type.getClazz(), type);
+
+    cache.clear();
+  }
+
+  /**
    * Add the given type to the registry. If universal name or class is already associated with
    * another entry, IllegalArgumentException is thrown.
    *
@@ -82,11 +95,8 @@ public final class TypeRegistry {
    * @return Hash bytes as hexadecimal value.
    */
   public static String add(Type type) {
-    validate(type);
     LOGGER.info("Adding type to the registry: ?", type);
-
-    hashMap.put(type.getUniversalName().getHashBytes(), type);
-    classMap.put(type.getClazz(), type);
+    addType(type);
 
     return type.getUniversalName().getHash();
   }
