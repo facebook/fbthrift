@@ -60,7 +60,7 @@ class TypeRegistry {
   //
   // Throws std::out_of_range if no matching serializer has been registered.
   // Throws std::bad_any_cast if value cannot be stored in out.
-  [[noreturn]] void load(const AnyData& data, AnyRef out) const;
+  void load(const AnyData& data, AnyRef out) const;
   AnyValue load(const AnyData& data) const;
 };
 

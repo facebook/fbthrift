@@ -32,21 +32,37 @@ FOLLY_EXPORT TypeRegistry& getGeneratedTypeRegistry() {
 
 } // namespace detail
 
-AnyData TypeRegistry::store(AnyRef, const Protocol&) const {
-  // TODO(afuller): Implement.
-  folly::throw_exception<std::out_of_range>("Not Implemented");
-  return {};
+AnyData TypeRegistry::store(AnyRef value, const Protocol&) const {
+  switch (value.type().base_type()) {
+    case BaseType::Void:
+      return {};
+    default:
+      // TODO(afuller): Implement.
+      folly::throw_exception<std::out_of_range>("Not Implemented");
+  }
 }
 
-void TypeRegistry::load(const AnyData&, AnyRef) const {
-  // TODO(afuller): Implement.
-  folly::throw_exception<std::out_of_range>("Not Implemented");
+void TypeRegistry::load(const AnyData& value, AnyRef out) const {
+  switch (value.type().base_type()) {
+    case BaseType::Void:
+      if (out.type() != value.type()) {
+        folly::throw_exception<std::bad_any_cast>();
+      }
+      return;
+    default:
+      // TODO(afuller): Implement.
+      folly::throw_exception<std::out_of_range>("Not Implemented");
+  }
 }
 
-AnyValue TypeRegistry::load(const AnyData&) const {
-  // TODO(afuller): Implement.
-  folly::throw_exception<std::out_of_range>("Not Implemented");
-  return {};
+AnyValue TypeRegistry::load(const AnyData& data) const {
+  switch (data.type().base_type()) {
+    case BaseType::Void:
+      return {};
+    default:
+      // TODO(afuller): Implement.
+      folly::throw_exception<std::out_of_range>("Not Implemented");
+  }
 }
 
 } // namespace type
