@@ -57,7 +57,6 @@ class AnyRegistry:
         return False
 
     def register_module(self, module: types.ModuleType) -> None:
-        # pyre-fixme[16]: `ModuleType` has no attribute `_fbthrift_all_structs`.
         for cls in module._fbthrift_all_structs:
             self.register_type(cls)
 
