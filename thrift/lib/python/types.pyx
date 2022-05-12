@@ -146,7 +146,7 @@ cdef class StructInfo:
 
     cdef void fill(self) except *:
         cdef cDynamicStructInfo* info_ptr = self.cpp_obj.get()
-        for idx, (id, is_unqualified, name, type_info, _, _) in enumerate(self.fields):
+        for idx, (id, qualifier, name, type_info, _, _) in enumerate(self.fields):
             # type_info can be a lambda function so types with dependencies
             # won't need to be defined in order
             if callable(type_info):
@@ -154,7 +154,7 @@ cdef class StructInfo:
             self.type_infos.append(type_info)
             self.name_to_index[name] = idx
             info_ptr.addFieldInfo(
-                id, is_unqualified, name.encode("utf-8"), getCTypeInfo(type_info)
+                id, qualifier, name.encode("utf-8"), getCTypeInfo(type_info)
             )
 
     cdef void store_field_values(self) except *:
@@ -184,7 +184,7 @@ cdef class UnionInfo:
 
     cdef void fill(self) except *:
         cdef cDynamicStructInfo* info_ptr = self.cpp_obj.get()
-        for idx, (id, is_unqualified, name, type_info, _, adapter_classes) in enumerate(self.fields):
+        for idx, (id, qualifier, name, type_info, _, adapter_classes) in enumerate(self.fields):
             # type_info can be a lambda function so types with dependencies
             # won't need to be defined in order
             if callable(type_info):
@@ -192,7 +192,7 @@ cdef class UnionInfo:
             self.type_infos[id] = type_info
             self.id_to_adapter_classes[id] = adapter_classes
             info_ptr.addFieldInfo(
-                id, is_unqualified, name.encode("utf-8"), getCTypeInfo(type_info)
+                id, qualifier, name.encode("utf-8"), getCTypeInfo(type_info)
             )
 
 
