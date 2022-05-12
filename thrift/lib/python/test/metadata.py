@@ -19,8 +19,8 @@ import testing.thrift_metadata
 from apache.thrift.metadata.thrift_types import ThriftPrimitiveType
 from testing.thrift_clients import TestingService, TestingServiceChild
 from testing.thrift_services import TestingServiceInterface
-from testing.thrift_types import hard, HardError, Perm, mixed
-from thrift.python.metadata import gen_metadata, ThriftKind
+from testing.thrift_types import hard, HardError, Perm, mixed, Complex
+from thrift.python.metadata import gen_metadata
 
 
 class MetadataTests(unittest.TestCase):
@@ -240,3 +240,9 @@ class MetadataTests(unittest.TestCase):
         third = recStruct.fields["third"]
         self.assertEqual(third.as_list()[0].type, "3")
         self.assertEqual(third.as_list()[1].type, "4")
+
+    def test_complex(self) -> None:
+        complex_field_to_name = {
+            field.id: field.name for field in gen_metadata(Complex).fields
+        }
+        self.assertEqual(complex_field_to_name[7], "val_enum")

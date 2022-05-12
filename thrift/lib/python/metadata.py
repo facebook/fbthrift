@@ -24,6 +24,7 @@ from apache.thrift.metadata.thrift_types import (
     ThriftEnum,
     ThriftType,
     ThriftField,
+    ThriftEnumType,
     ThriftStructType,
     ThriftUnionType,
     ThriftPrimitiveType,
@@ -128,7 +129,7 @@ class ThriftTypeProxy:
             return ThriftMapProxy(val, thriftMeta)
         elif thriftType.type is ThriftType.Type.t_enum:
             val = thriftType.value
-            assert isinstance(thriftType, ThriftEnum)
+            assert isinstance(val, ThriftEnumType)
             specialType = ThriftTypeProxy(
                 thriftMeta.enums[thriftType.value.name], thriftMeta
             )
