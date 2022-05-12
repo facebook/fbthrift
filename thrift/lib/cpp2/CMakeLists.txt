@@ -274,6 +274,7 @@ add_library(
   server/RequestDebugLog.cpp
   server/RequestPileBase.cpp
   server/RequestPileInterface.cpp
+  server/ReactiveToggle.cpp
   server/RequestsRegistry.cpp
   server/ResourcePool.cpp
   server/ResourcePoolHandle.cpp
