@@ -30,7 +30,7 @@ class AbstractTest:
     def setUp(self):
         self.obj = ListTypeVersioningV2(
             strings=["plain thing", chr(40960) + "fun" + chr(1972)],
-            hello=u"hello\xac\u1234\u20ac\U00008000",
+            hello="hello\xac\u1234\u20ac\U00008000",
         )
 
     def _serialize(self, obj):

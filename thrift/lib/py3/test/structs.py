@@ -311,10 +311,10 @@ class StructTests(unittest.TestCase):
 class NumericalConversionsTests(unittest.TestCase):
     def test_overflow(self) -> None:
         with self.assertRaises(OverflowError):
-            numerical(float_val=5, int_val=2 ** 63 - 1)
+            numerical(float_val=5, int_val=2**63 - 1)
 
         with self.assertRaises(OverflowError):
-            numerical(float_val=5, int_val=2, int_list=[5, 2 ** 32])
+            numerical(float_val=5, int_val=2, int_list=[5, 2**32])
 
     def test_int_to_float(self) -> None:
         x = numerical(int_val=5, float_val=5, float_list=[1, 5, 6])
@@ -323,9 +323,9 @@ class NumericalConversionsTests(unittest.TestCase):
         x(float_list=[6, 7, 8])
 
     def test_int_to_i64(self) -> None:
-        large = 2 ** 63 - 1
+        large = 2**63 - 1
         numerical(int_val=5, float_val=5, i64_val=int(large))
-        too_large = 2 ** 65 - 1
+        too_large = 2**65 - 1
         with self.assertRaises(OverflowError):
             numerical(int_val=5, float_val=5, i64_val=int(too_large))
 

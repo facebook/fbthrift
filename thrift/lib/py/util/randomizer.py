@@ -332,7 +332,7 @@ class EnumRandomizer(ScalarTypeRandomizer):
 
 
 def _integer_randomizer_factory(name, ttype, n_bits):
-    _universe_size = 2 ** n_bits
+    _universe_size = 2**n_bits
     _min = -(2 ** (n_bits - 1))
     _max = (2 ** (n_bits - 1)) - 1
     _name = name
@@ -455,13 +455,13 @@ class FloatingPointRandomizer(ScalarTypeRandomizer):
 class SinglePrecisionFloatRandomizer(FloatingPointRandomizer):
     ttype = Thrift.TType.FLOAT
 
-    _universe_size = 2 ** 32
+    _universe_size = 2**32
 
 
 class DoublePrecisionFloatRandomizer(FloatingPointRandomizer):
     ttype = Thrift.TType.DOUBLE
 
-    _universe_size = 2 ** 64
+    _universe_size = 2**64
 
 
 class CollectionTypeRandomizer(BaseRandomizer):

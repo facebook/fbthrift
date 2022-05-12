@@ -199,7 +199,7 @@ class SerializerTests(unittest.TestCase):
         self.thrift_serialization_round_robin(control, fixtures)
 
     def test_pickle_Integers_union(self) -> None:
-        control = Integers(large=2 ** 32)
+        control = Integers(large=2**32)
         self.pickle_round_robin(control)
 
     def test_pickle_sequence(self) -> None:

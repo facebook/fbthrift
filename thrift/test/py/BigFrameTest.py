@@ -31,7 +31,7 @@ from ThriftTest import ThriftTest
 
 class TestHandler(ThriftTest.Iface):
     def testString(self, str):
-        return str * 2 ** 30
+        return str * 2**30
 
 
 def create_server():
@@ -66,4 +66,4 @@ class BigFrameTest(unittest.TestCase):
 
         with create_client(port) as client:
             result = client.testString("a")
-            self.assertEqual(len(result), 2 ** 30)
+            self.assertEqual(len(result), 2**30)

@@ -179,10 +179,10 @@ class ClientTests(unittest.TestCase):
             loop.run_until_complete(client.pick_a_color(Color.red))
 
     def test_rpc_int_sizes(self) -> None:
-        one = 2 ** 7 - 1
-        two = 2 ** 15 - 1
-        three = 2 ** 31 - 1
-        four = 2 ** 63 - 1
+        one = 2**7 - 1
+        two = 2**15 - 1
+        three = 2**31 - 1
+        four = 2**63 - 1
         client = TestingService()
         loop = asyncio.get_event_loop()
         with self.assertRaises(asyncio.InvalidStateError):

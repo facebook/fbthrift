@@ -99,7 +99,6 @@ if _is_legacy_ssl:
             certfile=certfile,
         )
 
-
 else:
 
     def _warn_if_legacy():

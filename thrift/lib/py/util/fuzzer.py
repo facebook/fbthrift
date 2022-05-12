@@ -56,7 +56,6 @@ if six.PY3:
     def load_source(name, pathname):
         return SourceFileLoader(name, pathname).load_module()
 
-
 else:
     import imp
 

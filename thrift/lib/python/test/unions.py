@@ -83,10 +83,10 @@ class UnionTests(unittest.TestCase):
         x.small
 
     def test_integers_fromValue(self) -> None:
-        tiny = 2 ** 7 - 1
-        small = 2 ** 15 - 1
-        medium = 2 ** 31 - 1
-        large = 2 ** 63 - 1
+        tiny = 2**7 - 1
+        small = 2**15 - 1
+        medium = 2**31 - 1
+        large = 2**63 - 1
         union = Integers.fromValue(tiny)
         self.assertEqual(union.type, Integers.Type.tiny)
         union = Integers.fromValue(small)
