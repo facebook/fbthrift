@@ -354,7 +354,9 @@ std::unordered_map<std::string, int32_t> get_client_name_to_split_count(
 }
 
 bool is_mixin(const t_field& field) {
-  return field.has_annotation("cpp.mixin");
+  return field.has_annotation("cpp.mixin") ||
+      field.find_structured_annotation_or_null(
+          "facebook.com/thrift/annotation/Mixin") != nullptr;
 }
 
 bool has_ref_annotation(const t_field& field) {

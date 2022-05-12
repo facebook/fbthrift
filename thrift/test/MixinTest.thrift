@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/thrift.thrift"
+
 struct Mixin1 {
   1: string field1;
 }
 
 struct Mixin2 {
-  1: Mixin1 m1 (cpp.mixin);
+  @thrift.Mixin
+  1: Mixin1 m1;
   2: optional string field2;
 }
 

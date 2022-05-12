@@ -18,6 +18,7 @@ namespace annotation {
   ::apache::thrift::detail::md::StructMetadata<Deprecated>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<TerseWrite>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Box>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<Mixin>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<SerializeInFieldIdOrder>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<NoLegacyAPIs>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<v1>::gen(metadata);

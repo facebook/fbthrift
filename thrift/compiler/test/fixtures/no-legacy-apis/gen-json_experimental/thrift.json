@@ -53,23 +53,29 @@
         "is_union" : false,
         "lineno" : 55
       },
+      "Mixin" : {
+        "name" : "Mixin",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 57
+      },
       "SerializeInFieldIdOrder" : {
         "name" : "SerializeInFieldIdOrder",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 62
+        "lineno" : 64
       },
       "NoLegacyAPIs" : {
         "name" : "NoLegacyAPIs",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 72
+        "lineno" : 74
       },
       "v1" : {
         "name" : "v1",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 79
+        "lineno" : 81
       }
       },
   "source_path" : "thrift/annotation/thrift",

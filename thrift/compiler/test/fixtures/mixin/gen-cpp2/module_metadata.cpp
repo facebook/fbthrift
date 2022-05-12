@@ -61,7 +61,7 @@ StructMetadata<::cpp2::Mixin2>::gen(ThriftMetadata& metadata) {
   module_Mixin2.is_union() = false;
   static const EncodedThriftField
   module_Mixin2_fields[] = {
-    {1, "m1", false, std::make_unique<Struct<::cpp2::Mixin1>>("module.Mixin1"), std::vector<ThriftConstStruct>{}},
+    {1, "m1", false, std::make_unique<Struct<::cpp2::Mixin1>>("module.Mixin1"), std::vector<ThriftConstStruct>{*cvStruct("thrift.Mixin", {}).cv_struct_ref(), }},
     {2, "field2", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_Mixin2_fields) {

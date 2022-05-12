@@ -107,8 +107,8 @@
         }
       }
     },
-    "SerializeInFieldIdOrder" : {
-      "lineno" : 62,
+    "Mixin" : {
+      "lineno" : 57,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -116,17 +116,35 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 60,
+          "line" : 56,
           "column" : 1
         },
         "end" : {
-          "line" : 64,
+          "line" : 57,
+          "column" : 70
+        }
+      }
+    },
+    "SerializeInFieldIdOrder" : {
+      "lineno" : 64,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 62,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 66,
           "column" : 2
         }
       }
     },
     "NoLegacyAPIs" : {
-      "lineno" : 72,
+      "lineno" : 74,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -134,17 +152,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 66,
+          "line" : 68,
           "column" : 1
         },
         "end" : {
-          "line" : 74,
+          "line" : 76,
           "column" : 2
         }
       }
     },
     "v1" : {
-      "lineno" : 79,
+      "lineno" : 81,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -152,11 +170,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 76,
+          "line" : 78,
           "column" : 1
         },
         "end" : {
-          "line" : 79,
+          "line" : 81,
           "column" : 13
         }
       }

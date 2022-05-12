@@ -10,6 +10,7 @@
 
 #include <thrift/lib/cpp2/type/Tag.h>
 
+#include "thrift/annotation/gen-cpp2/thrift_types.h"
 
 namespace apache {
 namespace thrift {
