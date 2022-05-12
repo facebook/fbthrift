@@ -757,7 +757,7 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node tablebased_qualifier() {
     const std::string enum_type = "::apache::thrift::detail::FieldQualifier::";
     switch (field_->qualifier()) {
-      case t_field_qualifier::unspecified:
+      case t_field_qualifier::none:
       case t_field_qualifier::required:
         return enum_type + "Unqualified";
       case t_field_qualifier::optional:

@@ -678,7 +678,7 @@ class mstch_python_field : public mstch_field {
   mstch::node tablebased_qualifier() {
     const std::string enum_type = "FieldQualifier.";
     switch (field_->qualifier()) {
-      case t_field_qualifier::unspecified:
+      case t_field_qualifier::none:
       case t_field_qualifier::required:
         return enum_type + "Unqualified";
       case t_field_qualifier::optional:

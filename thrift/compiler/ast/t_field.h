@@ -34,7 +34,7 @@ namespace compiler {
 class t_struct;
 
 enum class t_field_qualifier {
-  unspecified = 0,
+  none,
   required,
   optional,
   terse,
@@ -151,7 +151,7 @@ class t_field final : public t_named {
   void set_req(e_req req) {
     switch (req) {
       case e_req::opt_in_req_out:
-        set_qualifier(t_field_qualifier::unspecified);
+        set_qualifier(t_field_qualifier::none);
         break;
       case e_req::required:
         set_qualifier(t_field_qualifier::required);
@@ -166,7 +166,7 @@ class t_field final : public t_named {
   }
   e_req get_req() const {
     switch (qual_) {
-      case t_field_qualifier::unspecified:
+      case t_field_qualifier::none:
         return e_req::opt_in_req_out;
       case t_field_qualifier::required:
         return e_req::required;

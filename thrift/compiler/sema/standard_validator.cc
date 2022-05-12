@@ -246,7 +246,7 @@ void validate_field_names_uniqueness(
 void validate_union_field_attributes(
     diagnostic_context& ctx, const t_union& node) {
   for (const auto& field : node.fields()) {
-    if (field.qualifier() != t_field_qualifier::unspecified) {
+    if (field.qualifier() != t_field_qualifier::none) {
       auto qual = field.qualifier() == t_field_qualifier::required ? "required"
                                                                    : "optional";
       ctx.failure(field, [&](auto& o) {

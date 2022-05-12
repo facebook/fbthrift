@@ -55,7 +55,7 @@ void remove_param_list_field_qualifiers(
     diagnostic_context& ctx, mutator_context&, t_function& node) {
   for (auto& field : node.params().fields()) {
     switch (field.qualifier()) {
-      case t_field_qualifier::unspecified:
+      case t_field_qualifier::none:
         continue;
       case t_field_qualifier::required:
         ctx.warning(node, "optional keyword is ignored in argument lists.");
@@ -69,7 +69,7 @@ void remove_param_list_field_qualifiers(
             "@thrift.TerseWrite annotation is ignored in argument lists.");
         break;
     }
-    field.set_qualifier(t_field_qualifier::unspecified);
+    field.set_qualifier(t_field_qualifier::none);
   }
 }
 
@@ -81,7 +81,7 @@ void mutate_terse_write_annotation_field(
 
   if (terse_write_annotation) {
     auto qual = node.qualifier();
-    ctx.check(qual == t_field_qualifier::unspecified, [&](auto& o) {
+    ctx.check(qual == t_field_qualifier::none, [&](auto& o) {
       o << "`@thrift.TerseWrite` cannot be used with qualified fields. Remove `"
         << (qual == t_field_qualifier::required ? "required" : "optional")
         << "` qualifier from field `" << node.name() << "`.";
@@ -95,7 +95,7 @@ void mutate_terse_write_annotation_struct(
     diagnostic_context& ctx, mutator_context&, t_struct& node) {
   if (ctx.program().inherit_annotation_or_null(node, kTerseWriteUri)) {
     for (auto& field : node.fields()) {
-      if (field.qualifier() == t_field_qualifier::unspecified) {
+      if (field.qualifier() == t_field_qualifier::none) {
         field.set_qualifier(t_field_qualifier::terse);
       }
     }
