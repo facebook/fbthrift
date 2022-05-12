@@ -82,6 +82,10 @@ class Union(
     StructOrUnion,
     metaclass=UnionMeta,
 ):
+    # pyre-ignore[4]: it can be anything
+    type: typing.Any
+    # pyre-ignore[4]: it can be anything
+    value: typing.Any
     def __bool__(self) -> bool: ...
 
 class StructMeta(type): ...
