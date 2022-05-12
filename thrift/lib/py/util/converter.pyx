@@ -14,29 +14,22 @@
 # limitations under the License.
 
 import enum
-import typing
 
+from thrift.py3.types cimport Struct as py3_Struct, Union as py3_Union
+from thrift.py3.types import Enum as py3_Enum
 import thrift.py3.reflection as py3_reflection
-import thrift.py3.types as py3_types
-import thrift.python.types as python_types
+cimport thrift.python.types as python_types
 from thrift.Thrift import TType
 from thrift.util import parse_struct_spec
 
 
-T = typing.TypeVar("T")
-
-
-def to_py_struct(
-    cls: typing.Type[T], obj: typing.Union[py3_types.Struct, python_types.StructOrUnion]
-) -> T:
+def to_py_struct(cls, obj):
     return _to_py_struct(cls, obj)
 
 
-def _to_py_struct(
-    cls: typing.Type[T], obj: typing.Union[py3_types.Struct, python_types.StructOrUnion]
-) -> T:
+cdef object _to_py_struct(object cls, object obj):
     field_id_to_name = {}
-    if isinstance(obj, py3_types.Struct):
+    if isinstance(obj, py3_Struct):
         try:
             field_id_to_name = {
                 field_spec.id: (
@@ -46,13 +39,19 @@ def _to_py_struct(
             }
         except TypeError:
             pass
-    elif isinstance(obj, python_types.StructOrUnion):
-        # pyre-fixme[16]: `StructOrUnion` has no attribute `_fbthrift_SPEC`.
-        field_id_to_name = {spec[0]: spec[2] for spec in obj._fbthrift_SPEC}
+    elif isinstance(obj, python_types.Struct):
+        field_id_to_name = {
+            spec[0]: spec[2]
+            for spec in (<python_types.StructInfo>obj._fbthrift_struct_info).fields
+        }
+    elif isinstance(obj, python_types.Union):
+        field_id_to_name = {
+            spec[0]: spec[2]
+            for spec in (<python_types.UnionInfo>obj._fbthrift_struct_info).fields
+        }
 
-    # pyre-fixme[16]: `T` has no attribute `isUnion`.
     if cls.isUnion():
-        if not isinstance(obj, py3_types.Union) and not isinstance(
+        if not isinstance(obj, py3_Union) and not isinstance(
             obj, python_types.Union
         ):
             raise TypeError("Source object is not an Union")
@@ -80,14 +79,7 @@ def _to_py_struct(
         )
 
 
-# pyre-fixme[3]: Return annotation cannot be `Any`.
-def _to_py_field(
-    field_type: TType,
-    # pyre-fixme[2]: Parameter annotation cannot be `Any`.
-    type_args: typing.Any,
-    # pyre-fixme[2]: Parameter annotation cannot be `Any`.
-    obj: typing.Any,
-) -> typing.Any:
+cdef object _to_py_field(object field_type, object type_args, object obj):
     if obj is None:
         return None
     if field_type == TType.STRUCT:
@@ -104,6 +96,6 @@ def _to_py_field(
             for k, v in obj.items()
         }
     # thrift-python Enums are subclasses of enum.Enum
-    if isinstance(obj, py3_types.Enum) or isinstance(obj, enum.Enum):
+    if isinstance(obj, py3_Enum) or isinstance(obj, enum.Enum):
         return obj.value
     return obj

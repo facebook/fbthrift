@@ -641,7 +641,7 @@ cdef make_fget_union(type_value, adapter_classes):
 
 class StructMeta(type):
     def __new__(cls, name, bases, dct):
-        fields = dct['_fbthrift_SPEC']
+        fields = dct.pop('_fbthrift_SPEC')
         num_fields = len(fields)
         dct["_fbthrift_struct_info"] = StructInfo(name, fields)
         for i, f in enumerate(fields):
@@ -664,7 +664,7 @@ def gen_enum(fields):
 
 class UnionMeta(type):
     def __new__(cls, name, bases, dct):
-        fields = dct['_fbthrift_SPEC']
+        fields = dct.pop('_fbthrift_SPEC')
         num_fields = len(fields)
         dct["_fbthrift_struct_info"] = UnionInfo(name, fields)
         dct["Type"] = enum.Enum(name, gen_enum(fields))
