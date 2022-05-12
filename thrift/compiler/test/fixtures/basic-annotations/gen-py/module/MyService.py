@@ -1256,6 +1256,9 @@ lobDataById_args.thrift_spec = (
 lobDataById_args.thrift_struct_annotations = {
 }
 lobDataById_args.thrift_field_annotations = {
+  2: {
+    "cpp.name": "dataStr",
+  },
 }
 
 def lobDataById_args__init__(self, id=None, data=None,):

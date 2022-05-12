@@ -408,8 +408,8 @@ void MyServiceAsyncProcessor::executeRequest_lobDataById(apache::thrift::ServerR
   ::cpp2::MyService_lobDataById_pargs args;
   ::std::int64_t uarg_id{0};
   args.get<0>().value = &uarg_id;
-  auto uarg_data = std::make_unique<::std::string>();
-  args.get<1>().value = uarg_data.get();
+  auto uarg_dataStr = std::make_unique<::std::string>();
+  args.get<1>().value = uarg_dataStr.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "MyService.lobDataById", serverRequest.requestContext()));
   try {
     deserializeRequest<ProtocolIn_>(args, "lobDataById", apache::thrift::detail::ServerRequestHelper::compressedRequest(std::move(serverRequest)).uncompress(), ctxStack.get());
@@ -431,7 +431,7 @@ void MyServiceAsyncProcessor::executeRequest_lobDataById(apache::thrift::ServerR
     , requestPileNotification.first, requestPileNotification.second
     , concurrencyControllerNotification.first, concurrencyControllerNotification.second
     );
-  iface_->async_tm_lobDataById(std::move(callback), args.get<0>().ref(), std::move(uarg_data));
+  iface_->async_tm_lobDataById(std::move(callback), args.get<0>().ref(), std::move(uarg_dataStr));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

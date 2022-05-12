@@ -322,24 +322,24 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_putDataById(std
   }
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*dataStr*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("lobDataById");
 }
 
-folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::semifuture_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_dataStr) {
   auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
   __fbthrift_invocation_lobDataById.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
-  lobDataById(p_id, std::move(p_data));
+  lobDataById(p_id, std::move(p_dataStr));
   return folly::makeSemiFuture();
 }
 
-folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::future_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::cpp2::MyService>::future_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_dataStr) {
   auto expected{apache::thrift::detail::si::InvocationType::Future};
   __fbthrift_invocation_lobDataById.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
-  return apache::thrift::detail::si::future(semifuture_lobDataById(p_id, std::move(p_data)), getInternalKeepAlive());
+  return apache::thrift::detail::si::future(semifuture_lobDataById(p_id, std::move(p_dataStr)), getInternalKeepAlive());
 }
 
-void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data) {
+void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_dataStr) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
   // available to the future through the thread-local backchannel, so we create
@@ -355,19 +355,19 @@ void apache::thrift::ServiceHandler<::cpp2::MyService>::async_tm_lobDataById(std
       }
       case apache::thrift::detail::si::InvocationType::Future:
       {
-        auto fut = future_lobDataById(p_id, std::move(p_data));
+        auto fut = future_lobDataById(p_id, std::move(p_dataStr));
         apache::thrift::detail::si::async_tm_future_oneway(std::move(callback), std::move(fut));
         return;
       }
       case apache::thrift::detail::si::InvocationType::SemiFuture:
       {
-        auto fut = semifuture_lobDataById(p_id, std::move(p_data));
+        auto fut = semifuture_lobDataById(p_id, std::move(p_dataStr));
         apache::thrift::detail::si::async_tm_semifuture_oneway(std::move(callback), std::move(fut));
         return;
       }
       case apache::thrift::detail::si::InvocationType::Sync:
       {
-        lobDataById(p_id, std::move(p_data));
+        lobDataById(p_id, std::move(p_dataStr));
         return;
       }
       default:
@@ -458,7 +458,7 @@ void MyServiceSvNull::putDataById(::std::int64_t /*id*/, std::unique_ptr<::std::
   return;
 }
 
-void MyServiceSvNull::lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) {
+void MyServiceSvNull::lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*dataStr*/) {
   return;
 }
 

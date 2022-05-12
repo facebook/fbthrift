@@ -37,7 +37,7 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
     ) override;
     void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback
         , int64_t id
-        , std::unique_ptr<std::string> data
+        , std::unique_ptr<std::string> dataStr
     ) override;
     void async_tm_cppDoNothing(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;

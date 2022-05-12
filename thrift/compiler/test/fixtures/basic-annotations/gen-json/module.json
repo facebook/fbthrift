@@ -700,7 +700,22 @@
             },
             {
               "type_enum" : "STRING",
-              "spec_args" : null
+              "spec_args" : null,
+              "annotations" : {
+                "cpp.name" : {
+                  "value" : "dataStr",
+                  "source_range" : {
+                    "begin" : {
+                      "line" : 76,
+                      "column" : 54
+                    },
+                    "end" : {
+                      "line" : 76,
+                      "column" : 74
+                    }
+                  }
+                }
+              }
             }
           ],
           "throws" : [],
@@ -711,7 +726,7 @@
             },
             "end" : {
               "line" : 76,
-              "column" : 53
+              "column" : 76
             }
           }
         },

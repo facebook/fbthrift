@@ -126,7 +126,7 @@ data = std::move(data)    ]() mutable {
 void MyServiceWrapper::async_tm_lobDataById(
   std::unique_ptr<apache::thrift::HandlerCallbackBase> callback
     , int64_t id
-    , std::unique_ptr<std::string> data
+    , std::unique_ptr<std::string> dataStr
 ) {
   auto ctx = callback->getRequestContext();
   folly::via(
@@ -141,7 +141,7 @@ data = std::move(data)    ]() mutable {
             ctx,
             std::move(promise),
             id,
-            std::move(data)        );
+            std::move(dataStr)        );
         std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
           (void)t;
           

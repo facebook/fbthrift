@@ -73,7 +73,7 @@ service MyService {
     @MyStructNestedAnnotation{name = "argument"}
     2: string data,
   );
-  oneway void lobDataById(1: i64 id, 2: string data);
+  oneway void lobDataById(1: i64 id, 2: string data (cpp.name = "dataStr"));
   void doNothing() (cpp.name = 'cppDoNothing');
 }
 

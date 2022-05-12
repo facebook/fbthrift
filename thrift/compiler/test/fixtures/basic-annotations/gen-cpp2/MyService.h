@@ -66,10 +66,10 @@ class ServiceHandler<::cpp2::MyService> : public apache::thrift::ServerInterface
   virtual folly::Future<folly::Unit> future_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
   virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
   virtual void async_tm_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
-  virtual void lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/);
-  virtual folly::Future<folly::Unit> future_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
-  virtual folly::SemiFuture<folly::Unit> semifuture_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
-  virtual void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_data);
+  virtual void lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*dataStr*/);
+  virtual folly::Future<folly::Unit> future_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_dataStr);
+  virtual folly::SemiFuture<folly::Unit> semifuture_lobDataById(::std::int64_t p_id, std::unique_ptr<::std::string> p_dataStr);
+  virtual void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, ::std::int64_t p_id, std::unique_ptr<::std::string> p_dataStr);
   virtual void cppDoNothing();
   virtual folly::Future<folly::Unit> future_cppDoNothing();
   virtual folly::SemiFuture<folly::Unit> semifuture_cppDoNothing();
@@ -98,7 +98,7 @@ class MyServiceSvNull : public MyServiceSvIf {
   bool hasDataById(::std::int64_t /*id*/) override;
   void getDataById(::std::string& /*_return*/, ::std::int64_t /*id*/) override;
   void putDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) override;
-  void lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) override;
+  void lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*dataStr*/) override;
   void cppDoNothing() override;
 };
 

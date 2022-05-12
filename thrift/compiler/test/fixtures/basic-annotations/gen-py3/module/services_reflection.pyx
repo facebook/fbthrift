@@ -133,7 +133,7 @@ cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
                     type=str,
                     kind=__NumberType.NOT_A_NUMBER,
                     annotations={
-                    },
+                        """cpp.name""": """dataStr""",                    },
                 ),
             ),
             result=None,
