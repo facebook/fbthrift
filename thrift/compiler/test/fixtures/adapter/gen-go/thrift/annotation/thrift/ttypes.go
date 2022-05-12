@@ -135,6 +135,71 @@ func (p *RequiresBackwardCompatibility) String() string {
   return fmt.Sprintf("RequiresBackwardCompatibility({FieldName:%s})", fieldNameVal)
 }
 
+type Beta struct {
+}
+
+func NewBeta() *Beta {
+  return &Beta{}
+}
+
+type BetaBuilder struct {
+  obj *Beta
+}
+
+func NewBetaBuilder() *BetaBuilder{
+  return &BetaBuilder{
+    obj: NewBeta(),
+  }
+}
+
+func (p BetaBuilder) Emit() *Beta{
+  return &Beta{
+  }
+}
+
+func (p *Beta) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *Beta) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("Beta"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *Beta) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("Beta({})")
+}
+
 type Experimental struct {
 }
 

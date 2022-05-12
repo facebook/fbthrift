@@ -29,53 +29,59 @@
         "is_union" : false,
         "lineno" : 33
       },
+      "Beta" : {
+        "name" : "Beta",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 39
+      },
       "Experimental" : {
         "name" : "Experimental",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 39
+        "lineno" : 44
       },
       "Deprecated" : {
         "name" : "Deprecated",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 46
+        "lineno" : 51
       },
       "TerseWrite" : {
         "name" : "TerseWrite",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 52
+        "lineno" : 57
       },
       "Box" : {
         "name" : "Box",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 55
+        "lineno" : 61
       },
       "Mixin" : {
         "name" : "Mixin",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 57
+        "lineno" : 64
       },
       "SerializeInFieldIdOrder" : {
         "name" : "SerializeInFieldIdOrder",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 64
+        "lineno" : 71
       },
       "NoLegacyAPIs" : {
         "name" : "NoLegacyAPIs",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 74
+        "lineno" : 81
       },
       "v1" : {
         "name" : "v1",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 81
+        "lineno" : 89
       }
       },
   "source_path" : "thrift/annotation/thrift",

@@ -36,12 +36,17 @@ struct RequiresBackwardCompatibility {
 
 // Indicates a definition may change in backwards incompatible ways.
 @scope.Definition
+struct Beta {} (thrift.uri = "facebook.com/thrift/annotation/Beta")
+
+// Indicates a definition should only be used with permission, and may
+// change in incompatible ways or only work in specific contexts.
+@scope.Definition
 struct Experimental {} (
   thrift.uri = "facebook.com/thrift/annotation/Experimental",
 )
 
 // Indicates a definition should no longer be used.
-@Experimental // TODO(afuller): Hook up to code gen.
+@Beta // TODO(afuller): Hook up to code gen.
 @scope.Definition
 struct Deprecated {}
 
@@ -51,8 +56,10 @@ struct Deprecated {}
 @Experimental
 struct TerseWrite {} (thrift.uri = "facebook.com/thrift/annotation/TerseWrite")
 
+@Beta
 @scope.Field
 struct Box {} (thrift.uri = "facebook.com/thrift/annotation/Box")
+@Beta
 @scope.Field
 struct Mixin {} (thrift.uri = "facebook.com/thrift/annotation/Mixin")
 
@@ -75,6 +82,7 @@ struct NoLegacyAPIs {} (
   thrift.uri = "facebook.com/thrift/annotation/NoLegacyAPIs",
 )
 
+@Experimental
 @TerseWrite
 @NoLegacyAPIs
 @scope.FbthriftInternalScopeTransitive

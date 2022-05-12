@@ -30,6 +30,13 @@ void reset_field<::facebook::thrift::annotation::RequiresBackwardCompatibility>(
 }
 
 template<>
+void reset_field<::facebook::thrift::annotation::Beta>(
+    ::facebook::thrift::annotation::Beta& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
 void reset_field<::facebook::thrift::annotation::Experimental>(
     ::facebook::thrift::annotation::Experimental& obj, uint16_t index) {
   switch (index) {
@@ -88,6 +95,16 @@ void reset_field<::facebook::thrift::annotation::v1>(
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::RequiresBackwardCompatibility>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::Beta>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

@@ -35,7 +35,7 @@
         }
       }
     },
-    "Experimental" : {
+    "Beta" : {
       "lineno" : 39,
       "is_exception" : false,
       "is_union" : false,
@@ -48,13 +48,31 @@
           "column" : 1
         },
         "end" : {
-          "line" : 41,
+          "line" : 39,
+          "column" : 68
+        }
+      }
+    },
+    "Experimental" : {
+      "lineno" : 44,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 43,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 46,
           "column" : 2
         }
       }
     },
     "Deprecated" : {
-      "lineno" : 46,
+      "lineno" : 51,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -62,52 +80,16 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 44,
+          "line" : 49,
           "column" : 1
         },
         "end" : {
-          "line" : 46,
+          "line" : 51,
           "column" : 21
         }
       }
     },
     "TerseWrite" : {
-      "lineno" : 52,
-      "is_exception" : false,
-      "is_union" : false,
-      "fields" : {
-
-      },
-      "source_range" : {
-        "begin" : {
-          "line" : 48,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 52,
-          "column" : 80
-        }
-      }
-    },
-    "Box" : {
-      "lineno" : 55,
-      "is_exception" : false,
-      "is_union" : false,
-      "fields" : {
-
-      },
-      "source_range" : {
-        "begin" : {
-          "line" : 54,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 55,
-          "column" : 66
-        }
-      }
-    },
-    "Mixin" : {
       "lineno" : 57,
       "is_exception" : false,
       "is_union" : false,
@@ -116,16 +98,34 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 56,
+          "line" : 53,
           "column" : 1
         },
         "end" : {
           "line" : 57,
-          "column" : 70
+          "column" : 80
         }
       }
     },
-    "SerializeInFieldIdOrder" : {
+    "Box" : {
+      "lineno" : 61,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 59,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 61,
+          "column" : 66
+        }
+      }
+    },
+    "Mixin" : {
       "lineno" : 64,
       "is_exception" : false,
       "is_union" : false,
@@ -138,13 +138,13 @@
           "column" : 1
         },
         "end" : {
-          "line" : 66,
-          "column" : 2
+          "line" : 64,
+          "column" : 70
         }
       }
     },
-    "NoLegacyAPIs" : {
-      "lineno" : 74,
+    "SerializeInFieldIdOrder" : {
+      "lineno" : 71,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -152,16 +152,16 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 68,
+          "line" : 69,
           "column" : 1
         },
         "end" : {
-          "line" : 76,
+          "line" : 73,
           "column" : 2
         }
       }
     },
-    "v1" : {
+    "NoLegacyAPIs" : {
       "lineno" : 81,
       "is_exception" : false,
       "is_union" : false,
@@ -170,11 +170,29 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 78,
+          "line" : 75,
           "column" : 1
         },
         "end" : {
-          "line" : 81,
+          "line" : 83,
+          "column" : 2
+        }
+      }
+    },
+    "v1" : {
+      "lineno" : 89,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 85,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 89,
           "column" : 13
         }
       }

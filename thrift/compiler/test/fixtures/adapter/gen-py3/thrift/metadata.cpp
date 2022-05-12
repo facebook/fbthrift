@@ -14,6 +14,7 @@ namespace annotation {
   ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
   ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::StructMetadata<RequiresBackwardCompatibility>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<Beta>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Experimental>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Deprecated>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<TerseWrite>::gen(metadata);
