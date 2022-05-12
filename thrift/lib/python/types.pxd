@@ -24,12 +24,16 @@ cdef extern from "<thrift/lib/cpp2/protocol/TableBasedSerializer.h>" namespace "
         pass
     cdef struct cStructInfo "::apache::thrift::detail::StructInfo":
         pass
+    cpdef enum class FieldQualifier "::apache::thrift::detail::FieldQualifier":
+        Unqualified
+        Optional
+        Terse
 
 cdef extern from "<thrift/lib/python/types.h>" namespace "::apache::thrift::python":
     cdef cppclass cDynamicStructInfo "::apache::thrift::python::DynamicStructInfo":
         cDynamicStructInfo(const char* name, int16_t numFields, bint isUnion)
         const cStructInfo& getStructInfo()
-        void addFieldInfo(int16_t id, bint isUnqualified, const char* name, const cTypeInfo* typeInfo) except+
+        void addFieldInfo(int16_t id, FieldQualifier qualifier, const char* name, const cTypeInfo* typeInfo) except+
         void addFieldValue(int16_t index, object fieldValue) except+
         bint isUnion()
 

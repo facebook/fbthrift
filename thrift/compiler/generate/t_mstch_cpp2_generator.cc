@@ -25,6 +25,7 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/split.hpp>
 
+#include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/gen/cpp/type_resolver.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
@@ -666,6 +667,8 @@ class mstch_cpp2_field : public mstch_field {
             {"field:eligible_for_storage_name_mangling?",
              &mstch_cpp2_field::eligible_for_storage_name_mangling},
             {"field:type_tag", &mstch_cpp2_field::type_tag},
+            {"field:tablebased_qualifier",
+             &mstch_cpp2_field::tablebased_qualifier},
         });
     register_has_option("field:deprecated_clear?", "deprecated_clear");
   }
@@ -750,6 +753,22 @@ class mstch_cpp2_field : public mstch_field {
         throw std::runtime_error("unknown qualifier");
     }
   }
+
+  mstch::node tablebased_qualifier() {
+    const std::string enum_type = "::apache::thrift::detail::FieldQualifier::";
+    switch (field_->qualifier()) {
+      case t_field_qualifier::unspecified:
+      case t_field_qualifier::required:
+        return enum_type + "Unqualified";
+      case t_field_qualifier::optional:
+        return enum_type + "Optional";
+      case t_field_qualifier::terse:
+        return enum_type + "Terse";
+      default:
+        throw std::runtime_error("unknown qualifier");
+    }
+  }
+
   mstch::node transitively_refers_to_unique() {
     return cpp2::field_transitively_refers_to_unique(field_);
   }

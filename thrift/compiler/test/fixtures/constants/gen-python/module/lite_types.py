@@ -16,7 +16,7 @@ class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "weeks",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -24,7 +24,7 @@ class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "title",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -32,7 +32,7 @@ class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             3,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "employer",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(Company),  # typeinfo
             None,  # default value
@@ -40,7 +40,7 @@ class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             4,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "compensation",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             None,  # default value
@@ -48,7 +48,7 @@ class Internship(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             5,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "school",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -74,7 +74,7 @@ class Range(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "min",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -82,7 +82,7 @@ class Range(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "max",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -108,7 +108,7 @@ class struct1(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "a",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             1234567,  # default value
@@ -116,7 +116,7 @@ class struct1(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "b",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             "<uninitialized>",  # default value
@@ -142,7 +142,7 @@ class struct2(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "a",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -150,7 +150,7 @@ class struct2(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "b",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -158,7 +158,7 @@ class struct2(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "c",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(struct1),  # typeinfo
             None,  # default value
@@ -166,7 +166,7 @@ class struct2(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "d",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
             None,  # default value
@@ -192,7 +192,7 @@ class struct3(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "a",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -200,7 +200,7 @@ class struct3(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "b",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -208,7 +208,7 @@ class struct3(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "c",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(struct2),  # typeinfo
             None,  # default value
@@ -234,7 +234,7 @@ class struct4(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "a",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -242,7 +242,7 @@ class struct4(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "b",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             None,  # default value
@@ -250,7 +250,7 @@ class struct4(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             3,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "c",  # name
             _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
             None,  # default value
@@ -276,7 +276,7 @@ class union1(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "i",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -284,7 +284,7 @@ class union1(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "d",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             None,  # default value
@@ -310,7 +310,7 @@ class union2(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "i",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -318,7 +318,7 @@ class union2(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "d",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             None,  # default value
@@ -326,7 +326,7 @@ class union2(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "s",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(struct1),  # typeinfo
             None,  # default value
@@ -334,7 +334,7 @@ class union2(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "u",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(union1),  # typeinfo
             None,  # default value

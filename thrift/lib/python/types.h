@@ -385,7 +385,7 @@ class DynamicStructInfo {
 
   void addFieldInfo(
       detail::FieldID id,
-      bool isUnqualified,
+      detail::FieldQualifier qualifier,
       const char* name,
       const detail::TypeInfo* typeInfo);
 

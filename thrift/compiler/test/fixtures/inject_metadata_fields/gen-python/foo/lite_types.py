@@ -16,7 +16,7 @@ class Fields(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             100,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "injected_field",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -24,7 +24,7 @@ class Fields(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             101,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "injected_structured_annotation_field",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -32,7 +32,7 @@ class Fields(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             102,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "injected_unstructured_annotation_field",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value

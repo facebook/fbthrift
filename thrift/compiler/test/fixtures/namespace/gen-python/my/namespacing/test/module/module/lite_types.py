@@ -14,7 +14,7 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "MyInt",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -52,7 +52,7 @@ class _fbthrift_TestService_init_args(metaclass=_fbthrift_py3lite_types.StructMe
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "int1",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -64,7 +64,7 @@ class _fbthrift_TestService_init_result(metaclass=_fbthrift_py3lite_types.Struct
     _fbthrift_SPEC = (
         (
             0,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value

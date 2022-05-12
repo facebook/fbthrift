@@ -79,13 +79,22 @@ enum class StringFieldType {
   IOBufObj,
 };
 
+// A required field is handled as an unqualified field, because the required
+// qualifier is deprecated and has same serialization semantic with the
+// unqualified qualifier.
+enum class FieldQualifier {
+  Unqualified,
+  Optional,
+  Terse,
+};
+
 struct FieldInfo {
   // Field id in thrift definition.
   FieldID id;
 
   // Unqualified fields need to be differentiated from optional fields to always
   // write unqualified fields despite the value of __isset.
-  bool isUnqualified;
+  FieldQualifier qualifier;
 
   const char* name;
 

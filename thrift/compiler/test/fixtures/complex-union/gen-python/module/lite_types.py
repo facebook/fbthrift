@@ -14,7 +14,7 @@ class ComplexUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "intValue",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -22,7 +22,7 @@ class ComplexUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "stringValue",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -30,7 +30,7 @@ class ComplexUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "intListValue",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i64),  # typeinfo
             None,  # default value
@@ -38,7 +38,7 @@ class ComplexUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "stringListValue",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
@@ -46,7 +46,7 @@ class ComplexUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             9,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "typedefValue",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
@@ -54,7 +54,7 @@ class ComplexUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             14,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "stringRef",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -80,7 +80,7 @@ class ListUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "intListValue",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i64),  # typeinfo
             None,  # default value
@@ -88,7 +88,7 @@ class ListUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "stringListValue",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
@@ -114,7 +114,7 @@ class DataUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "binaryData",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value
@@ -122,7 +122,7 @@ class DataUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "stringData",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -148,7 +148,7 @@ class Val(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "strVal",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -156,7 +156,7 @@ class Val(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "intVal",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -164,7 +164,7 @@ class Val(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             9,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "typedefValue",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
@@ -190,7 +190,7 @@ class ValUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "v1",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(Val),  # typeinfo
             None,  # default value
@@ -198,7 +198,7 @@ class ValUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "v2",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(Val),  # typeinfo
             None,  # default value
@@ -224,7 +224,7 @@ class VirtualComplexUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "thingOne",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -232,7 +232,7 @@ class VirtualComplexUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "thingTwo",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -258,7 +258,7 @@ class NonCopyableStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "num",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -284,7 +284,7 @@ class NonCopyableUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "s",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(NonCopyableStruct),  # typeinfo
             None,  # default value

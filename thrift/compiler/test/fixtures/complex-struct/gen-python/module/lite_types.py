@@ -16,7 +16,7 @@ class MyStructFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myLongField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -24,7 +24,7 @@ class MyStructFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "MyByteField",  # name
             _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
             None,  # default value
@@ -32,7 +32,7 @@ class MyStructFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myStringField",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -40,7 +40,7 @@ class MyStructFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myFloatField",  # name
             _fbthrift_py3lite_types.typeinfo_float,  # typeinfo
             None,  # default value
@@ -66,7 +66,7 @@ class MyStructMapFloatThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myLongField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -74,7 +74,7 @@ class MyStructMapFloatThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mapListOfFloats",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_float))),  # typeinfo
             None,  # default value
@@ -100,7 +100,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "MyIntField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -108,7 +108,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "MyStringField",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -116,7 +116,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "MyDataField",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataItem),  # typeinfo
             None,  # default value
@@ -124,7 +124,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myEnum",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
@@ -132,7 +132,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "MyBoolField",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
@@ -140,7 +140,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             6,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "MyByteField",  # name
             _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
             None,  # default value
@@ -148,7 +148,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             7,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "MyShortField",  # name
             _fbthrift_py3lite_types.typeinfo_i16,  # typeinfo
             None,  # default value
@@ -156,7 +156,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             8,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "MyLongField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -164,7 +164,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             9,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "MyDoubleField",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             None,  # default value
@@ -172,7 +172,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             10,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "lDouble",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_double),  # typeinfo
             None,  # default value
@@ -180,7 +180,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             11,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "lShort",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
             None,  # default value
@@ -188,7 +188,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             12,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "lInteger",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
             None,  # default value
@@ -196,7 +196,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             13,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "lLong",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i64),  # typeinfo
             None,  # default value
@@ -204,7 +204,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             14,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "lString",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
@@ -212,7 +212,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             15,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "lBool",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_bool),  # typeinfo
             None,  # default value
@@ -220,7 +220,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             16,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "lByte",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_byte),  # typeinfo
             None,  # default value
@@ -228,7 +228,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             17,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mShortString",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
@@ -236,7 +236,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             18,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mIntegerString",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
@@ -244,7 +244,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             19,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mStringMyStruct",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.StructTypeInfo(MyStruct)),  # typeinfo
             None,  # default value
@@ -252,7 +252,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             20,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mStringBool",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.typeinfo_bool),  # typeinfo
             None,  # default value
@@ -260,7 +260,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             21,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mIntegerInteger",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
             None,  # default value
@@ -268,7 +268,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             22,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mIntegerBool",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_bool),  # typeinfo
             None,  # default value
@@ -276,7 +276,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             23,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "sShort",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i16),  # typeinfo
             None,  # default value
@@ -284,7 +284,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             24,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "sMyStruct",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyStruct)),  # typeinfo
             None,  # default value
@@ -292,7 +292,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             25,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "sLong",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i64),  # typeinfo
             None,  # default value
@@ -300,7 +300,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             26,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "sString",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
@@ -308,7 +308,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             27,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "sByte",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_byte),  # typeinfo
             None,  # default value
@@ -316,7 +316,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             28,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mListList",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32), _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32)),  # typeinfo
             None,  # default value
@@ -342,7 +342,7 @@ class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "age",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             60,  # default value
@@ -350,7 +350,7 @@ class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "name",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             "Batman",  # default value
@@ -376,7 +376,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myLongDFset",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             10,  # default value
@@ -384,7 +384,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myLongDF",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -392,7 +392,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "portDFset",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             3456,  # default value
@@ -400,7 +400,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "portNum",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -408,7 +408,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myBinaryDFset",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             b"abc",  # default value
@@ -416,7 +416,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             6,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myBinary",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value
@@ -424,7 +424,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             7,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myByteDFSet",  # name
             _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
             17,  # default value
@@ -432,7 +432,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             8,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myByte",  # name
             _fbthrift_py3lite_types.typeinfo_byte,  # typeinfo
             None,  # default value
@@ -440,7 +440,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             9,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myDoubleDFset",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             float(99.7678),  # default value
@@ -448,7 +448,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             10,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myDoubleDFZero",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             float(0),  # default value
@@ -456,7 +456,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             12,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myDouble",  # name
             _fbthrift_py3lite_types.typeinfo_double,  # typeinfo
             None,  # default value
@@ -464,7 +464,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             13,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "field3",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string, {15: "a_value", 2: "b_value"}),  # default value
@@ -472,7 +472,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             14,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myList",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.EnumTypeInfo(MyEnum)),  # typeinfo
             lambda: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.EnumTypeInfo(MyEnum), (MyEnum.MyValue1, MyEnum.MyValue1, MyEnum.MyValue2, )),  # default value
@@ -480,7 +480,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             15,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mySet",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             lambda: _fbthrift_py3lite_types.Set(_fbthrift_py3lite_types.typeinfo_string, ("house", "car", "dog", )),  # default value
@@ -488,7 +488,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             16,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "simpleStruct",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(SimpleStruct),  # typeinfo
             lambda: SimpleStruct(age=40, name="John"),  # default value
@@ -496,7 +496,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             17,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "listStructDFset",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct)),  # typeinfo
             lambda: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), (SimpleStruct(age=40, name="IronMan"), SimpleStruct(age=999, name="Thanos"), )),  # default value
@@ -504,7 +504,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             18,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myUnion",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnion),  # typeinfo
             lambda: MyUnion(myEnum=MyEnum.MyValue2),  # default value
@@ -512,7 +512,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             19,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "listUnionDFset",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyUnion)),  # typeinfo
             lambda: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(MyUnion), (MyUnion(myEnum=MyEnum.MyValue2), MyUnion(intValue=123), )),  # default value
@@ -520,7 +520,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             20,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mapNestlistStructDfSet",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct))),  # typeinfo
             lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct)), {1: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), (SimpleStruct(age=40, name="IronMan"), SimpleStruct(age=999, name="Thanos"), )), 2: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), (SimpleStruct(age=28, name="BatMan"), SimpleStruct(age=12, name="Robin"), )), 5: _fbthrift_py3lite_types.List(_fbthrift_py3lite_types.StructTypeInfo(SimpleStruct), (SimpleStruct(age=12, name="RatMan"), SimpleStruct(age=6, name="Catman"), ))}),  # default value
@@ -528,7 +528,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             21,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mapJavaTypeDFset",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_string, {15: "a_value", 2: "b_value"}),  # default value
@@ -536,7 +536,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             22,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "emptyMap",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
             lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_i32, {}),  # default value
@@ -544,7 +544,7 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             23,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "enumMapDFset",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum))),  # typeinfo
             lambda: _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum)), {"SANDY BRIDGE": _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum), {16: MyEnum.MyValue1, 144: MyEnum.MyValue1}), "IVY BRIDGE": _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum), {32: MyEnum.MyValue2, 144: MyEnum.MyValue2}), "HASWELL": _fbthrift_py3lite_types.Map(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.EnumTypeInfo(MyEnum), {32: MyEnum.MyValue3, 128: MyEnum.MyValue3, 256: MyEnum.MyValue3})}),  # default value
@@ -570,7 +570,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myLongField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -578,7 +578,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myLongTypeDef",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -586,7 +586,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myStringField",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -594,7 +594,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myStringTypedef",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -602,7 +602,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myMapField",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
@@ -610,7 +610,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             6,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myMapTypedef",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
@@ -618,7 +618,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             7,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myListField",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_double),  # typeinfo
             None,  # default value
@@ -626,7 +626,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             8,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myListTypedef",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_double),  # typeinfo
             None,  # default value
@@ -634,7 +634,7 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             9,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myMapListOfTypeDef",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i16, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_double))),  # typeinfo
             None,  # default value
@@ -678,7 +678,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myEnum",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
@@ -686,7 +686,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myStruct",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStruct),  # typeinfo
             None,  # default value
@@ -694,7 +694,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myDataItem",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataItem),  # typeinfo
             None,  # default value
@@ -702,7 +702,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "complexNestedStruct",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(ComplexNestedStruct),  # typeinfo
             None,  # default value
@@ -710,7 +710,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "longValue",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -718,7 +718,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             6,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "intValue",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -744,7 +744,7 @@ class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myEnum",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
@@ -752,7 +752,7 @@ class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "setFloat",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_float)),  # typeinfo
             None,  # default value
@@ -760,7 +760,7 @@ class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myDataItem",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataItem),  # typeinfo
             None,  # default value
@@ -768,7 +768,7 @@ class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "complexNestedStruct",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(ComplexNestedStruct),  # typeinfo
             None,  # default value
@@ -794,7 +794,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "setOfSetOfInt",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i32)),  # typeinfo
             None,  # default value
@@ -802,7 +802,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "listofListOfListOfListOfEnum",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.EnumTypeInfo(MyEnum))))),  # typeinfo
             None,  # default value
@@ -810,7 +810,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "listOfListOfMyStruct",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyStruct))),  # typeinfo
             None,  # default value
@@ -818,7 +818,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "setOfListOfListOfLong",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i64))),  # typeinfo
             None,  # default value
@@ -826,7 +826,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "setOfSetOfsetOfLong",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i64))),  # typeinfo
             None,  # default value
@@ -834,7 +834,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             6,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mapStructListOfListOfLong",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyStruct)))),  # typeinfo
             None,  # default value
@@ -842,7 +842,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             7,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mKeyStructValInt",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyStruct), _fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
             None,  # default value
@@ -850,7 +850,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             8,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "listOfMapKeyIntValInt",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_i32)),  # typeinfo
             None,  # default value
@@ -858,7 +858,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             9,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "listOfMapKeyStrValList",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyStruct)))),  # typeinfo
             None,  # default value
@@ -866,7 +866,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             10,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mapKeySetValLong",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_i32), _fbthrift_py3lite_types.typeinfo_i64),  # typeinfo
             None,  # default value
@@ -874,7 +874,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             11,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mapKeyListValLong",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string), _fbthrift_py3lite_types.typeinfo_i32),  # typeinfo
             None,  # default value
@@ -882,7 +882,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             12,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mapKeyMapValMap",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string), _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string)),  # typeinfo
             None,  # default value
@@ -890,7 +890,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             13,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mapKeySetValMap",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32)), _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string)), _fbthrift_py3lite_types.typeinfo_string)),  # typeinfo
             None,  # default value
@@ -898,7 +898,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             14,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "NestedMaps",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string), _fbthrift_py3lite_types.typeinfo_string), _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_string)),  # typeinfo
             None,  # default value
@@ -906,7 +906,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             15,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mapKeyIntValList",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(MyStruct))),  # typeinfo
             None,  # default value
@@ -914,7 +914,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             16,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mapKeyIntValSet",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_bool)),  # typeinfo
             None,  # default value
@@ -922,7 +922,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             17,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mapKeySetValInt",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_bool), _fbthrift_py3lite_types.EnumTypeInfo(MyEnum)),  # typeinfo
             None,  # default value
@@ -930,7 +930,7 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             18,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "mapKeyListValSet",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_i32), _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_double, _fbthrift_py3lite_types.typeinfo_string))),  # typeinfo
             None,  # default value
@@ -956,7 +956,7 @@ class TypeRemapped(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "lsMap",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
@@ -964,7 +964,7 @@ class TypeRemapped(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "ioMap",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i32, _fbthrift_py3lite_types.typeinfo_i64)),  # typeinfo
             None,  # default value
@@ -972,7 +972,7 @@ class TypeRemapped(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "BigInteger",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -980,7 +980,7 @@ class TypeRemapped(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "binaryTestBuffer",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value
@@ -1024,7 +1024,7 @@ class reqXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "message",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -1032,7 +1032,7 @@ class reqXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
         ),
         (
             2,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "errorCode",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -1058,7 +1058,7 @@ class optXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "message",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -1066,7 +1066,7 @@ class optXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
         ),
         (
             2,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "errorCode",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
@@ -1092,7 +1092,7 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "message",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -1100,7 +1100,7 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "listStrings",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
@@ -1108,7 +1108,7 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "errorEnum",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
@@ -1116,7 +1116,7 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
         ),
         (
             4,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "unionError",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyUnion),  # typeinfo
             None,  # default value
@@ -1124,7 +1124,7 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "structError",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStruct),  # typeinfo
             None,  # default value
@@ -1132,7 +1132,7 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
         ),
         (
             6,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "lsMap",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_i64, _fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value

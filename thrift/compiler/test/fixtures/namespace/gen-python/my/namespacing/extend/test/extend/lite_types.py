@@ -24,7 +24,7 @@ class _fbthrift_ExtendTestService_check_args(metaclass=_fbthrift_py3lite_types.S
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "struct1",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(py3lite_module_root.my.namespacing.test.hsmodule.lite_types.HsFoo),  # typeinfo
             None,  # default value
@@ -36,7 +36,7 @@ class _fbthrift_ExtendTestService_check_result(metaclass=_fbthrift_py3lite_types
     _fbthrift_SPEC = (
         (
             0,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value

@@ -25,6 +25,7 @@
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
 
+#include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/detail/mustache/mstch.h>
 #include <thrift/compiler/generate/common.h>
@@ -663,6 +664,8 @@ class mstch_python_field : public mstch_field {
         this,
         {
             {"field:py_name", &mstch_python_field::py_name},
+            {"field:tablebased_qualifier",
+             &mstch_python_field::tablebased_qualifier},
             {"field:user_default_value",
              &mstch_python_field::user_default_value},
             {"field:has_adapter?", &mstch_python_field::has_adapter},
@@ -672,6 +675,20 @@ class mstch_python_field : public mstch_field {
   }
 
   mstch::node py_name() { return py_name_; }
+  mstch::node tablebased_qualifier() {
+    const std::string enum_type = "FieldQualifier.";
+    switch (field_->qualifier()) {
+      case t_field_qualifier::unspecified:
+      case t_field_qualifier::required:
+        return enum_type + "Unqualified";
+      case t_field_qualifier::optional:
+        return enum_type + "Optional";
+      case t_field_qualifier::terse:
+        return enum_type + "Terse";
+      default:
+        throw std::runtime_error("unknown qualifier");
+    }
+  }
   mstch::node user_default_value() {
     const t_const_value* value = field_->get_value();
     if (!value) {

@@ -18,7 +18,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "MyIntField",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -26,7 +26,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "MyStringField",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -34,7 +34,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "MyDataField",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataItem),  # typeinfo
             None,  # default value
@@ -42,7 +42,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myEnum",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
@@ -50,7 +50,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             5,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "oneway",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
@@ -58,7 +58,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             6,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "readonly",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
@@ -66,7 +66,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             7,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "idempotent",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
@@ -74,7 +74,7 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         ),
         (
             8,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "floatSet",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_float),  # typeinfo
             None,  # default value
@@ -118,7 +118,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myEnum",  # name
             lambda: _fbthrift_py3lite_types.EnumTypeInfo(MyEnum),  # typeinfo
             None,  # default value
@@ -126,7 +126,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myStruct",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyStruct),  # typeinfo
             None,  # default value
@@ -134,7 +134,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             3,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "myDataItem",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(MyDataItem),  # typeinfo
             None,  # default value
@@ -142,7 +142,7 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         ),
         (
             4,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "floatSet",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_float),  # typeinfo
             None,  # default value
@@ -209,7 +209,7 @@ class _fbthrift_MyService_getRandomData_result(metaclass=_fbthrift_py3lite_types
     _fbthrift_SPEC = (
         (
             0,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -222,7 +222,7 @@ class _fbthrift_MyService_sink_args(metaclass=_fbthrift_py3lite_types.StructMeta
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "sink",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -239,7 +239,7 @@ class _fbthrift_MyService_putDataById_args(metaclass=_fbthrift_py3lite_types.Str
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "id",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -247,7 +247,7 @@ class _fbthrift_MyService_putDataById_args(metaclass=_fbthrift_py3lite_types.Str
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "data",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -264,7 +264,7 @@ class _fbthrift_MyService_hasDataById_args(metaclass=_fbthrift_py3lite_types.Str
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "id",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -276,7 +276,7 @@ class _fbthrift_MyService_hasDataById_result(metaclass=_fbthrift_py3lite_types.S
     _fbthrift_SPEC = (
         (
             0,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
             None,  # default value
@@ -289,7 +289,7 @@ class _fbthrift_MyService_getDataById_args(metaclass=_fbthrift_py3lite_types.Str
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "id",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -301,7 +301,7 @@ class _fbthrift_MyService_getDataById_result(metaclass=_fbthrift_py3lite_types.S
     _fbthrift_SPEC = (
         (
             0,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -314,7 +314,7 @@ class _fbthrift_MyService_deleteDataById_args(metaclass=_fbthrift_py3lite_types.
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "id",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -331,7 +331,7 @@ class _fbthrift_MyService_lobDataById_args(metaclass=_fbthrift_py3lite_types.Str
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "id",  # name
             _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
             None,  # default value
@@ -339,7 +339,7 @@ class _fbthrift_MyService_lobDataById_args(metaclass=_fbthrift_py3lite_types.Str
         ),
         (
             2,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "data",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -357,7 +357,7 @@ class _fbthrift_MyService_invalid_return_for_hack_result(metaclass=_fbthrift_py3
     _fbthrift_SPEC = (
         (
             0,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "success",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_float),  # typeinfo
             None,  # default value
@@ -370,7 +370,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey0_args(metaclass=_fbthrift_py3
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "key",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -382,7 +382,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey0_result(metaclass=_fbthrift_p
     _fbthrift_SPEC = (
         (
             0,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value
@@ -395,7 +395,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey1_args(metaclass=_fbthrift_py3
     _fbthrift_SPEC = (
         (
             1,  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "key",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
@@ -407,7 +407,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey1_result(metaclass=_fbthrift_p
     _fbthrift_SPEC = (
         (
             0,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value

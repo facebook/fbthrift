@@ -28,7 +28,8 @@ namespace detail {
 
 constexpr TypeInfo kStopType = {
     protocol::TType::T_STOP, nullptr, nullptr, nullptr};
-constexpr FieldInfo kStopMarker = {0, false, nullptr, 0, 0, &kStopType};
+constexpr FieldInfo kStopMarker = {
+    0, FieldQualifier::Unqualified, nullptr, 0, 0, &kStopType};
 
 template <class Protocol_>
 void skip(
@@ -667,7 +668,7 @@ size_t write(
   } else {
     for (std::int16_t index = 0; index < structInfo.numFields; index++) {
       const auto& fieldInfo = structInfo.fieldInfos[index];
-      if (fieldInfo.isUnqualified ||
+      if (fieldInfo.qualifier == FieldQualifier::Unqualified ||
           isFieldSet(object, fieldInfo, structInfo)) {
         if (OptionalThriftValue value =
                 getValue(*fieldInfo.typeInfo, getMember(fieldInfo, object))) {

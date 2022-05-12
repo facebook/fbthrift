@@ -256,7 +256,7 @@ constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_Trivia
   /* .fieldInfos */ {
   {
     /* .id */ 1,
-    /* .isUnqualified */ false,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Optional,
     /* .name */ "fieldA",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(0),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(0),
@@ -264,7 +264,7 @@ constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_Trivia
   },
   {
     /* .id */ 2,
-    /* .isUnqualified */ false,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Optional,
     /* .name */ "fieldB",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(1),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(1),
@@ -272,7 +272,7 @@ constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_Trivia
   },
   {
     /* .id */ 3,
-    /* .isUnqualified */ false,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Optional,
     /* .name */ "fieldC",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(2),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(2),
@@ -280,7 +280,7 @@ constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_Trivia
   },
   {
     /* .id */ 4,
-    /* .isUnqualified */ false,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Optional,
     /* .name */ "fieldD",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(3),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(3),
@@ -288,7 +288,7 @@ constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_Trivia
   },
   {
     /* .id */ 5,
-    /* .isUnqualified */ true,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Unqualified,
     /* .name */ "fieldE",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(4),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(4),
@@ -503,7 +503,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
   /* .fieldInfos */ {
   {
     /* .id */ 2,
-    /* .isUnqualified */ true,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Unqualified,
     /* .name */ "fieldB",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(0),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(0),
@@ -511,7 +511,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
   },
   {
     /* .id */ 3,
-    /* .isUnqualified */ true,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Unqualified,
     /* .name */ "fieldC",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(1),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(1),
@@ -519,7 +519,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
   },
   {
     /* .id */ 4,
-    /* .isUnqualified */ true,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Unqualified,
     /* .name */ "fieldD",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(2),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(2),
@@ -527,7 +527,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
   },
   {
     /* .id */ 5,
-    /* .isUnqualified */ true,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Unqualified,
     /* .name */ "fieldE",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(3),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(3),
@@ -535,7 +535,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
   },
   {
     /* .id */ 6,
-    /* .isUnqualified */ true,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Unqualified,
     /* .name */ "fieldF",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(4),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(4),
@@ -543,7 +543,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
   },
   {
     /* .id */ 7,
-    /* .isUnqualified */ true,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Unqualified,
     /* .name */ "fieldG",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(5),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(5),
@@ -551,7 +551,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
   },
   {
     /* .id */ 8,
-    /* .isUnqualified */ true,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Unqualified,
     /* .name */ "fieldH",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(6),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(6),
@@ -559,7 +559,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
   },
   {
     /* .id */ 12,
-    /* .isUnqualified */ true,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Unqualified,
     /* .name */ "fieldA",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(7),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(7),
@@ -662,7 +662,7 @@ constexpr ::apache::thrift::detail::StructInfoN<2> __fbthrift_struct_info_Exampl
   /* .fieldInfos */ {
   {
     /* .id */ 1,
-    /* .isUnqualified */ true,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Unqualified,
     /* .name */ "fieldA",
     /* .memberOffset */ 0,
     /* .issetOffset */ 0,
@@ -670,7 +670,7 @@ constexpr ::apache::thrift::detail::StructInfoN<2> __fbthrift_struct_info_Exampl
   },
   {
     /* .id */ 2,
-    /* .isUnqualified */ true,
+    /* .qualifier */ ::apache::thrift::detail::FieldQualifier::Unqualified,
     /* .name */ "fieldB",
     /* .memberOffset */ 0,
     /* .issetOffset */ 0,

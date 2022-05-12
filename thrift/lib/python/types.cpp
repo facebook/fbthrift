@@ -21,6 +21,7 @@
 #include <folly/Range.h>
 #include <folly/ScopeGuard.h>
 #include <folly/lang/New.h>
+#include <thrift/lib/cpp2/protocol/TableBasedSerializer.h>
 
 namespace apache {
 namespace thrift {
@@ -154,7 +155,7 @@ PyObject* createStructTuple(const detail::StructInfo& structInfo) {
       *static_cast<const FieldValueMap*>(structInfo.customExt);
   for (int i = 0; i < numFields; ++i) {
     auto fieldInfo = structInfo.fieldInfos[i];
-    if (!fieldInfo.isUnqualified) { // optional field
+    if (fieldInfo.qualifier != detail::FieldQualifier::Unqualified) {
       PyTuple_SET_ITEM(tuple.get(), i + 1, Py_None);
       Py_INCREF(Py_None);
     } else {
@@ -559,14 +560,14 @@ DynamicStructInfo::~DynamicStructInfo() {
 
 void DynamicStructInfo::addFieldInfo(
     detail::FieldID id,
-    bool isUnqualified,
+    detail::FieldQualifier qualifier,
     const char* name,
     const detail::TypeInfo* typeInfo) {
   fieldNames_.push_back(name);
   int16_t idx = fieldNames_.size() - 1;
   structInfo_->fieldInfos[idx] = detail::FieldInfo{
       /* .id */ id,
-      /* .isUnqualified */ isUnqualified,
+      /* .qualifier */ qualifier,
       /* .name */ fieldNames_[idx].c_str(),
       /* .memberOffset */
       static_cast<ptrdiff_t>(

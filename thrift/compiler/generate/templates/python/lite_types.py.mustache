@@ -49,8 +49,7 @@ class {{struct:name}}(metaclass={{!
         {{#struct:fields_and_mixin_fields}}
         (
             {{field:key}},  # id
-            {{#field:opt_in_req_out?}}True{{/field:opt_in_req_out?}}{{!
-            }}{{^field:opt_in_req_out?}}False{{/field:opt_in_req_out?}},  # isUnqualified
+            _fbthrift_py3lite_types.{{field:tablebased_qualifier}}, # qualifier
             "{{field:py_name}}",  # name
             {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
             {{#field:user_default_value}}{{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{/field:type}}{{> types/constant_value }}{{/field:user_default_value}}{{!
@@ -143,7 +142,7 @@ class {{> types/function_args_type}}(metaclass=_fbthrift_py3lite_types.StructMet
         {{#function:args}}
         (
             {{field:key}},  # id
-            True,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "{{field:py_name}}",  # name
             {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
             None,  # default value
@@ -159,7 +158,7 @@ class {{> types/function_return_type}}(metaclass=_fbthrift_py3lite_types.StructM
         {{^type:void?}}
         (
             0,  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "success",  # name
             {{#function:return_type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/function:return_type}},  # typeinfo
             None,  # default value
@@ -170,7 +169,7 @@ class {{> types/function_return_type}}(metaclass=_fbthrift_py3lite_types.StructM
         {{#function:exceptions}}
         (
             {{field:key}},  # id
-            False,  # isUnqualified
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "{{field:py_name}}",  # name
             {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
             None,  # default value
