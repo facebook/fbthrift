@@ -373,6 +373,12 @@ class t_hack_generator : public t_oop_generator {
    * Service-level generation functions
    */
 
+  void _generate_args(
+      std::ofstream& out,
+      const t_service* tservice,
+      const t_function* tfunction);
+  void _generate_current_seq_id(
+      std::ofstream& out, const t_function* tfunction);
   void generate_service(const t_service* tservice, bool mangle);
   void generate_service_helpers(const t_service* tservice, bool mangle);
   void generate_service_interactions(const t_service* tservice, bool mangle);
@@ -4549,6 +4555,38 @@ void t_hack_generator::generate_php_struct_from_map(
   out << indent() << "}\n";
 }
 
+void t_hack_generator::_generate_args(
+    std::ofstream& out,
+    const t_service* tservice,
+    const t_function* tfunction) {
+  const std::string& argsname = generate_function_helper_name(
+      tservice, tfunction, PhpFunctionNameSuffix::ARGS);
+  const auto& fields = tfunction->get_paramlist()->fields();
+  out << indent() << "$args = " << argsname;
+
+  if (!fields.empty()) {
+    out << "::fromShape(shape(\n";
+    indent_up();
+    // Loop through the fields and assign to the args struct
+    for (auto&& field : fields) {
+      indent(out);
+      std::string name = "$" + field.name();
+      out << "'" << field.name() << "' => ";
+      if (nullable_everything_) {
+        // just passthrough null
+        out << name << " === null ? null : ";
+      }
+      t_name_generator namer;
+      this->_generate_sendImpl_arg(out, namer, name, field.get_type());
+      out << ",\n";
+    }
+    indent_down();
+    indent(out) << "));\n";
+  } else {
+    out << "::withDefaultValues();\n";
+  }
+}
+
 void t_hack_generator::generate_php_struct_async_struct_creation_method_header(
     std::ofstream& out, ThriftAsyncStructCreationMethod method_type) {
   indent(out) << "public static async function ";
@@ -5192,6 +5230,9 @@ void t_hack_generator::generate_service_interactions(
       }
       _generate_service_client_child_fn(f_service_, interaction, function);
       _generate_sendImpl(f_service_, interaction, function);
+      if (function->returns_sink()) {
+        _generate_sink_encode_sendImpl(f_service_, interaction, function);
+      }
       if (function->qualifier() != t_function_qualifier::one_way) {
         _generate_recvImpl(f_service_, interaction, function);
       }
@@ -5961,6 +6002,9 @@ void t_hack_generator::_generate_service_client(
       continue;
     }
     _generate_sendImpl(out, tservice, function);
+    if (function->returns_sink()) {
+      _generate_sink_encode_sendImpl(out, tservice, function);
+    }
     if (function->qualifier() != t_function_qualifier::one_way) {
       _generate_recvImpl(out, tservice, function);
     }
@@ -6485,12 +6529,22 @@ void t_hack_generator::_generate_sink_final_response_decode_recvImpl(
   scope_down(out);
 }
 
+void t_hack_generator::_generate_current_seq_id(
+    std::ofstream& out, const t_function* tfunction) {
+  indent(out) << "$currentseqid = $this->sendImpl_" << tfunction->name() << "(";
+
+  auto delim = "";
+  for (const auto& param : tfunction->get_paramlist()->fields()) {
+    out << delim << "$" << param.name();
+    delim = ", ";
+  }
+  out << ");\n";
+}
+
 void t_hack_generator::_generate_sendImpl(
     std::ofstream& out,
     const t_service* tservice,
     const t_function* tfunction) {
-  const t_struct* arg_struct = tfunction->get_paramlist();
-  const auto& fields = arg_struct->fields();
   const std::string& funname = tfunction->name();
   const std::string& rpc_function_name =
       generate_rpc_function_name(tservice, tfunction);
@@ -6505,32 +6559,9 @@ void t_hack_generator::_generate_sendImpl(
   }
   indent_up();
 
-  const std::string& argsname = generate_function_helper_name(
-      tservice, tfunction, PhpFunctionNameSuffix::ARGS);
+  out << indent() << "$currentseqid = $this->getNextSequenceID();\n";
+  _generate_args(out, tservice, tfunction);
 
-  out << indent() << "$currentseqid = $this->getNextSequenceID();\n"
-      << indent() << "$args = " << argsname;
-  if (!fields.empty()) {
-    out << "::fromShape(shape(\n";
-    indent_up();
-    // Loop through the fields and assign to the args struct
-    for (auto&& field : fields) {
-      indent(out);
-      std::string name = "$" + field.name();
-      out << "'" << field.name() << "' => ";
-      if (nullable_everything_) {
-        // just passthrough null
-        out << name << " === null ? null : ";
-      }
-      t_name_generator namer;
-      this->_generate_sendImpl_arg(out, namer, name, field.get_type());
-      out << ",\n";
-    }
-    indent_down();
-    indent(out) << "));\n";
-  } else {
-    out << "::withDefaultValues();\n";
-  }
   out << indent() << "try {\n";
   indent_up();
   out << indent() << "$this->eventHandler_->preSend('" << rpc_function_name
@@ -6609,10 +6640,6 @@ void t_hack_generator::_generate_sendImpl(
   indent(out) << "return $currentseqid;\n";
 
   scope_down(out);
-
-  if (tfunction->returns_sink()) {
-    _generate_sink_encode_sendImpl(out, tservice, tfunction);
-  }
 }
 
 // If !strict_types, containers are typehinted as KeyedContainer<Key, Value>
@@ -6822,14 +6849,7 @@ void t_hack_generator::_generate_service_client_child_fn(
   indent(out) << "await $this->asyncHandler_->genBefore(\"" << tservice_name
               << "\", \"" << generate_rpc_function_name(tservice, tfunction)
               << "\");\n";
-  indent(out) << "$currentseqid = $this->sendImpl_" << tfunction->name() << "(";
-
-  auto delim = "";
-  for (const auto& param : tfunction->get_paramlist()->fields()) {
-    out << delim << "$" << param.name();
-    delim = ", ";
-  }
-  out << ");\n";
+  _generate_current_seq_id(out, tfunction);
 
   if (tfunction->qualifier() != t_function_qualifier::one_way) {
     out << indent() << "$channel = $this->channel_;\n"
@@ -6932,14 +6952,7 @@ void t_hack_generator::_generate_service_client_stream_child_fn(
   indent(out) << "await $this->asyncHandler_->genBefore(\"" << tservice_name
               << "\", \"" << generate_rpc_function_name(tservice, tfunction)
               << "\");\n";
-  indent(out) << "$currentseqid = $this->sendImpl_" << tfunction->name() << "(";
-
-  auto delim = "";
-  for (const auto& param : tfunction->get_paramlist()->fields()) {
-    out << delim << "$" << param.name();
-    delim = ", ";
-  }
-  out << ");\n";
+  _generate_current_seq_id(out, tfunction);
 
   out << indent() << "$msg = $out_transport->getBuffer();\n"
       << indent() << "$out_transport->resetBuffer();\n"
@@ -7038,14 +7051,7 @@ void t_hack_generator::_generate_service_client_sink_child_fn(
   indent(out) << "await $this->asyncHandler_->genBefore(\"" << tservice_name
               << "\", \"" << generate_rpc_function_name(tservice, tfunction)
               << "\");\n";
-  indent(out) << "$currentseqid = $this->sendImpl_" << tfunction->name() << "(";
-
-  auto delim = "";
-  for (const auto& param : tfunction->get_paramlist()->fields()) {
-    out << delim << "$" << param.name();
-    delim = ", ";
-  }
-  out << ");\n";
+  _generate_current_seq_id(out, tfunction);
 
   out << indent() << "$msg = $out_transport->getBuffer();\n"
       << indent() << "$out_transport->resetBuffer();\n"
