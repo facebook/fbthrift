@@ -706,6 +706,13 @@ void ThriftServer::runtimeResourcePoolsChecks() {
     runtimeServerActions_.activeRequestTrackingDisabled = true;
     runtimeDisableResourcePools();
   }
+
+  if (getEnableCodel() || FLAGS_codel_enabled ||
+      (threadManager_ && threadManager_->codelEnabled())) {
+    LOG(INFO) << "Resource pools disabled. Codel enabled";
+    runtimeServerActions_.codelEnabled = true;
+    runtimeDisableResourcePools();
+  }
 }
 
 void ThriftServer::ensureResourcePools() {

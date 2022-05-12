@@ -171,6 +171,7 @@ std::string BaseThriftServer::RuntimeServerActions::explain() const {
       (activeRequestTrackingDisabled ? "activeRequestTrackingDisabled, " : "") +
       (setPreprocess ? "setPreprocess, " : "") +
       (setIsOverloaded ? "setIsOverloaded, " : "") +
+      (codelEnabled ? "codelEnabled, " : "") +
       (!resourcePoolFlagSet ? "flagsNotSet, " : "");
   return result;
 }

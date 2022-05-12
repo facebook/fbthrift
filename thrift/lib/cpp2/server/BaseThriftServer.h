@@ -187,6 +187,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
     bool setIsOverloaded{false};
     bool resourcePoolEnabled{false};
     bool resourcePoolFlagSet{false};
+    bool codelEnabled{false};
     std::string executorToThreadManagerUnexpectedFunctionName{};
 
     std::string explain() const;
