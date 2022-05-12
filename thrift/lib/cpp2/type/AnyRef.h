@@ -73,6 +73,11 @@ class AnyRef {
     return info_->type.as<native_type<Tag>>(ptr_);
   }
   template <typename Tag>
+  constexpr native_type<Tag>& as_mut() {
+    ensureMutable();
+    return info_->type.as<native_type<Tag>>(ptr_);
+  }
+  template <typename Tag>
   constexpr const native_type<Tag>* try_as() const noexcept {
     return info_->type.try_as<native_type<Tag>>(ptr_);
   }

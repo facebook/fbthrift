@@ -14,12 +14,20 @@
  * limitations under the License.
  */
 
+#pragma once
+
 #include <type_traits>
 
 #include <thrift/lib/cpp2/type/Protocol.h>
 
-namespace apache::thrift::test {
+// Helper so gtest prints out the line number when running the given check.
+#define FBTHRIFT_SCOPED_CHECK(check) \
+  {                                  \
+    SCOPED_TRACE(#check);            \
+    check;                           \
+  }
 
+namespace apache::thrift::test {
 namespace detail {
 
 template <typename Expected, typename Actual>
@@ -52,4 +60,13 @@ constexpr auto kUnknownStdProtocol = static_cast<type::StandardProtocol>(1000);
 inline const type::Protocol& UnknownProtocol() {
   return type::Protocol::get<kUnknownStdProtocol>();
 }
+
+// Returns the full thrift type name, for the given type.
+inline std::string thriftType(std::string_view type) {
+  if (type.empty()) {
+    return {};
+  }
+  return "facebook.com/thrift/" + std::string(type);
+}
+
 } // namespace apache::thrift::test

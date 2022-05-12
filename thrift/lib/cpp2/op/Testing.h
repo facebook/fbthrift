@@ -23,6 +23,9 @@
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 #include <thrift/lib/cpp2/op/Compare.h>
+#include <thrift/lib/cpp2/op/Serializer.h>
+#include <thrift/lib/cpp2/type/Protocol.h>
+#include <thrift/lib/cpp2/type/Testing.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 
 namespace apache::thrift::test {
@@ -120,5 +123,91 @@ template <typename P, typename T1 = typename P::value_type, typename T2 = T1>
 void expectPatch(P patch, const T1& actual, const T2& expected) {
   expectPatch(std::move(patch), actual, expected, expected);
 }
+
+// Always serializes integers to the number 1.
+class Number1Serializer
+    : public op::TagSerializer<type::i32_t, Number1Serializer> {
+  using Base = op::TagSerializer<type::i32_t, Number1Serializer>;
+
+ public:
+  const type::Protocol& getProtocol() const override;
+
+  using Base::encode;
+  void encode(const int&, folly::io::QueueAppender&& appender) const {
+    std::string data = "number 1!!";
+    appender.push(reinterpret_cast<const uint8_t*>(data.data()), data.size());
+  }
+
+  using Base::decode;
+  void decode(folly::io::Cursor& cursor, int& value) const {
+    cursor.readFixedString(10);
+    value = 1;
+  }
+};
+
+extern const type::Protocol kFollyToStringProtocol;
+
+// A serializer based on `folly::to<std::string>`.
+template <typename Tag>
+class FollyToStringSerializer
+    : public op::TagSerializer<Tag, FollyToStringSerializer<Tag>> {
+  using Base = op::TagSerializer<Tag, FollyToStringSerializer>;
+  using T = type::native_type<Tag>;
+
+ public:
+  const type::Protocol& getProtocol() const override {
+    return kFollyToStringProtocol;
+  }
+  using Base::encode;
+  void encode(const T& value, folly::io::QueueAppender&& appender) const {
+    std::string data = folly::to<std::string>(value);
+    appender.push(reinterpret_cast<const uint8_t*>(data.data()), data.size());
+  }
+  using Base::decode;
+  void decode(folly::io::Cursor& cursor, T& value) const {
+    value = folly::to<T>(cursor.readFixedString(cursor.totalLength()));
+  }
+};
+
+class MultiSerializer : public op::Serializer {
+  using Base = op::Serializer;
+
+ public:
+  mutable size_t intEncCount = 0;
+  mutable size_t dblEncCount = 0;
+
+  mutable size_t intDecCount = 0;
+  mutable size_t dblDecCount = 0;
+  mutable size_t anyDecCount = 0;
+
+  using Base::decode;
+  using Base::encode;
+
+  const type::Protocol& getProtocol() const override {
+    return kFollyToStringProtocol;
+  }
+  void encode(
+      type::AnyRef value, folly::io::QueueAppender&& appender) const override;
+  void encode(const type::AnyValue& value, folly::io::QueueAppender&& appender)
+      const override;
+  void decode(folly::io::Cursor& cursor, type::AnyRef value) const override;
+  void decode(
+      const type::Type& type,
+      folly::io::Cursor& cursor,
+      type::AnyValue& value) const override;
+
+  // Helper functions to check the statis
+  void checkAndResetInt(size_t enc, size_t dec) const;
+  void checkAndResetDbl(size_t enc, size_t dec) const;
+  void checkAndResetAny(size_t dec) const;
+  void checkAndResetAll() const;
+  void checkAnyDec() const;
+  void checkIntEnc() const;
+  void checkIntDec() const;
+  void checkDblEnc() const;
+  void checkDblDec() const;
+  void checkAnyIntDec() const;
+  void checkAnyDblDec() const;
+};
 
 } // namespace apache::thrift::test
