@@ -19,11 +19,13 @@
 #include <type_traits>
 
 #include <thrift/lib/cpp2/op/Get.h>
+#include <thrift/lib/cpp2/op/Hash.h>
 #include <thrift/lib/cpp2/type/BaseType.h>
 #include <thrift/lib/cpp2/type/NativeType.h>
 #include <thrift/lib/cpp2/type/ThriftType.h>
 #include <thrift/lib/cpp2/type/detail/Wrap.h>
 #include <thrift/lib/thrift/gen-cpp2/type_rep_types.h>
+#include <thrift/lib/thrift/gen-cpp2/type_rep_types_custom_protocol.h>
 
 namespace apache {
 namespace thrift {
@@ -185,3 +187,14 @@ class Type : public detail::Wrap<TypeStruct> {
 } // namespace type
 } // namespace thrift
 } // namespace apache
+
+// The custom specialization of std::hash can be injected in namespace std.
+namespace std {
+template <>
+struct hash<apache::thrift::type::Type> {
+  using Type = apache::thrift::type::Type;
+  size_t operator()(const Type& type) const noexcept {
+    return apache::thrift::op::hash<Type::underlying_tag>(type.toThrift());
+  }
+};
+} // namespace std
