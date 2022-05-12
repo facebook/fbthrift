@@ -62,49 +62,6 @@ interface BarClientIf extends \IThriftSyncIf {
 trait BarClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = Bar_baz_args::fromShape(shape(
-      'a' => $a,
-      'b' => Vec\map($b, 
-        $_val0 ==> dict($_val0)
-      ),
-    ));
-    try {
-      $this->eventHandler_->preSend('baz', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'baz', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'baz', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('baz', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('baz', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('baz', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('baz', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('baz', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_baz(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
@@ -184,7 +141,13 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Bar", "baz");
-    $currentseqid = $this->sendImpl_baz($a, $b);
+    $args = Bar_baz_args::fromShape(shape(
+      'a' => $a,
+      'b' => Vec\map($b, 
+        $_val0 ==> dict($_val0)
+      ),
+    ));
+    $currentseqid = $this->sendImplHelper($args, "baz", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -220,7 +183,13 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Bar", "baz");
-    $currentseqid = $this->sendImpl_baz($a, $b);
+    $args = Bar_baz_args::fromShape(shape(
+      'a' => $a,
+      'b' => Vec\map($b, 
+        $_val0 ==> dict($_val0)
+      ),
+    ));
+    $currentseqid = $this->sendImplHelper($args, "baz", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -240,7 +209,13 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
 
   /* send and recv functions */
   public function send_baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b): int {
-    return $this->sendImpl_baz($a, $b);
+    $args = Bar_baz_args::fromShape(shape(
+      'a' => $a,
+      'b' => Vec\map($b, 
+        $_val0 ==> dict($_val0)
+      ),
+    ));
+    return $this->sendImplHelper($args, "baz", false);
   }
   public function recv_baz(?int $expectedsequenceid = null): string {
     return $this->recvImpl_baz($expectedsequenceid);

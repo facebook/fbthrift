@@ -117,47 +117,6 @@ interface PubSubStreamingServiceClientIf extends \IThriftSyncIf {
 trait PubSubStreamingServiceClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_returnstream(int $i32_from, int $i32_to): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = PubSubStreamingService_returnstream_args::fromShape(shape(
-      'i32_from' => $i32_from,
-      'i32_to' => $i32_to,
-    ));
-    try {
-      $this->eventHandler_->preSend('returnstream', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'returnstream', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'returnstream', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('returnstream', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('returnstream', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('returnstream', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('returnstream', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('returnstream', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_returnstream_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
     $protocol = $this->input_;
@@ -245,46 +204,6 @@ trait PubSubStreamingServiceClientBase {
     return;
   }
 
-  protected function sendImpl_streamthrows(int $foo): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = PubSubStreamingService_streamthrows_args::fromShape(shape(
-      'foo' => $foo,
-    ));
-    try {
-      $this->eventHandler_->preSend('streamthrows', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'streamthrows', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'streamthrows', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('streamthrows', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('streamthrows', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('streamthrows', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('streamthrows', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('streamthrows', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_streamthrows_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
     $protocol = $this->input_;
@@ -375,46 +294,6 @@ trait PubSubStreamingServiceClientBase {
     return;
   }
 
-  protected function sendImpl_boththrows(int $foo): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = PubSubStreamingService_boththrows_args::fromShape(shape(
-      'foo' => $foo,
-    ));
-    try {
-      $this->eventHandler_->preSend('boththrows', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'boththrows', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'boththrows', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('boththrows', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('boththrows', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('boththrows', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('boththrows', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('boththrows', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_boththrows_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
     $protocol = $this->input_;
@@ -510,46 +389,6 @@ trait PubSubStreamingServiceClientBase {
     return;
   }
 
-  protected function sendImpl_responseandstreamthrows(int $foo): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = PubSubStreamingService_responseandstreamthrows_args::fromShape(shape(
-      'foo' => $foo,
-    ));
-    try {
-      $this->eventHandler_->preSend('responseandstreamthrows', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'responseandstreamthrows', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'responseandstreamthrows', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('responseandstreamthrows', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('responseandstreamthrows', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('responseandstreamthrows', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('responseandstreamthrows', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('responseandstreamthrows', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_responseandstreamthrows_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
     $protocol = $this->input_;
@@ -651,47 +490,6 @@ trait PubSubStreamingServiceClientBase {
     throw $x;
   }
 
-  protected function sendImpl_returnstreamFast(int $i32_from, int $i32_to): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = PubSubStreamingService_returnstreamFast_args::fromShape(shape(
-      'i32_from' => $i32_from,
-      'i32_to' => $i32_to,
-    ));
-    try {
-      $this->eventHandler_->preSend('returnstreamFast', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'returnstreamFast', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'returnstreamFast', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('returnstreamFast', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('returnstreamFast', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('returnstreamFast', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('returnstreamFast', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('returnstreamFast', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_returnstreamFast_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
     $protocol = $this->input_;
@@ -805,7 +603,11 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     );
 
     await $this->asyncHandler_->genBefore("PubSubStreamingService", "returnstream");
-    $currentseqid = $this->sendImpl_returnstream($i32_from, $i32_to);
+    $args = PubSubStreamingService_returnstream_args::fromShape(shape(
+      'i32_from' => $i32_from,
+      'i32_to' => $i32_to,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "returnstream", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
@@ -838,7 +640,10 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     );
 
     await $this->asyncHandler_->genBefore("PubSubStreamingService", "streamthrows");
-    $currentseqid = $this->sendImpl_streamthrows($foo);
+    $args = PubSubStreamingService_streamthrows_args::fromShape(shape(
+      'foo' => $foo,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "streamthrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
@@ -872,7 +677,10 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     );
 
     await $this->asyncHandler_->genBefore("PubSubStreamingService", "boththrows");
-    $currentseqid = $this->sendImpl_boththrows($foo);
+    $args = PubSubStreamingService_boththrows_args::fromShape(shape(
+      'foo' => $foo,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "boththrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
@@ -906,7 +714,10 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     );
 
     await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamthrows");
-    $currentseqid = $this->sendImpl_responseandstreamthrows($foo);
+    $args = PubSubStreamingService_responseandstreamthrows_args::fromShape(shape(
+      'foo' => $foo,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "responseandstreamthrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
@@ -940,7 +751,11 @@ class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements Pub
     );
 
     await $this->asyncHandler_->genBefore("PubSubStreamingService", "returnstreamFast");
-    $currentseqid = $this->sendImpl_returnstreamFast($i32_from, $i32_to);
+    $args = PubSubStreamingService_returnstreamFast_args::fromShape(shape(
+      'i32_from' => $i32_from,
+      'i32_to' => $i32_to,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "returnstreamFast", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
@@ -979,7 +794,11 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     );
 
     await $this->asyncHandler_->genBefore("PubSubStreamingService", "returnstream");
-    $currentseqid = $this->sendImpl_returnstream($i32_from, $i32_to);
+    $args = PubSubStreamingService_returnstream_args::fromShape(shape(
+      'i32_from' => $i32_from,
+      'i32_to' => $i32_to,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "returnstream", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
@@ -1012,7 +831,10 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     );
 
     await $this->asyncHandler_->genBefore("PubSubStreamingService", "streamthrows");
-    $currentseqid = $this->sendImpl_streamthrows($foo);
+    $args = PubSubStreamingService_streamthrows_args::fromShape(shape(
+      'foo' => $foo,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "streamthrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
@@ -1046,7 +868,10 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     );
 
     await $this->asyncHandler_->genBefore("PubSubStreamingService", "boththrows");
-    $currentseqid = $this->sendImpl_boththrows($foo);
+    $args = PubSubStreamingService_boththrows_args::fromShape(shape(
+      'foo' => $foo,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "boththrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
@@ -1080,7 +905,10 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     );
 
     await $this->asyncHandler_->genBefore("PubSubStreamingService", "responseandstreamthrows");
-    $currentseqid = $this->sendImpl_responseandstreamthrows($foo);
+    $args = PubSubStreamingService_responseandstreamthrows_args::fromShape(shape(
+      'foo' => $foo,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "responseandstreamthrows", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
@@ -1114,7 +942,11 @@ class PubSubStreamingServiceClient extends \ThriftClientBase implements PubSubSt
     );
 
     await $this->asyncHandler_->genBefore("PubSubStreamingService", "returnstreamFast");
-    $currentseqid = $this->sendImpl_returnstreamFast($i32_from, $i32_to);
+    $args = PubSubStreamingService_returnstreamFast_args::fromShape(shape(
+      'i32_from' => $i32_from,
+      'i32_to' => $i32_to,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "returnstreamFast", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);

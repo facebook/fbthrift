@@ -63,46 +63,6 @@ interface MyServiceClientIf extends \IThriftSyncIf {
 trait MyServiceClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_query(?MyUnion $u): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_query_args::fromShape(shape(
-      'u' => $u,
-    ));
-    try {
-      $this->eventHandler_->preSend('query', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'query', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'query', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('query', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('query', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('query', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('query', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('query', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_query(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): MyStruct {
     try {
@@ -181,7 +141,10 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "query");
-    $currentseqid = $this->sendImpl_query($u);
+    $args = MyService_query_args::fromShape(shape(
+      'u' => $u,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "query", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -216,7 +179,10 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "query");
-    $currentseqid = $this->sendImpl_query($u);
+    $args = MyService_query_args::fromShape(shape(
+      'u' => $u,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "query", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -236,7 +202,10 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
 
   /* send and recv functions */
   public function send_query(?MyUnion $u): int {
-    return $this->sendImpl_query($u);
+    $args = MyService_query_args::fromShape(shape(
+      'u' => $u,
+    ));
+    return $this->sendImplHelper($args, "query", false);
   }
   public function recv_query(?int $expectedsequenceid = null): MyStruct {
     return $this->recvImpl_query($expectedsequenceid);

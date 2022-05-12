@@ -139,44 +139,6 @@ interface SinkServiceClientIf extends \IThriftSyncIf {
 trait SinkServiceClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_method(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = SinkService_method_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('method', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'method', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'method', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('method', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('method', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('method', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('method', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('method', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function sendImpl_method_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
     $protocol = $this->output_;
@@ -302,44 +264,6 @@ trait SinkServiceClientBase {
     return;
   }
 
-  protected function sendImpl_methodAndReponse(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = SinkService_methodAndReponse_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('methodAndReponse', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'methodAndReponse', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'methodAndReponse', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('methodAndReponse', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('methodAndReponse', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('methodAndReponse', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('methodAndReponse', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('methodAndReponse', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function sendImpl_methodAndReponse_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
     $protocol = $this->output_;
@@ -471,44 +395,6 @@ trait SinkServiceClientBase {
     throw $x;
   }
 
-  protected function sendImpl_methodThrow(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = SinkService_methodThrow_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('methodThrow', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'methodThrow', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'methodThrow', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('methodThrow', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('methodThrow', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('methodThrow', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('methodThrow', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('methodThrow', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function sendImpl_methodThrow_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
     $protocol = $this->output_;
@@ -639,44 +525,6 @@ trait SinkServiceClientBase {
     return;
   }
 
-  protected function sendImpl_methodSinkThrow(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = SinkService_methodSinkThrow_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('methodSinkThrow', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'methodSinkThrow', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'methodSinkThrow', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('methodSinkThrow', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('methodSinkThrow', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('methodSinkThrow', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('methodSinkThrow', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('methodSinkThrow', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function sendImpl_methodSinkThrow_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
     $protocol = $this->output_;
@@ -806,44 +654,6 @@ trait SinkServiceClientBase {
     return;
   }
 
-  protected function sendImpl_methodFinalThrow(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = SinkService_methodFinalThrow_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('methodFinalThrow', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'methodFinalThrow', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'methodFinalThrow', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('methodFinalThrow', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('methodFinalThrow', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('methodFinalThrow', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('methodFinalThrow', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('methodFinalThrow', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function sendImpl_methodFinalThrow_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
     $protocol = $this->output_;
@@ -972,44 +782,6 @@ trait SinkServiceClientBase {
     return;
   }
 
-  protected function sendImpl_methodBothThrow(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = SinkService_methodBothThrow_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('methodBothThrow', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'methodBothThrow', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'methodBothThrow', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('methodBothThrow', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('methodBothThrow', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('methodBothThrow', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('methodBothThrow', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('methodBothThrow', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function sendImpl_methodBothThrow_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
     $protocol = $this->output_;
@@ -1142,44 +914,6 @@ trait SinkServiceClientBase {
     return;
   }
 
-  protected function sendImpl_methodFast(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = SinkService_methodFast_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('methodFast', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'methodFast', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'methodFast', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('methodFast', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('methodFast', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('methodFast', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('methodFast', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('methodFast', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function sendImpl_methodFast_SinkEncode(): (function(?SinkPayload, ?\Exception) : (string, bool)) {
     $protocol = $this->output_;
@@ -1330,7 +1064,8 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     );
 
     await $this->asyncHandler_->genBefore("SinkService", "method");
-    $currentseqid = $this->sendImpl_method();
+    $args = SinkService_method_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "method", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
@@ -1375,7 +1110,8 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     );
 
     await $this->asyncHandler_->genBefore("SinkService", "methodAndReponse");
-    $currentseqid = $this->sendImpl_methodAndReponse();
+    $args = SinkService_methodAndReponse_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "methodAndReponse", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
@@ -1421,7 +1157,8 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     );
 
     await $this->asyncHandler_->genBefore("SinkService", "methodThrow");
-    $currentseqid = $this->sendImpl_methodThrow();
+    $args = SinkService_methodThrow_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "methodThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
@@ -1466,7 +1203,8 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     );
 
     await $this->asyncHandler_->genBefore("SinkService", "methodSinkThrow");
-    $currentseqid = $this->sendImpl_methodSinkThrow();
+    $args = SinkService_methodSinkThrow_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "methodSinkThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
@@ -1511,7 +1249,8 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     );
 
     await $this->asyncHandler_->genBefore("SinkService", "methodFinalThrow");
-    $currentseqid = $this->sendImpl_methodFinalThrow();
+    $args = SinkService_methodFinalThrow_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "methodFinalThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
@@ -1556,7 +1295,8 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     );
 
     await $this->asyncHandler_->genBefore("SinkService", "methodBothThrow");
-    $currentseqid = $this->sendImpl_methodBothThrow();
+    $args = SinkService_methodBothThrow_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "methodBothThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
@@ -1601,7 +1341,8 @@ class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsy
     );
 
     await $this->asyncHandler_->genBefore("SinkService", "methodFast");
-    $currentseqid = $this->sendImpl_methodFast();
+    $args = SinkService_methodFast_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "methodFast", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
@@ -1651,7 +1392,8 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     );
 
     await $this->asyncHandler_->genBefore("SinkService", "method");
-    $currentseqid = $this->sendImpl_method();
+    $args = SinkService_method_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "method", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
@@ -1696,7 +1438,8 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     );
 
     await $this->asyncHandler_->genBefore("SinkService", "methodAndReponse");
-    $currentseqid = $this->sendImpl_methodAndReponse();
+    $args = SinkService_methodAndReponse_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "methodAndReponse", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
@@ -1742,7 +1485,8 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     );
 
     await $this->asyncHandler_->genBefore("SinkService", "methodThrow");
-    $currentseqid = $this->sendImpl_methodThrow();
+    $args = SinkService_methodThrow_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "methodThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
@@ -1787,7 +1531,8 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     );
 
     await $this->asyncHandler_->genBefore("SinkService", "methodSinkThrow");
-    $currentseqid = $this->sendImpl_methodSinkThrow();
+    $args = SinkService_methodSinkThrow_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "methodSinkThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
@@ -1832,7 +1577,8 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     );
 
     await $this->asyncHandler_->genBefore("SinkService", "methodFinalThrow");
-    $currentseqid = $this->sendImpl_methodFinalThrow();
+    $args = SinkService_methodFinalThrow_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "methodFinalThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
@@ -1877,7 +1623,8 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     );
 
     await $this->asyncHandler_->genBefore("SinkService", "methodBothThrow");
-    $currentseqid = $this->sendImpl_methodBothThrow();
+    $args = SinkService_methodBothThrow_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "methodBothThrow", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);
@@ -1922,7 +1669,8 @@ class SinkServiceClient extends \ThriftClientBase implements SinkServiceClientIf
     );
 
     await $this->asyncHandler_->genBefore("SinkService", "methodFast");
-    $currentseqid = $this->sendImpl_methodFast();
+    $args = SinkService_methodFast_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "methodFast", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $sink) = await $channel->genSendRequestSink($rpc_options, $msg);

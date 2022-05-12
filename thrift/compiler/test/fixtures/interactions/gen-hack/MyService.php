@@ -114,44 +114,6 @@ interface MyServiceClientIf extends \IThriftSyncIf {
 trait MyServiceClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_foo(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_foo_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('foo', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'foo', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'foo', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('foo', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('foo', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('foo', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('foo', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('foo', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_foo(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
@@ -207,46 +169,6 @@ trait MyServiceClientBase {
     return;
   }
 
-  protected function sendImpl_interact(int $arg): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_interact_args::fromShape(shape(
-      'arg' => $arg,
-    ));
-    try {
-      $this->eventHandler_->preSend('interact', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'interact', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'interact', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('interact', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('interact', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('interact', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('interact', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('interact', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_interact(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
@@ -302,44 +224,6 @@ trait MyServiceClientBase {
     return;
   }
 
-  protected function sendImpl_interactFast(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_interactFast_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('interactFast', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'interactFast', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'interactFast', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('interactFast', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('interactFast', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('interactFast', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('interactFast', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('interactFast', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_interactFast(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
     try {
@@ -401,44 +285,6 @@ trait MyServiceClientBase {
     throw $x;
   }
 
-  protected function sendImpl_serialize(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_serialize_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('serialize', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'serialize', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'serialize', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('serialize', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('serialize', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('serialize', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('serialize', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('serialize', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_serialize_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : int) {
     $protocol = $this->input_;
@@ -568,7 +414,8 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "foo");
-    $currentseqid = $this->sendImpl_foo();
+    $args = MyService_foo_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "foo", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -597,7 +444,10 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "interact");
-    $currentseqid = $this->sendImpl_interact($arg);
+    $args = MyService_interact_args::fromShape(shape(
+      'arg' => $arg,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "interact", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -626,7 +476,8 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "interactFast");
-    $currentseqid = $this->sendImpl_interactFast();
+    $args = MyService_interactFast_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "interactFast", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -664,7 +515,8 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     );
 
     await $this->asyncHandler_->genBefore("MyService", "serialize");
-    $currentseqid = $this->sendImpl_serialize();
+    $args = MyService_serialize_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "serialize", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
@@ -694,7 +546,8 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "foo");
-    $currentseqid = $this->sendImpl_foo();
+    $args = MyService_foo_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "foo", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -723,7 +576,10 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "interact");
-    $currentseqid = $this->sendImpl_interact($arg);
+    $args = MyService_interact_args::fromShape(shape(
+      'arg' => $arg,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "interact", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -752,7 +608,8 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "interactFast");
-    $currentseqid = $this->sendImpl_interactFast();
+    $args = MyService_interactFast_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "interactFast", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -790,7 +647,8 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     );
 
     await $this->asyncHandler_->genBefore("MyService", "serialize");
-    $currentseqid = $this->sendImpl_serialize();
+    $args = MyService_serialize_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "serialize", false);
     $msg = $out_transport->getBuffer();
     $out_transport->resetBuffer();
     list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
@@ -805,19 +663,24 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
 
   /* send and recv functions */
   public function send_foo(): int {
-    return $this->sendImpl_foo();
+    $args = MyService_foo_args::withDefaultValues();
+    return $this->sendImplHelper($args, "foo", false);
   }
   public function recv_foo(?int $expectedsequenceid = null): void {
     $this->recvImpl_foo($expectedsequenceid);
   }
   public function send_interact(int $arg): int {
-    return $this->sendImpl_interact($arg);
+    $args = MyService_interact_args::fromShape(shape(
+      'arg' => $arg,
+    ));
+    return $this->sendImplHelper($args, "interact", false);
   }
   public function recv_interact(?int $expectedsequenceid = null): void {
     $this->recvImpl_interact($expectedsequenceid);
   }
   public function send_interactFast(): int {
-    return $this->sendImpl_interactFast();
+    $args = MyService_interactFast_args::withDefaultValues();
+    return $this->sendImplHelper($args, "interactFast", false);
   }
   public function recv_interactFast(?int $expectedsequenceid = null): int {
     return $this->recvImpl_interactFast($expectedsequenceid);

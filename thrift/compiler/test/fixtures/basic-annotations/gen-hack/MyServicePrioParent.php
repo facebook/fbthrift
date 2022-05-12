@@ -80,44 +80,6 @@ interface MyServicePrioParentClientIf extends \IThriftSyncIf {
 trait MyServicePrioParentClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_ping(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyServicePrioParent_ping_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('ping', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'ping', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'ping', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('ping', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('ping', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('ping', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('ping', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('ping', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_ping(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
@@ -173,44 +135,6 @@ trait MyServicePrioParentClientBase {
     return;
   }
 
-  protected function sendImpl_pong(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyServicePrioParent_pong_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('pong', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'pong', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'pong', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('pong', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('pong', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('pong', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('pong', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('pong', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_pong(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
@@ -283,7 +207,8 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping");
-    $currentseqid = $this->sendImpl_ping();
+    $args = MyServicePrioParent_ping_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "ping", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -312,7 +237,8 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong");
-    $currentseqid = $this->sendImpl_pong();
+    $args = MyServicePrioParent_pong_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "pong", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -346,7 +272,8 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping");
-    $currentseqid = $this->sendImpl_ping();
+    $args = MyServicePrioParent_ping_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "ping", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -375,7 +302,8 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong");
-    $currentseqid = $this->sendImpl_pong();
+    $args = MyServicePrioParent_pong_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "pong", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -394,13 +322,15 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
 
   /* send and recv functions */
   public function send_ping(): int {
-    return $this->sendImpl_ping();
+    $args = MyServicePrioParent_ping_args::withDefaultValues();
+    return $this->sendImplHelper($args, "ping", false);
   }
   public function recv_ping(?int $expectedsequenceid = null): void {
     $this->recvImpl_ping($expectedsequenceid);
   }
   public function send_pong(): int {
-    return $this->sendImpl_pong();
+    $args = MyServicePrioParent_pong_args::withDefaultValues();
+    return $this->sendImplHelper($args, "pong", false);
   }
   public function recv_pong(?int $expectedsequenceid = null): void {
     $this->recvImpl_pong($expectedsequenceid);

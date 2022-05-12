@@ -61,46 +61,6 @@ interface TestServiceClientIf extends \foo\hack_ns\FooHackServiceClientIf {
 trait TestServiceClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_ping(string $str_arg): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = \hack_ns2\TestService_ping_args::fromShape(shape(
-      'str_arg' => $str_arg,
-    ));
-    try {
-      $this->eventHandler_->preSend('ping', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'ping', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'ping', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('ping', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('ping', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('ping', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('ping', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('ping', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_ping(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
     try {
@@ -179,7 +139,10 @@ class TestServiceAsyncClient extends \foo\hack_ns\FooHackServiceAsyncClient impl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("TestService", "ping");
-    $currentseqid = $this->sendImpl_ping($str_arg);
+    $args = \hack_ns2\TestService_ping_args::fromShape(shape(
+      'str_arg' => $str_arg,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "ping", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -214,7 +177,10 @@ class TestServiceClient extends \foo\hack_ns\FooHackServiceClient implements Tes
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("TestService", "ping");
-    $currentseqid = $this->sendImpl_ping($str_arg);
+    $args = \hack_ns2\TestService_ping_args::fromShape(shape(
+      'str_arg' => $str_arg,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "ping", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -234,7 +200,10 @@ class TestServiceClient extends \foo\hack_ns\FooHackServiceClient implements Tes
 
   /* send and recv functions */
   public function send_ping(string $str_arg): int {
-    return $this->sendImpl_ping($str_arg);
+    $args = \hack_ns2\TestService_ping_args::fromShape(shape(
+      'str_arg' => $str_arg,
+    ));
+    return $this->sendImplHelper($args, "ping", false);
   }
   public function recv_ping(?int $expectedsequenceid = null): int {
     return $this->recvImpl_ping($expectedsequenceid);

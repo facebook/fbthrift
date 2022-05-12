@@ -86,47 +86,6 @@ interface Service1ClientIf extends \IThriftSyncIf {
 trait Service1ClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_func(string $arg1, ?MyStruct $arg2): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = Service1_func_args::fromShape(shape(
-      'arg1' => $arg1,
-      'arg2' => $arg2,
-    ));
-    try {
-      $this->eventHandler_->preSend('func', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'func', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'func', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('func', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('func', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('func', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('func', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('func', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_func(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): MyStruct {
     try {
@@ -188,47 +147,6 @@ trait Service1ClientBase {
     throw $x;
   }
 
-  protected function sendImpl_func1(string $arg1, ?MyStruct $arg2): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = Service1_func1_args::fromShape(shape(
-      'arg1' => $arg1,
-      'arg2' => $arg2,
-    ));
-    try {
-      $this->eventHandler_->preSend('func1', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'func1', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'func1', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('func1', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('func1', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('func1', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('func1', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('func1', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_func1(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): MyStruct {
     try {
@@ -308,7 +226,11 @@ class Service1AsyncClient extends \ThriftClientBase implements Service1AsyncClie
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Service1", "func");
-    $currentseqid = $this->sendImpl_func($arg1, $arg2);
+    $args = Service1_func_args::fromShape(shape(
+      'arg1' => $arg1,
+      'arg2' => $arg2,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "func", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -339,7 +261,11 @@ class Service1AsyncClient extends \ThriftClientBase implements Service1AsyncClie
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Service1", "func1");
-    $currentseqid = $this->sendImpl_func1($arg1, $arg2);
+    $args = Service1_func1_args::fromShape(shape(
+      'arg1' => $arg1,
+      'arg2' => $arg2,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "func1", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -375,7 +301,11 @@ class Service1Client extends \ThriftClientBase implements Service1ClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Service1", "func");
-    $currentseqid = $this->sendImpl_func($arg1, $arg2);
+    $args = Service1_func_args::fromShape(shape(
+      'arg1' => $arg1,
+      'arg2' => $arg2,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "func", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -406,7 +336,11 @@ class Service1Client extends \ThriftClientBase implements Service1ClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Service1", "func1");
-    $currentseqid = $this->sendImpl_func1($arg1, $arg2);
+    $args = Service1_func1_args::fromShape(shape(
+      'arg1' => $arg1,
+      'arg2' => $arg2,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "func1", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -426,13 +360,21 @@ class Service1Client extends \ThriftClientBase implements Service1ClientIf {
 
   /* send and recv functions */
   public function send_func(string $arg1, ?MyStruct $arg2): int {
-    return $this->sendImpl_func($arg1, $arg2);
+    $args = Service1_func_args::fromShape(shape(
+      'arg1' => $arg1,
+      'arg2' => $arg2,
+    ));
+    return $this->sendImplHelper($args, "func", false);
   }
   public function recv_func(?int $expectedsequenceid = null): MyStruct {
     return $this->recvImpl_func($expectedsequenceid);
   }
   public function send_func1(string $arg1, ?MyStruct $arg2): int {
-    return $this->sendImpl_func1($arg1, $arg2);
+    $args = Service1_func1_args::fromShape(shape(
+      'arg1' => $arg1,
+      'arg2' => $arg2,
+    ));
+    return $this->sendImplHelper($args, "func1", false);
   }
   public function recv_func1(?int $expectedsequenceid = null): MyStruct {
     return $this->recvImpl_func1($expectedsequenceid);

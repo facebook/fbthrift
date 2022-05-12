@@ -84,46 +84,6 @@ interface DbMixedStackArgumentsClientIf extends \IThriftSyncIf {
 trait DbMixedStackArgumentsClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_getDataByKey0(string $key): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = DbMixedStackArguments_getDataByKey0_args::fromShape(shape(
-      'key' => $key,
-    ));
-    try {
-      $this->eventHandler_->preSend('getDataByKey0', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'getDataByKey0', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'getDataByKey0', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('getDataByKey0', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('getDataByKey0', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('getDataByKey0', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('getDataByKey0', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('getDataByKey0', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_getDataByKey0(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
@@ -185,46 +145,6 @@ trait DbMixedStackArgumentsClientBase {
     throw $x;
   }
 
-  protected function sendImpl_getDataByKey1(string $key): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = DbMixedStackArguments_getDataByKey1_args::fromShape(shape(
-      'key' => $key,
-    ));
-    try {
-      $this->eventHandler_->preSend('getDataByKey1', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'getDataByKey1', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'getDataByKey1', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('getDataByKey1', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('getDataByKey1', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('getDataByKey1', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('getDataByKey1', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('getDataByKey1', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_getDataByKey1(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
@@ -303,7 +223,10 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey0");
-    $currentseqid = $this->sendImpl_getDataByKey0($key);
+    $args = DbMixedStackArguments_getDataByKey0_args::fromShape(shape(
+      'key' => $key,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "getDataByKey0", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -333,7 +256,10 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey1");
-    $currentseqid = $this->sendImpl_getDataByKey1($key);
+    $args = DbMixedStackArguments_getDataByKey1_args::fromShape(shape(
+      'key' => $key,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "getDataByKey1", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -368,7 +294,10 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey0");
-    $currentseqid = $this->sendImpl_getDataByKey0($key);
+    $args = DbMixedStackArguments_getDataByKey0_args::fromShape(shape(
+      'key' => $key,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "getDataByKey0", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -398,7 +327,10 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey1");
-    $currentseqid = $this->sendImpl_getDataByKey1($key);
+    $args = DbMixedStackArguments_getDataByKey1_args::fromShape(shape(
+      'key' => $key,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "getDataByKey1", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -418,13 +350,19 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
 
   /* send and recv functions */
   public function send_getDataByKey0(string $key): int {
-    return $this->sendImpl_getDataByKey0($key);
+    $args = DbMixedStackArguments_getDataByKey0_args::fromShape(shape(
+      'key' => $key,
+    ));
+    return $this->sendImplHelper($args, "getDataByKey0", false);
   }
   public function recv_getDataByKey0(?int $expectedsequenceid = null): string {
     return $this->recvImpl_getDataByKey0($expectedsequenceid);
   }
   public function send_getDataByKey1(string $key): int {
-    return $this->sendImpl_getDataByKey1($key);
+    $args = DbMixedStackArguments_getDataByKey1_args::fromShape(shape(
+      'key' => $key,
+    ));
+    return $this->sendImplHelper($args, "getDataByKey1", false);
   }
   public function recv_getDataByKey1(?int $expectedsequenceid = null): string {
     return $this->recvImpl_getDataByKey1($expectedsequenceid);

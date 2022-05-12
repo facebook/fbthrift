@@ -59,44 +59,6 @@ interface BadServiceClientIf extends \IThriftSyncIf {
 trait BadServiceClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_bar(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = BadService_bar_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('bar', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'bar', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'bar', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('bar', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('bar', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('bar', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('bar', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('bar', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_bar(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
     try {
@@ -182,7 +144,8 @@ class BadServiceAsyncClient extends \ThriftClientBase implements BadServiceAsync
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("BadService", "bar");
-    $currentseqid = $this->sendImpl_bar();
+    $args = BadService_bar_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "bar", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -217,7 +180,8 @@ class BadServiceClient extends \ThriftClientBase implements BadServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("BadService", "bar");
-    $currentseqid = $this->sendImpl_bar();
+    $args = BadService_bar_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "bar", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -237,7 +201,8 @@ class BadServiceClient extends \ThriftClientBase implements BadServiceClientIf {
 
   /* send and recv functions */
   public function send_bar(): int {
-    return $this->sendImpl_bar();
+    $args = BadService_bar_args::withDefaultValues();
+    return $this->sendImplHelper($args, "bar", false);
   }
   public function recv_bar(?int $expectedsequenceid = null): int {
     return $this->recvImpl_bar($expectedsequenceid);

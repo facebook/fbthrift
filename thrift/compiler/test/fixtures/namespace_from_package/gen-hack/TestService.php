@@ -65,46 +65,6 @@ interface TestServiceClientIf extends \IThriftSyncIf {
 trait TestServiceClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_init(int $int1): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = \namespace_from_package\module\TestService_init_args::fromShape(shape(
-      'int1' => $int1,
-    ));
-    try {
-      $this->eventHandler_->preSend('init', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'init', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'init', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('init', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('init', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('init', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('init', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('init', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_init(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): int {
     try {
@@ -183,7 +143,10 @@ class TestServiceAsyncClient extends \ThriftClientBase implements TestServiceAsy
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("TestService", "init");
-    $currentseqid = $this->sendImpl_init($int1);
+    $args = \namespace_from_package\module\TestService_init_args::fromShape(shape(
+      'int1' => $int1,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "init", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -218,7 +181,10 @@ class TestServiceClient extends \ThriftClientBase implements TestServiceClientIf
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("TestService", "init");
-    $currentseqid = $this->sendImpl_init($int1);
+    $args = \namespace_from_package\module\TestService_init_args::fromShape(shape(
+      'int1' => $int1,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "init", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -238,7 +204,10 @@ class TestServiceClient extends \ThriftClientBase implements TestServiceClientIf
 
   /* send and recv functions */
   public function send_init(int $int1): int {
-    return $this->sendImpl_init($int1);
+    $args = \namespace_from_package\module\TestService_init_args::fromShape(shape(
+      'int1' => $int1,
+    ));
+    return $this->sendImplHelper($args, "init", false);
   }
   public function recv_init(?int $expectedsequenceid = null): int {
     return $this->recvImpl_init($expectedsequenceid);

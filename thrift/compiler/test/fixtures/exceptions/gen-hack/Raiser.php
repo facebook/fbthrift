@@ -140,44 +140,6 @@ interface RaiserClientIf extends \IThriftSyncIf {
 trait RaiserClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_doBland(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = Raiser_doBland_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('doBland', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'doBland', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'doBland', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('doBland', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('doBland', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('doBland', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('doBland', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('doBland', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_doBland(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
@@ -233,44 +195,6 @@ trait RaiserClientBase {
     return;
   }
 
-  protected function sendImpl_doRaise(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = Raiser_doRaise_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('doRaise', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'doRaise', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'doRaise', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('doRaise', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('doRaise', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('doRaise', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('doRaise', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('doRaise', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_doRaise(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
@@ -341,44 +265,6 @@ trait RaiserClientBase {
     return;
   }
 
-  protected function sendImpl_get200(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = Raiser_get200_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('get200', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'get200', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'get200', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('get200', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('get200', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('get200', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('get200', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('get200', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_get200(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
@@ -440,44 +326,6 @@ trait RaiserClientBase {
     throw $x;
   }
 
-  protected function sendImpl_get500(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = Raiser_get500_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('get500', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'get500', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'get500', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('get500', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('get500', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('get500', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('get500', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('get500', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_get500(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
@@ -571,7 +419,8 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Raiser", "doBland");
-    $currentseqid = $this->sendImpl_doBland();
+    $args = Raiser_doBland_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "doBland", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -603,7 +452,8 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Raiser", "doRaise");
-    $currentseqid = $this->sendImpl_doRaise();
+    $args = Raiser_doRaise_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "doRaise", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -632,7 +482,8 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Raiser", "get200");
-    $currentseqid = $this->sendImpl_get200();
+    $args = Raiser_get200_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "get200", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -665,7 +516,8 @@ class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Raiser", "get500");
-    $currentseqid = $this->sendImpl_get500();
+    $args = Raiser_get500_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "get500", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -700,7 +552,8 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Raiser", "doBland");
-    $currentseqid = $this->sendImpl_doBland();
+    $args = Raiser_doBland_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "doBland", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -732,7 +585,8 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Raiser", "doRaise");
-    $currentseqid = $this->sendImpl_doRaise();
+    $args = Raiser_doRaise_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "doRaise", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -761,7 +615,8 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Raiser", "get200");
-    $currentseqid = $this->sendImpl_get200();
+    $args = Raiser_get200_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "get200", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -794,7 +649,8 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("Raiser", "get500");
-    $currentseqid = $this->sendImpl_get500();
+    $args = Raiser_get500_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "get500", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -814,25 +670,29 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
 
   /* send and recv functions */
   public function send_doBland(): int {
-    return $this->sendImpl_doBland();
+    $args = Raiser_doBland_args::withDefaultValues();
+    return $this->sendImplHelper($args, "doBland", false);
   }
   public function recv_doBland(?int $expectedsequenceid = null): void {
     $this->recvImpl_doBland($expectedsequenceid);
   }
   public function send_doRaise(): int {
-    return $this->sendImpl_doRaise();
+    $args = Raiser_doRaise_args::withDefaultValues();
+    return $this->sendImplHelper($args, "doRaise", false);
   }
   public function recv_doRaise(?int $expectedsequenceid = null): void {
     $this->recvImpl_doRaise($expectedsequenceid);
   }
   public function send_get200(): int {
-    return $this->sendImpl_get200();
+    $args = Raiser_get200_args::withDefaultValues();
+    return $this->sendImplHelper($args, "get200", false);
   }
   public function recv_get200(?int $expectedsequenceid = null): string {
     return $this->recvImpl_get200($expectedsequenceid);
   }
   public function send_get500(): int {
-    return $this->sendImpl_get500();
+    $args = Raiser_get500_args::withDefaultValues();
+    return $this->sendImplHelper($args, "get500", false);
   }
   public function recv_get500(?int $expectedsequenceid = null): string {
     return $this->recvImpl_get500($expectedsequenceid);

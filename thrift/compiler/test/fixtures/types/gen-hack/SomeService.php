@@ -80,46 +80,6 @@ interface SomeServiceClientIf extends \IThriftSyncIf {
 trait SomeServiceClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_bounce_map(Map<int, string> $m): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = SomeService_bounce_map_args::fromShape(shape(
-      'm' => $m,
-    ));
-    try {
-      $this->eventHandler_->preSend('bounce_map', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'bounce_map', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'bounce_map', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('bounce_map', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('bounce_map', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('bounce_map', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('bounce_map', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('bounce_map', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_bounce_map(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Map<int, string> {
     try {
@@ -181,46 +141,6 @@ trait SomeServiceClientBase {
     throw $x;
   }
 
-  protected function sendImpl_binary_keyed_map(KeyedContainer<int, int> $r): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = SomeService_binary_keyed_map_args::fromShape(shape(
-      'r' => new Vector($r),
-    ));
-    try {
-      $this->eventHandler_->preSend('binary_keyed_map', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'binary_keyed_map', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'binary_keyed_map', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('binary_keyed_map', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('binary_keyed_map', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('binary_keyed_map', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('binary_keyed_map', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('binary_keyed_map', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_binary_keyed_map(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): Map<string, int> {
     try {
@@ -299,7 +219,10 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("SomeService", "bounce_map");
-    $currentseqid = $this->sendImpl_bounce_map($m);
+    $args = SomeService_bounce_map_args::fromShape(shape(
+      'm' => $m,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "bounce_map", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -329,7 +252,10 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("SomeService", "binary_keyed_map");
-    $currentseqid = $this->sendImpl_binary_keyed_map($r);
+    $args = SomeService_binary_keyed_map_args::fromShape(shape(
+      'r' => new Vector($r),
+    ));
+    $currentseqid = $this->sendImplHelper($args, "binary_keyed_map", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -364,7 +290,10 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("SomeService", "bounce_map");
-    $currentseqid = $this->sendImpl_bounce_map($m);
+    $args = SomeService_bounce_map_args::fromShape(shape(
+      'm' => $m,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "bounce_map", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -394,7 +323,10 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("SomeService", "binary_keyed_map");
-    $currentseqid = $this->sendImpl_binary_keyed_map($r);
+    $args = SomeService_binary_keyed_map_args::fromShape(shape(
+      'r' => new Vector($r),
+    ));
+    $currentseqid = $this->sendImplHelper($args, "binary_keyed_map", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -414,13 +346,19 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
 
   /* send and recv functions */
   public function send_bounce_map(Map<int, string> $m): int {
-    return $this->sendImpl_bounce_map($m);
+    $args = SomeService_bounce_map_args::fromShape(shape(
+      'm' => $m,
+    ));
+    return $this->sendImplHelper($args, "bounce_map", false);
   }
   public function recv_bounce_map(?int $expectedsequenceid = null): Map<int, string> {
     return $this->recvImpl_bounce_map($expectedsequenceid);
   }
   public function send_binary_keyed_map(KeyedContainer<int, int> $r): int {
-    return $this->sendImpl_binary_keyed_map($r);
+    $args = SomeService_binary_keyed_map_args::fromShape(shape(
+      'r' => new Vector($r),
+    ));
+    return $this->sendImplHelper($args, "binary_keyed_map", false);
   }
   public function recv_binary_keyed_map(?int $expectedsequenceid = null): Map<string, int> {
     return $this->recvImpl_binary_keyed_map($expectedsequenceid);

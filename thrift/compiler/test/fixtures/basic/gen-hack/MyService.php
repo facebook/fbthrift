@@ -216,44 +216,6 @@ interface MyServiceClientIf extends \IThriftSyncIf {
 trait MyServiceClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_ping(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_ping_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('ping', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'ping', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'ping', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('ping', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('ping', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('ping', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('ping', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('ping', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_ping(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
@@ -309,44 +271,6 @@ trait MyServiceClientBase {
     return;
   }
 
-  protected function sendImpl_getRandomData(): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_getRandomData_args::withDefaultValues();
-    try {
-      $this->eventHandler_->preSend('getRandomData', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'getRandomData', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'getRandomData', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('getRandomData', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('getRandomData', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('getRandomData', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('getRandomData', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('getRandomData', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_getRandomData(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
@@ -408,46 +332,6 @@ trait MyServiceClientBase {
     throw $x;
   }
 
-  protected function sendImpl_sink(int $sink): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_sink_args::fromShape(shape(
-      'sink' => $sink,
-    ));
-    try {
-      $this->eventHandler_->preSend('sink', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'sink', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'sink', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('sink', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('sink', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('sink', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('sink', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('sink', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_sink(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
@@ -503,47 +387,6 @@ trait MyServiceClientBase {
     return;
   }
 
-  protected function sendImpl_putDataById(int $id, string $data): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_putDataById_args::fromShape(shape(
-      'id' => $id,
-      'data' => $data,
-    ));
-    try {
-      $this->eventHandler_->preSend('putDataById', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'putDataById', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'putDataById', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('putDataById', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('putDataById', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('putDataById', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('putDataById', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('putDataById', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_putDataById(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
@@ -599,46 +442,6 @@ trait MyServiceClientBase {
     return;
   }
 
-  protected function sendImpl_hasDataById(int $id): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_hasDataById_args::fromShape(shape(
-      'id' => $id,
-    ));
-    try {
-      $this->eventHandler_->preSend('hasDataById', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'hasDataById', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'hasDataById', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('hasDataById', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('hasDataById', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('hasDataById', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('hasDataById', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('hasDataById', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_hasDataById(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): bool {
     try {
@@ -700,46 +503,6 @@ trait MyServiceClientBase {
     throw $x;
   }
 
-  protected function sendImpl_getDataById(int $id): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_getDataById_args::fromShape(shape(
-      'id' => $id,
-    ));
-    try {
-      $this->eventHandler_->preSend('getDataById', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'getDataById', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'getDataById', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('getDataById', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('getDataById', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('getDataById', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('getDataById', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('getDataById', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_getDataById(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): string {
     try {
@@ -801,46 +564,6 @@ trait MyServiceClientBase {
     throw $x;
   }
 
-  protected function sendImpl_deleteDataById(int $id): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_deleteDataById_args::fromShape(shape(
-      'id' => $id,
-    ));
-    try {
-      $this->eventHandler_->preSend('deleteDataById', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'deleteDataById', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'deleteDataById', \TMessageType::CALL, $args, $currentseqid, false);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('deleteDataById', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->flush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('deleteDataById', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('deleteDataById', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('deleteDataById', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('deleteDataById', $args, $currentseqid);
-    return $currentseqid;
-  }
 
   protected function recvImpl_deleteDataById(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
     try {
@@ -896,47 +619,6 @@ trait MyServiceClientBase {
     return;
   }
 
-  protected function sendImpl_lobDataById(int $id, string $data): int {
-    $currentseqid = $this->getNextSequenceID();
-    $args = MyService_lobDataById_args::fromShape(shape(
-      'id' => $id,
-      'data' => $data,
-    ));
-    try {
-      $this->eventHandler_->preSend('lobDataById', $args, $currentseqid);
-      if ($this->output_ is \TBinaryProtocolAccelerated)
-      {
-        \thrift_protocol_write_binary($this->output_, 'lobDataById', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), true);
-      }
-      else if ($this->output_ is \TCompactProtocolAccelerated)
-      {
-        \thrift_protocol_write_compact($this->output_, 'lobDataById', \TMessageType::CALL, $args, $currentseqid, true);
-      }
-      else
-      {
-        $this->output_->writeMessageBegin('lobDataById', \TMessageType::CALL, $currentseqid);
-        $args->write($this->output_);
-        $this->output_->writeMessageEnd();
-        $this->output_->getTransport()->onewayFlush();
-      }
-    } catch (\THandlerShortCircuitException $ex) {
-      switch ($ex->resultType) {
-        case \THandlerShortCircuitException::R_EXPECTED_EX:
-        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
-          $this->eventHandler_->sendError('lobDataById', $args, $currentseqid, $ex->result);
-          throw $ex->result;
-        case \THandlerShortCircuitException::R_SUCCESS:
-        default:
-          $this->eventHandler_->postSend('lobDataById', $args, $currentseqid);
-          return $currentseqid;
-      }
-    } catch (\Exception $ex) {
-      $this->eventHandler_->sendError('lobDataById', $args, $currentseqid, $ex);
-      throw $ex;
-    }
-    $this->eventHandler_->postSend('lobDataById', $args, $currentseqid);
-    return $currentseqid;
-  }
 
 }
 
@@ -955,7 +637,8 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "ping");
-    $currentseqid = $this->sendImpl_ping();
+    $args = MyService_ping_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "ping", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -984,7 +667,8 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "getRandomData");
-    $currentseqid = $this->sendImpl_getRandomData();
+    $args = MyService_getRandomData_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "getRandomData", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1014,7 +698,10 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "sink");
-    $currentseqid = $this->sendImpl_sink($sink);
+    $args = MyService_sink_args::fromShape(shape(
+      'sink' => $sink,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "sink", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1044,7 +731,11 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "putDataById");
-    $currentseqid = $this->sendImpl_putDataById($id, $data);
+    $args = MyService_putDataById_args::fromShape(shape(
+      'id' => $id,
+      'data' => $data,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "putDataById", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1073,7 +764,10 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "hasDataById");
-    $currentseqid = $this->sendImpl_hasDataById($id);
+    $args = MyService_hasDataById_args::fromShape(shape(
+      'id' => $id,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "hasDataById", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1103,7 +797,10 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "getDataById");
-    $currentseqid = $this->sendImpl_getDataById($id);
+    $args = MyService_getDataById_args::fromShape(shape(
+      'id' => $id,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "getDataById", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1133,7 +830,10 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "deleteDataById");
-    $currentseqid = $this->sendImpl_deleteDataById($id);
+    $args = MyService_deleteDataById_args::fromShape(shape(
+      'id' => $id,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "deleteDataById", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1163,7 +863,11 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "lobDataById");
-    $currentseqid = $this->sendImpl_lobDataById($id, $data);
+    $args = MyService_lobDataById_args::fromShape(shape(
+      'id' => $id,
+      'data' => $data,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "lobDataById", true);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     if ($channel !== null && $out_transport is \TMemoryBuffer) {
@@ -1190,7 +894,8 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "ping");
-    $currentseqid = $this->sendImpl_ping();
+    $args = MyService_ping_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "ping", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1219,7 +924,8 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "getRandomData");
-    $currentseqid = $this->sendImpl_getRandomData();
+    $args = MyService_getRandomData_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "getRandomData", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1249,7 +955,10 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "sink");
-    $currentseqid = $this->sendImpl_sink($sink);
+    $args = MyService_sink_args::fromShape(shape(
+      'sink' => $sink,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "sink", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1279,7 +988,11 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "putDataById");
-    $currentseqid = $this->sendImpl_putDataById($id, $data);
+    $args = MyService_putDataById_args::fromShape(shape(
+      'id' => $id,
+      'data' => $data,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "putDataById", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1308,7 +1021,10 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "hasDataById");
-    $currentseqid = $this->sendImpl_hasDataById($id);
+    $args = MyService_hasDataById_args::fromShape(shape(
+      'id' => $id,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "hasDataById", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1338,7 +1054,10 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "getDataById");
-    $currentseqid = $this->sendImpl_getDataById($id);
+    $args = MyService_getDataById_args::fromShape(shape(
+      'id' => $id,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "getDataById", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1368,7 +1087,10 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "deleteDataById");
-    $currentseqid = $this->sendImpl_deleteDataById($id);
+    $args = MyService_deleteDataById_args::fromShape(shape(
+      'id' => $id,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "deleteDataById", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -1398,7 +1120,11 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "lobDataById");
-    $currentseqid = $this->sendImpl_lobDataById($id, $data);
+    $args = MyService_lobDataById_args::fromShape(shape(
+      'id' => $id,
+      'data' => $data,
+    ));
+    $currentseqid = $this->sendImplHelper($args, "lobDataById", true);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     if ($channel !== null && $out_transport is \TMemoryBuffer) {
@@ -1410,49 +1136,71 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
 
   /* send and recv functions */
   public function send_ping(): int {
-    return $this->sendImpl_ping();
+    $args = MyService_ping_args::withDefaultValues();
+    return $this->sendImplHelper($args, "ping", false);
   }
   public function recv_ping(?int $expectedsequenceid = null): void {
     $this->recvImpl_ping($expectedsequenceid);
   }
   public function send_getRandomData(): int {
-    return $this->sendImpl_getRandomData();
+    $args = MyService_getRandomData_args::withDefaultValues();
+    return $this->sendImplHelper($args, "getRandomData", false);
   }
   public function recv_getRandomData(?int $expectedsequenceid = null): string {
     return $this->recvImpl_getRandomData($expectedsequenceid);
   }
   public function send_sink(int $sink): int {
-    return $this->sendImpl_sink($sink);
+    $args = MyService_sink_args::fromShape(shape(
+      'sink' => $sink,
+    ));
+    return $this->sendImplHelper($args, "sink", false);
   }
   public function recv_sink(?int $expectedsequenceid = null): void {
     $this->recvImpl_sink($expectedsequenceid);
   }
   public function send_putDataById(int $id, string $data): int {
-    return $this->sendImpl_putDataById($id, $data);
+    $args = MyService_putDataById_args::fromShape(shape(
+      'id' => $id,
+      'data' => $data,
+    ));
+    return $this->sendImplHelper($args, "putDataById", false);
   }
   public function recv_putDataById(?int $expectedsequenceid = null): void {
     $this->recvImpl_putDataById($expectedsequenceid);
   }
   public function send_hasDataById(int $id): int {
-    return $this->sendImpl_hasDataById($id);
+    $args = MyService_hasDataById_args::fromShape(shape(
+      'id' => $id,
+    ));
+    return $this->sendImplHelper($args, "hasDataById", false);
   }
   public function recv_hasDataById(?int $expectedsequenceid = null): bool {
     return $this->recvImpl_hasDataById($expectedsequenceid);
   }
   public function send_getDataById(int $id): int {
-    return $this->sendImpl_getDataById($id);
+    $args = MyService_getDataById_args::fromShape(shape(
+      'id' => $id,
+    ));
+    return $this->sendImplHelper($args, "getDataById", false);
   }
   public function recv_getDataById(?int $expectedsequenceid = null): string {
     return $this->recvImpl_getDataById($expectedsequenceid);
   }
   public function send_deleteDataById(int $id): int {
-    return $this->sendImpl_deleteDataById($id);
+    $args = MyService_deleteDataById_args::fromShape(shape(
+      'id' => $id,
+    ));
+    return $this->sendImplHelper($args, "deleteDataById", false);
   }
   public function recv_deleteDataById(?int $expectedsequenceid = null): void {
     $this->recvImpl_deleteDataById($expectedsequenceid);
   }
   public function send_lobDataById(int $id, string $data): int {
-    return $this->sendImpl_lobDataById($id, $data);
+    $args = MyService_lobDataById_args::fromShape(shape(
+      'id' => $id,
+      'data' => $data,
+    ));
+    return $this->sendImplHelper($args, "lobDataById", true);
   }
 }
 
