@@ -294,7 +294,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
     return new static();
   }
 
-  public static async function genFromShape(self::TConstructorShape $shape): Awaitable<this> {
+  public static async function genFromShape(self::TConstructorShape $shape)[zoned_local]: Awaitable<this> {
     $obj = new static();
     $name = Shapes::idx($shape, 'name');
     if ($name !== null) {

@@ -319,7 +319,7 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     return new static();
   }
 
-  public static async function genFromShape(self::TConstructorShape $shape): Awaitable<this> {
+  public static async function genFromShape(self::TConstructorShape $shape)[zoned_local]: Awaitable<this> {
     $obj = new static();
     $wrapped_field = Shapes::idx($shape, 'wrapped_field');
     if ($wrapped_field !== null) {
@@ -671,7 +671,7 @@ class MyComplexStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct
     return new static();
   }
 
-  public static async function genFromShape(self::TConstructorShape $shape): Awaitable<this> {
+  public static async function genFromShape(self::TConstructorShape $shape)[zoned_local]: Awaitable<this> {
     $obj = new static();
     $map_of_string_to_MyStruct = Shapes::idx($shape, 'map_of_string_to_MyStruct');
     if ($map_of_string_to_MyStruct !== null) {
