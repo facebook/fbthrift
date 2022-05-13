@@ -34,19 +34,26 @@ struct structured_annotation_builder {
     type.set_uri(uri);
   }
 
+  virtual ~structured_annotation_builder() = default;
+
   static std::unique_ptr<t_const_value> make_string(const char* value) {
     auto name = std::make_unique<t_const_value>();
     name->set_string(value);
     return name;
   }
+
+  virtual std::unique_ptr<t_const> make() {
+    auto map = std::make_unique<t_const_value>();
+    return std::make_unique<t_const>(program, &type, "", std::move(map));
+  }
 };
 
-struct adapter_builder : private structured_annotation_builder {
+struct adapter_builder : structured_annotation_builder {
   explicit adapter_builder(t_program* p)
       : structured_annotation_builder(
             p, "Adapter", "facebook.com/thrift/annotation/cpp/Adapter") {}
 
-  std::unique_ptr<t_const> make() & {
+  std::unique_ptr<t_const> make() override {
     auto map = std::make_unique<t_const_value>();
     map->set_map();
     map->add_map(make_string("name"), make_string("MyAdapter"));
@@ -55,15 +62,10 @@ struct adapter_builder : private structured_annotation_builder {
   }
 };
 
-struct box_builder : private structured_annotation_builder {
+struct box_builder : structured_annotation_builder {
   explicit box_builder(t_program* p)
       : structured_annotation_builder(
             p, "Box", "facebook.com/thrift/annotation/Box") {}
-
-  std::unique_ptr<t_const> make() & {
-    auto map = std::make_unique<t_const_value>();
-    return std::make_unique<t_const>(program, &type, "", std::move(map));
-  }
 };
 
 } // namespace apache::thrift::compiler::gen::cpp
