@@ -151,6 +151,14 @@ FOLLY_INLINE_VARIABLE constexpr clear_fn clear{};
 using empty_fn = detail::st::struct_private_access::empty_fn;
 FOLLY_INLINE_VARIABLE static constexpr empty_fn empty{};
 
+// TODO(dokwon): Add apache::thrift::uri support for generated enum types.
+template <typename T>
+FOLLY_EXPORT const std::string& uri() {
+  static const auto& kUri = *new std::string(
+      detail::st::struct_private_access::__fbthrift_thrift_uri<T>());
+  return kUri;
+}
+
 template <typename T>
 constexpr bool is_thrift_class_v =
     apache::thrift::detail::st::IsThriftClass<T>::value;

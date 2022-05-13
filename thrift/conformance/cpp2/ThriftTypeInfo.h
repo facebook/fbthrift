@@ -17,6 +17,7 @@
 #pragma once
 
 #include <initializer_list>
+#include <string_view>
 
 #include <folly/container/Access.h>
 #include <thrift/conformance/if/gen-cpp2/type_types.h>
@@ -37,7 +38,7 @@ inline constexpr type::hash_size_t kDefaultTypeHashBytes =
 //
 // The first name in names is set as the primary name, and all others are added
 // as aliases.
-template <typename C = std::initializer_list<const char*>>
+template <typename C = std::initializer_list<std::string_view>>
 ThriftTypeInfo createThriftTypeInfo(
     C&& names, type::hash_size_t typeHashBytes = kTypeHashBytesNotSpecified);
 
@@ -58,9 +59,9 @@ ThriftTypeInfo createThriftTypeInfo(R&& uris, type::hash_size_t typeHashBytes) {
     folly::throw_exception<std::invalid_argument>(
         "At least one name must be provided.");
   }
-  type.set_uri(std::forward<decltype(*itr)>(*itr++));
+  type.set_uri(std::string{std::forward<decltype(*itr)>(*itr++)});
   for (; itr != iend; ++itr) {
-    type.altUris()->emplace(std::forward<decltype(*itr)>(*itr++));
+    type.altUris()->emplace(std::string{std::forward<decltype(*itr)>(*itr++)});
   }
   return type;
 }
@@ -73,7 +74,7 @@ const ThriftTypeInfo& getGeneratedThriftTypeInfo() {
                T>())::value,
       "missing the `thrift.uri` annotation");
   static const ThriftTypeInfo kInfo =
-      createThriftTypeInfo({struct_private_access::__fbthrift_thrift_uri<T>()});
+      createThriftTypeInfo({::apache::thrift::uri<T>()});
   return kInfo;
 }
 

@@ -98,9 +98,8 @@ class Type : public detail::Wrap<TypeStruct> {
 
  private:
   template <typename Tag>
-  static constexpr decltype(auto) getUri() {
-    return ::apache::thrift::detail::st::struct_private_access::
-        __fbthrift_thrift_uri<standard_type<Tag>>();
+  static const std::string& getUri() {
+    return ::apache::thrift::uri<standard_type<Tag>>();
   }
 
   friend bool operator==(Type lhs, Type rhs) noexcept {
@@ -110,7 +109,7 @@ class Type : public detail::Wrap<TypeStruct> {
     return lhs.data_ != rhs.data_;
   }
 
-  static std::string&& checkName(std::string&& name);
+  static void checkName(const std::string& name);
 
   template <typename CTag, typename T>
   static decltype(auto) getId(T&& result) {
@@ -126,9 +125,10 @@ class Type : public detail::Wrap<TypeStruct> {
   }
 
   template <typename CTag>
-  static TypeStruct makeNamed(std::string&& uri) {
+  static TypeStruct makeNamed(std::string uri) {
     TypeStruct result;
-    getId<CTag>(result).ensure().uri_ref() = checkName(std::move(uri));
+    checkName(uri);
+    getId<CTag>(result).ensure().uri_ref() = std::move(uri);
     return result;
   }
 

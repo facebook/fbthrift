@@ -22,9 +22,8 @@ namespace apache {
 namespace thrift {
 namespace type {
 
-std::string&& Type::checkName(std::string&& name) {
+void Type::checkName(const std::string& name) {
   validateUniversalName(name);
-  return std::move(name);
 }
 
 } // namespace type
