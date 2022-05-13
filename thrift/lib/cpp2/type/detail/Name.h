@@ -125,8 +125,10 @@ struct GetName<cpp_type<T, Tag>> : PrettyName<T> {};
 template <typename T>
 struct GetName<service_t<T>> {
   FOLLY_EXPORT const std::string& operator()() const {
-    static const auto* kUri =
-        new std::string([]() { return T::__fbthrift_thrift_uri(); }());
+    static const auto* kUri = new std::string([]() {
+      return apache::thrift::detail::st::struct_private_access::
+          __fbthrift_thrift_uri<T>();
+    }());
     return *kUri;
   }
 };

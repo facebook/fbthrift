@@ -77,6 +77,9 @@ namespace st {
 //
 //  Thrift structures have private members but it may be necessary for the
 //  Thrift support library to access those private members.
+//
+//  TODO(dokwon): Rename struct_private_access to have single `private access`
+//  struct.
 struct struct_private_access {
   //  These should be alias templates but Clang has a bug where it does not
   //  permit member alias templates of a friend struct to access private
