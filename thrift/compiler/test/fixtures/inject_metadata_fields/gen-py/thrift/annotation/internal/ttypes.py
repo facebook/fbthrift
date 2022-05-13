@@ -112,7 +112,7 @@ InjectMetadataFields.thrift_spec = (
 )
 
 InjectMetadataFields.thrift_struct_annotations = {
-  "thrift.uri": "facebook.com/thrift/annotation/internal/InjectMetadataFields",
+  "thrift.uri": "facebook.com/thrift/annotation/InjectMetadataFields",
 }
 InjectMetadataFields.thrift_field_annotations = {
 }

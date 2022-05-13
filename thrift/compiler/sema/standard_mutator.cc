@@ -25,10 +25,9 @@ namespace thrift {
 namespace compiler {
 
 constexpr auto kTerseWriteUri = "facebook.com/thrift/annotation/TerseWrite";
-constexpr auto kSetGenerated =
-    "facebook.com/thrift/annotation/meta/SetGenerated";
+constexpr auto kSetGenerated = "facebook.com/thrift/annotation/SetGenerated";
 constexpr auto kInjectMetadataFieldsUri =
-    "facebook.com/thrift/annotation/internal/InjectMetadataFields";
+    "facebook.com/thrift/annotation/InjectMetadataFields";
 
 // TODO(afuller): Instead of mutating the AST, readers should look for
 // the interaction level annotation and the validation logic should be moved to

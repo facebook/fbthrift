@@ -10,7 +10,7 @@
  * Original thrift struct:-
  * InjectMetadataFields
  */
-<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/internal/InjectMetadataFields'))>>
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/InjectMetadataFields'))>>
 class facebook_thrift_annotation_InjectMetadataFields implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 

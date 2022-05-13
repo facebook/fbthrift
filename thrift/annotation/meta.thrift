@@ -60,5 +60,5 @@ struct Transitive {} (thrift.uri = "facebook.com/thrift/annotation/Transitive")
 @scope.Struct
 @thrift.Experimental
 struct SetGenerated {} (
-  thrift.uri = "facebook.com/thrift/annotation/meta/SetGenerated",
+  thrift.uri = "facebook.com/thrift/annotation/SetGenerated",
 )
