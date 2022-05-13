@@ -128,6 +128,9 @@ class MyStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::i64_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::string_t>
   >;
+  
+  static ::apache::thrift::tag::myIntField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::myStringField __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -246,11 +249,6 @@ class MyStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myStringField() && {
     return {static_cast<T&&>(this->__fbthrift_field_myStringField), __isset.at(1), __isset.bit(1)};
   }
- private:
-  static ::apache::thrift::tag::myIntField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::myStringField __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
-
- public:
 
   template <class Protocol_>
   unsigned long read(Protocol_* iprot);
@@ -290,6 +288,9 @@ class MyUnion final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::enum_t<::test::fixtures::basic::MyEnum>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{2}, ::apache::thrift::type::struct_t<::test::fixtures::basic::MyStruct>>
   >;
+  
+  static ::apache::thrift::tag::myEnum __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::myDataItem __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -508,11 +509,6 @@ class MyUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myDataItem_ref() && {
     return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
- private:
-  static ::apache::thrift::tag::myEnum __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::myDataItem __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
-
- public:
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>

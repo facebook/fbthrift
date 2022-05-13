@@ -101,4 +101,3 @@
   FOLLY_ERASE auto <%mixin:field_name%>() &&          { return std::move(*this).<%mixin:field_name%>_ref(); }
   FOLLY_ERASE auto <%mixin:field_name%>() const&&     { return std::move(*this).<%mixin:field_name%>_ref(); }
 <%/struct:mixin_fields%>
-<% > module_types_h/get%>

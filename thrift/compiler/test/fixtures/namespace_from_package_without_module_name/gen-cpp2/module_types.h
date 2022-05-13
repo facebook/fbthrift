@@ -56,6 +56,8 @@ class Foo final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::i64_t>
   >;
+  
+  static ::apache::thrift::tag::MyInt __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -132,10 +134,6 @@ class Foo final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyInt() && {
     return {static_cast<T&&>(this->__fbthrift_field_MyInt), __isset.at(0), __isset.bit(0)};
   }
- private:
-  static ::apache::thrift::tag::MyInt __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-
- public:
 
   ::std::int64_t get_MyInt() const {
     return __fbthrift_field_MyInt;

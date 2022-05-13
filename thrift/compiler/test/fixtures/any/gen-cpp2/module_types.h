@@ -68,6 +68,8 @@ class MyStruct final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>
   >;
+  
+  static ::apache::thrift::tag::myString __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -142,10 +144,6 @@ class MyStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myString() && {
     return {static_cast<T&&>(this->__fbthrift_field_myString), __isset.at(0), __isset.bit(0)};
   }
- private:
-  static ::apache::thrift::tag::myString __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-
- public:
 
   const ::std::string& get_myString() const& {
     return __fbthrift_field_myString;
@@ -199,6 +197,8 @@ class MyUnion final  {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>
   >;
+  
+  static ::apache::thrift::tag::myString __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -364,10 +364,6 @@ class MyUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myString_ref() && {
     return {std::move(value_.myString), type_, myString, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
- private:
-  static ::apache::thrift::tag::myString __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-
- public:
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
@@ -415,6 +411,8 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   using __fbthrift_fields = ::apache::thrift::type::fields<
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{1}, ::apache::thrift::type::string_t>
   >;
+  
+  static ::apache::thrift::tag::myString __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -478,10 +476,6 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myString_ref() && {
     return {static_cast<T&&>(this->myString), __isset.at(0), __isset.bit(0)};
   }
- private:
-  static ::apache::thrift::tag::myString __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-
- public:
 
   const ::std::string& get_myString() const& {
     return myString;

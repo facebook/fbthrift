@@ -513,6 +513,16 @@ class YourStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::cpp_type<std::deque<std::string>, ::apache::thrift::type::list<::apache::thrift::type::string_t>>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{9}, ::apache::thrift::type::adapted<StaticCast, ::apache::thrift::type::union_t<::cpp2::YourUnion>>>
   >;
+  
+  static ::apache::thrift::tag::majorVer __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::package __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::annotation_with_quote __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::class_ __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::annotation_with_trailing_comma __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
+  static ::apache::thrift::tag::empty_annotations __fbthrift_ident(::apache::thrift::type::field_id_u_c<6>);
+  static ::apache::thrift::tag::my_enum __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
+  static ::apache::thrift::tag::cpp_type_annotation __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
+  static ::apache::thrift::tag::my_union __fbthrift_ident(::apache::thrift::type::field_id_u_c<9>);
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -931,18 +941,6 @@ class YourStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> my_union() && {
     return {static_cast<T&&>(this->__fbthrift_field_my_union), __isset.at(8), __isset.bit(8)};
   }
- private:
-  static ::apache::thrift::tag::majorVer __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
-  static ::apache::thrift::tag::package __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::annotation_with_quote __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
-  static ::apache::thrift::tag::class_ __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
-  static ::apache::thrift::tag::annotation_with_trailing_comma __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
-  static ::apache::thrift::tag::empty_annotations __fbthrift_ident(::apache::thrift::type::field_id_u_c<6>);
-  static ::apache::thrift::tag::my_enum __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
-  static ::apache::thrift::tag::cpp_type_annotation __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
-  static ::apache::thrift::tag::my_union __fbthrift_ident(::apache::thrift::type::field_id_u_c<9>);
-
- public:
 
   ::std::int64_t get_majorVer() const {
     return __fbthrift_field_majorVer;

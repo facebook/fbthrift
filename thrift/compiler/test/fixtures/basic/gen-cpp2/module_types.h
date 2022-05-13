@@ -173,6 +173,7 @@ class MyDataItem final  {
   static const char* __fbthrift_thrift_uri();
   using __fbthrift_fields = ::apache::thrift::type::fields<
   >;
+  
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -249,6 +250,15 @@ class MyStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::set<::apache::thrift::type::float_t>>
   >;
+  
+  static ::apache::thrift::tag::MyIntField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::MyStringField __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::MyDataField __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::myEnum __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+  static ::apache::thrift::tag::oneway __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
+  static ::apache::thrift::tag::readonly __fbthrift_ident(::apache::thrift::type::field_id_u_c<6>);
+  static ::apache::thrift::tag::idempotent __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
+  static ::apache::thrift::tag::floatSet __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -620,17 +630,6 @@ class MyStruct final  {
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> floatSet() && {
     return {static_cast<T&&>(this->__fbthrift_field_floatSet), __isset.at(7), __isset.bit(7)};
   }
- private:
-  static ::apache::thrift::tag::MyIntField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::MyStringField __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
-  static ::apache::thrift::tag::MyDataField __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
-  static ::apache::thrift::tag::myEnum __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
-  static ::apache::thrift::tag::oneway __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
-  static ::apache::thrift::tag::readonly __fbthrift_ident(::apache::thrift::type::field_id_u_c<6>);
-  static ::apache::thrift::tag::idempotent __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
-  static ::apache::thrift::tag::floatSet __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
-
- public:
 
   ::std::int64_t get_MyIntField() const {
     return __fbthrift_field_MyIntField;
@@ -755,6 +754,11 @@ class MyUnion final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{3}, ::apache::thrift::type::struct_t<::test::fixtures::basic::MyDataItem>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{4}, ::apache::thrift::type::set<::apache::thrift::type::float_t>>
   >;
+  
+  static ::apache::thrift::tag::myEnum __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
+  static ::apache::thrift::tag::myStruct __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+  static ::apache::thrift::tag::myDataItem __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+  static ::apache::thrift::tag::floatSet __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -1143,13 +1147,6 @@ class MyUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> floatSet_ref() && {
     return {std::move(value_.floatSet), type_, floatSet, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
- private:
-  static ::apache::thrift::tag::myEnum __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
-  static ::apache::thrift::tag::myStruct __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
-  static ::apache::thrift::tag::myDataItem __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
-  static ::apache::thrift::tag::floatSet __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
-
- public:
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
