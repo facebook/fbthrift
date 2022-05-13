@@ -29,7 +29,7 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
             "intField",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -37,7 +37,7 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
             "optionalIntField",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             3,  # id
@@ -45,7 +45,7 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
             "intFieldWithDefault",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             13,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             4,  # id
@@ -53,7 +53,7 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
             "setField",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             5,  # id
@@ -61,7 +61,7 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
             "optionalSetField",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             6,  # id
@@ -69,7 +69,7 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
             "mapField",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string)),  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             7,  # id
@@ -77,7 +77,7 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
             "optionalMapField",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string)),  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             8,  # id
@@ -85,23 +85,23 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
             "binaryField",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             9,  # id
             _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "longField",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_py3lite_types.AdaptedTypeInfo(_fbthrift_py3lite_types.typeinfo_i64, my.module.Adapter2),  # typeinfo
             None,  # default value
-            (my.module.Adapter2, ),  # adapter classes
+            None,  # adapter class
         ),
         (
             10,  # id
             _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "adaptedLongField",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_py3lite_types.AdaptedTypeInfo(_fbthrift_py3lite_types.typeinfo_i64, my.module.Adapter2),  # typeinfo
             None,  # default value
-            (my.Adapter3, my.module.Adapter2, ),  # adapter classes
+            my.Adapter3,  # adapter class
         ),
     )
 
@@ -127,7 +127,7 @@ class Baz(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "intField",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             4,  # id
@@ -135,7 +135,7 @@ class Baz(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "setField",  # name
             lambda: _fbthrift_py3lite_types.SetTypeInfo(_fbthrift_py3lite_types.typeinfo_string),  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             6,  # id
@@ -143,7 +143,7 @@ class Baz(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "mapField",  # name
             lambda: _fbthrift_py3lite_types.MapTypeInfo(_fbthrift_py3lite_types.typeinfo_string, _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.typeinfo_string)),  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             8,  # id
@@ -151,15 +151,15 @@ class Baz(metaclass=_fbthrift_py3lite_types.UnionMeta):
             "binaryField",  # name
             _fbthrift_py3lite_types.typeinfo_binary,  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             9,  # id
             _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
             "longField",  # name
-            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            _fbthrift_py3lite_types.AdaptedTypeInfo(_fbthrift_py3lite_types.typeinfo_i64, my.module.Adapter2),  # typeinfo
             None,  # default value
-            (my.module.Adapter2, ),  # adapter classes
+            None,  # adapter class
         ),
     )
 
@@ -185,7 +185,7 @@ class Bar(metaclass=_fbthrift_py3lite_types.StructMeta):
             "structField",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(Foo),  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -193,7 +193,7 @@ class Bar(metaclass=_fbthrift_py3lite_types.StructMeta):
             "optionalStructField",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(Foo),  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             3,  # id
@@ -201,7 +201,7 @@ class Bar(metaclass=_fbthrift_py3lite_types.StructMeta):
             "structListField",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(Foo)),  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             4,  # id
@@ -209,7 +209,7 @@ class Bar(metaclass=_fbthrift_py3lite_types.StructMeta):
             "optionalStructListField",  # name
             lambda: _fbthrift_py3lite_types.ListTypeInfo(_fbthrift_py3lite_types.StructTypeInfo(Foo)),  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             5,  # id
@@ -217,7 +217,7 @@ class Bar(metaclass=_fbthrift_py3lite_types.StructMeta):
             "unionField",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(Baz),  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             6,  # id
@@ -225,7 +225,7 @@ class Bar(metaclass=_fbthrift_py3lite_types.StructMeta):
             "optionalUnionField",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(Baz),  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
     )
 
@@ -251,7 +251,7 @@ class StructWithFieldAdapter(metaclass=_fbthrift_py3lite_types.StructMeta):
             "field",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
-            (my.Adapter1, ),  # adapter classes
+            my.Adapter1,  # adapter class
         ),
         (
             2,  # id
@@ -259,7 +259,7 @@ class StructWithFieldAdapter(metaclass=_fbthrift_py3lite_types.StructMeta):
             "shared_field",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             3,  # id
@@ -267,7 +267,7 @@ class StructWithFieldAdapter(metaclass=_fbthrift_py3lite_types.StructMeta):
             "opt_shared_field",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             4,  # id
@@ -275,7 +275,7 @@ class StructWithFieldAdapter(metaclass=_fbthrift_py3lite_types.StructMeta):
             "opt_boxed_field",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
     )
 
@@ -330,7 +330,7 @@ class _fbthrift_Service_func_args(metaclass=_fbthrift_py3lite_types.StructMeta):
             "arg1",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             2,  # id
@@ -338,7 +338,7 @@ class _fbthrift_Service_func_args(metaclass=_fbthrift_py3lite_types.StructMeta):
             "arg2",  # name
             _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
         (
             3,  # id
@@ -346,7 +346,7 @@ class _fbthrift_Service_func_args(metaclass=_fbthrift_py3lite_types.StructMeta):
             "arg3",  # name
             lambda: _fbthrift_py3lite_types.StructTypeInfo(Foo),  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
     )
 
@@ -358,7 +358,7 @@ class _fbthrift_Service_func_result(metaclass=_fbthrift_py3lite_types.StructMeta
             "success",  # name
             _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
             None,  # default value
-            None,  # adapter classes
+            None,  # adapter class
         ),
     )
 

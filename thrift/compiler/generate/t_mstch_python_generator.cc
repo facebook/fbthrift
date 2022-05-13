@@ -137,8 +137,13 @@ class mstch_python_type : public mstch_type {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       const t_program* prog)
-      : mstch_type(type, std::move(generators), std::move(cache), pos),
-        prog_{prog} {
+      : mstch_type(
+            type->get_true_type(),
+            std::move(generators),
+            std::move(cache),
+            pos),
+        prog_{prog},
+        adapter_annotation_(find_structured_adapter_annotation(*type)) {
     register_methods(
         this,
         {
@@ -150,6 +155,9 @@ class mstch_python_type : public mstch_type {
             {"type:external_program?", &mstch_python_type::is_external_program},
             {"type:integer?", &mstch_python_type::is_integer},
             {"type:iobuf?", &mstch_python_type::is_iobuf},
+            {"type:has_adapter?", &mstch_python_type::has_adapter},
+            {"type:adapter_name", &mstch_python_type::adapter_name},
+            {"type:adapter_type_hint", &mstch_python_type::adapter_type_hint},
         });
   }
 
@@ -201,6 +209,16 @@ class mstch_python_type : public mstch_type {
         is_type_iobuf(type_->get_annotation("cpp.type"));
   }
 
+  mstch::node has_adapter() { return adapter_annotation_ != nullptr; }
+
+  mstch::node adapter_name() {
+    return get_annotation_property(adapter_annotation_, "name");
+  }
+
+  mstch::node adapter_type_hint() {
+    return get_annotation_property(adapter_annotation_, "typeHint");
+  }
+
  protected:
   const t_program* get_type_program() const {
     if (const t_program* p = type_->program()) {
@@ -210,6 +228,7 @@ class mstch_python_type : public mstch_type {
   }
 
   const t_program* prog_;
+  const t_const* adapter_annotation_;
 };
 
 class mstch_python_const_value : public mstch_const_value {
@@ -379,9 +398,8 @@ class type_python_generator : public type_generator {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
-    auto true_type = type->get_true_type();
     return std::make_shared<mstch_python_type>(
-        true_type, generators, cache, pos, prog_);
+        type, generators, cache, pos, prog_);
   }
 
  protected:
@@ -657,9 +675,7 @@ class mstch_python_field : public mstch_field {
             index,
             field_context),
         py_name_{py3::get_py3_name(*field)},
-        field_adapter_annotation_(find_structured_adapter_annotation(*field)),
-        type_adapter_annotation_(
-            find_structured_adapter_annotation(*field->get_type())) {
+        adapter_annotation_(find_structured_adapter_annotation(*field)) {
     register_methods(
         this,
         {
@@ -669,7 +685,7 @@ class mstch_python_field : public mstch_field {
             {"field:user_default_value",
              &mstch_python_field::user_default_value},
             {"field:has_adapter?", &mstch_python_field::has_adapter},
-            {"field:adapter_names", &mstch_python_field::adapter_names},
+            {"field:adapter_name", &mstch_python_field::adapter_name},
             {"field:adapter_type_hint", &mstch_python_field::adapter_type_hint},
         });
   }
@@ -707,38 +723,17 @@ class mstch_python_field : public mstch_field {
     return generators_->const_value_generator_->generate(
         value, generators_, cache_, pos_);
   }
-  mstch::node has_adapter() {
-    return field_adapter_annotation_ != nullptr ||
-        type_adapter_annotation_ != nullptr;
-  }
-  mstch::node adapter_names() {
-    mstch::array a;
-    if (field_adapter_annotation_) {
-      a.push_back(mstch::map{
-          {"adapter:name",
-           get_annotation_property(field_adapter_annotation_, "name")}});
-    }
-    if (type_adapter_annotation_) {
-      a.push_back(mstch::map{
-          {"adapter:name",
-           get_annotation_property(type_adapter_annotation_, "name")}});
-    }
-    return a;
+  mstch::node has_adapter() { return adapter_annotation_ != nullptr; }
+  mstch::node adapter_name() {
+    return get_annotation_property(adapter_annotation_, "name");
   }
   mstch::node adapter_type_hint() {
-    if (field_adapter_annotation_) {
-      return get_annotation_property(field_adapter_annotation_, "typeHint");
-    }
-    if (type_adapter_annotation_) {
-      return get_annotation_property(type_adapter_annotation_, "typeHint");
-    }
-    return "";
+    return get_annotation_property(adapter_annotation_, "typeHint");
   }
 
  private:
   const std::string py_name_;
-  const t_const* field_adapter_annotation_;
-  const t_const* type_adapter_annotation_;
+  const t_const* adapter_annotation_;
 };
 
 class mstch_python_struct : public mstch_struct {

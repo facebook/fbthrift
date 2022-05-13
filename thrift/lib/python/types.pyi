@@ -62,6 +62,15 @@ class StructTypeInfo:
 class EnumTypeInfo:
     def __init__(self, klass: typing.Type[eT]) -> None: ...
 
+TAdapter = typing.TypeVar(
+    "TAdapter", bound="thrift.python.adapters.base.Adapter[object, object]"
+)
+
+class AdaptedTypeInfo:
+    def __init__(
+        self, orig_type_info: AnyTypeInfo, adapter_class: typing.Type[TAdapter]
+    ) -> None: ...
+
 # Parent class for structs and unions
 class StructOrUnion(typing.Hashable):
     def __eq__(self) -> bool: ...

@@ -17,7 +17,5 @@
 }}{{!
 A tuple of adapter classes, field adapter first, then type adapter, if exist.
 None if none.
-}}{{#field:has_adapter?}}{{!
-}}({{#field:adapter_names}}{{adapter:name}}, {{/field:adapter_names}}){{!
-}}{{/field:has_adapter?}}{{!
+}}{{#field:has_adapter?}}{{field:adapter_name}}{{/field:has_adapter?}}{{!
 }}{{^field:has_adapter?}}None{{/field:has_adapter?}}

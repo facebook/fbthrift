@@ -21,6 +21,8 @@ This is for pep 484 typing
 This is useful for typing call paterns since it allows python container types OR
 thrift-py3 specific container types.
 
+}}{{#type:has_adapter?}}{{type:adapter_type_hint}}{{/type:has_adapter?}}{{!
+}}{{^type:has_adapter?}}{{!
 }}{{#type:bool?}}bool{{/type:bool?}}{{!
 }}{{#type:byte?}}int{{/type:byte?}}{{!
 }}{{#type:i16?}}int{{/type:i16?}}{{!
@@ -48,4 +50,5 @@ thrift-py3 specific container types.
 }}{{#type:enum}}{{!
   }}{{#type:need_module_path?}}{{type:module_path}}.{{/type:need_module_path?}}{{!
   }}{{enum:name}}{{!
-}}{{/type:enum}}
+}}{{/type:enum}}{{!
+}}{{/type:has_adapter?}}

@@ -179,18 +179,18 @@ cdef class UnionInfo:
             True,
         )
         self.type_infos = {}
-        self.id_to_adapter_classes = {}
+        self.id_to_adapter_class = {}
         self.name_to_index = {}
 
     cdef void fill(self) except *:
         cdef cDynamicStructInfo* info_ptr = self.cpp_obj.get()
-        for idx, (id, qualifier, name, type_info, _, adapter_classes) in enumerate(self.fields):
+        for idx, (id, qualifier, name, type_info, _, adapter_class) in enumerate(self.fields):
             # type_info can be a lambda function so types with dependencies
             # won't need to be defined in order
             if callable(type_info):
                 type_info = type_info()
             self.type_infos[id] = type_info
-            self.id_to_adapter_classes[id] = adapter_classes
+            self.id_to_adapter_class[id] = adapter_class
             info_ptr.addFieldInfo(
                 id, qualifier, name.encode("utf-8"), getCTypeInfo(type_info)
             )
@@ -215,6 +215,8 @@ cdef const cTypeInfo* getCTypeInfo(type_info):
             return (<MapTypeInfo>type_info).get()
         if isinstance(type_info, EnumTypeInfo):
             return &i32TypeInfo
+        if isinstance(type_info, AdaptedTypeInfo):
+            return getCTypeInfo((<AdaptedTypeInfo>type_info)._orig_type_info)
 
 
 cdef class ListTypeInfo:
@@ -341,6 +343,24 @@ cdef class EnumTypeInfo:
             return BadEnum(self._class, value)
 
 
+cdef class AdaptedTypeInfo:
+    def __cinit__(self, orig_type_info, adapter_class):
+        self._orig_type_info = orig_type_info
+        self._adapter_class = adapter_class
+
+    # validate and convert to format serializer may understand
+    def to_internal_data(self, value not None):
+        return self._orig_type_info.to_internal_data(
+            self._adapter_class.to_thrift(value)
+        )
+
+    # convert deserialized data to user format
+    def to_python_value(self, object value):
+        return self._adapter_class.from_thrift(
+            self._orig_type_info.to_python_value(value)
+        )
+
+
 cdef void set_struct_field(tuple struct_tuple, int16_t index, value) except *:
     setStructIsset(struct_tuple, index, 1)
     old_value = struct_tuple[index + 1]
@@ -371,10 +391,10 @@ cdef class Struct(StructOrUnion):
                 raise TypeError(f"__init__() got an unexpected keyword argument '{name}'")
             if value is None:
                 continue
-            adapter_classes = info.fields[index][5]
-            if adapter_classes:
+            adapter_class = info.fields[index][5]
+            if adapter_class:
                 field_id = info.fields[index][0]
-                value = _to_thrift_field(adapter_classes, value, field_id, self)
+                value = adapter_class.to_thrift_field(value, field_id, self)
             set_struct_field(
                 self._fbthrift_data,
                 index,
@@ -397,10 +417,10 @@ cdef class Struct(StructOrUnion):
                     continue
                 value_to_copy = self._fbthrift_data[index + 1]
             else:  # new assigned value
-                adapter_classes = info.fields[index][5]
-                if adapter_classes:
+                adapter_class = info.fields[index][5]
+                if adapter_class:
                     field_id = info.fields[index][0]
-                    value = _to_thrift_field(adapter_classes, value, field_id, self)
+                    value = adapter_class.to_thrift_field(value, field_id, self)
                 value_to_copy = info.type_infos[index].to_internal_data(value)
             set_struct_field(new_inst._fbthrift_data, index, value_to_copy)
         if kwargs:
@@ -529,9 +549,9 @@ cdef class Union(StructOrUnion):
         Py_DECREF(old_type_value)
         old_value = self._fbthrift_data[1]
         union_info = (<UnionInfo>self._fbthrift_struct_info)
-        adapter_classes = union_info.id_to_adapter_classes[type_value]
-        if adapter_classes:
-            value = _to_thrift_field(adapter_classes, value, type_value, self)
+        adapter_class = union_info.id_to_adapter_class[type_value]
+        if adapter_class:
+            value = adapter_class.to_thrift_field(value, type_value, self)
         value = union_info.type_infos[type_value].to_internal_data(value)
         Py_INCREF(value)
         PyTuple_SET_ITEM(self._fbthrift_data, 1, value)
@@ -613,11 +633,10 @@ cdef class Union(StructOrUnion):
         return self.type.value != 0
 
 
-cdef make_fget_struct(i, field_id, adapter_classes):
-    if adapter_classes:
+cdef make_fget_struct(i, field_id, adapter_class):
+    if adapter_class:
         return functools.cached_property(lambda self:
-            _from_thrift_field(
-                adapter_classes,
+            adapter_class.from_thrift_field(
                 (<Struct>self)._fbthrift_get_field_value(i),
                 field_id,
                 self,
@@ -626,11 +645,10 @@ cdef make_fget_struct(i, field_id, adapter_classes):
     return functools.cached_property(lambda self: (<Struct>self)._fbthrift_get_field_value(i))
 
 
-cdef make_fget_union(type_value, adapter_classes):
-    if adapter_classes:
+cdef make_fget_union(type_value, adapter_class):
+    if adapter_class:
         return functools.cached_property(lambda self:
-            _from_thrift_field(
-                adapter_classes,
+            adapter_class.from_thrift_field(
                 (<Union>self)._fbthrift_get_field_value(type_value),
                 type_value,
                 self,
@@ -1128,15 +1146,3 @@ class Enum:
     @staticmethod
     def __get_thrift_name__() -> str:
         return NotImplementedError()
-
-
-cdef _to_thrift_field(tuple adapter_classes, adapted, int field_id, strct):
-    for cls in adapter_classes:
-        adapted = cls.to_thrift_field(adapted, field_id, strct)
-    return adapted
-
-
-cdef _from_thrift_field(tuple adapter_classes, orig, int field_id, strct):
-    for cls in reversed(adapter_classes):
-        orig = cls.from_thrift_field(orig, field_id, strct)
-    return orig

@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import typing
+
 from thrift.python.adapters.base import Adapter
 
 
@@ -23,3 +25,13 @@ class AtoiAdapter(Adapter[str, int]):
     @classmethod
     def to_thrift(cls, adapted: int) -> str:
         return str(adapted)
+
+
+class ItoaListAdapter(Adapter[typing.Sequence[int], typing.Sequence[str]]):
+    @classmethod
+    def from_thrift(cls, original: typing.Sequence[int]) -> typing.Sequence[str]:
+        return [str(i) for i in original]
+
+    @classmethod
+    def to_thrift(cls, adapted: typing.Sequence[str]) -> typing.Sequence[int]:
+        return [int(a) for a in adapted]

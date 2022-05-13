@@ -14,7 +14,7 @@
 
 import unittest
 
-from thrift.python.test.adapters.atoi import AtoiAdapter
+from thrift.python.test.adapters.atoi import AtoiAdapter, ItoaListAdapter
 
 
 class AtoiAdapterTest(unittest.TestCase):
@@ -22,3 +22,10 @@ class AtoiAdapterTest(unittest.TestCase):
         a = "42"
         i = AtoiAdapter.from_thrift(a)
         self.assertEqual(a, AtoiAdapter.to_thrift(i))
+
+
+class ItoaListAdapterTest(unittest.TestCase):
+    def test_round_trip(self):
+        ints = [1, 10, 100, 1000]
+        strs = ItoaListAdapter.from_thrift(ints)
+        self.assertEqual(ints, ItoaListAdapter.to_thrift(strs))

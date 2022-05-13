@@ -42,6 +42,14 @@ struct Foo {
     typeHint = "datetime.datetime",
   }
   3: AdaptedInt another_time;
+  4: list<AdaptedInt> int_list;
+  5: set<AdaptedInt> int_set;
+  6: map<AdaptedInt, Datetime> int_to_datetime_map;
+  @python.Adapter{
+    name = "thrift.python.test.adapters.atoi.ItoaListAdapter",
+    typeHint = "typing.Sequence[str]",
+  }
+  7: list<AdaptedInt> adapted_list;
 }
 
 union Bar {

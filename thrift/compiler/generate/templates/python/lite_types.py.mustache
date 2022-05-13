@@ -54,7 +54,7 @@ class {{struct:name}}(metaclass={{!
             {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
             {{#field:user_default_value}}{{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{/field:type}}{{> types/constant_value }}{{/field:user_default_value}}{{!
             }}{{^field:user_default_value}}None{{/field:user_default_value}},  # default value
-            {{> fields/adapter_classes }},  # adapter classes
+            {{> fields/adapter_class }},  # adapter class
         ),
         {{/struct:fields_and_mixin_fields}}
     )
@@ -146,7 +146,7 @@ class {{> types/function_args_type}}(metaclass=_fbthrift_py3lite_types.StructMet
             "{{field:py_name}}",  # name
             {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
             None,  # default value
-            {{> fields/adapter_classes }},  # adapter classes
+            {{> fields/adapter_class }},  # adapter class
         ),
         {{/function:args}}
     )
@@ -162,7 +162,7 @@ class {{> types/function_return_type}}(metaclass=_fbthrift_py3lite_types.StructM
             "success",  # name
             {{#function:return_type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/function:return_type}},  # typeinfo
             None,  # default value
-            {{> fields/adapter_classes }},  # adapter classes
+            {{> fields/adapter_class }},  # adapter class
         ),
         {{/type:void?}}
         {{/function:return_type}}
@@ -173,7 +173,7 @@ class {{> types/function_return_type}}(metaclass=_fbthrift_py3lite_types.StructM
             "{{field:py_name}}",  # name
             {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
             None,  # default value
-            {{> fields/adapter_classes }},  # adapter classes
+            {{> fields/adapter_class }},  # adapter class
         ),
         {{/function:exceptions}}
     )
