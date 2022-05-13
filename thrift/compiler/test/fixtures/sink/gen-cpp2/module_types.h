@@ -87,7 +87,6 @@ class InitialResponse final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
-  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -210,7 +209,6 @@ class FinalResponse final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
-  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -333,7 +331,6 @@ class SinkPayload final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
-  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -456,7 +453,6 @@ class CompatibleWithKeywordSink final  {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
-  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -579,7 +575,6 @@ class FOLLY_EXPORT InitialException : public apache::thrift::TException {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
-  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -695,7 +690,6 @@ class FOLLY_EXPORT SinkException1 : public apache::thrift::TException {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
-  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -811,7 +805,6 @@ class FOLLY_EXPORT SinkException2 : public apache::thrift::TException {
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
-  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;

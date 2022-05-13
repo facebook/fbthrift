@@ -68,11 +68,6 @@ ThriftTypeInfo createThriftTypeInfo(R&& uris, type::hash_size_t typeHashBytes) {
 
 template <typename T>
 const ThriftTypeInfo& getGeneratedThriftTypeInfo() {
-  using ::apache::thrift::detail::st::struct_private_access;
-  static_assert(
-      decltype(struct_private_access::__fbthrift_cpp2_gen_has_thrift_uri<
-               T>())::value,
-      "missing the `thrift.uri` annotation");
   static const ThriftTypeInfo kInfo =
       createThriftTypeInfo({::apache::thrift::uri<T>()});
   return kInfo;

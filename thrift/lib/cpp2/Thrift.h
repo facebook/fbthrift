@@ -90,10 +90,6 @@ struct struct_private_access {
   __fbthrift_cpp2_gen_json();
 
   template <typename T>
-  static folly::bool_constant<T::__fbthrift_cpp2_gen_has_thrift_uri> //
-  __fbthrift_cpp2_gen_has_thrift_uri();
-
-  template <typename T>
   static typename T::__fbthrift_fields __fbthrift_fields();
 
   template <typename T>
