@@ -191,6 +191,12 @@ void rectify_returned_interactions(
     return;
   }
 
+  if (!node.return_type().resolve()) {
+    ctx.failure(
+        node, "Failed to resolve return type of `" + node.name() + "`.");
+    return;
+  }
+
   if (const auto& ret = node.returned_interaction()) {
     check_is_interaction(*ret);
   } else if (node.return_type()->is_service()) {

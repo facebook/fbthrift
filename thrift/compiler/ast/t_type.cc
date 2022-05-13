@@ -90,16 +90,23 @@ const t_type* t_type::get_true_type() const {
 
 bool t_type_ref::resolved() const noexcept {
   return !empty() &&
-      (unresolve_type_ == nullptr || unresolve_type_->type().resolved());
+      (unresolved_type_ == nullptr || unresolved_type_->type().resolved());
+}
+
+bool t_type_ref::resolve() {
+  if (unresolved_type_ != nullptr) { // Try to resolve.
+    if (!unresolved_type_->resolve()) {
+      return false;
+    }
+    unresolved_type_ = nullptr;
+  }
+  return true;
 }
 
 const t_type& t_type_ref::deref() {
-  if (unresolve_type_ != nullptr) { // Try to resolve.
-    if (!unresolve_type_->resolve()) {
-      throw std::runtime_error(
-          "Could not resolve type: " + unresolve_type_->get_full_name());
-    }
-    unresolve_type_ = nullptr;
+  if (!resolve()) {
+    throw std::runtime_error(
+        "Could not resolve type: " + unresolved_type_->get_full_name());
   }
   return deref_or_throw();
 }

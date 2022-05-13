@@ -434,7 +434,11 @@ std::unique_ptr<t_program_bundle> parse_and_mutate_program(
   parsing_driver driver(sm, ctx, filename, std::move(params));
   auto program = driver.parse();
   if (program != nullptr) {
-    standard_mutators()(ctx, *program);
+    auto result = standard_mutators()(ctx, *program);
+    if (result.unresolvable_typeref) {
+      // Stop processing if there is unresolvable typeref
+      program = nullptr;
+    }
   }
   return program;
 }

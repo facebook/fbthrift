@@ -51,6 +51,12 @@ class ast_mutator
 // A thin wrapper around a vector of mutators that
 // knows how to apply those mutators in order.
 struct ast_mutators {
+ private:
+  struct mutation_result {
+    bool unresolvable_typeref = false;
+  };
+
+ public:
   std::vector<ast_mutator> stages;
 
   // Access a specific mutator stage, growing the number of stages if needed.
@@ -64,7 +70,8 @@ struct ast_mutators {
     return stages[index];
   }
 
-  void operator()(diagnostic_context& ctx, t_program_bundle& bundle) {
+  mutation_result operator()(
+      diagnostic_context& ctx, t_program_bundle& bundle) {
     // Best effort try to egarly resolve types.
     // NOTE: It is allowed to reference types that haven't been generated yet,
     // so it is ok if this fails. The call after applying mutators will catch
@@ -75,7 +82,9 @@ struct ast_mutators {
       stage.mutate(ctx, bundle);
     }
     // We have no more mutators, so all type references **must** resolve.
-    resolve_all_types(ctx, bundle);
+    mutation_result ret;
+    ret.unresolvable_typeref = !resolve_all_types(ctx, bundle);
+    return ret;
   }
 
  private:

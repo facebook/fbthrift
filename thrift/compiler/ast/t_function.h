@@ -56,6 +56,7 @@ class t_function final : public t_named {
         paramlist_(std::make_unique<t_paramlist>(program)) {}
 
   const t_type_ref& return_type() const { return return_type_; }
+  t_type_ref& return_type() { return return_type_; }
   void set_return_type(t_type_ref ret) { return_type_ = std::move(ret); }
 
   t_paramlist& params() { return *paramlist_; }

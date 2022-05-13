@@ -1958,6 +1958,27 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:foo.thrift] InvalidKeyType: Hack only supports integers and strings as key for map and set - https://fburl.com/wiki/pgzirbu8, function invalid_rpc_return has invalid return type with type: set<float>.\n",
         )
 
+    def test_undefined_type(self):
+        write_file("header.thrift", "")
+        write_file(
+            "main.thrift",
+            textwrap.dedent(
+                """\
+                include "header.thrift"
+                service Foo {
+                  header.Bar func();
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("main.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:main.thrift:3] Failed to resolve return type of `func`.\n"
+            "[FAILURE:main.thrift:3] Type `header.Bar` not defined.\n",
+        )
+
     def test_rpc_param_invalid_key_type(self):
         write_file(
             "foo.thrift",
