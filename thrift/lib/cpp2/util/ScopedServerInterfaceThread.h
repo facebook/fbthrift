@@ -111,6 +111,15 @@ class ScopedServerInterfaceThread {
       size_t numThreads = folly::hardware_concurrency()) const;
 };
 
+namespace detail {
+template <typename T>
+T get_service_tag(ServiceHandler<T>*);
+
+template <typename ServiceHandler>
+using get_service_tag_t =
+    decltype(get_service_tag(std::declval<ServiceHandler*>()));
+} // namespace detail
+
 /**
  * Creates a AsyncClientT for a given handler, backed by an internal
  * ScopedServerInterfaceThread, with optional fault injection
@@ -121,6 +130,14 @@ class ScopedServerInterfaceThread {
  * This is more convenient but offers less control than managing
  * your own ScopedServerInterfaceThread.
  */
+template <
+    class ServiceHandler,
+    class ServiceTag =
+        apache::thrift::detail::get_service_tag_t<ServiceHandler>>
+std::unique_ptr<Client<ServiceTag>> makeTestClient(
+    std::shared_ptr<ServiceHandler> handler,
+    ScopedServerInterfaceThread::FaultInjectionFunc injectFault = nullptr);
+
 template <class AsyncClientT>
 std::unique_ptr<AsyncClientT> makeTestClient(
     std::shared_ptr<AsyncProcessorFactory> apf,

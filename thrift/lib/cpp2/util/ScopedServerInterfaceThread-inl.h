@@ -162,5 +162,14 @@ std::unique_ptr<AsyncClientT> makeTestClient(
   return client;
 }
 
+template <class ServiceHandler, class ServiceTag>
+std::unique_ptr<Client<ServiceTag>> makeTestClient(
+    std::shared_ptr<ServiceHandler> handler,
+    ScopedServerInterfaceThread::FaultInjectionFunc injectFault) {
+  return makeTestClient<Client<ServiceTag>>(
+      std::static_pointer_cast<AsyncProcessorFactory>(std::move(handler)),
+      std::move(injectFault));
+}
+
 } // namespace thrift
 } // namespace apache

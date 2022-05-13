@@ -295,8 +295,7 @@ TEST(ScopedServerInterfaceThread, faultInjection) {
 }
 
 TEST(ScopedServerInterfaceThread, makeTestClient) {
-  auto cli = makeTestClient<SimpleServiceAsyncClient>(
-      make_shared<SimpleServiceImpl>());
+  auto cli = makeTestClient(make_shared<SimpleServiceImpl>());
   EXPECT_EQ(6, cli->sync_add(-3, 9));
 }
 
