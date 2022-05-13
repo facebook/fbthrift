@@ -38,21 +38,21 @@ struct ValueHelper {
   static void set(Value& result, T&& value) {
     if constexpr (false) {
     } else if constexpr (type::base_type_v<TT> == type::BaseType::Bool) {
-      result.set_boolValue(value);
+      result.boolValue_ref() = value;
     } else if constexpr (type::base_type_v<TT> == type::BaseType::Byte) {
-      result.set_byteValue(value);
+      result.byteValue_ref() = value;
     } else if constexpr (type::base_type_v<TT> == type::BaseType::I16) {
-      result.set_i16Value(value);
+      result.i16Value_ref() = value;
     } else if constexpr (type::base_type_v<TT> == type::BaseType::I32) {
-      result.set_i32Value(value);
+      result.i32Value_ref() = value;
     } else if constexpr (type::base_type_v<TT> == type::BaseType::I64) {
-      result.set_i64Value(value);
+      result.i64Value_ref() = value;
     } else if constexpr (type::base_type_v<TT> == type::BaseType::Enum) {
-      result.set_i32Value(static_cast<int32_t>(value));
+      result.i32Value_ref() = static_cast<int32_t>(value);
     } else if constexpr (type::base_type_v<TT> == type::BaseType::Float) {
-      result.set_floatValue(value);
+      result.floatValue_ref() = value;
     } else if constexpr (type::base_type_v<TT> == type::BaseType::Double) {
-      result.set_doubleValue(value);
+      result.doubleValue_ref() = value;
     } else if constexpr (type::base_type_v<TT> == type::BaseType::String) {
       result.set_stringValue(std::forward<T>(value));
     }
@@ -62,15 +62,15 @@ struct ValueHelper {
 template <>
 struct ValueHelper<type::binary_t> {
   static void set(Value& result, folly::IOBuf value) {
-    result.set_binaryValue(std::move(value));
+    result.binaryValue_ref() = std::move(value);
   }
   static void set(Value& result, std::string_view value) {
-    result.set_binaryValue(
-        folly::IOBuf{folly::IOBuf::COPY_BUFFER, value.data(), value.size()});
+    result.binaryValue_ref() =
+        folly::IOBuf{folly::IOBuf::COPY_BUFFER, value.data(), value.size()};
   }
   static void set(Value& result, folly::ByteRange value) {
-    result.set_binaryValue(
-        folly::IOBuf{folly::IOBuf::COPY_BUFFER, value.data(), value.size()});
+    result.binaryValue_ref() =
+        folly::IOBuf{folly::IOBuf::COPY_BUFFER, value.data(), value.size()};
   }
 };
 
