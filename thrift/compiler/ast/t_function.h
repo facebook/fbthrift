@@ -18,6 +18,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include <thrift/compiler/ast/node_list.h>
 #include <thrift/compiler/ast/t_named.h>
@@ -47,17 +48,31 @@ class t_function final : public t_named {
    *
    * @param program          - The program in which this function is to be
    * defined.
-   * @param return_type      - The type of the value that will be returned
+   * @param return_type      - The type(s) of the value that will be returned
    * @param name             - The symbolic name of the function
    */
   t_function(t_program* program, t_type_ref return_type, std::string name)
       : t_named(std::move(name)),
-        return_type_(return_type),
+        paramlist_(std::make_unique<t_paramlist>(program)) {
+    set_return_type(return_type);
+  }
+
+  t_function(
+      t_program* program,
+      std::vector<t_type_ref> return_types,
+      std::string name)
+      : t_named(std::move(name)),
+        return_types_(std::move(return_types)),
         paramlist_(std::make_unique<t_paramlist>(program)) {}
 
-  const t_type_ref& return_type() const { return return_type_; }
-  t_type_ref& return_type() { return return_type_; }
-  void set_return_type(t_type_ref ret) { return_type_ = std::move(ret); }
+  const t_type_ref& return_type() const {
+    return response_pos_ != -1 ? return_types_[response_pos_]
+                               : t_type_ref::none();
+  }
+  void set_return_type(t_type_ref ret) {
+    response_pos_ = return_types_.size();
+    return_types_.push_back(ret);
+  }
 
   t_paramlist& params() { return *paramlist_; }
   const t_paramlist& params() const { return *paramlist_; }
@@ -84,18 +99,25 @@ class t_function final : public t_named {
 
   // new syntax only
   const t_type_ref& returned_interaction() const {
-    return returned_interaction_;
+    return returned_interaction_pos_ != -1
+        ? return_types_[returned_interaction_pos_]
+        : t_type_ref::none();
   }
-  void set_returned_interaction(t_type_ref interaction) {
-    returned_interaction_ = std::move(interaction);
+  void set_returned_interaction_pos(uint8_t pos) {
+    returned_interaction_pos_ = pos;
   }
+  void set_response_pos(uint8_t pos) { response_pos_ = pos; }
+
+  std::vector<t_type_ref>& return_types() { return return_types_; }
+  const std::vector<t_type_ref>& return_types() const { return return_types_; }
 
  private:
-  t_type_ref return_type_;
+  std::vector<t_type_ref> return_types_;
   std::unique_ptr<t_paramlist> paramlist_;
   std::unique_ptr<t_throws> exceptions_;
   t_function_qualifier qualifier_;
-  t_type_ref returned_interaction_;
+  int8_t returned_interaction_pos_{-1};
+  int8_t response_pos_{-1};
   bool isInteractionConstructor_{false};
   bool isInteractionMember_{false};
 
@@ -131,8 +153,8 @@ class t_function final : public t_named {
   const t_throws* get_sink_xceptions() const;
   const t_throws* get_sink_final_response_xceptions() const;
   bool is_oneway() const { return qualifier_ == t_function_qualifier::one_way; }
-  bool returns_stream() const { return return_type_->is_streamresponse(); }
-  bool returns_sink() const { return return_type_->is_sink(); }
+  bool returns_stream() const { return return_type()->is_streamresponse(); }
+  bool returns_sink() const { return return_type()->is_sink(); }
 };
 
 using t_function_list = node_list<t_function>;

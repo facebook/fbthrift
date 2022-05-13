@@ -661,27 +661,6 @@ void validate_interaction_factories(
       o << "Nested interactions are forbidden: " << node.name();
     });
   }
-
-  if (node.is_interaction_constructor()) {
-    // uses old syntax
-    return;
-  }
-
-  t_type_ref ret;
-  if (node.return_type()->is_streamresponse()) {
-    auto& stream =
-        static_cast<const t_stream_response&>(node.return_type().deref());
-    ret = stream.first_response_type();
-  } else if (node.return_type()->is_sink()) {
-    auto& sink = static_cast<const t_sink&>(node.return_type().deref());
-    ret = sink.first_response_type();
-  } else {
-    ret = node.return_type();
-  }
-
-  if (!ret.empty() && ret->is_service()) {
-    ctx.failure("Interactions are not allowed in this position");
-  }
 }
 
 } // namespace

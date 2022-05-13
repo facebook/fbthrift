@@ -34,6 +34,7 @@
 #include <limits.h>
 #include <stack>
 #include <utility>
+#include <vector>
 
 #include <boost/optional.hpp>
 
@@ -310,7 +311,8 @@ using t_typethrowspair = std::pair<t_type_ref, t_throws*>;
 %type<t_function*>                 Function
 %type<t_function*>                 FunctionAnnotated
 %type<t_function*>                 Performs
-%type<std::pair<t_type_ref, t_type_ref>> FunctionType
+%type<std::vector<t_type_ref>>     FunctionType
+%type<t_type_ref>                  FunctionTypeElement
 %type<t_function_list*>            FunctionList
 
 %type<t_throws*>                   MaybeThrows
@@ -838,10 +840,7 @@ Function:
     {
       driver.debug("Function => FunctionQualifier FunctionType Identifier ( FieldList ) MaybeThrows");
       @$ = driver.compute_location({@1, @2, @3, @4, @5, @6, @7});
-      $$ = new t_function(driver.program, std::move($2.first), std::move($3));
-      if ($2.second) {
-        $$->set_returned_interaction(std::move(*$2.second));
-      }
+      $$ = new t_function(driver.program, std::move($2), std::move($3));
       $$->set_qualifier($1);
       driver.set_fields($$->params(), std::move(*own($5)));
       $$->set_exceptions(own($7));
@@ -945,57 +944,38 @@ FieldValue:
 |   { $$ = nullptr; }
 
 FunctionType:
-  StreamReturnType
+  FunctionTypeElement
     {
-      driver.debug("FunctionType -> StreamReturnType");
-      $$.first = driver.new_type_ref(own($1), nullptr);
+      driver.debug("FunctionType -> FunctionTypeElement");
+      $$ = {$1};
     }
-| FieldType "," StreamReturnType
+| FunctionType "," FunctionTypeElement
     {
-      driver.debug("FunctionType -> FieldType, StreamReturnType");
-      // This might actually be an interaction, corrected in standard mutator.
-      $3->set_first_response_type(std::move($1));
-      $$.first = driver.new_type_ref(own($3), nullptr);
+      driver.debug("FunctionType -> FunctionType, FunctionTypeElement");
+      $$ = std::move($1);
+      $$.push_back($3);
     }
-|  FieldType "," FieldType "," StreamReturnType
-    {
-      driver.debug("FunctionType -> FieldType, FieldType, StreamReturnType");
-      $5->set_first_response_type(std::move($3));
-      $$ = {driver.new_type_ref(own($5), nullptr), $1};
-    }
+
+FunctionTypeElement:
+  FieldType
+  {
+      driver.debug("FunctionTypeElement -> FieldType");
+      $$ = $1;
+  }
+| StreamReturnType
+  {
+      driver.debug("FunctionTypeElement -> StreamReturnType");
+      $$ = driver.new_type_ref(own($1), nullptr);
+  }
 | SinkReturnType
-    {
-      driver.debug("FunctionType -> SinkReturnType");
-      $$.first = driver.new_type_ref(own($1), nullptr);
-    }
-| FieldType "," SinkReturnType
-    {
-      driver.debug("FunctionType -> FieldType, SinkReturnType");
-      // This might actually be an interaction, corrected in standard mutator.
-      $3->set_first_response_type(std::move($1));
-      $$.first = driver.new_type_ref(own($3), nullptr);
-    }
-|  FieldType "," FieldType "," SinkReturnType
-    {
-      driver.debug("FunctionType -> FieldType, FieldType, SinkReturnType");
-      $5->set_first_response_type(std::move($3));
-      $$ = {driver.new_type_ref(own($5), nullptr), $1};
-    }
-| FieldType
-    {
-      driver.debug("FunctionType -> FieldType");
-      // This might actually be an interaction, corrected in standard mutator.
-      $$.first = $1;
-    }
-|  FieldType "," FieldType
-    {
-      driver.debug("FunctionType -> FieldType, FieldType");
-      $$ = {$3, $1};
-    }
+  {
+      driver.debug("FunctionTypeElement -> SinkReturnType");
+      $$ = driver.new_type_ref(own($1), nullptr);
+  }
 | tok_void
     {
-      driver.debug("FunctionType -> tok_void");
-      $$.first = t_base_type::t_void();
+      driver.debug("FunctionTypeElement -> tok_void");
+      $$ = t_base_type::t_void();
     }
 
 StreamReturnType:

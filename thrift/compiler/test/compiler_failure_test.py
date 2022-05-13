@@ -1737,11 +1737,9 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:6] Only an interaction is allowed in this position\n"
-            "[FAILURE:foo.thrift:7] Only an interaction is allowed in this position\n"
-            "[FAILURE:foo.thrift:8] Only an interaction is allowed in this position\n"
-            "[FAILURE:foo.thrift:6] Interactions are not allowed in this position\n"
-            "[FAILURE:foo.thrift:8] Interactions are not allowed in this position\n",
+            "[FAILURE:foo.thrift:6] Interactions are only allowed as the leftmost return type: interaction foo.I\n"
+            "[FAILURE:foo.thrift:7] Too many return types: i32\n"
+            "[FAILURE:foo.thrift:8] Interactions are only allowed as the leftmost return type: interaction foo.I\n",
         )
 
     def test_interaction_in_return_type(self):
@@ -1767,9 +1765,9 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:6] Interactions are not allowed in this position\n"
-            "[FAILURE:foo.thrift:7] Interactions are not allowed in this position\n"
-            "[FAILURE:foo.thrift:8] Interactions are not allowed in this position\n",
+            "[FAILURE:foo.thrift:6] Interactions are only allowed as the leftmost return type: interaction foo.I\n"
+            "[FAILURE:foo.thrift:7] Interactions are only allowed as the leftmost return type: interaction foo.I\n"
+            "[FAILURE:foo.thrift:8] Interactions are only allowed as the leftmost return type: interaction foo.I\n",
         )
 
     # Time complexity of for_each_transitive_field should be O(1)

@@ -176,49 +176,73 @@ void set_generated(diagnostic_context&, mutator_context&, t_named& node) {
   }
 }
 
-void rectify_returned_interactions(
+void normalize_return_type(
     diagnostic_context& ctx, mutator_context&, t_function& node) {
-  auto check_is_interaction = [&](const t_type& node) {
-    const auto* type = node.get_true_type();
-    ctx.check(
-        type->is_service() &&
-            static_cast<const t_service*>(type)->is_interaction(),
-        "Only an interaction is allowed in this position");
-  };
-
-  if (node.is_interaction_constructor()) {
-    // uses old syntax
-    return;
-  }
-
-  if (!node.return_type().resolve()) {
-    ctx.failure(
-        node, "Failed to resolve return type of `" + node.name() + "`.");
-    return;
-  }
-
-  if (const auto& ret = node.returned_interaction()) {
-    check_is_interaction(*ret);
-  } else if (node.return_type()->is_service()) {
-    check_is_interaction(*node.return_type());
-    node.set_returned_interaction(node.return_type());
-    node.set_return_type(t_base_type::t_void());
-  } else if (node.return_type()->is_streamresponse()) {
-    auto& stream =
-        static_cast<const t_stream_response&>(node.return_type().deref());
-    if (stream.first_response_type() &&
-        stream.first_response_type()->is_service()) {
-      check_is_interaction(*stream.first_response_type());
-      node.set_returned_interaction(stream.first_response_type());
-      const_cast<t_stream_response&>(stream).set_first_response_type({});
+  auto& types = node.return_types();
+  for (size_t i = 0; i < types.size(); ++i) {
+    if (!types[i].resolve()) {
+      ctx.failure(
+          node, "Failed to resolve return type of `" + node.name() + "`.");
+      return;
     }
-  } else if (node.return_type()->is_sink()) {
-    auto& sink = static_cast<const t_sink&>(node.return_type().deref());
-    if (sink.first_response_type() &&
-        sink.first_response_type()->is_service()) {
-      check_is_interaction(*sink.first_response_type());
-      node.set_returned_interaction(sink.first_response_type());
-      const_cast<t_sink&>(sink).set_first_response_type({});
+
+    const auto* type = types[i]->get_true_type();
+    if (auto* interaction = dynamic_cast<const t_interaction*>(type)) {
+      if (i != 0) {
+        ctx.failure([&](auto& o) {
+          o << "Interactions are only allowed as the leftmost return type: "
+            << type->get_full_name();
+        });
+      }
+
+      // Old syntax treats returned interaction as response instead
+      if (node.is_interaction_constructor()) {
+        assert(types.size() == 1);
+        node.set_response_pos(i);
+        break;
+      }
+      node.set_returned_interaction_pos(i);
+      if (types.size() == 1) {
+        node.set_return_type(t_base_type::t_void());
+        break;
+      }
+    } else if (auto* stream = dynamic_cast<const t_stream_response*>(type)) {
+      if (i + 1 != types.size()) {
+        ctx.failure([&](auto& o) {
+          o << "Streams are only allowed as the rightmost return type: "
+            << type->get_full_name();
+        });
+      }
+      // TODO: move first response out of t_stream_response
+      if (const auto& ret = node.return_type()) {
+        const_cast<t_stream_response*>(stream)->set_first_response_type(ret);
+      }
+      node.set_response_pos(i);
+    } else if (auto* sink = dynamic_cast<const t_sink*>(type)) {
+      if (i + 1 != types.size()) {
+        ctx.failure([&](auto& o) {
+          o << "Sinks are only allowed as the rightmost return type: "
+            << type->get_full_name();
+        });
+      }
+      // TODO: move first response out of t_sink
+      if (const auto& ret = node.return_type()) {
+        const_cast<t_sink*>(sink)->set_first_response_type(ret);
+      }
+      node.set_response_pos(i);
+    } else if (
+        dynamic_cast<const t_service*>(type) ||
+        dynamic_cast<const t_exception*>(type)) {
+      ctx.failure([&](auto& o) {
+        o << "Invalid return type: " << type->get_full_name();
+      });
+    } else {
+      if (node.return_type()) {
+        ctx.failure([&](auto& o) {
+          o << "Too many return types: " << type->get_full_name();
+        });
+      }
+      node.set_response_pos(i);
     }
   }
 }
@@ -230,7 +254,7 @@ ast_mutators standard_mutators() {
     initial.add_interaction_visitor(
         &propagate_process_in_event_base_annotation);
     initial.add_function_visitor(&remove_param_list_field_qualifiers);
-    initial.add_function_visitor(&rectify_returned_interactions);
+    initial.add_function_visitor(&normalize_return_type);
     initial.add_definition_visitor(&set_generated);
   }
 

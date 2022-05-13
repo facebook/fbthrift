@@ -253,6 +253,8 @@ class t_type_ref final {
   const t_type* operator->() const { return &deref(); }
   const t_type& operator*() const { return deref(); }
 
+  static const t_type_ref& none();
+
  private:
   friend class t_placeholder_typedef;
   const t_type* type_ = nullptr;

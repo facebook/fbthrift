@@ -125,6 +125,11 @@ t_type_ref t_type_ref::for_placeholder(t_placeholder_typedef& unresolve_type) {
   return t_type_ref{unresolve_type, unresolve_type};
 }
 
+const t_type_ref& t_type_ref::none() {
+  static const t_type_ref empty;
+  return empty;
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
