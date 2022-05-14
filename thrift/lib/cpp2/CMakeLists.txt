@@ -253,7 +253,8 @@ add_library(
   async/ThreadBoundAdaptorChannel.cpp
   gen/module_metadata_cpp.cpp
   gen/module_types_cpp.cpp
-  op/Serializer.cpp
+  # TODO(dokwon): Uncomment after removing folly::Poly dependency in Any.
+  # op/Serializer.cpp
   security/AsyncStopTLS.cpp
   security/FizzPeeker.cpp
   security/SSLUtil.cpp
