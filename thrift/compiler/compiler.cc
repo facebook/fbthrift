@@ -176,7 +176,8 @@ std::string parseArgs(
   };
 
   // Hacky parameter handling... I didn't feel like using a library sorry!
-  bool nowarn = false; // Guard so --nowarn and --strict are order agnostic.
+  bool nowarn =
+      false; // Guard so --nowarn and --legacy-strict are order agnostic.
   for (; arg_i < arguments.size() - 1;
        ++arg_i) { // Last argument is the src file.
     // Parse flag.
@@ -205,7 +206,7 @@ std::string parseArgs(
     } else if (flag == "nowarn") {
       dparams.warn_level = g_warn = 0;
       nowarn = true;
-    } else if (flag == "strict" || flag == "legacy-strict") {
+    } else if (flag == "legacy-strict") {
       pparams.strict = 255;
       if (!nowarn) { // Don't override nowarn.
         dparams.warn_level = g_warn = 2;
