@@ -124,6 +124,16 @@ void expectPatch(P patch, const T1& actual, const T2& expected) {
   expectPatch(std::move(patch), actual, expected, expected);
 }
 
+// Checks round trips using the given serializer.
+template <typename Tag, typename S, typename T = type::native_type<Tag>>
+void expectRoundTrip(const S& seralizer, const T& expected) {
+  folly::IOBufQueue queue;
+  seralizer.encode(expected, folly::io::QueueAppender{&queue, 2 << 4});
+  folly::io::Cursor cursor(queue.front());
+  T actual = seralizer.template decode<Tag>(cursor);
+  EXPECT_EQ(actual, expected);
+}
+
 // Always serializes integers to the number 1.
 class Number1Serializer
     : public op::TagSerializer<type::i32_t, Number1Serializer> {

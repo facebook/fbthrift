@@ -132,6 +132,31 @@ class TagSerializer : public Serializer {
   const Derived& derived() const { return static_cast<const Derived&>(*this); }
 };
 
+// A serializer for any class that knows how to read and write itself using a
+// Thrift protocol.
+template <typename Tag, typename Reader, typename Writer>
+class ProtocolSerializer
+    : public TagSerializer<Tag, ProtocolSerializer<Tag, Reader, Writer>> {
+  using Base = TagSerializer<Tag, ProtocolSerializer>;
+  using T = type::native_type<Tag>;
+
+ public:
+  using Base::encode;
+  void encode(const T& value, folly::io::QueueAppender&& appender) const {
+    Writer writer;
+    writer.setOutput(std::move(appender));
+    value.write(&writer);
+  }
+
+  using Base::decode;
+  void decode(folly::io::Cursor& cursor, T& value) const {
+    Reader reader;
+    reader.setInput(cursor);
+    value.read(&reader);
+    cursor = reader.getCursor();
+  }
+};
+
 } // namespace op
 } // namespace thrift
 } // namespace apache
