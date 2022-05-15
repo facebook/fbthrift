@@ -25,7 +25,7 @@ namespace {
 
 TEST(AnyValueTest, Void) {
   AnyValue value;
-  EXPECT_EQ(value.type(), Type::create<void_t>());
+  EXPECT_EQ(value.type(), Type::get<void_t>());
   EXPECT_TRUE(value.empty());
   value.clear();
   EXPECT_TRUE(value.empty());
@@ -36,7 +36,7 @@ TEST(AnyValueTest, Void) {
 
 TEST(AnyValueTest, Int) {
   AnyValue value = AnyValue::create<i32_t>(1);
-  EXPECT_EQ(value.type(), Type::create<i32_t>());
+  EXPECT_EQ(value.type(), Type::get<i32_t>());
   EXPECT_FALSE(value.empty());
   value.clear();
   EXPECT_TRUE(value.empty());

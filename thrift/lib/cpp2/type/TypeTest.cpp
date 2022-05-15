@@ -117,50 +117,47 @@ struct MyStruct {
 struct MyAdapter {};
 
 TEST(TypeTest, Create) {
+  EXPECT_EQ(Type::get<list<i16_t>>(), Type::create<list_c>(Type::get<i16_t>()));
+
+  EXPECT_EQ(Type::get<set<i16_t>>(), Type::create<set_c>(Type::get<i16_t>()));
   EXPECT_EQ(
-      Type::create<list<i16_t>>(), Type::create<list_c>(Type::create<i16_t>()));
+      Type::get<set<list<i16_t>>>(),
+      Type::create<set_c>(Type::get<list<i16_t>>()));
 
   EXPECT_EQ(
-      Type::create<set<i16_t>>(), Type::create<set_c>(Type::create<i16_t>()));
+      (Type::get<map<string_t, binary_t>>()),
+      Type::create<map_c>(Type::get<string_t>(), Type::get<binary_t>()));
   EXPECT_EQ(
-      Type::create<set<list<i16_t>>>(),
-      Type::create<set_c>(Type::create<list<i16_t>>()));
-
-  EXPECT_EQ(
-      (Type::create<map<string_t, binary_t>>()),
-      Type::create<map_c>(Type::create<string_t>(), Type::create<binary_t>()));
-  EXPECT_EQ(
-      (Type::create<map<set<string_t>, list<binary_t>>>()),
+      (Type::get<map<set<string_t>, list<binary_t>>>()),
       Type::create<map_c>(
-          Type::create<set<string_t>>(), Type::create<list<binary_t>>()));
+          Type::get<set<string_t>>(), Type::get<list<binary_t>>()));
   EXPECT_EQ(
-      Type::create<struct_t<MyStruct>>(),
+      Type::get<struct_t<MyStruct>>(),
       Type::create<struct_c>("domain.com/my/package/MyStruct"));
   EXPECT_EQ(
-      Type::create<union_t<MyStruct>>(),
+      Type::get<union_t<MyStruct>>(),
       Type::create<union_c>("domain.com/my/package/MyStruct"));
   EXPECT_EQ(
-      Type::create<exception_t<MyStruct>>(),
+      Type::get<exception_t<MyStruct>>(),
       Type::create<exception_c>("domain.com/my/package/MyStruct"));
 }
 
 TEST(TypeTest, Adapted) {
   // Adapted is ignored.
-  EXPECT_EQ(
-      (Type::create<adapted<MyAdapter, void_t>>()), Type::create<void_t>());
+  EXPECT_EQ((Type::get<adapted<MyAdapter, void_t>>()), Type::get<void_t>());
 }
 
 TEST(TypeTest, CppType) {
   // CppType is ignored.
-  EXPECT_EQ((Type::create<cpp_type<void, void_t>>()), Type::create<void_t>());
+  EXPECT_EQ((Type::get<cpp_type<void, void_t>>()), Type::get<void_t>());
 }
 
 TEST(TypeTest, ImplicitConversion) {
   EXPECT_EQ(list<i16_t>{}, Type::create<list_c>(i16_t{}));
   Type type = i16_t{};
-  EXPECT_EQ(type, Type::create<i16_t>());
+  EXPECT_EQ(type, Type::get<i16_t>());
   type = void_t{};
-  EXPECT_NE(type, Type::create<i16_t>());
+  EXPECT_NE(type, Type::get<i16_t>());
   EXPECT_EQ(type, Type());
 }
 

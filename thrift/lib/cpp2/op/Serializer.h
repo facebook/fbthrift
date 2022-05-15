@@ -112,14 +112,14 @@ class TagSerializer : public Serializer {
 
   using Base::decode;
   void decode(folly::io::Cursor& cursor, type::AnyRef value) const final {
-    checkType(value.type(), type_);
+    checkType(value.type(), type::Type::get<Tag>());
     derived().decode(cursor, value.as_mut<Tag>());
   }
   void decode(
       const type::Type& type,
       folly::io::Cursor& cursor,
       type::AnyValue& value) const final {
-    checkType(type, type_);
+    checkType(type, type::Type::get<Tag>());
     if (auto* obj = value.try_as<Tag>()) {
       derived().decode(cursor, *obj);
     } else {
@@ -130,7 +130,6 @@ class TagSerializer : public Serializer {
 
  private:
   const Derived& derived() const { return static_cast<const Derived&>(*this); }
-  const type::Type type_ = Tag{};
 };
 
 } // namespace op

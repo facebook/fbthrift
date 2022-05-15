@@ -35,11 +35,11 @@ namespace type {
 //
 // Can be constructed directly from ThriftType tags:
 //
-//   auto listOfStringType1 = Type::create<list<string_t>>();
+//   auto listOfStringType1 = Type::get<list<string_t>>();
 //
 // Or built up from other type values:
 //
-//   auto stringType = Type::create<string_t>();
+//   auto stringType = Type::get<string_t>();
 //   auto listOfStringType2 = Type::create<list_c>(stringType);
 //
 // Both of these result in the same type:
@@ -78,8 +78,8 @@ class Type : public detail::Wrap<TypeStruct> {
   // arguments. If the type Tag is not concrete, the additional parameters must
   // be passed in. For example:
   //
-  //   Type::create<list<i32>>() ==
-  //       Type::create<list_c>(Type::create<i32>());
+  //   Type::get<list<i32>>() ==
+  //       Type::create<list_c>(Type::get<i32>());
   //
   //   //Create the type for an IDL-defined, named struct.
   //   Type::create<struct_c>("mydomain.com/my/package/MyStruct");
@@ -88,7 +88,12 @@ class Type : public detail::Wrap<TypeStruct> {
   static Type create(Args&&... args) {
     return {Tag{}, std::forward<Args>(args)...};
   }
-
+  template <typename Tag>
+  FOLLY_EXPORT static const Type& get() noexcept {
+    static_assert(is_concrete_v<Tag>, "");
+    static const Type& kInst = *new Type(Tag{});
+    return kInst;
+  }
   BaseType base_type() const noexcept {
     return static_cast<BaseType>(data_.id()->getType());
   }

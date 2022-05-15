@@ -29,13 +29,13 @@ TEST(TypeRegistry, Void) {
   TypeRegistry treg;
   // We can store void.
   AnyData data = treg.store<StandardProtocol::Compact>(AnyRef{});
-  EXPECT_EQ(data.type(), Type::create<void_t>());
+  EXPECT_EQ(data.type(), Type::get<void_t>());
   EXPECT_TRUE(data.protocol().empty()); // void has no protocol
 
   // Can load void.
   AnyValue val = treg.load(data);
   EXPECT_TRUE(val.empty());
-  EXPECT_EQ(val.type(), Type::create<void_t>());
+  EXPECT_EQ(val.type(), Type::get<void_t>());
 
   // Happy with an empty AnyRef.
   AnyRef rval;
