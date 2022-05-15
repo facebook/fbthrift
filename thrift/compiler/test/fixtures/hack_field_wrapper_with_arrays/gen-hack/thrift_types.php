@@ -192,6 +192,10 @@ class facebook_thrift_annotation_Beta implements \IThriftSyncStruct, \IThriftSha
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
+        'facebook_thrift_annotation_Program' => facebook_thrift_annotation_Program::fromShape(
+          shape(
+          )
+        ),
         'facebook_thrift_annotation_Definition' => facebook_thrift_annotation_Definition::fromShape(
           shape(
           )
@@ -283,6 +287,10 @@ class facebook_thrift_annotation_Experimental implements \IThriftSyncStruct, \IT
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
+        'facebook_thrift_annotation_Program' => facebook_thrift_annotation_Program::fromShape(
+          shape(
+          )
+        ),
         'facebook_thrift_annotation_Definition' => facebook_thrift_annotation_Definition::fromShape(
           shape(
           )
@@ -374,6 +382,10 @@ class facebook_thrift_annotation_Deprecated implements \IThriftSyncStruct, \IThr
     return shape(
       'struct' => dict[
         'facebook_thrift_annotation_Beta' => facebook_thrift_annotation_Beta::fromShape(
+          shape(
+          )
+        ),
+        'facebook_thrift_annotation_Program' => facebook_thrift_annotation_Program::fromShape(
           shape(
           )
         ),
@@ -472,11 +484,11 @@ class facebook_thrift_annotation_TerseWrite implements \IThriftSyncStruct, \IThr
           shape(
           )
         ),
-        'facebook_thrift_annotation_Field' => facebook_thrift_annotation_Field::fromShape(
+        'facebook_thrift_annotation_Struct' => facebook_thrift_annotation_Struct::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Struct' => facebook_thrift_annotation_Struct::fromShape(
+        'facebook_thrift_annotation_Field' => facebook_thrift_annotation_Field::fromShape(
           shape(
           )
         ),

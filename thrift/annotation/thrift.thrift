@@ -35,11 +35,13 @@ struct RequiresBackwardCompatibility {
 } (thrift.uri = "facebook.com/thrift/annotation/RequiresBackwardCompatibility")
 
 // Indicates a definition may change in backwards incompatible ways.
+@scope.Program
 @scope.Definition
 struct Beta {} (thrift.uri = "facebook.com/thrift/annotation/Beta")
 
 // Indicates a definition should only be used with permission, and may
 // change in incompatible ways or only work in specific contexts.
+@scope.Program
 @scope.Definition
 struct Experimental {} (
   thrift.uri = "facebook.com/thrift/annotation/Experimental",
@@ -47,12 +49,13 @@ struct Experimental {} (
 
 // Indicates a definition should no longer be used.
 @Beta // TODO(afuller): Hook up to code gen.
+@scope.Program
 @scope.Definition
 struct Deprecated {}
 
 @scope.Program
-@scope.Field
 @scope.Struct
+@scope.Field
 @Experimental
 struct TerseWrite {} (thrift.uri = "facebook.com/thrift/annotation/TerseWrite")
 
