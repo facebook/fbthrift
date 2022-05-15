@@ -24,7 +24,7 @@ import types
 import unittest
 
 from testing.clients import TestingService
-from testing.types import Color, I32List, easy
+from testing.types import Color, easy, I32List
 from thrift.py3.client import (
     Client,
     get_client,

@@ -20,8 +20,8 @@ import time
 import unittest
 
 from thrift.server.TAsyncioServer import (
-    ThriftClientProtocolFactory,
     ThriftAsyncServerFactory,
+    ThriftClientProtocolFactory,
 )
 from thrift.transport.THeaderTransport import CLIENT_TYPE
 from ThriftTest import ThriftTest

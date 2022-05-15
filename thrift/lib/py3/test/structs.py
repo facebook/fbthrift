@@ -18,22 +18,22 @@ import unittest
 
 from testing.types import (
     Color,
+    easy,
     File,
+    hard,
     Integers,
     Kind,
     Nested1,
     Nested2,
     Nested3,
     NonCopyable,
+    numerical,
     Optionals,
+    PrivateCppRefField,
     Reserved,
     Runtime,
     SlowCompare,
     UnusedError,
-    easy,
-    hard,
-    numerical,
-    PrivateCppRefField,
 )
 from thrift.py3.common import Protocol
 from thrift.py3.serializer import deserialize

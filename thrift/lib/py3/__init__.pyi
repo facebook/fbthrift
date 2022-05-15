@@ -21,15 +21,15 @@ from thrift.py3.exceptions import (
     TransportError as TransportError,
 )
 from thrift.py3.serializer import (
-    Protocol as Protocol,
     deserialize as deserialize,
+    Protocol as Protocol,
     serialize as serialize,
 )
 from thrift.py3.server import (
+    get_context as get_context,
     RequestContext as RequestContext,
     SSLPolicy as SSLPolicy,
     ThriftServer as ThriftServer,
-    get_context as get_context,
 )
 from thrift.py3.types import (
     BadEnum as BadEnum,

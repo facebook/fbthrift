@@ -12,10 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import sys
 import threading
@@ -26,17 +23,17 @@ from functools import partial
 
 from thrift.protocol.THeaderProtocol import THeaderProtocol
 from thrift.server.CppServerWrapper import (
-    CppServerWrapper,
-    CppContextData,
-    SSLPolicy,
-    VerifyClientCertificate,
-    SSLVersion,
     CallbackWrapper,
     CallTimestamps,
+    CppContextData,
+    CppServerWrapper,
+    SSLPolicy,
+    SSLVersion,
+    VerifyClientCertificate,
 )
-from thrift.server.TServer import TServer, TConnectionContext
+from thrift.server.TServer import TConnectionContext, TServer
 from thrift.Thrift import TPriority
-from thrift.transport.THeaderTransport import THeaderTransport, MAX_BIG_FRAME_SIZE
+from thrift.transport.THeaderTransport import MAX_BIG_FRAME_SIZE, THeaderTransport
 from thrift.transport.TTransport import TMemoryBuffer
 
 # Default sampling rate for expensive sampling operations, such as histogram

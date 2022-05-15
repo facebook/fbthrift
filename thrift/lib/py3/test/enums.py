@@ -15,7 +15,7 @@
 
 import pickle
 import unittest
-from typing import Type, TypeVar, cast
+from typing import cast, Type, TypeVar
 
 from testing.types import BadMembers, Color, ColorGroups, File, Kind, Perm
 from thrift.py3.common import Protocol

@@ -16,14 +16,14 @@
 import unittest
 
 from testing.thrift_types import (
+    easy,
     F14MapFollyString,
     LocationMap,
+    StrEasyMap,
     StrI32ListMap,
     StrIntMap,
     StrStrIntListMapMap,
     StrStrMap,
-    StrEasyMap,
-    easy,
 )
 
 

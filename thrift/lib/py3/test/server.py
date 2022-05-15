@@ -20,11 +20,7 @@ from typing import Sequence
 
 from testing.services import TestingServiceInterface
 from testing.types import Color, easy
-from thrift.py3.server import (
-    SocketAddress,
-    ThriftServer,
-    getServiceName,
-)
+from thrift.py3.server import getServiceName, SocketAddress, ThriftServer
 from thrift.py3.test.is_overload.helper import OverloadTestHelper
 
 

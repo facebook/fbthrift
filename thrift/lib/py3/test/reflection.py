@@ -19,6 +19,7 @@ from testing.clients import TestingService
 from testing.services import TestingServiceInterface
 from testing.types import (
     Color,
+    easy,
     HardError,
     I32List,
     Integers,
@@ -29,16 +30,15 @@ from testing.types import (
     SimpleError,
     StrI32ListMap,
     StrStrIntListMapMap,
-    easy,
 )
 from thrift.py3.reflection import (
     ArgumentSpec,
+    inspect,
+    inspectable,
     MethodSpec,
     NumberType,
     Qualifier,
     StructType,
-    inspect,
-    inspectable,
 )
 
 

@@ -17,10 +17,10 @@ import struct
 import unittest
 
 from thrift.transport.THeaderTransport import (
-    CLIENT_TYPE,
-    THeaderTransport,
-    MAX_FRAME_SIZE,
     BIG_FRAME_MAGIC,
+    CLIENT_TYPE,
+    MAX_FRAME_SIZE,
+    THeaderTransport,
     TRANSFORM,
 )
 from thrift.transport.TTransport import TMemoryBuffer

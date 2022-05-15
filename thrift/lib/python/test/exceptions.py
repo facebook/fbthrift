@@ -23,11 +23,8 @@ from testing.thrift_types import (
     UnusedError,
     ValueOrError,
 )
-from thrift.python.exceptions import Error, ApplicationErrorType
-from thrift.python.serializer import (
-    deserialize,
-    serialize_iobuf,
-)
+from thrift.python.exceptions import ApplicationErrorType, Error
+from thrift.python.serializer import deserialize, serialize_iobuf
 
 
 class ExceptionTests(unittest.TestCase):

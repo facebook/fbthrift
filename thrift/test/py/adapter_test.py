@@ -15,13 +15,13 @@
 import unittest
 from unittest.mock import patch
 
-from thrift.protocol import (
+from thrift.protocol import (  # type: ignore  # noqa: F401
+    fastproto,
     TBinaryProtocol,
     TCompactProtocol,
     TJSONProtocol,
     TSimpleJSONProtocol,
 )
-from thrift.protocol import fastproto  # type: ignore # noqa: F401
 from thrift.util import Serializer
 
 from .adapter.ttypes import Foo, FooWithoutAdapters

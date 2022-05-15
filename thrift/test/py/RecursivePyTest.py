@@ -12,20 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import unittest
 
 from thrift.protocol import TBinaryProtocol
 from thrift.protocol.TBinaryProtocol import (
-    TBinaryProtocolFactory,
     TBinaryProtocolAcceleratedFactory,
+    TBinaryProtocolFactory,
 )
 from thrift.transport import TTransport
-from thrift.util.Serializer import serialize, deserialize
+from thrift.util.Serializer import deserialize, serialize
 from Recursive.ttypes import *
 
 

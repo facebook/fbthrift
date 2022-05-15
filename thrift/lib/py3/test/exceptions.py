@@ -17,16 +17,16 @@ import unittest
 
 from testing.types import Color, HardError, SimpleError, UnfriendlyError, UnusedError
 from thrift.py3.exceptions import (
-    Error,
     ApplicationError,
-    TransportError,
-    ProtocolError,
     ApplicationErrorType,
+    Error,
+    ProtocolError,
     ProtocolErrorType,
+    TransportError,
     TransportErrorType,
     TransportOptions,
 )
-from thrift.py3.serializer import serialize_iobuf, deserialize
+from thrift.py3.serializer import deserialize, serialize_iobuf
 
 from .exception_helper import simulate_HardError, simulate_UnusedError
 

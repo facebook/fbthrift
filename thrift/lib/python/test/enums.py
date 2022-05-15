@@ -15,22 +15,19 @@
 
 import unittest
 from enum import Enum
-from typing import Type, TypeVar, cast
+from typing import cast, Type, TypeVar
 
 from testing.thrift_types import (
+    BadMembers,
     Color,
     ColorGroups,
-    BadMembers,
     File,
-    OptionalFile,
-    OptionalColorGroups,
     Kind,
+    OptionalColorGroups,
+    OptionalFile,
     Perm,
 )
-from thrift.python.serializer import (
-    deserialize,
-    serialize_iobuf,
-)
+from thrift.python.serializer import deserialize, serialize_iobuf
 from thrift.python.types import BadEnum
 
 _E = TypeVar("_E", bound=Enum)

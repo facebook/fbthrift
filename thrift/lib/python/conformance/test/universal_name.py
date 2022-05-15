@@ -20,12 +20,12 @@ from thrift.python.conformance.universal_name import (
     get_universal_hash,
     get_universal_hash_prefix,
     get_universal_hash_size,
-    maybe_get_universal_hash_prefix,
     matches_universal_hash,
+    maybe_get_universal_hash_prefix,
+    UniversalHashAlgorithm,
     validate_universal_hash,
     validate_universal_hash_bytes,
     validate_universal_name,
-    UniversalHashAlgorithm,
 )
 
 

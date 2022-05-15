@@ -34,10 +34,7 @@ with the CMDLINE_OPTIONS attribute. See the implementations of RemoteHostClient
 and RemoteHttpClient for examples.
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import argparse
 import json
@@ -52,11 +49,11 @@ from thrift import Thrift
 from thrift.protocol import (
     TBinaryProtocol,
     TCompactProtocol,
-    TJSONProtocol,
     THeaderProtocol,
+    TJSONProtocol,
     TSimpleJSONProtocol,
 )
-from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
+from thrift.transport import THttpClient, TSocket, TSSLSocket, TTransport
 from thrift.transport.THeaderTransport import THeaderTransport
 
 

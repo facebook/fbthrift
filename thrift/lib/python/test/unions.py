@@ -15,15 +15,8 @@
 
 import unittest
 
-from testing.thrift_types import (
-    Integers,
-    ReservedUnion,
-    ComplexUnion,
-)
-from thrift.python.serializer import (
-    deserialize,
-    serialize_iobuf,
-)
+from testing.thrift_types import ComplexUnion, Integers, ReservedUnion
+from thrift.python.serializer import deserialize, serialize_iobuf
 from thrift.python.types import Union
 
 

@@ -18,7 +18,7 @@ import unittest
 from blank_interaction.services import BlankServiceInterface
 from interaction.clients import Calculator
 from interaction.types import Point
-from thrift.py3.client import get_client, ClientType
+from thrift.py3.client import ClientType, get_client
 
 from .run_interaction import run_interaction
 

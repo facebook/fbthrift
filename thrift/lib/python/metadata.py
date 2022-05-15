@@ -14,34 +14,34 @@
 
 import enum
 from types import MappingProxyType
-from typing import Union, Mapping, Iterator, Optional, Tuple, Sequence, cast, Type
+from typing import cast, Iterator, Mapping, Optional, Sequence, Tuple, Type, Union
 
 from apache.thrift.metadata.thrift_types import (
-    ThriftMetadata,
-    ThriftStruct,
-    ThriftException,
-    ThriftService,
-    ThriftEnum,
-    ThriftType,
-    ThriftField,
-    ThriftEnumType,
-    ThriftStructType,
-    ThriftUnionType,
-    ThriftPrimitiveType,
-    ThriftListType,
-    ThriftSetType,
-    ThriftMapType,
-    ThriftFunction,
-    ThriftTypedefType,
-    ThriftSinkType,
-    ThriftStreamType,
     ThriftConstStruct,
     ThriftConstValue,
+    ThriftEnum,
+    ThriftEnumType,
+    ThriftException,
+    ThriftField,
+    ThriftFunction,
+    ThriftListType,
+    ThriftMapType,
+    ThriftMetadata,
+    ThriftPrimitiveType,
+    ThriftService,
+    ThriftSetType,
+    ThriftSinkType,
+    ThriftStreamType,
+    ThriftStruct,
+    ThriftStructType,
+    ThriftType,
+    ThriftTypedefType,
+    ThriftUnionType,
 )
 from thrift.python.client import Client
 from thrift.python.exceptions import GeneratedError
 from thrift.python.server import ServiceInterface
-from thrift.python.types import Struct, Union as ThriftUnion, Enum
+from thrift.python.types import Enum, Struct, Union as ThriftUnion
 
 
 class ThriftKind(enum.Enum):

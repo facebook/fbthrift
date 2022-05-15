@@ -16,10 +16,8 @@ from ThriftTest.ttypes import *
 import sys
 import unittest
 
-from thrift.protocol import TBinaryProtocol
-from thrift.protocol import TCompactProtocol
-from thrift.transport import TSocket
-from thrift.transport import TTransport
+from thrift.protocol import TBinaryProtocol, TCompactProtocol
+from thrift.transport import TSocket, TTransport
 from thrift.util import Serializer
 
 if sys.version_info[0] < 3:

@@ -13,12 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
-import sys, glob
+import glob, sys
 
 sys.path.insert(0, "./gen-py")
 lib_path = glob.glob("../../lib/py/build/lib.*")
@@ -37,8 +34,7 @@ import unittest
 from optparse import OptionParser
 
 from thrift.protocol import TBinaryProtocol
-from thrift.transport import TSocket
-from thrift.transport import TTransport
+from thrift.transport import TSocket, TTransport
 
 
 class TimeoutTest(unittest.TestCase):

@@ -27,10 +27,7 @@ from thrift.async_common import (
     WrappedTransport,
 )
 from thrift.server.TServer import TServerEventHandler
-from thrift.Thrift import (
-    TException,
-    TProcessor,
-)
+from thrift.Thrift import TException, TProcessor
 
 
 __all__ = [

@@ -18,7 +18,7 @@ import tempfile
 import textwrap
 import unittest
 
-from thrift.compiler.codemod.test_utils import write_file, run_binary, read_file
+from thrift.compiler.codemod.test_utils import read_file, run_binary, write_file
 
 
 # TODO(urielrivas): We can use clangr's unit-test formatting in the future.

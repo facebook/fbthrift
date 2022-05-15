@@ -22,10 +22,7 @@ syntax on Python 2 so we had to abstract coroutines away.
 Look for them in TAsyncioServer and TTrolliusServer respectively.
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
 import struct
@@ -37,20 +34,14 @@ import six
 import thrift
 from thrift.protocol.THeaderProtocol import THeaderProtocolFactory
 from thrift.server.TServer import TConnectionContext
-from thrift.Thrift import (
-    TApplicationException,
-    TMessageType,
-)
+from thrift.Thrift import TApplicationException, TMessageType
 from thrift.transport.THeaderTransport import (
-    THeaderTransport,
+    CLIENT_TYPE,
     HEADER_FLAG,
     MAX_FRAME_SIZE,
-    CLIENT_TYPE,
+    THeaderTransport,
 )
-from thrift.transport.TTransport import (
-    TTransportBase,
-    TTransportException,
-)
+from thrift.transport.TTransport import TTransportBase, TTransportException
 
 if six.PY3:
     import asyncio

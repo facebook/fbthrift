@@ -13,16 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
-import sys, glob
+import glob, sys
 
 sys.path.insert(0, "./gen-py")
 sys.path.insert(0, glob.glob("../../lib/py/build/lib.*")[0])
 
 # Just import these generated files to make sure they are syntactically valid
-from DebugProtoTest import EmptyService
-from DebugProtoTest import Inherited
+from DebugProtoTest import EmptyService, Inherited

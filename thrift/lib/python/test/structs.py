@@ -18,28 +18,22 @@ import unittest
 
 from testing.thrift_types import (
     Color,
-    Integers,
+    easy,
     File,
-    OptionalFile,
+    Integers,
     Kind,
     Nested1,
     Nested2,
     Nested3,
+    numerical,
+    OptionalFile,
     Optionals,
     Reserved,
     Runtime,
     UnusedError,
-    easy,
-    numerical,
 )
-from thrift.python.serializer import (
-    deserialize,
-    serialize_iobuf,
-)
-from thrift.python.types import (
-    isset,
-    update_nested_field,
-)
+from thrift.python.serializer import deserialize, serialize_iobuf
+from thrift.python.types import isset, update_nested_field
 
 
 class StructTests(unittest.TestCase):

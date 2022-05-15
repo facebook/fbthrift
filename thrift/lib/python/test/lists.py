@@ -17,12 +17,12 @@ import itertools
 import unittest
 
 from testing.thrift_types import (
+    easy,
+    EasyList,
     I32List,
+    int_list,
     StringList,
     StrList2D,
-    easy,
-    int_list,
-    EasyList,
 )
 
 

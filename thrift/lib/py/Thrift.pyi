@@ -15,7 +15,7 @@
 
 # pyre-unsafe
 
-from typing import Optional, Any, Tuple, Callable, Dict
+from typing import Any, Callable, Dict, Optional, Tuple
 
 UEXW_MAX_LENGTH: int = ...
 

@@ -19,20 +19,20 @@ from typing import Mapping
 
 from folly.iobuf import IOBuf
 from testing.thrift_types import (
-    Complex,
-    Integers,
-    StringBucket,
-    easy,
-    hard,
     Color,
     ColorGroups,
+    Complex,
     ComplexUnion,
+    easy,
+    hard,
+    Integers,
+    StringBucket,
 )
 from thrift.python.exceptions import Error
-from thrift.python.serializer import Protocol
 from thrift.python.serializer import (
     deserialize,
     deserialize_with_length,
+    Protocol,
     serialize,
     serialize_iobuf,
 )

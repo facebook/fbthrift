@@ -14,7 +14,7 @@
 
 import time
 
-from thrift.py3 import serialize, deserialize, Protocol
+from thrift.py3 import deserialize, Protocol, serialize
 from thrift.test.lazy_deserialization.simple.types import Foo, LazyFoo
 
 

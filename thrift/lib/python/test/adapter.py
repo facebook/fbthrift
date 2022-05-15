@@ -17,7 +17,7 @@ import unittest
 from datetime import datetime
 from unittest.mock import MagicMock
 
-from thrift.python.test.adapter.thrift_types import AdaptedInt, Bar, Foo, Datetime
+from thrift.python.test.adapter.thrift_types import AdaptedInt, Bar, Datetime, Foo
 from thrift.python.test.adapters.datetime import DatetimeAdapter
 
 

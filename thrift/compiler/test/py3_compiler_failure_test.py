@@ -23,10 +23,7 @@ import textwrap
 import unittest
 
 # @manual=//thrift/compiler/test:compiler_failure_test-library
-from thrift.compiler.test.compiler_failure_test import (
-    thrift,
-    write_file,
-)
+from thrift.compiler.test.compiler_failure_test import thrift, write_file
 
 
 class CompilerFailureTest(unittest.TestCase):

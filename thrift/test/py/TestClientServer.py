@@ -38,7 +38,7 @@ from thrift.protocol import (
     TMultiplexedProtocol,
 )
 from thrift.transport import TSocket, TSSLSocket, TTransport
-from thrift.transport.THeaderTransport import CLIENT_TYPE, TRANSFORM, THeaderTransport
+from thrift.transport.THeaderTransport import CLIENT_TYPE, THeaderTransport, TRANSFORM
 from ThriftTest import SecondService, ThriftTest
 from ThriftTest.ttypes import *
 

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import enum
-from typing import NamedTuple, Tuple, List, Sequence
+from typing import List, NamedTuple, Sequence, Tuple
 
 class CompileRetcode(enum.Enum):
     success: CompileRetcode = ...

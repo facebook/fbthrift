@@ -15,8 +15,8 @@
 
 import sys
 from distutils.command.build_ext import build_ext as _build_ext
-from distutils.core import setup, Extension as _Extension
-from distutils.errors import CCompilerError, DistutilsError, CompileError
+from distutils.core import Extension as _Extension, setup
+from distutils.errors import CCompilerError, CompileError, DistutilsError
 
 
 class Extension(_Extension):

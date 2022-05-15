@@ -19,7 +19,7 @@ import testing.thrift_metadata
 from apache.thrift.metadata.thrift_types import ThriftPrimitiveType
 from testing.thrift_clients import TestingService, TestingServiceChild
 from testing.thrift_services import TestingServiceInterface
-from testing.thrift_types import hard, HardError, Perm, mixed, Complex
+from testing.thrift_types import Complex, hard, HardError, mixed, Perm
 from thrift.python.metadata import gen_metadata
 
 

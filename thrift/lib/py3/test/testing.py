@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from unittest import TestCase, IsolatedAsyncioTestCase
-from unittest.mock import patch, Mock
+from unittest import IsolatedAsyncioTestCase, TestCase
+from unittest.mock import Mock, patch
 
 import thrift.py3  # @manual
 from testing.clients import TestingService

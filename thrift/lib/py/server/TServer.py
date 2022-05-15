@@ -14,16 +14,13 @@
 
 # pyre-unsafe
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
 
 from thrift.protocol import TBinaryProtocol
 from thrift.protocol.THeaderProtocol import THeaderProtocolFactory
-from thrift.Thrift import TProcessor, TApplicationException
+from thrift.Thrift import TApplicationException, TProcessor
 from thrift.transport import TTransport
 
 

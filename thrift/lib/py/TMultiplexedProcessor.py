@@ -14,15 +14,12 @@
 
 # pyre-unsafe
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import sys
 
-from thrift.protocol import TProtocolDecorator, TMultiplexedProtocol
-from thrift.Thrift import TProcessor, TMessageType, TException
+from thrift.protocol import TMultiplexedProtocol, TProtocolDecorator
+from thrift.Thrift import TException, TMessageType, TProcessor
 
 
 class TMultiplexedProcessor(TProcessor):

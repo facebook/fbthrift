@@ -23,7 +23,7 @@ from binary.thrift_types import Binaries, BinaryUnion
 from folly.iobuf import IOBuf
 from thrift.py3.server import SocketAddress
 from thrift.python.client import get_client
-from thrift.python.server import ThriftServer, ServiceInterface
+from thrift.python.server import ServiceInterface, ThriftServer
 
 
 class BinaryTests(unittest.TestCase):

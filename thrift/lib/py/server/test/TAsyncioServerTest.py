@@ -34,10 +34,7 @@ from thrift.util.asyncio import create_client
 from thrift_asyncio.sleep import Sleep
 from thrift_asyncio.tutorial import Calculator
 
-from .handler import (
-    AsyncCalculatorHandler,
-    AsyncSleepHandler,
-)
+from .handler import AsyncCalculatorHandler, AsyncSleepHandler
 
 
 def server_loop_runner(loop, sock, handler, protocol_factory=None):

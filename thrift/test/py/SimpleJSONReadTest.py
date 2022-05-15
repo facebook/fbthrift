@@ -13,17 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import math
 import sys
 import unittest
 
-from SimpleJSONRead.ttypes import SomeStruct, Stuff, StuffMissing, Empty
-from thrift.protocol import TSimpleJSONProtocol, TProtocol
+from SimpleJSONRead.ttypes import Empty, SomeStruct, Stuff, StuffMissing
+from thrift.protocol import TProtocol, TSimpleJSONProtocol
 from thrift.transport.TTransport import TMemoryBuffer
 from thrift.util import Serializer
 

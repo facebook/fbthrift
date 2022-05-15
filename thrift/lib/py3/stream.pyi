@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import AsyncIterator, Tuple, TypeVar, Generic
+from typing import AsyncIterator, Generic, Tuple, TypeVar
 
 _T = TypeVar("_T")
 rT = TypeVar("rT")

@@ -19,7 +19,7 @@ import time
 import typing
 from multiprocessing import Process
 
-from thrift.py3.server import ThriftServer, SocketAddress, get_context
+from thrift.py3.server import get_context, SocketAddress, ThriftServer
 from thrift.python.leaf.services import LeafServiceInterface
 from thrift.python.test.services import EchoServiceInterface, TestServiceInterface
 from thrift.python.test.types import ArithmeticException, EmptyException

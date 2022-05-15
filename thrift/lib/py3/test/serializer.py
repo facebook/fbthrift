@@ -16,22 +16,21 @@
 import asyncio
 import pickle
 import unittest
-from typing import Mapping, Union, Hashable
+from typing import Hashable, Mapping, Union
 
 from testing.types import (
     Digits,
+    easy,
+    hard,
     I32List,
     Integers,
     SetI32,
     StringBucket,
     StrStrMap,
-    easy,
-    hard,
 )
 from thrift.py3.common import Protocol
 from thrift.py3.exceptions import Error
 from thrift.py3.serializer import (
-    Transform,
     deserialize,
     deserialize_from_header,
     deserialize_with_length,
@@ -39,6 +38,7 @@ from thrift.py3.serializer import (
     serialize_iobuf,
     serialize_with_header,
     serialize_with_header_iobuf,
+    Transform,
 )
 from thrift.py3.types import Struct
 

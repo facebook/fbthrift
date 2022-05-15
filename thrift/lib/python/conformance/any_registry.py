@@ -23,7 +23,7 @@ from thrift.python.conformance.universal_name import (
     get_universal_hash_prefix,
     UniversalHashAlgorithm,
 )
-from thrift.python.serializer import deserialize, serialize_iobuf, Protocol
+from thrift.python.serializer import deserialize, Protocol, serialize_iobuf
 from thrift.python.types import StructOrUnion
 
 

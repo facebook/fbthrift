@@ -15,8 +15,8 @@
 
 import unittest
 
-from testing.types import SetI32Lists, F14MapFollyString, StrList2D
-from thrift.py3.cache import to_tuple, to_frozenset, to_mappingproxy
+from testing.types import F14MapFollyString, SetI32Lists, StrList2D
+from thrift.py3.cache import to_frozenset, to_mappingproxy, to_tuple
 
 
 class CachedContainerTest(unittest.TestCase):

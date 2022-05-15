@@ -16,7 +16,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import unittest
 
-from fuzz import TestService, DerivedTestService
+from fuzz import DerivedTestService, TestService
 from thrift.util.fuzzer import Service
 
 

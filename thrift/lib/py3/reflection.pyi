@@ -14,7 +14,7 @@
 
 from collections.abc import Mapping, Sequence, Set
 from enum import Enum
-from typing import Any, NamedTuple, Optional, Tuple, Type, Union, overload, TypeVar
+from typing import Any, NamedTuple, Optional, overload, Tuple, Type, TypeVar, Union
 
 from thrift.py3.client import Client
 from thrift.py3.exceptions import Error

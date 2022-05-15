@@ -19,9 +19,8 @@ from apache.thrift.test.load import LoadTest
 from apache.thrift.test.py3.py3_load_handler import LoadHandler
 from thrift.protocol.TBinaryProtocol import TBinaryProtocolAcceleratedFactory
 from thrift.protocol.THeaderProtocol import THeaderProtocolFactory
-from thrift.server import TServer, TCppServer
-from thrift.transport import TSocket
-from thrift.transport import TTransport
+from thrift.server import TCppServer, TServer
+from thrift.transport import TSocket, TTransport
 from thrift.transport.THeaderTransport import CLIENT_TYPE
 
 

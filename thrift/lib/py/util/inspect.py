@@ -16,7 +16,7 @@
 import inspect
 import sys
 from types import ModuleType
-from typing import Any, Dict, List, Optional, Tuple, Type, cast
+from typing import Any, cast, Dict, List, Optional, Tuple, Type
 
 from thrift.Thrift import TType
 

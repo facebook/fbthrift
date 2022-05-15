@@ -15,16 +15,11 @@
 
 import asyncio
 import unittest
-from typing import AsyncGenerator, Tuple, Optional
+from typing import AsyncGenerator, Optional, Tuple
 
 from thrift.py3.client import ClientType, get_client
 from thrift.py3.common import RpcOptions
-from thrift.py3.server import (
-    ServiceInterface,
-    SocketAddress,
-    ThriftServer,
-    get_context,
-)
+from thrift.py3.server import get_context, ServiceInterface, SocketAddress, ThriftServer
 from thrift.py3.test.included.included.types import Included
 from thrift.py3.test.stream.clients import StreamTestService
 from thrift.py3.test.stream.services import StreamTestServiceInterface

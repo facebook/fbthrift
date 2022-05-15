@@ -25,10 +25,10 @@ from typing import (
     Mapping,
     NamedTuple,
     Optional,
+    overload,
     Type,
     TypeVar,
     Union,
-    overload,
 )
 
 from thrift.py3.common import Headers, Priority

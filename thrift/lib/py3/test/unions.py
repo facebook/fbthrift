@@ -16,7 +16,7 @@
 import unittest
 
 from folly.iobuf import IOBuf
-from testing.types import Color, ComplexUnion, Integers, IOBufUnion, ReservedUnion, easy
+from testing.types import Color, ComplexUnion, easy, Integers, IOBufUnion, ReservedUnion
 from thrift.py3.common import Protocol
 from thrift.py3.serializer import deserialize
 from thrift.py3.types import Union

@@ -16,7 +16,7 @@
 import itertools
 import unittest
 
-from testing.types import I32List, StringList, StrList2D, Uint32List, easy, int_list
+from testing.types import easy, I32List, int_list, StringList, StrList2D, Uint32List
 from thrift.py3.types import Container
 
 

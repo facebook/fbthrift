@@ -30,16 +30,11 @@ from stack_args.services import StackServiceInterface
 from stack_args.types import simple
 from testing.clients import TestingService
 from testing.services import TestingServiceInterface
-from testing.types import Color, HardError, easy
+from testing.types import Color, easy, HardError
 from thrift.py3.client import ClientType, get_client
 from thrift.py3.common import Protocol, RpcOptions
 from thrift.py3.exceptions import ApplicationError, TransportError
-from thrift.py3.server import (
-    ServiceInterface,
-    SocketAddress,
-    ThriftServer,
-    get_context,
-)
+from thrift.py3.server import get_context, ServiceInterface, SocketAddress, ThriftServer
 from thrift.py3.test.cpp_handler import CppHandler
 
 

@@ -16,16 +16,7 @@
 import ipaddress
 import os
 from types import TracebackType
-from typing import (
-    Any,
-    Awaitable,
-    Callable,
-    Mapping,
-    Optional,
-    Type,
-    TypeVar,
-    Union,
-)
+from typing import Any, Awaitable, Callable, Mapping, Optional, Type, TypeVar, Union
 
 from folly.iobuf import IOBuf
 from thrift.py3.server import ThriftServer as ThriftServer_py3

@@ -14,7 +14,7 @@
 
 import unittest
 
-from testing.a.types import Mixin3, Union, Foo
+from testing.a.types import Foo, Mixin3, Union
 from testing.b.types import Mixin1, Mixin2
 
 
