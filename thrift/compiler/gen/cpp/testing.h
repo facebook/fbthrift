@@ -68,4 +68,10 @@ struct box_builder : structured_annotation_builder {
             p, "Box", "facebook.com/thrift/annotation/Box") {}
 };
 
+struct terse_builder : structured_annotation_builder {
+  explicit terse_builder(t_program* p)
+      : structured_annotation_builder(
+            p, "TerseWrite", "facebook.com/thrift/annotation/TerseWrite") {}
+};
+
 } // namespace apache::thrift::compiler::gen::cpp
