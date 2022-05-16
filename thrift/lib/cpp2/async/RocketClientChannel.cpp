@@ -198,6 +198,9 @@ folly::Try<FirstResponsePayload> decodeResponseError(
       exCode = kUnimplementedMethodErrorCode;
       exType = TApplicationException::UNKNOWN_METHOD;
       break;
+    case ResponseRpcErrorCode::TENANT_QUOTA_EXCEEDED:
+      exCode = kTenantQuotaExceededErrorCode;
+      exType = TApplicationException::LOADSHEDDING;
     default:
       exCode = kUnknownErrorCode;
       break;

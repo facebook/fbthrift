@@ -49,4 +49,5 @@ const std::string kInteractionConstructorErrorErrorCode{"27"};
 const std::string kRequestParsingErrorCode{"28"};
 const std::string kChecksumMismatchErrorCode{"30"};
 const std::string kUnimplementedMethodErrorCode{"31"};
+const std::string kTenantQuotaExceededErrorCode{"32"};
 const std::string kConnectionClosingErrorCode{"-1"};

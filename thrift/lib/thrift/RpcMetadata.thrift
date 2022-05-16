@@ -338,6 +338,9 @@ enum ResponseRpcErrorCode {
   // implemented in the application handler.
   // ResponseRpcErrorCategory::INVALID_REQUEST
   UNIMPLEMENTED_METHOD = 16,
+  // ...
+  // ResponseRpcErrorCategory::LOADSHEDDING
+  TENANT_QUOTA_EXCEEDED = 17,
 }
 
 struct ResponseRpcError {

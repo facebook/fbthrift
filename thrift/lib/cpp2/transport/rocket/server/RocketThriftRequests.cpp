@@ -282,7 +282,9 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
                        {kChecksumMismatchErrorCode,
                         ResponseRpcErrorCode::CHECKSUM_MISMATCH},
                        {kUnimplementedMethodErrorCode,
-                        ResponseRpcErrorCode::UNIMPLEMENTED_METHOD}});
+                        ResponseRpcErrorCode::UNIMPLEMENTED_METHOD},
+                       {kTenantQuotaExceededErrorCode,
+                        ResponseRpcErrorCode::TENANT_QUOTA_EXCEEDED}});
                   if (auto errorCode = folly::get_ptr(errorCodeMap, *exPtr)) {
                     return *errorCode;
                   }

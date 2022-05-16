@@ -67,6 +67,7 @@ extern const std::string kConnectionClosingErrorCode;
 extern const std::string kRequestParsingErrorCode;
 extern const std::string kChecksumMismatchErrorCode;
 extern const std::string kUnimplementedMethodErrorCode;
+extern const std::string kTenantQuotaExceededErrorCode;
 
 namespace apache {
 namespace thrift {
