@@ -61,6 +61,7 @@ struct StreamRequest {
 
 service StressTest {
   void ping() (thread = "eb");
+  binary echo(1: binary payload);
 
   BasicResponse requestResponseTm(1: BasicRequest req);
   BasicResponse requestResponseEb(1: BasicRequest req) (thread = "eb");

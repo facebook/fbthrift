@@ -25,6 +25,16 @@ THRIFT_STRESS_TEST(Ping) {
   co_await client->co_ping();
 }
 
+THRIFT_STRESS_TEST(Echo256b) {
+  static std::string const s(256, '?');
+  co_await client->co_echo(s);
+}
+
+THRIFT_STRESS_TEST(Echo4M) {
+  static std::string const s(4096000, '?');
+  co_await client->co_echo(s);
+}
+
 /**
  * Send a request with a small payload, have the server "process" it for 50ms on
  * the CPU threadpool via sleeping instead of the default busy wait, and return

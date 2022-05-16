@@ -28,6 +28,12 @@ class StressTestHandler : public StressTestSvIf {
 
   void async_eb_ping(std::unique_ptr<HandlerCallback<void>> callback) override;
 
+  void async_tm_echo(
+      std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
+      std::unique_ptr<::std::string> payload) override {
+    callback->result(std::move(payload));
+  }
+
   void async_tm_requestResponseTm(
       std::unique_ptr<HandlerCallback<std::unique_ptr<BasicResponse>>> callback,
       std::unique_ptr<BasicRequest> request) override;
