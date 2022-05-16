@@ -27,7 +27,8 @@ DEFINE_int32(server_port, 5000, "Port of the stress test server");
 DEFINE_string(test_name, "", "Stress test to run");
 DEFINE_int64(runtime_s, 10, "Runtime of test in seconds");
 DEFINE_int64(client_threads, 1, "Nnumber of client threads");
-DEFINE_int64(clients_per_thread, 1, "Number of clients per client thread");
+DEFINE_int64(connections_per_thread, 1, "Number of clients per client thread");
+DEFINE_int64(clients_per_connection, 1, "Number of clients per connection");
 DEFINE_string(
     client_security,
     "",
@@ -148,20 +149,26 @@ StressTestStats TestRunner::run(std::unique_ptr<StressTestBase> test) {
           "Unrecognized option for security '{}'", FLAGS_client_security);
     }
   }
-  ClientConnectionConfig connCfg{
-      .serverHost = folly::SocketAddress(FLAGS_server_host, FLAGS_server_port),
-      .security = security,
-      .certPath = FLAGS_client_cert_path,
-      .keyPath = FLAGS_client_key_path,
-      .trustedCertsPath = FLAGS_client_ca_path,
-  };
-  return ClientConfig{
-      .numClientThreads = FLAGS_client_threads <= 0
-          ? std::thread::hardware_concurrency()
-          : static_cast<uint64_t>(FLAGS_client_threads),
-      .numClientsPerThread = static_cast<uint64_t>(FLAGS_clients_per_thread),
-      .connConfig = std::move(connCfg),
-  };
+
+  ClientConnectionConfig connCfg{};
+  connCfg.serverHost =
+      folly::SocketAddress(FLAGS_server_host, FLAGS_server_port);
+  connCfg.security = security;
+  connCfg.certPath = FLAGS_client_cert_path;
+  connCfg.keyPath = FLAGS_client_key_path;
+  connCfg.trustedCertsPath = FLAGS_client_ca_path;
+
+  ClientConfig config{};
+  config.numClientThreads = FLAGS_client_threads <= 0
+      ? std::thread::hardware_concurrency()
+      : static_cast<uint64_t>(FLAGS_client_threads);
+  config.numConnectionsPerThread =
+      static_cast<uint64_t>(FLAGS_connections_per_thread);
+  config.numClientsPerConnection =
+      static_cast<uint64_t>(FLAGS_clients_per_connection);
+  config.connConfig = std::move(connCfg);
+
+  return config;
 }
 
 } // namespace stress

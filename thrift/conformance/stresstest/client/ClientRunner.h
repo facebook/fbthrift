@@ -33,7 +33,8 @@ class ClientThread;
 
 struct ClientConfig {
   uint64_t numClientThreads;
-  uint64_t numClientsPerThread;
+  uint64_t numConnectionsPerThread;
+  uint64_t numClientsPerConnection;
   ClientConnectionConfig connConfig;
 };
 

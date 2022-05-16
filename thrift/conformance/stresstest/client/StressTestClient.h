@@ -42,7 +42,7 @@ struct ClientRpcStats {
 class StressTestClient {
  public:
   explicit StressTestClient(
-      std::unique_ptr<StressTestAsyncClient> client, ClientRpcStats& stats)
+      std::shared_ptr<StressTestAsyncClient> client, ClientRpcStats& stats)
       : client_(std::move(client)), stats_(stats) {}
 
   folly::coro::Task<void> co_ping();
@@ -63,7 +63,7 @@ class StressTestClient {
   template <class Fn>
   folly::coro::Task<void> timedExecute(Fn&& fn);
 
-  std::unique_ptr<StressTestAsyncClient> client_;
+  std::shared_ptr<StressTestAsyncClient> client_;
   ClientRpcStats& stats_;
   bool connectionGood_{true};
 };
