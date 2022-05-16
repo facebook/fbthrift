@@ -67,18 +67,20 @@ class ClientThread : public folly::HHWheelTimer::Callback {
     }
   }
 
-  void stop() {
-    folly::coro::blocking_wait(
-        scope_.joinAsync().scheduleOn(thread_.getEventBase()));
-    thread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
-      // cancel memory monitoring timeout and capture residual memory usage
-      cancelTimeout();
-      memoryStats_.connectionsIdle = getThreadMemoryUsage();
-      // record memory usage percentiles collected during test
-      memoryStats_.p50 = memoryHistogram_.getPercentileEstimate(.5);
-      memoryStats_.p99 = memoryHistogram_.getPercentileEstimate(.99);
-      memoryStats_.p100 = memoryHistogram_.getPercentileEstimate(1.0);
-    });
+  folly::SemiFuture<folly::Unit> stop() {
+    return scope_.joinAsync()
+        .semi()
+        .via(thread_.getEventBase())
+        .thenValue([&](auto&&) -> folly::Unit {
+          // cancel memory monitoring timeout and capture residual memory usage
+          cancelTimeout();
+          memoryStats_.connectionsIdle = getThreadMemoryUsage();
+          // record memory usage percentiles collected during test
+          memoryStats_.p50 = memoryHistogram_.getPercentileEstimate(.5);
+          memoryStats_.p99 = memoryHistogram_.getPercentileEstimate(.99);
+          memoryStats_.p100 = memoryHistogram_.getPercentileEstimate(1.0);
+          return folly::Unit{};
+        });
   }
 
   // HHWheelTimer callback interface
@@ -134,9 +136,11 @@ void ClientRunner::stop() {
   CHECK(started_ && !stopped_)
       << "ClientRunner was not started or is already stopped";
   cancelSource_.requestCancellation();
+  std::vector<folly::SemiFuture<folly::Unit>> stops;
   for (auto& clientThread : clientThreads_) {
-    clientThread->stop();
+    stops.push_back(clientThread->stop());
   }
+  folly::collect(std::move(stops)).get();
   stopped_ = true;
 }
 
