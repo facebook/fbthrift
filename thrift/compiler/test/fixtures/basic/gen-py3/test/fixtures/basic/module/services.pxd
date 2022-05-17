@@ -19,6 +19,7 @@ cdef class MyServiceInterface(ServiceInterface):
     cdef bint _for_cython_deleteDataById
     cdef bint _for_cython_lobDataById
     cdef bint _for_cython_invalid_return_for_hack
+    cdef bint _for_cython_rpc_skipped_codegen
     pass
 
 cdef class DbMixedStackArgumentsInterface(ServiceInterface):

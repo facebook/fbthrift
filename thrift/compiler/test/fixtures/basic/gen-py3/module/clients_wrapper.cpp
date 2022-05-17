@@ -163,6 +163,21 @@ MyServiceClientWrapper::invalid_return_for_hack(
   return _future;
 }
 
+folly::Future<folly::Unit>
+MyServiceClientWrapper::rpc_skipped_codegen(
+    apache::thrift::RpcOptions& rpcOptions) {
+  auto* client = static_cast<::test::fixtures::basic::MyServiceAsyncClient*>(async_client_.get());
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_rpc_skipped_codegen, channel_);
+  client->rpc_skipped_codegen(
+    rpcOptions,
+    std::move(callback)
+  );
+  return _future;
+}
+
 folly::Future<std::string>
 DbMixedStackArgumentsClientWrapper::getDataByKey0(
     apache::thrift::RpcOptions& rpcOptions,

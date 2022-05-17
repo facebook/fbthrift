@@ -68,6 +68,7 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::test::fixtu
       cint64_t arg_id,
       string arg_data,)
     cFollyFuture[cset[float]] invalid_return_for_hack(cRpcOptions, )
+    cFollyFuture[cFollyUnit] rpc_skipped_codegen(cRpcOptions, )
 
 
   cdef cppclass cDbMixedStackArgumentsClientWrapper "::test::fixtures::basic::DbMixedStackArgumentsClientWrapper":

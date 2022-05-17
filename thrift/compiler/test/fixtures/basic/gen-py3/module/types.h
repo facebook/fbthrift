@@ -68,6 +68,9 @@ void reset_field<::test::fixtures::basic::MyStruct>(
     case 7:
       obj.floatSet_ref().copy_from(default_inst<::test::fixtures::basic::MyStruct>().floatSet_ref());
       return;
+    case 8:
+      obj.no_hack_codegen_field_ref().copy_from(default_inst<::test::fixtures::basic::MyStruct>().no_hack_codegen_field_ref());
+      return;
   }
 }
 

@@ -32,6 +32,7 @@ struct ForEachField<::test::fixtures::basic::MyStruct> {
     f(5, static_cast<T&&>(t).readonly_ref()...);
     f(6, static_cast<T&&>(t).idempotent_ref()...);
     f(7, static_cast<T&&>(t).floatSet_ref()...);
+    f(8, static_cast<T&&>(t).no_hack_codegen_field_ref()...);
   }
 };
 

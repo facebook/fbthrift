@@ -27,6 +27,7 @@ public class MyServiceRpcServerHandler
   private final java.util.List<com.facebook.thrift.payload.Reader> _deleteDataByIdReaders;
   private final java.util.List<com.facebook.thrift.payload.Reader> _lobDataByIdReaders;
   private final java.util.List<com.facebook.thrift.payload.Reader> _invalidReturnForHackReaders;
+  private final java.util.List<com.facebook.thrift.payload.Reader> _rpcSkippedCodegenReaders;
 
   private final java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers;
 
@@ -73,6 +74,9 @@ public class MyServiceRpcServerHandler
 
     _methodMap.put("invalidReturnForHack", this);
     _invalidReturnForHackReaders = _create_invalidReturnForHack_request_readers();
+
+    _methodMap.put("rpcSkippedCodegen", this);
+    _rpcSkippedCodegenReaders = _create_rpcSkippedCodegen_request_readers();
 
   }
 
@@ -774,6 +778,89 @@ oprot.writeString(_iter0);
 
           return _internalResponse;
   }
+  private static java.util.List<com.facebook.thrift.payload.Reader> _create_rpcSkippedCodegen_request_readers() {
+    java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
+
+
+    return _readerList;
+  }
+
+  private static com.facebook.thrift.payload.Writer _create_rpcSkippedCodegen_response_writer(
+      final Object _r,
+      final com.facebook.swift.service.ContextChain _chain,
+      final int _seqId) {
+      return oprot -> {
+      try {
+        oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
+
+        
+
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+
+        _chain.postWrite(_r);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+
+  private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
+    _dorpcSkippedCodegen(
+    MyService.Reactive _delegate,
+    String _name,
+    com.facebook.thrift.payload.ServerRequestPayload _payload,
+    java.util.List<com.facebook.thrift.payload.Reader> _readers,
+    java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
+    final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
+          _chain.preRead();
+          java.util.List<Object>_data = _payload.getData(_readers);
+          java.util.Iterator<Object> _iterator = _data.iterator();
+
+
+          _chain.postRead(_data);
+
+          reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
+            reactor.core.publisher.Mono.defer(() -> _delegate
+            .rpcSkippedCodegen())
+            .map(_response -> {
+              _chain.preWrite(_response);
+              com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
+                  _payload,
+                  _create_rpcSkippedCodegen_response_writer(_response, _chain, _payload.getMessageSeqId()));
+
+                return _serverResponsePayload;
+            })
+            .switchIfEmpty(
+              reactor.core.publisher.Mono.fromSupplier(
+                () -> {
+                  _chain.preWrite(null);
+                  return com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
+                    _payload,
+                    _create_rpcSkippedCodegen_response_writer(null, _chain, _payload.getMessageSeqId()));
+                }
+              )
+            )
+            .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
+                _chain.preWriteException(_t);
+                // exception is not of user declared type
+                String _errorMessage = String.format("Internal error processing rpcSkippedCodegen: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
+                org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
+                _tApplicationException.initCause(_t);
+                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(),  _chain);
+
+                return reactor.core.publisher.Mono.just(_serverResponsePayload);
+            });
+          if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _internalResponse = _internalResponse.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+          }
+
+          return _internalResponse;
+  }
 
   private static java.util.List<com.facebook.thrift.payload.Reader> _create_lobDataById_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
@@ -843,6 +930,9 @@ oprot.writeString(_iter0);
         break;
         case "invalidReturnForHack":
           _result = _doinvalidReturnForHack(_delegate, _name, _payload, _invalidReturnForHackReaders, _eventHandlers);
+        break;
+        case "rpcSkippedCodegen":
+          _result = _dorpcSkippedCodegen(_delegate, _name, _payload, _rpcSkippedCodegenReaders, _eventHandlers);
         break;
         default: {
           _result = reactor.core.publisher.Mono.error(new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.UNKNOWN_METHOD, "no method found with name " + _name));

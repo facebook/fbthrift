@@ -173,6 +173,16 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
                 "Empty Response",
             )
 
+        async def rpc_skipped_codegen(
+            self
+        ) -> None:
+            resp = await self._send_request(
+                "MyService",
+                "rpc_skipped_codegen",
+                test.fixtures.basic.module.lite_types._fbthrift_MyService_rpc_skipped_codegen_args(),
+                test.fixtures.basic.module.lite_types._fbthrift_MyService_rpc_skipped_codegen_result,
+            )
+
 
     class Sync(_fbthrift_py3lite_SyncClient):
         @staticmethod
@@ -315,6 +325,16 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
+            )
+
+        def rpc_skipped_codegen(
+            self
+        ) -> None:
+            resp = self._send_request(
+                "MyService",
+                "rpc_skipped_codegen",
+                test.fixtures.basic.module.lite_types._fbthrift_MyService_rpc_skipped_codegen_args(),
+                test.fixtures.basic.module.lite_types._fbthrift_MyService_rpc_skipped_codegen_result,
             )
 
 

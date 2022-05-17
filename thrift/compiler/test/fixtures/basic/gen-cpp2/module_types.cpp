@@ -159,6 +159,7 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     __fbthrift_field_readonly(std::move(other.__fbthrift_field_readonly)),
     __fbthrift_field_idempotent(std::move(other.__fbthrift_field_idempotent)),
     __fbthrift_field_floatSet(std::move(other.__fbthrift_field_floatSet)),
+    __fbthrift_field_no_hack_codegen_field(std::move(other.__fbthrift_field_no_hack_codegen_field)),
     __isset(other.__isset) {
 }
 
@@ -171,12 +172,13 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->__fbthrift_field_readonly = std::move(other.__fbthrift_field_readonly);
     this->__fbthrift_field_idempotent = std::move(other.__fbthrift_field_idempotent);
     this->__fbthrift_field_floatSet = std::move(other.__fbthrift_field_floatSet);
+    this->__fbthrift_field_no_hack_codegen_field = std::move(other.__fbthrift_field_no_hack_codegen_field);
     __isset = other.__isset;
     return *this;
 }
 
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::test::fixtures::basic::MyDataItem MyDataField__arg, ::test::fixtures::basic::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg, ::std::set<float> floatSet__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::test::fixtures::basic::MyDataItem MyDataField__arg, ::test::fixtures::basic::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg, ::std::set<float> floatSet__arg, ::std::string no_hack_codegen_field__arg) :
     __fbthrift_field_MyIntField(std::move(MyIntField__arg)),
     __fbthrift_field_MyStringField(std::move(MyStringField__arg)),
     __fbthrift_field_MyDataField(std::move(MyDataField__arg)),
@@ -184,7 +186,8 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
     __fbthrift_field_oneway(std::move(oneway__arg)),
     __fbthrift_field_readonly(std::move(readonly__arg)),
     __fbthrift_field_idempotent(std::move(idempotent__arg)),
-    __fbthrift_field_floatSet(std::move(floatSet__arg)) {
+    __fbthrift_field_floatSet(std::move(floatSet__arg)),
+    __fbthrift_field_no_hack_codegen_field(std::move(no_hack_codegen_field__arg)) {
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
   __isset.set(folly::index_constant<2>(), true);
@@ -193,6 +196,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
   __isset.set(folly::index_constant<5>(), true);
   __isset.set(folly::index_constant<6>(), true);
   __isset.set(folly::index_constant<7>(), true);
+  __isset.set(folly::index_constant<8>(), true);
 }
 
 
@@ -205,6 +209,7 @@ void MyStruct::__fbthrift_clear() {
   this->__fbthrift_field_readonly = bool();
   this->__fbthrift_field_idempotent = bool();
   this->__fbthrift_field_floatSet.clear();
+  this->__fbthrift_field_no_hack_codegen_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -240,6 +245,9 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (!(lhs.floatSet_ref() == rhs.floatSet_ref())) {
     return false;
   }
+  if (!(lhs.no_hack_codegen_field_ref() == rhs.no_hack_codegen_field_ref())) {
+    return false;
+  }
   return true;
 }
 
@@ -271,6 +279,9 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (!(lhs.floatSet_ref() == rhs.floatSet_ref())) {
     return lhs.floatSet_ref() < rhs.floatSet_ref();
   }
+  if (!(lhs.no_hack_codegen_field_ref() == rhs.no_hack_codegen_field_ref())) {
+    return lhs.no_hack_codegen_field_ref() < rhs.no_hack_codegen_field_ref();
+  }
   return false;
 }
 
@@ -301,6 +312,7 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.readonly_ref().value(), b.readonly_ref().value());
   swap(a.idempotent_ref().value(), b.idempotent_ref().value());
   swap(a.floatSet_ref().value(), b.floatSet_ref().value());
+  swap(a.no_hack_codegen_field_ref().value(), b.no_hack_codegen_field_ref().value());
   swap(a.__isset, b.__isset);
 }
 

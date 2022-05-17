@@ -145,6 +145,21 @@
               "column" : 25
             }
           }
+        },
+        "no_hack_codegen_field" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 42,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 43,
+              "column" : 34
+            }
+          }
         }
       },
       "source_range" : {
@@ -153,13 +168,13 @@
           "column" : 1
         },
         "end" : {
-          "line" : 42,
+          "line" : 44,
           "column" : 2
         }
       }
     },
     "MyDataItem" : {
-      "lineno" : 44,
+      "lineno" : 46,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -167,17 +182,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 44,
+          "line" : 46,
           "column" : 1
         },
         "end" : {
-          "line" : 44,
+          "line" : 46,
           "column" : 21
         }
       }
     },
     "MyUnion" : {
-      "lineno" : 46,
+      "lineno" : 48,
       "is_exception" : false,
       "is_union" : true,
       "fields" : {
@@ -187,11 +202,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 47,
+              "line" : 49,
               "column" : 3
             },
             "end" : {
-              "line" : 47,
+              "line" : 49,
               "column" : 19
             }
           }
@@ -202,11 +217,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 48,
+              "line" : 50,
               "column" : 3
             },
             "end" : {
-              "line" : 48,
+              "line" : 50,
               "column" : 23
             }
           }
@@ -217,11 +232,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 49,
+              "line" : 51,
               "column" : 3
             },
             "end" : {
-              "line" : 49,
+              "line" : 51,
               "column" : 27
             }
           }
@@ -232,11 +247,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 50,
+              "line" : 52,
               "column" : 3
             },
             "end" : {
-              "line" : 51,
+              "line" : 53,
               "column" : 25
             }
           }
@@ -244,11 +259,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 46,
+          "line" : 48,
           "column" : 1
         },
         "end" : {
-          "line" : 52,
+          "line" : 54,
           "column" : 2
         }
       }
@@ -256,7 +271,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 54,
+      "lineno" : 56,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -267,11 +282,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 55,
+              "line" : 57,
               "column" : 3
             },
             "end" : {
-              "line" : 55,
+              "line" : 57,
               "column" : 14
             }
           }
@@ -285,11 +300,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 56,
+              "line" : 58,
               "column" : 3
             },
             "end" : {
-              "line" : 56,
+              "line" : 58,
               "column" : 25
             }
           }
@@ -308,11 +323,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 57,
+              "line" : 59,
               "column" : 3
             },
             "end" : {
-              "line" : 57,
+              "line" : 59,
               "column" : 25
             }
           }
@@ -335,11 +350,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 59,
+              "line" : 61,
               "column" : 3
             },
             "end" : {
-              "line" : 59,
+              "line" : 61,
               "column" : 46
             }
           }
@@ -358,11 +373,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 60,
+              "line" : 62,
               "column" : 3
             },
             "end" : {
-              "line" : 60,
+              "line" : 62,
               "column" : 39
             }
           }
@@ -381,11 +396,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 61,
+              "line" : 63,
               "column" : 3
             },
             "end" : {
-              "line" : 61,
+              "line" : 63,
               "column" : 41
             }
           }
@@ -404,11 +419,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 62,
+              "line" : 64,
               "column" : 3
             },
             "end" : {
-              "line" : 62,
+              "line" : 64,
               "column" : 44
             }
           }
@@ -431,11 +446,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 63,
+              "line" : 65,
               "column" : 3
             },
             "end" : {
-              "line" : 63,
+              "line" : 65,
               "column" : 53
             }
           }
@@ -449,30 +464,48 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 65,
+              "line" : 67,
               "column" : 3
             },
             "end" : {
-              "line" : 66,
+              "line" : 68,
               "column" : 39
+            }
+          }
+        },
+        "MyService.rpc_skipped_codegen" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [],
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 70,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 71,
+              "column" : 29
             }
           }
         }
       },
       "source_range" : {
         "begin" : {
-          "line" : 54,
+          "line" : 56,
           "column" : 1
         },
         "end" : {
-          "line" : 67,
+          "line" : 72,
           "column" : 2
         }
       }
 
     },
     "DbMixedStackArguments" : {
-      "lineno" : 69,
+      "lineno" : 74,
       "functions" : {
         "DbMixedStackArguments.getDataByKey0" : {
           "return_type" : {
@@ -488,11 +521,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 70,
+              "line" : 75,
               "column" : 3
             },
             "end" : {
-              "line" : 70,
+              "line" : 75,
               "column" : 38
             }
           }
@@ -511,11 +544,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 71,
+              "line" : 76,
               "column" : 3
             },
             "end" : {
-              "line" : 71,
+              "line" : 76,
               "column" : 38
             }
           }
@@ -523,11 +556,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 69,
+          "line" : 74,
           "column" : 1
         },
         "end" : {
-          "line" : 72,
+          "line" : 77,
           "column" : 2
         }
       }

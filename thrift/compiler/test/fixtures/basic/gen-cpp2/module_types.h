@@ -23,6 +23,7 @@ struct oneway;
 struct readonly;
 struct idempotent;
 struct floatSet;
+struct no_hack_codegen_field;
 struct myEnum;
 struct myStruct;
 struct myDataItem;
@@ -60,6 +61,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(idempotent);
 #ifndef APACHE_THRIFT_ACCESSOR_floatSet
 #define APACHE_THRIFT_ACCESSOR_floatSet
 APACHE_THRIFT_DEFINE_ACCESSOR(floatSet);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_no_hack_codegen_field
+#define APACHE_THRIFT_ACCESSOR_no_hack_codegen_field
+APACHE_THRIFT_DEFINE_ACCESSOR(no_hack_codegen_field);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_myEnum
 #define APACHE_THRIFT_ACCESSOR_myEnum
@@ -253,7 +258,8 @@ class MyStruct final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{5}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{6}, ::apache::thrift::type::bool_t>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{7}, ::apache::thrift::type::bool_t>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::set<::apache::thrift::type::float_t>>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::set<::apache::thrift::type::float_t>>,
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{9}, ::apache::thrift::type::string_t>
   >;
   
   static ::apache::thrift::tag::MyIntField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
@@ -264,6 +270,7 @@ class MyStruct final  {
   static ::apache::thrift::tag::readonly __fbthrift_ident(::apache::thrift::type::field_id_u_c<6>);
   static ::apache::thrift::tag::idempotent __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
   static ::apache::thrift::tag::floatSet __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
+  static ::apache::thrift::tag::no_hack_codegen_field __fbthrift_ident(::apache::thrift::type::field_id_u_c<9>);
 
   static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
@@ -275,6 +282,7 @@ class MyStruct final  {
       case 6: return 6;
       case 7: return 7;
       case 8: return 8;
+      case 9: return 9;
     }
     return 0;
   }
@@ -295,7 +303,7 @@ class MyStruct final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::test::fixtures::basic::MyDataItem MyDataField__arg, ::test::fixtures::basic::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg, ::std::set<float> floatSet__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::test::fixtures::basic::MyDataItem MyDataField__arg, ::test::fixtures::basic::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg, ::std::set<float> floatSet__arg, ::std::string no_hack_codegen_field__arg);
 
   MyStruct(MyStruct&&) noexcept;
 
@@ -324,7 +332,9 @@ class MyStruct final  {
  private:
   ::std::set<float> __fbthrift_field_floatSet;
  private:
-  apache::thrift::detail::isset_bitset<8, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
+  ::std::string __fbthrift_field_no_hack_codegen_field;
+ private:
+  apache::thrift::detail::isset_bitset<9, apache::thrift::detail::IssetBitsetOption::Unpacked> __isset;
 
  public:
 
@@ -651,6 +661,46 @@ class MyStruct final  {
     return {static_cast<T&&>(this->__fbthrift_field_floatSet), __isset.at(7), __isset.bit(7)};
   }
 
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> no_hack_codegen_field_ref() const& {
+    return {this->__fbthrift_field_no_hack_codegen_field, __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> no_hack_codegen_field_ref() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_no_hack_codegen_field), __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> no_hack_codegen_field_ref() & {
+    return {this->__fbthrift_field_no_hack_codegen_field, __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> no_hack_codegen_field_ref() && {
+    return {static_cast<T&&>(this->__fbthrift_field_no_hack_codegen_field), __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> no_hack_codegen_field() const& {
+    return {this->__fbthrift_field_no_hack_codegen_field, __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> no_hack_codegen_field() const&& {
+    return {static_cast<const T&&>(this->__fbthrift_field_no_hack_codegen_field), __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> no_hack_codegen_field() & {
+    return {this->__fbthrift_field_no_hack_codegen_field, __isset.at(8), __isset.bit(8)};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> no_hack_codegen_field() && {
+    return {static_cast<T&&>(this->__fbthrift_field_no_hack_codegen_field), __isset.at(8), __isset.bit(8)};
+  }
+
   ::std::int64_t get_MyIntField() const {
     return __fbthrift_field_MyIntField;
   }
@@ -732,6 +782,21 @@ class MyStruct final  {
   ::std::set<float>& set_floatSet(T_MyStruct_floatSet_struct_setter&& floatSet_) {
     floatSet_ref() = std::forward<T_MyStruct_floatSet_struct_setter>(floatSet_);
     return __fbthrift_field_floatSet;
+  }
+
+  const ::std::string& get_no_hack_codegen_field() const& {
+    return __fbthrift_field_no_hack_codegen_field;
+  }
+
+  ::std::string get_no_hack_codegen_field() && {
+    return std::move(__fbthrift_field_no_hack_codegen_field);
+  }
+
+  template <typename T_MyStruct_no_hack_codegen_field_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.no_hack_codegen_field_ref() = BAR;` instead of `FOO.set_no_hack_codegen_field(BAR);`")]]
+  ::std::string& set_no_hack_codegen_field(T_MyStruct_no_hack_codegen_field_struct_setter&& no_hack_codegen_field_) {
+    no_hack_codegen_field_ref() = std::forward<T_MyStruct_no_hack_codegen_field_struct_setter>(no_hack_codegen_field_);
+    return __fbthrift_field_no_hack_codegen_field;
   }
 
   template <class Protocol_>

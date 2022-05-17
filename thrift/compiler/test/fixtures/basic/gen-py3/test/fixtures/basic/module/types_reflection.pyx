@@ -132,6 +132,18 @@ cdef __StructSpec get_reflection__MyStruct():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=9,
+            name="no_hack_codegen_field",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__MyDataItem():
     cdef _test_fixtures_basic_module_types.MyDataItem defaults = _test_fixtures_basic_module_types.MyDataItem._fbthrift_create(

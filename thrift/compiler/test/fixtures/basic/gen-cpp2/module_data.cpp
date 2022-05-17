@@ -41,7 +41,7 @@ const std::array<int16_t, 0> TStructDataStorage<::test::fixtures::basic::MyDataI
 const std::array<protocol::TType, 0> TStructDataStorage<::test::fixtures::basic::MyDataItem>::fields_types = {{
 }};
 
-const std::array<folly::StringPiece, 8> TStructDataStorage<::test::fixtures::basic::MyStruct>::fields_names = {{
+const std::array<folly::StringPiece, 9> TStructDataStorage<::test::fixtures::basic::MyStruct>::fields_names = {{
   "MyIntField",
   "MyStringField",
   "MyDataField",
@@ -50,8 +50,9 @@ const std::array<folly::StringPiece, 8> TStructDataStorage<::test::fixtures::bas
   "readonly",
   "idempotent",
   "floatSet",
+  "no_hack_codegen_field",
 }};
-const std::array<int16_t, 8> TStructDataStorage<::test::fixtures::basic::MyStruct>::fields_ids = {{
+const std::array<int16_t, 9> TStructDataStorage<::test::fixtures::basic::MyStruct>::fields_ids = {{
   1,
   2,
   3,
@@ -60,8 +61,9 @@ const std::array<int16_t, 8> TStructDataStorage<::test::fixtures::basic::MyStruc
   6,
   7,
   8,
+  9,
 }};
-const std::array<protocol::TType, 8> TStructDataStorage<::test::fixtures::basic::MyStruct>::fields_types = {{
+const std::array<protocol::TType, 9> TStructDataStorage<::test::fixtures::basic::MyStruct>::fields_types = {{
   TType::T_I64,
   TType::T_STRING,
   TType::T_STRUCT,
@@ -70,6 +72,7 @@ const std::array<protocol::TType, 8> TStructDataStorage<::test::fixtures::basic:
   TType::T_BOOL,
   TType::T_BOOL,
   TType::T_SET,
+  TType::T_STRING,
 }};
 
 const std::array<folly::StringPiece, 4> TStructDataStorage<::test::fixtures::basic::MyUnion>::fields_names = {{

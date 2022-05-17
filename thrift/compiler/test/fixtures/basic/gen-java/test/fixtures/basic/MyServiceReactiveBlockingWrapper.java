@@ -223,5 +223,25 @@ public class MyServiceReactiveBlockingWrapper
         throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
       }
   }
+  @java.lang.Override
+  public void rpcSkippedCodegen() throws org.apache.thrift.TException {
+      rpcSkippedCodegenWrapper(com.facebook.thrift.client.RpcOptions.EMPTY);
+  }
+
+  @java.lang.Override
+  public void rpcSkippedCodegen(
+        com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      rpcSkippedCodegenWrapper(rpcOptions);
+  }
+
+  @java.lang.Override
+  public com.facebook.thrift.client.ResponseWrapper<Void> rpcSkippedCodegenWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        return _delegate.rpcSkippedCodegenWrapper(rpcOptions).block();
+      } catch (Throwable t) {
+        throw com.facebook.thrift.util.ExceptionUtil.wrap(t);
+      }
+  }
 
 }

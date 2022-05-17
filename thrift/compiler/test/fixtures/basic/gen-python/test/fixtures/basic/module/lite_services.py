@@ -38,6 +38,7 @@ class MyServiceInterface(
             b"deleteDataById": self._fbthrift__handler_deleteDataById,
             b"lobDataById": self._fbthrift__handler_lobDataById,
             b"invalid_return_for_hack": self._fbthrift__handler_invalid_return_for_hack,
+            b"rpc_skipped_codegen": self._fbthrift__handler_rpc_skipped_codegen,
         }
         return {**super().getFunctionTable(), **functionTable}
 
@@ -171,6 +172,19 @@ class MyServiceInterface(
         args_struct = deserialize(test.fixtures.basic.module.lite_types._fbthrift_MyService_invalid_return_for_hack_args, args, protocol)
         value = await self.invalid_return_for_hack()
         return_struct = test.fixtures.basic.module.lite_types._fbthrift_MyService_invalid_return_for_hack_result(success=value)
+
+        return serialize_iobuf(return_struct, protocol)
+
+
+    async def rpc_skipped_codegen(
+            self
+        ) -> None:
+        raise NotImplementedError("async def rpc_skipped_codegen is not implemented")
+
+    async def _fbthrift__handler_rpc_skipped_codegen(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) -> _fbthrift_iobuf.IOBuf:
+        args_struct = deserialize(test.fixtures.basic.module.lite_types._fbthrift_MyService_rpc_skipped_codegen_args, args, protocol)
+        value = await self.rpc_skipped_codegen()
+        return_struct = test.fixtures.basic.module.lite_types._fbthrift_MyService_rpc_skipped_codegen_result()
 
         return serialize_iobuf(return_struct, protocol)
 

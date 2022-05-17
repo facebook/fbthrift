@@ -74,6 +74,11 @@ class MyService(thrift.py3.client.Client):
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.AbstractSet[float]: ...
 
+    async def rpc_skipped_codegen(
+        self,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> None: ...
+
 
 
 _DbMixedStackArgumentsT = _typing.TypeVar('_DbMixedStackArgumentsT', bound='DbMixedStackArguments')

@@ -30,6 +30,7 @@ class MyStruct(_fbthrift_py3lite_types.Struct):
     readonly: _typing.Final[bool] = ...
     idempotent: _typing.Final[bool] = ...
     floatSet: _typing.Final[_typing.AbstractSet[float]] = ...
+    no_hack_codegen_field: _typing.Final[str] = ...
     def __init__(
         self, *,
         MyIntField: _typing.Optional[int]=...,
@@ -39,7 +40,8 @@ class MyStruct(_fbthrift_py3lite_types.Struct):
         oneway: _typing.Optional[bool]=...,
         readonly: _typing.Optional[bool]=...,
         idempotent: _typing.Optional[bool]=...,
-        floatSet: _typing.Optional[_typing.AbstractSet[float]]=...
+        floatSet: _typing.Optional[_typing.AbstractSet[float]]=...,
+        no_hack_codegen_field: _typing.Optional[str]=...
     ) -> None: ...
 
     def __call__(
@@ -51,9 +53,10 @@ class MyStruct(_fbthrift_py3lite_types.Struct):
         oneway: _typing.Optional[bool]=...,
         readonly: _typing.Optional[bool]=...,
         idempotent: _typing.Optional[bool]=...,
-        floatSet: _typing.Optional[_typing.AbstractSet[float]]=...
+        floatSet: _typing.Optional[_typing.AbstractSet[float]]=...,
+        no_hack_codegen_field: _typing.Optional[str]=...
     ) -> MyStruct: ...
-    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, str, MyDataItem, MyEnum, bool, bool, bool, _typing.AbstractSet[float]]]]: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, str, MyDataItem, MyEnum, bool, bool, bool, _typing.AbstractSet[float], str]]]: ...
 
 
 class MyDataItem(_fbthrift_py3lite_types.Struct):
@@ -326,6 +329,32 @@ class _fbthrift_MyService_invalid_return_for_hack_result(_fbthrift_py3lite_types
         str,
         _typing.Union[
             _typing.AbstractSet[float],
+        ]]]: ...
+
+
+
+
+class _fbthrift_MyService_rpc_skipped_codegen_args(_fbthrift_py3lite_types.Struct):
+
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None]]]: ...
+
+class _fbthrift_MyService_rpc_skipped_codegen_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[None]
+
+    def __init__(
+        self, *, success: _typing.Optional[None] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            None,
         ]]]: ...
 
 

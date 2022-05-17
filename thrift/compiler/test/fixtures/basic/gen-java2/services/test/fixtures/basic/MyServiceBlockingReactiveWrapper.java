@@ -177,4 +177,21 @@ public class MyServiceBlockingReactiveWrapper
         return _m;
     }
 
+    @java.lang.Override
+    public reactor.core.publisher.Mono<Void> rpcSkippedCodegen() {
+        reactor.core.publisher.Mono<Void> _m = reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+                try {
+                    _delegate.rpcSkippedCodegen();
+                } catch (Throwable _e) {
+                    throw reactor.core.Exceptions.propagate(_e);
+                }
+            });
+
+        if (!com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
+            _m = _m.subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+        }
+
+        return _m;
+    }
+
 }

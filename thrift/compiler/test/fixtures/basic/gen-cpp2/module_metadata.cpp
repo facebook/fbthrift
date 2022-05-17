@@ -68,6 +68,7 @@ StructMetadata<::test::fixtures::basic::MyStruct>::gen(ThriftMetadata& metadata)
     {6, "readonly", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {7, "idempotent", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
     {8, "floatSet", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE)), std::vector<ThriftConstStruct>{*cvStruct("hack.SkipCodegen", {{"reason", cvString(R"(Invalid key type)")}}).cv_struct_ref(), }},
+    {9, "no_hack_codegen_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{*cvStruct("hack.SkipCodegen", {{"reason", cvString(R"(skip field codegen for deprecation)")}}).cv_struct_ref(), }},
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -246,6 +247,16 @@ void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::M
   func.structured_annotations()->push_back(*cvStruct("hack.SkipCodegen", {{"reason", cvString(R"(Invalid key type)")}}).cv_struct_ref());
   service.functions()->push_back(std::move(func));
 }
+void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_rpc_skipped_codegen(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name() = "rpc_skipped_codegen";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
+  func_ret_type->writeAndGenType(*func.return_type(), metadata);
+  func.is_oneway() = false;
+  func.structured_annotations()->push_back(*cvStruct("hack.SkipCodegen", {{"reason", cvString(R"(Skip function deprecation)")}}).cv_struct_ref());
+  service.functions()->push_back(std::move(func));
+}
 
 void ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
   const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata(), *response.services());
@@ -271,6 +282,7 @@ const ThriftServiceContextRef* ServiceMetadata<::apache::thrift::ServiceHandler<
     ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_deleteDataById,
     ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_lobDataById,
     ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_invalid_return_for_hack,
+    ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>>::gen_rpc_skipped_codegen,
   };
   for (auto& function_gen : functions) {
     function_gen(metadata, module_MyService);

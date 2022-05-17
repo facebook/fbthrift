@@ -47,6 +47,7 @@ public class MyServiceReactiveClient
   private static final TField _lobDataById_DATA_FIELD_DESC = new TField("data", TType.STRING, (short)2);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _lobDataById_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _invalidReturnForHack_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _rpcSkippedCodegen_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
   }
@@ -560,6 +561,52 @@ public class MyServiceReactiveClient
   @java.lang.Override
   public reactor.core.publisher.Mono<Set<Float>> invalidReturnForHack() {
     return invalidReturnForHack( com.facebook.thrift.client.RpcOptions.EMPTY);
+  }
+
+  private com.facebook.thrift.payload.Writer _createrpcSkippedCodegenWriter() {
+    return oprot -> {
+      try {
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static final com.facebook.thrift.payload.Reader _rpcSkippedCodegen_READER = Readers.voidReader();
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Void>> rpcSkippedCodegenWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return _rpcClient
+      .flatMap(_rpc -> {
+        org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
+                .setName("rpc_skipped_codegen")
+                .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
+                .setOtherMetadata(getHeaders(rpcOptions))
+                .setProtocol(_protocolId)
+                .build();
+
+            com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
+                com.facebook.thrift.payload.ClientRequestPayload.create(
+                    _createrpcSkippedCodegenWriter(),
+                    _rpcSkippedCodegen_READER,
+                    _rpcSkippedCodegen_EXCEPTION_READERS,
+                    _metadata,
+                    java.util.Collections.emptyMap());
+
+            return _rpc
+                .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw com.facebook.thrift.util.ExceptionUtil.propagate(_p);});
+      });
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> rpcSkippedCodegen( final com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return rpcSkippedCodegenWrapper( rpcOptions).then();
+  }
+
+  @java.lang.Override
+  public reactor.core.publisher.Mono<Void> rpcSkippedCodegen() {
+    return rpcSkippedCodegen( com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
 

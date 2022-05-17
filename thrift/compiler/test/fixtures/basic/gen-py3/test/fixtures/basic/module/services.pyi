@@ -82,6 +82,12 @@ class MyServiceInterface(
     async def invalid_return_for_hack(
         self
     ) -> _typing.AbstractSet[float]: ...
+
+
+    @abstractmethod
+    async def rpc_skipped_codegen(
+        self
+    ) -> None: ...
     pass
 
 

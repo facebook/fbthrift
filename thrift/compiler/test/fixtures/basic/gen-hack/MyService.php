@@ -71,6 +71,13 @@ interface MyServiceAsyncIf extends \IThriftAsyncIf {
    *               2: string data);
    */
   public function lobDataById(int $id, string $data): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   rpc_skipped_codegen();
+   */
+  public function rpc_skipped_codegen(): Awaitable<void>;
 }
 
 /**
@@ -136,6 +143,13 @@ interface MyServiceIf extends \IThriftSyncIf {
    *               2: string data);
    */
   public function lobDataById(int $id, string $data): void;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   rpc_skipped_codegen();
+   */
+  public function rpc_skipped_codegen(): void;
 }
 
 /**
@@ -209,6 +223,13 @@ interface MyServiceClientIf extends \IThriftSyncIf {
    *               2: string data);
    */
   public function lobDataById(int $id, string $data): Awaitable<void>;
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   rpc_skipped_codegen();
+   */
+  public function rpc_skipped_codegen(): Awaitable<void>;
 }
 
 /**
@@ -622,6 +643,61 @@ trait MyServiceClientBase {
   }
 
 
+
+  protected function recvImpl_rpc_skipped_codegen(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
+    try {
+      $this->eventHandler_->preRecv('rpc_skipped_codegen', $expectedsequenceid);
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
+        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic\MyService_rpc_skipped_codegen_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
+      {
+        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic\MyService_rpc_skipped_codegen_result', Shapes::idx($options, 'read_options', 0));
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
+        if ($mtype === \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = \fixtures\basic\MyService_rpc_skipped_codegen_result::withDefaultValues();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
+          throw new \TProtocolException("rpc_skipped_codegen failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('rpc_skipped_codegen', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('rpc_skipped_codegen', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('rpc_skipped_codegen', $expectedsequenceid, $ex->result);
+          return;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->recvError('rpc_skipped_codegen', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postRecv('rpc_skipped_codegen', $expectedsequenceid, null);
+    return;
+  }
+
 }
 
 class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncClientIf {
@@ -877,6 +953,36 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
       $out_transport->resetBuffer();
       await $channel->genSendRequestNoResponse($rpc_options, $msg);
     }
+  }
+
+  /**
+   * Original thrift definition:-
+   * void
+   *   rpc_skipped_codegen();
+   */
+  public async function rpc_skipped_codegen(): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    await $this->asyncHandler_->genBefore("MyService", "rpc_skipped_codegen");
+    $args = \fixtures\basic\MyService_rpc_skipped_codegen_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "rpc_skipped_codegen", false);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $this->recvImpl_rpc_skipped_codegen($currentseqid);
+    await $this->asyncHandler_->genAfter();
   }
 
 }
@@ -1136,6 +1242,36 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
   }
 
+  /**
+   * Original thrift definition:-
+   * void
+   *   rpc_skipped_codegen();
+   */
+  public async function rpc_skipped_codegen(): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
+    await $this->asyncHandler_->genBefore("MyService", "rpc_skipped_codegen");
+    $args = \fixtures\basic\MyService_rpc_skipped_codegen_args::withDefaultValues();
+    $currentseqid = $this->sendImplHelper($args, "rpc_skipped_codegen", false);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    if ($channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer) {
+      $msg = $out_transport->getBuffer();
+      $out_transport->resetBuffer();
+      list($result_msg, $_read_headers) = await $channel->genSendRequestResponse($rpc_options, $msg);
+      $in_transport->resetBuffer();
+      $in_transport->write($result_msg);
+    } else {
+      await $this->asyncHandler_->genWait($currentseqid);
+    }
+    $this->recvImpl_rpc_skipped_codegen($currentseqid);
+    await $this->asyncHandler_->genAfter();
+  }
+
   /* send and recv functions */
   public function send_ping(): int {
     $args = \fixtures\basic\MyService_ping_args::withDefaultValues();
@@ -1203,6 +1339,13 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
       'data' => $data,
     ));
     return $this->sendImplHelper($args, "lobDataById", true);
+  }
+  public function send_rpc_skipped_codegen(): int {
+    $args = \fixtures\basic\MyService_rpc_skipped_codegen_args::withDefaultValues();
+    return $this->sendImplHelper($args, "rpc_skipped_codegen", false);
+  }
+  public function recv_rpc_skipped_codegen(?int $expectedsequenceid = null): void {
+    $this->recvImpl_rpc_skipped_codegen($expectedsequenceid);
   }
 }
 
@@ -1543,6 +1686,50 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     return;
+  }
+  protected async function process_rpc_skipped_codegen(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('rpc_skipped_codegen');
+    $reply_type = \TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'rpc_skipped_codegen', dict[]);
+
+    if ($input is \TBinaryProtocolAccelerated) {
+      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\basic\MyService_rpc_skipped_codegen_args');
+    } else if ($input is \TCompactProtocolAccelerated) {
+      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\basic\MyService_rpc_skipped_codegen_args');
+    } else {
+      $args = \fixtures\basic\MyService_rpc_skipped_codegen_args::withDefaultValues();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'rpc_skipped_codegen', $args);
+    $result = \fixtures\basic\MyService_rpc_skipped_codegen_result::withDefaultValues();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, '\fixtures\basic\MyService', 'rpc_skipped_codegen', $args);
+      await $this->handler->rpc_skipped_codegen();
+      $this->eventHandler_->postExec($handler_ctx, 'rpc_skipped_codegen', $result);
+    } catch (\Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'rpc_skipped_codegen', $ex);
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'rpc_skipped_codegen', $result);
+    if ($output is \TBinaryProtocolAccelerated)
+    {
+      \thrift_protocol_write_binary($output, 'rpc_skipped_codegen', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output is \TCompactProtocolAccelerated)
+    {
+      \thrift_protocol_write_compact($output, 'rpc_skipped_codegen', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("rpc_skipped_codegen", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'rpc_skipped_codegen', $result);
   }
   protected async function process_getThriftServiceMetadata(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $reply_type = \TMessageType::REPLY;
@@ -1921,6 +2108,50 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
       $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     return;
+  }
+  protected function process_rpc_skipped_codegen(int $seqid, \TProtocol $input, \TProtocol $output): void {
+    $handler_ctx = $this->eventHandler_->getHandlerContext('rpc_skipped_codegen');
+    $reply_type = \TMessageType::REPLY;
+
+    $this->eventHandler_->preRead($handler_ctx, 'rpc_skipped_codegen', dict[]);
+
+    if ($input is \TBinaryProtocolAccelerated) {
+      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\basic\MyService_rpc_skipped_codegen_args');
+    } else if ($input is \TCompactProtocolAccelerated) {
+      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\basic\MyService_rpc_skipped_codegen_args');
+    } else {
+      $args = \fixtures\basic\MyService_rpc_skipped_codegen_args::withDefaultValues();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $this->eventHandler_->postRead($handler_ctx, 'rpc_skipped_codegen', $args);
+    $result = \fixtures\basic\MyService_rpc_skipped_codegen_result::withDefaultValues();
+    try {
+      $this->eventHandler_->preExec($handler_ctx, '\fixtures\basic\MyService', 'rpc_skipped_codegen', $args);
+      $this->handler->rpc_skipped_codegen();
+      $this->eventHandler_->postExec($handler_ctx, 'rpc_skipped_codegen', $result);
+    } catch (\Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $this->eventHandler_->handlerError($handler_ctx, 'rpc_skipped_codegen', $ex);
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    $this->eventHandler_->preWrite($handler_ctx, 'rpc_skipped_codegen', $result);
+    if ($output is \TBinaryProtocolAccelerated)
+    {
+      \thrift_protocol_write_binary($output, 'rpc_skipped_codegen', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output is \TCompactProtocolAccelerated)
+    {
+      \thrift_protocol_write_compact($output, 'rpc_skipped_codegen', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("rpc_skipped_codegen", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
+    $this->eventHandler_->postWrite($handler_ctx, 'rpc_skipped_codegen', $result);
   }
   protected function process_getThriftServiceMetadata(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $reply_type = \TMessageType::REPLY;
@@ -3272,6 +3503,140 @@ class MyService_lobDataById_args implements \IThriftSyncStruct, \IThriftShapishS
 
 }
 
+class MyService_rpc_skipped_codegen_args implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const type TShape = shape(
+    ...
+  );
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_rpc_skipped_codegen_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.rpc_skipped_codegen_args",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
+}
+
+class MyService_rpc_skipped_codegen_result implements \IThriftSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_rpc_skipped_codegen_result';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_rpc_skipped_codegen_result",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
+}
+
 class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
     return \tmeta_ThriftService::fromShape(
@@ -3459,6 +3824,16 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
               "is_oneway" => true,
             )
           ),
+          \tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "rpc_skipped_codegen",
+              "return_type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+            )
+          ),
         ],
       )
     );
@@ -3501,6 +3876,13 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
           '\facebook\thrift\annotation\SkipCodegen' => \facebook\thrift\annotation\SkipCodegen::fromShape(
             shape(
               "reason" => "Invalid key type",
+            )
+          ),
+        ],
+        'rpc_skipped_codegen' => dict[
+          '\facebook\thrift\annotation\SkipCodegen' => \facebook\thrift\annotation\SkipCodegen::fromShape(
+            shape(
+              "reason" => "Skip function deprecation",
             )
           ),
         ],

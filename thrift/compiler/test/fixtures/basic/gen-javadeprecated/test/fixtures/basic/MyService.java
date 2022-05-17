@@ -49,6 +49,8 @@ public class MyService {
 
     public Set<Float> invalid_return_for_hack() throws TException;
 
+    public void rpc_skipped_codegen() throws TException;
+
   }
 
   public interface AsyncIface {
@@ -70,6 +72,8 @@ public class MyService {
     public void lobDataById(long id, String data, AsyncMethodCallback resultHandler) throws TException;
 
     public void invalid_return_for_hack(AsyncMethodCallback resultHandler) throws TException;
+
+    public void rpc_skipped_codegen(AsyncMethodCallback resultHandler) throws TException;
 
   }
 
@@ -470,6 +474,47 @@ public class MyService {
       throw new TApplicationException(TApplicationException.MISSING_RESULT, "invalid_return_for_hack failed: unknown result");
     }
 
+    public void rpc_skipped_codegen() throws TException
+    {
+      ContextStack ctx = getContextStack("MyService.rpc_skipped_codegen", null);
+      this.setContextStack(ctx);
+      send_rpc_skipped_codegen();
+      recv_rpc_skipped_codegen();
+    }
+
+    public void send_rpc_skipped_codegen() throws TException
+    {
+      ContextStack ctx = this.getContextStack();
+      super.preWrite(ctx, "MyService.rpc_skipped_codegen", null);
+      oprot_.writeMessageBegin(new TMessage("rpc_skipped_codegen", TMessageType.CALL, seqid_));
+      rpc_skipped_codegen_args args = new rpc_skipped_codegen_args();
+      args.write(oprot_);
+      oprot_.writeMessageEnd();
+      oprot_.getTransport().flush();
+      super.postWrite(ctx, "MyService.rpc_skipped_codegen", args);
+      return;
+    }
+
+    public void recv_rpc_skipped_codegen() throws TException
+    {
+      ContextStack ctx = super.getContextStack();
+      long bytes;
+      TMessageType mtype;
+      super.preRead(ctx, "MyService.rpc_skipped_codegen");
+      TMessage msg = iprot_.readMessageBegin();
+      if (msg.type == TMessageType.EXCEPTION) {
+        TApplicationException x = TApplicationException.read(iprot_);
+        iprot_.readMessageEnd();
+        throw x;
+      }
+      rpc_skipped_codegen_result result = new rpc_skipped_codegen_result();
+      result.read(iprot_);
+      iprot_.readMessageEnd();
+      super.postRead(ctx, "MyService.rpc_skipped_codegen", result);
+
+      return;
+    }
+
   }
   public static class AsyncClient extends TAsyncClient implements AsyncIface {
     public static class Factory implements TAsyncClientFactory<AsyncClient> {
@@ -488,16 +533,16 @@ public class MyService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void ping(AsyncMethodCallback resultHandler20) throws TException {
+    public void ping(AsyncMethodCallback resultHandler21) throws TException {
       checkReady();
-      ping_call method_call = new ping_call(resultHandler20, this, ___protocolFactory, ___transport);
+      ping_call method_call = new ping_call(resultHandler21, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class ping_call extends TAsyncMethodCall {
-      public ping_call(AsyncMethodCallback resultHandler21, TAsyncClient client17, TProtocolFactory protocolFactory18, TNonblockingTransport transport19) throws TException {
-        super(client17, protocolFactory18, transport19, resultHandler21, false);
+      public ping_call(AsyncMethodCallback resultHandler22, TAsyncClient client18, TProtocolFactory protocolFactory19, TNonblockingTransport transport20) throws TException {
+        super(client18, protocolFactory19, transport20, resultHandler22, false);
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -517,16 +562,16 @@ public class MyService {
       }
     }
 
-    public void getRandomData(AsyncMethodCallback resultHandler25) throws TException {
+    public void getRandomData(AsyncMethodCallback resultHandler26) throws TException {
       checkReady();
-      getRandomData_call method_call = new getRandomData_call(resultHandler25, this, ___protocolFactory, ___transport);
+      getRandomData_call method_call = new getRandomData_call(resultHandler26, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getRandomData_call extends TAsyncMethodCall {
-      public getRandomData_call(AsyncMethodCallback resultHandler26, TAsyncClient client22, TProtocolFactory protocolFactory23, TNonblockingTransport transport24) throws TException {
-        super(client22, protocolFactory23, transport24, resultHandler26, false);
+      public getRandomData_call(AsyncMethodCallback resultHandler27, TAsyncClient client23, TProtocolFactory protocolFactory24, TNonblockingTransport transport25) throws TException {
+        super(client23, protocolFactory24, transport25, resultHandler27, false);
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -546,17 +591,17 @@ public class MyService {
       }
     }
 
-    public void sink(long sink, AsyncMethodCallback resultHandler30) throws TException {
+    public void sink(long sink, AsyncMethodCallback resultHandler31) throws TException {
       checkReady();
-      sink_call method_call = new sink_call(sink, resultHandler30, this, ___protocolFactory, ___transport);
+      sink_call method_call = new sink_call(sink, resultHandler31, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class sink_call extends TAsyncMethodCall {
       private long sink;
-      public sink_call(long sink, AsyncMethodCallback resultHandler31, TAsyncClient client27, TProtocolFactory protocolFactory28, TNonblockingTransport transport29) throws TException {
-        super(client27, protocolFactory28, transport29, resultHandler31, false);
+      public sink_call(long sink, AsyncMethodCallback resultHandler32, TAsyncClient client28, TProtocolFactory protocolFactory29, TNonblockingTransport transport30) throws TException {
+        super(client28, protocolFactory29, transport30, resultHandler32, false);
         this.sink = sink;
       }
 
@@ -578,9 +623,9 @@ public class MyService {
       }
     }
 
-    public void putDataById(long id, String data, AsyncMethodCallback resultHandler35) throws TException {
+    public void putDataById(long id, String data, AsyncMethodCallback resultHandler36) throws TException {
       checkReady();
-      putDataById_call method_call = new putDataById_call(id, data, resultHandler35, this, ___protocolFactory, ___transport);
+      putDataById_call method_call = new putDataById_call(id, data, resultHandler36, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
@@ -588,8 +633,8 @@ public class MyService {
     public static class putDataById_call extends TAsyncMethodCall {
       private long id;
       private String data;
-      public putDataById_call(long id, String data, AsyncMethodCallback resultHandler36, TAsyncClient client32, TProtocolFactory protocolFactory33, TNonblockingTransport transport34) throws TException {
-        super(client32, protocolFactory33, transport34, resultHandler36, false);
+      public putDataById_call(long id, String data, AsyncMethodCallback resultHandler37, TAsyncClient client33, TProtocolFactory protocolFactory34, TNonblockingTransport transport35) throws TException {
+        super(client33, protocolFactory34, transport35, resultHandler37, false);
         this.id = id;
         this.data = data;
       }
@@ -613,17 +658,17 @@ public class MyService {
       }
     }
 
-    public void hasDataById(long id, AsyncMethodCallback resultHandler40) throws TException {
+    public void hasDataById(long id, AsyncMethodCallback resultHandler41) throws TException {
       checkReady();
-      hasDataById_call method_call = new hasDataById_call(id, resultHandler40, this, ___protocolFactory, ___transport);
+      hasDataById_call method_call = new hasDataById_call(id, resultHandler41, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class hasDataById_call extends TAsyncMethodCall {
       private long id;
-      public hasDataById_call(long id, AsyncMethodCallback resultHandler41, TAsyncClient client37, TProtocolFactory protocolFactory38, TNonblockingTransport transport39) throws TException {
-        super(client37, protocolFactory38, transport39, resultHandler41, false);
+      public hasDataById_call(long id, AsyncMethodCallback resultHandler42, TAsyncClient client38, TProtocolFactory protocolFactory39, TNonblockingTransport transport40) throws TException {
+        super(client38, protocolFactory39, transport40, resultHandler42, false);
         this.id = id;
       }
 
@@ -645,17 +690,17 @@ public class MyService {
       }
     }
 
-    public void getDataById(long id, AsyncMethodCallback resultHandler45) throws TException {
+    public void getDataById(long id, AsyncMethodCallback resultHandler46) throws TException {
       checkReady();
-      getDataById_call method_call = new getDataById_call(id, resultHandler45, this, ___protocolFactory, ___transport);
+      getDataById_call method_call = new getDataById_call(id, resultHandler46, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getDataById_call extends TAsyncMethodCall {
       private long id;
-      public getDataById_call(long id, AsyncMethodCallback resultHandler46, TAsyncClient client42, TProtocolFactory protocolFactory43, TNonblockingTransport transport44) throws TException {
-        super(client42, protocolFactory43, transport44, resultHandler46, false);
+      public getDataById_call(long id, AsyncMethodCallback resultHandler47, TAsyncClient client43, TProtocolFactory protocolFactory44, TNonblockingTransport transport45) throws TException {
+        super(client43, protocolFactory44, transport45, resultHandler47, false);
         this.id = id;
       }
 
@@ -677,17 +722,17 @@ public class MyService {
       }
     }
 
-    public void deleteDataById(long id, AsyncMethodCallback resultHandler50) throws TException {
+    public void deleteDataById(long id, AsyncMethodCallback resultHandler51) throws TException {
       checkReady();
-      deleteDataById_call method_call = new deleteDataById_call(id, resultHandler50, this, ___protocolFactory, ___transport);
+      deleteDataById_call method_call = new deleteDataById_call(id, resultHandler51, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class deleteDataById_call extends TAsyncMethodCall {
       private long id;
-      public deleteDataById_call(long id, AsyncMethodCallback resultHandler51, TAsyncClient client47, TProtocolFactory protocolFactory48, TNonblockingTransport transport49) throws TException {
-        super(client47, protocolFactory48, transport49, resultHandler51, false);
+      public deleteDataById_call(long id, AsyncMethodCallback resultHandler52, TAsyncClient client48, TProtocolFactory protocolFactory49, TNonblockingTransport transport50) throws TException {
+        super(client48, protocolFactory49, transport50, resultHandler52, false);
         this.id = id;
       }
 
@@ -709,9 +754,9 @@ public class MyService {
       }
     }
 
-    public void lobDataById(long id, String data, AsyncMethodCallback resultHandler55) throws TException {
+    public void lobDataById(long id, String data, AsyncMethodCallback resultHandler56) throws TException {
       checkReady();
-      lobDataById_call method_call = new lobDataById_call(id, data, resultHandler55, this, ___protocolFactory, ___transport);
+      lobDataById_call method_call = new lobDataById_call(id, data, resultHandler56, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
@@ -719,8 +764,8 @@ public class MyService {
     public static class lobDataById_call extends TAsyncMethodCall {
       private long id;
       private String data;
-      public lobDataById_call(long id, String data, AsyncMethodCallback resultHandler56, TAsyncClient client52, TProtocolFactory protocolFactory53, TNonblockingTransport transport54) throws TException {
-        super(client52, protocolFactory53, transport54, resultHandler56, true);
+      public lobDataById_call(long id, String data, AsyncMethodCallback resultHandler57, TAsyncClient client53, TProtocolFactory protocolFactory54, TNonblockingTransport transport55) throws TException {
+        super(client53, protocolFactory54, transport55, resultHandler57, true);
         this.id = id;
         this.data = data;
       }
@@ -743,16 +788,16 @@ public class MyService {
       }
     }
 
-    public void invalid_return_for_hack(AsyncMethodCallback resultHandler60) throws TException {
+    public void invalid_return_for_hack(AsyncMethodCallback resultHandler61) throws TException {
       checkReady();
-      invalid_return_for_hack_call method_call = new invalid_return_for_hack_call(resultHandler60, this, ___protocolFactory, ___transport);
+      invalid_return_for_hack_call method_call = new invalid_return_for_hack_call(resultHandler61, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class invalid_return_for_hack_call extends TAsyncMethodCall {
-      public invalid_return_for_hack_call(AsyncMethodCallback resultHandler61, TAsyncClient client57, TProtocolFactory protocolFactory58, TNonblockingTransport transport59) throws TException {
-        super(client57, protocolFactory58, transport59, resultHandler61, false);
+      public invalid_return_for_hack_call(AsyncMethodCallback resultHandler62, TAsyncClient client58, TProtocolFactory protocolFactory59, TNonblockingTransport transport60) throws TException {
+        super(client58, protocolFactory59, transport60, resultHandler62, false);
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -769,6 +814,35 @@ public class MyService {
         TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
         TProtocol prot = super.client.getProtocolFactory().getProtocol(memoryTransport);
         return (new Client(prot)).recv_invalid_return_for_hack();
+      }
+    }
+
+    public void rpc_skipped_codegen(AsyncMethodCallback resultHandler66) throws TException {
+      checkReady();
+      rpc_skipped_codegen_call method_call = new rpc_skipped_codegen_call(resultHandler66, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class rpc_skipped_codegen_call extends TAsyncMethodCall {
+      public rpc_skipped_codegen_call(AsyncMethodCallback resultHandler67, TAsyncClient client63, TProtocolFactory protocolFactory64, TNonblockingTransport transport65) throws TException {
+        super(client63, protocolFactory64, transport65, resultHandler67, false);
+      }
+
+      public void write_args(TProtocol prot) throws TException {
+        prot.writeMessageBegin(new TMessage("rpc_skipped_codegen", TMessageType.CALL, 0));
+        rpc_skipped_codegen_args args = new rpc_skipped_codegen_args();
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public void getResult() throws TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
+        TProtocol prot = super.client.getProtocolFactory().getProtocol(memoryTransport);
+        (new Client(prot)).recv_rpc_skipped_codegen();
       }
     }
 
@@ -789,6 +863,7 @@ public class MyService {
       processMap_.put("deleteDataById", new deleteDataById());
       processMap_.put("lobDataById", new lobDataById());
       processMap_.put("invalid_return_for_hack", new invalid_return_for_hack());
+      processMap_.put("rpc_skipped_codegen", new rpc_skipped_codegen());
     }
 
     protected static interface ProcessFunction {
@@ -1000,6 +1075,27 @@ public class MyService {
         oprot.writeMessageEnd();
         oprot.getTransport().flush();
         event_handler_.postWrite(handler_ctx, "MyService.invalid_return_for_hack", result);
+      }
+
+    }
+
+    private class rpc_skipped_codegen implements ProcessFunction {
+      public void process(int seqid, TProtocol iprot, TProtocol oprot, TConnectionContext server_ctx) throws TException
+      {
+        Object handler_ctx = event_handler_.getContext("MyService.rpc_skipped_codegen", server_ctx);
+        rpc_skipped_codegen_args args = new rpc_skipped_codegen_args();
+        event_handler_.preRead(handler_ctx, "MyService.rpc_skipped_codegen");
+        args.read(iprot);
+        iprot.readMessageEnd();
+        event_handler_.postRead(handler_ctx, "MyService.rpc_skipped_codegen", args);
+        rpc_skipped_codegen_result result = new rpc_skipped_codegen_result();
+        iface_.rpc_skipped_codegen();
+        event_handler_.preWrite(handler_ctx, "MyService.rpc_skipped_codegen", result);
+        oprot.writeMessageBegin(new TMessage("rpc_skipped_codegen", TMessageType.REPLY, seqid));
+        result.write(oprot);
+        oprot.writeMessageEnd();
+        oprot.getTransport().flush();
+        event_handler_.postWrite(handler_ctx, "MyService.rpc_skipped_codegen", result);
       }
 
     }
@@ -4172,15 +4268,15 @@ public class MyService {
           case SUCCESS:
             if (__field.type == TType.SET) {
               {
-                TSet _set62 = iprot.readSetBegin();
-                this.success = new HashSet<Float>(Math.max(0, 2*_set62.size));
-                for (int _i63 = 0; 
-                     (_set62.size < 0) ? iprot.peekSet() : (_i63 < _set62.size); 
-                     ++_i63)
+                TSet _set68 = iprot.readSetBegin();
+                this.success = new HashSet<Float>(Math.max(0, 2*_set68.size));
+                for (int _i69 = 0; 
+                     (_set68.size < 0) ? iprot.peekSet() : (_i69 < _set68.size); 
+                     ++_i69)
                 {
-                  float _elem64;
-                  _elem64 = iprot.readFloat();
-                  this.success.add(_elem64);
+                  float _elem70;
+                  _elem70 = iprot.readFloat();
+                  this.success.add(_elem70);
                 }
                 iprot.readSetEnd();
               }
@@ -4208,8 +4304,8 @@ public class MyService {
         oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
         {
           oprot.writeSetBegin(new TSet(TType.FLOAT, this.success.size()));
-          for (float _iter65 : this.success)          {
-            oprot.writeFloat(_iter65);
+          for (float _iter71 : this.success)          {
+            oprot.writeFloat(_iter71);
           }
           oprot.writeSetEnd();
         }
@@ -4245,6 +4341,271 @@ public class MyService {
         sb.append(TBaseHelper.toString(this.getSuccess(), indent + 1, prettyPrint));
       }
       first = false;
+      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws TException {
+      // check for required fields
+    }
+
+  }
+
+  public static class rpc_skipped_codegen_args implements TBase, java.io.Serializable, Cloneable, Comparable<rpc_skipped_codegen_args>   {
+    private static final TStruct STRUCT_DESC = new TStruct("rpc_skipped_codegen_args");
+
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
+
+    static {
+      FieldMetaData.addStructMetaDataMap(rpc_skipped_codegen_args.class, metaDataMap);
+    }
+
+    public rpc_skipped_codegen_args() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public rpc_skipped_codegen_args(rpc_skipped_codegen_args other) {
+    }
+
+    public rpc_skipped_codegen_args deepCopy() {
+      return new rpc_skipped_codegen_args(this);
+    }
+
+    public void setFieldValue(int fieldID, Object __value) {
+      switch (fieldID) {
+      default:
+        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
+      }
+    }
+
+    public Object getFieldValue(int fieldID) {
+      switch (fieldID) {
+      default:
+        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
+      }
+    }
+
+    @Override
+    public boolean equals(Object _that) {
+      if (_that == null)
+        return false;
+      if (this == _that)
+        return true;
+      if (!(_that instanceof rpc_skipped_codegen_args))
+        return false;
+      rpc_skipped_codegen_args that = (rpc_skipped_codegen_args)_that;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return Arrays.deepHashCode(new Object[] {});
+    }
+
+    @Override
+    public int compareTo(rpc_skipped_codegen_args other) {
+      if (other == null) {
+        // See java.lang.Comparable docs
+        throw new NullPointerException();
+      }
+
+      if (other == this) {
+        return 0;
+      }
+      int lastComparison = 0;
+
+      return 0;
+    }
+
+    public void read(TProtocol iprot) throws TException {
+      TField __field;
+      iprot.readStructBegin(metaDataMap);
+      while (true)
+      {
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) {
+          break;
+        }
+        switch (__field.id)
+        {
+          default:
+            TProtocolUtil.skip(iprot, __field.type);
+            break;
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(TProtocol oprot) throws TException {
+      validate();
+
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      return toString(1, true);
+    }
+
+    @Override
+    public String toString(int indent, boolean prettyPrint) {
+      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
+      String newLine = prettyPrint ? "\n" : "";
+      String space = prettyPrint ? " " : "";
+      StringBuilder sb = new StringBuilder("rpc_skipped_codegen_args");
+      sb.append(space);
+      sb.append("(");
+      sb.append(newLine);
+      boolean first = true;
+
+      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws TException {
+      // check for required fields
+    }
+
+  }
+
+  public static class rpc_skipped_codegen_result implements TBase, java.io.Serializable, Cloneable, Comparable<rpc_skipped_codegen_result>   {
+    private static final TStruct STRUCT_DESC = new TStruct("rpc_skipped_codegen_result");
+
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
+
+    static {
+      FieldMetaData.addStructMetaDataMap(rpc_skipped_codegen_result.class, metaDataMap);
+    }
+
+    public rpc_skipped_codegen_result() {
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public rpc_skipped_codegen_result(rpc_skipped_codegen_result other) {
+    }
+
+    public rpc_skipped_codegen_result deepCopy() {
+      return new rpc_skipped_codegen_result(this);
+    }
+
+    public void setFieldValue(int fieldID, Object __value) {
+      switch (fieldID) {
+      default:
+        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
+      }
+    }
+
+    public Object getFieldValue(int fieldID) {
+      switch (fieldID) {
+      default:
+        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
+      }
+    }
+
+    @Override
+    public boolean equals(Object _that) {
+      if (_that == null)
+        return false;
+      if (this == _that)
+        return true;
+      if (!(_that instanceof rpc_skipped_codegen_result))
+        return false;
+      rpc_skipped_codegen_result that = (rpc_skipped_codegen_result)_that;
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return Arrays.deepHashCode(new Object[] {});
+    }
+
+    @Override
+    public int compareTo(rpc_skipped_codegen_result other) {
+      if (other == null) {
+        // See java.lang.Comparable docs
+        throw new NullPointerException();
+      }
+
+      if (other == this) {
+        return 0;
+      }
+      int lastComparison = 0;
+
+      return 0;
+    }
+
+    public void read(TProtocol iprot) throws TException {
+      TField __field;
+      iprot.readStructBegin(metaDataMap);
+      while (true)
+      {
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) {
+          break;
+        }
+        switch (__field.id)
+        {
+          default:
+            TProtocolUtil.skip(iprot, __field.type);
+            break;
+        }
+        iprot.readFieldEnd();
+      }
+      iprot.readStructEnd();
+
+
+      // check for required fields of primitive type, which can't be checked in the validate method
+      validate();
+    }
+
+    public void write(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+
+    @Override
+    public String toString() {
+      return toString(1, true);
+    }
+
+    @Override
+    public String toString(int indent, boolean prettyPrint) {
+      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
+      String newLine = prettyPrint ? "\n" : "";
+      String space = prettyPrint ? " " : "";
+      StringBuilder sb = new StringBuilder("rpc_skipped_codegen_result");
+      sb.append(space);
+      sb.append("(");
+      sb.append(newLine);
+      boolean first = true;
+
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
       sb.append(")");
       return sb.toString();

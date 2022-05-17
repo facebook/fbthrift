@@ -46,6 +46,7 @@ type MyService interface {
   //  - Data
   LobDataById(id int64, data string) (err error)
   InvalidReturnForHack() (_r []float32, err error)
+  RpcSkippedCodegen() (err error)
 }
 
 type MyServiceClientInterface interface {
@@ -73,6 +74,7 @@ type MyServiceClientInterface interface {
   //  - Data
   LobDataById(id int64, data string) (err error)
   InvalidReturnForHack() (_r []float32, err error)
+  RpcSkippedCodegen() (err error)
 }
 
 type MyServiceClient struct {
@@ -253,6 +255,19 @@ func (p *MyServiceClient) recvInvalidReturnForHack() (value []float32, err error
   if err != nil { return }
 
   return __result.GetSuccess(), nil
+}
+
+func (p *MyServiceClient) RpcSkippedCodegen() (err error) {
+  var args MyServiceRpcSkippedCodegenArgs
+  err = p.CC.SendMsg("rpc_skipped_codegen", &args, thrift.CALL)
+  if err != nil { return }
+  return p.recvRpcSkippedCodegen()
+}
+
+
+func (p *MyServiceClient) recvRpcSkippedCodegen() (err error) {
+  var __result MyServiceRpcSkippedCodegenResult
+  return p.CC.RecvMsg("rpc_skipped_codegen", &__result)
 }
 
 
@@ -461,6 +476,21 @@ func (p *MyServiceThreadsafeClient) recvInvalidReturnForHack() (value []float32,
   return __result.GetSuccess(), nil
 }
 
+func (p *MyServiceThreadsafeClient) RpcSkippedCodegen() (err error) {
+  p.Mu.Lock()
+  defer p.Mu.Unlock()
+  var args MyServiceRpcSkippedCodegenArgs
+  err = p.CC.SendMsg("rpc_skipped_codegen", &args, thrift.CALL)
+  if err != nil { return }
+  return p.recvRpcSkippedCodegen()
+}
+
+
+func (p *MyServiceThreadsafeClient) recvRpcSkippedCodegen() (err error) {
+  var __result MyServiceRpcSkippedCodegenResult
+  return p.CC.RecvMsg("rpc_skipped_codegen", &__result)
+}
+
 
 type MyServiceChannelClient struct {
   RequestChannel thrift.RequestChannel
@@ -593,6 +623,16 @@ func (p *MyServiceChannelClient) InvalidReturnForHack(ctx context.Context) (_r [
   return __result.GetSuccess(), nil
 }
 
+func (p *MyServiceChannelClient) RpcSkippedCodegen(ctx context.Context) (err error) {
+  args := MyServiceRpcSkippedCodegenArgs{
+  }
+  var __result MyServiceRpcSkippedCodegenResult
+  err = p.RequestChannel.Call(ctx, "rpc_skipped_codegen", &args, &__result)
+  if err != nil { return }
+
+  return nil
+}
+
 
 type MyServiceProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
@@ -634,6 +674,7 @@ func NewMyServiceProcessor(handler MyService) *MyServiceProcessor {
   self3.processorMap["deleteDataById"] = &myServiceProcessorDeleteDataById{handler:handler}
   self3.processorMap["lobDataById"] = &myServiceProcessorLobDataById{handler:handler}
   self3.processorMap["invalid_return_for_hack"] = &myServiceProcessorInvalidReturnForHack{handler:handler}
+  self3.processorMap["rpc_skipped_codegen"] = &myServiceProcessorRpcSkippedCodegen{handler:handler}
   self3.functionServiceMap["ping"] = "MyService"
   self3.functionServiceMap["getRandomData"] = "MyService"
   self3.functionServiceMap["sink"] = "MyService"
@@ -643,6 +684,7 @@ func NewMyServiceProcessor(handler MyService) *MyServiceProcessor {
   self3.functionServiceMap["deleteDataById"] = "MyService"
   self3.functionServiceMap["lobDataById"] = "MyService"
   self3.functionServiceMap["invalid_return_for_hack"] = "MyService"
+  self3.functionServiceMap["rpc_skipped_codegen"] = "MyService"
   return self3
 }
 
@@ -1118,6 +1160,58 @@ func (p *myServiceProcessorInvalidReturnForHack) Run(argStruct thrift.Struct) (t
     }
   } else {
     __result.Success = retval
+  }
+  return &__result, nil
+}
+
+type myServiceProcessorRpcSkippedCodegen struct {
+  handler MyService
+}
+
+func (p *MyServiceRpcSkippedCodegenResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
+func (p *myServiceProcessorRpcSkippedCodegen) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
+  args := MyServiceRpcSkippedCodegenArgs{}
+  if err := args.Read(iprot); err != nil {
+    return nil, err
+  }
+  iprot.ReadMessageEnd()
+  return &args, nil
+}
+
+func (p *myServiceProcessorRpcSkippedCodegen) Write(seqId int32, result thrift.WritableStruct, oprot thrift.Protocol) (err thrift.Exception) {
+  var err2 error
+  messageType := thrift.REPLY
+  switch result.(type) {
+  case thrift.ApplicationException:
+    messageType = thrift.EXCEPTION
+  }
+  if err2 = oprot.WriteMessageBegin("rpc_skipped_codegen", messageType, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  return err
+}
+
+func (p *myServiceProcessorRpcSkippedCodegen) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
+  var __result MyServiceRpcSkippedCodegenResult
+  if err := p.handler.RpcSkippedCodegen(); err != nil {
+    switch err.(type) {
+    default:
+      x := thrift.NewApplicationExceptionCause(thrift.INTERNAL_ERROR, "Internal error processing rpc_skipped_codegen: " + err.Error(), err)
+      return x, x
+    }
   }
   return &__result, nil
 }
@@ -2866,6 +2960,138 @@ func (p *MyServiceInvalidReturnForHackResult) String() string {
 
   successVal := fmt.Sprintf("%v", p.Success)
   return fmt.Sprintf("MyServiceInvalidReturnForHackResult({Success:%s})", successVal)
+}
+
+type MyServiceRpcSkippedCodegenArgs struct {
+  thrift.IRequest
+}
+
+func NewMyServiceRpcSkippedCodegenArgs() *MyServiceRpcSkippedCodegenArgs {
+  return &MyServiceRpcSkippedCodegenArgs{}
+}
+
+type MyServiceRpcSkippedCodegenArgsBuilder struct {
+  obj *MyServiceRpcSkippedCodegenArgs
+}
+
+func NewMyServiceRpcSkippedCodegenArgsBuilder() *MyServiceRpcSkippedCodegenArgsBuilder{
+  return &MyServiceRpcSkippedCodegenArgsBuilder{
+    obj: NewMyServiceRpcSkippedCodegenArgs(),
+  }
+}
+
+func (p MyServiceRpcSkippedCodegenArgsBuilder) Emit() *MyServiceRpcSkippedCodegenArgs{
+  return &MyServiceRpcSkippedCodegenArgs{
+  }
+}
+
+func (p *MyServiceRpcSkippedCodegenArgs) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MyServiceRpcSkippedCodegenArgs) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("rpc_skipped_codegen_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MyServiceRpcSkippedCodegenArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("MyServiceRpcSkippedCodegenArgs({})")
+}
+
+type MyServiceRpcSkippedCodegenResult struct {
+  thrift.IResponse
+}
+
+func NewMyServiceRpcSkippedCodegenResult() *MyServiceRpcSkippedCodegenResult {
+  return &MyServiceRpcSkippedCodegenResult{}
+}
+
+type MyServiceRpcSkippedCodegenResultBuilder struct {
+  obj *MyServiceRpcSkippedCodegenResult
+}
+
+func NewMyServiceRpcSkippedCodegenResultBuilder() *MyServiceRpcSkippedCodegenResultBuilder{
+  return &MyServiceRpcSkippedCodegenResultBuilder{
+    obj: NewMyServiceRpcSkippedCodegenResult(),
+  }
+}
+
+func (p MyServiceRpcSkippedCodegenResultBuilder) Emit() *MyServiceRpcSkippedCodegenResult{
+  return &MyServiceRpcSkippedCodegenResult{
+  }
+}
+
+func (p *MyServiceRpcSkippedCodegenResult) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MyServiceRpcSkippedCodegenResult) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("rpc_skipped_codegen_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MyServiceRpcSkippedCodegenResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("MyServiceRpcSkippedCodegenResult({})")
 }
 
 

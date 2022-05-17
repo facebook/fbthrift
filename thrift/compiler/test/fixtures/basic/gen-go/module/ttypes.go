@@ -75,6 +75,7 @@ func MyEnumPtr(v MyEnum) *MyEnum { return &v }
 //  - Readonly
 //  - Idempotent
 //  - FloatSet
+//  - NoHackCodegenField
 type MyStruct struct {
   MyIntField int64 `thrift:"MyIntField,1" db:"MyIntField" json:"MyIntField"`
   MyStringField string `thrift:"MyStringField,2" db:"MyStringField" json:"MyStringField"`
@@ -84,6 +85,7 @@ type MyStruct struct {
   Readonly bool `thrift:"readonly,6" db:"readonly" json:"readonly"`
   Idempotent bool `thrift:"idempotent,7" db:"idempotent" json:"idempotent"`
   FloatSet []float32 `thrift:"floatSet,8" db:"floatSet" json:"floatSet"`
+  NoHackCodegenField string `thrift:"no_hack_codegen_field,9" db:"no_hack_codegen_field" json:"no_hack_codegen_field"`
 }
 
 func NewMyStruct() *MyStruct {
@@ -127,6 +129,10 @@ func (p *MyStruct) GetIdempotent() bool {
 func (p *MyStruct) GetFloatSet() []float32 {
   return p.FloatSet
 }
+
+func (p *MyStruct) GetNoHackCodegenField() string {
+  return p.NoHackCodegenField
+}
 func (p *MyStruct) IsSetMyDataField() bool {
   return p != nil && p.MyDataField != nil
 }
@@ -151,6 +157,7 @@ func (p MyStructBuilder) Emit() *MyStruct{
     Readonly: p.obj.Readonly,
     Idempotent: p.obj.Idempotent,
     FloatSet: p.obj.FloatSet,
+    NoHackCodegenField: p.obj.NoHackCodegenField,
   }
 }
 
@@ -194,6 +201,11 @@ func (m *MyStructBuilder) FloatSet(floatSet []float32) *MyStructBuilder {
   return m
 }
 
+func (m *MyStructBuilder) NoHackCodegenField(noHackCodegenField string) *MyStructBuilder {
+  m.obj.NoHackCodegenField = noHackCodegenField
+  return m
+}
+
 func (m *MyStruct) SetMyIntField(myIntField int64) *MyStruct {
   m.MyIntField = myIntField
   return m
@@ -231,6 +243,11 @@ func (m *MyStruct) SetIdempotent(idempotent bool) *MyStruct {
 
 func (m *MyStruct) SetFloatSet(floatSet []float32) *MyStruct {
   m.FloatSet = floatSet
+  return m
+}
+
+func (m *MyStruct) SetNoHackCodegenField(noHackCodegenField string) *MyStruct {
+  m.NoHackCodegenField = noHackCodegenField
   return m
 }
 
@@ -277,6 +294,10 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
       }
     case 8:
       if err := p.ReadField8(iprot); err != nil {
+        return err
+      }
+    case 9:
+      if err := p.ReadField9(iprot); err != nil {
         return err
       }
     default:
@@ -379,6 +400,15 @@ func (p *MyStruct)  ReadField8(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *MyStruct)  ReadField9(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 9: ", err)
+  } else {
+    p.NoHackCodegenField = v
+  }
+  return nil
+}
+
 func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("MyStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -390,6 +420,7 @@ func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := p.writeField6(oprot); err != nil { return err }
   if err := p.writeField7(oprot); err != nil { return err }
   if err := p.writeField8(oprot); err != nil { return err }
+  if err := p.writeField9(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -493,6 +524,16 @@ func (p *MyStruct) writeField8(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *MyStruct) writeField9(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("no_hack_codegen_field", thrift.STRING, 9); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 9:no_hack_codegen_field: ", p), err) }
+  if err := oprot.WriteString(string(p.NoHackCodegenField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.no_hack_codegen_field (9) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 9:no_hack_codegen_field: ", p), err) }
+  return err
+}
+
 func (p *MyStruct) String() string {
   if p == nil {
     return "<nil>"
@@ -511,7 +552,8 @@ func (p *MyStruct) String() string {
   readonlyVal := fmt.Sprintf("%v", p.Readonly)
   idempotentVal := fmt.Sprintf("%v", p.Idempotent)
   floatSetVal := fmt.Sprintf("%v", p.FloatSet)
-  return fmt.Sprintf("MyStruct({MyIntField:%s MyStringField:%s MyDataField:%s MyEnum:%s Oneway:%s Readonly:%s Idempotent:%s FloatSet:%s})", myIntFieldVal, myStringFieldVal, myDataFieldVal, myEnumVal, onewayVal, readonlyVal, idempotentVal, floatSetVal)
+  noHackCodegenFieldVal := fmt.Sprintf("%v", p.NoHackCodegenField)
+  return fmt.Sprintf("MyStruct({MyIntField:%s MyStringField:%s MyDataField:%s MyEnum:%s Oneway:%s Readonly:%s Idempotent:%s FloatSet:%s NoHackCodegenField:%s})", myIntFieldVal, myStringFieldVal, myDataFieldVal, myEnumVal, onewayVal, readonlyVal, idempotentVal, floatSetVal, noHackCodegenFieldVal)
 }
 
 type MyDataItem struct {

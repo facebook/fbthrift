@@ -34,6 +34,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   private static final TField READONLY_FIELD_DESC = new TField("readonly", TType.BOOL, (short)6);
   private static final TField IDEMPOTENT_FIELD_DESC = new TField("idempotent", TType.BOOL, (short)7);
   private static final TField FLOAT_SET_FIELD_DESC = new TField("floatSet", TType.SET, (short)8);
+  private static final TField NO_HACK_CODEGEN_FIELD_FIELD_DESC = new TField("no_hack_codegen_field", TType.STRING, (short)9);
 
   public long MyIntField;
   public String MyStringField;
@@ -47,6 +48,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   public boolean readonly;
   public boolean idempotent;
   public Set<Float> floatSet;
+  public String no_hack_codegen_field;
   public static final int MYINTFIELD = 1;
   public static final int MYSTRINGFIELD = 2;
   public static final int MYDATAFIELD = 3;
@@ -55,6 +57,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   public static final int READONLY = 6;
   public static final int IDEMPOTENT = 7;
   public static final int FLOATSET = 8;
+  public static final int NO_HACK_CODEGEN_FIELD = 9;
 
   // isset id assignments
   private static final int __MYINTFIELD_ISSET_ID = 0;
@@ -84,6 +87,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     tmpMetaDataMap.put(FLOATSET, new FieldMetaData("floatSet", TFieldRequirementType.DEFAULT, 
         new SetMetaData(TType.SET, 
             new FieldValueMetaData(TType.FLOAT))));
+    tmpMetaDataMap.put(NO_HACK_CODEGEN_FIELD, new FieldMetaData("no_hack_codegen_field", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -102,7 +107,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       boolean oneway,
       boolean readonly,
       boolean idempotent,
-      Set<Float> floatSet) {
+      Set<Float> floatSet,
+      String no_hack_codegen_field) {
     this();
     this.MyIntField = MyIntField;
     setMyIntFieldIsSet(true);
@@ -116,6 +122,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     this.idempotent = idempotent;
     setIdempotentIsSet(true);
     this.floatSet = floatSet;
+    this.no_hack_codegen_field = no_hack_codegen_field;
   }
 
   public static class Builder {
@@ -127,6 +134,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     private boolean readonly;
     private boolean idempotent;
     private Set<Float> floatSet;
+    private String no_hack_codegen_field;
 
     BitSet __optional_isset = new BitSet(4);
 
@@ -177,6 +185,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return this;
     }
 
+    public Builder setNo_hack_codegen_field(final String no_hack_codegen_field) {
+      this.no_hack_codegen_field = no_hack_codegen_field;
+      return this;
+    }
+
     public MyStruct build() {
       MyStruct result = new MyStruct();
       if (__optional_isset.get(__MYINTFIELD_ISSET_ID)) {
@@ -195,6 +208,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         result.setIdempotent(this.idempotent);
       }
       result.setFloatSet(this.floatSet);
+      result.setNo_hack_codegen_field(this.no_hack_codegen_field);
       return result;
     }
   }
@@ -224,6 +238,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     this.idempotent = TBaseHelper.deepCopy(other.idempotent);
     if (other.isSetFloatSet()) {
       this.floatSet = TBaseHelper.deepCopy(other.floatSet);
+    }
+    if (other.isSetNo_hack_codegen_field()) {
+      this.no_hack_codegen_field = TBaseHelper.deepCopy(other.no_hack_codegen_field);
     }
   }
 
@@ -427,6 +444,30 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
+  public String getNo_hack_codegen_field() {
+    return this.no_hack_codegen_field;
+  }
+
+  public MyStruct setNo_hack_codegen_field(String no_hack_codegen_field) {
+    this.no_hack_codegen_field = no_hack_codegen_field;
+    return this;
+  }
+
+  public void unsetNo_hack_codegen_field() {
+    this.no_hack_codegen_field = null;
+  }
+
+  // Returns true if field no_hack_codegen_field is set (has been assigned a value) and false otherwise
+  public boolean isSetNo_hack_codegen_field() {
+    return this.no_hack_codegen_field != null;
+  }
+
+  public void setNo_hack_codegen_fieldIsSet(boolean __value) {
+    if (!__value) {
+      this.no_hack_codegen_field = null;
+    }
+  }
+
   @SuppressWarnings("unchecked")
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
@@ -494,6 +535,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       }
       break;
 
+    case NO_HACK_CODEGEN_FIELD:
+      if (__value == null) {
+        unsetNo_hack_codegen_field();
+      } else {
+        setNo_hack_codegen_field((String)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -524,6 +573,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     case FLOATSET:
       return getFloatSet();
+
+    case NO_HACK_CODEGEN_FIELD:
+      return getNo_hack_codegen_field();
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -556,12 +608,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     if (!TBaseHelper.equalsNobinary(this.isSetFloatSet(), that.isSetFloatSet(), this.floatSet, that.floatSet)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetNo_hack_codegen_field(), that.isSetNo_hack_codegen_field(), this.no_hack_codegen_field, that.no_hack_codegen_field)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {MyIntField, MyStringField, MyDataField, myEnum, oneway, readonly, idempotent, floatSet});
+    return Arrays.deepHashCode(new Object[] {MyIntField, MyStringField, MyDataField, myEnum, oneway, readonly, idempotent, floatSet, no_hack_codegen_field});
   }
 
   @Override
@@ -637,6 +691,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(floatSet, other.floatSet);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetNo_hack_codegen_field()).compareTo(other.isSetNo_hack_codegen_field());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(no_hack_codegen_field, other.no_hack_codegen_field);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -727,6 +789,13 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case NO_HACK_CODEGEN_FIELD:
+          if (__field.type == TType.STRING) {
+            this.no_hack_codegen_field = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -780,6 +849,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         }
         oprot.writeSetEnd();
       }
+      oprot.writeFieldEnd();
+    }
+    if (this.no_hack_codegen_field != null) {
+      oprot.writeFieldBegin(NO_HACK_CODEGEN_FIELD_FIELD_DESC);
+      oprot.writeString(this.no_hack_codegen_field);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -879,6 +953,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       sb.append("null");
     } else {
       sb.append(TBaseHelper.toString(this.getFloatSet(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("no_hack_codegen_field");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getNo_hack_codegen_field() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getNo_hack_codegen_field(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

@@ -175,6 +175,19 @@ cdef void MyService_invalid_return_for_hack_callback(
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
+cdef void MyService_rpc_skipped_codegen_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
 cdef void DbMixedStackArguments_getDataByKey0_callback(
     cFollyTry[string]&& result,
     PyObject* userdata
@@ -434,6 +447,26 @@ cdef class MyService(thrift.py3.client.Client):
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).invalid_return_for_hack(rpc_options._cpp_obj, 
             ),
             MyService_invalid_return_for_hack_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def rpc_skipped_codegen(
+            MyService self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).rpc_skipped_codegen(rpc_options._cpp_obj, 
+            ),
+            MyService_rpc_skipped_codegen_callback,
             <PyObject *> __userdata
         )
         return asyncio_shield(__future)

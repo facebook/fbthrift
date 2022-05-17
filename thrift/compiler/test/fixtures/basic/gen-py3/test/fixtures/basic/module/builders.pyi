@@ -25,6 +25,7 @@ class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     readonly: _typing.Optional[bool]
     idempotent: _typing.Optional[bool]
     floatSet: _typing.Optional[set]
+    no_hack_codegen_field: _typing.Optional[str]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

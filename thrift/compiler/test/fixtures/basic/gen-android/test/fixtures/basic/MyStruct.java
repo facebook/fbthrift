@@ -34,6 +34,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   private static final TField READONLY_FIELD_DESC = new TField("readonly", TType.BOOL, (short)6);
   private static final TField IDEMPOTENT_FIELD_DESC = new TField("idempotent", TType.BOOL, (short)7);
   private static final TField FLOAT_SET_FIELD_DESC = new TField("floatSet", TType.SET, (short)8);
+  private static final TField NO_HACK_CODEGEN_FIELD_FIELD_DESC = new TField("no_hack_codegen_field", TType.STRING, (short)9);
 
   public final Long MyIntField;
   public final String MyStringField;
@@ -47,6 +48,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public final Boolean readonly;
   public final Boolean idempotent;
   public final Set<Float> floatSet;
+  public final String no_hack_codegen_field;
   public static final int MYINTFIELD = 1;
   public static final int MYSTRINGFIELD = 2;
   public static final int MYDATAFIELD = 3;
@@ -55,6 +57,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public static final int READONLY = 6;
   public static final int IDEMPOTENT = 7;
   public static final int FLOATSET = 8;
+  public static final int NO_HACK_CODEGEN_FIELD = 9;
 
   public MyStruct(
       Long MyIntField,
@@ -64,7 +67,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       Boolean oneway,
       Boolean readonly,
       Boolean idempotent,
-      Set<Float> floatSet) {
+      Set<Float> floatSet,
+      String no_hack_codegen_field) {
     this.MyIntField = MyIntField;
     this.MyStringField = MyStringField;
     this.MyDataField = MyDataField;
@@ -73,6 +77,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     this.readonly = readonly;
     this.idempotent = idempotent;
     this.floatSet = floatSet;
+    this.no_hack_codegen_field = no_hack_codegen_field;
   }
 
   /**
@@ -118,6 +123,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       this.floatSet = TBaseHelper.deepCopy(other.floatSet);
     } else {
       this.floatSet = null;
+    }
+    if (other.isSetNo_hack_codegen_field()) {
+      this.no_hack_codegen_field = TBaseHelper.deepCopy(other.no_hack_codegen_field);
+    } else {
+      this.no_hack_codegen_field = null;
     }
   }
 
@@ -201,6 +211,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     return this.floatSet != null;
   }
 
+  public String getNo_hack_codegen_field() {
+    return this.no_hack_codegen_field;
+  }
+
+  // Returns true if field no_hack_codegen_field is set (has been assigned a value) and false otherwise
+  public boolean isSetNo_hack_codegen_field() {
+    return this.no_hack_codegen_field != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -227,12 +246,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetFloatSet(), that.isSetFloatSet(), this.floatSet, that.floatSet)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetNo_hack_codegen_field(), that.isSetNo_hack_codegen_field(), this.no_hack_codegen_field, that.no_hack_codegen_field)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {MyIntField, MyStringField, MyDataField, myEnum, oneway, readonly, idempotent, floatSet});
+    return Arrays.deepHashCode(new Object[] {MyIntField, MyStringField, MyDataField, myEnum, oneway, readonly, idempotent, floatSet, no_hack_codegen_field});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -249,6 +270,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     Boolean tmp_readonly = null;
     Boolean tmp_idempotent = null;
     Set<Float> tmp_floatSet = null;
+    String tmp_no_hack_codegen_field = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -327,6 +349,13 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case NO_HACK_CODEGEN_FIELD:
+          if (__field.type == TType.STRING) {
+            tmp_no_hack_codegen_field = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -345,6 +374,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       ,tmp_readonly
       ,tmp_idempotent
       ,tmp_floatSet
+      ,tmp_no_hack_codegen_field
     );
     _that.validate();
     return _that;
@@ -398,6 +428,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
         }
         oprot.writeSetEnd();
       }
+      oprot.writeFieldEnd();
+    }
+    if (this.no_hack_codegen_field != null) {
+      oprot.writeFieldBegin(NO_HACK_CODEGEN_FIELD_FIELD_DESC);
+      oprot.writeString(this.no_hack_codegen_field);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

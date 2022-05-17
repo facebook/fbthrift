@@ -16,6 +16,7 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
         yield "readonly", self.readonly
         yield "idempotent", self.idempotent
         yield "floatSet", self.floatSet
+        yield "no_hack_codegen_field", self.no_hack_codegen_field
 
 cdef class MyDataItem_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _test_fixtures_basic_module_types.MyDataItem

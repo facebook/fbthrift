@@ -22,6 +22,7 @@ pub mod types {
         pub readonly: ::std::primitive::bool,
         pub idempotent: ::std::primitive::bool,
         pub floatSet: ::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>,
+        pub no_hack_codegen_field: ::std::string::String,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -170,6 +171,7 @@ pub mod types {
                 readonly: ::std::default::Default::default(),
                 idempotent: ::std::default::Default::default(),
                 floatSet: ::std::default::Default::default(),
+                no_hack_codegen_field: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -187,6 +189,7 @@ pub mod types {
                 .field("readonly", &self.readonly)
                 .field("idempotent", &self.idempotent)
                 .field("floatSet", &self.floatSet)
+                .field("no_hack_codegen_field", &self.no_hack_codegen_field)
                 .finish()
         }
     }
@@ -228,6 +231,9 @@ pub mod types {
             p.write_field_begin("floatSet", ::fbthrift::TType::Set, 8);
             ::fbthrift::Serialize::write(&self.floatSet, p);
             p.write_field_end();
+            p.write_field_begin("no_hack_codegen_field", ::fbthrift::TType::String, 9);
+            ::fbthrift::Serialize::write(&self.no_hack_codegen_field, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -245,6 +251,7 @@ pub mod types {
                 ::fbthrift::Field::new("floatSet", ::fbthrift::TType::Set, 8),
                 ::fbthrift::Field::new("idempotent", ::fbthrift::TType::Bool, 7),
                 ::fbthrift::Field::new("myEnum", ::fbthrift::TType::I32, 4),
+                ::fbthrift::Field::new("no_hack_codegen_field", ::fbthrift::TType::String, 9),
                 ::fbthrift::Field::new("oneway", ::fbthrift::TType::Bool, 5),
                 ::fbthrift::Field::new("readonly", ::fbthrift::TType::Bool, 6),
             ];
@@ -256,6 +263,7 @@ pub mod types {
             let mut field_readonly = ::std::option::Option::None;
             let mut field_idempotent = ::std::option::Option::None;
             let mut field_floatSet = ::std::option::Option::None;
+            let mut field_no_hack_codegen_field = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -269,6 +277,7 @@ pub mod types {
                     (::fbthrift::TType::Bool, 6) => field_readonly = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Bool, 7) => field_idempotent = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Set, 8) => field_floatSet = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 9) => field_no_hack_codegen_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -283,6 +292,7 @@ pub mod types {
                 readonly: field_readonly.unwrap_or_default(),
                 idempotent: field_idempotent.unwrap_or_default(),
                 floatSet: field_floatSet.unwrap_or_default(),
+                no_hack_codegen_field: field_no_hack_codegen_field.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }
@@ -1539,6 +1549,123 @@ pub mod services {
                 )
             }
         }
+
+        #[derive(Clone, Debug)]
+        pub enum RpcSkippedCodegenExn {
+            #[doc(hidden)]
+            Success(()),
+            ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for RpcSkippedCodegenExn {
+            fn from(exn: ::fbthrift::ApplicationException) -> Self {
+                RpcSkippedCodegenExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for RpcSkippedCodegenExn {
+            fn exn_name(&self) -> &'static str {
+                match self {
+                    RpcSkippedCodegenExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    RpcSkippedCodegenExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                match self {
+                    RpcSkippedCodegenExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    RpcSkippedCodegenExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                match self {
+                    RpcSkippedCodegenExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    RpcSkippedCodegenExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for RpcSkippedCodegenExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    RpcSkippedCodegenExn::Success(_) => ::fbthrift::ResultType::Return,
+                    RpcSkippedCodegenExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
+                }
+            }
+        }
+
+        impl ::fbthrift::GetTType for RpcSkippedCodegenExn {
+            const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+        }
+
+        impl<P> ::fbthrift::Serialize<P> for RpcSkippedCodegenExn
+        where
+            P: ::fbthrift::ProtocolWriter,
+        {
+            fn write(&self, p: &mut P) {
+                if let RpcSkippedCodegenExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
+                p.write_struct_begin("RpcSkippedCodegen");
+                match self {
+                    RpcSkippedCodegenExn::Success(inner) => {
+                        p.write_field_begin(
+                            "Success",
+                            ::fbthrift::TType::Void,
+                            0i16,
+                        );
+                        inner.write(p);
+                        p.write_field_end();
+                    }
+                    RpcSkippedCodegenExn::ApplicationException(_aexn) => unreachable!(),
+                }
+                p.write_field_stop();
+                p.write_struct_end();
+            }
+        }
+
+        impl<P> ::fbthrift::Deserialize<P> for RpcSkippedCodegenExn
+        where
+            P: ::fbthrift::ProtocolReader,
+        {
+            fn read(p: &mut P) -> ::anyhow::Result<Self> {
+                static RETURNS: &[::fbthrift::Field] = &[
+                    ::fbthrift::Field::new("Success", ::fbthrift::TType::Void, 0),
+                ];
+                let _ = p.read_struct_begin(|_| ())?;
+                let mut once = false;
+                let mut alt = RpcSkippedCodegenExn::Success(());
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), RETURNS)?;
+                    match ((fty, fid as ::std::primitive::i32), once) {
+                        ((::fbthrift::TType::Stop, _), _) => {
+                            p.read_field_end()?;
+                            break;
+                        }
+                        ((::fbthrift::TType::Void, 0i32), false) => {
+                            once = true;
+                            alt = RpcSkippedCodegenExn::Success(::fbthrift::Deserialize::read(p)?);
+                        }
+                        ((ty, _id), false) => p.skip(ty)?,
+                        ((badty, badid), true) => return ::std::result::Result::Err(::std::convert::From::from(
+                            ::fbthrift::ApplicationException::new(
+                                ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                                format!(
+                                    "unwanted extra union {} field ty {:?} id {}",
+                                    "RpcSkippedCodegenExn",
+                                    badty,
+                                    badid,
+                                ),
+                            )
+                        )),
+                    }
+                    p.read_field_end()?;
+                }
+                p.read_struct_end()?;
+                ::std::result::Result::Ok(alt)
+            }
+        }
     }
 
     pub mod db_mixed_stack_arguments {
@@ -2224,6 +2351,49 @@ pub mod client {
             .instrument(::tracing::info_span!("MyService.invalid_return_for_hack"))
             .boxed()
         }
+
+        fn _rpc_skipped_codegen_impl(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::RpcSkippedCodegenError>> + ::std::marker::Send + 'static>> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.rpc_skipped_codegen";
+            }
+            let args = self::Args_MyService_rpc_skipped_codegen {
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            // need to do call setup outside of async block because T: Transport isn't Send
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("rpc_skipped_codegen", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
+
+            let call = self.transport()
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env, rpc_options)
+                .instrument(::tracing::trace_span!("call", function = "MyService.rpc_skipped_codegen"));
+
+            async move {
+                let reply_env = call.await?;
+
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::RpcSkippedCodegenExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
+
+                match res {
+                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
+                    ::std::result::Result::Err(aexn) =>
+                        ::std::result::Result::Err(crate::errors::my_service::RpcSkippedCodegenError::ApplicationException(aexn))
+                }
+            }
+            .instrument(::tracing::info_span!("MyService.rpc_skipped_codegen"))
+            .boxed()
+        }
     }
 
     pub trait MyService: ::std::marker::Send {
@@ -2270,6 +2440,10 @@ pub mod client {
         fn invalid_return_for_hack(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::errors::my_service::InvalidReturnForHackError>> + ::std::marker::Send + 'static>>;
+
+        fn rpc_skipped_codegen(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::RpcSkippedCodegenError>> + ::std::marker::Send + 'static>>;
     }
 
     pub trait MyServiceExt<T>: MyService
@@ -2320,6 +2494,10 @@ pub mod client {
             &self,
             rpc_options: T::RpcOptions,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::errors::my_service::InvalidReturnForHackError>> + ::std::marker::Send + 'static>>;
+        fn rpc_skipped_codegen_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::RpcSkippedCodegenError>> + ::std::marker::Send + 'static>>;
     }
 
     struct Args_MyService_ping<'a> {
@@ -2480,6 +2658,20 @@ pub mod client {
         }
     }
 
+    struct Args_MyService_rpc_skipped_codegen<'a> {
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyService_rpc_skipped_codegen<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyService.rpc_skipped_codegen"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
     impl<P, T, S> MyService for MyServiceImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
@@ -2574,6 +2766,14 @@ pub mod client {
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::errors::my_service::InvalidReturnForHackError>> + ::std::marker::Send + 'static>> {
             let rpc_options = T::RpcOptions::default();
             self._invalid_return_for_hack_impl(
+                rpc_options,
+            )
+        }
+        fn rpc_skipped_codegen(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::RpcSkippedCodegenError>> + ::std::marker::Send + 'static>> {
+            let rpc_options = T::RpcOptions::default();
+            self._rpc_skipped_codegen_impl(
                 rpc_options,
             )
         }
@@ -2676,6 +2876,14 @@ pub mod client {
                 rpc_options,
             )
         }
+        fn rpc_skipped_codegen_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::RpcSkippedCodegenError>> + ::std::marker::Send + 'static>> {
+            self._rpc_skipped_codegen_impl(
+                rpc_options,
+            )
+        }
     }
 
     impl<'a, S> MyService for S
@@ -2751,6 +2959,12 @@ pub mod client {
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::errors::my_service::InvalidReturnForHackError>> + ::std::marker::Send + 'static>> {
             self.as_ref().invalid_return_for_hack(
+            )
+        }
+        fn rpc_skipped_codegen(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::RpcSkippedCodegenError>> + ::std::marker::Send + 'static>> {
+            self.as_ref().rpc_skipped_codegen(
             )
         }
     }
@@ -2847,6 +3061,14 @@ pub mod client {
             rpc_options: T::RpcOptions,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::errors::my_service::InvalidReturnForHackError>> + ::std::marker::Send + 'static>> {
             <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).invalid_return_for_hack_with_rpc_opts(
+                rpc_options,
+            )
+        }
+        fn rpc_skipped_codegen_with_rpc_opts(
+            &self,
+            rpc_options: T::RpcOptions,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::RpcSkippedCodegenError>> + ::std::marker::Send + 'static>> {
+            <Self as ::std::convert::AsRef<dyn MyServiceExt<T>>>::as_ref(self).rpc_skipped_codegen_with_rpc_opts(
                 rpc_options,
             )
         }
@@ -3450,6 +3672,16 @@ pub mod server {
                 ),
             ))
         }
+        async fn rpc_skipped_codegen(
+            &self,
+        ) -> ::std::result::Result<(), crate::services::my_service::RpcSkippedCodegenExn> {
+            ::std::result::Result::Err(crate::services::my_service::RpcSkippedCodegenExn::ApplicationException(
+                ::fbthrift::ApplicationException::unimplemented_method(
+                    "MyService",
+                    "rpc_skipped_codegen",
+                ),
+            ))
+        }
     }
 
     #[::async_trait::async_trait]
@@ -3525,6 +3757,12 @@ pub mod server {
             &self,
         ) -> ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::services::my_service::InvalidReturnForHackExn> {
             (**self).invalid_return_for_hack(
+            ).await
+        }
+        async fn rpc_skipped_codegen(
+            &self,
+        ) -> ::std::result::Result<(), crate::services::my_service::RpcSkippedCodegenExn> {
+            (**self).rpc_skipped_codegen(
             ).await
         }
     }
@@ -3766,6 +4004,29 @@ pub mod server {
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_invalid_return_for_hack {
         #[inline]
         #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.invalid_return_for_hack"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+            })
+        }
+    }
+
+    struct Args_MyService_rpc_skipped_codegen {
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_rpc_skipped_codegen {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.rpc_skipped_codegen"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -4326,6 +4587,63 @@ pub mod server {
 
             ::std::result::Result::Ok(res)
         }
+
+        #[::tracing::instrument(skip_all, fields(method = "MyService.rpc_skipped_codegen"))]
+        async fn handle_rpc_skipped_codegen<'a>(
+            &'a self,
+            p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::my_service::RpcSkippedCodegenExn> {
+            use ::const_cstr::const_cstr;
+            use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
+            const_cstr! {
+                SERVICE_NAME = "MyService";
+                METHOD_NAME = "MyService.rpc_skipped_codegen";
+            }
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
+            let _args: self::Args_MyService_rpc_skipped_codegen = ::fbthrift::Deserialize::read(p)?;
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
+                protocol: P::PROTOCOL_ID,
+                method_name: METHOD_NAME.as_cstr(),
+                buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
+            })?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.rpc_skipped_codegen(
+                )
+            )
+            .catch_unwind()
+            .instrument(::tracing::info_span!("service_handler", method = "MyService.rpc_skipped_codegen"))
+            .await;
+
+            // nested results - panic catch on the outside, method on the inside
+            let res = match res {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
+                    ::tracing::info!(method = "MyService.rpc_skipped_codegen", "success");
+                    crate::services::my_service::RpcSkippedCodegenExn::Success(res)
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::RpcSkippedCodegenExn::Success(_))) => {
+                    panic!(
+                        "{} attempted to return success via error",
+                        "rpc_skipped_codegen",
+                    )
+                }
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
+                    ::tracing::error!(method = "MyService.rpc_skipped_codegen", exception = ?exn);
+                    exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.rpc_skipped_codegen", exn);
+                    crate::services::my_service::RpcSkippedCodegenExn::ApplicationException(aexn)
+                }
+            };
+
+            ::std::result::Result::Ok(res)
+        }
     }
 
     #[::async_trait::async_trait]
@@ -4353,6 +4671,7 @@ pub mod server {
                 b"deleteDataById" => ::std::result::Result::Ok(6usize),
                 b"lobDataById" => ::std::result::Result::Ok(7usize),
                 b"invalid_return_for_hack" => ::std::result::Result::Ok(8usize),
+                b"rpc_skipped_codegen" => ::std::result::Result::Ok(9usize),
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
@@ -4546,6 +4865,27 @@ pub mod server {
                     let res = self.handle_invalid_return_for_hack(_p, _r, &mut ctx_stack).await?;
                     let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
                         "invalid_return_for_hack",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        _r,
+                        &mut ctx_stack,
+                        res
+                    )?;
+                    Ok(env)
+                }
+                9usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "MyService";
+                        METHOD_NAME = "MyService.rpc_skipped_codegen";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_rpc_skipped_codegen(_p, _r, &mut ctx_stack).await?;
+                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "rpc_skipped_codegen",
                         METHOD_NAME.as_cstr(),
                         _seqid,
                         _r,
@@ -5223,6 +5563,7 @@ pub mod mock {
         pub deleteDataById: r#impl::my_service::deleteDataById<'mock>,
         pub lobDataById: r#impl::my_service::lobDataById<'mock>,
         pub invalid_return_for_hack: r#impl::my_service::invalid_return_for_hack<'mock>,
+        pub rpc_skipped_codegen: r#impl::my_service::rpc_skipped_codegen<'mock>,
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
@@ -5238,6 +5579,7 @@ pub mod mock {
                 deleteDataById: r#impl::my_service::deleteDataById::unimplemented(),
                 lobDataById: r#impl::my_service::lobDataById::unimplemented(),
                 invalid_return_for_hack: r#impl::my_service::invalid_return_for_hack::unimplemented(),
+                rpc_skipped_codegen: r#impl::my_service::rpc_skipped_codegen::unimplemented(),
                 _marker: ::std::marker::PhantomData,
             }
         }
@@ -5312,6 +5654,13 @@ pub mod mock {
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeSet<::fbthrift::export::OrderedFloat<::std::primitive::f32>>, crate::errors::my_service::InvalidReturnForHackError>> + ::std::marker::Send + 'static>> {
             let mut closure = self.invalid_return_for_hack.closure.lock().unwrap();
+            let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure()))
+        }
+        fn rpc_skipped_codegen(
+            &self,
+        ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::RpcSkippedCodegenError>> + ::std::marker::Send + 'static>> {
+            let mut closure = self.rpc_skipped_codegen.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut() -> _ = &mut **closure;
             ::std::boxed::Box::pin(::futures::future::ready(closure()))
         }
@@ -5751,6 +6100,50 @@ pub mod mock {
                     *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
                 }
             }
+
+            pub struct rpc_skipped_codegen<'mock> {
+                pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
+                    dyn ::std::ops::FnMut() -> ::std::result::Result<
+                        (),
+                        crate::errors::my_service::RpcSkippedCodegenError,
+                    > + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                >>,
+            }
+
+            impl<'mock> rpc_skipped_codegen<'mock> {
+                pub fn unimplemented() -> Self {
+                    rpc_skipped_codegen {
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|| panic!(
+                            "{}::{} is not mocked",
+                            "MyService",
+                            "rpc_skipped_codegen",
+                        ))),
+                    }
+                }
+
+                pub fn ret(&self, value: ()) {
+                    self.mock(move || value.clone());
+                }
+
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut() -> () + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Ok(mock()));
+                }
+
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut() -> ::std::result::Result<(), crate::errors::my_service::RpcSkippedCodegenError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || mock());
+                }
+
+                pub fn throw<E>(&self, exception: E)
+                where
+                    E: ::std::convert::Into<crate::errors::my_service::RpcSkippedCodegenError>,
+                    E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
+                {
+                    let mut closure = self.closure.lock().unwrap();
+                    *closure = ::std::boxed::Box::new(move || ::std::result::Result::Err(exception.clone().into()));
+                }
+            }
         }
         pub mod db_mixed_stack_arguments {
 
@@ -5981,6 +6374,21 @@ pub mod errors {
                         ::std::result::Result::Ok(res),
                     crate::services::my_service::InvalidReturnForHackExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(InvalidReturnForHackError::ApplicationException(aexn)),
+                }
+            }
+        }
+
+        pub type RpcSkippedCodegenError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::my_service::RpcSkippedCodegenExn> for
+            ::std::result::Result<(), RpcSkippedCodegenError>
+        {
+            fn from(e: crate::services::my_service::RpcSkippedCodegenExn) -> Self {
+                match e {
+                    crate::services::my_service::RpcSkippedCodegenExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::RpcSkippedCodegenExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(RpcSkippedCodegenError::ApplicationException(aexn)),
                 }
             }
         }

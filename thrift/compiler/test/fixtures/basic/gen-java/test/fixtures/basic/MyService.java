@@ -220,6 +220,19 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
+
+        @ThriftMethod(value = "rpc_skipped_codegen")
+        ListenableFuture<Void> rpcSkippedCodegen();
+
+        default ListenableFuture<Void> rpcSkippedCodegen(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default ListenableFuture<ResponseWrapper<Void>> rpcSkippedCodegenWrapper(
+            RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
     }
     @java.lang.Override void close();
 
@@ -365,6 +378,19 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
         throw new UnsupportedOperationException();
     }
 
+    @ThriftMethod(value = "rpc_skipped_codegen")
+    void rpcSkippedCodegen() throws org.apache.thrift.TException;
+
+    default void rpcSkippedCodegen(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
+    default ResponseWrapper<Void> rpcSkippedCodegenWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+    }
+
     @com.facebook.swift.service.ThriftService("MyService")
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
@@ -490,6 +516,17 @@ public interface MyService extends java.io.Closeable, com.facebook.thrift.util.B
         }
 
         default reactor.core.publisher.Mono<ResponseWrapper<Set<Float>>> invalidReturnForHackWrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        @ThriftMethod(value = "rpc_skipped_codegen")
+        reactor.core.publisher.Mono<Void> rpcSkippedCodegen();
+
+        default reactor.core.publisher.Mono<Void> rpcSkippedCodegen(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        default reactor.core.publisher.Mono<ResponseWrapper<Void>> rpcSkippedCodegenWrapper(RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
 

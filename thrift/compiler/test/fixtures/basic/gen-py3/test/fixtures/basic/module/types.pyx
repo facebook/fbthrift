@@ -166,6 +166,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           "readonly": deref(self._cpp_obj).readonly_ref().has_value(),
           "idempotent": deref(self._cpp_obj).idempotent_ref().has_value(),
           "floatSet": deref(self._cpp_obj).floatSet_ref().has_value(),
+          "no_hack_codegen_field": deref(self._cpp_obj).no_hack_codegen_field_ref().has_value(),
         })
 
     @staticmethod
@@ -244,6 +245,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def floatSet(self):
         return self.floatSet_impl()
 
+    cdef inline no_hack_codegen_field_impl(self):
+
+        return (<bytes>deref(self._cpp_obj).no_hack_codegen_field_ref().value()).decode('UTF-8')
+
+    @property
+    def no_hack_codegen_field(self):
+        return self.no_hack_codegen_field_impl()
+
 
     def __hash__(MyStruct self):
         return super().__hash__()
@@ -287,7 +296,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return __get_field_name_by_index[cMyStruct](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 8
+        self._fbthrift_struct_size = 9
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

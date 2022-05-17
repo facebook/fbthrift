@@ -859,6 +859,99 @@ class Client<::test::fixtures::basic::MyService> : public apache::thrift::Genera
   void invalid_return_for_hackT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
   std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> invalid_return_for_hackCtx(apache::thrift::RpcOptions* rpcOptions);
  public:
+  virtual void rpc_skipped_codegen(std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual void rpc_skipped_codegen(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ protected:
+  void rpc_skipped_codegenImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions = false);
+ public:
+
+  virtual void sync_rpc_skipped_codegen();
+  virtual void sync_rpc_skipped_codegen(apache::thrift::RpcOptions& rpcOptions);
+
+  virtual folly::Future<folly::Unit> future_rpc_skipped_codegen();
+  virtual folly::SemiFuture<folly::Unit> semifuture_rpc_skipped_codegen();
+  virtual folly::Future<folly::Unit> future_rpc_skipped_codegen(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<folly::Unit> semifuture_rpc_skipped_codegen(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_rpc_skipped_codegen(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_rpc_skipped_codegen(apache::thrift::RpcOptions& rpcOptions);
+
+#if FOLLY_HAS_COROUTINES
+#if __clang__
+  template <int = 0>
+  folly::coro::Task<void> co_rpc_skipped_codegen() {
+    return co_rpc_skipped_codegen<false>(nullptr);
+  }
+  template <int = 0>
+  folly::coro::Task<void> co_rpc_skipped_codegen(apache::thrift::RpcOptions& rpcOptions) {
+    return co_rpc_skipped_codegen<true>(&rpcOptions);
+  }
+#else
+  folly::coro::Task<void> co_rpc_skipped_codegen() {
+    co_await folly::coro::detachOnCancel(semifuture_rpc_skipped_codegen());
+  }
+  folly::coro::Task<void> co_rpc_skipped_codegen(apache::thrift::RpcOptions& rpcOptions) {
+    co_await folly::coro::detachOnCancel(semifuture_rpc_skipped_codegen(rpcOptions));
+  }
+#endif
+ private:
+  template <bool hasRpcOptions>
+  folly::coro::Task<void> co_rpc_skipped_codegen(apache::thrift::RpcOptions* rpcOptions) {
+    const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+    const bool cancellable = cancelToken.canBeCancelled();
+    apache::thrift::ClientReceiveState returnState;
+    apache::thrift::ClientCoroCallback<false> callback(&returnState, co_await folly::coro::co_current_executor);
+    auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+    auto [ctx, header] = rpc_skipped_codegenCtx(rpcOptions);
+    using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+    auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+    static apache::thrift::RpcOptions defaultRpcOptions;
+    auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback);
+    if constexpr (hasRpcOptions) {
+      rpc_skipped_codegenImpl(*rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback));
+    } else {
+      rpc_skipped_codegenImpl(defaultRpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback));
+    }
+    if (cancellable) {
+      folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+      co_await callback.co_waitUntilDone();
+    } else {
+      co_await callback.co_waitUntilDone();
+    }
+    if (returnState.isException()) {
+      co_yield folly::coro::co_error(std::move(returnState.exception()));
+    }
+    returnState.resetProtocolId(protocolId);
+    returnState.resetCtx(std::move(ctx));
+    SCOPE_EXIT {
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
+      }
+    };
+    if (auto ew = recv_wrapped_rpc_skipped_codegen(returnState)) {
+      co_yield folly::coro::co_error(std::move(ew));
+    }
+  }
+ public:
+#endif // FOLLY_HAS_COROUTINES
+
+  virtual void rpc_skipped_codegen(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+
+
+  static folly::exception_wrapper recv_wrapped_rpc_skipped_codegen(::apache::thrift::ClientReceiveState& state);
+  static void recv_rpc_skipped_codegen(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_rpc_skipped_codegen(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_rpc_skipped_codegen(::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_, typename RpcOptions>
+  void rpc_skipped_codegenT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback);
+  std::pair<std::unique_ptr<::apache::thrift::ContextStack>, std::shared_ptr<::apache::thrift::transport::THeader>> rpc_skipped_codegenCtx(apache::thrift::RpcOptions* rpcOptions);
+ public:
 };
 
 } // namespace apache::thrift

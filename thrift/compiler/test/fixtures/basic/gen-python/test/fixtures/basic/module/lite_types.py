@@ -80,6 +80,14 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
             None,  # adapter class
         ),
+        (
+            9,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "no_hack_codegen_field",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
     )
 
     @staticmethod
@@ -366,6 +374,15 @@ class _fbthrift_MyService_invalid_return_for_hack_result(metaclass=_fbthrift_py3
     )
 
 
+class _fbthrift_MyService_rpc_skipped_codegen_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+class _fbthrift_MyService_rpc_skipped_codegen_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+
 class _fbthrift_DbMixedStackArguments_getDataByKey0_args(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -434,6 +451,8 @@ _fbthrift_py3lite_types.fill_specs(
     _fbthrift_MyService_lobDataById_args,
     _fbthrift_MyService_invalid_return_for_hack_args,
     _fbthrift_MyService_invalid_return_for_hack_result,
+    _fbthrift_MyService_rpc_skipped_codegen_args,
+    _fbthrift_MyService_rpc_skipped_codegen_result,
     _fbthrift_DbMixedStackArguments_getDataByKey0_args,
     _fbthrift_DbMixedStackArguments_getDataByKey0_result,
     _fbthrift_DbMixedStackArguments_getDataByKey1_args,

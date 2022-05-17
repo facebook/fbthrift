@@ -559,6 +559,65 @@ void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::async_t
   }
 }
 
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::rpc_skipped_codegen() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("rpc_skipped_codegen");
+}
+
+folly::SemiFuture<folly::Unit> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::semifuture_rpc_skipped_codegen() {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_rpc_skipped_codegen.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  rpc_skipped_codegen();
+  return folly::makeSemiFuture();
+}
+
+folly::Future<folly::Unit> apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::future_rpc_skipped_codegen() {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_rpc_skipped_codegen.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_rpc_skipped_codegen(), getInternalKeepAlive());
+}
+
+void apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>::async_tm_rpc_skipped_codegen(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_rpc_skipped_codegen.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_rpc_skipped_codegen.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_rpc_skipped_codegen();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_rpc_skipped_codegen();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        rpc_skipped_codegen();
+        callback->done();
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
+}
+
 
 namespace test { namespace fixtures { namespace basic {
 
@@ -591,6 +650,10 @@ void MyServiceSvNull::lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::
 }
 
 void MyServiceSvNull::invalid_return_for_hack(::std::set<float>& /*_return*/) {}
+
+void MyServiceSvNull::rpc_skipped_codegen() {
+  return;
+}
 
 
 const char* MyServiceAsyncProcessor::getServiceName() {
@@ -663,6 +726,11 @@ const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::kOwnProcessMa
      &MyServiceAsyncProcessor::setUpAndProcess_invalid_return_for_hack<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
      &MyServiceAsyncProcessor::executeRequest_invalid_return_for_hack<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
      &MyServiceAsyncProcessor::executeRequest_invalid_return_for_hack<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"rpc_skipped_codegen",
+    {&MyServiceAsyncProcessor::setUpAndProcess_rpc_skipped_codegen<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &MyServiceAsyncProcessor::setUpAndProcess_rpc_skipped_codegen<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>,
+     &MyServiceAsyncProcessor::executeRequest_rpc_skipped_codegen<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>,
+     &MyServiceAsyncProcessor::executeRequest_rpc_skipped_codegen<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 apache::thrift::ServiceRequestInfoMap const& MyServiceServiceInfoHolder::requestInfoMap() const {
@@ -724,6 +792,12 @@ apache::thrift::ServiceRequestInfoMap MyServiceServiceInfoHolder::staticRequestI
     {false,
      apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
      "MyService.invalid_return_for_hack",
+     std::nullopt,
+     apache::thrift::concurrency::NORMAL}},
+  {"rpc_skipped_codegen",
+    {false,
+     apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
+     "MyService.rpc_skipped_codegen",
      std::nullopt,
      apache::thrift::concurrency::NORMAL}},
   };

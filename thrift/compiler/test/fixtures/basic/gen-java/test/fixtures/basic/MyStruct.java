@@ -32,7 +32,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         @com.facebook.swift.codec.ThriftField(value=5, name="oneway", requiredness=Requiredness.NONE) final boolean oneway,
         @com.facebook.swift.codec.ThriftField(value=6, name="readonly", requiredness=Requiredness.NONE) final boolean readonly,
         @com.facebook.swift.codec.ThriftField(value=7, name="idempotent", requiredness=Requiredness.NONE) final boolean idempotent,
-        @com.facebook.swift.codec.ThriftField(value=8, name="floatSet", requiredness=Requiredness.NONE) final Set<Float> floatSet
+        @com.facebook.swift.codec.ThriftField(value=8, name="floatSet", requiredness=Requiredness.NONE) final Set<Float> floatSet,
+        @com.facebook.swift.codec.ThriftField(value=9, name="no_hack_codegen_field", requiredness=Requiredness.NONE) final String noHackCodegenField
     ) {
         this.myIntField = myIntField;
         this.myStringField = myStringField;
@@ -42,6 +43,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         this.readonly = readonly;
         this.idempotent = idempotent;
         this.floatSet = floatSet;
+        this.noHackCodegenField = noHackCodegenField;
     }
     
     @ThriftConstructor
@@ -54,6 +56,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       this.readonly = false;
       this.idempotent = false;
       this.floatSet = null;
+      this.noHackCodegenField = null;
     }
     
     public static class Builder {
@@ -66,6 +69,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private boolean readonly = false;
         private boolean idempotent = false;
         private Set<Float> floatSet = null;
+        private String noHackCodegenField = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
         public Builder setMyIntField(long myIntField) {
@@ -131,6 +135,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
         public Set<Float> getFloatSet() { return floatSet; }
     
+            @com.facebook.swift.codec.ThriftField(value=9, name="no_hack_codegen_field", requiredness=Requiredness.NONE)
+        public Builder setNoHackCodegenField(String noHackCodegenField) {
+            this.noHackCodegenField = noHackCodegenField;
+            return this;
+        }
+    
+        public String getNoHackCodegenField() { return noHackCodegenField; }
+    
         public Builder() { }
         public Builder(MyStruct other) {
             this.myIntField = other.myIntField;
@@ -141,6 +153,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             this.readonly = other.readonly;
             this.idempotent = other.idempotent;
             this.floatSet = other.floatSet;
+            this.noHackCodegenField = other.noHackCodegenField;
         }
     
         @ThriftConstructor
@@ -153,12 +166,13 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
                 this.oneway,
                 this.readonly,
                 this.idempotent,
-                this.floatSet
+                this.floatSet,
+                this.noHackCodegenField
             );
             return result;
         }
     }
-                                    public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                                        public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
@@ -186,6 +200,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         private final Set<Float> floatSet;
     public static final int _FLOATSET = 8;
     private static final TField FLOAT_SET_FIELD_DESC = new TField("floatSet", TType.SET, (short)8);
+        private final String noHackCodegenField;
+    public static final int _NO_HACK_CODEGEN_FIELD = 9;
+    private static final TField NO_HACK_CODEGEN_FIELD_FIELD_DESC = new TField("no_hack_codegen_field", TType.STRING, (short)9);
     static {
       NAMES_TO_IDS.put("myIntField", 1);
       THRIFT_NAMES_TO_IDS.put("MyIntField", 1);
@@ -211,6 +228,9 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
       NAMES_TO_IDS.put("floatSet", 8);
       THRIFT_NAMES_TO_IDS.put("floatSet", 8);
       FIELD_METADATA.put(8, FLOAT_SET_FIELD_DESC);
+      NAMES_TO_IDS.put("noHackCodegenField", 9);
+      THRIFT_NAMES_TO_IDS.put("no_hack_codegen_field", 9);
+      FIELD_METADATA.put(9, NO_HACK_CODEGEN_FIELD_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
         new com.facebook.thrift.type.UniversalName("test.dev/fixtures/basic/MyStruct"), 
         MyStruct.class, MyStruct::read0));
@@ -255,6 +275,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     @com.facebook.swift.codec.ThriftField(value=8, name="floatSet", requiredness=Requiredness.NONE)
     public Set<Float> getFloatSet() { return floatSet; }
     
+    
+    @Nullable
+    @com.facebook.swift.codec.ThriftField(value=9, name="no_hack_codegen_field", requiredness=Requiredness.NONE)
+    public String getNoHackCodegenField() { return noHackCodegenField; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -266,6 +291,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
         helper.add("readonly", readonly);
         helper.add("idempotent", idempotent);
         helper.add("floatSet", floatSet);
+        helper.add("noHackCodegenField", noHackCodegenField);
         return helper.toString();
     }
     
@@ -289,6 +315,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     Objects.equals(readonly, other.readonly) &&
     Objects.equals(idempotent, other.idempotent) &&
     Objects.equals(floatSet, other.floatSet) &&
+    Objects.equals(noHackCodegenField, other.noHackCodegenField) &&
             true;
     }
     
@@ -302,7 +329,8 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             oneway,
             readonly,
             idempotent,
-            floatSet
+            floatSet,
+            noHackCodegenField
         });
     }
     
@@ -393,6 +421,14 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _NO_HACK_CODEGEN_FIELD:
+          if (__field.type == TType.STRING) {
+            String noHackCodegenField = oprot.readString();
+            builder.setNoHackCodegenField(noHackCodegenField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -438,6 +474,11 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
           oprot.writeFloat(_iter1);
         }
         oprot.writeSetEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.noHackCodegenField != null) {
+        oprot.writeFieldBegin(NO_HACK_CODEGEN_FIELD_FIELD_DESC);
+        oprot.writeString(this.noHackCodegenField);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

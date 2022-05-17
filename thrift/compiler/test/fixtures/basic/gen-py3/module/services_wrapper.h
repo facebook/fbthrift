@@ -46,6 +46,7 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
         , std::unique_ptr<std::string> data
     ) override;
     void async_tm_invalid_return_for_hack(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::set<float>>>> callback) override;
+    void async_tm_rpc_skipped_codegen(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 folly::SemiFuture<folly::Unit> semifuture_onStartServing() override;
 folly::SemiFuture<folly::Unit> semifuture_onStopRequested() override;
 };

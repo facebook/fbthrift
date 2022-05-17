@@ -88,6 +88,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         __field_ref[cbool] readonly_ref()
         __field_ref[cbool] idempotent_ref()
         __field_ref[cset[float]] floatSet_ref()
+        __field_ref[string] no_hack_codegen_field_ref()
 
 
     cdef cppclass cMyDataItem "::test::fixtures::basic::MyDataItem":
@@ -140,6 +141,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef inline object readonly_impl(self)
     cdef inline object idempotent_impl(self)
     cdef inline object floatSet_impl(self)
+    cdef inline object no_hack_codegen_field_impl(self)
     cdef MyDataItem __fbthrift_cached_MyDataField
     cdef object __fbthrift_cached_myEnum
     cdef Set__float __fbthrift_cached_floatSet

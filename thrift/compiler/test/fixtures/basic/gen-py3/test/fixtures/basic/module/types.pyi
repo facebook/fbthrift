@@ -35,6 +35,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         readonly: bool
         idempotent: bool
         floatSet: bool
+        no_hack_codegen_field: bool
         pass
 
     MyIntField: Final[int] = ...
@@ -53,6 +54,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     floatSet: Final[_typing.AbstractSet[float]] = ...
 
+    no_hack_codegen_field: Final[str] = ...
+
     def __init__(
         self, *,
         MyIntField: _typing.Optional[int]=None,
@@ -62,7 +65,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         oneway: _typing.Optional[bool]=None,
         readonly: _typing.Optional[bool]=None,
         idempotent: _typing.Optional[bool]=None,
-        floatSet: _typing.Optional[_typing.AbstractSet[float]]=None
+        floatSet: _typing.Optional[_typing.AbstractSet[float]]=None,
+        no_hack_codegen_field: _typing.Optional[str]=None
     ) -> None: ...
 
     def __call__(
@@ -74,7 +78,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         oneway: _typing.Union[bool, '__NotSet', None]=NOTSET,
         readonly: _typing.Union[bool, '__NotSet', None]=NOTSET,
         idempotent: _typing.Union[bool, '__NotSet', None]=NOTSET,
-        floatSet: _typing.Union[_typing.AbstractSet[float], '__NotSet', None]=NOTSET
+        floatSet: _typing.Union[_typing.AbstractSet[float], '__NotSet', None]=NOTSET,
+        no_hack_codegen_field: _typing.Union[str, '__NotSet', None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...

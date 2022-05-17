@@ -51,6 +51,7 @@ FUNCTIONS = {
     'deleteDataById': Function('deleteDataById', 'MyService', 'void', [('i64', 'id', 'i64')]),
     'lobDataById': Function('lobDataById', 'MyService', None, [('i64', 'id', 'i64'), ('string', 'data', 'string')]),
     'invalid_return_for_hack': Function('invalid_return_for_hack', 'MyService', 'set<float>', []),
+    'rpc_skipped_codegen': Function('rpc_skipped_codegen', 'MyService', 'void', []),
 }
 
 SERVICE_NAMES = ['MyService', ]

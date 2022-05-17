@@ -69,4 +69,9 @@ public class MyServiceAsyncReactiveWrapper
         return com.facebook.thrift.util.FutureUtil.toMono(_delegate.invalidReturnForHack());
     }
 
+    @java.lang.Override
+    public reactor.core.publisher.Mono<Void> rpcSkippedCodegen() {
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.rpcSkippedCodegen());
+    }
+
 }

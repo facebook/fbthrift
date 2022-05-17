@@ -39,6 +39,8 @@ struct MyStruct {
   7: bool idempotent;
   @hack.SkipCodegen{reason = "Invalid key type"}
   8: set<float> floatSet;
+  @hack.SkipCodegen{reason = "skip field codegen for deprecation"}
+  9: string no_hack_codegen_field;
 }
 
 struct MyDataItem {}
@@ -64,6 +66,9 @@ service MyService {
 
   @hack.SkipCodegen{reason = "Invalid key type"}
   set<float> invalid_return_for_hack();
+
+  @hack.SkipCodegen{reason = "Skip function deprecation"}
+  void rpc_skipped_codegen();
 }
 
 service DbMixedStackArguments {

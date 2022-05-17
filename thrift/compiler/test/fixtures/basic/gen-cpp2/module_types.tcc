@@ -259,6 +259,20 @@ _readField_floatSet:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           8,
+          9,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_no_hack_codegen_field:
+  {
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->__fbthrift_field_no_hack_codegen_field, _readState);
+    
+  }
+ this->__isset.set(8, true);
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          9,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -343,6 +357,14 @@ _loop:
         goto _skip;
       }
     }
+    case 9:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_no_hack_codegen_field;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -390,6 +412,10 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("floatSet", apache::thrift::protocol::T_SET, 8);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>>::serializedSize<false>(*prot_, this->__fbthrift_field_floatSet);
   }
+  {
+    xfer += prot_->serializedFieldSize("no_hack_codegen_field", apache::thrift::protocol::T_STRING, 9);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_no_hack_codegen_field);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -429,6 +455,10 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   {
     xfer += prot_->serializedFieldSize("floatSet", apache::thrift::protocol::T_SET, 8);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>>::serializedSize<false>(*prot_, this->__fbthrift_field_floatSet);
+  }
+  {
+    xfer += prot_->serializedFieldSize("no_hack_codegen_field", apache::thrift::protocol::T_STRING, 9);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->__fbthrift_field_no_hack_codegen_field);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -493,6 +523,13 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_SET, 8, kPrevFieldId>(*prot_, "floatSet", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::set<::apache::thrift::type_class::floating_point>, ::std::set<float>>::write(*prot_, this->__fbthrift_field_floatSet);
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    constexpr int16_t kPrevFieldId = 8;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 9, kPrevFieldId>(*prot_, "no_hack_codegen_field", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->__fbthrift_field_no_hack_codegen_field);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

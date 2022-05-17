@@ -196,4 +196,21 @@ public class MyServiceReactiveAsyncWrapper
     return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.invalidReturnForHackWrapper( rpcOptions));
   }
 
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Void> rpcSkippedCodegen() {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.rpcSkippedCodegen());
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<Void> rpcSkippedCodegen(
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.rpcSkippedCodegen( rpcOptions));
+  }
+
+  @java.lang.Override
+  public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Void>> rpcSkippedCodegenWrapper(
+    com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.rpcSkippedCodegenWrapper( rpcOptions));
+  }
+
 }

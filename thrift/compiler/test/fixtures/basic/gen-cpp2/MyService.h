@@ -87,6 +87,10 @@ class ServiceHandler<::test::fixtures::basic::MyService> : public apache::thrift
   virtual folly::Future<std::unique_ptr<::std::set<float>>> future_invalid_return_for_hack();
   virtual folly::SemiFuture<std::unique_ptr<::std::set<float>>> semifuture_invalid_return_for_hack();
   virtual void async_tm_invalid_return_for_hack(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<float>>>> callback);
+  virtual void rpc_skipped_codegen();
+  virtual folly::Future<folly::Unit> future_rpc_skipped_codegen();
+  virtual folly::SemiFuture<folly::Unit> semifuture_rpc_skipped_codegen();
+  virtual void async_tm_rpc_skipped_codegen(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
  private:
   static ::test::fixtures::basic::MyServiceServiceInfoHolder __fbthrift_serviceInfoHolder;
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_ping{apache::thrift::detail::si::InvocationType::AsyncTm};
@@ -98,6 +102,7 @@ class ServiceHandler<::test::fixtures::basic::MyService> : public apache::thrift
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_deleteDataById{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_lobDataById{apache::thrift::detail::si::InvocationType::AsyncTm};
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_invalid_return_for_hack{apache::thrift::detail::si::InvocationType::AsyncTm};
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_rpc_skipped_codegen{apache::thrift::detail::si::InvocationType::AsyncTm};
 };
 
 } // namespace apache::thrift
@@ -117,6 +122,7 @@ class MyServiceSvNull : public MyServiceSvIf {
   void deleteDataById(::std::int64_t /*id*/) override;
   void lobDataById(::std::int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) override;
   void invalid_return_for_hack(::std::set<float>& /*_return*/) override;
+  void rpc_skipped_codegen() override;
 };
 
 class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -208,6 +214,14 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   static apache::thrift::SerializedResponse return_invalid_return_for_hack(apache::thrift::ContextStack* ctx, ::std::set<float> const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_invalid_return_for_hack(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void setUpAndProcess_rpc_skipped_codegen(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void executeRequest_rpc_skipped_codegen(apache::thrift::ServerRequest&& serverRequest);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static apache::thrift::SerializedResponse return_rpc_skipped_codegen(apache::thrift::ContextStack* ctx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_rpc_skipped_codegen(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
   MyServiceAsyncProcessor(::apache::thrift::ServiceHandler<::test::fixtures::basic::MyService>* iface) :
       iface_(iface) {}

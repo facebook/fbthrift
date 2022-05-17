@@ -197,6 +197,19 @@ cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
             },
         )
     )
+    spec.add_method(
+        __MethodSpec._fbthrift_create(
+            name="rpc_skipped_codegen",
+            arguments=(
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
     return spec
 
 

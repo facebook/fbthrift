@@ -33,6 +33,7 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"readonly")] = __MyStruct_FieldsSetter._set_field_5
         __fbthrift_inst._setters[__cstring_view(<const char*>"idempotent")] = __MyStruct_FieldsSetter._set_field_6
         __fbthrift_inst._setters[__cstring_view(<const char*>"floatSet")] = __MyStruct_FieldsSetter._set_field_7
+        __fbthrift_inst._setters[__cstring_view(<const char*>"no_hack_codegen_field")] = __MyStruct_FieldsSetter._set_field_8
         return __fbthrift_inst
 
     cdef void set_field(__MyStruct_FieldsSetter self, const char* name, object value) except *:
@@ -112,6 +113,15 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
             __reset_field[_test_fixtures_basic_module_types.cMyStruct](deref(self._struct_cpp_obj), 7)
             return
         deref(self._struct_cpp_obj).floatSet_ref().assign(deref(_test_fixtures_basic_module_types.Set__float(_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_8(self, _fbthrift_value) except *:
+        # for field no_hack_codegen_field
+        if _fbthrift_value is None:
+            __reset_field[_test_fixtures_basic_module_types.cMyStruct](deref(self._struct_cpp_obj), 8)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'no_hack_codegen_field is not a { str !r}.')
+        deref(self._struct_cpp_obj).no_hack_codegen_field_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
 
 
 @__cython.auto_pickle(False)

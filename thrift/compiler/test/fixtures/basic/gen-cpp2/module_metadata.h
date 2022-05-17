@@ -67,6 +67,7 @@ class ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::
   static void gen_deleteDataById(ThriftMetadata& metadata, ThriftService& context);
   static void gen_lobDataById(ThriftMetadata& metadata, ThriftService& context);
   static void gen_invalid_return_for_hack(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_rpc_skipped_codegen(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
 class ServiceMetadata<::apache::thrift::ServiceHandler<::test::fixtures::basic::DbMixedStackArguments>> {

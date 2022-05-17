@@ -61,6 +61,7 @@ class MyStruct:
    - readonly
    - idempotent
    - floatSet
+   - no_hack_codegen_field
   """
 
   thrift_spec = None
@@ -134,6 +135,11 @@ class MyStruct:
           iprot.readSetEnd()
         else:
           iprot.skip(ftype)
+      elif fid == 9:
+        if ftype == TType.STRING:
+          self.no_hack_codegen_field = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -182,6 +188,10 @@ class MyStruct:
         oprot.writeFloat(iter7)
       oprot.writeSetEnd()
       oprot.writeFieldEnd()
+    if self.no_hack_codegen_field != None:
+      oprot.writeFieldBegin('no_hack_codegen_field', TType.STRING, 9)
+      oprot.writeString(self.no_hack_codegen_field.encode('utf-8')) if UTF8STRINGS and not isinstance(self.no_hack_codegen_field, bytes) else oprot.writeString(self.no_hack_codegen_field)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -222,6 +232,8 @@ class MyStruct:
       self.floatSet = set_cls()
       for _tmp_e8 in json_obj['floatSet']:
         self.floatSet.add(float(_tmp_e8))
+    if 'no_hack_codegen_field' in json_obj and json_obj['no_hack_codegen_field'] is not None:
+      self.no_hack_codegen_field = json_obj['no_hack_codegen_field']
 
   def __repr__(self):
     L = []
@@ -258,6 +270,10 @@ class MyStruct:
       value = pprint.pformat(self.floatSet, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    floatSet=%s' % (value))
+    if self.no_hack_codegen_field is not None:
+      value = pprint.pformat(self.no_hack_codegen_field, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    no_hack_codegen_field=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -571,6 +587,7 @@ MyStruct.thrift_spec = (
   (6, TType.BOOL, 'readonly', None, None, 2, ), # 6
   (7, TType.BOOL, 'idempotent', None, None, 2, ), # 7
   (8, TType.SET, 'floatSet', (TType.FLOAT,None), None, 2, ), # 8
+  (9, TType.STRING, 'no_hack_codegen_field', True, None, 2, ), # 9
 )
 
 MyStruct.thrift_struct_annotations = {
@@ -578,7 +595,7 @@ MyStruct.thrift_struct_annotations = {
 MyStruct.thrift_field_annotations = {
 }
 
-def MyStruct__init__(self, MyIntField=None, MyStringField=None, MyDataField=None, myEnum=None, oneway=None, readonly=None, idempotent=None, floatSet=None,):
+def MyStruct__init__(self, MyIntField=None, MyStringField=None, MyDataField=None, myEnum=None, oneway=None, readonly=None, idempotent=None, floatSet=None, no_hack_codegen_field=None,):
   self.MyIntField = MyIntField
   self.MyStringField = MyStringField
   self.MyDataField = MyDataField
@@ -587,6 +604,7 @@ def MyStruct__init__(self, MyIntField=None, MyStringField=None, MyDataField=None
   self.readonly = readonly
   self.idempotent = idempotent
   self.floatSet = floatSet
+  self.no_hack_codegen_field = no_hack_codegen_field
 
 MyStruct.__init__ = MyStruct__init__
 
@@ -599,6 +617,7 @@ def MyStruct__setstate__(self, state):
   state.setdefault('readonly', None)
   state.setdefault('idempotent', None)
   state.setdefault('floatSet', None)
+  state.setdefault('no_hack_codegen_field', None)
   self.__dict__ = state
 
 MyStruct.__getstate__ = lambda self: self.__dict__.copy()

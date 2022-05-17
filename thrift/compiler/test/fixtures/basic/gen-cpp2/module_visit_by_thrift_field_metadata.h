@@ -45,6 +45,8 @@ struct VisitByFieldId<::test::fixtures::basic::MyStruct> {
       return f(6, static_cast<T&&>(t).idempotent_ref());
     case 8:
       return f(7, static_cast<T&&>(t).floatSet_ref());
+    case 9:
+      return f(8, static_cast<T&&>(t).no_hack_codegen_field_ref());
     default:
       throwInvalidThriftId(fieldId, "::test::fixtures::basic::MyStruct");
     }

@@ -24,6 +24,7 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public pbool readonly
     cdef public pbool idempotent
     cdef public set floatSet
+    cdef public str no_hack_codegen_field
 
 
 cdef class MyDataItem_Builder(thrift.py3.builder.StructBuilder):

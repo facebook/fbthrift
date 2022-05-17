@@ -209,6 +209,10 @@ cdef class MyServiceInterface(
             self):
         raise NotImplementedError("async def invalid_return_for_hack is not implemented")
 
+    async def rpc_skipped_codegen(
+            self):
+        raise NotImplementedError("async def rpc_skipped_codegen is not implemented")
+
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__MyService(for_clients=False)
@@ -419,6 +423,21 @@ cdef api void call_cy_MyService_invalid_return_for_hack(
     __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_invalid_return_for_hack_coro(
+            self,
+            __promise
+        )
+    )
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+cdef api void call_cy_MyService_rpc_skipped_codegen(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit._fbthrift_create(cmove(cPromise))
+    __context = RequestContext._fbthrift_create(ctx)
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+    asyncio.get_event_loop().create_task(
+        MyService_rpc_skipped_codegen_coro(
             self,
             __promise
         )
@@ -714,6 +733,34 @@ async def MyService_invalid_return_for_hack_coro(
         ))
     else:
         promise.cPromise.setValue(make_unique[cset[float]](deref((<_test_fixtures_basic_module_types.Set__float?> result)._cpp_obj)))
+
+async def MyService_rpc_skipped_codegen_coro(
+    object self,
+    Promise_cFollyUnit promise
+):
+    try:
+        result = await self.rpc_skipped_codegen()
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler rpc_skipped_codegen:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    except asyncio.CancelledError as ex:
+        print("Coroutine was cancelled in service handler rpc_skipped_codegen:", file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 async def MyService_onStartServing_coro(
     object self,
