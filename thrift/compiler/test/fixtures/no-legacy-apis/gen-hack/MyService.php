@@ -6,6 +6,8 @@
  *  @generated
  */
 
+namespace fixtures\no-legacy-apis;
+
 /**
  * Original thrift service:-
  * MyService
@@ -17,7 +19,7 @@ interface MyServiceAsyncIf extends \IThriftAsyncIf {
    * MyStruct
    *   query(1: MyUnion u);
    */
-  public function query(?MyUnion $u): Awaitable<MyStruct>;
+  public function query(?\fixtures\no-legacy-apis\MyUnion $u): Awaitable<\fixtures\no-legacy-apis\MyStruct>;
 }
 
 /**
@@ -31,7 +33,7 @@ interface MyServiceIf extends \IThriftSyncIf {
    * MyStruct
    *   query(1: MyUnion u);
    */
-  public function query(?MyUnion $u): MyStruct;
+  public function query(?\fixtures\no-legacy-apis\MyUnion $u): \fixtures\no-legacy-apis\MyStruct;
 }
 
 /**
@@ -53,7 +55,7 @@ interface MyServiceClientIf extends \IThriftSyncIf {
    * MyStruct
    *   query(1: MyUnion u);
    */
-  public function query(?MyUnion $u): Awaitable<MyStruct>;
+  public function query(?\fixtures\no-legacy-apis\MyUnion $u): Awaitable<\fixtures\no-legacy-apis\MyStruct>;
 }
 
 /**
@@ -64,14 +66,14 @@ trait MyServiceClientBase {
   require extends \ThriftClientBase;
 
 
-  protected function recvImpl_query(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): MyStruct {
+  protected function recvImpl_query(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): \fixtures\no-legacy-apis\MyStruct {
     try {
       $this->eventHandler_->preRecv('query', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_query_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\no-legacy-apis\MyService_query_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_query_result', Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\no-legacy-apis\MyService_query_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -90,7 +92,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_query_result::withDefaultValues();
+        $result = \fixtures\no-legacy-apis\MyService_query_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
@@ -134,14 +136,14 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
    * MyStruct
    *   query(1: MyUnion u);
    */
-  public async function query(?MyUnion $u): Awaitable<MyStruct> {
+  public async function query(?\fixtures\no-legacy-apis\MyUnion $u): Awaitable<\fixtures\no-legacy-apis\MyStruct> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "query");
-    $args = MyService_query_args::fromShape(shape(
+    $args = \fixtures\no-legacy-apis\MyService_query_args::fromShape(shape(
       'u' => $u,
     ));
     $currentseqid = $this->sendImplHelper($args, "query", false);
@@ -172,14 +174,14 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
    * MyStruct
    *   query(1: MyUnion u);
    */
-  public async function query(?MyUnion $u): Awaitable<MyStruct> {
+  public async function query(?\fixtures\no-legacy-apis\MyUnion $u): Awaitable<\fixtures\no-legacy-apis\MyStruct> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "query");
-    $args = MyService_query_args::fromShape(shape(
+    $args = \fixtures\no-legacy-apis\MyService_query_args::fromShape(shape(
       'u' => $u,
     ));
     $currentseqid = $this->sendImplHelper($args, "query", false);
@@ -201,13 +203,13 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
   }
 
   /* send and recv functions */
-  public function send_query(?MyUnion $u): int {
-    $args = MyService_query_args::fromShape(shape(
+  public function send_query(?\fixtures\no-legacy-apis\MyUnion $u): int {
+    $args = \fixtures\no-legacy-apis\MyService_query_args::fromShape(shape(
       'u' => $u,
     ));
     return $this->sendImplHelper($args, "query", false);
   }
-  public function recv_query(?int $expectedsequenceid = null): MyStruct {
+  public function recv_query(?int $expectedsequenceid = null): \fixtures\no-legacy-apis\MyStruct {
     return $this->recvImpl_query($expectedsequenceid);
   }
 }
@@ -223,18 +225,18 @@ abstract class MyServiceAsyncProcessorBase extends \ThriftAsyncProcessor {
     $this->eventHandler_->preRead($handler_ctx, 'query', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, 'MyService_query_args');
+      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\no-legacy-apis\MyService_query_args');
     } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, 'MyService_query_args');
+      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\no-legacy-apis\MyService_query_args');
     } else {
-      $args = MyService_query_args::withDefaultValues();
+      $args = \fixtures\no-legacy-apis\MyService_query_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'query', $args);
-    $result = MyService_query_result::withDefaultValues();
+    $result = \fixtures\no-legacy-apis\MyService_query_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'query', $args);
+      $this->eventHandler_->preExec($handler_ctx, '\fixtures\no-legacy-apis\MyService', 'query', $args);
       $result->success = await $this->handler->query($args->u);
       $this->eventHandler_->postExec($handler_ctx, 'query', $result);
     } catch (\Exception $ex) {
@@ -311,18 +313,18 @@ abstract class MyServiceSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->preRead($handler_ctx, 'query', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, 'MyService_query_args');
+      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\no-legacy-apis\MyService_query_args');
     } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, 'MyService_query_args');
+      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\no-legacy-apis\MyService_query_args');
     } else {
-      $args = MyService_query_args::withDefaultValues();
+      $args = \fixtures\no-legacy-apis\MyService_query_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'query', $args);
-    $result = MyService_query_result::withDefaultValues();
+    $result = \fixtures\no-legacy-apis\MyService_query_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'MyService', 'query', $args);
+      $this->eventHandler_->preExec($handler_ctx, '\fixtures\no-legacy-apis\MyService', 'query', $args);
       $result->success = $this->handler->query($args->u);
       $this->eventHandler_->postExec($handler_ctx, 'query', $result);
     } catch (\Exception $ex) {
@@ -399,7 +401,7 @@ class MyService_query_args implements \IThriftSyncStruct, \IThriftShapishSyncStr
     1 => shape(
       'var' => 'u',
       'type' => \TType::STRUCT,
-      'class' => MyUnion::class,
+      'class' => \fixtures\no-legacy-apis\MyUnion::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -407,17 +409,17 @@ class MyService_query_args implements \IThriftSyncStruct, \IThriftShapishSyncStr
   ];
 
   const type TConstructorShape = shape(
-    ?'u' => ?MyUnion,
+    ?'u' => ?\fixtures\no-legacy-apis\MyUnion,
   );
 
   const type TShape = shape(
-    ?'u' => ?MyUnion::TShape,
+    ?'u' => ?\fixtures\no-legacy-apis\MyUnion::TShape,
     ...
   );
   const int STRUCTURAL_ID = 806889198569760186;
-  public ?MyUnion $u;
+  public ?\fixtures\no-legacy-apis\MyUnion $u;
 
-  public function __construct(?MyUnion $u = null  )[] {
+  public function __construct(?\fixtures\no-legacy-apis\MyUnion $u = null  )[] {
     $this->u = $u;
   }
 
@@ -436,16 +438,16 @@ class MyService_query_args implements \IThriftSyncStruct, \IThriftShapishSyncStr
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.query_args",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
                     shape(
                       "name" => "module.MyUnion",
                     )
@@ -471,7 +473,7 @@ class MyService_query_args implements \IThriftSyncStruct, \IThriftShapishSyncStr
 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
-      Shapes::idx($shape, 'u') === null ? null : (MyUnion::__fromShape($shape['u'])),
+      Shapes::idx($shape, 'u') === null ? null : (\fixtures\no-legacy-apis\MyUnion::__fromShape($shape['u'])),
     );
   }
 
@@ -493,7 +495,7 @@ class MyService_query_args implements \IThriftSyncStruct, \IThriftShapishSyncStr
 
     if (idx($parsed, 'u') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['u']);
-      $_tmp1 = MyUnion::withDefaultValues();
+      $_tmp1 = \fixtures\no-legacy-apis\MyUnion::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->u = $_tmp1;
     }    
@@ -508,7 +510,7 @@ class MyService_query_result implements \IThriftSyncStruct {
     0 => shape(
       'var' => 'success',
       'type' => \TType::STRUCT,
-      'class' => MyStruct::class,
+      'class' => \fixtures\no-legacy-apis\MyStruct::class,
     ),
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -516,13 +518,13 @@ class MyService_query_result implements \IThriftSyncStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => ?MyStruct,
+    ?'success' => ?\fixtures\no-legacy-apis\MyStruct,
   );
 
   const int STRUCTURAL_ID = 7307096097859369800;
-  public ?MyStruct $success;
+  public ?\fixtures\no-legacy-apis\MyStruct $success;
 
-  public function __construct(?MyStruct $success = null  )[] {
+  public function __construct(?\fixtures\no-legacy-apis\MyStruct $success = null  )[] {
     $this->success = $success;
   }
 
@@ -541,16 +543,16 @@ class MyService_query_result implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.MyService_query_result",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 0,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
                     shape(
                       "name" => "module.MyStruct",
                     )
@@ -587,7 +589,7 @@ class MyService_query_result implements \IThriftSyncStruct {
 
     if (idx($parsed, 'success') !== null) {
       $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['success']);
-      $_tmp1 = MyStruct::withDefaultValues();
+      $_tmp1 = \fixtures\no-legacy-apis\MyStruct::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
       $this->success = $_tmp1;
     }    
@@ -597,16 +599,16 @@ class MyService_query_result implements \IThriftSyncStruct {
 
 class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
-    return tmeta_ThriftService::fromShape(
+    return \tmeta_ThriftService::fromShape(
       shape(
         "name" => "module.MyService",
         "functions" => vec[
-          tmeta_ThriftFunction::fromShape(
+          \tmeta_ThriftFunction::fromShape(
             shape(
               "name" => "query",
-              "return_type" => tmeta_ThriftType::fromShape(
+              "return_type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
                     shape(
                       "name" => "module.MyStruct",
                     )
@@ -614,12 +616,12 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
                 )
               ),
               "arguments" => vec[
-                tmeta_ThriftField::fromShape(
+                \tmeta_ThriftField::fromShape(
                   shape(
                     "id" => 1,
-                    "type" => tmeta_ThriftType::fromShape(
+                    "type" => \tmeta_ThriftType::fromShape(
                       shape(
-                        "t_struct" => tmeta_ThriftStructType::fromShape(
+                        "t_struct" => \tmeta_ThriftStructType::fromShape(
                           shape(
                             "name" => "module.MyUnion",
                           )
@@ -653,11 +655,11 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
         'metadata' => \tmeta_ThriftMetadata::fromShape(
           shape(
             'enums' => dict[
-              'module.MyEnum' => MyEnum_TEnumStaticMetadata::getEnumMetadata(),
+              'module.MyEnum' => \fixtures\no-legacy-apis\MyEnum_TEnumStaticMetadata::getEnumMetadata(),
             ],
             'structs' => dict[
-              'module.MyStruct' => MyStruct::getStructMetadata(),
-              'module.MyUnion' => MyUnion::getStructMetadata(),
+              'module.MyStruct' => \fixtures\no-legacy-apis\MyStruct::getStructMetadata(),
+              'module.MyUnion' => \fixtures\no-legacy-apis\MyUnion::getStructMetadata(),
             ],
             'exceptions' => dict[
             ],

@@ -27,6 +27,7 @@
 #include <utility>
 #include <vector>
 
+#include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 
 #include <thrift/compiler/ast/t_const_value.h>
@@ -642,19 +643,17 @@ class t_hack_generator : public t_oop_generator {
   }
 
   std::string hack_namespace(const t_program* p) {
-    std::string ns;
-    ns = p->get_namespace("hack");
-    std::replace(ns.begin(), ns.end(), '.', '\\');
-    return ns;
+    auto ns = p->gen_namespace_or_default(
+        "hack", [&p] { return p->package().path(); });
+    return boost::algorithm::join(ns, "\\");
   }
 
   std::string php_namespace(const t_program* p) {
     std::string ns = hack_namespace(p);
-    p->get_namespace("hack");
     if (!ns.empty()) {
       return ns;
     }
-    ns = p->get_namespace("php");
+    ns = gen_raw_php_namespace(*p);
     if (!ns.empty()) {
       ns.push_back('_');
       return ns;
@@ -676,7 +675,7 @@ class t_hack_generator : public t_oop_generator {
       }
       return "\\" + ns + "\\" + name;
     }
-    ns = prog->get_namespace("php");
+    ns = gen_raw_php_namespace(*prog);
     return (!decl && has_hack_namespace ? "\\" : "") +
         (!ns.empty() ? ns + "_" : "") + name;
   }
@@ -799,6 +798,12 @@ class t_hack_generator : public t_oop_generator {
       }
     }
     return interactions;
+  }
+
+  static std::string gen_raw_php_namespace(const t_program& p) {
+    return boost::algorithm::join(
+        p.gen_namespace_or_default("php", [&p] { return p.package().path(); }),
+        ".");
   }
   /**
    * File streams

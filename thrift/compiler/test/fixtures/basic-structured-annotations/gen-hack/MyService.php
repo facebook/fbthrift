@@ -6,6 +6,8 @@
  *  @generated
  */
 
+namespace fixtures\basic-structured-annotations;
+
 /**
  * Original thrift service:-
  * MyService
@@ -89,10 +91,10 @@ trait MyServiceClientBase {
     try {
       $this->eventHandler_->preRecv('first', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_first_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic-structured-annotations\MyService_first_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_first_result', Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic-structured-annotations\MyService_first_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -111,7 +113,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_first_result::withDefaultValues();
+        $result = \fixtures\basic-structured-annotations\MyService_first_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
@@ -150,10 +152,10 @@ trait MyServiceClientBase {
     try {
       $this->eventHandler_->preRecv('second', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'MyService_second_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic-structured-annotations\MyService_second_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'MyService_second_result', Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic-structured-annotations\MyService_second_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -172,7 +174,7 @@ trait MyServiceClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = MyService_second_result::withDefaultValues();
+        $result = \fixtures\basic-structured-annotations\MyService_second_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
@@ -223,7 +225,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "first");
-    $args = MyService_first_args::withDefaultValues();
+    $args = \fixtures\basic-structured-annotations\MyService_first_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "first", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
@@ -254,7 +256,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncCl
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "second");
-    $args = MyService_second_args::fromShape(shape(
+    $args = \fixtures\basic-structured-annotations\MyService_second_args::fromShape(shape(
       'count' => $count,
     ));
     $currentseqid = $this->sendImplHelper($args, "second", false);
@@ -292,7 +294,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "first");
-    $args = MyService_first_args::withDefaultValues();
+    $args = \fixtures\basic-structured-annotations\MyService_first_args::withDefaultValues();
     $currentseqid = $this->sendImplHelper($args, "first", false);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
@@ -323,7 +325,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("MyService", "second");
-    $args = MyService_second_args::fromShape(shape(
+    $args = \fixtures\basic-structured-annotations\MyService_second_args::fromShape(shape(
       'count' => $count,
     ));
     $currentseqid = $this->sendImplHelper($args, "second", false);
@@ -346,14 +348,14 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
 
   /* send and recv functions */
   public function send_first(): int {
-    $args = MyService_first_args::withDefaultValues();
+    $args = \fixtures\basic-structured-annotations\MyService_first_args::withDefaultValues();
     return $this->sendImplHelper($args, "first", false);
   }
   public function recv_first(?int $expectedsequenceid = null): string {
     return $this->recvImpl_first($expectedsequenceid);
   }
   public function send_second(int $count): int {
-    $args = MyService_second_args::fromShape(shape(
+    $args = \fixtures\basic-structured-annotations\MyService_second_args::fromShape(shape(
       'count' => $count,
     ));
     return $this->sendImplHelper($args, "second", false);
@@ -395,7 +397,7 @@ class MyService_first_args implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.first_args",
         "is_union" => false,
@@ -456,21 +458,21 @@ class MyService_first_result implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.MyService_first_result",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 0,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.annotated_inline_string",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                         )
                       ),
                     )
@@ -493,12 +495,12 @@ class MyService_first_result implements \IThriftSyncStruct {
         'success' => shape(
           'field' => dict[],
           'type' => dict[
-            'structured_annotation_inline' => structured_annotation_inline::fromShape(
+            '\fixtures\basic-structured-annotations\structured_annotation_inline' => \fixtures\basic-structured-annotations\structured_annotation_inline::fromShape(
               shape(
                 "count" => 1,
               )
             ),
-            'structured_annotation_with_default' => structured_annotation_with_default::fromShape(
+            '\fixtures\basic-structured-annotations\structured_annotation_with_default' => \fixtures\basic-structured-annotations\structured_annotation_with_default::fromShape(
               shape(
                 "name" => "abc",
               )
@@ -554,16 +556,16 @@ class MyService_second_args implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.second_args",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                 )
               ),
               "name" => "count",
@@ -581,7 +583,7 @@ class MyService_second_args implements \IThriftSyncStruct {
       'fields' => dict[
         'count' => shape(
           'field' => dict[
-            'structured_annotation_inline' => structured_annotation_inline::fromShape(
+            '\fixtures\basic-structured-annotations\structured_annotation_inline' => \fixtures\basic-structured-annotations\structured_annotation_inline::fromShape(
               shape(
                 "count" => 4,
               )
@@ -638,16 +640,16 @@ class MyService_second_result implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.MyService_second_result",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 0,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
                 )
               ),
               "name" => "success",
@@ -675,21 +677,21 @@ class MyService_second_result implements \IThriftSyncStruct {
 
 class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
-    return tmeta_ThriftService::fromShape(
+    return \tmeta_ThriftService::fromShape(
       shape(
         "name" => "module.MyService",
         "functions" => vec[
-          tmeta_ThriftFunction::fromShape(
+          \tmeta_ThriftFunction::fromShape(
             shape(
               "name" => "first",
-              "return_type" => tmeta_ThriftType::fromShape(
+              "return_type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                  "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
                     shape(
                       "name" => "module.annotated_inline_string",
-                      "underlyingType" => tmeta_ThriftType::fromShape(
+                      "underlyingType" => \tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                         )
                       ),
                     )
@@ -698,21 +700,21 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
               ),
             )
           ),
-          tmeta_ThriftFunction::fromShape(
+          \tmeta_ThriftFunction::fromShape(
             shape(
               "name" => "second",
-              "return_type" => tmeta_ThriftType::fromShape(
+              "return_type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
                 )
               ),
               "arguments" => vec[
-                tmeta_ThriftField::fromShape(
+                \tmeta_ThriftField::fromShape(
                   shape(
                     "id" => 1,
-                    "type" => tmeta_ThriftType::fromShape(
+                    "type" => \tmeta_ThriftType::fromShape(
                       shape(
-                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
                       )
                     ),
                     "name" => "count",
@@ -758,7 +760,7 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[
-        'structured_annotation_inline' => structured_annotation_inline::fromShape(
+        '\fixtures\basic-structured-annotations\structured_annotation_inline' => \fixtures\basic-structured-annotations\structured_annotation_inline::fromShape(
           shape(
             "count" => 3,
           )
@@ -766,13 +768,13 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
       ],
       'functions' => dict[
         'first' => dict[
-          'structured_annotation_with_default' => structured_annotation_with_default::fromShape(
+          '\fixtures\basic-structured-annotations\structured_annotation_with_default' => \fixtures\basic-structured-annotations\structured_annotation_with_default::fromShape(
             shape(
             )
           ),
         ],
         'second' => dict[
-          'structured_annotation_inline' => structured_annotation_inline::fromShape(
+          '\fixtures\basic-structured-annotations\structured_annotation_inline' => \fixtures\basic-structured-annotations\structured_annotation_inline::fromShape(
             shape(
               "count" => 2,
             )

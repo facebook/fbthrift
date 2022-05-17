@@ -3,10 +3,8 @@
   "thrift_module" : "module",
   "namespaces": {
     "go": "namespace_from_package.module",
-    "hack": "namespace_from_package.module",
     "hs": "DefaultNamespace.module",
     "java": "dev.test.namespace_from_package.module_deprecated",
-    "php": "namespace_from_package.module",
     "py": "namespace_from_package.module",
     "py.asyncio": "test.namespace_from_package.module",
     "rust": "test.namespace_from_package.module"

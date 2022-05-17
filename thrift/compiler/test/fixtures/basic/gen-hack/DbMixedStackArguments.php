@@ -6,6 +6,8 @@
  *  @generated
  */
 
+namespace fixtures\basic;
+
 /**
  * Original thrift service:-
  * DbMixedStackArguments
@@ -89,10 +91,10 @@ trait DbMixedStackArgumentsClientBase {
     try {
       $this->eventHandler_->preRecv('getDataByKey0', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'DbMixedStackArguments_getDataByKey0_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic\DbMixedStackArguments_getDataByKey0_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'DbMixedStackArguments_getDataByKey0_result', Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic\DbMixedStackArguments_getDataByKey0_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -111,7 +113,7 @@ trait DbMixedStackArgumentsClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = DbMixedStackArguments_getDataByKey0_result::withDefaultValues();
+        $result = \fixtures\basic\DbMixedStackArguments_getDataByKey0_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
@@ -150,10 +152,10 @@ trait DbMixedStackArgumentsClientBase {
     try {
       $this->eventHandler_->preRecv('getDataByKey1', $expectedsequenceid);
       if ($this->input_ is \TBinaryProtocolAccelerated) {
-        $result = \thrift_protocol_read_binary($this->input_, 'DbMixedStackArguments_getDataByKey1_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_binary($this->input_, '\fixtures\basic\DbMixedStackArguments_getDataByKey1_result', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
       } else if ($this->input_ is \TCompactProtocolAccelerated)
       {
-        $result = \thrift_protocol_read_compact($this->input_, 'DbMixedStackArguments_getDataByKey1_result', Shapes::idx($options, 'read_options', 0));
+        $result = \thrift_protocol_read_compact($this->input_, '\fixtures\basic\DbMixedStackArguments_getDataByKey1_result', Shapes::idx($options, 'read_options', 0));
       }
       else
       {
@@ -172,7 +174,7 @@ trait DbMixedStackArgumentsClientBase {
           $this->input_->readMessageEnd();
           throw $x;
         }
-        $result = DbMixedStackArguments_getDataByKey1_result::withDefaultValues();
+        $result = \fixtures\basic\DbMixedStackArguments_getDataByKey1_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
@@ -223,7 +225,7 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey0");
-    $args = DbMixedStackArguments_getDataByKey0_args::fromShape(shape(
+    $args = \fixtures\basic\DbMixedStackArguments_getDataByKey0_args::fromShape(shape(
       'key' => $key,
     ));
     $currentseqid = $this->sendImplHelper($args, "getDataByKey0", false);
@@ -256,7 +258,7 @@ class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMi
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey1");
-    $args = DbMixedStackArguments_getDataByKey1_args::fromShape(shape(
+    $args = \fixtures\basic\DbMixedStackArguments_getDataByKey1_args::fromShape(shape(
       'key' => $key,
     ));
     $currentseqid = $this->sendImplHelper($args, "getDataByKey1", false);
@@ -294,7 +296,7 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey0");
-    $args = DbMixedStackArguments_getDataByKey0_args::fromShape(shape(
+    $args = \fixtures\basic\DbMixedStackArguments_getDataByKey0_args::fromShape(shape(
       'key' => $key,
     ));
     $currentseqid = $this->sendImplHelper($args, "getDataByKey0", false);
@@ -327,7 +329,7 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     }
     $rpc_options = $this->getAndResetOptions() ?? \ThriftClientBase::defaultOptions();
     await $this->asyncHandler_->genBefore("DbMixedStackArguments", "getDataByKey1");
-    $args = DbMixedStackArguments_getDataByKey1_args::fromShape(shape(
+    $args = \fixtures\basic\DbMixedStackArguments_getDataByKey1_args::fromShape(shape(
       'key' => $key,
     ));
     $currentseqid = $this->sendImplHelper($args, "getDataByKey1", false);
@@ -350,7 +352,7 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
 
   /* send and recv functions */
   public function send_getDataByKey0(string $key): int {
-    $args = DbMixedStackArguments_getDataByKey0_args::fromShape(shape(
+    $args = \fixtures\basic\DbMixedStackArguments_getDataByKey0_args::fromShape(shape(
       'key' => $key,
     ));
     return $this->sendImplHelper($args, "getDataByKey0", false);
@@ -359,7 +361,7 @@ class DbMixedStackArgumentsClient extends \ThriftClientBase implements DbMixedSt
     return $this->recvImpl_getDataByKey0($expectedsequenceid);
   }
   public function send_getDataByKey1(string $key): int {
-    $args = DbMixedStackArguments_getDataByKey1_args::fromShape(shape(
+    $args = \fixtures\basic\DbMixedStackArguments_getDataByKey1_args::fromShape(shape(
       'key' => $key,
     ));
     return $this->sendImplHelper($args, "getDataByKey1", false);
@@ -380,18 +382,18 @@ abstract class DbMixedStackArgumentsAsyncProcessorBase extends \ThriftAsyncProce
     $this->eventHandler_->preRead($handler_ctx, 'getDataByKey0', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, 'DbMixedStackArguments_getDataByKey0_args');
+      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\basic\DbMixedStackArguments_getDataByKey0_args');
     } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, 'DbMixedStackArguments_getDataByKey0_args');
+      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\basic\DbMixedStackArguments_getDataByKey0_args');
     } else {
-      $args = DbMixedStackArguments_getDataByKey0_args::withDefaultValues();
+      $args = \fixtures\basic\DbMixedStackArguments_getDataByKey0_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'getDataByKey0', $args);
-    $result = DbMixedStackArguments_getDataByKey0_result::withDefaultValues();
+    $result = \fixtures\basic\DbMixedStackArguments_getDataByKey0_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'DbMixedStackArguments', 'getDataByKey0', $args);
+      $this->eventHandler_->preExec($handler_ctx, '\fixtures\basic\DbMixedStackArguments', 'getDataByKey0', $args);
       $result->success = await $this->handler->getDataByKey0($args->key);
       $this->eventHandler_->postExec($handler_ctx, 'getDataByKey0', $result);
     } catch (\Exception $ex) {
@@ -424,18 +426,18 @@ abstract class DbMixedStackArgumentsAsyncProcessorBase extends \ThriftAsyncProce
     $this->eventHandler_->preRead($handler_ctx, 'getDataByKey1', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, 'DbMixedStackArguments_getDataByKey1_args');
+      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\basic\DbMixedStackArguments_getDataByKey1_args');
     } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, 'DbMixedStackArguments_getDataByKey1_args');
+      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\basic\DbMixedStackArguments_getDataByKey1_args');
     } else {
-      $args = DbMixedStackArguments_getDataByKey1_args::withDefaultValues();
+      $args = \fixtures\basic\DbMixedStackArguments_getDataByKey1_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'getDataByKey1', $args);
-    $result = DbMixedStackArguments_getDataByKey1_result::withDefaultValues();
+    $result = \fixtures\basic\DbMixedStackArguments_getDataByKey1_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'DbMixedStackArguments', 'getDataByKey1', $args);
+      $this->eventHandler_->preExec($handler_ctx, '\fixtures\basic\DbMixedStackArguments', 'getDataByKey1', $args);
       $result->success = await $this->handler->getDataByKey1($args->key);
       $this->eventHandler_->postExec($handler_ctx, 'getDataByKey1', $result);
     } catch (\Exception $ex) {
@@ -512,18 +514,18 @@ abstract class DbMixedStackArgumentsSyncProcessorBase extends \ThriftSyncProcess
     $this->eventHandler_->preRead($handler_ctx, 'getDataByKey0', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, 'DbMixedStackArguments_getDataByKey0_args');
+      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\basic\DbMixedStackArguments_getDataByKey0_args');
     } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, 'DbMixedStackArguments_getDataByKey0_args');
+      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\basic\DbMixedStackArguments_getDataByKey0_args');
     } else {
-      $args = DbMixedStackArguments_getDataByKey0_args::withDefaultValues();
+      $args = \fixtures\basic\DbMixedStackArguments_getDataByKey0_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'getDataByKey0', $args);
-    $result = DbMixedStackArguments_getDataByKey0_result::withDefaultValues();
+    $result = \fixtures\basic\DbMixedStackArguments_getDataByKey0_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'DbMixedStackArguments', 'getDataByKey0', $args);
+      $this->eventHandler_->preExec($handler_ctx, '\fixtures\basic\DbMixedStackArguments', 'getDataByKey0', $args);
       $result->success = $this->handler->getDataByKey0($args->key);
       $this->eventHandler_->postExec($handler_ctx, 'getDataByKey0', $result);
     } catch (\Exception $ex) {
@@ -556,18 +558,18 @@ abstract class DbMixedStackArgumentsSyncProcessorBase extends \ThriftSyncProcess
     $this->eventHandler_->preRead($handler_ctx, 'getDataByKey1', dict[]);
 
     if ($input is \TBinaryProtocolAccelerated) {
-      $args = \thrift_protocol_read_binary_struct($input, 'DbMixedStackArguments_getDataByKey1_args');
+      $args = \thrift_protocol_read_binary_struct($input, '\fixtures\basic\DbMixedStackArguments_getDataByKey1_args');
     } else if ($input is \TCompactProtocolAccelerated) {
-      $args = \thrift_protocol_read_compact_struct($input, 'DbMixedStackArguments_getDataByKey1_args');
+      $args = \thrift_protocol_read_compact_struct($input, '\fixtures\basic\DbMixedStackArguments_getDataByKey1_args');
     } else {
-      $args = DbMixedStackArguments_getDataByKey1_args::withDefaultValues();
+      $args = \fixtures\basic\DbMixedStackArguments_getDataByKey1_args::withDefaultValues();
       $args->read($input);
     }
     $input->readMessageEnd();
     $this->eventHandler_->postRead($handler_ctx, 'getDataByKey1', $args);
-    $result = DbMixedStackArguments_getDataByKey1_result::withDefaultValues();
+    $result = \fixtures\basic\DbMixedStackArguments_getDataByKey1_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'DbMixedStackArguments', 'getDataByKey1', $args);
+      $this->eventHandler_->preExec($handler_ctx, '\fixtures\basic\DbMixedStackArguments', 'getDataByKey1', $args);
       $result->success = $this->handler->getDataByKey1($args->key);
       $this->eventHandler_->postExec($handler_ctx, 'getDataByKey1', $result);
     } catch (\Exception $ex) {
@@ -680,16 +682,16 @@ class DbMixedStackArguments_getDataByKey0_args implements \IThriftSyncStruct, \I
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.getDataByKey0_args",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                 )
               ),
               "name" => "key",
@@ -777,16 +779,16 @@ class DbMixedStackArguments_getDataByKey0_result implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.DbMixedStackArguments_getDataByKey0_result",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 0,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
                 )
               ),
               "name" => "success",
@@ -867,16 +869,16 @@ class DbMixedStackArguments_getDataByKey1_args implements \IThriftSyncStruct, \I
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.getDataByKey1_args",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                 )
               ),
               "name" => "key",
@@ -964,16 +966,16 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.DbMixedStackArguments_getDataByKey1_result",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 0,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
                 )
               ),
               "name" => "success",
@@ -1013,25 +1015,25 @@ class DbMixedStackArguments_getDataByKey1_result implements \IThriftSyncStruct {
 
 class DbMixedStackArgumentsStaticMetadata implements \IThriftServiceStaticMetadata {
   public static function getServiceMetadata()[]: \tmeta_ThriftService {
-    return tmeta_ThriftService::fromShape(
+    return \tmeta_ThriftService::fromShape(
       shape(
         "name" => "module.DbMixedStackArguments",
         "functions" => vec[
-          tmeta_ThriftFunction::fromShape(
+          \tmeta_ThriftFunction::fromShape(
             shape(
               "name" => "getDataByKey0",
-              "return_type" => tmeta_ThriftType::fromShape(
+              "return_type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
                 )
               ),
               "arguments" => vec[
-                tmeta_ThriftField::fromShape(
+                \tmeta_ThriftField::fromShape(
                   shape(
                     "id" => 1,
-                    "type" => tmeta_ThriftType::fromShape(
+                    "type" => \tmeta_ThriftType::fromShape(
                       shape(
-                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                       )
                     ),
                     "name" => "key",
@@ -1040,21 +1042,21 @@ class DbMixedStackArgumentsStaticMetadata implements \IThriftServiceStaticMetada
               ],
             )
           ),
-          tmeta_ThriftFunction::fromShape(
+          \tmeta_ThriftFunction::fromShape(
             shape(
               "name" => "getDataByKey1",
-              "return_type" => tmeta_ThriftType::fromShape(
+              "return_type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
                 )
               ),
               "arguments" => vec[
-                tmeta_ThriftField::fromShape(
+                \tmeta_ThriftField::fromShape(
                   shape(
                     "id" => 1,
-                    "type" => tmeta_ThriftType::fromShape(
+                    "type" => \tmeta_ThriftType::fromShape(
                       shape(
-                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
                       )
                     ),
                     "name" => "key",
