@@ -134,7 +134,7 @@ void MyServiceWrapper::async_tm_lobDataById(
     [this, ctx,
      callback = std::move(callback),
 id,
-data = std::move(data)    ]() mutable {
+dataStr = std::move(dataStr)    ]() mutable {
         auto [promise, future] = folly::makePromiseContract<folly::Unit>();
         call_cy_MyService_lobDataById(
             this->if_object,
