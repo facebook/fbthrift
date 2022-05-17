@@ -174,6 +174,13 @@ class MyDataItem final  {
   >;
   
 
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+    }
+    return 0;
+  }
+
+
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
 
@@ -257,6 +264,21 @@ class MyStruct final  {
   static ::apache::thrift::tag::readonly __fbthrift_ident(::apache::thrift::type::field_id_u_c<6>);
   static ::apache::thrift::tag::idempotent __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
   static ::apache::thrift::tag::floatSet __fbthrift_ident(::apache::thrift::type::field_id_u_c<8>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+      case 3: return 3;
+      case 4: return 4;
+      case 5: return 5;
+      case 6: return 6;
+      case 7: return 7;
+      case 8: return 8;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -756,6 +778,17 @@ class MyUnion final  {
   static ::apache::thrift::tag::myStruct __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::myDataItem __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
   static ::apache::thrift::tag::floatSet __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+      case 3: return 3;
+      case 4: return 4;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;

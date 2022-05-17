@@ -23,6 +23,14 @@ namespace apache {
 namespace thrift {
 namespace type {
 
+template <class StructTag>
+using ordinal_fn =
+    ::apache::thrift::detail::st::struct_private_access::ordinal_fn<
+        native_type<StructTag>>;
+
+template <class StructTag>
+FOLLY_INLINE_VARIABLE constexpr ordinal_fn<StructTag> ordinal{};
+
 // The type tag for the given type::field_t.
 template <typename FieldTag>
 using field_type_tag = typename detail::field_to_tag::apply<FieldTag>::type;

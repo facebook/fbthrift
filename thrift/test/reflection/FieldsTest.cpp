@@ -78,6 +78,25 @@ static_assert(
                     adapted<test::TemplatedTestAdapter, i64_t>>>>>);
 
 static_assert(
+    ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
+        FieldId{1}) == 1);
+static_assert(
+    ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
+        FieldId{2}) == 2);
+static_assert(
+    ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
+        FieldId{3}) == 3);
+static_assert(
+    ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
+        FieldId{4}) == 4);
+static_assert(
+    ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
+        FieldId{5}) == 5);
+static_assert(
+    ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
+        FieldId{6}) == 6);
+
+static_assert(
     test::same_tag<
         struct_private_access::fields<test_cpp2::cpp_reflection::struct3>,
         fields<
@@ -144,6 +163,17 @@ TEST(FieldsTest, Fields) {
       });
   EXPECT_EQ(ids, expectedIds);
   EXPECT_EQ(tags, expectedTags);
+
+  for (uint16_t idx = 0; idx < expectedIds.size(); ++idx) {
+    EXPECT_EQ(
+        ordinal<type::struct_t<test_cpp2::cpp_reflection::struct3>>(
+            FieldId{expectedIds[idx]}),
+        idx + 1);
+  }
+
+  static_assert(
+      ordinal<type::struct_t<test_cpp2::cpp_reflection::struct3>>(
+          FieldId{19}) == 0);
 }
 
 TEST(FieldsTest, Get) {

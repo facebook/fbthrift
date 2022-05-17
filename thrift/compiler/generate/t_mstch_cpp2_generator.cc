@@ -620,6 +620,7 @@ class mstch_cpp2_field : public mstch_field {
         {
             {"field:name_hash", &mstch_cpp2_field::name_hash},
             {"field:index_plus_one", &mstch_cpp2_field::index_plus_one},
+            {"field:ordinal", &mstch_cpp2_field::ordinal},
             {"field:has_isset?", &mstch_cpp2_field::has_isset},
             {"field:isset_index", &mstch_cpp2_field::isset_index},
             {"field:cpp_name", &mstch_cpp2_field::cpp_name},
@@ -676,6 +677,7 @@ class mstch_cpp2_field : public mstch_field {
     return "__fbthrift_hash_" + cpp2::sha256_hex(field_->get_name());
   }
   mstch::node index_plus_one() { return std::to_string(index_ + 1); }
+  mstch::node ordinal() { return index_plus_one(); }
   mstch::node isset_index() {
     assert(field_context_);
     return field_context_->isset_index;

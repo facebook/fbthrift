@@ -209,6 +209,15 @@ class structured_annotation_inline final  {
   static ::apache::thrift::tag::count __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+    }
+    return 0;
+  }
+
+
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
 
@@ -391,6 +400,14 @@ class structured_annotation_with_default final  {
   
   static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+    }
+    return 0;
+  }
+
+
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
 
@@ -520,6 +537,14 @@ class structured_annotation_forward final  {
   
   static ::apache::thrift::tag::count __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+    }
+    return 0;
+  }
+
+
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
 
@@ -648,6 +673,16 @@ class structured_annotation_recursive final  {
   static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::recurse __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::forward __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+      case 3: return 3;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -881,6 +916,15 @@ class structured_annotation_nested final  {
   static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::nest __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+    }
+    return 0;
+  }
+
+
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
 
@@ -1065,6 +1109,17 @@ class MyStruct final  {
   static ::apache::thrift::tag::annotated_type __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::annotated_recursive __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
   static ::apache::thrift::tag::annotated_nested __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+      case 3: return 3;
+      case 4: return 4;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -1357,6 +1412,14 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   
   static ::apache::thrift::tag::context __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+    }
+    return 0;
+  }
+
+
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
   static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
@@ -1479,6 +1542,15 @@ class MyUnion final  {
   
   static ::apache::thrift::tag::first __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::second __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;

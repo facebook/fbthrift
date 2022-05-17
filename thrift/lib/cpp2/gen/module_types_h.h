@@ -24,6 +24,7 @@
 
 #include <folly/CPortability.h>
 #include <folly/Traits.h>
+#include <folly/Utility.h>
 #include <folly/container/F14Map.h>
 #include <folly/container/F14Set.h>
 #include <folly/synchronization/Lock.h>

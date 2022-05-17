@@ -594,6 +594,15 @@ class MyData final  {
   static ::apache::thrift::tag::data1 __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::data2 __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+    }
+    return 0;
+  }
+
+
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
 
@@ -774,6 +783,15 @@ class MyUnion final  {
   
   static ::apache::thrift::tag::option1 __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::option2 __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -1098,6 +1116,37 @@ class MyStruct final  {
   static ::apache::thrift::tag::optSetVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<22>);
   static ::apache::thrift::tag::optMapVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<23>);
   static ::apache::thrift::tag::unionVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<30>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+      case 3: return 3;
+      case 4: return 4;
+      case 5: return 5;
+      case 6: return 6;
+      case 7: return 7;
+      case 8: return 8;
+      case 9: return 9;
+      case 10: return 10;
+      case 11: return 11;
+      case 12: return 12;
+      case 13: return 13;
+      case 14: return 14;
+      case 15: return 15;
+      case 16: return 16;
+      case 17: return 17;
+      case 18: return 18;
+      case 19: return 19;
+      case 20: return 20;
+      case 21: return 21;
+      case 22: return 22;
+      case 23: return 23;
+      case 30: return 24;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -2478,6 +2527,15 @@ class MyDataPatchStruct final  {
   static ::apache::thrift::tag::data1 __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::data2 __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+    }
+    return 0;
+  }
+
+
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
 
@@ -2635,6 +2693,16 @@ class MyDataValuePatchStruct final  {
   static ::apache::thrift::tag::assign __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+      case 3: return 3;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -2847,6 +2915,17 @@ class OptionalMyDataValuePatchStruct final  {
   static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
   static ::apache::thrift::tag::ensure __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
   static ::apache::thrift::tag::patchAfter __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 2: return 1;
+      case 3: return 2;
+      case 4: return 3;
+      case 5: return 4;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -3099,6 +3178,15 @@ class MyUnionPatchStruct final  {
   static ::apache::thrift::tag::option1 __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::option2 __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+    }
+    return 0;
+  }
+
+
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
 
@@ -3258,6 +3346,17 @@ class MyUnionValuePatchStruct final  {
   static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
   static ::apache::thrift::tag::ensure __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
   static ::apache::thrift::tag::patchAfter __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 2: return 1;
+      case 3: return 2;
+      case 4: return 3;
+      case 5: return 4;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -3523,6 +3622,17 @@ class OptionalMyUnionValuePatchStruct final  {
   static ::apache::thrift::tag::ensure __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
   static ::apache::thrift::tag::patchAfter __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
 
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 2: return 1;
+      case 3: return 2;
+      case 4: return 3;
+      case 5: return 4;
+    }
+    return 0;
+  }
+
+
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
 
@@ -3777,6 +3887,17 @@ class MyStructField21PatchStruct final  {
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::prepend __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
   static ::apache::thrift::tag::append __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+      case 4: return 3;
+      case 5: return 4;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -4062,6 +4183,17 @@ class OptionalMyStructField21PatchStruct final  {
   static ::apache::thrift::tag::ensure __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
   static ::apache::thrift::tag::patchAfter __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
 
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 2: return 1;
+      case 3: return 2;
+      case 4: return 3;
+      case 5: return 4;
+    }
+    return 0;
+  }
+
+
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
 
@@ -4328,6 +4460,17 @@ class MyStructField22PatchStruct final  {
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::remove __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
   static ::apache::thrift::tag::add __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+      case 4: return 3;
+      case 5: return 4;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -4613,6 +4756,17 @@ class OptionalMyStructField22PatchStruct final  {
   static ::apache::thrift::tag::ensure __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
   static ::apache::thrift::tag::patchAfter __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
 
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 2: return 1;
+      case 3: return 2;
+      case 4: return 3;
+      case 5: return 4;
+    }
+    return 0;
+  }
+
+
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
 
@@ -4878,6 +5032,16 @@ class MyStructField23PatchStruct final  {
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::put __fbthrift_ident(::apache::thrift::type::field_id_u_c<7>);
 
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+      case 7: return 3;
+    }
+    return 0;
+  }
+
+
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
 
@@ -5110,6 +5274,17 @@ class OptionalMyStructField23PatchStruct final  {
   static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
   static ::apache::thrift::tag::ensure __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
   static ::apache::thrift::tag::patchAfter __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 2: return 1;
+      case 3: return 2;
+      case 4: return 3;
+      case 5: return 4;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -5417,6 +5592,37 @@ class MyStructPatchStruct final  {
   static ::apache::thrift::tag::optSetVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<22>);
   static ::apache::thrift::tag::optMapVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<23>);
   static ::apache::thrift::tag::unionVal __fbthrift_ident(::apache::thrift::type::field_id_u_c<30>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+      case 3: return 3;
+      case 4: return 4;
+      case 5: return 5;
+      case 6: return 6;
+      case 7: return 7;
+      case 8: return 8;
+      case 9: return 9;
+      case 10: return 10;
+      case 11: return 11;
+      case 12: return 12;
+      case 13: return 13;
+      case 14: return 14;
+      case 15: return 15;
+      case 16: return 16;
+      case 17: return 17;
+      case 18: return 18;
+      case 19: return 19;
+      case 20: return 20;
+      case 21: return 21;
+      case 22: return 22;
+      case 23: return 23;
+      case 30: return 24;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
@@ -6522,6 +6728,16 @@ class MyStructValuePatchStruct final  {
   static ::apache::thrift::tag::clear __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
 
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 1: return 1;
+      case 2: return 2;
+      case 3: return 3;
+    }
+    return 0;
+  }
+
+
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
 
@@ -6733,6 +6949,17 @@ class OptionalMyStructValuePatchStruct final  {
   static ::apache::thrift::tag::patch __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
   static ::apache::thrift::tag::ensure __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
   static ::apache::thrift::tag::patchAfter __fbthrift_ident(::apache::thrift::type::field_id_u_c<5>);
+
+  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+    switch (::folly::to_underlying(id)) {
+      case 2: return 1;
+      case 3: return 2;
+      case 4: return 3;
+      case 5: return 4;
+    }
+    return 0;
+  }
+
 
   void __fbthrift_clear();
   bool __fbthrift_is_empty() const;
