@@ -18,7 +18,6 @@
 
 #include <tuple>
 
-#include <fatal/type/search.h>
 #include <folly/Utility.h>
 #include <thrift/lib/cpp/FieldId.h>
 #include <thrift/lib/cpp2/Thrift.h>
@@ -79,21 +78,6 @@ struct field_to_tag {
   struct apply<field_t<Id, Tag>> {
     using type = Tag;
   };
-};
-
-template <class StructTag, FieldId Id>
-struct field_tag_by_id {
- private:
-  using sorted_fields = fatal::sort_by<struct_fields<StructTag>, field_to_id>;
-  static constexpr auto index() {
-    auto ret = fatal::size<sorted_fields>::value;
-    fatal::sorted_search<sorted_fields, field_to_id>(
-        Id, [&](auto index) { ret = index.value; });
-    return ret;
-  }
-
- public:
-  using type = field_at_t<sorted_fields, index()>;
 };
 
 template <class StructTag, size_t Ordinal>

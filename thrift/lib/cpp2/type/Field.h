@@ -45,15 +45,6 @@ template <typename StructTag>
 FOLLY_INLINE_VARIABLE constexpr int16_t field_size_v =
     detail::fields_size<detail::struct_fields<StructTag>>::value;
 
-// field_tag_t<StructTag, Id> is an alias for the field_t of the field in given
-// thrift struct where corresponding field id == Id, or for void if there is no
-// such field.
-//
-// Compile-time complexity: O(logN) (With O(NlogN) preparation per TU that used
-// this alias since fatal::sort<fields> will be instantiated once in each TU)
-template <typename StructTag, FieldId Id>
-using field_tag_by_id = typename detail::field_tag_by_id<StructTag, Id>::type;
-
 template <typename StructTag, int16_t Ordinal>
 using field_tag_by_ordinal =
     typename detail::field_tag_by_ord<StructTag, Ordinal>::type;
@@ -65,6 +56,12 @@ FOLLY_INLINE_VARIABLE constexpr FieldId field_id_by_ordinal_v =
 template <typename Structured, int16_t Ordinal>
 using field_type_tag_by_ordinal =
     field_type_tag<field_tag_by_ordinal<Structured, Ordinal>>;
+
+// field_tag_t<StructTag, Id> is an alias for the field_t of the field in given
+// thrift struct where corresponding field id == Id, or for void if there is no
+// such field.
+template <typename StructTag, FieldId Id>
+using field_tag_by_id = field_tag_by_ordinal<StructTag, ordinal<StructTag>(Id)>;
 
 } // namespace type
 } // namespace thrift
