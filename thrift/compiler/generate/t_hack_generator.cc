@@ -2402,10 +2402,8 @@ bool t_hack_generator::skip_codegen(const t_field* field) {
         "InvalidKeyType: Hack only supports integers and strings as key for "
         "map and set - https://fburl.com/wiki/pgzirbu8, field: " +
         field->get_type()->get_full_name() + " " + field->get_name() + ".");
-  } else if (!is_valid_type && skip_codegen_field != nullptr) {
-    return true;
   }
-  return false;
+  return skip_codegen_field != nullptr;
 }
 
 bool t_hack_generator::skip_codegen(const t_function* tfunction) {
@@ -2435,10 +2433,8 @@ bool t_hack_generator::skip_codegen(const t_function* tfunction) {
         "map and set - https://fburl.com/wiki/pgzirbu8, function " +
         tfunction->get_name() + " has invalid " + field_name +
         " with type: " + invalid_type->get_full_name() + ".");
-  } else if (invalid_type != nullptr && skip_codegen_function != nullptr) {
-    return true;
   }
-  return false;
+  return skip_codegen_function != nullptr;
 }
 
 /**

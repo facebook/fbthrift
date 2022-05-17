@@ -79,10 +79,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'var' => 'idempotent',
       'type' => \TType::BOOL,
     ),
-    9 => shape(
-      'var' => 'no_hack_codegen_field',
-      'type' => \TType::STRING,
-    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'MyIntField' => 1,
@@ -92,7 +88,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'oneway' => 5,
     'readonly' => 6,
     'idempotent' => 7,
-    'no_hack_codegen_field' => 9,
   ];
 
   const type TConstructorShape = shape(
@@ -103,7 +98,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'oneway' => ?bool,
     ?'readonly' => ?bool,
     ?'idempotent' => ?bool,
-    ?'no_hack_codegen_field' => ?string,
   );
 
   const type TShape = shape(
@@ -114,7 +108,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     'oneway' => bool,
     'readonly' => bool,
     'idempotent' => bool,
-    'no_hack_codegen_field' => string,
     ...
   );
   const int STRUCTURAL_ID = 4991963907375804067;
@@ -153,13 +146,8 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
    * 7: bool idempotent
    */
   public bool $idempotent;
-  /**
-   * Original thrift field:-
-   * 9: string no_hack_codegen_field
-   */
-  public string $no_hack_codegen_field;
 
-  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?\fixtures\basic\MyDataItem $MyDataField = null, ?\fixtures\basic\MyEnum $myEnum = null, ?bool $oneway = null, ?bool $readonly = null, ?bool $idempotent = null, ?string $no_hack_codegen_field = null  )[] {
+  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?\fixtures\basic\MyDataItem $MyDataField = null, ?\fixtures\basic\MyEnum $myEnum = null, ?bool $oneway = null, ?bool $readonly = null, ?bool $idempotent = null  )[] {
     $this->MyIntField = $MyIntField ?? 0;
     $this->MyStringField = $MyStringField ?? '';
     $this->MyDataField = $MyDataField;
@@ -167,7 +155,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     $this->oneway = $oneway ?? false;
     $this->readonly = $readonly ?? false;
     $this->idempotent = $idempotent ?? false;
-    $this->no_hack_codegen_field = $no_hack_codegen_field ?? '';
   }
 
   public static function withDefaultValues()[]: this {
@@ -183,7 +170,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       Shapes::idx($shape, 'oneway'),
       Shapes::idx($shape, 'readonly'),
       Shapes::idx($shape, 'idempotent'),
-      Shapes::idx($shape, 'no_hack_codegen_field'),
     );
   }
 
@@ -290,17 +276,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               "name" => "idempotent",
             )
           ),
-          \tmeta_ThriftField::fromShape(
-            shape(
-              "id" => 9,
-              "type" => \tmeta_ThriftType::fromShape(
-                shape(
-                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                )
-              ),
-              "name" => "no_hack_codegen_field",
-            )
-          ),
         ],
         "is_union" => false,
       )
@@ -311,16 +286,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'no_hack_codegen_field' => shape(
-          'field' => dict[
-            '\facebook\thrift\annotation\SkipCodegen' => \facebook\thrift\annotation\SkipCodegen::fromShape(
-              shape(
-                "reason" => "skip field codegen for deprecation",
-              )
-            ),
-          ],
-          'type' => dict[],
-        ),
       ],
     );
   }
@@ -334,7 +299,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       $shape['oneway'],
       $shape['readonly'],
       $shape['idempotent'],
-      $shape['no_hack_codegen_field'],
     );
   }
 
@@ -347,7 +311,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       'oneway' => $this->oneway,
       'readonly' => $this->readonly,
       'idempotent' => $this->idempotent,
-      'no_hack_codegen_field' => $this->no_hack_codegen_field,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -383,9 +346,6 @@ class MyStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     }    
     if (idx($parsed, 'idempotent') !== null) {
       $this->idempotent = /* HH_FIXME[4110] */ $parsed['idempotent'];
-    }    
-    if (idx($parsed, 'no_hack_codegen_field') !== null) {
-      $this->no_hack_codegen_field = /* HH_FIXME[4110] */ $parsed['no_hack_codegen_field'];
     }    
   }
 
