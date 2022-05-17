@@ -42,6 +42,8 @@ struct structured_annotation_builder {
     return name;
   }
 
+  const std::string& uri() { return type.uri(); }
+
   virtual std::unique_ptr<t_const> make() {
     auto map = std::make_unique<t_const_value>();
     return std::make_unique<t_const>(program, &type, "", std::move(map));
@@ -72,6 +74,22 @@ struct terse_builder : structured_annotation_builder {
   explicit terse_builder(t_program* p)
       : structured_annotation_builder(
             p, "TerseWrite", "facebook.com/thrift/annotation/TerseWrite") {}
+};
+
+struct inject_metadata_fields_builder : structured_annotation_builder {
+  explicit inject_metadata_fields_builder(t_program* p)
+      : structured_annotation_builder(
+            p,
+            "InjectMetadataFields",
+            "facebook.com/thrift/annotation/InjectMetadataFields") {}
+
+  std::unique_ptr<t_const> make() override {
+    auto map = std::make_unique<t_const_value>();
+    map->set_map();
+    map->add_map(make_string("type"), make_string("MyStruct"));
+    map->set_ttype(t_type_ref::from_ptr(&type));
+    return std::make_unique<t_const>(program, &type, "", std::move(map));
+  }
 };
 
 } // namespace apache::thrift::compiler::gen::cpp
