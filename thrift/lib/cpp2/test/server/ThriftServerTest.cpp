@@ -3369,6 +3369,42 @@ TEST(ThriftServer, getThreadManager) {
   EXPECT_EQ(a, 1);
 }
 
+TEST(ThriftServer, acceptConnection) {
+  struct Interface1 : public TestServiceSvIf {
+    void echoRequest(
+        std::string& _return, std::unique_ptr<std::string>) override {
+      _return = "echo";
+    }
+  };
+  struct Interface2 : public TestServiceSvIf {
+    void echoRequest(
+        std::string& _return, std::unique_ptr<std::string>) override {
+      _return = "echoOverride";
+    }
+  };
+  ScopedServerInterfaceThread runner(std::make_shared<Interface1>());
+
+  auto client1 = runner.newClient<TestServiceAsyncClient>();
+  EXPECT_EQ("echo", client1->semifuture_echoRequest("echo").get());
+
+  folly::NetworkSocket fds[2];
+  CHECK(!folly::netops::socketpair(PF_UNIX, SOCK_STREAM, 0, fds));
+
+  dynamic_cast<ThriftServer&>(runner.getThriftServer())
+      .acceptConnection(fds[0], {}, {}, std::make_shared<Interface2>());
+
+  auto client2 =
+      std::make_unique<TestServiceAsyncClient>(PooledRequestChannel::newChannel(
+          [fd = fds[1]](folly::EventBase& evb) {
+            return RocketClientChannel::newChannel(
+                folly::AsyncSocket::newSocket(&evb, fd));
+          },
+          1));
+
+  EXPECT_EQ("echoOverride", client2->semifuture_echoRequest("echo").get());
+  EXPECT_EQ("echo", client1->semifuture_echoRequest("echo").get());
+}
+
 TEST_P(HeaderOrRocket, setMaxReuqestsToOne) {
   ScopedServerInterfaceThread runner(
       std::make_shared<TestInterface>(), "::1", 0, [](auto&& server) {

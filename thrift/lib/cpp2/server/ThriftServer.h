@@ -1243,6 +1243,22 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
      */
     UNIMPLEMENTED,
   };
+
+  struct NewConnectionContext {
+    std::shared_ptr<AsyncProcessorFactory> processorFactory;
+  };
+
+  static folly::Optional<NewConnectionContext> extractNewConnectionContext(
+      folly::AsyncTransport& sock);
+
+  void acceptConnection(
+      folly::NetworkSocket fd,
+      const folly::SocketAddress& clientAddr,
+      folly::AsyncServerSocket::AcceptCallback::AcceptInfo info,
+      std::shared_ptr<AsyncProcessorFactory> processor);
+
+ private:
+  using ServerBootstrap::acceptConnection;
 };
 
 template <typename AcceptorClass, typename SharedSSLContextManagerClass>

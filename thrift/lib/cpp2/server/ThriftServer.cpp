@@ -1553,5 +1553,48 @@ ThriftServer::createIOThreadPool() {
           THRIFT_FLAG(enable_io_queue_lag_detection)));
 }
 
+namespace {
+struct NewConnectionContextHolder
+    : public folly::AsyncTransport::LifecycleObserver {
+  explicit NewConnectionContextHolder(ThriftServer::NewConnectionContext c)
+      : ctx(std::move(c)) {}
+
+  void observerAttach(folly::AsyncTransport*) noexcept override {}
+  void observerDetach(folly::AsyncTransport*) noexcept override { delete this; }
+  void destroy(folly::AsyncTransport*) noexcept override { delete this; }
+  void close(folly::AsyncTransport*) noexcept override {}
+
+  ThriftServer::NewConnectionContext ctx;
+};
+} // namespace
+
+void ThriftServer::acceptConnection(
+    folly::NetworkSocket fd,
+    const folly::SocketAddress& clientAddr,
+    folly::AsyncServerSocket::AcceptCallback::AcceptInfo info,
+    std::shared_ptr<AsyncProcessorFactory> processor) {
+  this->acceptConnection(
+      fd,
+      clientAddr,
+      info,
+      new NewConnectionContextHolder(
+          ThriftServer::NewConnectionContext{processor}));
+}
+
+folly::Optional<ThriftServer::NewConnectionContext>
+ThriftServer::extractNewConnectionContext(folly::AsyncTransport& transport) {
+  if (auto sock = transport.getUnderlyingTransport<folly::AsyncSocket>()) {
+    for (auto observer : sock->getLifecycleObservers()) {
+      if (auto ctxHolder =
+              dynamic_cast<NewConnectionContextHolder*>(observer)) {
+        auto ctx = std::move(ctxHolder->ctx);
+        sock->removeLifecycleObserver(observer);
+        return ctx;
+      }
+    }
+  }
+  return folly::none;
+}
+
 } // namespace thrift
 } // namespace apache

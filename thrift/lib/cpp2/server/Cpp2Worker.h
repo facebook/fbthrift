@@ -163,8 +163,19 @@ class Cpp2Worker : public IOWorkerContext,
    public:
     explicit PerServiceMetadata(
         AsyncProcessorFactory& processorFactory,
-        AsyncProcessorFactory::CreateMethodMetadataResult&& methods)
-        : processorFactory_(processorFactory), methods_(std::move(methods)) {}
+        AsyncProcessorFactory::CreateMethodMetadataResult&& methods,
+        std::shared_ptr<AsyncProcessorFactory> processorFactoryStorage = {})
+        : processorFactory_(processorFactory), methods_(std::move(methods)) {
+      if (processorFactoryStorage) {
+        processorFactoryStorageTracker_.emplace(
+            std::move(processorFactoryStorage));
+      }
+    }
+
+    bool expired() const {
+      return processorFactoryStorageTracker_ &&
+          processorFactoryStorageTracker_->expired();
+    }
 
     /**
      * AsyncProcessorFactory::createMethodMetadata is not implemented.
@@ -217,6 +228,8 @@ class Cpp2Worker : public IOWorkerContext,
 
    private:
     AsyncProcessorFactory& processorFactory_;
+    std::optional<std::weak_ptr<AsyncProcessorFactory>>
+        processorFactoryStorageTracker_;
     AsyncProcessorFactory::CreateMethodMetadataResult methods_;
   };
   /**
@@ -225,16 +238,35 @@ class Cpp2Worker : public IOWorkerContext,
    * same service.
    */
   PerServiceMetadata& getMetadataForService(
-      AsyncProcessorFactory& processorFactory) const {
+      AsyncProcessorFactory& processorFactory,
+      std::shared_ptr<AsyncProcessorFactory> processorFactoryStorage = {})
+      const {
     getEventBase()->dcheckIsInEventBaseThread();
     if (auto metadata =
             folly::get_ptr(perServiceMetadata_, &processorFactory)) {
-      return *metadata;
+      if (!metadata->expired()) {
+        return *metadata;
+      }
+    }
+    // Perform GC
+    {
+      std::vector<AsyncProcessorFactory*> expired;
+      for (const auto& kv : perServiceMetadata_) {
+        if (kv.second.expired()) {
+          expired.push_back(kv.first);
+        }
+      }
+
+      for (auto expiredProcessorFactory : expired) {
+        perServiceMetadata_.erase(expiredProcessorFactory);
+      }
     }
     auto [metadata, _] = perServiceMetadata_.emplace(
         &processorFactory,
         PerServiceMetadata{
-            processorFactory, processorFactory.createMethodMetadata()});
+            processorFactory,
+            processorFactory.createMethodMetadata(),
+            std::move(processorFactoryStorage)});
     return metadata->second;
   }
 

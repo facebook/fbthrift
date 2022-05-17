@@ -209,8 +209,13 @@ void ThriftRocketServerHandler::handleSetupFrame(
     // no custom frame handler was found, do the default
     processorFactory_ =
         std::addressof(worker_->getServer()->getDecoratedProcessorFactory());
-    serviceMetadata_ =
-        std::addressof(worker_->getMetadataForService(*processorFactory_));
+    if (auto newConnectionContext = ThriftServer::extractNewConnectionContext(
+            const_cast<folly::AsyncTransport&>(*connContext_.getTransport()))) {
+      processorFactoryStorage_ = newConnectionContext->processorFactory;
+      processorFactory_ = std::addressof(*processorFactoryStorage_);
+    }
+    serviceMetadata_ = std::addressof(worker_->getMetadataForService(
+        *processorFactory_, processorFactoryStorage_));
     processor_ = processorFactory_->getProcessor();
     if (worker_->getServer()->resourcePoolSet().empty()) {
       threadManager_ = worker_->getServer()->getThreadManager();
