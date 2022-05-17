@@ -1,5 +1,4 @@
 json src/service.thrift
-hs src/service.thrift
 py src/service.thrift
 android src/module.thrift
 cocoa:import_path=thrift src/service.thrift
