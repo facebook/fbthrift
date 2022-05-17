@@ -106,7 +106,7 @@ void ThriftProcessor::onThriftRequest(
       methodMetadataResult,
       protoId,
       reqContext,
-      server_.getThreadManager().get(),
+      server_.getThreadManager_deprecated().get(),
       &server_);
 }
 } // namespace thrift

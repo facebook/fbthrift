@@ -84,8 +84,12 @@ class ServerConfigsMock : public ServerConfigs {
 
   uint32_t getListenerTos() const override { return 0; }
 
-  std::shared_ptr<concurrency::ThreadManager> getThreadManager()
+  std::shared_ptr<concurrency::ThreadManager> getThreadManager_deprecated()
       const override {
+    return {};
+  }
+
+  std::shared_ptr<folly::Executor> getThreadManager() const override {
     return {};
   }
 

@@ -699,10 +699,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return a shared pointer to the thread manager
    */
-  std::shared_ptr<concurrency::ThreadManager> getThreadManager()
+  std::shared_ptr<concurrency::ThreadManager> getThreadManager_deprecated()
       const override {
     std::lock_guard<std::mutex> lock(threadManagerMutex_);
     return tmLoggingWrapper_;
+  }
+
+  std::shared_ptr<folly::Executor> getThreadManager() const override {
+    std::lock_guard<std::mutex> lock(threadManagerMutex_);
+    return threadManager_;
   }
 
   /**

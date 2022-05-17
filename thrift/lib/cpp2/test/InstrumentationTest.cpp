@@ -452,19 +452,31 @@ TEST_F(RequestInstrumentationTest, PendingTaskCount) {
   });
   auto firstReq = client->semifuture_runCallback();
   baton.wait();
-  EXPECT_EQ(3, thriftServer()->getThreadManager()->pendingTaskCount());
-  EXPECT_EQ(0, thriftServer()->getThreadManager()->pendingUpstreamTaskCount());
+  EXPECT_EQ(
+      3, thriftServer()->getThreadManager_deprecated()->pendingTaskCount());
+  EXPECT_EQ(
+      0,
+      thriftServer()
+          ->getThreadManager_deprecated()
+          ->pendingUpstreamTaskCount());
 
   handler()->setCallback([&](TestInterface*) {});
   auto secondReq = client->semifuture_runCallback();
 
   auto expire = std::chrono::steady_clock::now() + 5s;
-  while (thriftServer()->getThreadManager()->pendingUpstreamTaskCount() < 1 &&
+  while (thriftServer()
+                 ->getThreadManager_deprecated()
+                 ->pendingUpstreamTaskCount() < 1 &&
          std::chrono::steady_clock::now() < expire) {
     std::this_thread::yield();
   }
-  EXPECT_EQ(4, thriftServer()->getThreadManager()->pendingTaskCount());
-  EXPECT_EQ(1, thriftServer()->getThreadManager()->pendingUpstreamTaskCount());
+  EXPECT_EQ(
+      4, thriftServer()->getThreadManager_deprecated()->pendingTaskCount());
+  EXPECT_EQ(
+      1,
+      thriftServer()
+          ->getThreadManager_deprecated()
+          ->pendingUpstreamTaskCount());
 
   baton2.post();
   std::move(firstReq).get();

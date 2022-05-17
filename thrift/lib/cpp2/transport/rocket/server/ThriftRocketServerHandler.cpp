@@ -218,7 +218,7 @@ void ThriftRocketServerHandler::handleSetupFrame(
         *processorFactory_, processorFactoryStorage_));
     processor_ = processorFactory_->getProcessor();
     if (worker_->getServer()->resourcePoolSet().empty()) {
-      threadManager_ = worker_->getServer()->getThreadManager();
+      threadManager_ = worker_->getServer()->getThreadManager_deprecated();
     }
     serverConfigs_ = worker_->getServer();
     requestsRegistry_ = worker_->getRequestsRegistry();

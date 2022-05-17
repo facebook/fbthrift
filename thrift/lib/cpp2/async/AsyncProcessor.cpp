@@ -437,7 +437,7 @@ concurrency::ThreadManager* HandlerCallbackBase::getThreadManager_deprecated() {
     if (auto connCtx = reqCtx_->getConnectionContext()) {
       if (auto workerCtx = connCtx->getWorkerContext()) {
         if (auto serverCtx = workerCtx->getServerContext()) {
-          return serverCtx->getThreadManager().get();
+          return serverCtx->getThreadManager_deprecated().get();
         }
       }
     }

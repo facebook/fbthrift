@@ -680,7 +680,7 @@ class CppServerWrapper : public ThriftServer {
   // the magic is in the custom deleter which takes and releases a refcount on
   // the std::shared_ptr, instead of doing any local deletion.
   boost::shared_ptr<ThreadManager> getThreadManagerHelper() {
-    auto ptr = this->getThreadManager();
+    auto ptr = this->getThreadManager_deprecated();
     return boost::shared_ptr<ThreadManager>(ptr.get(), [ptr](void*) {});
   }
 

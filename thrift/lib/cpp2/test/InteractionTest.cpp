@@ -745,7 +745,7 @@ TEST(InteractionCodegenTest, ClientCrashDuringInteractionConstructor) {
   };
   auto handler = std::make_shared<SlowCalculatorHandler>();
   ScopedServerInterfaceThread runner{handler};
-  runner.getThriftServer().getThreadManager()->addWorker();
+  runner.getThriftServer().getThreadManager_deprecated()->addWorker();
   folly::EventBase eb;
   folly::AsyncSocket* sock = new folly::AsyncSocket(&eb, runner.getAddress());
   CalculatorAsyncClient client(
@@ -989,7 +989,7 @@ TEST(InteractionCodegenTest, StreamExtendsInteractionLifetime) {
 
   auto handler = std::make_shared<StreamingHandler>();
   ScopedServerInterfaceThread runner{handler};
-  runner.getThriftServer().getThreadManager()->addWorker();
+  runner.getThriftServer().getThreadManager_deprecated()->addWorker();
   auto client = runner.newClient<StreamerAsyncClient>(nullptr, [](auto socket) {
     return RocketClientChannel::newChannel(std::move(socket));
   });

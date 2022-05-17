@@ -144,7 +144,7 @@ Cpp2Connection::Cpp2Connection(
       transport_(transport),
       executor_(worker_->getServer()->getExecutor()) {
   if (worker_->getServer()->resourcePoolSet().empty()) {
-    threadManager_ = worker_->getServer()->getThreadManager();
+    threadManager_ = worker_->getServer()->getThreadManager_deprecated();
   }
   context_.setTransportType(Cpp2ConnContext::TransportType::HEADER);
 

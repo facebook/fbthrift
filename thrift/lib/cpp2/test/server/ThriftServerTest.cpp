@@ -1215,7 +1215,7 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterOverSimpleTMUpstreamPriorities) {
   baton1.wait();
 
   handler->callback_ = [&](auto) { EXPECT_EQ(2, testCounter++); };
-  auto tm = runner.getThriftServer().getThreadManager();
+  auto tm = runner.getThriftServer().getThreadManager_deprecated();
   auto normalPriExecutor = dynamic_cast<ThreadManager*>(
       tm->getKeepAlive(NORMAL, ThreadManager::Source::INTERNAL).get());
   auto req2 = client->semifuture_voidResponse();
@@ -1276,7 +1276,7 @@ TEST_P(
   // the server, and make sure they are added to the upstream queue.
   std::vector<folly::SemiFuture<int>> requests;
   auto sendRequestAndWait = [&](int expectedValue) {
-    auto tm = runner.getThriftServer().getThreadManager();
+    auto tm = runner.getThriftServer().getThreadManager_deprecated();
     auto upstreamQueue = dynamic_cast<folly::MeteredExecutor*>(
         tm->getKeepAlive(NORMAL, ThreadManager::Source::UPSTREAM).get());
     auto numPendingReqs = upstreamQueue->pendingTasks();

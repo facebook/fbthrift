@@ -21,6 +21,7 @@
 #include <string>
 #include <variant>
 
+#include <folly/Executor.h>
 #include <folly/lang/Assume.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
@@ -190,8 +191,11 @@ class ServerConfigs {
     rejectRequestsUntilStarted_ = rejectRequestsUntilStarted;
   }
 
-  virtual std::shared_ptr<concurrency::ThreadManager> getThreadManager()
-      const = 0;
+  virtual std::shared_ptr<folly::Executor> getThreadManager() const = 0;
+
+  [[deprecated("If possible use getThreadManager() instead")]] virtual std::
+      shared_ptr<concurrency::ThreadManager>
+      getThreadManager_deprecated() const = 0;
 
   virtual concurrency::ThreadManager::ExecutionScope getRequestExecutionScope(
       Cpp2RequestContext*, concurrency::PRIORITY defaultPriority) {
