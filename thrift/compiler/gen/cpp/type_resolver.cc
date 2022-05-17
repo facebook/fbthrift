@@ -335,10 +335,12 @@ std::string type_resolver::gen_adapted_type(
 std::string type_resolver::gen_type_tag(const t_type& type) {
   auto tag = gen_thrift_type_tag(type);
   if (const auto* cpp_type = find_first_type(type)) {
-    tag = "::apache::thrift::type::cpp_type<" + *cpp_type + ", " + tag + ">";
+    tag =
+        fmt::format("::apache::thrift::type::cpp_type<{}, {}>", *cpp_type, tag);
   }
   if (const auto* cpp_adapter = find_first_adapter(type)) {
-    tag = "::apache::thrift::type::adapted<" + *cpp_adapter + ", " + tag + ">";
+    tag = fmt::format(
+        "::apache::thrift::type::adapted<{}, {}>", *cpp_adapter, tag);
   }
   return tag;
 }
