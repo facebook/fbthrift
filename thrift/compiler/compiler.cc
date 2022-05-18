@@ -41,7 +41,6 @@
 
 #include <thrift/compiler/ast/diagnostic_context.h>
 #include <thrift/compiler/ast/t_program_bundle.h>
-#include <thrift/compiler/common.h>
 #include <thrift/compiler/diagnostic.h>
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/mutator/mutator.h>
@@ -202,18 +201,16 @@ std::string parseArgs(
           pparams.allow_experimental_features, *arg, isComma);
     } else if (flag == "debug") {
       dparams.debug = true;
-      g_debug = 1;
     } else if (flag == "nowarn") {
-      dparams.warn_level = g_warn = 0;
+      dparams.warn_level = 0;
       nowarn = true;
     } else if (flag == "legacy-strict") {
       pparams.strict = 255;
       if (!nowarn) { // Don't override nowarn.
-        dparams.warn_level = g_warn = 2;
+        dparams.warn_level = 2;
       }
     } else if (flag == "v" || flag == "verbose") {
       dparams.info = true;
-      g_verbose = 1;
     } else if (flag == "r" || flag == "recurse") {
       gparams.gen_recurse = true;
     } else if (flag == "allow-neg-keys") {
@@ -490,7 +487,6 @@ compile_result compile(const std::vector<std::string>& arguments) {
   compile_result result;
 
   // Parse arguments.
-  g_stage = "arguments";
   parsing_params pparams;
   gen_params gparams;
   diagnostic_params dparams;
@@ -503,7 +499,6 @@ compile_result compile(const std::vector<std::string>& arguments) {
   diagnostic_context ctx(source_mgr, result.detail, std::move(dparams));
 
   // Parse it!
-  g_stage = "parse";
   auto program = parse_and_mutate_program(
       source_mgr, ctx, input_filename, std::move(pparams));
   if (!program) {
@@ -531,7 +526,6 @@ compile_result compile(const std::vector<std::string>& arguments) {
   }
 
   // Generate it!
-  g_stage = "generation";
   ctx.begin_visit(*program->root_program());
   try {
     if (generate(gparams, *program->root_program(), ctx)) {

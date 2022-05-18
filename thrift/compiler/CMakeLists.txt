@@ -53,7 +53,6 @@ target_link_libraries(
 add_library(
   compiler_base
 
-  common.cc
   diagnostic.cc
   filesystem.cc
   platform.cc

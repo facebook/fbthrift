@@ -32,7 +32,6 @@
 #include <boost/filesystem.hpp>
 
 #include <thrift/compiler/ast/t_typedef.h>
-#include <thrift/compiler/common.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/generate/t_generator.h>
@@ -51,6 +50,12 @@ const std::string* get_py_adapter(const t_type* type) {
     return nullptr;
   }
   return t_typedef::get_first_annotation_or_null(type, {"py.adapter"});
+}
+
+void mark_file_executable(const std::string& path) {
+  namespace fs = boost::filesystem;
+  fs::permissions(
+      path, fs::add_perms | fs::owner_exe | fs::group_exe | fs::others_exe);
 }
 
 } // namespace
