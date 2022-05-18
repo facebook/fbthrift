@@ -18,9 +18,10 @@ package com.meta.thrift.example.ping.server;
 
 import com.facebook.swift.service.ThriftServerConfig;
 import com.facebook.thrift.example.ping.PingService;
+import com.facebook.thrift.server.RpcServerHandler;
 import com.facebook.thrift.server.ServerTransport;
+import com.facebook.thrift.util.RpcServerUtils;
 import com.facebook.thrift.util.TransportType;
-import java.util.Collections;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -86,14 +87,15 @@ public class PingServer {
 
   public static void main(String[] args) {
     PingServerConfig config = parseArgs(args);
+    RpcServerHandler handler = PingService.serverHandlerBuilder(new PingImpl()).build();
+
     LOG.info("starting server");
     if ("header".equals(config.getTransport())) {
       ServerTransport transport =
-          PingService.createServer(
+          RpcServerUtils.createServerTransport(
                   new ThriftServerConfig().setPort(config.getPort()),
                   TransportType.THEADER,
-                  new PingImpl(),
-                  Collections.emptyList())
+                  handler)
               .block();
       LOG.info("server started at -> " + transport.getAddress());
       transport.onClose().block();

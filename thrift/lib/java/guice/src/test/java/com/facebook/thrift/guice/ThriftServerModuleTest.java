@@ -22,7 +22,6 @@ import com.facebook.swift.service.ThriftServerConfig;
 import com.facebook.swift.service.stats.ServerStats;
 import com.facebook.swift.service.stats.ThriftServerStatsHandler;
 import com.facebook.thrift.example.ping.PingService;
-import com.facebook.thrift.legacy.server.testservices.BlockingPingService;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.util.Modules;
@@ -38,7 +37,8 @@ public class ThriftServerModuleTest {
                     binder ->
                         ThriftServiceExporter.binder(binder)
                             .addEventHandler(new ThriftServerStatsHandler(new ServerStats()))
-                            .addThriftService(new BlockingPingService()))
+                            .addServerHandler(
+                                PingService.serverHandlerBuilder(new BlockingPingService())))
                 .with(
                     binder -> {
                       ThriftServerConfig config = new ThriftServerConfig();

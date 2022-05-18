@@ -21,8 +21,7 @@ import static com.google.inject.multibindings.Multibinder.newSetBinder;
 import com.facebook.swift.service.ThriftEventHandler;
 import com.facebook.thrift.server.CompositeRpcServerHandler;
 import com.facebook.thrift.server.RpcServerHandler;
-import com.facebook.thrift.util.RpcServerUtils;
-import com.facebook.thrift.util.ThriftService;
+import com.facebook.thrift.server.RpcServerHandlerBuilder;
 import com.google.inject.Binder;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -54,22 +53,26 @@ public class ThriftServiceExporter {
     return this;
   }
 
-  public ThriftServiceExporter addThriftService(ThriftService... thriftService) {
-    Objects.requireNonNull(thriftService);
-    for (ThriftService ts : thriftService) {
-      newSetBinder(binder, ThriftService.class).addBinding().toInstance(ts);
+  @SuppressWarnings("rawtypes")
+  public ThriftServiceExporter addServerHandler(RpcServerHandlerBuilder... serverHandlers) {
+    Objects.requireNonNull(serverHandlers);
+    for (RpcServerHandlerBuilder sh : serverHandlers) {
+      newSetBinder(binder, RpcServerHandlerBuilder.class).addBinding().toInstance(sh);
     }
     return this;
   }
 
   public static class RpcServerHandlerProvider implements Provider<RpcServerHandler> {
-    private final Set<ThriftService> thriftServices;
+    @SuppressWarnings("rawtypes")
+    private final Set<RpcServerHandlerBuilder> rpcServerHandlerBuilders;
+
     private final Set<ThriftEventHandler> eventHandlers;
 
     @Inject
     public RpcServerHandlerProvider(
-        Set<ThriftService> thriftServices, Set<ThriftEventHandler> eventHandlers) {
-      this.thriftServices = thriftServices;
+        Set<RpcServerHandlerBuilder> rpcServerHandlerBuilders,
+        Set<ThriftEventHandler> eventHandlers) {
+      this.rpcServerHandlerBuilders = rpcServerHandlerBuilders;
       this.eventHandlers = eventHandlers;
     }
 
@@ -77,11 +80,10 @@ public class ThriftServiceExporter {
     public RpcServerHandler get() {
       List<ThriftEventHandler> eventHandlers = new ArrayList<>(this.eventHandlers);
       List<RpcServerHandler> rpcServerHandlers =
-          thriftServices.stream()
+          rpcServerHandlerBuilders.stream()
               .map(
-                  thriftService ->
-                      RpcServerUtils.getRpcServerHandlerForThriftService(
-                          thriftService, eventHandlers))
+                  rpcServerHandlerBuilder ->
+                      rpcServerHandlerBuilder.setEventHandlers(eventHandlers).build())
               .collect(Collectors.toList());
 
       if (rpcServerHandlers.size() == 1) {
