@@ -17,9 +17,12 @@
 #include <thrift/lib/cpp2/type/TypeRegistry.h>
 
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp2/op/Testing.h>
 #include <thrift/lib/cpp2/type/Any.h>
 #include <thrift/lib/cpp2/type/AnyRef.h>
 #include <thrift/lib/cpp2/type/AnyValue.h>
+#include <thrift/lib/cpp2/type/Tag.h>
+#include <thrift/lib/cpp2/type/Testing.h>
 #include <thrift/lib/cpp2/type/UniversalName.h>
 
 namespace apache::thrift::type {
@@ -49,7 +52,7 @@ TEST(TypeRegistry, Void) {
   EXPECT_THROW(treg.load(data, rval), std::bad_any_cast);
 }
 
-TEST(TypeRegistry, NotImplemented) {
+TEST(TypeRegistry, OutOfRange) {
   TypeRegistry treg;
   // Try to store a non-void value.
   EXPECT_THROW(
@@ -61,6 +64,22 @@ TEST(TypeRegistry, NotImplemented) {
   builder.protocol() = Protocol::get<StandardProtocol::Compact>();
   AnyData data(builder);
   EXPECT_THROW(treg.load(data), std::out_of_range);
+}
+
+TEST(TypeRegistry, Register) {
+  TypeRegistry treg;
+  // Register the protocol
+  test::FollyToStringSerializer<double_t> serializer;
+  treg.registerSerializer(serializer, double_t{});
+
+  // Store the value using registered protocol.
+  AnyData any = treg.store<double_t>(2.5, test::kFollyToStringProtocol);
+  EXPECT_EQ(any.type(), Type::get<double_t>());
+  EXPECT_EQ(any.protocol().name(), "facebook.com/thrift/FollyToString");
+  EXPECT_EQ(any.data().to<std::string>(), "2.5");
+
+  // Load the value, and verify it roundtriped correctly.
+  EXPECT_EQ(treg.load(any).as<double_t>(), 2.5);
 }
 
 } // namespace

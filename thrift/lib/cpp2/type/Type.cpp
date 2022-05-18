@@ -22,6 +22,34 @@ namespace apache {
 namespace thrift {
 namespace type {
 
+bool Type::isFull(const TypeNameUnion& typeName) {
+  return typeName.getType() == TypeNameUnion::uri;
+}
+
+bool Type::isFull(const TypeId& typeId) {
+  switch (typeId.getType()) {
+    case TypeId::enumType:
+      return isFull(*typeId.enumType_ref());
+    case TypeId::structType:
+      return isFull(*typeId.structType_ref());
+    case TypeId::unionType:
+      return isFull(*typeId.unionType_ref());
+    case TypeId::exceptionType:
+      return isFull(*typeId.exceptionType_ref());
+    default:
+      return true;
+  }
+}
+
+bool Type::isFull(const TypeStruct& type) {
+  for (const auto& param : *type.params()) {
+    if (!isFull(param)) {
+      return false;
+    }
+  }
+  return isFull(*type.id());
+}
+
 void Type::checkName(const std::string& name) {
   validateUniversalName(name);
 }

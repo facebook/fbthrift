@@ -101,7 +101,17 @@ class Type : public detail::Wrap<TypeStruct> {
   Type& operator=(const Type&) = default;
   Type& operator=(Type&&) noexcept = default;
 
+  // If the complete type information is present.
+  //
+  // Specifically, that all contained 'type name' values have full,
+  // human-readable, Thrift URIs.
+  bool isFull() const { return isFull(data_); }
+
  private:
+  static bool isFull(const TypeNameUnion& typeName);
+  static bool isFull(const TypeId& typeId);
+  static bool isFull(const TypeStruct& type);
+
   template <typename Tag>
   static const std::string& getUri() {
     return ::apache::thrift::uri<standard_type<Tag>>();

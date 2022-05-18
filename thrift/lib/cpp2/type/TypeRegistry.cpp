@@ -32,37 +32,84 @@ FOLLY_EXPORT TypeRegistry& getGeneratedTypeRegistry() {
 
 } // namespace detail
 
-AnyData TypeRegistry::store(AnyRef value, const Protocol&) const {
-  switch (value.type().base_type()) {
-    case BaseType::Void:
-      return {};
-    default:
-      // TODO(afuller): Implement.
-      folly::throw_exception<std::out_of_range>("Not Implemented");
+AnyData TypeRegistry::store(AnyRef value, const Protocol& protocol) const {
+  if (value.type() == Type::get<type::void_t>()) {
+    return {};
   }
+
+  // Encode the value.
+  const auto& serializer = getEntry(value.type()).getSerializer(protocol);
+  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+
+  // Allocate 16KB at a time; leave some room for the IOBuf overhead
+  // TODO(afuller): This is the size we use by default, for structs. Consider
+  // adjusting it, based on what is being encoded.
+  constexpr size_t kDesiredGrowth = (1 << 14) - 64;
+  serializer.encode(value, folly::io::QueueAppender(&queue, kDesiredGrowth));
+
+  // Return the resulting Any.
+  SemiAny builder;
+  builder.data() = queue.moveAsValue();
+  builder.protocol() = protocol;
+  builder.type() = value.type();
+  return AnyData{std::move(builder)};
 }
 
-void TypeRegistry::load(const AnyData& value, AnyRef out) const {
-  switch (value.type().base_type()) {
-    case BaseType::Void:
-      if (out.type() != value.type()) {
-        folly::throw_exception<std::bad_any_cast>();
-      }
-      return;
-    default:
-      // TODO(afuller): Implement.
-      folly::throw_exception<std::out_of_range>("Not Implemented");
+void TypeRegistry::load(const AnyData& data, AnyRef out) const {
+  if (data.type() == Type::get<type::void_t>()) {
+    if (out.type() != Type::get<type::void_t>()) {
+      folly::throw_exception<std::bad_any_cast>();
+    }
+    return;
   }
+  folly::io::Cursor cursor{&data.data()};
+  getEntry(data.type()).getSerializer(data.protocol()).decode(cursor, out);
 }
 
 AnyValue TypeRegistry::load(const AnyData& data) const {
-  switch (data.type().base_type()) {
-    case BaseType::Void:
-      return {};
-    default:
-      // TODO(afuller): Implement.
-      folly::throw_exception<std::out_of_range>("Not Implemented");
+  if (data.type() == Type::get<type::void_t>()) {
+    return {};
   }
+  folly::io::Cursor cursor{&data.data()};
+  return getEntry(data.type())
+      .getSerializer(data.protocol())
+      .decode(data.type(), cursor);
+}
+
+bool TypeRegistry::registerSerializer(
+    const op::Serializer& serializer, const Type& type) {
+  if (!type.isFull()) {
+    folly::throw_exception<std::runtime_error>(
+        "Can only register types with fill uris.");
+  }
+  return types_[type]
+      .protocols.emplace(serializer.getProtocol(), &serializer)
+      .second;
+}
+
+auto TypeRegistry::getEntry(const Type& type) const -> const TypeEntry& {
+  if (!type.isFull()) { // TODO(afuller): Implement look by type hash.
+    folly::throw_exception<std::out_of_range>("Not Implemented");
+  }
+
+  // Lookup by exact type.
+  auto itr = types_.find(type);
+  if (itr != types_.end()) {
+    return itr->second;
+  }
+
+  // TODO(afuller): Improve error message.
+  folly::throw_exception<std::out_of_range>("Type not registered.");
+}
+
+const op::Serializer& TypeRegistry::TypeEntry::getSerializer(
+    const Protocol& protocol) const {
+  auto itr = protocols.find(protocol);
+  if (itr == protocols.end()) {
+    // TODO(afuller): Improve error message.
+    folly::throw_exception<std::out_of_range>("Protocol not registered.");
+  }
+  return *itr->second;
 }
 
 } // namespace type
