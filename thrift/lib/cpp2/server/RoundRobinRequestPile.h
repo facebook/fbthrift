@@ -27,17 +27,23 @@ namespace apache::thrift {
 
 class RoundRobinRequestPile : public RequestPileBase {
  public:
+  using Priority = unsigned int;
+  using Bucket = unsigned int;
+  // Function to specify priority and bucket for a request. The priority must be
+  // <= the number of priorities (lower numbers have higher priority). The
+  // bucket must be <= the number of buckets available at the specified
+  // priority.
   using PileSelectionFunction =
-      std::function<std::pair<unsigned, unsigned>(const ServerRequest&)>;
+      std::function<std::pair<Priority, Bucket>(const ServerRequest&)>;
 
   struct Options {
-    inline constexpr static unsigned kDefaultNumPriorities = 1;
-    inline constexpr static unsigned kDefaultNumBuckets = 1;
+    inline constexpr static unsigned int kDefaultNumPriorities = 1;
+    inline constexpr static unsigned int kDefaultNumBuckets = 1;
 
     std::string name;
 
     // numBucket = numBuckets_[priority]
-    std::vector<unsigned> numBucketsPerPriority;
+    std::vector<unsigned int> numBucketsPerPriority;
 
     // 0 means no limit
     // this is a per bucket limit
@@ -55,11 +61,14 @@ class RoundRobinRequestPile : public RequestPileBase {
 
     void setName(std::string rName) { name = std::move(rName); }
 
-    void setNumPriorities(unsigned numPri) {
-      numBucketsPerPriority.resize(numPri);
+    // Set the number of priority levels to provide. By default the number of
+    // buckets per priority will be set to 1.
+    void setNumPriorities(unsigned int numPri) {
+      numBucketsPerPriority.clear();
+      numBucketsPerPriority.resize(numPri, 1);
     }
 
-    void setNumBucketsPerPriority(unsigned priority, unsigned numBucket) {
+    void setNumBucketsPerPriority(Priority priority, unsigned int numBucket) {
       numBucketsPerPriority.at(priority) = numBucket;
     }
 
@@ -67,7 +76,7 @@ class RoundRobinRequestPile : public RequestPileBase {
     // e.g. This is setting the number of buckets per priority
     // If your RequestPile has 3 priorities and each has 2 buckets
     // you should pass in {2,2,2}
-    void setShape(std::vector<unsigned> shape) {
+    void setShape(std::vector<unsigned int> shape) {
       numBucketsPerPriority = std::move(shape);
     }
 
