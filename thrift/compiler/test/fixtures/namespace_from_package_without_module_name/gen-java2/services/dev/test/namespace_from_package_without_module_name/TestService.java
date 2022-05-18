@@ -28,25 +28,6 @@ public interface TestService extends java.io.Closeable, com.facebook.thrift.util
         };
     }
 
-    @Deprecated
-    static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
-        final TestService _serviceImpl,
-        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
-        return new TestServiceRpcServerHandler(_serviceImpl, _eventHandlers);
-    }
-
-    @Deprecated
-    static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
-        final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
-        final com.facebook.thrift.util.TransportType _transportType,
-        final TestService _serviceImpl,
-        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
-
-        final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
-
-        return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
-    }
-
     static com.facebook.thrift.client.ClientBuilder<TestService> clientBuilder() {
         return new ClientBuilder<TestService>() {
             @Override
@@ -67,25 +48,6 @@ public interface TestService extends java.io.Closeable, com.facebook.thrift.util
                     return new TestServiceRpcServerHandler(impl, eventHandlers);
                 }
             };
-        }
-
-        @Deprecated
-        static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
-        final TestService.Async _serviceImpl,
-        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
-            return new TestServiceRpcServerHandler(_serviceImpl, _eventHandlers);
-        }
-
-        @Deprecated
-        static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
-            final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
-            final com.facebook.thrift.util.TransportType _transportType,
-            final TestService.Async _serviceImpl,
-            final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
-
-            final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
-
-            return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
         static com.facebook.thrift.client.ClientBuilder<TestService.Async> clientBuilder() {
@@ -144,25 +106,6 @@ public interface TestService extends java.io.Closeable, com.facebook.thrift.util
                     return new TestServiceRpcServerHandler(impl, eventHandlers);
                 }
             };
-        }
-
-        @Deprecated
-        static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
-        final TestService.Reactive _serviceImpl,
-        final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
-            return new TestServiceRpcServerHandler(_serviceImpl, _eventHandlers);
-        }
-
-        @Deprecated
-        static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
-            final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
-            final com.facebook.thrift.util.TransportType _transportType,
-            final TestService.Reactive _serviceImpl,
-            final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
-
-            final com.facebook.thrift.server.RpcServerHandler _serverHandler = createRpcServerHandler(_serviceImpl, _eventHandlers);
-
-            return com.facebook.thrift.util.RpcServerUtils.createServerTransport(_thriftServerConfig, _transportType, _serverHandler);
         }
 
         static com.facebook.thrift.client.ClientBuilder<TestService.Reactive> clientBuilder() {
