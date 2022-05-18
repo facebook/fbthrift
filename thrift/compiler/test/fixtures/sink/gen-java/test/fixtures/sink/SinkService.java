@@ -19,12 +19,23 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("SinkService")
 public interface SinkService extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
+    static com.facebook.thrift.server.RpcServerHandlerBuilder<SinkService> serverHandlerBuilder(SinkService _serverImpl) {
+        return new com.facebook.thrift.server.RpcServerHandlerBuilder<SinkService>(_serverImpl) {
+            @Override
+            public com.facebook.thrift.server.RpcServerHandler build() {
+                return new SinkServiceRpcServerHandler(impl, eventHandlers);
+            }
+        };
+    }
+
+    @Deprecated
     static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final SinkService _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
         return new SinkServiceRpcServerHandler(_serviceImpl, _eventHandlers);
     }
 
+    @Deprecated
     static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
         final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
         final com.facebook.thrift.util.TransportType _transportType,
@@ -49,12 +60,23 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
 
     @com.facebook.swift.service.ThriftService("SinkService")
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
+        static com.facebook.thrift.server.RpcServerHandlerBuilder<SinkService.Async> serverHandlerBuilder(SinkService.Async _serverImpl) {
+            return new com.facebook.thrift.server.RpcServerHandlerBuilder<SinkService.Async>(_serverImpl) {
+                @Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
+                    return new SinkServiceRpcServerHandler(impl, eventHandlers);
+                }
+            };
+        }
+
+        @Deprecated
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final SinkService.Async _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
             return new SinkServiceRpcServerHandler(_serviceImpl, _eventHandlers);
         }
 
+        @Deprecated
         static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
             final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
             final com.facebook.thrift.util.TransportType _transportType,
@@ -84,12 +106,23 @@ public interface SinkService extends java.io.Closeable, com.facebook.thrift.util
 
     @com.facebook.swift.service.ThriftService("SinkService")
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
+        static com.facebook.thrift.server.RpcServerHandlerBuilder<SinkService.Reactive> serverHandlerBuilder(SinkService.Reactive _serverImpl) {
+            return new com.facebook.thrift.server.RpcServerHandlerBuilder<SinkService.Reactive>(_serverImpl) {
+                @Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
+                    return new SinkServiceRpcServerHandler(impl, eventHandlers);
+                }
+            };
+        }
+
+        @Deprecated
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final SinkService.Reactive _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
             return new SinkServiceRpcServerHandler(_serviceImpl, _eventHandlers);
         }
 
+        @Deprecated
         static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
             final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
             final com.facebook.thrift.util.TransportType _transportType,

@@ -19,12 +19,23 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("MyServicePrioChild")
 public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thrift.util.BlockingService, test.fixtures.basicannotations.MyServicePrioParent {
+    static com.facebook.thrift.server.RpcServerHandlerBuilder<MyServicePrioChild> serverHandlerBuilder(MyServicePrioChild _serverImpl) {
+        return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyServicePrioChild>(_serverImpl) {
+            @Override
+            public com.facebook.thrift.server.RpcServerHandler build() {
+                return new MyServicePrioChildRpcServerHandler(impl, eventHandlers);
+            }
+        };
+    }
+
+    @Deprecated
     static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final MyServicePrioChild _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
         return new MyServicePrioChildRpcServerHandler(_serviceImpl, _eventHandlers);
     }
 
+    @Deprecated
     static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
         final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
         final com.facebook.thrift.util.TransportType _transportType,
@@ -49,12 +60,23 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
 
     @com.facebook.swift.service.ThriftService("MyServicePrioChild")
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService, test.fixtures.basicannotations.MyServicePrioParent.Async {
+        static com.facebook.thrift.server.RpcServerHandlerBuilder<MyServicePrioChild.Async> serverHandlerBuilder(MyServicePrioChild.Async _serverImpl) {
+            return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyServicePrioChild.Async>(_serverImpl) {
+                @Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
+                    return new MyServicePrioChildRpcServerHandler(impl, eventHandlers);
+                }
+            };
+        }
+
+        @Deprecated
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final MyServicePrioChild.Async _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
             return new MyServicePrioChildRpcServerHandler(_serviceImpl, _eventHandlers);
         }
 
+        @Deprecated
         static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
             final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
             final com.facebook.thrift.util.TransportType _transportType,
@@ -109,12 +131,23 @@ public interface MyServicePrioChild extends java.io.Closeable, com.facebook.thri
 
     @com.facebook.swift.service.ThriftService("MyServicePrioChild")
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService, test.fixtures.basicannotations.MyServicePrioParent.Reactive {
+        static com.facebook.thrift.server.RpcServerHandlerBuilder<MyServicePrioChild.Reactive> serverHandlerBuilder(MyServicePrioChild.Reactive _serverImpl) {
+            return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyServicePrioChild.Reactive>(_serverImpl) {
+                @Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
+                    return new MyServicePrioChildRpcServerHandler(impl, eventHandlers);
+                }
+            };
+        }
+
+        @Deprecated
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final MyServicePrioChild.Reactive _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
             return new MyServicePrioChildRpcServerHandler(_serviceImpl, _eventHandlers);
         }
 
+        @Deprecated
         static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
             final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
             final com.facebook.thrift.util.TransportType _transportType,

@@ -19,12 +19,23 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("BadService")
 public interface BadService extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
+    static com.facebook.thrift.server.RpcServerHandlerBuilder<BadService> serverHandlerBuilder(BadService _serverImpl) {
+        return new com.facebook.thrift.server.RpcServerHandlerBuilder<BadService>(_serverImpl) {
+            @Override
+            public com.facebook.thrift.server.RpcServerHandler build() {
+                return new BadServiceRpcServerHandler(impl, eventHandlers);
+            }
+        };
+    }
+
+    @Deprecated
     static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final BadService _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
         return new BadServiceRpcServerHandler(_serviceImpl, _eventHandlers);
     }
 
+    @Deprecated
     static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
         final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
         final com.facebook.thrift.util.TransportType _transportType,
@@ -49,12 +60,23 @@ public interface BadService extends java.io.Closeable, com.facebook.thrift.util.
 
     @com.facebook.swift.service.ThriftService("BadService")
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
+        static com.facebook.thrift.server.RpcServerHandlerBuilder<BadService.Async> serverHandlerBuilder(BadService.Async _serverImpl) {
+            return new com.facebook.thrift.server.RpcServerHandlerBuilder<BadService.Async>(_serverImpl) {
+                @Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
+                    return new BadServiceRpcServerHandler(impl, eventHandlers);
+                }
+            };
+        }
+
+        @Deprecated
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final BadService.Async _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
             return new BadServiceRpcServerHandler(_serviceImpl, _eventHandlers);
         }
 
+        @Deprecated
         static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
             final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
             final com.facebook.thrift.util.TransportType _transportType,
@@ -125,12 +147,23 @@ public interface BadService extends java.io.Closeable, com.facebook.thrift.util.
 
     @com.facebook.swift.service.ThriftService("BadService")
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
+        static com.facebook.thrift.server.RpcServerHandlerBuilder<BadService.Reactive> serverHandlerBuilder(BadService.Reactive _serverImpl) {
+            return new com.facebook.thrift.server.RpcServerHandlerBuilder<BadService.Reactive>(_serverImpl) {
+                @Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
+                    return new BadServiceRpcServerHandler(impl, eventHandlers);
+                }
+            };
+        }
+
+        @Deprecated
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final BadService.Reactive _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
             return new BadServiceRpcServerHandler(_serviceImpl, _eventHandlers);
         }
 
+        @Deprecated
         static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
             final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
             final com.facebook.thrift.util.TransportType _transportType,

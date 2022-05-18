@@ -19,12 +19,23 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("NestedContainers")
 public interface NestedContainers extends java.io.Closeable, com.facebook.thrift.util.BlockingService {
+    static com.facebook.thrift.server.RpcServerHandlerBuilder<NestedContainers> serverHandlerBuilder(NestedContainers _serverImpl) {
+        return new com.facebook.thrift.server.RpcServerHandlerBuilder<NestedContainers>(_serverImpl) {
+            @Override
+            public com.facebook.thrift.server.RpcServerHandler build() {
+                return new NestedContainersRpcServerHandler(impl, eventHandlers);
+            }
+        };
+    }
+
+    @Deprecated
     static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final NestedContainers _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
         return new NestedContainersRpcServerHandler(_serviceImpl, _eventHandlers);
     }
 
+    @Deprecated
     static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
         final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
         final com.facebook.thrift.util.TransportType _transportType,
@@ -49,12 +60,23 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
 
     @com.facebook.swift.service.ThriftService("NestedContainers")
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService {
+        static com.facebook.thrift.server.RpcServerHandlerBuilder<NestedContainers.Async> serverHandlerBuilder(NestedContainers.Async _serverImpl) {
+            return new com.facebook.thrift.server.RpcServerHandlerBuilder<NestedContainers.Async>(_serverImpl) {
+                @Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
+                    return new NestedContainersRpcServerHandler(impl, eventHandlers);
+                }
+            };
+        }
+
+        @Deprecated
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final NestedContainers.Async _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
             return new NestedContainersRpcServerHandler(_serviceImpl, _eventHandlers);
         }
 
+        @Deprecated
         static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
             final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
             final com.facebook.thrift.util.TransportType _transportType,
@@ -243,12 +265,23 @@ public interface NestedContainers extends java.io.Closeable, com.facebook.thrift
 
     @com.facebook.swift.service.ThriftService("NestedContainers")
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService {
+        static com.facebook.thrift.server.RpcServerHandlerBuilder<NestedContainers.Reactive> serverHandlerBuilder(NestedContainers.Reactive _serverImpl) {
+            return new com.facebook.thrift.server.RpcServerHandlerBuilder<NestedContainers.Reactive>(_serverImpl) {
+                @Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
+                    return new NestedContainersRpcServerHandler(impl, eventHandlers);
+                }
+            };
+        }
+
+        @Deprecated
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final NestedContainers.Reactive _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
             return new NestedContainersRpcServerHandler(_serviceImpl, _eventHandlers);
         }
 
+        @Deprecated
         static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
             final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
             final com.facebook.thrift.util.TransportType _transportType,

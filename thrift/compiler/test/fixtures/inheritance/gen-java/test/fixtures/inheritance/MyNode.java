@@ -19,12 +19,23 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("MyNode")
 public interface MyNode extends java.io.Closeable, com.facebook.thrift.util.BlockingService, test.fixtures.inheritance.MyRoot {
+    static com.facebook.thrift.server.RpcServerHandlerBuilder<MyNode> serverHandlerBuilder(MyNode _serverImpl) {
+        return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyNode>(_serverImpl) {
+            @Override
+            public com.facebook.thrift.server.RpcServerHandler build() {
+                return new MyNodeRpcServerHandler(impl, eventHandlers);
+            }
+        };
+    }
+
+    @Deprecated
     static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final MyNode _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
         return new MyNodeRpcServerHandler(_serviceImpl, _eventHandlers);
     }
 
+    @Deprecated
     static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
         final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
         final com.facebook.thrift.util.TransportType _transportType,
@@ -49,12 +60,23 @@ public interface MyNode extends java.io.Closeable, com.facebook.thrift.util.Bloc
 
     @com.facebook.swift.service.ThriftService("MyNode")
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService, test.fixtures.inheritance.MyRoot.Async {
+        static com.facebook.thrift.server.RpcServerHandlerBuilder<MyNode.Async> serverHandlerBuilder(MyNode.Async _serverImpl) {
+            return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyNode.Async>(_serverImpl) {
+                @Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
+                    return new MyNodeRpcServerHandler(impl, eventHandlers);
+                }
+            };
+        }
+
+        @Deprecated
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final MyNode.Async _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
             return new MyNodeRpcServerHandler(_serviceImpl, _eventHandlers);
         }
 
+        @Deprecated
         static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
             final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
             final com.facebook.thrift.util.TransportType _transportType,
@@ -109,12 +131,23 @@ public interface MyNode extends java.io.Closeable, com.facebook.thrift.util.Bloc
 
     @com.facebook.swift.service.ThriftService("MyNode")
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService, test.fixtures.inheritance.MyRoot.Reactive {
+        static com.facebook.thrift.server.RpcServerHandlerBuilder<MyNode.Reactive> serverHandlerBuilder(MyNode.Reactive _serverImpl) {
+            return new com.facebook.thrift.server.RpcServerHandlerBuilder<MyNode.Reactive>(_serverImpl) {
+                @Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
+                    return new MyNodeRpcServerHandler(impl, eventHandlers);
+                }
+            };
+        }
+
+        @Deprecated
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final MyNode.Reactive _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
             return new MyNodeRpcServerHandler(_serviceImpl, _eventHandlers);
         }
 
+        @Deprecated
         static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
             final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
             final com.facebook.thrift.util.TransportType _transportType,

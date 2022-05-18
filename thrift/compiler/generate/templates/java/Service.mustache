@@ -31,12 +31,23 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 @com.facebook.swift.service.ThriftService("{{service:javaCapitalName}}")
 public interface {{service:javaCapitalName}} extends java.io.Closeable, com.facebook.thrift.util.BlockingService{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}{{/service:extends}} {
+    static com.facebook.thrift.server.RpcServerHandlerBuilder<{{service:javaCapitalName}}> serverHandlerBuilder({{service:javaCapitalName}} _serverImpl) {
+        return new com.facebook.thrift.server.RpcServerHandlerBuilder<{{service:javaCapitalName}}>(_serverImpl) {
+            @Override
+            public com.facebook.thrift.server.RpcServerHandler build() {
+                return new {{service:javaCapitalName}}RpcServerHandler(impl, eventHandlers);
+            }
+        };
+    }
+
+    @Deprecated
     static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final {{service:javaCapitalName}} _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
         return new {{service:javaCapitalName}}RpcServerHandler(_serviceImpl, _eventHandlers);
     }
 
+    @Deprecated
     static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
         final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
         final com.facebook.thrift.util.TransportType _transportType,
@@ -61,12 +72,23 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
 
     @com.facebook.swift.service.ThriftService("{{service:javaCapitalName}}")
     public interface Async extends java.io.Closeable, com.facebook.thrift.util.AsyncService{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Async{{/service:extends}} {
+        static com.facebook.thrift.server.RpcServerHandlerBuilder<{{service:javaCapitalName}}.Async> serverHandlerBuilder({{service:javaCapitalName}}.Async _serverImpl) {
+            return new com.facebook.thrift.server.RpcServerHandlerBuilder<{{service:javaCapitalName}}.Async>(_serverImpl) {
+                @Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
+                    return new {{service:javaCapitalName}}RpcServerHandler(impl, eventHandlers);
+                }
+            };
+        }
+
+        @Deprecated
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final {{service:javaCapitalName}}.Async _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
             return new {{service:javaCapitalName}}RpcServerHandler(_serviceImpl, _eventHandlers);
         }
 
+        @Deprecated
         static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
             final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
             final com.facebook.thrift.util.TransportType _transportType,
@@ -177,12 +199,23 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable, com.face
 
     @com.facebook.swift.service.ThriftService("{{service:javaCapitalName}}")
     interface Reactive extends reactor.core.Disposable, com.facebook.thrift.util.ReactiveService{{#service:extends}}, {{service:javaPackage}}.{{service:javaCapitalName}}.Reactive{{/service:extends}} {
+        static com.facebook.thrift.server.RpcServerHandlerBuilder<{{service:javaCapitalName}}.Reactive> serverHandlerBuilder({{service:javaCapitalName}}.Reactive _serverImpl) {
+            return new com.facebook.thrift.server.RpcServerHandlerBuilder<{{service:javaCapitalName}}.Reactive>(_serverImpl) {
+                @Override
+                public com.facebook.thrift.server.RpcServerHandler build() {
+                    return new {{service:javaCapitalName}}RpcServerHandler(impl, eventHandlers);
+                }
+            };
+        }
+
+        @Deprecated
         static com.facebook.thrift.server.RpcServerHandler createRpcServerHandler(
         final {{service:javaCapitalName}}.Reactive _serviceImpl,
         final List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
             return new {{service:javaCapitalName}}RpcServerHandler(_serviceImpl, _eventHandlers);
         }
 
+        @Deprecated
         static reactor.core.publisher.Mono<? extends com.facebook.thrift.server.ServerTransport> createServer(
             final com.facebook.swift.service.ThriftServerConfig _thriftServerConfig,
             final com.facebook.thrift.util.TransportType _transportType,
