@@ -28,6 +28,8 @@ from thrift.python.test.test_server import server_in_another_process
 from thrift.python.test.thrift_clients import EchoService, TestService
 from thrift.python.test.thrift_types import ArithmeticException, EmptyException
 
+from .exceptions_helper import HijackTestException, HijackTestHelper
+
 
 TEST_HEADER_KEY = "headerKey"
 TEST_HEADER_VALUE = "headerValue"
@@ -124,3 +126,10 @@ class SyncClientTests(unittest.TestCase):
                     pass
             with self.assertRaises(RuntimeError):
                 client.add(1, 2)
+
+    # TODO: add similar test to the async_client_test
+    def test_add_test_handler_should_hijack_transport_error(self) -> None:
+        with HijackTestHelper():
+            with get_sync_client(TestService, path="/no/where") as client:
+                with self.assertRaises(HijackTestException):
+                    client.add(1, 2)

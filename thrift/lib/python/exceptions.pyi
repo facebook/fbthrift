@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import enum
+import types
 import typing
 
 class Error(Exception):

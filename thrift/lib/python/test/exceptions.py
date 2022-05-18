@@ -23,7 +23,12 @@ from testing.thrift_types import (
     UnusedError,
     ValueOrError,
 )
-from thrift.python.exceptions import ApplicationErrorType, Error
+from thrift.python.exceptions import (
+    ApplicationErrorType,
+    Error,
+    TransportError,
+    TransportErrorType,
+)
 from thrift.python.serializer import deserialize, serialize_iobuf
 
 
@@ -91,3 +96,15 @@ class ExceptionTests(unittest.TestCase):
         y = deserialize(ValueOrError, serialized)
         self.assertIsNot(x, y)
         self.assertEqual(x, y)
+
+    def test_create_transporterror_should_set_correct_values(self) -> None:
+        t = TransportError(
+            type=TransportErrorType.CORRUPTED_DATA,
+            message="transport error",
+            errno=5,
+            options=1,
+        )
+        self.assertEqual(t.type, TransportErrorType.CORRUPTED_DATA)
+        self.assertEqual(t.message, "transport error")
+        self.assertEqual(t.errno, 5)
+        self.assertEqual(t.options, 1)

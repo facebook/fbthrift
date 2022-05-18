@@ -12,10 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from cpython.ref cimport PyObject
 from folly cimport cFollyExceptionWrapper
 from libc.stdint cimport int16_t
 from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
+from thrift.py3.common cimport RpcOptions
 
 
 cdef extern from "thrift/lib/cpp/Thrift.h" namespace "apache::thrift":
@@ -98,10 +100,16 @@ cdef class TransportError(LibraryError):
 cdef TransportError create_TransportError(unique_ptr[cTTransportException] ex)
 
 
-cdef object create_py_exception(const cFollyExceptionWrapper& ex)
+cdef object create_py_exception(const cFollyExceptionWrapper& ex, RpcOptions options)
 
 
 # Base class for all generated exceptions defined in Thrift IDL
 cdef class GeneratedError(Error):
     cdef object _fbthrift_data
     cdef _fbthrift_get_field_value(self, int16_t index)
+
+# TODO: add a HandlerManager class to wrap functionality below
+ctypedef object(*Handler)(const cFollyExceptionWrapper& ex, PyObject* user_data)
+cdef void addHandler(Handler handler)
+cdef void removeAllHandlers()
+cdef object runHandlers(const cFollyExceptionWrapper& ex, RpcOptions options)

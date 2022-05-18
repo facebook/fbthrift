@@ -116,7 +116,8 @@ cdef void _async_client_send_request_callback(
             deserialize(response_cls, response_iobuf, protocol=protocol)
         )
     elif result.value().buf.hasError():
-        pyfuture.set_exception(create_py_exception(result.value().buf.error()))
+        # TODO: pass a proper RpcOptions value
+        pyfuture.set_exception(create_py_exception(result.value().buf.error(), None))
     else:
         pyfuture.set_exception(ApplicationError(
             ApplicationErrorType.MISSING_RESULT,

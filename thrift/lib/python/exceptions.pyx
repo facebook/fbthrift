@@ -17,6 +17,7 @@ import functools
 
 from cython.operator cimport dereference as deref
 from thrift.python.types cimport StructInfo, createStructTuple, set_struct_field
+from libcpp.vector cimport vector
 
 
 cdef class Error(Exception):
@@ -82,6 +83,24 @@ cdef class TransportError(LibraryError):
         return self.args[3]
 
 
+cdef vector[Handler] handlers
+
+
+cdef void addHandler(Handler handler):
+    handlers.push_back(handler)
+
+
+cdef void removeAllHandlers():
+    handlers.clear()
+
+
+cdef object runHandlers(const cFollyExceptionWrapper& ex, RpcOptions options):
+    for handler in handlers:
+        pyex = handler(ex, <PyObject *> options)
+        if pyex:
+            return pyex
+
+
 cdef TransportError create_TransportError(unique_ptr[cTTransportException] ex):
     if not ex:
         return
@@ -100,7 +119,12 @@ cdef TransportError create_TransportError(unique_ptr[cTTransportException] ex):
     )
 
 
-cdef object create_py_exception(const cFollyExceptionWrapper& ex):
+cdef object create_py_exception(const cFollyExceptionWrapper& ex, RpcOptions options):
+    # This will raise an exception if a handler raised one
+    pyex = runHandlers(ex, options)
+    if pyex:
+        return pyex
+
     pyex = create_ApplicationError(try_make_unique_exception[cTApplicationException](ex))
     if pyex:
         return pyex
