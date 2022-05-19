@@ -924,12 +924,22 @@ where
 {
 }
 
+pub trait Serializable:
+    Serialize<SimpleJsonProtocolSerializer<SizeCounter>>
+    + Serialize<SimpleJsonProtocolSerializer<BytesMut>>
+{
+}
+
+impl<T> Serializable for T where
+    T: Serialize<SimpleJsonProtocolSerializer<SizeCounter>>
+        + Serialize<SimpleJsonProtocolSerializer<BytesMut>>
+{
+}
+
 /// Serialize a Thrift value using the compact protocol.
 pub fn serialize<T>(v: T) -> Bytes
 where
-    T: Serialize<SimpleJsonProtocolSerializer<SizeCounter>>
-        + Serialize<SimpleJsonProtocolSerializer<BytesMut>>
-        + Copy,
+    T: Serializable,
 {
     let mut sizer = SimpleJsonProtocolSerializer {
         buffer: SizeCounter::new().writer(),
