@@ -3339,6 +3339,9 @@ void t_hack_generator::generate_php_struct_async_shape_methods(
       out, ThriftAsyncStructCreationMethod::FROM_SHAPE);
   t_name_generator namer;
   for (const auto& field : tstruct->fields()) {
+    if (skip_codegen(&field)) {
+      continue;
+    }
     const std::string& name = field.name();
     const t_type* t = field.type()->get_true_type();
 
@@ -3401,6 +3404,9 @@ void t_hack_generator::generate_php_struct_async_shape_methods(
   indent_up();
 
   for (const auto& field : tstruct->fields()) {
+    if (skip_codegen(&field)) {
+      continue;
+    }
     const t_type* t = field.type()->get_true_type();
     t_name_generator ngen;
 
@@ -3461,8 +3467,10 @@ void t_hack_generator::generate_php_structural_id(
 
 bool t_hack_generator::is_async_struct(const t_struct* tstruct) {
   for (const auto& field : tstruct->fields()) {
-    if (find_hack_wrapper(field)) {
-      return true;
+    if (!skip_codegen(&field)) {
+      if (find_hack_wrapper(field)) {
+        return true;
+      }
     }
   }
   return false;
@@ -3486,9 +3494,11 @@ bool t_hack_generator::is_async_shapish_struct(const t_struct* tstruct) {
   }
 
   for (const auto& field : tstruct->fields()) {
-    if (is_async_field(field)) {
-      struct_async_type_[parent_struct_name] = ThriftShapishStructType::ASYNC;
-      return true;
+    if (!skip_codegen(&field)) {
+      if (is_async_field(field)) {
+        struct_async_type_[parent_struct_name] = ThriftShapishStructType::ASYNC;
+        return true;
+      }
     }
   }
   struct_async_type_[parent_struct_name] = ThriftShapishStructType::SYNC;
@@ -3854,6 +3864,9 @@ void t_hack_generator::generate_php_struct_constructor_field_assignment(
     ThriftStructType type,
     const std::string& name,
     bool is_default_assignment) {
+  if (skip_codegen(&field)) {
+    return;
+  }
   std::string adapter;
   if (const auto* annotation = find_hack_field_adapter(field)) {
     adapter = *annotation;
@@ -4010,6 +4023,9 @@ void t_hack_generator::generate_php_struct_default_constructor(
     std::vector<const t_field*> wrapped_fields;
     if (type != ThriftStructType::RESULT) {
       for (const auto& field : tstruct->fields()) {
+        if (skip_codegen(&field)) {
+          continue;
+        }
         // Fields with FieldWrappr annotation are nullable and need to be set
         // at the end after all non-nullable fields are set.
         if (find_hack_wrapper(field)) {
@@ -4393,6 +4409,9 @@ void t_hack_generator::generate_adapter_type_checks(
   }
 
   for (const auto& field : tstruct->fields()) {
+    if (skip_codegen(&field)) {
+      continue;
+    }
     if (const auto* adapter = find_hack_field_adapter(field)) {
       adapter_types_.emplace(
           *adapter,
@@ -4668,6 +4687,9 @@ void t_hack_generator::generate_php_struct_async_struct_creation_method(
     idx_prefix = "idx($map, '";
   }
   for (const auto& field : tstruct->fields()) {
+    if (skip_codegen(&field)) {
+      continue;
+    }
     const std::string& name = field.name();
     std::string field_ref = "$" + name;
     out << indent() << field_ref << " = " << idx_prefix << name << "');\n";

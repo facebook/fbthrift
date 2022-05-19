@@ -304,7 +304,7 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     'adapted__and_wrapped_type' => \MyAdapter1::THackType,
     ?'optional_adapted_and_wrapped_type' => ?\MyAdapter1::THackType,
   );
-  const int STRUCTURAL_ID = 9035067595372477432;
+  const int STRUCTURAL_ID = 3054438916646683824;
   /**
    * Original thrift field:-
    * 1: i64 wrapped_field
@@ -588,6 +588,7 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     $annotated_field = await ($this->annotated_field as nonnull)->genUnwrap();
     $adapted__and_wrapped_type = await ($this->adapted__and_wrapped_type as nonnull)->genUnwrap();
     $optional_adapted_and_wrapped_type = await ($this->optional_adapted_and_wrapped_type as nonnull)->genUnwrap();
+    $invalid_key_map = await ($this->invalid_key_map as nonnull)->genUnwrap();
     return shape(
       'wrapped_field' => $wrapped_field,
       'annotated_field' => $annotated_field,

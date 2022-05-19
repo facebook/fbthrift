@@ -39,6 +39,9 @@ struct MyNestedStruct {
   4: i64 adapted__and_wrapped_type;
   @hack.FieldWrapper{name = "\MyFieldWrapper"}
   5: optional i64WithAdapter optional_adapted_and_wrapped_type;
+  @hack.FieldWrapper{name = "\MyFieldWrapper"}
+  @hack.SkipCodegen{reason = "invalid map key"}
+  6: optional map<MyStruct, string> invalid_key_map;
 }
 
 struct MyComplexStruct {
