@@ -48,6 +48,9 @@ namespace {
 
 constexpr auto kCppRefUri = "facebook.com/thrift/annotation/cpp/Ref";
 constexpr auto kCppAdapterUri = "facebook.com/thrift/annotation/cpp/Adapter";
+constexpr auto kHackAdapterUri = "facebook.com/thrift/annotation/hack/Adapter";
+constexpr auto kCppUnstructuredAdapter = "cpp.adapter";
+constexpr auto kHackUnstructuredAdapter = "hack.adapter";
 
 const t_structured* get_mixin_type(const t_field& field) {
   if (cpp2::is_mixin(field)) {
@@ -150,6 +153,101 @@ class redef_checker {
   const t_named& parent_;
 
   name_index<t_named> seen_;
+};
+
+// Helper for validating the adapters
+class adapter_checker {
+ public:
+  explicit adapter_checker(diagnostic_context& ctx) : ctx_(ctx) {}
+
+  // Checks if adapter name is provided
+  // Do not allow composing two structured annotations on typedef
+  void check(
+      const t_named& node,
+      const char* structured_adapter_annotation,
+      const char* structured_adapter_annotation_error_name) {
+    const t_const* adapter_annotation =
+        node.find_structured_annotation_or_null(structured_adapter_annotation);
+    if (!adapter_annotation) {
+      return;
+    }
+
+    try {
+      adapter_annotation->get_value_from_structured_annotation("name");
+    } catch (const std::exception& e) {
+      ctx_.failure([&](auto& o) { o << e.what(); });
+      return;
+    }
+
+    // TODO (dokwon): Do not allow composing unstructured adapter annotation on
+    // typedef as well.
+    if (const auto* typedf = dynamic_cast<const t_typedef*>(&node)) {
+      if (t_typedef::get_first_structured_annotation_or_null(
+              &*typedf->type(), structured_adapter_annotation)) {
+        ctx_.failure([&](auto& o) {
+          o << "The `" << structured_adapter_annotation_error_name
+            << "` annotation cannot be annotated more than once in all typedef levels in `"
+            << node.name() << "`.";
+        });
+      }
+    }
+  }
+
+  void check(
+      const t_named&& node,
+      const char* structured_adapter_annotation,
+      const char* structured_adapter_annotation_error_name) = delete;
+
+  // Do not allow composing structured annotation on field/typedef
+  // and unstructured annotation on typedef/type
+  void check(
+      const t_field& field,
+      const char* structured_adapter_annotation,
+      const char* unstructured_adapter_annotation,
+      const char* structured_adapter_annotation_error_name,
+      bool disallow_structured_annotations_on_both_field_and_typedef) {
+    if (!field.type().resolved()) {
+      return;
+    }
+    auto type = field.type().get_type();
+
+    bool structured_annotation_on_field =
+        field.find_structured_annotation_or_null(structured_adapter_annotation);
+
+    bool structured_annotation_on_typedef =
+        t_typedef::get_first_structured_annotation_or_null(
+            type, structured_adapter_annotation) != nullptr;
+
+    if (disallow_structured_annotations_on_both_field_and_typedef &&
+        structured_annotation_on_field && structured_annotation_on_typedef) {
+      ctx_.failure([&](auto& o) {
+        o << "`" << structured_adapter_annotation_error_name
+          << "` cannot be applied on both field and typedef in `"
+          << field.name() << "`.";
+      });
+    }
+
+    if (structured_annotation_on_typedef || structured_annotation_on_field) {
+      if (t_typedef::get_first_annotation_or_null(
+              type, {unstructured_adapter_annotation})) {
+        ctx_.failure([&](auto& o) {
+          o << "`" << structured_adapter_annotation_error_name
+            << "` cannot be combined with `" << unstructured_adapter_annotation
+            << "` in `" << field.name() << "`.";
+        });
+      }
+    }
+  }
+
+  void check(
+      const t_field&& field,
+      const char* structured_adapter_annotation,
+      const char* unstructured_adapter_annotation,
+      const char* structured_adapter_annotation_error_name,
+      bool disallow_structured_annotations_on_both_field_and_typedef) = delete;
+
+ private:
+  diagnostic_context& ctx_;
 };
 
 struct service_metadata {
@@ -458,44 +556,14 @@ void validate_ref_annotation(diagnostic_context& ctx, const t_field& node) {
   }
 }
 
-void validate_adapter_annotation(diagnostic_context& ctx, const t_named& node) {
-  const t_const* adapter_annotation =
-      node.find_structured_annotation_or_null(kCppAdapterUri);
+void validate_cpp_adapter_annotation(
+    diagnostic_context& ctx, const t_named& node) {
+  adapter_checker(ctx).check(node, kCppAdapterUri, "@cpp.Adapter");
+}
 
-  if (!adapter_annotation) {
-    return;
-  }
-
-  try {
-    adapter_annotation->get_value_from_structured_annotation("name");
-  } catch (const std::exception& e) {
-    ctx.failure([&](auto& o) { o << e.what(); });
-    return;
-  }
-
-  // Do not allow composing with unstructured adapter annotation on a field.
-  if (const auto* field = dynamic_cast<const t_field*>(&node)) {
-    if (t_typedef::get_first_annotation_or_null(
-            &*field->type(), {"cpp.adapter"})) {
-      ctx.failure([&](auto& o) {
-        o << "`@cpp.Adapter` cannot be combined with `cpp_adapter` in `"
-          << node.name() << "`.";
-      });
-    }
-  }
-
-  // TODO (dokwon): Do not allow composing unstructured adapter annotation on
-  // typedef as well.
-  // Do not allow composing two structured adapter annotation on typedef.
-  if (const auto* typedf = dynamic_cast<const t_typedef*>(&node)) {
-    if (t_typedef::get_first_structured_annotation_or_null(
-            &*typedf->type(), kCppAdapterUri)) {
-      ctx.failure([&](auto& o) {
-        o << "The @cpp.Adapter annotation cannot be annotated more than once in all typedef levels in `"
-          << node.name() << "`.";
-      });
-    }
-  }
+void validate_hack_adapter_annotation(
+    diagnostic_context& ctx, const t_named& node) {
+  adapter_checker(ctx).check(node, kHackAdapterUri, "@hack.Adapter");
 }
 
 void validate_box_annotation(
@@ -663,6 +731,25 @@ void validate_interaction_factories(
   }
 }
 
+void validate_cpp_field_adapter_annotation(
+    diagnostic_context& ctx, const t_field& field) {
+  adapter_checker(ctx).check(
+      field,
+      kCppAdapterUri,
+      kCppUnstructuredAdapter,
+      "@cpp.Adapter",
+      false /* disallow_structured_annotations_on_both_field_and_typedef */);
+}
+
+void validate_hack_field_adapter_annotation(
+    diagnostic_context& ctx, const t_field& field) {
+  adapter_checker(ctx).check(
+      field,
+      kHackAdapterUri,
+      kHackUnstructuredAdapter,
+      "@hack.Adapter",
+      true /* disallow_structured_annotations_on_both_field_and_typedef */);
+}
 } // namespace
 
 ast_validator standard_validator() {
@@ -690,6 +777,8 @@ ast_validator standard_validator() {
   validator.add_field_visitor(&validate_field_default_value);
   validator.add_field_visitor(&validate_ref_annotation);
   validator.add_field_visitor(&validate_ref_unique_and_box_annotation);
+  validator.add_field_visitor(&validate_cpp_field_adapter_annotation);
+  validator.add_field_visitor(&validate_hack_field_adapter_annotation);
 
   validator.add_enum_visitor(&validate_enum_value_name_uniqueness);
   validator.add_enum_visitor(&validate_enum_value_uniqueness);
@@ -697,7 +786,8 @@ ast_validator standard_validator() {
 
   validator.add_definition_visitor(&validate_structured_annotation);
   validator.add_definition_visitor(&validate_annotation_scopes);
-  validator.add_definition_visitor(&validate_adapter_annotation);
+  validator.add_definition_visitor(&validate_cpp_adapter_annotation);
+  validator.add_definition_visitor(&validate_hack_adapter_annotation);
 
   validator.add_const_visitor(&validate_const_type_and_value);
   validator.add_program_visitor(&validate_uri_uniqueness);

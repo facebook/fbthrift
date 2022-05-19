@@ -806,19 +806,25 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 include "thrift/annotation/cpp.thrift"
+                include "thrift/annotation/hack.thrift"
 
-                typedef i64 MyI64 (cpp.adapter="MyAdapter")
+                typedef i64 MyI64 (cpp.adapter="MyAdapter", hack.adapter="MyAdapter")
 
                 struct MyStruct {
                     @cpp.Adapter{name="MyAdapter"}
+                    @hack.Adapter{name="MyAdapter"}
                     1: MyI64 my_field;
                     @cpp.Adapter{}
+                    @hack.Adapter{name="MyAdapter"}
                     2: i64 my_field2;
                     @cpp.Adapter{name="MyAdapter"}
+                    @hack.Adapter{name="MyAdapter"}
                     3: optional i64 my_field3 (cpp.ref);
                     @cpp.Adapter{name="MyAdapter"}
+                    @hack.Adapter{name="MyAdapter"}
                     4: optional i64 my_field4 (cpp.ref_type = "unique");
                     @cpp.Adapter{name="MyAdapter"}
+                    @hack.Adapter{name="MyAdapter"}
                     @cpp.Ref{type = cpp.RefType.Unique}
                     5: optional i64 my_field5;
                 }
@@ -831,14 +837,16 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:7] `@cpp.Adapter` cannot be combined with "
-            "`cpp_adapter` in `my_field`.\n"
-            "[FAILURE:foo.thrift:9] key `name` not found.\n"
-            "[FAILURE:foo.thrift:11] cpp.ref, cpp2.ref are deprecated. "
+            "[FAILURE:foo.thrift:9] `@cpp.Adapter` cannot be combined with "
+            "`cpp.adapter` in `my_field`.\n"
+            "[FAILURE:foo.thrift:9] `@hack.Adapter` cannot be combined with "
+            "`hack.adapter` in `my_field`.\n"
+            "[FAILURE:foo.thrift:12] key `name` not found.\n"
+            "[FAILURE:foo.thrift:15] cpp.ref, cpp2.ref are deprecated. "
             "Please use @thrift.Box annotation instead in `my_field3` with @cpp.Adapter.\n"
-            "[FAILURE:foo.thrift:13] cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
+            "[FAILURE:foo.thrift:18] cpp.ref_type = `unique`, cpp2.ref_type = `unique` "
             "are deprecated. Please use @thrift.Box annotation instead in `my_field4` with @cpp.Adapter.\n"
-            "[FAILURE:foo.thrift:16] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. "
+            "[FAILURE:foo.thrift:22] @cpp.Ref{type = cpp.RefType.Unique} is deprecated. "
             "Please use @thrift.Box annotation instead in `my_field5` with @cpp.Adapter.\n",
         )
 
@@ -848,19 +856,26 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 include "thrift/annotation/cpp.thrift"
+                include "thrift/annotation/hack.thrift"
 
                 @cpp.Adapter{}
+                @hack.Adapter{}
                 typedef i32 MyI32
 
                 @cpp.Adapter{name="MyAdapter"}
+                @hack.Adapter{name="MyAdapter"}
                 typedef i64 MyI64
 
                 @cpp.Adapter{name="MyAdapter"}
+                @hack.Adapter{name="MyAdapter"}
                 typedef MyI64 DoubleMyI64
 
                 struct MyStruct {
                     1: MyI64 my_field;
+                    2: MyI64 (cpp.adapter="MyAdapter", hack.adapter="MyAdapter") my_field1;
+                    3: MyI64 my_field2 (cpp.adapter="MyAdapter", hack.adapter="MyAdapter");
                 }
+
                 """
             ),
         )
@@ -870,8 +885,15 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            "[FAILURE:foo.thrift:4] key `name` not found.\n"
-            "[FAILURE:foo.thrift:10] The @cpp.Adapter annotation cannot be annotated more "
+            "[FAILURE:foo.thrift:18] `@cpp.Adapter` cannot be combined with "
+            "`cpp.adapter` in `my_field1`.\n"
+            "[FAILURE:foo.thrift:18] `@hack.Adapter` cannot be combined with "
+            "`hack.adapter` in `my_field1`.\n"
+            "[FAILURE:foo.thrift:6] key `name` not found.\n"
+            "[FAILURE:foo.thrift:6] key `name` not found.\n"
+            "[FAILURE:foo.thrift:14] The `@cpp.Adapter` annotation cannot be annotated more "
+            "than once in all typedef levels in `DoubleMyI64`.\n"
+            "[FAILURE:foo.thrift:14] The `@hack.Adapter` annotation cannot be annotated more "
             "than once in all typedef levels in `DoubleMyI64`.\n",
         )
 
