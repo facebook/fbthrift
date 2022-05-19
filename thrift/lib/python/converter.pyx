@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from thrift.python.metadata import gen_metadata
 from thrift.python.types cimport (
     StructOrUnion,
     Struct,
