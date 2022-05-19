@@ -18,9 +18,13 @@ pub mod types {
 
     pub type ListWithElemAdapter = ::std::vec::Vec<crate::types::StringWithAdapter>;
 
+    pub type ListWithElemAdapter_withAdapter = crate::types::ListWithElemAdapter;
+
     pub type MyI64 = ::std::primitive::i64;
 
     pub type MyI32 = ::std::primitive::i32;
+
+    pub type FooWithAdapter = crate::types::Foo;
 
     pub type StructWithAdapter = crate::types::Bar;
 
@@ -33,8 +37,8 @@ pub mod types {
         pub intFieldWithDefault: ::std::primitive::i32,
         pub setField: crate::types::SetWithAdapter,
         pub optionalSetField: ::std::option::Option<crate::types::SetWithAdapter>,
-        pub mapField: ::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter>,
-        pub optionalMapField: ::std::option::Option<::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter>>,
+        pub mapField: ::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter_withAdapter>,
+        pub optionalMapField: ::std::option::Option<::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter_withAdapter>>,
         pub binaryField: ::std::vec::Vec<::std::primitive::u8>,
         pub longField: crate::types::MyI64,
         pub adaptedLongField: crate::types::MyI64,
@@ -50,7 +54,7 @@ pub mod types {
     pub enum Baz {
         intField(::std::primitive::i32),
         setField(crate::types::SetWithAdapter),
-        mapField(::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter>),
+        mapField(::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter_withAdapter>),
         binaryField(::std::vec::Vec<::std::primitive::u8>),
         longField(crate::types::MyI64),
         UnknownField(::std::primitive::i32),
@@ -60,8 +64,8 @@ pub mod types {
     pub struct Bar {
         pub structField: crate::types::Foo,
         pub optionalStructField: ::std::option::Option<crate::types::Foo>,
-        pub structListField: ::std::vec::Vec<crate::types::Foo>,
-        pub optionalStructListField: ::std::option::Option<::std::vec::Vec<crate::types::Foo>>,
+        pub structListField: ::std::vec::Vec<crate::types::FooWithAdapter>,
+        pub optionalStructListField: ::std::option::Option<::std::vec::Vec<crate::types::FooWithAdapter>>,
         pub unionField: crate::types::Baz,
         pub optionalUnionField: ::std::option::Option<crate::types::Baz>,
         // This field forces `..Default::default()` when instantiating this
@@ -85,6 +89,8 @@ pub mod types {
         #[doc(hidden)]
         pub _dot_dot_Default_default: self::dot_dot::OtherFields,
     }
+
+
 
 
 

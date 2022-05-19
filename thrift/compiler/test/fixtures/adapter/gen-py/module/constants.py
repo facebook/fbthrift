@@ -24,5 +24,5 @@ import thrift.annotation.hack.ttypes
 import my
 
 
-from .ttypes import UTF8STRINGS, Foo, Baz, Bar, StructWithFieldAdapter, SetWithAdapter, StringWithAdapter, ListWithElemAdapter, MyI64, MyI32, StructWithAdapter, UnionWithAdapter
+from .ttypes import UTF8STRINGS, Foo, Baz, Bar, StructWithFieldAdapter, SetWithAdapter, StringWithAdapter, ListWithElemAdapter, ListWithElemAdapter_withAdapter, MyI64, MyI32, FooWithAdapter, StructWithAdapter, UnionWithAdapter
 

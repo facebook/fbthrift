@@ -1136,7 +1136,9 @@ Sequence.register(List__Foo)
 SetWithAdapter = Set__string
 StringWithAdapter = str
 ListWithElemAdapter = List__string
+ListWithElemAdapter_withAdapter = List__string
 MyI64 = int
 MyI32 = int
+FooWithAdapter = Foo
 StructWithAdapter = Bar
 UnionWithAdapter = Baz

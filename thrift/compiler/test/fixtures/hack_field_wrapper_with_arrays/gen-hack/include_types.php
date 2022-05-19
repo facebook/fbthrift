@@ -265,13 +265,13 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
     ),
     3 => shape(
       'var' => 'adapted_type',
-      'adapter' => \MyAdapter::class,
+      'adapter' => \MyAdapter1::class,
       'type' => \TType::I64,
     ),
     4 => shape(
       'var' => 'adapted__and_wrapped_type',
       'is_wrapped' => true,
-      'adapter' => \MyAdapter::class,
+      'adapter' => \MyAdapter1::class,
       'type' => \TType::I64,
     ),
     5 => shape(
@@ -292,16 +292,16 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
   const type TConstructorShape = shape(
     ?'wrapped_field' => ?int,
     ?'annotated_field' => ?int,
-    ?'adapted_type' => ?\MyAdapter::THackType,
-    ?'adapted__and_wrapped_type' => ?\MyAdapter::THackType,
+    ?'adapted_type' => ?\MyAdapter1::THackType,
+    ?'adapted__and_wrapped_type' => ?\MyAdapter1::THackType,
     ?'optional_adapted_and_wrapped_type' => ?\MyAdapter1::THackType,
   );
 
   const type TShape = shape(
     'wrapped_field' => int,
     'annotated_field' => int,
-    'adapted_type' => \MyAdapter::THackType,
-    'adapted__and_wrapped_type' => \MyAdapter::THackType,
+    'adapted_type' => \MyAdapter1::THackType,
+    'adapted__and_wrapped_type' => \MyAdapter1::THackType,
     ?'optional_adapted_and_wrapped_type' => ?\MyAdapter1::THackType,
   );
   const int STRUCTURAL_ID = 9035067595372477432;
@@ -329,14 +329,14 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
    * Original thrift field:-
    * 3: i64 adapted_type
    */
-  public \MyAdapter::THackType $adapted_type;
+  public \MyAdapter1::THackType $adapted_type;
   /**
    * Original thrift field:-
    * 4: i64 adapted__and_wrapped_type
    */
-  private ?\MyFieldWrapper<\MyAdapter::THackType, MyNestedStruct> $adapted__and_wrapped_type;
+  private ?\MyFieldWrapper<\MyAdapter1::THackType, MyNestedStruct> $adapted__and_wrapped_type;
 
-  public function get_adapted__and_wrapped_type()[]: \MyFieldWrapper<\MyAdapter::THackType, MyNestedStruct> {
+  public function get_adapted__and_wrapped_type()[]: \MyFieldWrapper<\MyAdapter1::THackType, MyNestedStruct> {
     return $this->adapted__and_wrapped_type as nonnull;
   }
 
@@ -352,10 +352,10 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
 
 
   public function __construct()[] {
-    $this->adapted_type = \MyAdapter::fromThrift(0);
+    $this->adapted_type = \MyAdapter1::fromThrift(0);
     $this->wrapped_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, MyNestedStruct>(0, 1, $this);
     $this->annotated_field = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<int, MyNestedStruct>(0, 2, $this);
-    $this->adapted__and_wrapped_type = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\MyAdapter::THackType, MyNestedStruct>(\MyAdapter::fromThrift(0), 4, $this);
+    $this->adapted__and_wrapped_type = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<\MyAdapter1::THackType, MyNestedStruct>(\MyAdapter1::fromThrift(0), 4, $this);
     $this->optional_adapted_and_wrapped_type = \MyFieldWrapper::fromThrift_DO_NOT_USE_THRIFT_INTERNAL<?\MyAdapter1::THackType, MyNestedStruct>(null, 5, $this);
   }
 
@@ -521,11 +521,26 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
           ],
           'type' => dict[],
         ),
+        'adapted_type' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+              shape(
+                "name" => "\MyAdapter1",
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
         'adapted__and_wrapped_type' => shape(
           'field' => dict[
             '\facebook\thrift\annotation\FieldWrapper' => \facebook\thrift\annotation\FieldWrapper::fromShape(
               shape(
                 "name" => "\MyFieldWrapper",
+              )
+            ),
+            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+              shape(
+                "name" => "\MyAdapter1",
               )
             ),
           ],
@@ -539,7 +554,13 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
               )
             ),
           ],
-          'type' => dict[],
+          'type' => dict[
+            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+              shape(
+                "name" => "\MyAdapter1",
+              )
+            ),
+          ],
         ),
       ],
     );
@@ -604,7 +625,6 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
-    \ThriftUtil::requireSameType<\MyAdapter::TThriftType, int>();
     \ThriftUtil::requireSameType<\MyAdapter1::TThriftType, int>();
   }
 

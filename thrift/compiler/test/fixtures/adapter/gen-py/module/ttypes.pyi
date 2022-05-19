@@ -266,7 +266,9 @@ class StructWithFieldAdapter:
 SetWithAdapter = __T.Set[str]
 StringWithAdapter = str
 ListWithElemAdapter = __T.List[str]
+ListWithElemAdapter_withAdapter = __T.List[str]
 MyI64 = int
 MyI32 = int
+FooWithAdapter = Foo
 StructWithAdapter = my.Adapter2.Type
 UnionWithAdapter = my.Adapter2.Type

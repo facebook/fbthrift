@@ -150,8 +150,10 @@ class StructWithFieldAdapter(_fbthrift_py3lite_types.Struct):
 SetWithAdapter = _typing.Set[str]
 StringWithAdapter = str
 ListWithElemAdapter = _typing.List[str]
+ListWithElemAdapter_withAdapter = _typing.List[str]
 MyI64 = my.another.module.AdaptedType2
 MyI32 = int
+FooWithAdapter = Foo
 StructWithAdapter = Bar
 UnionWithAdapter = Baz
 

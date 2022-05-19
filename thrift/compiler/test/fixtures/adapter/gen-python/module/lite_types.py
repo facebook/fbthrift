@@ -316,8 +316,10 @@ _fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
 SetWithAdapter = _fbthrift_py3lite_types.SetTypeFactory(_fbthrift_py3lite_types.typeinfo_string)
 StringWithAdapter = str
 ListWithElemAdapter = _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_string)
+ListWithElemAdapter_withAdapter = _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_string)
 MyI64 = my.another.module.AdaptedType2
 MyI32 = int
+FooWithAdapter = Foo
 StructWithAdapter = Bar
 UnionWithAdapter = Baz
 

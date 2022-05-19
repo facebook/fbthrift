@@ -39,7 +39,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Foo', 'Baz', 'Bar', 'StructWithFieldAdapter', 'SetWithAdapter', 'StringWithAdapter', 'ListWithElemAdapter', 'MyI64', 'MyI32', 'StructWithAdapter', 'UnionWithAdapter']
+__all__ = ['UTF8STRINGS', 'Foo', 'Baz', 'Bar', 'StructWithFieldAdapter', 'SetWithAdapter', 'StringWithAdapter', 'ListWithElemAdapter', 'ListWithElemAdapter_withAdapter', 'MyI64', 'MyI32', 'FooWithAdapter', 'StructWithAdapter', 'UnionWithAdapter']
 
 class Foo:
   """
@@ -1058,8 +1058,10 @@ class StructWithFieldAdapter:
 SetWithAdapter = UnimplementedTypedef()
 StringWithAdapter = UnimplementedTypedef()
 ListWithElemAdapter = UnimplementedTypedef()
+ListWithElemAdapter_withAdapter = ListWithElemAdapter
 MyI64 = UnimplementedTypedef()
 MyI32 = UnimplementedTypedef()
+FooWithAdapter = Foo
 StructWithAdapter = my.Adapter2.Type
 UnionWithAdapter = my.Adapter2.Type
 all_structs.append(Foo)

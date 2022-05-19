@@ -326,6 +326,16 @@ class MyUnion implements \IThriftAsyncStruct, \IThriftUnion<MyUnionEnum>, \IThri
           ],
           'type' => dict[],
         ),
+        'union_adapted_type' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+              shape(
+                "name" => "\AdapterTestIntToString",
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
       ],
     );
   }

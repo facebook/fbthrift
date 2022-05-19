@@ -407,6 +407,16 @@ class MyNestedStruct implements \IThriftAsyncStruct, \IThriftShapishAsyncStruct 
           ],
           'type' => dict[],
         ),
+        'adapted_type' => shape(
+          'field' => dict[
+            '\facebook\thrift\annotation\Adapter' => \facebook\thrift\annotation\Adapter::fromShape(
+              shape(
+                "name" => "\MyAdapter",
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
       ],
     );
   }

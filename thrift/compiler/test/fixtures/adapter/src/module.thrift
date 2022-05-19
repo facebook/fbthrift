@@ -35,6 +35,8 @@ typedef string (
   py.adapter = 'my.Adapter1',
 ) StringWithAdapter
 typedef list<StringWithAdapter> ListWithElemAdapter
+@hack.Adapter{name = '\Adapter2'}
+typedef ListWithElemAdapter ListWithElemAdapter_withAdapter
 
 @cpp.Adapter{name = "my::Adapter1"}
 @python.Adapter{
@@ -64,8 +66,7 @@ struct Foo {
   @hack.Adapter{name = '\Adapter3'}
   6: map<
     string,
-    ListWithElemAdapter (
-      hack.adapter = '\Adapter2',
+    ListWithElemAdapter_withAdapter (
       cpp.adapter = 'my::Adapter2',
       py.adapter = 'my.Adapter2',
     )
@@ -73,8 +74,7 @@ struct Foo {
   @hack.Adapter{name = '\Adapter3'}
   7: optional map<
     string,
-    ListWithElemAdapter (
-      hack.adapter = '\Adapter2',
+    ListWithElemAdapter_withAdapter (
       cpp.adapter = 'my::Adapter2',
       py.adapter = 'my.Adapter2',
     )
@@ -99,8 +99,7 @@ union Baz {
   @hack.Adapter{name = '\Adapter3'}
   6: map<
     string,
-    ListWithElemAdapter (
-      hack.adapter = '\Adapter2',
+    ListWithElemAdapter_withAdapter (
       cpp.adapter = 'my::Adapter2',
       py.adapter = 'my.Adapter2',
     )
@@ -113,6 +112,9 @@ union Baz {
   9: MyI64 longField;
 }
 
+@hack.Adapter{name = '\Adapter1'}
+typedef Foo FooWithAdapter
+
 struct Bar {
   @hack.Adapter{name = '\Adapter1'}
   1: Foo (cpp.adapter = 'my::Adapter1', py.adapter = 'my.Adapter1') structField;
@@ -122,18 +124,10 @@ struct Bar {
     py.adapter = 'my.Adapter1',
   ) optionalStructField;
   3: list<
-    Foo (
-      hack.adapter = '\Adapter1',
-      cpp.adapter = 'my::Adapter1',
-      py.adapter = 'my.Adapter1',
-    )
+    FooWithAdapter (cpp.adapter = 'my::Adapter1', py.adapter = 'my.Adapter1')
   > structListField;
   4: optional list<
-    Foo (
-      hack.adapter = '\Adapter1',
-      cpp.adapter = 'my::Adapter1',
-      py.adapter = 'my.Adapter1',
-    )
+    FooWithAdapter (cpp.adapter = 'my::Adapter1', py.adapter = 'my.Adapter1')
   > optionalStructListField;
   @hack.Adapter{name = '\Adapter1'}
   5: Baz (cpp.adapter = 'my::Adapter1', py.adapter = 'my.Adapter1') unionField;

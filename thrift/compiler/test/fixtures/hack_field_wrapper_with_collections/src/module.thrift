@@ -30,7 +30,8 @@ struct MyNestedStruct {
   1: i64 wrapped_field;
   @AnnotationStruct
   2: i64 annotated_field;
-  3: i64 (hack.adapter = "\MyAdapter") adapted_type;
+  @hack.Adapter{name = "\MyAdapter"}
+  3: i64 adapted_type;
 }
 
 struct MyComplexStruct {

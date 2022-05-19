@@ -290,7 +290,9 @@ class List__Foo(_typing.Sequence[Foo], _typing.Hashable):
 SetWithAdapter = Set__string
 StringWithAdapter = str
 ListWithElemAdapter = List__string
+ListWithElemAdapter_withAdapter = List__string
 MyI64 = int
 MyI32 = int
+FooWithAdapter = Foo
 StructWithAdapter = Bar
 UnionWithAdapter = Baz
