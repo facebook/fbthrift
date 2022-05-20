@@ -113,7 +113,7 @@ static {
     }
     
     @java.lang.Override
-    public boolean equals(Object o) {
+    public boolean equals(java.lang.Object o) {
         if (this == o) {
             return true;
         }
@@ -131,7 +131,7 @@ static {
     
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new Object[] {
+        return Arrays.deepHashCode(new java.lang.Object[] {
             field1,
             field2
         });

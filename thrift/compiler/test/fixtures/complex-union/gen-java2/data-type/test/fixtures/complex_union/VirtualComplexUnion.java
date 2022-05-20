@@ -39,7 +39,7 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
       FIELD_METADATA.put(2, THING_TWO_FIELD_DESC);
     }
 
-    private Object value;
+    private java.lang.Object value;
     private short id;
 
     @ThriftConstructor
@@ -133,7 +133,7 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(java.lang.Object o) {
         if (this == o) {
             return true;
         }
@@ -149,7 +149,7 @@ public final class VirtualComplexUnion implements com.facebook.thrift.payload.Th
 
     @Override
     public int hashCode() {
-        return Arrays.deepHashCode(new Object[] {
+        return Arrays.deepHashCode(new java.lang.Object[] {
             id,
             value,
         });

@@ -114,7 +114,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     }
     
     @java.lang.Override
-    public boolean equals(Object o) {
+    public boolean equals(java.lang.Object o) {
         if (this == o) {
             return true;
         }
@@ -132,7 +132,7 @@ public final class MyStruct implements com.facebook.thrift.payload.ThriftSeriali
     
     @java.lang.Override
     public int hashCode() {
-        return Arrays.deepHashCode(new Object[] {
+        return Arrays.deepHashCode(new java.lang.Object[] {
             myIntField,
             myStringField
         });

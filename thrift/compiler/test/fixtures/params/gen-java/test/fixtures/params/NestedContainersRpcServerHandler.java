@@ -70,7 +70,7 @@ public class NestedContainersRpcServerHandler
   }
 
   private static com.facebook.thrift.payload.Writer _create_mapList_response_writer(
-      final Object _r,
+      final java.lang.Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
@@ -99,8 +99,8 @@ public class NestedContainersRpcServerHandler
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
-          java.util.List<Object>_data = _payload.getData(_readers);
-          java.util.Iterator<Object> _iterator = _data.iterator();
+          java.util.List<java.lang.Object>_data = _payload.getData(_readers);
+          java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
           Map<Integer, List<Integer>> foo = (Map<Integer, List<Integer>>) _iterator.next();
 
@@ -156,7 +156,7 @@ public class NestedContainersRpcServerHandler
   }
 
   private static com.facebook.thrift.payload.Writer _create_mapSet_response_writer(
-      final Object _r,
+      final java.lang.Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
@@ -185,8 +185,8 @@ public class NestedContainersRpcServerHandler
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
-          java.util.List<Object>_data = _payload.getData(_readers);
-          java.util.Iterator<Object> _iterator = _data.iterator();
+          java.util.List<java.lang.Object>_data = _payload.getData(_readers);
+          java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
           Map<Integer, Set<Integer>> foo = (Map<Integer, Set<Integer>>) _iterator.next();
 
@@ -242,7 +242,7 @@ public class NestedContainersRpcServerHandler
   }
 
   private static com.facebook.thrift.payload.Writer _create_listMap_response_writer(
-      final Object _r,
+      final java.lang.Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
@@ -271,8 +271,8 @@ public class NestedContainersRpcServerHandler
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
-          java.util.List<Object>_data = _payload.getData(_readers);
-          java.util.Iterator<Object> _iterator = _data.iterator();
+          java.util.List<java.lang.Object>_data = _payload.getData(_readers);
+          java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
           List<Map<Integer, Integer>> foo = (List<Map<Integer, Integer>>) _iterator.next();
 
@@ -328,7 +328,7 @@ public class NestedContainersRpcServerHandler
   }
 
   private static com.facebook.thrift.payload.Writer _create_listSet_response_writer(
-      final Object _r,
+      final java.lang.Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
@@ -357,8 +357,8 @@ public class NestedContainersRpcServerHandler
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
-          java.util.List<Object>_data = _payload.getData(_readers);
-          java.util.Iterator<Object> _iterator = _data.iterator();
+          java.util.List<java.lang.Object>_data = _payload.getData(_readers);
+          java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
           List<Set<Integer>> foo = (List<Set<Integer>>) _iterator.next();
 
@@ -414,7 +414,7 @@ public class NestedContainersRpcServerHandler
   }
 
   private static com.facebook.thrift.payload.Writer _create_turtles_response_writer(
-      final Object _r,
+      final java.lang.Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
@@ -443,8 +443,8 @@ public class NestedContainersRpcServerHandler
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
-          java.util.List<Object>_data = _payload.getData(_readers);
-          java.util.Iterator<Object> _iterator = _data.iterator();
+          java.util.List<java.lang.Object>_data = _payload.getData(_readers);
+          java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
           List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo = (List<List<Map<Integer, Map<Integer, Set<Integer>>>>>) _iterator.next();
 

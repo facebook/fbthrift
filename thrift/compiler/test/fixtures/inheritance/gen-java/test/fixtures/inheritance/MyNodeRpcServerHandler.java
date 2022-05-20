@@ -52,7 +52,7 @@ public class MyNodeRpcServerHandler  extends test.fixtures.inheritance.MyRootRpc
   }
 
   private static com.facebook.thrift.payload.Writer _create_doMid_response_writer(
-      final Object _r,
+      final java.lang.Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
@@ -81,8 +81,8 @@ public class MyNodeRpcServerHandler  extends test.fixtures.inheritance.MyRootRpc
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
-          java.util.List<Object>_data = _payload.getData(_readers);
-          java.util.Iterator<Object> _iterator = _data.iterator();
+          java.util.List<java.lang.Object>_data = _payload.getData(_readers);
+          java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
 
           _chain.postRead(_data);

@@ -45,7 +45,7 @@ public class TooBigEnum extends IntEnum implements com.facebook.thrift.payload.T
 
 
     @java.lang.Override
-    public boolean equals(Object o) {
+    public boolean equals(java.lang.Object o) {
         if (this == o) {
             return true;
         }

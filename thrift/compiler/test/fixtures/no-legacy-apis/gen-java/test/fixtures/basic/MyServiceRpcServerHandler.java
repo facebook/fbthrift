@@ -54,7 +54,7 @@ public class MyServiceRpcServerHandler
   }
 
   private static com.facebook.thrift.payload.Writer _create_query_response_writer(
-      final Object _r,
+      final java.lang.Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
@@ -87,8 +87,8 @@ _iter0.write0(oprot);
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
-          java.util.List<Object>_data = _payload.getData(_readers);
-          java.util.Iterator<Object> _iterator = _data.iterator();
+          java.util.List<java.lang.Object>_data = _payload.getData(_readers);
+          java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
           test.fixtures.basic.MyUnion u = (test.fixtures.basic.MyUnion) _iterator.next();
 

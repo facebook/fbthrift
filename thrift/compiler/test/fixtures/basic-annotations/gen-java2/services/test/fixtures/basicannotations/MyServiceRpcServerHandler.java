@@ -76,7 +76,7 @@ public class MyServiceRpcServerHandler
   }
 
   private static com.facebook.thrift.payload.Writer _create_ping_response_writer(
-      final Object _r,
+      final java.lang.Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
@@ -130,8 +130,8 @@ public class MyServiceRpcServerHandler
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
-          java.util.List<Object>_data = _payload.getData(_readers);
-          java.util.Iterator<Object> _iterator = _data.iterator();
+          java.util.List<java.lang.Object>_data = _payload.getData(_readers);
+          java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
 
           _chain.postRead(_data);
@@ -195,7 +195,7 @@ public class MyServiceRpcServerHandler
   }
 
   private static com.facebook.thrift.payload.Writer _create_getRandomData_response_writer(
-      final Object _r,
+      final java.lang.Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
@@ -228,8 +228,8 @@ oprot.writeString(_iter0);
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
-          java.util.List<Object>_data = _payload.getData(_readers);
-          java.util.Iterator<Object> _iterator = _data.iterator();
+          java.util.List<java.lang.Object>_data = _payload.getData(_readers);
+          java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
 
           _chain.postRead(_data);
@@ -283,7 +283,7 @@ oprot.writeString(_iter0);
   }
 
   private static com.facebook.thrift.payload.Writer _create_hasDataById_response_writer(
-      final Object _r,
+      final java.lang.Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
@@ -316,8 +316,8 @@ oprot.writeBool(_iter0);
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
-          java.util.List<Object>_data = _payload.getData(_readers);
-          java.util.Iterator<Object> _iterator = _data.iterator();
+          java.util.List<java.lang.Object>_data = _payload.getData(_readers);
+          java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
           long id = (long) _iterator.next();
 
@@ -372,7 +372,7 @@ oprot.writeBool(_iter0);
   }
 
   private static com.facebook.thrift.payload.Writer _create_getDataById_response_writer(
-      final Object _r,
+      final java.lang.Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
@@ -405,8 +405,8 @@ oprot.writeString(_iter0);
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
-          java.util.List<Object>_data = _payload.getData(_readers);
-          java.util.Iterator<Object> _iterator = _data.iterator();
+          java.util.List<java.lang.Object>_data = _payload.getData(_readers);
+          java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
           long id = (long) _iterator.next();
 
@@ -463,7 +463,7 @@ oprot.writeString(_iter0);
   }
 
   private static com.facebook.thrift.payload.Writer _create_putDataById_response_writer(
-      final Object _r,
+      final java.lang.Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
@@ -492,8 +492,8 @@ oprot.writeString(_iter0);
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
-          java.util.List<Object>_data = _payload.getData(_readers);
-          java.util.Iterator<Object> _iterator = _data.iterator();
+          java.util.List<java.lang.Object>_data = _payload.getData(_readers);
+          java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
           long id = (long) _iterator.next();
           String data = (String) _iterator.next();
@@ -548,7 +548,7 @@ oprot.writeString(_iter0);
   }
 
   private static com.facebook.thrift.payload.Writer _create_doNothing_response_writer(
-      final Object _r,
+      final java.lang.Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
       return oprot -> {
@@ -577,8 +577,8 @@ oprot.writeString(_iter0);
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
           _chain.preRead();
-          java.util.List<Object>_data = _payload.getData(_readers);
-          java.util.Iterator<Object> _iterator = _data.iterator();
+          java.util.List<java.lang.Object>_data = _payload.getData(_readers);
+          java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
 
           _chain.postRead(_data);
@@ -644,8 +644,8 @@ oprot.writeString(_iter0);
     java.util.List<com.facebook.swift.service.ThriftEventHandler> _eventHandlers) {
     final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
     _chain.preRead();
-    java.util.List<Object>_data = _payload.getData(_readers);
-    java.util.Iterator<Object> _iterator = _data.iterator();
+    java.util.List<java.lang.Object>_data = _payload.getData(_readers);
+    java.util.Iterator<java.lang.Object> _iterator = _data.iterator();
 
     long id = (long) _iterator.next();
     String data = (String) _iterator.next();
