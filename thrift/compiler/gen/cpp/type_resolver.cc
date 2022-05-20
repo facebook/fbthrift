@@ -83,8 +83,10 @@ const std::string& type_resolver::get_storage_type_name(
 }
 
 const std::string* type_resolver::find_first_adapter(const t_type& node) {
-  if (const std::string* adapter = find_structured_adapter_annotation(node)) {
-    return adapter;
+  if (auto annotation = t_typedef::get_first_structured_annotation_or_null(
+          &node, "facebook.com/thrift/annotation/cpp/Adapter")) {
+    return &annotation->get_value_from_structured_annotation("name")
+                .get_string();
   }
   return t_typedef::get_first_annotation_or_null(&node, {"cpp.adapter"});
 }

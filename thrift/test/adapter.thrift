@@ -44,6 +44,8 @@ typedef double AdaptedDouble
 @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
 typedef string AdaptedString
 
+typedef AdaptedBool DoubleTypedefBool
+
 typedef binary (
   cpp.type = "::folly::IOBuf",
   cpp.adapter = "::apache::thrift::test::CustomProtocolAdapter",
@@ -110,6 +112,7 @@ struct AdaptTemplatedTestStruct {
   20: set<i64> adaptedSetDefault = [1];
   @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
   21: map<i64, i64> adaptedMapDefault = {1: 1};
+  22: DoubleTypedefBool doubleTypedefBool;
 }
 
 struct AdaptTemplatedNestedTestStruct {

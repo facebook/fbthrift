@@ -387,6 +387,7 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
   obj.adaptedList() = Wrapper<std::vector<int64_t>>{{1}};
   obj.adaptedSet() = Wrapper<std::set<int64_t>>{{1}};
   obj.adaptedMap() = Wrapper<std::map<int64_t, int64_t>>{{{1, 1}}};
+  obj.doubleTypedefBool_ref() = Wrapper<bool>{true};
 
   EXPECT_EQ(obj.adaptedBool_ref()->value, true);
   EXPECT_EQ(obj.adaptedByte_ref()->value, 1);
@@ -398,6 +399,7 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
   EXPECT_EQ(obj.adaptedList()->value, std::vector<int64_t>{1});
   EXPECT_EQ(obj.adaptedSet()->value, std::set<int64_t>{1});
   EXPECT_EQ(obj.adaptedMap()->value, int_map);
+  EXPECT_EQ(obj.doubleTypedefBool_ref()->value, true);
 
   auto objs = CompactSerializer::serialize<std::string>(obj);
   AdaptTemplatedTestStruct objd;
@@ -412,6 +414,7 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
   EXPECT_EQ(obj.adaptedList()->value, std::vector<int64_t>{1});
   EXPECT_EQ(obj.adaptedSet()->value, std::set<int64_t>{1});
   EXPECT_EQ(obj.adaptedMap()->value, int_map);
+  EXPECT_EQ(obj.doubleTypedefBool_ref()->value, true);
   EXPECT_EQ(obj, objd);
 
   // Adapted fields reset to the intrinsic default.

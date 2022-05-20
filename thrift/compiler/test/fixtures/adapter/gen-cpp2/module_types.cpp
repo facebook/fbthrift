@@ -72,6 +72,7 @@ Foo::Foo(const Foo& srcObj) {
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 8>(__fbthrift_field_binaryField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 9>(__fbthrift_field_longField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter2, 10>(__fbthrift_field_adaptedLongField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 11>(__fbthrift_field_doubleAdaptedField, *this);
 }
 
 Foo& Foo::operator=(const Foo& src) {
@@ -97,6 +98,7 @@ Foo::Foo() :
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 8>(__fbthrift_field_binaryField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 9>(__fbthrift_field_longField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter2, 10>(__fbthrift_field_adaptedLongField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 11>(__fbthrift_field_doubleAdaptedField, *this);
 }
 
 
@@ -125,6 +127,7 @@ Foo::Foo(Foo&& other) noexcept  :
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 8>(__fbthrift_field_binaryField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 9>(__fbthrift_field_longField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter2, 10>(__fbthrift_field_adaptedLongField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 11>(__fbthrift_field_doubleAdaptedField, *this);
 }
 
 Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
@@ -166,6 +169,7 @@ Foo::Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 8>(__fbthrift_field_binaryField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 9>(__fbthrift_field_longField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter2, 10>(__fbthrift_field_adaptedLongField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 11>(__fbthrift_field_doubleAdaptedField, *this);
   __isset.set(folly::index_constant<0>(), true);
   __isset.set(folly::index_constant<1>(), true);
   __isset.set(folly::index_constant<2>(), true);
@@ -192,7 +196,7 @@ void Foo::__fbthrift_clear() {
   ::apache::thrift::adapt_detail::clear<my::Adapter1, 8>(__fbthrift_field_binaryField, *this);
   ::apache::thrift::adapt_detail::clear<my::Adapter1, 9>(__fbthrift_field_longField, *this);
   ::apache::thrift::adapt_detail::clear<my::Adapter2, 10>(__fbthrift_field_adaptedLongField, *this);
-  this->__fbthrift_field_doubleAdaptedField = ::cpp2::DoubleTypedefI64();
+  ::apache::thrift::adapt_detail::clear<my::Adapter1, 11>(__fbthrift_field_doubleAdaptedField, *this);
   __isset = {};
 }
 
@@ -234,7 +238,7 @@ bool Foo::operator==(const Foo& rhs) const {
   if (::apache::thrift::adapt_detail::not_equal<my::Adapter2>(lhs.__fbthrift_field_adaptedLongField, rhs.__fbthrift_field_adaptedLongField)) {
     return false;
   }
-  if (!(lhs.doubleAdaptedField_ref() == rhs.doubleAdaptedField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.__fbthrift_field_doubleAdaptedField, rhs.__fbthrift_field_doubleAdaptedField)) {
     return false;
   }
   return true;
@@ -741,6 +745,7 @@ FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 8, ::std::string, ::cpp2::Foo>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 9, ::std::int64_t, ::cpp2::Foo>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter2, 10, ::std::int64_t, ::cpp2::Foo>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 11, ::std::int64_t, ::cpp2::Foo>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::std::int32_t, ::cpp2::Baz>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter2, 4, ::std::set<::std::string>, ::cpp2::Baz>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter3, 6, ::std::map<::std::string, ::cpp2::ListWithElemAdapter_withAdapter>, ::cpp2::Baz>();

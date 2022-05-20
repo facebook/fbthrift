@@ -62,8 +62,9 @@ class TypeResolverTest : public ::testing::Test {
     return resolver_.get_type_tag(type);
   }
 
- protected:
   type_resolver resolver_;
+
+ protected:
   t_program program_;
   t_struct struct_;
 };
@@ -278,6 +279,8 @@ TEST_F(TypeResolverTest, TypeDefs_Adapter) {
       get_type_name(*ttypedef1.type()),
       "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>");
   EXPECT_TRUE(can_resolve_to_scalar(ttypedef1));
+  ASSERT_TRUE(resolver_.find_first_adapter(ttypedef1));
+  EXPECT_EQ(*resolver_.find_first_adapter(ttypedef1), "HashAdapter");
 
   // Type defs can also be adapted.
   t_typedef ttypedef2(ttypedef1);
@@ -287,6 +290,17 @@ TEST_F(TypeResolverTest, TypeDefs_Adapter) {
       get_type_name(ttypedef2),
       "::apache::thrift::adapt_detail::adapted_t<TypeDefAdapter, ::path::to::MyHash>");
   EXPECT_TRUE(can_resolve_to_scalar(ttypedef2));
+  ASSERT_TRUE(resolver_.find_first_adapter(ttypedef2));
+  EXPECT_EQ(*resolver_.find_first_adapter(ttypedef2), "TypeDefAdapter");
+
+  // Structured annotation
+  t_base_type booll(t_base_type::t_bool());
+  t_typedef typedef1(&program_, "MyBool", booll);
+  auto adapter = adapter_builder(&program_);
+  typedef1.add_structured_annotation(adapter.make());
+  t_typedef typedef2(&program_, "DoubleBool", typedef1);
+  ASSERT_TRUE(resolver_.find_first_adapter(typedef2));
+  EXPECT_EQ(*resolver_.find_first_adapter(typedef2), "MyAdapter");
 }
 
 TEST_F(TypeResolverTest, CustomType) {

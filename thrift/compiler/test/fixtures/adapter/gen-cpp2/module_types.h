@@ -208,7 +208,7 @@ class Foo final  {
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{8}, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::binary_t>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{9}, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>>,
     ::apache::thrift::type::field_t<::apache::thrift::FieldId{10}, ::apache::thrift::type::adapted<my::Adapter2, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>>>,
-    ::apache::thrift::type::field_t<::apache::thrift::FieldId{11}, ::apache::thrift::type::i64_t>
+    ::apache::thrift::type::field_t<::apache::thrift::FieldId{11}, ::apache::thrift::type::adapted<my::Adapter1, ::apache::thrift::type::i64_t>>
   >;
   
   static ::apache::thrift::tag::intField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
@@ -735,16 +735,6 @@ class Foo final  {
   template <typename..., typename T = ::cpp2::DoubleTypedefI64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> doubleAdaptedField() && {
     return {static_cast<T&&>(this->__fbthrift_field_doubleAdaptedField), __isset.at(10), __isset.bit(10)};
-  }
-
-  ::cpp2::DoubleTypedefI64 get_doubleAdaptedField() const {
-    return __fbthrift_field_doubleAdaptedField;
-  }
-
-  [[deprecated("Use `FOO.doubleAdaptedField_ref() = BAR;` instead of `FOO.set_doubleAdaptedField(BAR);`")]]
-  ::cpp2::DoubleTypedefI64& set_doubleAdaptedField(::cpp2::DoubleTypedefI64 doubleAdaptedField_) {
-    doubleAdaptedField_ref() = doubleAdaptedField_;
-    return __fbthrift_field_doubleAdaptedField;
   }
 
   template <class Protocol_>
