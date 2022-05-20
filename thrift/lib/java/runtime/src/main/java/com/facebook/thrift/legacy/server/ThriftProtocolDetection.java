@@ -129,7 +129,7 @@ public class ThriftProtocolDetection extends ByteToMessageDecoder {
     pipeline.addLast(
         new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, Integer.BYTES, 0, Integer.BYTES),
         new LengthFieldPrepender(Integer.BYTES),
-        new HeaderTransportCodec(),
+        new HeaderTransportCodec(true),
         thriftServerHandler);
 
     // remove(this) must be last because it triggers downstream processing of the current message

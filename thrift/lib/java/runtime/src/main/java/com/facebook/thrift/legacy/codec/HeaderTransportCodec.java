@@ -19,6 +19,7 @@ package com.facebook.thrift.legacy.codec;
 import static com.google.common.base.Verify.verify;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import com.facebook.thrift.metadata.ClientInfo;
 import com.facebook.thrift.protocol.TProtocolType;
 import com.facebook.thrift.util.CompressionUtil;
 import com.google.common.annotations.VisibleForTesting;
@@ -32,6 +33,8 @@ import io.netty.channel.ChannelPromise;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicLong;
 import reactor.core.Exceptions;
 
 public final class HeaderTransportCodec extends ChannelDuplexHandler {
@@ -54,6 +57,19 @@ public final class HeaderTransportCodec extends ChannelDuplexHandler {
 
   private static final int ZLIB_TRANSFORM = 0x01;
 
+  private static final long LOG_INTERVAL = 30_000_000_000L; // 30 sec
+  private static final AtomicLong logTime = new AtomicLong(0);
+
+  private final long jitter = ThreadLocalRandom.current().nextLong(LOG_INTERVAL / 10);
+  private final long INTERVAL = LOG_INTERVAL + jitter; // between 30-33 sec
+
+  private long time = System.nanoTime() + jitter;
+  private final boolean isServer;
+
+  public HeaderTransportCodec(boolean isServer) {
+    this.isServer = isServer;
+  }
+
   @Override
   public void channelRead(ChannelHandlerContext context, Object message) {
     if (message instanceof ByteBuf) {
@@ -69,11 +85,23 @@ public final class HeaderTransportCodec extends ChannelDuplexHandler {
   @Override
   public void write(ChannelHandlerContext context, Object message, ChannelPromise promise) {
     if (message instanceof ThriftFrame) {
-      ByteBuf encodedFrame = encodeFrame(context.alloc(), (ThriftFrame) message);
+      boolean addHeader = !isServer & addHeader();
+      ByteBuf encodedFrame = encodeFrame(context.alloc(), (ThriftFrame) message, addHeader);
       context.writeAndFlush(encodedFrame, promise);
     } else {
       context.writeAndFlush(message, promise);
     }
+  }
+
+  private boolean addHeader() {
+    long now = System.nanoTime();
+    if (now - time > INTERVAL) {
+      long curr = logTime.get();
+      time = now;
+      return logTime.compareAndSet(curr, curr + INTERVAL);
+    }
+
+    return false;
   }
 
   /**
@@ -82,7 +110,7 @@ public final class HeaderTransportCodec extends ChannelDuplexHandler {
    * @param frame frame to be encoded; reference count ownership is transferred to this method
    * @return the encoded frame data; caller is responsible for releasing this buffer
    */
-  private static ByteBuf encodeFrame(ByteBufAllocator alloc, ThriftFrame frame) {
+  private static ByteBuf encodeFrame(ByteBufAllocator alloc, ThriftFrame frame, boolean addHeader) {
     ByteBuf encodedInfo = null;
     ByteBuf encodedHeaders = null;
     ByteBuf frameHeader = null;
@@ -96,6 +124,10 @@ public final class HeaderTransportCodec extends ChannelDuplexHandler {
       encodedInfo.writeByte(0);
 
       encodedHeaders = alloc.buffer();
+
+      if (addHeader) {
+        frame.getHeaders().put(ClientInfo.CLIENT_METADATA_HEADER, ClientInfo.getClientMetadata());
+      }
 
       encodeHeaders(NORMAL_HEADERS, frame.getHeaders(), encodedHeaders);
       encodeHeaders(PERSISTENT_HEADERS, frame.getPersistentHeaders(), encodedHeaders);

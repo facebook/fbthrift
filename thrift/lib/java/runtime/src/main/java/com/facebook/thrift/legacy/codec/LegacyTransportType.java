@@ -17,6 +17,7 @@
 package com.facebook.thrift.legacy.codec;
 
 import com.facebook.thrift.legacy.client.ThriftClientHandler;
+import com.facebook.thrift.metadata.ClientInfo;
 import com.facebook.thrift.protocol.TProtocolType;
 import io.airlift.units.DataSize;
 import io.netty.channel.ChannelPipeline;
@@ -61,8 +62,10 @@ public enum LegacyTransportType {
           new FlushConsolidationHandler(256, true),
           new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 0, Integer.BYTES, 0, Integer.BYTES),
           new LengthFieldPrepender(Integer.BYTES),
-          new HeaderTransportCodec(),
+          new HeaderTransportCodec(false),
           new ThriftClientHandler(LegacyTransportType.HEADER));
+
+      ClientInfo.addTransport(ClientInfo.Transport.HEADER);
     }
   };
 

@@ -19,6 +19,7 @@ package com.facebook.thrift.client;
 import com.facebook.swift.service.ThriftClientEventHandler;
 import com.facebook.swift.service.ThriftClientStats;
 import com.facebook.thrift.legacy.client.LegacyRpcClientFactory;
+import com.facebook.thrift.metadata.ClientInfo;
 import com.facebook.thrift.rsocket.client.HeaderAwareRpcClientFactory;
 import com.facebook.thrift.rsocket.client.RSocketRpcClientFactory;
 import com.facebook.thrift.util.resources.RpcResources;
@@ -122,11 +123,14 @@ public interface RpcClientFactory {
               "handleHeaderResponse is only applicable if using RSocket");
         }
         rpcClientFactory = new LegacyRpcClientFactory(thriftClientConfig);
+        ClientInfo.addTransport(ClientInfo.Transport.HEADER);
       } else {
         if (handleHeaderResponse) {
           rpcClientFactory = new HeaderAwareRpcClientFactory(thriftClientConfig);
+          ClientInfo.addTransport(ClientInfo.Transport.HEADER);
         } else {
           rpcClientFactory = new RSocketRpcClientFactory(thriftClientConfig);
+          ClientInfo.addTransport(ClientInfo.Transport.ROCKET);
         }
       }
 
