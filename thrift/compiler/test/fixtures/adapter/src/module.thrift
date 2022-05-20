@@ -45,6 +45,8 @@ typedef ListWithElemAdapter ListWithElemAdapter_withAdapter
 }
 typedef i64 MyI64
 
+typedef MyI64 DoubleTypedefI64
+
 @hack.Adapter{name = '\Adapter1'}
 typedef i32 MyI32
 
@@ -88,6 +90,7 @@ struct Foo {
   @cpp.Adapter{name = "my::Adapter2"}
   @python.Adapter{name = "my.Adapter3", typeHint = "my.AdaptedType3"}
   10: MyI64 adaptedLongField;
+  11: DoubleTypedefI64 doubleAdaptedField;
 } (
   thrift.uri = "facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo",
 )

@@ -77,6 +77,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] binaryField_ref()
         __field_ref[cint64_t] longField_ref()
         __field_ref[cint64_t] adaptedLongField_ref()
+        __field_ref[cint64_t] doubleAdaptedField_ref()
 
     cdef enum cBaz__type "::cpp2::Baz::Type":
         cBaz__type___EMPTY__ "::cpp2::Baz::Type::__EMPTY__",
@@ -147,6 +148,7 @@ cdef class Foo(thrift.py3.types.Struct):
     cdef inline object binaryField_impl(self)
     cdef inline object longField_impl(self)
     cdef inline object adaptedLongField_impl(self)
+    cdef inline object doubleAdaptedField_impl(self)
     cdef Set__string __fbthrift_cached_setField
     cdef Set__string __fbthrift_cached_optionalSetField
     cdef Map__string_List__string __fbthrift_cached_mapField

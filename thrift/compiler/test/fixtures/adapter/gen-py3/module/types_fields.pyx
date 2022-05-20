@@ -35,6 +35,7 @@ cdef class __Foo_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"binaryField")] = __Foo_FieldsSetter._set_field_7
         __fbthrift_inst._setters[__cstring_view(<const char*>"longField")] = __Foo_FieldsSetter._set_field_8
         __fbthrift_inst._setters[__cstring_view(<const char*>"adaptedLongField")] = __Foo_FieldsSetter._set_field_9
+        __fbthrift_inst._setters[__cstring_view(<const char*>"doubleAdaptedField")] = __Foo_FieldsSetter._set_field_10
         return __fbthrift_inst
 
     cdef void set_field(__Foo_FieldsSetter self, const char* name, object value) except *:
@@ -130,6 +131,16 @@ cdef class __Foo_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f'adaptedLongField is not a { int !r}.')
         _fbthrift_value = <cint64_t> _fbthrift_value
         deref(self._struct_cpp_obj).adaptedLongField_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_10(self, _fbthrift_value) except *:
+        # for field doubleAdaptedField
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cFoo](deref(self._struct_cpp_obj), 10)
+            return
+        if not isinstance(_fbthrift_value, int):
+            raise TypeError(f'doubleAdaptedField is not a { int !r}.')
+        _fbthrift_value = <cint64_t> _fbthrift_value
+        deref(self._struct_cpp_obj).doubleAdaptedField_ref().assign(_fbthrift_value)
 
 
 @__cython.auto_pickle(False)

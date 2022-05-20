@@ -39,7 +39,8 @@ class Foo:
         optionalMapField: __T.Optional[__T.Dict[str, __T.List[str]]] = ...,
         binaryField: __T.Optional[bytes] = ...,
         longField: __T.Optional[int] = ...,
-        adaptedLongField: __T.Optional[int] = ...
+        adaptedLongField: __T.Optional[int] = ...,
+        doubleAdaptedField: __T.Optional[int] = ...
     ) -> None:
         ...
 
@@ -83,6 +84,10 @@ class Foo:
     def adaptedLongField(self) -> int: ...
     @adaptedLongField.setter
     def adaptedLongField(self, value: __T.Optional[int]) -> None: ...
+    @__property__
+    def doubleAdaptedField(self) -> int: ...
+    @doubleAdaptedField.setter
+    def doubleAdaptedField(self, value: __T.Optional[int]) -> None: ...
 
 
     def isUnion(self) -> bool: ...
@@ -268,6 +273,7 @@ StringWithAdapter = str
 ListWithElemAdapter = __T.List[str]
 ListWithElemAdapter_withAdapter = __T.List[str]
 MyI64 = int
+DoubleTypedefI64 = int
 MyI32 = int
 FooWithAdapter = Foo
 StructWithAdapter = my.Adapter2.Type

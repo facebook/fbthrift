@@ -27,6 +27,7 @@ struct ForEachField<::cpp2::Foo> {
     f(7, static_cast<T&&>(t).binaryField_ref()...);
     f(8, static_cast<T&&>(t).longField_ref()...);
     f(9, static_cast<T&&>(t).adaptedLongField_ref()...);
+    f(10, static_cast<T&&>(t).doubleAdaptedField_ref()...);
   }
 };
 

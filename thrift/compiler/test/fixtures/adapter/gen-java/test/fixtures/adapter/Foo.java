@@ -34,7 +34,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         @com.facebook.swift.codec.ThriftField(value=7, name="optionalMapField", requiredness=Requiredness.OPTIONAL) final Map<String, List<String>> optionalMapField,
         @com.facebook.swift.codec.ThriftField(value=8, name="binaryField", requiredness=Requiredness.NONE) final byte[] binaryField,
         @com.facebook.swift.codec.ThriftField(value=9, name="longField", requiredness=Requiredness.NONE) final long longField,
-        @com.facebook.swift.codec.ThriftField(value=10, name="adaptedLongField", requiredness=Requiredness.NONE) final long adaptedLongField
+        @com.facebook.swift.codec.ThriftField(value=10, name="adaptedLongField", requiredness=Requiredness.NONE) final long adaptedLongField,
+        @com.facebook.swift.codec.ThriftField(value=11, name="doubleAdaptedField", requiredness=Requiredness.NONE) final long doubleAdaptedField
     ) {
         this.intField = intField;
         this.optionalIntField = optionalIntField;
@@ -46,6 +47,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         this.binaryField = binaryField;
         this.longField = longField;
         this.adaptedLongField = adaptedLongField;
+        this.doubleAdaptedField = doubleAdaptedField;
     }
     
     @ThriftConstructor
@@ -60,6 +62,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       this.binaryField = null;
       this.longField = 0L;
       this.adaptedLongField = 0L;
+      this.doubleAdaptedField = 0L;
     }
     
     public static class Builder {
@@ -74,6 +77,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         private byte[] binaryField = null;
         private long longField = 0L;
         private long adaptedLongField = 0L;
+        private long doubleAdaptedField = 0L;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
         public Builder setIntField(int intField) {
@@ -155,6 +159,14 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     
         public long getAdaptedLongField() { return adaptedLongField; }
     
+            @com.facebook.swift.codec.ThriftField(value=11, name="doubleAdaptedField", requiredness=Requiredness.NONE)
+        public Builder setDoubleAdaptedField(long doubleAdaptedField) {
+            this.doubleAdaptedField = doubleAdaptedField;
+            return this;
+        }
+    
+        public long getDoubleAdaptedField() { return doubleAdaptedField; }
+    
         public Builder() { }
         public Builder(Foo other) {
             this.intField = other.intField;
@@ -167,6 +179,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             this.binaryField = other.binaryField;
             this.longField = other.longField;
             this.adaptedLongField = other.adaptedLongField;
+            this.doubleAdaptedField = other.doubleAdaptedField;
         }
     
         @ThriftConstructor
@@ -181,12 +194,13 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 this.optionalMapField,
                 this.binaryField,
                 this.longField,
-                this.adaptedLongField
+                this.adaptedLongField,
+                this.doubleAdaptedField
             );
             return result;
         }
     }
-                                            public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
+                                                public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<String, Integer> THRIFT_NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
     private static final TStruct STRUCT_DESC = new TStruct("Foo");
@@ -220,6 +234,9 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         private final long adaptedLongField;
     public static final int _ADAPTEDLONGFIELD = 10;
     private static final TField ADAPTED_LONG_FIELD_FIELD_DESC = new TField("adaptedLongField", TType.I64, (short)10);
+        private final long doubleAdaptedField;
+    public static final int _DOUBLEADAPTEDFIELD = 11;
+    private static final TField DOUBLE_ADAPTED_FIELD_FIELD_DESC = new TField("doubleAdaptedField", TType.I64, (short)11);
     static {
       NAMES_TO_IDS.put("intField", 1);
       THRIFT_NAMES_TO_IDS.put("intField", 1);
@@ -251,6 +268,9 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       NAMES_TO_IDS.put("adaptedLongField", 10);
       THRIFT_NAMES_TO_IDS.put("adaptedLongField", 10);
       FIELD_METADATA.put(10, ADAPTED_LONG_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("doubleAdaptedField", 11);
+      THRIFT_NAMES_TO_IDS.put("doubleAdaptedField", 11);
+      FIELD_METADATA.put(11, DOUBLE_ADAPTED_FIELD_FIELD_DESC);
       com.facebook.thrift.type.TypeRegistry.add(new com.facebook.thrift.type.Type(
         new com.facebook.thrift.type.UniversalName("facebook.com/thrift/compiler/test/fixtures/adapter/src/module/Foo"), 
         Foo.class, Foo::read0));
@@ -305,6 +325,11 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     @com.facebook.swift.codec.ThriftField(value=10, name="adaptedLongField", requiredness=Requiredness.NONE)
     public long getAdaptedLongField() { return adaptedLongField; }
     
+    
+    
+    @com.facebook.swift.codec.ThriftField(value=11, name="doubleAdaptedField", requiredness=Requiredness.NONE)
+    public long getDoubleAdaptedField() { return doubleAdaptedField; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -318,6 +343,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         helper.add("binaryField", binaryField);
         helper.add("longField", longField);
         helper.add("adaptedLongField", adaptedLongField);
+        helper.add("doubleAdaptedField", doubleAdaptedField);
         return helper.toString();
     }
     
@@ -343,6 +369,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     Arrays.equals(binaryField, other.binaryField) &&
     Objects.equals(longField, other.longField) &&
     Objects.equals(adaptedLongField, other.adaptedLongField) &&
+    Objects.equals(doubleAdaptedField, other.doubleAdaptedField) &&
             true;
     }
     
@@ -358,7 +385,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             optionalMapField,
             binaryField,
             longField,
-            adaptedLongField
+            adaptedLongField,
+            doubleAdaptedField
         });
     }
     
@@ -525,6 +553,14 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _DOUBLEADAPTEDFIELD:
+          if (__field.type == TType.I64) {
+            long doubleAdaptedField = oprot.readI64();
+            builder.setDoubleAdaptedField(doubleAdaptedField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -610,6 +646,9 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       oprot.writeFieldEnd();
       oprot.writeFieldBegin(ADAPTED_LONG_FIELD_FIELD_DESC);
       oprot.writeI64(this.adaptedLongField);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(DOUBLE_ADAPTED_FIELD_FIELD_DESC);
+      oprot.writeI64(this.doubleAdaptedField);
       oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();

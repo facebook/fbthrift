@@ -22,6 +22,8 @@ pub mod types {
 
     pub type MyI64 = ::std::primitive::i64;
 
+    pub type DoubleTypedefI64 = crate::types::MyI64;
+
     pub type MyI32 = ::std::primitive::i32;
 
     pub type FooWithAdapter = crate::types::Foo;
@@ -42,6 +44,7 @@ pub mod types {
         pub binaryField: ::std::vec::Vec<::std::primitive::u8>,
         pub longField: crate::types::MyI64,
         pub adaptedLongField: crate::types::MyI64,
+        pub doubleAdaptedField: crate::types::DoubleTypedefI64,
         // This field forces `..Default::default()` when instantiating this
         // struct, to make code future-proof against new fields added later to
         // the definition in Thrift. If you don't want this, add the annotation
@@ -99,6 +102,7 @@ pub mod types {
 
 
 
+
     impl ::std::default::Default for self::Foo {
         fn default() -> Self {
             Self {
@@ -112,6 +116,7 @@ pub mod types {
                 binaryField: ::std::default::Default::default(),
                 longField: ::std::default::Default::default(),
                 adaptedLongField: ::std::default::Default::default(),
+                doubleAdaptedField: ::std::default::Default::default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             }
         }
@@ -131,6 +136,7 @@ pub mod types {
                 .field("binaryField", &self.binaryField)
                 .field("longField", &self.longField)
                 .field("adaptedLongField", &self.adaptedLongField)
+                .field("doubleAdaptedField", &self.doubleAdaptedField)
                 .finish()
         }
     }
@@ -184,6 +190,9 @@ pub mod types {
             p.write_field_begin("adaptedLongField", ::fbthrift::TType::I64, 10);
             ::fbthrift::Serialize::write(&self.adaptedLongField, p);
             p.write_field_end();
+            p.write_field_begin("doubleAdaptedField", ::fbthrift::TType::I64, 11);
+            ::fbthrift::Serialize::write(&self.doubleAdaptedField, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -197,6 +206,7 @@ pub mod types {
             static FIELDS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("adaptedLongField", ::fbthrift::TType::I64, 10),
                 ::fbthrift::Field::new("binaryField", ::fbthrift::TType::String, 8),
+                ::fbthrift::Field::new("doubleAdaptedField", ::fbthrift::TType::I64, 11),
                 ::fbthrift::Field::new("intField", ::fbthrift::TType::I32, 1),
                 ::fbthrift::Field::new("intFieldWithDefault", ::fbthrift::TType::I32, 3),
                 ::fbthrift::Field::new("longField", ::fbthrift::TType::I64, 9),
@@ -216,6 +226,7 @@ pub mod types {
             let mut field_binaryField = ::std::option::Option::None;
             let mut field_longField = ::std::option::Option::None;
             let mut field_adaptedLongField = ::std::option::Option::None;
+            let mut field_doubleAdaptedField = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -231,6 +242,7 @@ pub mod types {
                     (::fbthrift::TType::String, 8) => field_binaryField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::I64, 9) => field_longField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::I64, 10) => field_adaptedLongField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::I64, 11) => field_doubleAdaptedField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -247,6 +259,7 @@ pub mod types {
                 binaryField: field_binaryField.unwrap_or_default(),
                 longField: field_longField.unwrap_or_default(),
                 adaptedLongField: field_adaptedLongField.unwrap_or_default(),
+                doubleAdaptedField: field_doubleAdaptedField.unwrap_or_default(),
                 _dot_dot_Default_default: self::dot_dot::OtherFields(()),
             })
         }

@@ -32,6 +32,7 @@ cdef class Foo_Builder(thrift.py3.builder.StructBuilder):
     cdef public bytes binaryField
     cdef public pint longField
     cdef public pint adaptedLongField
+    cdef public pint doubleAdaptedField
 
 
 cdef class Baz_Builder(thrift.py3.builder.StructBuilder):

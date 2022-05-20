@@ -36,6 +36,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
   private static final TField BINARY_FIELD_FIELD_DESC = new TField("binaryField", TType.STRING, (short)8);
   private static final TField LONG_FIELD_FIELD_DESC = new TField("longField", TType.I64, (short)9);
   private static final TField ADAPTED_LONG_FIELD_FIELD_DESC = new TField("adaptedLongField", TType.I64, (short)10);
+  private static final TField DOUBLE_ADAPTED_FIELD_FIELD_DESC = new TField("doubleAdaptedField", TType.I64, (short)11);
 
   public int intField;
   public int optionalIntField;
@@ -47,6 +48,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
   public byte[] binaryField;
   public long longField;
   public long adaptedLongField;
+  public long doubleAdaptedField;
   public static final int INTFIELD = 1;
   public static final int OPTIONALINTFIELD = 2;
   public static final int INTFIELDWITHDEFAULT = 3;
@@ -57,6 +59,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
   public static final int BINARYFIELD = 8;
   public static final int LONGFIELD = 9;
   public static final int ADAPTEDLONGFIELD = 10;
+  public static final int DOUBLEADAPTEDFIELD = 11;
 
   // isset id assignments
   private static final int __INTFIELD_ISSET_ID = 0;
@@ -64,7 +67,8 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
   private static final int __INTFIELDWITHDEFAULT_ISSET_ID = 2;
   private static final int __LONGFIELD_ISSET_ID = 3;
   private static final int __ADAPTEDLONGFIELD_ISSET_ID = 4;
-  private BitSet __isset_bit_vector = new BitSet(5);
+  private static final int __DOUBLEADAPTEDFIELD_ISSET_ID = 5;
+  private BitSet __isset_bit_vector = new BitSet(6);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -98,6 +102,8 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
         new FieldValueMetaData(TType.I64)));
     tmpMetaDataMap.put(ADAPTEDLONGFIELD, new FieldMetaData("adaptedLongField", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.I64)));
+    tmpMetaDataMap.put(DOUBLEADAPTEDFIELD, new FieldMetaData("doubleAdaptedField", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.I64)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -117,7 +123,8 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
       Map<String,List<String>> mapField,
       byte[] binaryField,
       long longField,
-      long adaptedLongField) {
+      long adaptedLongField,
+      long doubleAdaptedField) {
     this();
     this.intField = intField;
     setIntFieldIsSet(true);
@@ -130,6 +137,8 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
     setLongFieldIsSet(true);
     this.adaptedLongField = adaptedLongField;
     setAdaptedLongFieldIsSet(true);
+    this.doubleAdaptedField = doubleAdaptedField;
+    setDoubleAdaptedFieldIsSet(true);
   }
 
   public Foo(
@@ -142,7 +151,8 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
       Map<String,List<String>> optionalMapField,
       byte[] binaryField,
       long longField,
-      long adaptedLongField) {
+      long adaptedLongField,
+      long doubleAdaptedField) {
     this();
     this.intField = intField;
     setIntFieldIsSet(true);
@@ -159,6 +169,8 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
     setLongFieldIsSet(true);
     this.adaptedLongField = adaptedLongField;
     setAdaptedLongFieldIsSet(true);
+    this.doubleAdaptedField = doubleAdaptedField;
+    setDoubleAdaptedFieldIsSet(true);
   }
 
   public static class Builder {
@@ -172,8 +184,9 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
     private byte[] binaryField;
     private long longField;
     private long adaptedLongField;
+    private long doubleAdaptedField;
 
-    BitSet __optional_isset = new BitSet(5);
+    BitSet __optional_isset = new BitSet(6);
 
     public Builder() {
     }
@@ -233,6 +246,12 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
       return this;
     }
 
+    public Builder setDoubleAdaptedField(final long doubleAdaptedField) {
+      this.doubleAdaptedField = doubleAdaptedField;
+      __optional_isset.set(__DOUBLEADAPTEDFIELD_ISSET_ID, true);
+      return this;
+    }
+
     public Foo build() {
       Foo result = new Foo();
       if (__optional_isset.get(__INTFIELD_ISSET_ID)) {
@@ -254,6 +273,9 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
       }
       if (__optional_isset.get(__ADAPTEDLONGFIELD_ISSET_ID)) {
         result.setAdaptedLongField(this.adaptedLongField);
+      }
+      if (__optional_isset.get(__DOUBLEADAPTEDFIELD_ISSET_ID)) {
+        result.setDoubleAdaptedField(this.doubleAdaptedField);
       }
       return result;
     }
@@ -289,6 +311,7 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
     }
     this.longField = TBaseHelper.deepCopy(other.longField);
     this.adaptedLongField = TBaseHelper.deepCopy(other.adaptedLongField);
+    this.doubleAdaptedField = TBaseHelper.deepCopy(other.doubleAdaptedField);
   }
 
   public Foo deepCopy() {
@@ -530,6 +553,29 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
     __isset_bit_vector.set(__ADAPTEDLONGFIELD_ISSET_ID, __value);
   }
 
+  public long getDoubleAdaptedField() {
+    return this.doubleAdaptedField;
+  }
+
+  public Foo setDoubleAdaptedField(long doubleAdaptedField) {
+    this.doubleAdaptedField = doubleAdaptedField;
+    setDoubleAdaptedFieldIsSet(true);
+    return this;
+  }
+
+  public void unsetDoubleAdaptedField() {
+    __isset_bit_vector.clear(__DOUBLEADAPTEDFIELD_ISSET_ID);
+  }
+
+  // Returns true if field doubleAdaptedField is set (has been assigned a value) and false otherwise
+  public boolean isSetDoubleAdaptedField() {
+    return __isset_bit_vector.get(__DOUBLEADAPTEDFIELD_ISSET_ID);
+  }
+
+  public void setDoubleAdaptedFieldIsSet(boolean __value) {
+    __isset_bit_vector.set(__DOUBLEADAPTEDFIELD_ISSET_ID, __value);
+  }
+
   @SuppressWarnings("unchecked")
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
@@ -613,6 +659,14 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
       }
       break;
 
+    case DOUBLEADAPTEDFIELD:
+      if (__value == null) {
+        unsetDoubleAdaptedField();
+      } else {
+        setDoubleAdaptedField((Long)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -650,6 +704,9 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
     case ADAPTEDLONGFIELD:
       return new Long(getAdaptedLongField());
 
+    case DOUBLEADAPTEDFIELD:
+      return new Long(getDoubleAdaptedField());
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -685,12 +742,14 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
 
     if (!TBaseHelper.equalsNobinary(this.adaptedLongField, that.adaptedLongField)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.doubleAdaptedField, that.doubleAdaptedField)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {intField, optionalIntField, intFieldWithDefault, setField, optionalSetField, mapField, optionalMapField, binaryField, longField, adaptedLongField});
+    return Arrays.deepHashCode(new Object[] {intField, optionalIntField, intFieldWithDefault, setField, optionalSetField, mapField, optionalMapField, binaryField, longField, adaptedLongField, doubleAdaptedField});
   }
 
   @Override
@@ -782,6 +841,14 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(adaptedLongField, other.adaptedLongField);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetDoubleAdaptedField()).compareTo(other.isSetDoubleAdaptedField());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(doubleAdaptedField, other.doubleAdaptedField);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -950,6 +1017,14 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case DOUBLEADAPTEDFIELD:
+          if (__field.type == TType.I64) {
+            this.doubleAdaptedField = iprot.readI64();
+            setDoubleAdaptedFieldIsSet(true);
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -1050,6 +1125,9 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
     oprot.writeFieldEnd();
     oprot.writeFieldBegin(ADAPTED_LONG_FIELD_FIELD_DESC);
     oprot.writeI64(this.adaptedLongField);
+    oprot.writeFieldEnd();
+    oprot.writeFieldBegin(DOUBLE_ADAPTED_FIELD_FIELD_DESC);
+    oprot.writeI64(this.doubleAdaptedField);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -1173,6 +1251,13 @@ public class Foo implements TBase, java.io.Serializable, Cloneable, Comparable<F
     sb.append(space);
     sb.append(":").append(space);
     sb.append(TBaseHelper.toString(this.getAdaptedLongField(), indent + 1, prettyPrint));
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("doubleAdaptedField");
+    sb.append(space);
+    sb.append(":").append(space);
+    sb.append(TBaseHelper.toString(this.getDoubleAdaptedField(), indent + 1, prettyPrint));
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");

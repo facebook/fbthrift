@@ -38,6 +38,8 @@ struct VisitByFieldId<::cpp2::Foo> {
       return f(8, static_cast<T&&>(t).longField_ref());
     case 10:
       return f(9, static_cast<T&&>(t).adaptedLongField_ref());
+    case 11:
+      return f(10, static_cast<T&&>(t).doubleAdaptedField_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::Foo");
     }

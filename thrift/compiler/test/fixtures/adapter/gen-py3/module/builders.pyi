@@ -33,6 +33,7 @@ class Foo_Builder(thrift.py3.builder.StructBuilder):
     binaryField: _typing.Optional[bytes]
     longField: _typing.Optional[int]
     adaptedLongField: _typing.Optional[int]
+    doubleAdaptedField: _typing.Optional[int]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

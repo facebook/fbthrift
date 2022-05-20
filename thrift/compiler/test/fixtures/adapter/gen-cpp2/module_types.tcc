@@ -231,6 +231,20 @@ _readField_adaptedLongField:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           10,
+          11,
+          apache::thrift::protocol::T_I64))) {
+    goto _loop;
+  }
+_readField_doubleAdaptedField:
+  {
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::DoubleTypedefI64>::readWithContext(*iprot, this->__fbthrift_field_doubleAdaptedField, _readState);
+    
+  }
+ this->__isset.set(10, true);
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          11,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -331,6 +345,14 @@ _loop:
         goto _skip;
       }
     }
+    case 11:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64))) {
+        goto _readField_doubleAdaptedField;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -386,6 +408,10 @@ uint32_t Foo::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("adaptedLongField", apache::thrift::protocol::T_I64, 10);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, my::Adapter1::toThrift(my::Adapter2::toThrift(this->__fbthrift_field_adaptedLongField)));
   }
+  {
+    xfer += prot_->serializedFieldSize("doubleAdaptedField", apache::thrift::protocol::T_I64, 11);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::DoubleTypedefI64>::serializedSize<false>(*prot_, this->__fbthrift_field_doubleAdaptedField);
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -433,6 +459,10 @@ uint32_t Foo::serializedSizeZC(Protocol_ const* prot_) const {
   {
     xfer += prot_->serializedFieldSize("adaptedLongField", apache::thrift::protocol::T_I64, 10);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, my::Adapter1::toThrift(my::Adapter2::toThrift(this->__fbthrift_field_adaptedLongField)));
+  }
+  {
+    xfer += prot_->serializedFieldSize("doubleAdaptedField", apache::thrift::protocol::T_I64, 11);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::DoubleTypedefI64>::serializedSize<false>(*prot_, this->__fbthrift_field_doubleAdaptedField);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -517,6 +547,13 @@ uint32_t Foo::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 10, kPrevFieldId>(*prot_, "adaptedLongField", previousFieldHasValue);
     previousFieldHasValue = true;
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::write(*prot_, my::Adapter1::toThrift(my::Adapter2::toThrift(this->__fbthrift_field_adaptedLongField)));
+    xfer += prot_->writeFieldEnd();
+  }
+  {
+    constexpr int16_t kPrevFieldId = 10;
+    xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 11, kPrevFieldId>(*prot_, "doubleAdaptedField", previousFieldHasValue);
+    previousFieldHasValue = true;
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::DoubleTypedefI64>::write(*prot_, this->__fbthrift_field_doubleAdaptedField);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

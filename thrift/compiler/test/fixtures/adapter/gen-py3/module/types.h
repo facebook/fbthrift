@@ -63,6 +63,9 @@ void reset_field<::cpp2::Foo>(
     case 9:
       obj.adaptedLongField_ref().copy_from(default_inst<::cpp2::Foo>().adaptedLongField_ref());
       return;
+    case 10:
+      obj.doubleAdaptedField_ref().copy_from(default_inst<::cpp2::Foo>().doubleAdaptedField_ref());
+      return;
   }
 }
 

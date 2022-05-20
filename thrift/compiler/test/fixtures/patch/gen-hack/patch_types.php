@@ -57,11 +57,11 @@ class GeneratePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
+        '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
           shape(
           )
         ),
-        '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
+        '\thrift\annotation\Structured' => \thrift\annotation\Structured::fromShape(
           shape(
           )
         ),

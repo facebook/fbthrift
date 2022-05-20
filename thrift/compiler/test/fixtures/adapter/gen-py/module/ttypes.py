@@ -39,7 +39,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Foo', 'Baz', 'Bar', 'StructWithFieldAdapter', 'SetWithAdapter', 'StringWithAdapter', 'ListWithElemAdapter', 'ListWithElemAdapter_withAdapter', 'MyI64', 'MyI32', 'FooWithAdapter', 'StructWithAdapter', 'UnionWithAdapter']
+__all__ = ['UTF8STRINGS', 'Foo', 'Baz', 'Bar', 'StructWithFieldAdapter', 'SetWithAdapter', 'StringWithAdapter', 'ListWithElemAdapter', 'ListWithElemAdapter_withAdapter', 'MyI64', 'DoubleTypedefI64', 'MyI32', 'FooWithAdapter', 'StructWithAdapter', 'UnionWithAdapter']
 
 class Foo:
   """
@@ -54,6 +54,7 @@ class Foo:
    - binaryField
    - longField
    - adaptedLongField
+   - doubleAdaptedField
   """
 
   thrift_spec = None
@@ -210,6 +211,11 @@ class Foo:
           self.adaptedLongField = iprot.readI64()
         else:
           iprot.skip(ftype)
+      elif fid == 11:
+        if ftype == TType.I64:
+          self.doubleAdaptedField = iprot.readI64()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -283,6 +289,10 @@ class Foo:
       oprot.writeFieldBegin('adaptedLongField', TType.I64, 10)
       oprot.writeI64(self.adaptedLongField)
       oprot.writeFieldEnd()
+    if self.doubleAdaptedField != None:
+      oprot.writeFieldBegin('doubleAdaptedField', TType.I64, 11)
+      oprot.writeI64(self.doubleAdaptedField)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -340,6 +350,8 @@ class Foo:
       self.longField = long(json_obj['longField'])
     if 'adaptedLongField' in json_obj and json_obj['adaptedLongField'] is not None:
       self.adaptedLongField = long(json_obj['adaptedLongField'])
+    if 'doubleAdaptedField' in json_obj and json_obj['doubleAdaptedField'] is not None:
+      self.doubleAdaptedField = long(json_obj['doubleAdaptedField'])
 
   def __repr__(self):
     L = []
@@ -384,6 +396,10 @@ class Foo:
       value = pprint.pformat(self.adaptedLongField, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    adaptedLongField=%s' % (value))
+    if self.doubleAdaptedField is not None:
+      value = pprint.pformat(self.doubleAdaptedField, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    doubleAdaptedField=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -1060,6 +1076,7 @@ StringWithAdapter = UnimplementedTypedef()
 ListWithElemAdapter = UnimplementedTypedef()
 ListWithElemAdapter_withAdapter = ListWithElemAdapter
 MyI64 = UnimplementedTypedef()
+DoubleTypedefI64 = MyI64
 MyI32 = UnimplementedTypedef()
 FooWithAdapter = Foo
 StructWithAdapter = my.Adapter2.Type
@@ -1077,6 +1094,7 @@ Foo.thrift_spec = (
   (8, TType.STRING, 'binaryField', False, None, 2, ), # 8
   (9, TType.I64, 'longField', None, None, 2, ), # 9
   (10, TType.I64, 'adaptedLongField', None, None, 2, ), # 10
+  (11, TType.I64, 'doubleAdaptedField', None, None, 2, ), # 11
 )
 
 Foo.thrift_struct_annotations = {
@@ -1085,7 +1103,7 @@ Foo.thrift_struct_annotations = {
 Foo.thrift_field_annotations = {
 }
 
-def Foo__init__(self, intField=None, optionalIntField=None, intFieldWithDefault=Foo.thrift_spec[3][4], setField=None, optionalSetField=None, mapField=None, optionalMapField=None, binaryField=None, longField=None, adaptedLongField=None,):
+def Foo__init__(self, intField=None, optionalIntField=None, intFieldWithDefault=Foo.thrift_spec[3][4], setField=None, optionalSetField=None, mapField=None, optionalMapField=None, binaryField=None, longField=None, adaptedLongField=None, doubleAdaptedField=None,):
   self.intField = intField
   self.optionalIntField = optionalIntField
   self.intFieldWithDefault = intFieldWithDefault
@@ -1096,6 +1114,7 @@ def Foo__init__(self, intField=None, optionalIntField=None, intFieldWithDefault=
   self.binaryField = binaryField
   self.longField = longField
   self.adaptedLongField = adaptedLongField
+  self.doubleAdaptedField = doubleAdaptedField
 
 Foo.__init__ = Foo__init__
 
@@ -1110,6 +1129,7 @@ def Foo__setstate__(self, state):
   state.setdefault('binaryField', None)
   state.setdefault('longField', None)
   state.setdefault('adaptedLongField', None)
+  state.setdefault('doubleAdaptedField', None)
   self.__dict__ = state
 
 Foo.__getstate__ = lambda self: self.__dict__.copy()

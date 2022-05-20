@@ -132,6 +132,7 @@ cdef class Foo(thrift.py3.types.Struct):
           "binaryField": deref(self._cpp_obj).binaryField_ref().has_value(),
           "longField": deref(self._cpp_obj).longField_ref().has_value(),
           "adaptedLongField": deref(self._cpp_obj).adaptedLongField_ref().has_value(),
+          "doubleAdaptedField": deref(self._cpp_obj).doubleAdaptedField_ref().has_value(),
         })
 
     @staticmethod
@@ -234,6 +235,14 @@ cdef class Foo(thrift.py3.types.Struct):
     def adaptedLongField(self):
         return self.adaptedLongField_impl()
 
+    cdef inline doubleAdaptedField_impl(self):
+
+        return deref(self._cpp_obj).doubleAdaptedField_ref().value()
+
+    @property
+    def doubleAdaptedField(self):
+        return self.doubleAdaptedField_impl()
+
 
     def __hash__(Foo self):
         return super().__hash__()
@@ -279,7 +288,7 @@ cdef class Foo(thrift.py3.types.Struct):
         return __get_field_name_by_index[cFoo](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 10
+        self._fbthrift_struct_size = 11
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Foo self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -1138,6 +1147,7 @@ StringWithAdapter = str
 ListWithElemAdapter = List__string
 ListWithElemAdapter_withAdapter = List__string
 MyI64 = int
+DoubleTypedefI64 = int
 MyI32 = int
 FooWithAdapter = Foo
 StructWithAdapter = Bar

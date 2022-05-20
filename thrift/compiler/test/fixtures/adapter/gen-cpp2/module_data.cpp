@@ -27,7 +27,7 @@ const std::array<folly::StringPiece, 5> TEnumDataStorage<::cpp2::Baz::Type>::nam
   "longField",
 }};
 
-const std::array<folly::StringPiece, 10> TStructDataStorage<::cpp2::Foo>::fields_names = {{
+const std::array<folly::StringPiece, 11> TStructDataStorage<::cpp2::Foo>::fields_names = {{
   "intField",
   "optionalIntField",
   "intFieldWithDefault",
@@ -38,8 +38,9 @@ const std::array<folly::StringPiece, 10> TStructDataStorage<::cpp2::Foo>::fields
   "binaryField",
   "longField",
   "adaptedLongField",
+  "doubleAdaptedField",
 }};
-const std::array<int16_t, 10> TStructDataStorage<::cpp2::Foo>::fields_ids = {{
+const std::array<int16_t, 11> TStructDataStorage<::cpp2::Foo>::fields_ids = {{
   1,
   2,
   3,
@@ -50,8 +51,9 @@ const std::array<int16_t, 10> TStructDataStorage<::cpp2::Foo>::fields_ids = {{
   8,
   9,
   10,
+  11,
 }};
-const std::array<protocol::TType, 10> TStructDataStorage<::cpp2::Foo>::fields_types = {{
+const std::array<protocol::TType, 11> TStructDataStorage<::cpp2::Foo>::fields_types = {{
   TType::T_I32,
   TType::T_I32,
   TType::T_I32,
@@ -60,6 +62,7 @@ const std::array<protocol::TType, 10> TStructDataStorage<::cpp2::Foo>::fields_ty
   TType::T_MAP,
   TType::T_MAP,
   TType::T_STRING,
+  TType::T_I64,
   TType::T_I64,
   TType::T_I64,
 }};

@@ -103,6 +103,14 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
             None,  # default value
             my.Adapter3,  # adapter class
         ),
+        (
+            11,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "doubleAdaptedField",  # name
+            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
     )
 
     @staticmethod
@@ -318,6 +326,7 @@ StringWithAdapter = str
 ListWithElemAdapter = _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_string)
 ListWithElemAdapter_withAdapter = _fbthrift_py3lite_types.ListTypeFactory(_fbthrift_py3lite_types.typeinfo_string)
 MyI64 = my.another.module.AdaptedType2
+DoubleTypedefI64 = int
 MyI32 = int
 FooWithAdapter = Foo
 StructWithAdapter = Bar

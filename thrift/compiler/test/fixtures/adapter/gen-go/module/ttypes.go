@@ -50,6 +50,10 @@ type MyI64 = int64
 
 func MyI64Ptr(v MyI64) *MyI64 { return &v }
 
+type DoubleTypedefI64 = MyI64
+
+func DoubleTypedefI64Ptr(v DoubleTypedefI64) *DoubleTypedefI64 { return &v }
+
 type MyI32 = int32
 
 func MyI32Ptr(v MyI32) *MyI32 { return &v }
@@ -83,6 +87,7 @@ func NewUnionWithAdapter() UnionWithAdapter { return NewBaz() }
 //  - BinaryField
 //  - LongField
 //  - AdaptedLongField
+//  - DoubleAdaptedField
 type Foo struct {
   IntField int32 `thrift:"intField,1" db:"intField" json:"intField"`
   OptionalIntField *int32 `thrift:"optionalIntField,2,optional" db:"optionalIntField" json:"optionalIntField,omitempty"`
@@ -94,6 +99,7 @@ type Foo struct {
   BinaryField []byte `thrift:"binaryField,8" db:"binaryField" json:"binaryField"`
   LongField MyI64 `thrift:"longField,9" db:"longField" json:"longField"`
   AdaptedLongField MyI64 `thrift:"adaptedLongField,10" db:"adaptedLongField" json:"adaptedLongField"`
+  DoubleAdaptedField DoubleTypedefI64 `thrift:"doubleAdaptedField,11" db:"doubleAdaptedField" json:"doubleAdaptedField"`
 }
 
 func NewFoo() *Foo {
@@ -147,6 +153,10 @@ func (p *Foo) GetLongField() MyI64 {
 func (p *Foo) GetAdaptedLongField() MyI64 {
   return p.AdaptedLongField
 }
+
+func (p *Foo) GetDoubleAdaptedField() DoubleTypedefI64 {
+  return p.DoubleAdaptedField
+}
 func (p *Foo) IsSetOptionalIntField() bool {
   return p != nil && p.OptionalIntField != nil
 }
@@ -181,6 +191,7 @@ func (p FooBuilder) Emit() *Foo{
     BinaryField: p.obj.BinaryField,
     LongField: p.obj.LongField,
     AdaptedLongField: p.obj.AdaptedLongField,
+    DoubleAdaptedField: p.obj.DoubleAdaptedField,
   }
 }
 
@@ -234,6 +245,11 @@ func (f *FooBuilder) AdaptedLongField(adaptedLongField MyI64) *FooBuilder {
   return f
 }
 
+func (f *FooBuilder) DoubleAdaptedField(doubleAdaptedField DoubleTypedefI64) *FooBuilder {
+  f.obj.DoubleAdaptedField = doubleAdaptedField
+  return f
+}
+
 func (f *Foo) SetIntField(intField int32) *Foo {
   f.IntField = intField
   return f
@@ -281,6 +297,11 @@ func (f *Foo) SetLongField(longField MyI64) *Foo {
 
 func (f *Foo) SetAdaptedLongField(adaptedLongField MyI64) *Foo {
   f.AdaptedLongField = adaptedLongField
+  return f
+}
+
+func (f *Foo) SetDoubleAdaptedField(doubleAdaptedField DoubleTypedefI64) *Foo {
+  f.DoubleAdaptedField = doubleAdaptedField
   return f
 }
 
@@ -335,6 +356,10 @@ func (p *Foo) Read(iprot thrift.Protocol) error {
       }
     case 10:
       if err := p.ReadField10(iprot); err != nil {
+        return err
+      }
+    case 11:
+      if err := p.ReadField11(iprot); err != nil {
         return err
       }
     default:
@@ -534,6 +559,16 @@ func (p *Foo)  ReadField10(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Foo)  ReadField11(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+    return thrift.PrependError("error reading field 11: ", err)
+  } else {
+    temp := DoubleTypedefI64(v)
+    p.DoubleAdaptedField = temp
+  }
+  return nil
+}
+
 func (p *Foo) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Foo"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -547,6 +582,7 @@ func (p *Foo) Write(oprot thrift.Protocol) error {
   if err := p.writeField8(oprot); err != nil { return err }
   if err := p.writeField9(oprot); err != nil { return err }
   if err := p.writeField10(oprot); err != nil { return err }
+  if err := p.writeField11(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -726,6 +762,16 @@ func (p *Foo) writeField10(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *Foo) writeField11(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("doubleAdaptedField", thrift.I64, 11); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 11:doubleAdaptedField: ", p), err) }
+  if err := oprot.WriteI64(int64(p.DoubleAdaptedField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.doubleAdaptedField (11) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 11:doubleAdaptedField: ", p), err) }
+  return err
+}
+
 func (p *Foo) String() string {
   if p == nil {
     return "<nil>"
@@ -746,7 +792,8 @@ func (p *Foo) String() string {
   binaryFieldVal := fmt.Sprintf("%v", p.BinaryField)
   longFieldVal := fmt.Sprintf("%v", p.LongField)
   adaptedLongFieldVal := fmt.Sprintf("%v", p.AdaptedLongField)
-  return fmt.Sprintf("Foo({IntField:%s OptionalIntField:%s IntFieldWithDefault:%s SetField:%s OptionalSetField:%s MapField:%s OptionalMapField:%s BinaryField:%s LongField:%s AdaptedLongField:%s})", intFieldVal, optionalIntFieldVal, intFieldWithDefaultVal, setFieldVal, optionalSetFieldVal, mapFieldVal, optionalMapFieldVal, binaryFieldVal, longFieldVal, adaptedLongFieldVal)
+  doubleAdaptedFieldVal := fmt.Sprintf("%v", p.DoubleAdaptedField)
+  return fmt.Sprintf("Foo({IntField:%s OptionalIntField:%s IntFieldWithDefault:%s SetField:%s OptionalSetField:%s MapField:%s OptionalMapField:%s BinaryField:%s LongField:%s AdaptedLongField:%s DoubleAdaptedField:%s})", intFieldVal, optionalIntFieldVal, intFieldWithDefaultVal, setFieldVal, optionalSetFieldVal, mapFieldVal, optionalMapFieldVal, binaryFieldVal, longFieldVal, adaptedLongFieldVal, doubleAdaptedFieldVal)
 }
 
 // Attributes:
