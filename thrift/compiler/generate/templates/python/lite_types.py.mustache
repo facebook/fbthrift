@@ -84,6 +84,20 @@ class {{struct:name}}(metaclass={{!
 
     {{/struct:exception_message?}}
     {{/struct:exception?}}
+
+    def to_py3_struct(self):
+        import {{program:module_path}}.types
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(
+            {{program:module_path}}.types.{{struct:name}}, self
+        )
+
+    def to_py_legacy_struct(self):
+        import {{program:py_legacy_module_path}}.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            {{program:py_legacy_module_path}}.ttypes.{{struct:name}}, self
+        )
 {{/program:structs}}
 
 # This unfortunately has to be down here to prevent circular imports

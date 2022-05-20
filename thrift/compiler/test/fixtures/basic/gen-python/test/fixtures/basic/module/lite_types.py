@@ -103,6 +103,20 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_MyStruct()
 
 
+    def to_py3_struct(self):
+        import test.fixtures.basic.module.types
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(
+            test.fixtures.basic.module.types.MyStruct, self
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.MyStruct, self
+        )
+
 
 class MyDataItem(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -120,6 +134,20 @@ class MyDataItem(metaclass=_fbthrift_py3lite_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyDataItem()
 
+
+    def to_py3_struct(self):
+        import test.fixtures.basic.module.types
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(
+            test.fixtures.basic.module.types.MyDataItem, self
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.MyDataItem, self
+        )
 
 
 class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
@@ -170,6 +198,20 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyUnion()
 
+
+    def to_py3_struct(self):
+        import test.fixtures.basic.module.types
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(
+            test.fixtures.basic.module.types.MyUnion, self
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.MyUnion, self
+        )
 
 # This unfortunately has to be down here to prevent circular imports
 import test.fixtures.basic.module.lite_metadata

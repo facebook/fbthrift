@@ -53,6 +53,20 @@ class Fields(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_Fields()
 
 
+    def to_py3_struct(self):
+        import foo.types
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(
+            foo.types.Fields, self
+        )
+
+    def to_py_legacy_struct(self):
+        import foo.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            foo.ttypes.Fields, self
+        )
+
 # This unfortunately has to be down here to prevent circular imports
 import foo.lite_metadata
 

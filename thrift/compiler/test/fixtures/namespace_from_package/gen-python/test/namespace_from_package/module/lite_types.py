@@ -35,6 +35,20 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_Foo()
 
 
+    def to_py3_struct(self):
+        import test.namespace_from_package.module.types
+        import thrift.py3.converter
+        return thrift.py3.converter.to_py3_struct(
+            test.namespace_from_package.module.types.Foo, self
+        )
+
+    def to_py_legacy_struct(self):
+        import namespace_from_package.module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            namespace_from_package.module.ttypes.Foo, self
+        )
+
 # This unfortunately has to be down here to prevent circular imports
 import test.namespace_from_package.module.lite_metadata
 

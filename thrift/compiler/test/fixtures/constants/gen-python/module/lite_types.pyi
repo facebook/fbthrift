@@ -57,6 +57,9 @@ class Internship(_fbthrift_py3lite_types.Struct):
     ) -> Internship: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, str, Company, float, str]]]: ...
 
+    def to_py3_struct(self) -> "module.types.Internship": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.Internship": ...   # type: ignore
+
 
 class Range(_fbthrift_py3lite_types.Struct):
     min: _typing.Final[_typing.Optional[int]] = ...
@@ -74,6 +77,9 @@ class Range(_fbthrift_py3lite_types.Struct):
     ) -> Range: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, int]]]: ...
 
+    def to_py3_struct(self) -> "module.types.Range": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.Range": ...   # type: ignore
+
 
 class struct1(_fbthrift_py3lite_types.Struct):
     a: _typing.Final[int] = ...
@@ -90,6 +96,9 @@ class struct1(_fbthrift_py3lite_types.Struct):
         b: _typing.Optional[str]=...
     ) -> struct1: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, str]]]: ...
+
+    def to_py3_struct(self) -> "module.types.struct1": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.struct1": ...   # type: ignore
 
 
 class struct2(_fbthrift_py3lite_types.Struct):
@@ -114,6 +123,9 @@ class struct2(_fbthrift_py3lite_types.Struct):
     ) -> struct2: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, str, struct1, _typing.Sequence[int]]]]: ...
 
+    def to_py3_struct(self) -> "module.types.struct2": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.struct2": ...   # type: ignore
+
 
 class struct3(_fbthrift_py3lite_types.Struct):
     a: _typing.Final[str] = ...
@@ -134,6 +146,9 @@ class struct3(_fbthrift_py3lite_types.Struct):
     ) -> struct3: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, int, struct2]]]: ...
 
+    def to_py3_struct(self) -> "module.types.struct3": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.struct3": ...   # type: ignore
+
 
 class struct4(_fbthrift_py3lite_types.Struct):
     a: _typing.Final[int] = ...
@@ -153,6 +168,9 @@ class struct4(_fbthrift_py3lite_types.Struct):
         c: _typing.Optional[int]=...
     ) -> struct4: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, float, int]]]: ...
+
+    def to_py3_struct(self) -> "module.types.struct4": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.struct4": ...   # type: ignore
 
 
 class union1(_fbthrift_py3lite_types.Union):
@@ -175,6 +193,9 @@ class union1(_fbthrift_py3lite_types.Union):
     value: _typing.Final[_typing.Union[None, int, float]]
     type: Type
     def get_type(self) -> Type:...
+
+    def to_py3_struct(self) -> "module.types.union1": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.union1": ...   # type: ignore
 
 
 class union2(_fbthrift_py3lite_types.Union):
@@ -203,6 +224,9 @@ class union2(_fbthrift_py3lite_types.Union):
     value: _typing.Final[_typing.Union[None, int, float, struct1, union1]]
     type: Type
     def get_type(self) -> Type:...
+
+    def to_py3_struct(self) -> "module.types.union2": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.union2": ...   # type: ignore
 
 
 myInt: int = ...

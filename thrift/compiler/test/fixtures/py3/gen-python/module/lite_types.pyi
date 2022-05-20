@@ -38,6 +38,9 @@ class SimpleException(_fbthrift_py3lite_exceptions.GeneratedError):
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int]]]: ...
 
+    def to_py3_struct(self) -> "module.types.SimpleException": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.SimpleException": ...   # type: ignore
+
 
 class OptionalRefStruct(_fbthrift_py3lite_types.Struct):
     optional_blob: _typing.Final[_typing.Optional[_fbthrift_iobuf.IOBuf]] = ...
@@ -51,6 +54,9 @@ class OptionalRefStruct(_fbthrift_py3lite_types.Struct):
         optional_blob: _typing.Optional[_fbthrift_iobuf.IOBuf]=...
     ) -> OptionalRefStruct: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[_fbthrift_iobuf.IOBuf]]]: ...
+
+    def to_py3_struct(self) -> "module.types.OptionalRefStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.OptionalRefStruct": ...   # type: ignore
 
 
 class SimpleStruct(_fbthrift_py3lite_types.Struct):
@@ -86,6 +92,9 @@ class SimpleStruct(_fbthrift_py3lite_types.Struct):
         hidden_field: _typing.Optional[int]=...
     ) -> SimpleStruct: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[bool, int, int, int, int, float, float, int]]]: ...
+
+    def to_py3_struct(self) -> "module.types.SimpleStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.SimpleStruct": ...   # type: ignore
 
 
 class ComplexStruct(_fbthrift_py3lite_types.Struct):
@@ -125,6 +134,9 @@ class ComplexStruct(_fbthrift_py3lite_types.Struct):
     ) -> ComplexStruct: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[SimpleStruct, SimpleStruct, int, str, AnEnum, bytes, str, str, bytes]]]: ...
 
+    def to_py3_struct(self) -> "module.types.ComplexStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.ComplexStruct": ...   # type: ignore
+
 
 class BinaryUnion(_fbthrift_py3lite_types.Union):
     iobuf_val: _typing.Final[_fbthrift_iobuf.IOBuf] = ...
@@ -144,6 +156,9 @@ class BinaryUnion(_fbthrift_py3lite_types.Union):
     type: Type
     def get_type(self) -> Type:...
 
+    def to_py3_struct(self) -> "module.types.BinaryUnion": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.BinaryUnion": ...   # type: ignore
+
 
 class BinaryUnionStruct(_fbthrift_py3lite_types.Struct):
     u: _typing.Final[BinaryUnion] = ...
@@ -157,6 +172,9 @@ class BinaryUnionStruct(_fbthrift_py3lite_types.Struct):
         u: _typing.Optional[BinaryUnion]=...
     ) -> BinaryUnionStruct: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[BinaryUnion]]]: ...
+
+    def to_py3_struct(self) -> "module.types.BinaryUnionStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.BinaryUnionStruct": ...   # type: ignore
 
 
 A_BOOL: bool = ...

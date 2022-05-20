@@ -18,3 +18,6 @@ class FooEx(_fbthrift_py3lite_exceptions.GeneratedError):
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
+
+    def to_py3_struct(self) -> "module.types.FooEx": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.FooEx": ...   # type: ignore

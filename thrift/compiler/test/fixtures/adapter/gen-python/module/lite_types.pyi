@@ -67,6 +67,9 @@ class Foo(_fbthrift_py3lite_types.Struct):
     ) -> Foo: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, int, int, _typing.AbstractSet[str], _typing.AbstractSet[str], _typing.Mapping[str, _typing.Sequence[str]], _typing.Mapping[str, _typing.Sequence[str]], bytes, my.another.module.AdaptedType2, my.AdaptedType3, int]]]: ...
 
+    def to_py3_struct(self) -> "module.types.Foo": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.Foo": ...   # type: ignore
+
 
 class Baz(_fbthrift_py3lite_types.Union):
     intField: _typing.Final[int] = ...
@@ -98,6 +101,9 @@ class Baz(_fbthrift_py3lite_types.Union):
     type: Type
     def get_type(self) -> Type:...
 
+    def to_py3_struct(self) -> "module.types.Baz": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.Baz": ...   # type: ignore
+
 
 class Bar(_fbthrift_py3lite_types.Struct):
     structField: _typing.Final[Foo] = ...
@@ -127,6 +133,9 @@ class Bar(_fbthrift_py3lite_types.Struct):
     ) -> Bar: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[Foo, Foo, _typing.Sequence[Foo], _typing.Sequence[Foo], Baz, Baz]]]: ...
 
+    def to_py3_struct(self) -> "module.types.Bar": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.Bar": ...   # type: ignore
+
 
 class StructWithFieldAdapter(_fbthrift_py3lite_types.Struct):
     field: _typing.Final[my.AdaptedType1] = ...
@@ -149,6 +158,9 @@ class StructWithFieldAdapter(_fbthrift_py3lite_types.Struct):
         opt_boxed_field: _typing.Optional[int]=...
     ) -> StructWithFieldAdapter: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[my.AdaptedType1, int, int, int]]]: ...
+
+    def to_py3_struct(self) -> "module.types.StructWithFieldAdapter": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.StructWithFieldAdapter": ...   # type: ignore
 
 SetWithAdapter = _typing.Set[str]
 StringWithAdapter = str

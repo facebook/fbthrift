@@ -34,6 +34,9 @@ class MyData(_fbthrift_py3lite_types.Struct):
     ) -> MyData: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, int]]]: ...
 
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.MyData": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyData": ...   # type: ignore
+
 
 class MyUnion(_fbthrift_py3lite_types.Union):
     option1: _typing.Final[str] = ...
@@ -55,6 +58,9 @@ class MyUnion(_fbthrift_py3lite_types.Union):
     value: _typing.Final[_typing.Union[None, str, int]]
     type: Type
     def get_type(self) -> Type:...
+
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.MyUnion": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyUnion": ...   # type: ignore
 
 
 class MyStruct(_fbthrift_py3lite_types.Struct):
@@ -139,6 +145,9 @@ class MyStruct(_fbthrift_py3lite_types.Struct):
     ) -> MyStruct: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[bool, int, int, int, int, float, float, str, bytes, MyData, bool, int, int, int, int, float, float, str, bytes, MyData, _typing.Sequence[int], _typing.AbstractSet[str], _typing.Mapping[str, str], MyUnion]]]: ...
 
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.MyStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyStruct": ...   # type: ignore
+
 
 class MyDataPatch(_fbthrift_py3lite_types.Struct):
     data1: _typing.Final[_typing.Optional[facebook.thrift.op.patch.lite_types.StringPatch]] = ...
@@ -155,6 +164,9 @@ class MyDataPatch(_fbthrift_py3lite_types.Struct):
         data2: _typing.Optional[facebook.thrift.op.patch.lite_types.I32Patch]=...
     ) -> MyDataPatch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[facebook.thrift.op.patch.lite_types.StringPatch, facebook.thrift.op.patch.lite_types.I32Patch]]]: ...
+
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.MyDataPatch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyDataPatch": ...   # type: ignore
 
 
 class MyDataValuePatch(_fbthrift_py3lite_types.Struct):
@@ -175,6 +187,9 @@ class MyDataValuePatch(_fbthrift_py3lite_types.Struct):
         patch: _typing.Optional[MyDataPatch]=...
     ) -> MyDataValuePatch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[MyData, bool, MyDataPatch]]]: ...
+
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.MyDataValuePatch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyDataValuePatch": ...   # type: ignore
 
 
 class OptionalMyDataValuePatch(_fbthrift_py3lite_types.Struct):
@@ -199,6 +214,9 @@ class OptionalMyDataValuePatch(_fbthrift_py3lite_types.Struct):
     ) -> OptionalMyDataValuePatch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[bool, MyDataValuePatch, MyData, MyDataValuePatch]]]: ...
 
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.OptionalMyDataValuePatch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.OptionalMyDataValuePatch": ...   # type: ignore
+
 
 class MyUnionPatch(_fbthrift_py3lite_types.Struct):
     option1: _typing.Final[_typing.Optional[facebook.thrift.op.patch.lite_types.StringPatch]] = ...
@@ -215,6 +233,9 @@ class MyUnionPatch(_fbthrift_py3lite_types.Struct):
         option2: _typing.Optional[facebook.thrift.op.patch.lite_types.I32Patch]=...
     ) -> MyUnionPatch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[facebook.thrift.op.patch.lite_types.StringPatch, facebook.thrift.op.patch.lite_types.I32Patch]]]: ...
+
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.MyUnionPatch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyUnionPatch": ...   # type: ignore
 
 
 class MyUnionValuePatch(_fbthrift_py3lite_types.Struct):
@@ -239,6 +260,9 @@ class MyUnionValuePatch(_fbthrift_py3lite_types.Struct):
     ) -> MyUnionValuePatch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[bool, MyUnionPatch, MyUnion, MyUnionPatch]]]: ...
 
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.MyUnionValuePatch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyUnionValuePatch": ...   # type: ignore
+
 
 class OptionalMyUnionValuePatch(_fbthrift_py3lite_types.Struct):
     clear: _typing.Final[_typing.Optional[bool]] = ...
@@ -261,6 +285,9 @@ class OptionalMyUnionValuePatch(_fbthrift_py3lite_types.Struct):
         patchAfter: _typing.Optional[MyUnionValuePatch]=...
     ) -> OptionalMyUnionValuePatch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[bool, MyUnionValuePatch, MyUnion, MyUnionValuePatch]]]: ...
+
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.OptionalMyUnionValuePatch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.OptionalMyUnionValuePatch": ...   # type: ignore
 
 
 class MyStructPatch(_fbthrift_py3lite_types.Struct):
@@ -345,6 +372,9 @@ class MyStructPatch(_fbthrift_py3lite_types.Struct):
     ) -> MyStructPatch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[facebook.thrift.op.patch.lite_types.BoolPatch, facebook.thrift.op.patch.lite_types.BytePatch, facebook.thrift.op.patch.lite_types.I16Patch, facebook.thrift.op.patch.lite_types.I32Patch, facebook.thrift.op.patch.lite_types.I64Patch, facebook.thrift.op.patch.lite_types.FloatPatch, facebook.thrift.op.patch.lite_types.DoublePatch, facebook.thrift.op.patch.lite_types.StringPatch, facebook.thrift.op.patch.lite_types.BinaryPatch, MyDataValuePatch, facebook.thrift.op.patch.lite_types.OptionalBoolPatch, facebook.thrift.op.patch.lite_types.OptionalBytePatch, facebook.thrift.op.patch.lite_types.OptionalI16Patch, facebook.thrift.op.patch.lite_types.OptionalI32Patch, facebook.thrift.op.patch.lite_types.OptionalI64Patch, facebook.thrift.op.patch.lite_types.OptionalFloatPatch, facebook.thrift.op.patch.lite_types.OptionalDoublePatch, facebook.thrift.op.patch.lite_types.OptionalStringPatch, facebook.thrift.op.patch.lite_types.OptionalBinaryPatch, OptionalMyDataValuePatch, OptionalMyStructField21Patch, OptionalMyStructField22Patch, OptionalMyStructField23Patch, MyUnionValuePatch]]]: ...
 
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.MyStructPatch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyStructPatch": ...   # type: ignore
+
 
 class MyStructField21Patch(_fbthrift_py3lite_types.Struct):
     assign: _typing.Final[_typing.Optional[_typing.Sequence[int]]] = ...
@@ -367,6 +397,9 @@ class MyStructField21Patch(_fbthrift_py3lite_types.Struct):
         append: _typing.Optional[_typing.Sequence[int]]=...
     ) -> MyStructField21Patch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[_typing.Sequence[int], bool, _typing.Sequence[int], _typing.Sequence[int]]]]: ...
+
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.MyStructField21Patch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyStructField21Patch": ...   # type: ignore
 
 
 class OptionalMyStructField21Patch(_fbthrift_py3lite_types.Struct):
@@ -391,6 +424,9 @@ class OptionalMyStructField21Patch(_fbthrift_py3lite_types.Struct):
     ) -> OptionalMyStructField21Patch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[bool, MyStructField21Patch, _typing.Sequence[int], MyStructField21Patch]]]: ...
 
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.OptionalMyStructField21Patch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.OptionalMyStructField21Patch": ...   # type: ignore
+
 
 class MyStructField22Patch(_fbthrift_py3lite_types.Struct):
     assign: _typing.Final[_typing.Optional[_typing.AbstractSet[str]]] = ...
@@ -413,6 +449,9 @@ class MyStructField22Patch(_fbthrift_py3lite_types.Struct):
         add: _typing.Optional[_typing.AbstractSet[str]]=...
     ) -> MyStructField22Patch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[_typing.AbstractSet[str], bool, _typing.AbstractSet[str], _typing.AbstractSet[str]]]]: ...
+
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.MyStructField22Patch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyStructField22Patch": ...   # type: ignore
 
 
 class OptionalMyStructField22Patch(_fbthrift_py3lite_types.Struct):
@@ -437,6 +476,9 @@ class OptionalMyStructField22Patch(_fbthrift_py3lite_types.Struct):
     ) -> OptionalMyStructField22Patch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[bool, MyStructField22Patch, _typing.AbstractSet[str], MyStructField22Patch]]]: ...
 
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.OptionalMyStructField22Patch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.OptionalMyStructField22Patch": ...   # type: ignore
+
 
 class MyStructField23Patch(_fbthrift_py3lite_types.Struct):
     assign: _typing.Final[_typing.Optional[_typing.Mapping[str, str]]] = ...
@@ -456,6 +498,9 @@ class MyStructField23Patch(_fbthrift_py3lite_types.Struct):
         put: _typing.Optional[_typing.Mapping[str, str]]=...
     ) -> MyStructField23Patch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[_typing.Mapping[str, str], bool, _typing.Mapping[str, str]]]]: ...
+
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.MyStructField23Patch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyStructField23Patch": ...   # type: ignore
 
 
 class OptionalMyStructField23Patch(_fbthrift_py3lite_types.Struct):
@@ -480,6 +525,9 @@ class OptionalMyStructField23Patch(_fbthrift_py3lite_types.Struct):
     ) -> OptionalMyStructField23Patch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[bool, MyStructField23Patch, _typing.Mapping[str, str], MyStructField23Patch]]]: ...
 
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.OptionalMyStructField23Patch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.OptionalMyStructField23Patch": ...   # type: ignore
+
 
 class MyStructValuePatch(_fbthrift_py3lite_types.Struct):
     assign: _typing.Final[_typing.Optional[MyStruct]] = ...
@@ -499,6 +547,9 @@ class MyStructValuePatch(_fbthrift_py3lite_types.Struct):
         patch: _typing.Optional[MyStructPatch]=...
     ) -> MyStructValuePatch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[MyStruct, bool, MyStructPatch]]]: ...
+
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.MyStructValuePatch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyStructValuePatch": ...   # type: ignore
 
 
 class OptionalMyStructValuePatch(_fbthrift_py3lite_types.Struct):
@@ -522,3 +573,6 @@ class OptionalMyStructValuePatch(_fbthrift_py3lite_types.Struct):
         patchAfter: _typing.Optional[MyStructValuePatch]=...
     ) -> OptionalMyStructValuePatch: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[bool, MyStructValuePatch, MyStruct, MyStructValuePatch]]]: ...
+
+    def to_py3_struct(self) -> "test.fixtures.patch.module.types.OptionalMyStructValuePatch": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.OptionalMyStructValuePatch": ...   # type: ignore
