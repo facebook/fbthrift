@@ -20,14 +20,14 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 41,
+            "lineno" : 43,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 39
+        "lineno" : 41
       },
       "Adapter" : {
         "name" : "Adapter",
@@ -35,14 +35,14 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 57,
+            "lineno" : 59,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 55
+        "lineno" : 57
       },
       "SkipCodegen" : {
         "name" : "SkipCodegen",
@@ -50,14 +50,14 @@
           "reason" : {
             "name" : "reason",
             "key" : 1,
-            "lineno" : 63,
+            "lineno" : 65,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 62
+        "lineno" : 64
       }
       },
   "source_path" : "thrift/annotation/hack",

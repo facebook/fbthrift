@@ -3,7 +3,7 @@
   "thrift_module" : "python",
   "structs" : {
     "Adapter" : {
-      "lineno" : 44,
+      "lineno" : 46,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -13,11 +13,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 46,
+              "line" : 48,
               "column" : 3
             },
             "end" : {
-              "line" : 46,
+              "line" : 48,
               "column" : 17
             }
           }
@@ -28,11 +28,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 48,
+              "line" : 50,
               "column" : 3
             },
             "end" : {
-              "line" : 48,
+              "line" : 50,
               "column" : 21
             }
           }
@@ -40,11 +40,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 42,
+          "line" : 44,
           "column" : 1
         },
         "end" : {
-          "line" : 49,
+          "line" : 51,
           "column" : 65
         }
       }

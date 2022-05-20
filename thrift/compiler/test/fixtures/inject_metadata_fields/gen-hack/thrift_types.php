@@ -6,12 +6,14 @@
  *  @generated
  */
 
+namespace thrift\annotation;
+
 /**
  * Original thrift struct:-
  * RequiresBackwardCompatibility
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/RequiresBackwardCompatibility'))>>
-class facebook_thrift_annotation_RequiresBackwardCompatibility implements \IThriftSyncStruct {
+class RequiresBackwardCompatibility implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -54,16 +56,16 @@ class facebook_thrift_annotation_RequiresBackwardCompatibility implements \IThri
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "thrift.RequiresBackwardCompatibility",
         "fields" => vec[
-          tmeta_ThriftField::fromShape(
+          \tmeta_ThriftField::fromShape(
             shape(
               "id" => 1,
-              "type" => tmeta_ThriftType::fromShape(
+              "type" => \tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
                 )
               ),
               "name" => "field_name",
@@ -78,15 +80,15 @@ class facebook_thrift_annotation_RequiresBackwardCompatibility implements \IThri
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_Struct' => facebook_thrift_annotation_Struct::fromShape(
+        '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Union' => facebook_thrift_annotation_Union::fromShape(
+        '\thrift\annotation\Union' => \thrift\annotation\Union::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Exception' => facebook_thrift_annotation_Exception::fromShape(
+        '\thrift\annotation\Exception' => \thrift\annotation\Exception::fromShape(
           shape(
           )
         ),
@@ -107,7 +109,7 @@ class facebook_thrift_annotation_RequiresBackwardCompatibility implements \IThri
  * Beta
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Beta'))>>
-class facebook_thrift_annotation_Beta implements \IThriftSyncStruct {
+class Beta implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -137,7 +139,7 @@ class facebook_thrift_annotation_Beta implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "thrift.Beta",
         "is_union" => false,
@@ -148,11 +150,11 @@ class facebook_thrift_annotation_Beta implements \IThriftSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_Program' => facebook_thrift_annotation_Program::fromShape(
+        '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Definition' => facebook_thrift_annotation_Definition::fromShape(
+        '\thrift\annotation\Definition' => \thrift\annotation\Definition::fromShape(
           shape(
           )
         ),
@@ -173,7 +175,7 @@ class facebook_thrift_annotation_Beta implements \IThriftSyncStruct {
  * Experimental
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Experimental'))>>
-class facebook_thrift_annotation_Experimental implements \IThriftSyncStruct {
+class Experimental implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -203,7 +205,7 @@ class facebook_thrift_annotation_Experimental implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "thrift.Experimental",
         "is_union" => false,
@@ -214,11 +216,11 @@ class facebook_thrift_annotation_Experimental implements \IThriftSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_Program' => facebook_thrift_annotation_Program::fromShape(
+        '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Definition' => facebook_thrift_annotation_Definition::fromShape(
+        '\thrift\annotation\Definition' => \thrift\annotation\Definition::fromShape(
           shape(
           )
         ),
@@ -238,7 +240,8 @@ class facebook_thrift_annotation_Experimental implements \IThriftSyncStruct {
  * Original thrift struct:-
  * Deprecated
  */
-class facebook_thrift_annotation_Deprecated implements \IThriftSyncStruct {
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Deprecated'))>>
+class Deprecated implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -268,7 +271,7 @@ class facebook_thrift_annotation_Deprecated implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "thrift.Deprecated",
         "is_union" => false,
@@ -279,15 +282,15 @@ class facebook_thrift_annotation_Deprecated implements \IThriftSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_Beta' => facebook_thrift_annotation_Beta::fromShape(
+        '\thrift\annotation\Beta' => \thrift\annotation\Beta::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Program' => facebook_thrift_annotation_Program::fromShape(
+        '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Definition' => facebook_thrift_annotation_Definition::fromShape(
+        '\thrift\annotation\Definition' => \thrift\annotation\Definition::fromShape(
           shape(
           )
         ),
@@ -308,7 +311,7 @@ class facebook_thrift_annotation_Deprecated implements \IThriftSyncStruct {
  * TerseWrite
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/TerseWrite'))>>
-class facebook_thrift_annotation_TerseWrite implements \IThriftSyncStruct {
+class TerseWrite implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -338,7 +341,7 @@ class facebook_thrift_annotation_TerseWrite implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "thrift.TerseWrite",
         "is_union" => false,
@@ -349,19 +352,19 @@ class facebook_thrift_annotation_TerseWrite implements \IThriftSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_Program' => facebook_thrift_annotation_Program::fromShape(
+        '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Struct' => facebook_thrift_annotation_Struct::fromShape(
+        '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Field' => facebook_thrift_annotation_Field::fromShape(
+        '\thrift\annotation\Field' => \thrift\annotation\Field::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
+        '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
           shape(
           )
         ),
@@ -382,7 +385,7 @@ class facebook_thrift_annotation_TerseWrite implements \IThriftSyncStruct {
  * Box
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Box'))>>
-class facebook_thrift_annotation_Box implements \IThriftSyncStruct {
+class Box implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -412,7 +415,7 @@ class facebook_thrift_annotation_Box implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "thrift.Box",
         "is_union" => false,
@@ -423,11 +426,11 @@ class facebook_thrift_annotation_Box implements \IThriftSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_Beta' => facebook_thrift_annotation_Beta::fromShape(
+        '\thrift\annotation\Beta' => \thrift\annotation\Beta::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Field' => facebook_thrift_annotation_Field::fromShape(
+        '\thrift\annotation\Field' => \thrift\annotation\Field::fromShape(
           shape(
           )
         ),
@@ -448,7 +451,7 @@ class facebook_thrift_annotation_Box implements \IThriftSyncStruct {
  * Mixin
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Mixin'))>>
-class facebook_thrift_annotation_Mixin implements \IThriftSyncStruct {
+class Mixin implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -478,7 +481,7 @@ class facebook_thrift_annotation_Mixin implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "thrift.Mixin",
         "is_union" => false,
@@ -489,11 +492,11 @@ class facebook_thrift_annotation_Mixin implements \IThriftSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_Beta' => facebook_thrift_annotation_Beta::fromShape(
+        '\thrift\annotation\Beta' => \thrift\annotation\Beta::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Field' => facebook_thrift_annotation_Field::fromShape(
+        '\thrift\annotation\Field' => \thrift\annotation\Field::fromShape(
           shape(
           )
         ),
@@ -514,7 +517,7 @@ class facebook_thrift_annotation_Mixin implements \IThriftSyncStruct {
  * SerializeInFieldIdOrder
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/SerializeInFieldIdOrder'))>>
-class facebook_thrift_annotation_SerializeInFieldIdOrder implements \IThriftSyncStruct {
+class SerializeInFieldIdOrder implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -544,7 +547,7 @@ class facebook_thrift_annotation_SerializeInFieldIdOrder implements \IThriftSync
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "thrift.SerializeInFieldIdOrder",
         "is_union" => false,
@@ -555,11 +558,11 @@ class facebook_thrift_annotation_SerializeInFieldIdOrder implements \IThriftSync
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_Struct' => facebook_thrift_annotation_Struct::fromShape(
+        '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
+        '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
           shape(
           )
         ),
@@ -580,7 +583,7 @@ class facebook_thrift_annotation_SerializeInFieldIdOrder implements \IThriftSync
  * NoLegacyAPIs
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/NoLegacyAPIs'))>>
-class facebook_thrift_annotation_NoLegacyAPIs implements \IThriftSyncStruct {
+class NoLegacyAPIs implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -610,7 +613,7 @@ class facebook_thrift_annotation_NoLegacyAPIs implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "thrift.NoLegacyAPIs",
         "is_union" => false,
@@ -621,27 +624,27 @@ class facebook_thrift_annotation_NoLegacyAPIs implements \IThriftSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_Program' => facebook_thrift_annotation_Program::fromShape(
+        '\thrift\annotation\Program' => \thrift\annotation\Program::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Struct' => facebook_thrift_annotation_Struct::fromShape(
+        '\thrift\annotation\Struct' => \thrift\annotation\Struct::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Union' => facebook_thrift_annotation_Union::fromShape(
+        '\thrift\annotation\Union' => \thrift\annotation\Union::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Exception' => facebook_thrift_annotation_Exception::fromShape(
+        '\thrift\annotation\Exception' => \thrift\annotation\Exception::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Service' => facebook_thrift_annotation_Service::fromShape(
+        '\thrift\annotation\Service' => \thrift\annotation\Service::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
+        '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
           shape(
           )
         ),
@@ -661,7 +664,8 @@ class facebook_thrift_annotation_NoLegacyAPIs implements \IThriftSyncStruct {
  * Original thrift struct:-
  * v1
  */
-class facebook_thrift_annotation_v1 implements \IThriftSyncStruct {
+<<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/v1'))>>
+class v1 implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -691,7 +695,7 @@ class facebook_thrift_annotation_v1 implements \IThriftSyncStruct {
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
-    return tmeta_ThriftStruct::fromShape(
+    return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "thrift.v1",
         "is_union" => false,
@@ -702,19 +706,19 @@ class facebook_thrift_annotation_v1 implements \IThriftSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        'facebook_thrift_annotation_Experimental' => facebook_thrift_annotation_Experimental::fromShape(
+        '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_TerseWrite' => facebook_thrift_annotation_TerseWrite::fromShape(
+        '\thrift\annotation\TerseWrite' => \thrift\annotation\TerseWrite::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_NoLegacyAPIs' => facebook_thrift_annotation_NoLegacyAPIs::fromShape(
+        '\thrift\annotation\NoLegacyAPIs' => \thrift\annotation\NoLegacyAPIs::fromShape(
           shape(
           )
         ),
-        'facebook_thrift_annotation_FbthriftInternalScopeTransitive' => facebook_thrift_annotation_FbthriftInternalScopeTransitive::fromShape(
+        '\thrift\annotation\FbthriftInternalScopeTransitive' => \thrift\annotation\FbthriftInternalScopeTransitive::fromShape(
           shape(
           )
         ),

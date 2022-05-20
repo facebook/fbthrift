@@ -1438,7 +1438,7 @@ class MyDataPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\facebook_thrift_annotation_Experimental' => \facebook_thrift_annotation_Experimental::fromShape(
+            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -1451,7 +1451,7 @@ class MyDataPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\facebook_thrift_annotation_Experimental' => \facebook_thrift_annotation_Experimental::fromShape(
+            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -2046,7 +2046,7 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\facebook_thrift_annotation_Experimental' => \facebook_thrift_annotation_Experimental::fromShape(
+            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -2059,7 +2059,7 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\facebook_thrift_annotation_Experimental' => \facebook_thrift_annotation_Experimental::fromShape(
+            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -3353,7 +3353,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\facebook_thrift_annotation_Experimental' => \facebook_thrift_annotation_Experimental::fromShape(
+            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -3366,7 +3366,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\facebook_thrift_annotation_Experimental' => \facebook_thrift_annotation_Experimental::fromShape(
+            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -3379,7 +3379,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\facebook_thrift_annotation_Experimental' => \facebook_thrift_annotation_Experimental::fromShape(
+            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -3392,7 +3392,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\facebook_thrift_annotation_Experimental' => \facebook_thrift_annotation_Experimental::fromShape(
+            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -3405,7 +3405,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\facebook_thrift_annotation_Experimental' => \facebook_thrift_annotation_Experimental::fromShape(
+            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -3418,7 +3418,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\facebook_thrift_annotation_Experimental' => \facebook_thrift_annotation_Experimental::fromShape(
+            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -3431,7 +3431,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\facebook_thrift_annotation_Experimental' => \facebook_thrift_annotation_Experimental::fromShape(
+            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -3444,7 +3444,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\facebook_thrift_annotation_Experimental' => \facebook_thrift_annotation_Experimental::fromShape(
+            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -3457,7 +3457,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\facebook_thrift_annotation_Experimental' => \facebook_thrift_annotation_Experimental::fromShape(
+            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),

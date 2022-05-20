@@ -19,6 +19,8 @@
 include "thrift/annotation/scope.thrift"
 include "thrift/annotation/thrift.thrift"
 
+package "facebook.com/thrift/annotation"
+
 namespace cpp2 facebook.thrift.annotation
 namespace py3 facebook.thrift.annotation
 namespace php facebook_thrift_annotation

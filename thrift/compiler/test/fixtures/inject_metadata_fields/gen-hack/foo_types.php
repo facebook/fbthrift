@@ -130,7 +130,7 @@ class Fields implements \IThriftSyncStruct {
       'fields' => dict[
         'injected_structured_annotation_field' => shape(
           'field' => dict[
-            'facebook_thrift_annotation_Box' => facebook_thrift_annotation_Box::fromShape(
+            '\thrift\annotation\Box' => \thrift\annotation\Box::fromShape(
               shape(
               )
             ),
