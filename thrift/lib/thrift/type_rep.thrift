@@ -23,8 +23,8 @@ cpp_include "<folly/FBString.h>"
 namespace cpp2 apache.thrift.type
 namespace py3 apache.thrift.type
 namespace php apache_thrift_type
-namespace java.swift com.facebook.thrift.type
 namespace java com.facebook.thrift.type
+namespace java.swift com.facebook.thrift.type_swift
 namespace java2 com.facebook.thrift.type
 namespace py.asyncio apache_thrift_asyncio.type_rep
 namespace go thrift.lib.thrift.type_rep

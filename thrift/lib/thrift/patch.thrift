@@ -22,7 +22,7 @@ cpp_include "thrift/lib/cpp2/op/detail/Patch.h"
 package "facebook.com/thrift/op"
 
 namespace cpp2 apache.thrift.op
-namespace java.swift com.facebook.thrift.op
+namespace java.swift com.facebook.thrift.op_swift
 namespace java2 com.facebook.thrift.op
 
 // An annotation that indicates a patch representation

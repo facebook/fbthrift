@@ -3,7 +3,7 @@
   "thrift_module" : "patch",
   "namespaces": {
     "cpp2": "apache.thrift.op",
-    "java.swift": "com.facebook.thrift.op",
+    "java.swift": "com.facebook.thrift.op_swift",
     "java2": "com.facebook.thrift.op"
   },  "structs" :
   {

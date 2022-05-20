@@ -26,9 +26,9 @@ cpp_include "<thrift/lib/cpp2/type/UniversalHashAlgorithm.h>"
 namespace cpp2 apache.thrift.type
 namespace py3 apache.thrift.type
 namespace php apache_thrift_type
-namespace java.swift com.facebook.thrift.type
 namespace java com.facebook.thrift.type
 namespace java2 com.facebook.thrift.type
+namespace java.swift com.facebook.thrift.type_swift
 namespace py.asyncio apache_thrift_asyncio.type
 namespace go thrift.lib.thrift.type
 namespace py thrift.lib.thrift.type
