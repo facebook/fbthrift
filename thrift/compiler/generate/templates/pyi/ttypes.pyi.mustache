@@ -100,6 +100,9 @@ class {{struct:name}}{{#struct:exception?}}(Thrift.TException){{/struct:exceptio
     def write(self, oprot: TProtocolBase) -> None: ...
     def __eq__(self, other: __T.Any) -> bool: ...
     def __ne__(self, other: __T.Any) -> bool: ...
+    {{!TODO: accommodate root_module_prefix}}
+    def to_python_struct(self) -> "{{#program:pythonNamespaces}}{{value}}.{{/program:pythonNamespaces}}{{program:name}}.thrift_types.{{struct:name}}": ...   # type: ignore
+    def to_py3_struct(self) -> "{{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types.{{struct:name}}": ...   # type: ignore
 {{/program:structs}}
 
 

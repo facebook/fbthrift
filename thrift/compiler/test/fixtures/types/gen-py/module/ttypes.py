@@ -172,6 +172,14 @@ class decorated_struct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.decorated_struct, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.decorated_struct, self)
 class ContainerStruct:
   """
   Attributes:
@@ -452,6 +460,14 @@ class ContainerStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.ContainerStruct, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.ContainerStruct, self)
 class CppTypeStruct:
   """
   Attributes:
@@ -537,6 +553,14 @@ class CppTypeStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.CppTypeStruct, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.CppTypeStruct, self)
 class VirtualStruct:
   """
   Attributes:
@@ -609,6 +633,14 @@ class VirtualStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.VirtualStruct, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.VirtualStruct, self)
 class MyStructWithForwardRefEnum:
   """
   Attributes:
@@ -695,6 +727,14 @@ class MyStructWithForwardRefEnum:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.MyStructWithForwardRefEnum, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.MyStructWithForwardRefEnum, self)
 class TrivialNumeric:
   """
   Attributes:
@@ -781,6 +821,14 @@ class TrivialNumeric:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.TrivialNumeric, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.TrivialNumeric, self)
 class TrivialNestedWithDefault:
   """
   Attributes:
@@ -868,6 +916,14 @@ class TrivialNestedWithDefault:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.TrivialNestedWithDefault, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.TrivialNestedWithDefault, self)
 class ComplexString:
   """
   Attributes:
@@ -970,6 +1026,14 @@ class ComplexString:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.ComplexString, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.ComplexString, self)
 class ComplexNestedWithDefault:
   """
   Attributes:
@@ -1057,6 +1121,14 @@ class ComplexNestedWithDefault:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.ComplexNestedWithDefault, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.ComplexNestedWithDefault, self)
 class MinPadding:
   """
   Attributes:
@@ -1185,6 +1257,14 @@ class MinPadding:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.MinPadding, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.MinPadding, self)
 class MyStruct:
   """
   Attributes:
@@ -1300,6 +1380,14 @@ class MyStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.MyStruct, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.MyStruct, self)
 class MyDataItem:
 
   thrift_spec = None
@@ -1354,6 +1442,14 @@ class MyDataItem:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.MyDataItem, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.MyDataItem, self)
 class Renaming:
   """
   Attributes:
@@ -1426,6 +1522,14 @@ class Renaming:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.Renaming, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.Renaming, self)
 class AnnotatedTypes:
   """
   Attributes:
@@ -1553,6 +1657,14 @@ class AnnotatedTypes:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.AnnotatedTypes, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.AnnotatedTypes, self)
 class ForwardUsageRoot:
   """
   Attributes:
@@ -1641,6 +1753,14 @@ class ForwardUsageRoot:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.ForwardUsageRoot, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.ForwardUsageRoot, self)
 class ForwardUsageStruct:
   """
   Attributes:
@@ -1714,6 +1834,14 @@ class ForwardUsageStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.ForwardUsageStruct, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.ForwardUsageStruct, self)
 class ForwardUsageByRef:
   """
   Attributes:
@@ -1787,6 +1915,14 @@ class ForwardUsageByRef:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.ForwardUsageByRef, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.ForwardUsageByRef, self)
 class NoexceptMoveEmpty:
 
   thrift_spec = None
@@ -1841,6 +1977,14 @@ class NoexceptMoveEmpty:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.NoexceptMoveEmpty, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.NoexceptMoveEmpty, self)
 class NoexceptMoveSimpleStruct:
   """
   Attributes:
@@ -1913,6 +2057,14 @@ class NoexceptMoveSimpleStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.NoexceptMoveSimpleStruct, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.NoexceptMoveSimpleStruct, self)
 class NoexceptMoveComplexStruct:
   """
   Attributes:
@@ -2126,6 +2278,14 @@ class NoexceptMoveComplexStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.NoexceptMoveComplexStruct, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.NoexceptMoveComplexStruct, self)
 class NoExceptMoveUnion(object):
   """
   Attributes:
@@ -2240,6 +2400,14 @@ class NoExceptMoveUnion(object):
   def __ne__(self, other):
     return not (self == other)
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.NoExceptMoveUnion, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.NoExceptMoveUnion, self)
 class AllocatorAware:
   """
   Attributes:
@@ -2438,6 +2606,14 @@ class AllocatorAware:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.AllocatorAware, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.AllocatorAware, self)
 class AllocatorAware2:
   """
   Attributes:
@@ -2510,6 +2686,14 @@ class AllocatorAware2:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.AllocatorAware2, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.AllocatorAware2, self)
 class TypedefStruct:
   """
   Attributes:
@@ -2610,6 +2794,14 @@ class TypedefStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.TypedefStruct, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.TypedefStruct, self)
 class StructWithDoubleUnderscores:
   """
   Attributes:
@@ -2682,6 +2874,14 @@ class StructWithDoubleUnderscores:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.StructWithDoubleUnderscores, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.StructWithDoubleUnderscores, self)
 TBinary = UnimplementedTypedef()
 IntTypedef = UnimplementedTypedef()
 UintTypedef = IntTypedef

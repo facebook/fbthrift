@@ -128,6 +128,14 @@ class CustomException(TException):
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import test.fixtures.interactions.module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(test.fixtures.interactions.module.thrift_types.CustomException, self)
+  def to_py3_struct(self):
+    import test.fixtures.interactions.module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(test.fixtures.interactions.module.types.CustomException, self)
 all_structs.append(CustomException)
 CustomException.thrift_spec = (
   None, # 0

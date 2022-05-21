@@ -105,6 +105,14 @@ class Fields:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.Fields, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.Fields, self)
 class FieldsInjectedToEmptyStruct:
   """
   Attributes:
@@ -177,6 +185,14 @@ class FieldsInjectedToEmptyStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.FieldsInjectedToEmptyStruct, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.FieldsInjectedToEmptyStruct, self)
 class FieldsInjectedToStruct:
   """
   Attributes:
@@ -263,6 +279,14 @@ class FieldsInjectedToStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.FieldsInjectedToStruct, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.FieldsInjectedToStruct, self)
 class FieldsInjectedWithIncludedStruct:
   """
   Attributes:
@@ -377,6 +401,14 @@ class FieldsInjectedWithIncludedStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.FieldsInjectedWithIncludedStruct, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.FieldsInjectedWithIncludedStruct, self)
 all_structs.append(Fields)
 Fields.thrift_spec = (
   None, # 0

@@ -123,6 +123,14 @@ class FieldWrapper:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import facebook.thrift.annotation.hack.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.hack.thrift_types.FieldWrapper, self)
+  def to_py3_struct(self):
+    import facebook.thrift.annotation.hack.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.hack.types.FieldWrapper, self)
 class Adapter:
   """
   Attributes:
@@ -210,6 +218,14 @@ class Adapter:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import facebook.thrift.annotation.hack.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.hack.thrift_types.Adapter, self)
+  def to_py3_struct(self):
+    import facebook.thrift.annotation.hack.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.hack.types.Adapter, self)
 class SkipCodegen:
   """
   Attributes:
@@ -297,6 +313,14 @@ class SkipCodegen:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import facebook.thrift.annotation.hack.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.hack.thrift_types.SkipCodegen, self)
+  def to_py3_struct(self):
+    import facebook.thrift.annotation.hack.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.hack.types.SkipCodegen, self)
 all_structs.append(FieldWrapper)
 FieldWrapper.thrift_spec = (
   None, # 0

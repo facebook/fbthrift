@@ -40,19 +40,6 @@ namespace compiler {
 
 namespace {
 
-std::string get_py3_namespace_with_name_and_prefix(
-    const t_program* prog, const std::string& prefix) {
-  std::ostringstream ss;
-  if (!prefix.empty()) {
-    ss << prefix << ".";
-  }
-  for (const auto& name : get_py3_namespace(prog)) {
-    ss << name << ".";
-  }
-  ss << prog->name();
-  return ss.str();
-}
-
 bool is_type_iobuf(const std::string& name) {
   return name == "folly::IOBuf" || name == "std::unique_ptr<folly::IOBuf>";
 }

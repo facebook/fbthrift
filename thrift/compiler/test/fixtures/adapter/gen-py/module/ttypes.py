@@ -414,6 +414,14 @@ class Foo:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.Foo, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.Foo, self)
 class Baz(object):
   """
   Attributes:
@@ -701,6 +709,14 @@ class Baz(object):
   def __ne__(self, other):
     return not (self == other)
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.Baz, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.Baz, self)
 class Bar:
   """
   Attributes:
@@ -928,6 +944,14 @@ class Bar:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.Bar, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.Bar, self)
 class StructWithFieldAdapter:
   """
   Attributes:
@@ -1071,6 +1095,14 @@ class StructWithFieldAdapter:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import module.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(module.thrift_types.StructWithFieldAdapter, self)
+  def to_py3_struct(self):
+    import module.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(module.types.StructWithFieldAdapter, self)
 SetWithAdapter = UnimplementedTypedef()
 StringWithAdapter = UnimplementedTypedef()
 ListWithElemAdapter = UnimplementedTypedef()

@@ -119,6 +119,14 @@ class Included:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+  def to_python_struct(self):
+    import includes.thrift_types
+    import thrift.python.converter
+    return thrift.python.converter.to_python_struct(includes.thrift_types.Included, self)
+  def to_py3_struct(self):
+    import includes.types
+    import thrift.py3.converter
+    return thrift.py3.converter.to_py3_struct(includes.types.Included, self)
 IncludedInt64 = UnimplementedTypedef()
 TransitiveFoo = transitive.ttypes.Foo
 all_structs.append(Included)
