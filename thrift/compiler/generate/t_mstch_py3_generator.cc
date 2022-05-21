@@ -384,6 +384,8 @@ class mstch_py3_program : public mstch_program {
             {"program:stream_exceptions",
              &mstch_py3_program::getStreamExceptions},
             {"program:cpp_gen_path", &mstch_py3_program::getCppGenPath},
+            {"program:py_legacy_module_path",
+             &mstch_py3_program::py_legacy_module_path},
         });
     gather_included_program_namespaces();
     visit_types_for_services_and_interactions();
@@ -482,6 +484,14 @@ class mstch_py3_program : public mstch_program {
 
   mstch::node hasStream() {
     return !has_option("no_stream") && !streamTypes_.empty();
+  }
+
+  mstch::node py_legacy_module_path() {
+    std::string module_path = program_->get_namespace("py");
+    if (module_path.empty()) {
+      return program_->name();
+    }
+    return module_path;
   }
 
  protected:

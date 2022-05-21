@@ -267,6 +267,21 @@ cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cSimpleException](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.SimpleException,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.SimpleException, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class OptionalRefStruct(thrift.py3.types.Struct):
@@ -370,6 +385,21 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cOptionalRefStruct](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.OptionalRefStruct,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.OptionalRefStruct, self
+        )
 
 
 @__cython.auto_pickle(False)
@@ -522,6 +552,21 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cSimpleStruct](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.SimpleStruct,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.SimpleStruct, self
+        )
 
 
 @__cython.auto_pickle(False)
@@ -699,6 +744,21 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cComplexStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.ComplexStruct,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.ComplexStruct, self
+        )
+
 
 
 
@@ -809,6 +869,21 @@ cdef class BinaryUnion(thrift.py3.types.Union):
         self._load_cache()
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.BinaryUnion,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.BinaryUnion, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class BinaryUnionStruct(thrift.py3.types.Struct):
@@ -903,6 +978,21 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cBinaryUnionStruct](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.BinaryUnionStruct,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.BinaryUnionStruct, self
+        )
 
 
 @__cython.auto_pickle(False)

@@ -155,4 +155,19 @@ cdef class C(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cC](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import c.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            c.thrift_types.C,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import c.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            c.ttypes.C, self
+        )
+
 

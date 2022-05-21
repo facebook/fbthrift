@@ -91,6 +91,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
+    def to_python_struct(self) -> "test.fixtures.basic.module.thrift_types.MyStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyStruct": ...   # type: ignore
+
 
 class MyDataItem(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -112,6 +115,9 @@ class MyDataItem(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'MyDataItem') -> bool: ...
     def __le__(self, other: 'MyDataItem') -> bool: ...
     def __ge__(self, other: 'MyDataItem') -> bool: ...
+
+    def to_python_struct(self) -> "test.fixtures.basic.module.thrift_types.MyDataItem": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyDataItem": ...   # type: ignore
 
 
 class MyUnion(thrift.py3.types.Union, _typing.Hashable):
@@ -159,6 +165,9 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     def value(self) -> _typing.Union[None, MyEnum, MyStruct, MyDataItem, _typing.AbstractSet[float]]: ...
     @__property__
     def type(self) -> "MyUnion.Type": ...
+
+    def to_python_struct(self) -> "test.fixtures.basic.module.thrift_types.MyUnion": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyUnion": ...   # type: ignore
 
 
 class Set__float(_typing.AbstractSet[float], _typing.Hashable):

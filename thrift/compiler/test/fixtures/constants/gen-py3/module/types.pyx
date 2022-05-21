@@ -393,6 +393,21 @@ cdef class Internship(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cInternship](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.Internship,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.Internship, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class Range(thrift.py3.types.Struct):
@@ -500,6 +515,21 @@ cdef class Range(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cRange](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.Range,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.Range, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class struct1(thrift.py3.types.Struct):
@@ -606,6 +636,21 @@ cdef class struct1(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cstruct1](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.struct1,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.struct1, self
+        )
 
 
 @__cython.auto_pickle(False)
@@ -736,6 +781,21 @@ cdef class struct2(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cstruct2](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.struct2,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.struct2, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class struct3(thrift.py3.types.Struct):
@@ -853,6 +913,21 @@ cdef class struct3(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cstruct3](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.struct3,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.struct3, self
+        )
 
 
 @__cython.auto_pickle(False)
@@ -973,6 +1048,21 @@ cdef class struct4(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cstruct4](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.struct4,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.struct4, self
+        )
 
 
 
@@ -1130,6 +1220,21 @@ cdef class union1(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.union1,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.union1, self
+        )
 
 
 
@@ -1323,6 +1428,21 @@ cdef class union2(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.union2,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.union2, self
+        )
 
 
 @__cython.auto_pickle(False)

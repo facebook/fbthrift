@@ -82,6 +82,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
+    def to_python_struct(self) -> "test.fixtures.enumstrict.module.thrift_types.MyStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.MyStruct": ...   # type: ignore
+
 
 class Map__MyEnum_string(_typing.Mapping[MyEnum, str], _typing.Hashable):
     def __init__(self, items: _typing.Optional[_typing.Mapping[MyEnum, str]]=None) -> None: ...

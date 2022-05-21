@@ -45,4 +45,7 @@ class HsFoo(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'HsFoo') -> bool: ...
     def __ge__(self, other: 'HsFoo') -> bool: ...
 
+    def to_python_struct(self) -> "my.namespacing.test.hsmodule.thrift_types.HsFoo": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "hsmodule.ttypes.HsFoo": ...   # type: ignore
+
 

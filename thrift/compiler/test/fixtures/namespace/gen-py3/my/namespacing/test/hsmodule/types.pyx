@@ -155,4 +155,19 @@ cdef class HsFoo(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cHsFoo](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import my.namespacing.test.hsmodule.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            my.namespacing.test.hsmodule.thrift_types.HsFoo,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import hsmodule.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            hsmodule.ttypes.HsFoo, self
+        )
+
 

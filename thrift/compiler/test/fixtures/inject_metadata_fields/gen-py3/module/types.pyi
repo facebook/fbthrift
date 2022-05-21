@@ -47,6 +47,9 @@ class Fields(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Fields') -> bool: ...
     def __ge__(self, other: 'Fields') -> bool: ...
 
+    def to_python_struct(self) -> "module.thrift_types.Fields": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.Fields": ...   # type: ignore
+
 
 class FieldsInjectedToEmptyStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -73,6 +76,9 @@ class FieldsInjectedToEmptyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'FieldsInjectedToEmptyStruct') -> bool: ...
     def __le__(self, other: 'FieldsInjectedToEmptyStruct') -> bool: ...
     def __ge__(self, other: 'FieldsInjectedToEmptyStruct') -> bool: ...
+
+    def to_python_struct(self) -> "module.thrift_types.FieldsInjectedToEmptyStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.FieldsInjectedToEmptyStruct": ...   # type: ignore
 
 
 class FieldsInjectedToStruct(thrift.py3.types.Struct, _typing.Hashable):
@@ -105,6 +111,9 @@ class FieldsInjectedToStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'FieldsInjectedToStruct') -> bool: ...
     def __le__(self, other: 'FieldsInjectedToStruct') -> bool: ...
     def __ge__(self, other: 'FieldsInjectedToStruct') -> bool: ...
+
+    def to_python_struct(self) -> "module.thrift_types.FieldsInjectedToStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.FieldsInjectedToStruct": ...   # type: ignore
 
 
 class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct, _typing.Hashable):
@@ -147,5 +156,8 @@ class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct, _typing.Hashable
     def __gt__(self, other: 'FieldsInjectedWithIncludedStruct') -> bool: ...
     def __le__(self, other: 'FieldsInjectedWithIncludedStruct') -> bool: ...
     def __ge__(self, other: 'FieldsInjectedWithIncludedStruct') -> bool: ...
+
+    def to_python_struct(self) -> "module.thrift_types.FieldsInjectedWithIncludedStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.FieldsInjectedWithIncludedStruct": ...   # type: ignore
 
 

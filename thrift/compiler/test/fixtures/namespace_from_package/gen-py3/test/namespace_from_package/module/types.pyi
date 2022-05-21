@@ -45,4 +45,7 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Foo') -> bool: ...
     def __ge__(self, other: 'Foo') -> bool: ...
 
+    def to_python_struct(self) -> "test.namespace_from_package.module.thrift_types.Foo": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "namespace_from_package.module.ttypes.Foo": ...   # type: ignore
+
 

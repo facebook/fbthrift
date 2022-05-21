@@ -56,6 +56,9 @@ class SmallStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'SmallStruct') -> bool: ...
     def __ge__(self, other: 'SmallStruct') -> bool: ...
 
+    def to_python_struct(self) -> "module.thrift_types.SmallStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.SmallStruct": ...   # type: ignore
+
 
 class containerStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -182,6 +185,9 @@ class containerStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'containerStruct') -> bool: ...
     def __le__(self, other: 'containerStruct') -> bool: ...
     def __ge__(self, other: 'containerStruct') -> bool: ...
+
+    def to_python_struct(self) -> "module.thrift_types.containerStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.containerStruct": ...   # type: ignore
 
 
 class Map__string_bool(_typing.Mapping[str, bool], _typing.Hashable):

@@ -324,6 +324,21 @@ cdef class MyUnion(thrift.py3.types.Union):
         self._load_cache()
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.MyUnion,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.MyUnion, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class MyField(thrift.py3.types.Struct):
@@ -521,6 +536,21 @@ cdef class MyField(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cMyField](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.MyField,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.MyField, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
@@ -646,6 +676,21 @@ cdef class MyStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.MyStruct,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.MyStruct, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class StructWithUnion(thrift.py3.types.Struct):
@@ -770,6 +815,21 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cStructWithUnion](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.StructWithUnion,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.StructWithUnion, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class RecursiveStruct(thrift.py3.types.Struct):
@@ -871,6 +931,21 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cRecursiveStruct](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.RecursiveStruct,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.RecursiveStruct, self
+        )
 
 
 @__cython.auto_pickle(False)
@@ -1033,6 +1108,21 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cStructWithContainers](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.StructWithContainers,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.StructWithContainers, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class StructWithSharedConst(thrift.py3.types.Struct):
@@ -1158,6 +1248,21 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cStructWithSharedConst](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.StructWithSharedConst,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.StructWithSharedConst, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class Empty(thrift.py3.types.Struct):
@@ -1239,6 +1344,21 @@ cdef class Empty(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cEmpty](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.Empty,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.Empty, self
+        )
 
 
 @__cython.auto_pickle(False)
@@ -1364,6 +1484,21 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cStructWithRef](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.StructWithRef,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.StructWithRef, self
+        )
 
 
 @__cython.auto_pickle(False)
@@ -1491,6 +1626,21 @@ cdef class StructWithBox(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cStructWithBox](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.StructWithBox,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.StructWithBox, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
@@ -1615,6 +1765,21 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cStructWithRefTypeUnique](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.StructWithRefTypeUnique,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.StructWithRefTypeUnique, self
+        )
 
 
 @__cython.auto_pickle(False)
@@ -1741,6 +1906,21 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cStructWithRefTypeShared](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.StructWithRefTypeShared,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.StructWithRefTypeShared, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
@@ -1866,6 +2046,21 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cStructWithRefTypeSharedConst](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.StructWithRefTypeSharedConst,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.StructWithRefTypeSharedConst, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
@@ -1966,6 +2161,21 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cStructWithRefAndAnnotCppNoexceptMoveCtor](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.StructWithRefAndAnnotCppNoexceptMoveCtor,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.StructWithRefAndAnnotCppNoexceptMoveCtor, self
+        )
 
 
 @__cython.auto_pickle(False)
@@ -2115,6 +2325,21 @@ cdef class StructWithString(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cStructWithString](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.StructWithString,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.StructWithString, self
+        )
 
 
 @__cython.auto_pickle(False)

@@ -224,6 +224,21 @@ cdef class Color(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cColor](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.Color,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.Color, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class Vehicle(thrift.py3.types.Struct):
@@ -365,6 +380,21 @@ cdef class Vehicle(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cVehicle](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.Vehicle,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.Vehicle, self
+        )
 
 
 @__cython.auto_pickle(False)
@@ -570,6 +600,21 @@ cdef class Person(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cPerson](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.Person,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.Person, self
+        )
 
 
 @__cython.auto_pickle(False)

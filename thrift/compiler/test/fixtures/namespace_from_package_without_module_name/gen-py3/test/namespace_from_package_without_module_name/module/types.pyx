@@ -155,4 +155,19 @@ cdef class Foo(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cFoo](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import test.namespace_from_package_without_module_name.module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            test.namespace_from_package_without_module_name.module.thrift_types.Foo,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import namespace_from_package_without_module_name.module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            namespace_from_package_without_module_name.module.ttypes.Foo, self
+        )
+
 

@@ -479,6 +479,21 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         self._load_cache()
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.ComplexUnion,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.ComplexUnion, self
+        )
+
 
 
 
@@ -611,6 +626,21 @@ cdef class ListUnion(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.ListUnion,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.ListUnion, self
+        )
 
 
 
@@ -745,6 +775,21 @@ cdef class DataUnion(thrift.py3.types.Union):
         self._load_cache()
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.DataUnion,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.DataUnion, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class Val(thrift.py3.types.Struct):
@@ -862,6 +907,21 @@ cdef class Val(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cVal](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.Val,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.Val, self
+        )
 
 
 
@@ -996,6 +1056,21 @@ cdef class ValUnion(thrift.py3.types.Union):
         self._load_cache()
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.ValUnion,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.ValUnion, self
+        )
+
 
 
 
@@ -1129,6 +1204,21 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
         self._load_cache()
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.VirtualComplexUnion,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.VirtualComplexUnion, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class NonCopyableStruct(thrift.py3.types.Struct):
@@ -1213,6 +1303,21 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cNonCopyableStruct](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.NonCopyableStruct,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.NonCopyableStruct, self
+        )
 
 
 
@@ -1325,6 +1430,21 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
+
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.NonCopyableUnion,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.NonCopyableUnion, self
+        )
 
 
 @__cython.auto_pickle(False)

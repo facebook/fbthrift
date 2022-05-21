@@ -188,6 +188,21 @@ cdef class Foo(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cFoo](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.Foo,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.Foo, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class List__bool(thrift.py3.types.List):

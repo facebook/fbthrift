@@ -139,6 +139,21 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cFooEx](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import module.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            module.thrift_types.FooEx,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import module.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            module.ttypes.FooEx, self
+        )
+
 
 
 cdef class ClientBufferedStream__i32(ClientBufferedStream):

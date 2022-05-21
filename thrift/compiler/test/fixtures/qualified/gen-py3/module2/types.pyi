@@ -52,6 +52,9 @@ class Struct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Struct') -> bool: ...
     def __ge__(self, other: 'Struct') -> bool: ...
 
+    def to_python_struct(self) -> "module2.thrift_types.Struct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module2.ttypes.Struct": ...   # type: ignore
+
 
 class BigStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -83,6 +86,9 @@ class BigStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'BigStruct') -> bool: ...
     def __le__(self, other: 'BigStruct') -> bool: ...
     def __ge__(self, other: 'BigStruct') -> bool: ...
+
+    def to_python_struct(self) -> "module2.thrift_types.BigStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module2.ttypes.BigStruct": ...   # type: ignore
 
 
 c2: Struct = ...

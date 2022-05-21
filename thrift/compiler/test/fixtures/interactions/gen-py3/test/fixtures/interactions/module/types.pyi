@@ -40,6 +40,9 @@ class CustomException(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     def __le__(self, other: 'CustomException') -> bool: ...
     def __ge__(self, other: 'CustomException') -> bool: ...
 
+    def to_python_struct(self) -> "test.fixtures.interactions.module.thrift_types.CustomException": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "test.fixtures.interactions.ttypes.CustomException": ...   # type: ignore
+
 
 
 class ClientBufferedStream__bool(thrift.py3.stream.ClientBufferedStream[bool]):

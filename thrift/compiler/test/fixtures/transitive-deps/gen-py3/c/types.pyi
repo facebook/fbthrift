@@ -45,4 +45,7 @@ class C(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'C') -> bool: ...
     def __ge__(self, other: 'C') -> bool: ...
 
+    def to_python_struct(self) -> "c.thrift_types.C": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "c.ttypes.C": ...   # type: ignore
+
 

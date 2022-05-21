@@ -83,6 +83,9 @@ class Internship(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Internship') -> bool: ...
     def __ge__(self, other: 'Internship') -> bool: ...
 
+    def to_python_struct(self) -> "module.thrift_types.Internship": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.Internship": ...   # type: ignore
+
 
 class Range(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -115,6 +118,9 @@ class Range(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Range') -> bool: ...
     def __ge__(self, other: 'Range') -> bool: ...
 
+    def to_python_struct(self) -> "module.thrift_types.Range": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.Range": ...   # type: ignore
+
 
 class struct1(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -146,6 +152,9 @@ class struct1(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'struct1') -> bool: ...
     def __le__(self, other: 'struct1') -> bool: ...
     def __ge__(self, other: 'struct1') -> bool: ...
+
+    def to_python_struct(self) -> "module.thrift_types.struct1": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.struct1": ...   # type: ignore
 
 
 class struct2(thrift.py3.types.Struct, _typing.Hashable):
@@ -189,6 +198,9 @@ class struct2(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'struct2') -> bool: ...
     def __ge__(self, other: 'struct2') -> bool: ...
 
+    def to_python_struct(self) -> "module.thrift_types.struct2": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.struct2": ...   # type: ignore
+
 
 class struct3(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -225,6 +237,9 @@ class struct3(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'struct3') -> bool: ...
     def __le__(self, other: 'struct3') -> bool: ...
     def __ge__(self, other: 'struct3') -> bool: ...
+
+    def to_python_struct(self) -> "module.thrift_types.struct3": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.struct3": ...   # type: ignore
 
 
 class struct4(thrift.py3.types.Struct, _typing.Hashable):
@@ -263,6 +278,9 @@ class struct4(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'struct4') -> bool: ...
     def __ge__(self, other: 'struct4') -> bool: ...
 
+    def to_python_struct(self) -> "module.thrift_types.struct4": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.struct4": ...   # type: ignore
+
 
 class union1(thrift.py3.types.Union, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -299,6 +317,9 @@ class union1(thrift.py3.types.Union, _typing.Hashable):
     def value(self) -> _typing.Union[None, int, float]: ...
     @__property__
     def type(self) -> "union1.Type": ...
+
+    def to_python_struct(self) -> "module.thrift_types.union1": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.union1": ...   # type: ignore
 
 
 class union2(thrift.py3.types.Union, _typing.Hashable):
@@ -346,6 +367,9 @@ class union2(thrift.py3.types.Union, _typing.Hashable):
     def value(self) -> _typing.Union[None, int, float, struct1, union1]: ...
     @__property__
     def type(self) -> "union2.Type": ...
+
+    def to_python_struct(self) -> "module.thrift_types.union2": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.union2": ...   # type: ignore
 
 
 _List__i32T = _typing.TypeVar('_List__i32T', bound=_typing.Sequence[int])

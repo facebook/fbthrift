@@ -46,6 +46,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
+    def to_python_struct(self) -> "matching_struct_names.thrift_types.MyStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "matching_struct_names.ttypes.MyStruct": ...   # type: ignore
+
 
 class Combo(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -87,6 +90,9 @@ class Combo(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'Combo') -> bool: ...
     def __le__(self, other: 'Combo') -> bool: ...
     def __ge__(self, other: 'Combo') -> bool: ...
+
+    def to_python_struct(self) -> "matching_struct_names.thrift_types.Combo": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "matching_struct_names.ttypes.Combo": ...   # type: ignore
 
 
 _List__MyStructT = _typing.TypeVar('_List__MyStructT', bound=_typing.Sequence[MyStruct])

@@ -74,6 +74,9 @@ class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "ComplexUnion.Type": ...
 
+    def to_python_struct(self) -> "module.thrift_types.ComplexUnion": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.ComplexUnion": ...   # type: ignore
+
 
 class ListUnion(thrift.py3.types.Union, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -110,6 +113,9 @@ class ListUnion(thrift.py3.types.Union, _typing.Hashable):
     def value(self) -> _typing.Union[None, _typing.Sequence[int], _typing.Sequence[str]]: ...
     @__property__
     def type(self) -> "ListUnion.Type": ...
+
+    def to_python_struct(self) -> "module.thrift_types.ListUnion": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.ListUnion": ...   # type: ignore
 
 
 class DataUnion(thrift.py3.types.Union, _typing.Hashable):
@@ -148,6 +154,9 @@ class DataUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "DataUnion.Type": ...
 
+    def to_python_struct(self) -> "module.thrift_types.DataUnion": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.DataUnion": ...   # type: ignore
+
 
 class Val(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -184,6 +193,9 @@ class Val(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'Val') -> bool: ...
     def __le__(self, other: 'Val') -> bool: ...
     def __ge__(self, other: 'Val') -> bool: ...
+
+    def to_python_struct(self) -> "module.thrift_types.Val": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.Val": ...   # type: ignore
 
 
 class ValUnion(thrift.py3.types.Union, _typing.Hashable):
@@ -222,6 +234,9 @@ class ValUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "ValUnion.Type": ...
 
+    def to_python_struct(self) -> "module.thrift_types.ValUnion": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.ValUnion": ...   # type: ignore
+
 
 class VirtualComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -259,6 +274,9 @@ class VirtualComplexUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "VirtualComplexUnion.Type": ...
 
+    def to_python_struct(self) -> "module.thrift_types.VirtualComplexUnion": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.VirtualComplexUnion": ...   # type: ignore
+
 
 class NonCopyableStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -285,6 +303,9 @@ class NonCopyableStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'NonCopyableStruct') -> bool: ...
     def __le__(self, other: 'NonCopyableStruct') -> bool: ...
     def __ge__(self, other: 'NonCopyableStruct') -> bool: ...
+
+    def to_python_struct(self) -> "module.thrift_types.NonCopyableStruct": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.NonCopyableStruct": ...   # type: ignore
 
 
 class NonCopyableUnion(thrift.py3.types.Union, _typing.Hashable):
@@ -317,6 +338,9 @@ class NonCopyableUnion(thrift.py3.types.Union, _typing.Hashable):
     def value(self) -> _typing.Union[None, NonCopyableStruct]: ...
     @__property__
     def type(self) -> "NonCopyableUnion.Type": ...
+
+    def to_python_struct(self) -> "module.thrift_types.NonCopyableUnion": ...   # type: ignore
+    def to_py_legacy_struct(self) -> "module.ttypes.NonCopyableUnion": ...   # type: ignore
 
 
 _List__i64T = _typing.TypeVar('_List__i64T', bound=_typing.Sequence[int])

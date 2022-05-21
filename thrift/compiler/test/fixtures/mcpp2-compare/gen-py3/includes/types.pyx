@@ -197,6 +197,21 @@ cdef class AStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cAStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
+    def to_python_struct(self):
+        import includes.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            includes.thrift_types.AStruct,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import includes.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            includes.ttypes.AStruct, self
+        )
+
 
 @__cython.auto_pickle(False)
 cdef class AStructB(thrift.py3.types.Struct):
@@ -297,6 +312,21 @@ cdef class AStructB(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cAStructB](buf, self._cpp_obj.get(), proto)
         return needed
+
+    def to_python_struct(self):
+        import includes.thrift_types
+        import thrift.python.converter
+        return thrift.python.converter.to_python_struct(
+            includes.thrift_types.AStructB,
+            self,
+        )
+
+    def to_py_legacy_struct(self):
+        import includes.ttypes
+        import thrift.util.converter
+        return thrift.util.converter.to_py_struct(
+            includes.ttypes.AStructB, self
+        )
 
 
 IncludedConstant = 42
