@@ -149,6 +149,11 @@ template <typename T, typename Tag>
 struct native_types<cpp_type<T, Tag>>
     : concrete_type<typename native_types<Tag>::standard_type, T> {};
 
+template <typename Tag, FieldId Id>
+struct native_types<field_t<Id, Tag>> : native_types<Tag> {};
+
+// TODO(dokwon): Add specialization for field_t<Id, adapted<Adapter, Tag>>.
+
 } // namespace detail
 } // namespace type
 } // namespace thrift

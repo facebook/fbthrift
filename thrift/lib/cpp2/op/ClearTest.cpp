@@ -34,8 +34,8 @@ using namespace apache::thrift::test;
 // type/op library.
 template <typename Tag>
 void testClearImpl(
-    const type::native_type<get_underlying_tag_t<Tag>>& expected,
-    type::native_type<get_underlying_tag_t<Tag>> unexpected,
+    const type::native_type<Tag>& expected,
+    type::native_type<Tag> unexpected,
     bool emptiable) {
   SCOPED_TRACE(type::getName<Tag>());
 
