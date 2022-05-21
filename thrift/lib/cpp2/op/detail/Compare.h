@@ -77,6 +77,9 @@ struct IdenticalTo<type::adapted<Adapter, Tag>> {
   // TODO(afuller): Implement.
 };
 
+template <typename Tag, FieldId Id>
+struct IdenticalTo<type::field_t<Id, Tag>> : IdenticalTo<Tag> {};
+
 template <typename F, typename I>
 struct FloatIdenticalTo {
   bool operator()(F lhs, F rhs) const {

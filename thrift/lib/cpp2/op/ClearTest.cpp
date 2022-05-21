@@ -42,16 +42,14 @@ void testClearImpl(
   EXPECT_EQ(isEmpty<Tag>(expected), emptiable);
   EXPECT_THAT(
       getIntrinsicDefault<get_underlying_tag_t<Tag>>(),
-      IsIdenticalTo<get_underlying_tag_t<Tag>>(expected));
+      IsIdenticalTo<Tag>(expected));
 
   EXPECT_FALSE(isEmpty<Tag>(unexpected));
-  EXPECT_THAT(
-      unexpected,
-      ::testing::Not(IsIdenticalTo<get_underlying_tag_t<Tag>>(expected)));
+  EXPECT_THAT(unexpected, ::testing::Not(IsIdenticalTo<Tag>(expected)));
 
   clear<Tag>(unexpected);
   EXPECT_EQ(isEmpty<Tag>(expected), emptiable);
-  EXPECT_THAT(unexpected, IsIdenticalTo<get_underlying_tag_t<Tag>>(expected));
+  EXPECT_THAT(unexpected, IsIdenticalTo<Tag>(expected));
 }
 
 template <typename Tag>
