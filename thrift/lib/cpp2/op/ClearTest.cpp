@@ -49,7 +49,7 @@ void testClearImpl(
       unexpected,
       ::testing::Not(IsIdenticalTo<get_underlying_tag_t<Tag>>(expected)));
 
-  clear<get_underlying_tag_t<Tag>>(unexpected);
+  clear<Tag>(unexpected);
   EXPECT_EQ(isEmpty<Tag>(expected), emptiable);
   EXPECT_THAT(unexpected, IsIdenticalTo<get_underlying_tag_t<Tag>>(expected));
 }

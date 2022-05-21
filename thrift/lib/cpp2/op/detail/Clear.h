@@ -75,6 +75,9 @@ struct Clear<type::adapted<Adapter, Tag>> {
   // TODO(afuller): implement.
 };
 
+template <typename Tag, FieldId Id>
+struct Clear<type::field_t<Id, Tag>> : Clear<Tag> {};
+
 template <typename Tag>
 struct Empty {
   static_assert(type::is_concrete_v<Tag>, "");
