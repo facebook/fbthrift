@@ -30,22 +30,38 @@ namespace apache::thrift::op {
 namespace {
 using namespace apache::thrift::test;
 
+// TODO(dokwon): Remove get_underlying_tag after supporting field_t for all
+// type/op library.
+template <typename Tag>
+void testClearImpl(
+    const type::native_type<get_underlying_tag_t<Tag>>& expected,
+    type::native_type<get_underlying_tag_t<Tag>> unexpected,
+    bool emptiable) {
+  SCOPED_TRACE(type::getName<get_underlying_tag_t<Tag>>());
+
+  EXPECT_EQ(isEmpty<Tag>(expected), emptiable);
+  EXPECT_THAT(
+      getIntrinsicDefault<get_underlying_tag_t<Tag>>(),
+      IsIdenticalTo<get_underlying_tag_t<Tag>>(expected));
+
+  EXPECT_FALSE(isEmpty<Tag>(unexpected));
+  EXPECT_THAT(
+      unexpected,
+      ::testing::Not(IsIdenticalTo<get_underlying_tag_t<Tag>>(expected)));
+
+  clear<get_underlying_tag_t<Tag>>(unexpected);
+  EXPECT_EQ(isEmpty<Tag>(expected), emptiable);
+  EXPECT_THAT(unexpected, IsIdenticalTo<get_underlying_tag_t<Tag>>(expected));
+}
+
 template <typename Tag>
 void testClear(
     const type::native_type<Tag>& expected,
     type::native_type<Tag> unexpected,
     bool emptiable = true) {
-  SCOPED_TRACE(type::getName<Tag>());
-
-  EXPECT_EQ(isEmpty<Tag>(expected), emptiable);
-  EXPECT_THAT(getIntrinsicDefault<Tag>(), IsIdenticalTo<Tag>(expected));
-
-  EXPECT_FALSE(isEmpty<Tag>(unexpected));
-  EXPECT_THAT(unexpected, ::testing::Not(IsIdenticalTo<Tag>(expected)));
-
-  clear<Tag>(unexpected);
-  EXPECT_EQ(isEmpty<Tag>(expected), emptiable);
-  EXPECT_THAT(unexpected, IsIdenticalTo<Tag>(expected));
+  testClearImpl<Tag>(expected, unexpected, emptiable);
+  testClearImpl<type::field_t<FieldId{1}, Tag>>(
+      expected, unexpected, emptiable);
 }
 
 TEST(ClearTest, Integral) {

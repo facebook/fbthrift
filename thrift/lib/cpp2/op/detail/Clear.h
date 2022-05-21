@@ -101,6 +101,9 @@ struct Empty<type::adapted<Adapter, Tag>> {
   // TODO(afuller): implement.
 };
 
+template <typename Tag, FieldId Id>
+struct Empty<type::field_t<Id, Tag>> : Empty<Tag> {};
+
 } // namespace detail
 } // namespace op
 } // namespace thrift

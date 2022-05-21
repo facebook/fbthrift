@@ -21,10 +21,12 @@
 
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp/FieldId.h>
 #include <thrift/lib/cpp2/op/Clear.h>
 #include <thrift/lib/cpp2/op/Compare.h>
 #include <thrift/lib/cpp2/op/Serializer.h>
 #include <thrift/lib/cpp2/type/Protocol.h>
+#include <thrift/lib/cpp2/type/Tag.h>
 #include <thrift/lib/cpp2/type/Testing.h>
 #include <thrift/lib/cpp2/type/Traits.h>
 
@@ -219,5 +221,16 @@ class MultiSerializer : public op::Serializer {
   void checkAnyIntDec() const;
   void checkAnyDblDec() const;
 };
+
+template <typename Tag>
+struct get_underlying_tag {
+  using type = Tag;
+};
+template <typename Tag, FieldId Id>
+struct get_underlying_tag<type::field_t<Id, Tag>> {
+  using type = Tag;
+};
+template <typename Tag>
+using get_underlying_tag_t = typename get_underlying_tag<Tag>::type;
 
 } // namespace apache::thrift::test
