@@ -95,7 +95,7 @@ public final class TypeRegistry {
    * @return Hash bytes as hexadecimal value.
    */
   public static String add(Type type) {
-    LOGGER.info("Adding type to the registry: ?", type);
+    LOGGER.debug("Adding type to the registry: {}", type);
     addType(type);
 
     return type.getUniversalName().getHash();

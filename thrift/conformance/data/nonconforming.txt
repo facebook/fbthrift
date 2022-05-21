@@ -9,7 +9,10 @@ cpp2/RoundTripTest/testset.float/NaN.Binary
 cpp2/RoundTripTest/testset.float/NaN.Compact
 cpp2/RoundTripTest/testset.double/NaN.Binary
 cpp2/RoundTripTest/testset.double/NaN.Compact
+#
+#
 # Python: NaN
+#
 python/RoundTripTest/double/NaN.Binary
 python/RoundTripTest/double/NaN.Compact
 python/RoundTripTest/float/NaN.Binary
@@ -18,3 +21,27 @@ python/RoundTripTest/testset.float/NaN.Binary
 python/RoundTripTest/testset.float/NaN.Compact
 python/RoundTripTest/testset.double/NaN.Binary
 python/RoundTripTest/testset.double/NaN.Compact
+#
+#
+# Java: NaN
+#
+java2/RoundTripTest/double/NaN.Binary
+java2/RoundTripTest/double/NaN.Compact
+java2/RoundTripTest/float/NaN.Binary
+java2/RoundTripTest/float/NaN.Compact
+java2/RoundTripTest/testset.float/NaN.Binary
+java2/RoundTripTest/testset.float/NaN.Compact
+java2/RoundTripTest/testset.double/NaN.Binary
+java2/RoundTripTest/testset.double/NaN.Compact
+#
+#
+# Java: These compatibility tests are failing in Java.
+# When a new field is added to StringStruct or BinaryStruct
+# client is sending an empty struct. Java is initializing String and binary
+# fields with intrinsic defaults (null) and send back null to the client.
+# Client is expecting empty value. This issue should be fixed on client side.
+#
+java2/CompatibilityTest/testset.binary/AddField.Binary
+java2/CompatibilityTest/testset.binary/AddField.Compact
+java2/CompatibilityTest/testset.string/AddField.Compact
+java2/CompatibilityTest/testset.string/AddField.Binary

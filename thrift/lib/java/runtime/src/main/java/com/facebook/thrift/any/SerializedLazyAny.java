@@ -22,6 +22,7 @@ import com.facebook.thrift.type.UniversalName;
 import com.facebook.thrift.type.UniversalNameCache;
 import com.facebook.thrift.util.SerializationProtocol;
 import com.facebook.thrift.util.SerializerUtil;
+import io.netty.buffer.ByteBufUtil;
 import java.util.Objects;
 import org.apache.thrift.conformance.Any;
 import org.apache.thrift.conformance.StandardProtocol;
@@ -59,6 +60,12 @@ public class SerializedLazyAny<T> extends LazyAny<T> {
   }
 
   private SerializationProtocol getSerializationProtocol() {
+    // Serialization protocol might be empty - optional
+    // Cpp implementation send empty when default is used.
+    if (any.getProtocol() == null) {
+      return SerializationProtocol.TCompact;
+    }
+
     switch (any.getProtocol()) {
       case JSON:
         return SerializationProtocol.TJSON;
@@ -90,7 +97,15 @@ public class SerializedLazyAny<T> extends LazyAny<T> {
           type = TypeRegistry.findByHashPrefix(any.getTypeHashPrefixSha2256());
         }
 
-        Objects.requireNonNull(type, "Unable to find type for any to deserialize struct");
+        Objects.requireNonNull(
+            type,
+            "Unable to find type for any to deserialize struct. "
+                + "type: "
+                + any.getType()
+                + " hash: "
+                + (any.getTypeHashPrefixSha2256() == null
+                    ? "null"
+                    : ByteBufUtil.hexDump(any.getTypeHashPrefixSha2256())));
 
         if (usingCustomProtocol()) {
           lazyValue =

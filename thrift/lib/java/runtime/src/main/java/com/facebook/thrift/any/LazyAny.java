@@ -72,6 +72,10 @@ public abstract class LazyAny<T> {
     deserializers.put(name, deserializer);
   }
 
+  public static LazyAny wrap(Any any) {
+    return new SerializedLazyAny(any);
+  }
+
   public abstract <T> T get();
 
   public abstract Any getAny();
