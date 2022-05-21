@@ -37,7 +37,7 @@ void testClearImpl(
     const type::native_type<get_underlying_tag_t<Tag>>& expected,
     type::native_type<get_underlying_tag_t<Tag>> unexpected,
     bool emptiable) {
-  SCOPED_TRACE(type::getName<get_underlying_tag_t<Tag>>());
+  SCOPED_TRACE(type::getName<Tag>());
 
   EXPECT_EQ(isEmpty<Tag>(expected), emptiable);
   EXPECT_THAT(
