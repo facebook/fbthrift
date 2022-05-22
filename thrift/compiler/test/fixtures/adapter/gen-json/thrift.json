@@ -162,25 +162,7 @@
       }
     },
     "NoLegacyAPIs" : {
-      "lineno" : 86,
-      "is_exception" : false,
-      "is_union" : false,
-      "fields" : {
-
-      },
-      "source_range" : {
-        "begin" : {
-          "line" : 80,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 88,
-          "column" : 2
-        }
-      }
-    },
-    "v1" : {
-      "lineno" : 94,
+      "lineno" : 96,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -192,8 +174,44 @@
           "column" : 1
         },
         "end" : {
-          "line" : 94,
+          "line" : 98,
+          "column" : 2
+        }
+      }
+    },
+    "v1" : {
+      "lineno" : 111,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 108,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 111,
           "column" : 13
+        }
+      }
+    },
+    "v1test" : {
+      "lineno" : 118,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 115,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 118,
+          "column" : 17
         }
       }
     }

@@ -720,3 +720,68 @@ func (p *V1) String() string {
   return fmt.Sprintf("V1({})")
 }
 
+type V1test struct {
+}
+
+func NewV1test() *V1test {
+  return &V1test{}
+}
+
+type V1testBuilder struct {
+  obj *V1test
+}
+
+func NewV1testBuilder() *V1testBuilder{
+  return &V1testBuilder{
+    obj: NewV1test(),
+  }
+}
+
+func (p V1testBuilder) Emit() *V1test{
+  return &V1test{
+  }
+}
+
+func (p *V1test) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *V1test) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("v1test"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *V1test) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("V1test({})")
+}
+

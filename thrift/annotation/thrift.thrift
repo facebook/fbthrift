@@ -77,18 +77,42 @@ struct SerializeInFieldIdOrder {} (
   thrift.uri = "facebook.com/thrift/annotation/SerializeInFieldIdOrder",
 )
 
+// Disables features that are marked for removal.
+//
+// TODO(afuller): Move to `@Beta`, as everyone should able to test without
+// legacy features.
+// TODO(afuller): Rename to just `NoLegacy` because this can apply any
+// 'feature'.
+// TODO(afuller): Add `@NoDeprecated` that removes depreciated features
+// (e.g. features that we are planning to remove)
+// TODO(afuller): Add a '@Legacy' annotation, to indicate that
+// something will be removed in the next release.
+@Experimental
 @scope.Program
 @scope.Struct
 @scope.Union
 @scope.Exception
 @scope.Service
-@Experimental
 struct NoLegacyAPIs {} (
   thrift.uri = "facebook.com/thrift/annotation/NoLegacyAPIs",
 )
 
-@Experimental
-@TerseWrite
+// Enables all experimental v1 features.
+//
+// Use with *caution* and only with explicit permission. This may enable
+// features may change significantly without notice or not work correctly
+// in all contexts.
+//
+// TODO(afuller): Rename to `v1alpha` so it is more obvious this is
+// @Experimental.
+@Experimental // All uses of v1 inherit `@Experimental`.
 @NoLegacyAPIs
 @scope.FbthriftInternalScopeTransitive
 struct v1 {}
+
+// Enables experimental features, even those that are known to break common
+// use cases.
+@TerseWrite // TODO(dokwon): Fix code gen. Currently known working: c++
+@v1 // All v1 features.
+@scope.FbthriftInternalScopeTransitive
+struct v1test {}

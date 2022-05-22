@@ -75,13 +75,19 @@
         "name" : "NoLegacyAPIs",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 86
+        "lineno" : 96
       },
       "v1" : {
         "name" : "v1",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 94
+        "lineno" : 111
+      },
+      "v1test" : {
+        "name" : "v1test",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 118
       }
       },
   "source_path" : "thrift/annotation/thrift",
