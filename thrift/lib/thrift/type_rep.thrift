@@ -255,3 +255,6 @@ struct TypeStruct {
   // The type params, if appropriate.
   2: list<TypeStruct> params;
 } (thrift.uri = "facebook.com/thrift/type/Type")
+
+// The id of an externally stored type.
+typedef ExternId TypeId
