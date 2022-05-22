@@ -1438,20 +1438,12 @@ class MyDataPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
-              shape(
-              )
-            ),
           ],
         ),
         'data2' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
-              shape(
-              )
-            ),
-            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -2046,20 +2038,12 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
-              shape(
-              )
-            ),
           ],
         ),
         'option2' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
-              shape(
-              )
-            ),
-            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -3353,20 +3337,12 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
-              shape(
-              )
-            ),
           ],
         ),
         'byteVal' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
-              shape(
-              )
-            ),
-            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -3379,20 +3355,12 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
-              shape(
-              )
-            ),
           ],
         ),
         'i32Val' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
-              shape(
-              )
-            ),
-            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -3405,20 +3373,12 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
-              shape(
-              )
-            ),
           ],
         ),
         'floatVal' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
-              shape(
-              )
-            ),
-            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),
@@ -3431,10 +3391,6 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
-              shape(
-              )
-            ),
           ],
         ),
         'stringVal' => shape(
@@ -3444,20 +3400,12 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
               shape(
               )
             ),
-            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
-              shape(
-              )
-            ),
           ],
         ),
         'binaryVal' => shape(
           'field' => dict[],
           'type' => dict[
             '\thrift\op\GenerateOptionalPatch' => \thrift\op\GenerateOptionalPatch::fromShape(
-              shape(
-              )
-            ),
-            '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
               shape(
               )
             ),

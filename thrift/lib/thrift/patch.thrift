@@ -16,6 +16,7 @@
 
 include "thrift/annotation/thrift.thrift"
 include "thrift/annotation/scope.thrift"
+
 cpp_include "thrift/lib/cpp2/op/detail/Patch.h"
 
 @thrift.v1
@@ -29,16 +30,13 @@ namespace java2 com.facebook.thrift.op
 // should be generated for the associated definition.
 @scope.Program
 @scope.Structured
-@thrift.Experimental
 struct GeneratePatch {}
 
 @scope.Struct
-@thrift.Experimental
 struct GenerateOptionalPatch {}
 
 // A patch for a boolean value.
 @GenerateOptionalPatch
-@thrift.Experimental
 struct BoolPatch {
   // Assign to a given value.
   //
@@ -55,7 +53,6 @@ struct BoolPatch {
 
 // A patch for an 8-bit integer value.
 @GenerateOptionalPatch
-@thrift.Experimental
 struct BytePatch {
   // Assign to a given value.
   //
@@ -72,7 +69,6 @@ struct BytePatch {
 
 // A patch for a 16-bit integer value.
 @GenerateOptionalPatch
-@thrift.Experimental
 struct I16Patch {
   // Assign to a given value.
   //
@@ -89,7 +85,6 @@ struct I16Patch {
 
 // A patch for a 32-bit integer value.
 @GenerateOptionalPatch
-@thrift.Experimental
 struct I32Patch {
   // Assign to a given value.
   //
@@ -106,7 +101,6 @@ struct I32Patch {
 
 // A patch for a 64-bit integer value.
 @GenerateOptionalPatch
-@thrift.Experimental
 struct I64Patch {
   // Assign to a given value.
   //
@@ -123,7 +117,6 @@ struct I64Patch {
 
 // A patch for a 32-bit floating point value.
 @GenerateOptionalPatch
-@thrift.Experimental
 struct FloatPatch {
   // Assign to a given value.
   //
@@ -140,7 +133,6 @@ struct FloatPatch {
 
 // A patch for an 64-bit floating point value.
 @GenerateOptionalPatch
-@thrift.Experimental
 struct DoublePatch {
   // Assign to a given value.
   //
@@ -157,7 +149,6 @@ struct DoublePatch {
 
 // A patch for a string value.
 @GenerateOptionalPatch
-@thrift.Experimental
 struct StringPatch {
   // Assign to a given value.
   //
@@ -180,7 +171,6 @@ struct StringPatch {
 
 // A patch for a binary value.
 @GenerateOptionalPatch
-@thrift.Experimental
 struct BinaryPatch {
   // Assign to a given value.
   //

@@ -35,7 +35,6 @@ cpp_include "<thrift/lib/cpp/FieldId.h>"
 // the absolute minimal amount of information need to work with a 'dynamic'
 // thrift value (e.g., one where the type is only known at runtime).
 @thrift.v1
-@thrift.Experimental
 package "facebook.com/thrift/type"
 
 // An unordered set of value ids, that can contain *at most one* value
