@@ -72,7 +72,7 @@
       }
     },
     "Deprecated" : {
-      "lineno" : 56,
+      "lineno" : 59,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -80,52 +80,16 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 53,
+          "line" : 56,
           "column" : 1
         },
         "end" : {
-          "line" : 56,
+          "line" : 59,
           "column" : 21
         }
       }
     },
-    "TerseWrite" : {
-      "lineno" : 62,
-      "is_exception" : false,
-      "is_union" : false,
-      "fields" : {
-
-      },
-      "source_range" : {
-        "begin" : {
-          "line" : 58,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 62,
-          "column" : 80
-        }
-      }
-    },
-    "Box" : {
-      "lineno" : 66,
-      "is_exception" : false,
-      "is_union" : false,
-      "fields" : {
-
-      },
-      "source_range" : {
-        "begin" : {
-          "line" : 64,
-          "column" : 1
-        },
-        "end" : {
-          "line" : 66,
-          "column" : 66
-        }
-      }
-    },
-    "Mixin" : {
+    "Legacy" : {
       "lineno" : 69,
       "is_exception" : false,
       "is_union" : false,
@@ -139,12 +103,66 @@
         },
         "end" : {
           "line" : 69,
+          "column" : 17
+        }
+      }
+    },
+    "TerseWrite" : {
+      "lineno" : 75,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 71,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 75,
+          "column" : 80
+        }
+      }
+    },
+    "Box" : {
+      "lineno" : 79,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 77,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 79,
+          "column" : 66
+        }
+      }
+    },
+    "Mixin" : {
+      "lineno" : 82,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 80,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 82,
           "column" : 70
         }
       }
     },
     "SerializeInFieldIdOrder" : {
-      "lineno" : 76,
+      "lineno" : 89,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -152,17 +170,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 74,
+          "line" : 87,
           "column" : 1
         },
         "end" : {
-          "line" : 78,
+          "line" : 91,
           "column" : 2
         }
       }
     },
     "NoLegacyAPIs" : {
-      "lineno" : 96,
+      "lineno" : 107,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -170,17 +188,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 90,
+          "line" : 101,
           "column" : 1
         },
         "end" : {
-          "line" : 98,
+          "line" : 109,
           "column" : 2
         }
       }
     },
     "v1" : {
-      "lineno" : 104,
+      "lineno" : 115,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -188,17 +206,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 103,
+          "line" : 114,
           "column" : 1
         },
         "end" : {
-          "line" : 104,
+          "line" : 115,
           "column" : 13
         }
       }
     },
     "v1alpha" : {
-      "lineno" : 116,
+      "lineno" : 127,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -206,17 +224,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 112,
+          "line" : 123,
           "column" : 1
         },
         "end" : {
-          "line" : 116,
+          "line" : 127,
           "column" : 18
         }
       }
     },
     "v1test" : {
-      "lineno" : 123,
+      "lineno" : 134,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -224,11 +242,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 120,
+          "line" : 131,
           "column" : 1
         },
         "end" : {
-          "line" : 123,
+          "line" : 134,
           "column" : 17
         }
       }

@@ -50,10 +50,23 @@ struct Experimental {} (
 )
 
 // Indicates a definition should no longer be used.
+//
+// TODO(afuller): Add a validator to produce warnings when annotated definitions
+// are used.
 @Beta // TODO(afuller): Hook up to code gen.
 @scope.Program
 @scope.Definition
 struct Deprecated {}
+
+// Indicates will be removed in the next release.
+//
+// Pleased migrate off of any feature mark as @Legacy.
+//
+// TODO(afuller): Add a linter to produce failures when annotated definitions
+// are used.
+@Deprecated // Legacy implies deprecated.
+@scope.FbthriftInternalScopeTransitive
+struct Legacy {}
 
 @scope.Program
 @scope.Struct
@@ -85,8 +98,6 @@ struct SerializeInFieldIdOrder {} (
 // 'feature'.
 // TODO(afuller): Add `@NoDeprecated` that removes depreciated features
 // (e.g. features that we are planning to remove)
-// TODO(afuller): Add a '@Legacy' annotation, to indicate that
-// something will be removed in the next release.
 @Experimental
 @scope.Program
 @scope.Struct
