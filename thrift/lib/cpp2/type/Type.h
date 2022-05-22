@@ -108,7 +108,7 @@ class Type : public detail::Wrap<TypeStruct> {
   bool isFull() const { return isFull(data_); }
 
  private:
-  static bool isFull(const TypeNameUnion& typeName);
+  static bool isFull(const TypeUri& typeUri);
   static bool isFull(const TypeId& typeId);
   static bool isFull(const TypeStruct& type);
 

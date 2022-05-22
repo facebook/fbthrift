@@ -218,7 +218,7 @@ typedef string Uri
 
 // The uri of an IDL defined type.
 @thrift.Experimental
-union TypeNameUnion {
+union TypeUri {
   // The unique Thrift URI for this type.
   1: Uri uri;
   // A prefix of the SHA2-256 hash of the URI.
@@ -239,10 +239,10 @@ union TypeId {
   7: Void doubleType;
   8: Void stringType;
   9: Void binaryType;
-  10: TypeNameUnion enumType;
-  11: TypeNameUnion structType;
-  12: TypeNameUnion unionType;
-  13: TypeNameUnion exceptionType;
+  10: TypeUri enumType;
+  11: TypeUri structType;
+  12: TypeUri unionType;
+  13: TypeUri exceptionType;
   14: Void listType;
   15: Void setType;
   16: Void mapType;

@@ -22,8 +22,8 @@ namespace apache {
 namespace thrift {
 namespace type {
 
-bool Type::isFull(const TypeNameUnion& typeName) {
-  return typeName.getType() == TypeNameUnion::uri;
+bool Type::isFull(const TypeUri& typeUri) {
+  return typeUri.getType() == TypeUri::uri;
 }
 
 bool Type::isFull(const TypeId& typeId) {

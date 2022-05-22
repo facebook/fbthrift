@@ -83,7 +83,7 @@ enum BaseType {
 // The hash algorithms that can be used with type names.
 @thrift.Experimental
 enum UniversalHashAlgorithm {
-  Sha2_256 = 2, // = getFieldId(TypeNameUnion::typeHashPrefixSha2_256).
+  Sha2_256 = 2, // = getFieldId(TypeUri::typeHashPrefixSha2_256).
 } (
   cpp.name = "UniversalHashAlgorithmEnum",
   cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::UniversalHashAlgorithm, ::apache::thrift::type::UniversalHashAlgorithmEnum>",
