@@ -160,6 +160,9 @@ typedef i64 ExternId
 // Unset/Empty/Null/npos/0 never refers to a valid external value.
 const ExternId noId = 0;
 
+// The id of an externally stored Value.
+typedef ExternId ValueId
+
 // Standard protocols.
 @thrift.Experimental
 enum StandardProtocol {
@@ -217,6 +220,8 @@ union TypeNameUnion {
   1: Uri uri;
   // A prefix of the SHA2-256 hash of the URI.
   2: ByteString typeHashPrefixSha2_256;
+  // An externally stored URI value.
+  3: ValueId id;
 }
 
 // Uniquely identifies a type.
