@@ -94,9 +94,7 @@ class Type : public detail::Wrap<TypeStruct> {
     static const Type& kInst = *new Type(Tag{});
     return kInst;
   }
-  BaseType base_type() const noexcept {
-    return static_cast<BaseType>(data_.id()->getType());
-  }
+  auto base_type() const noexcept { return BaseType{data_.name()->getType()}; }
 
   Type& operator=(const Type&) = default;
   Type& operator=(Type&&) noexcept = default;
@@ -109,7 +107,7 @@ class Type : public detail::Wrap<TypeStruct> {
 
  private:
   static bool isFull(const TypeUri& typeUri);
-  static bool isFull(const TypeId& typeId);
+  static bool isFull(const TypeName& typeName);
   static bool isFull(const TypeStruct& type);
 
   template <typename Tag>
@@ -127,15 +125,15 @@ class Type : public detail::Wrap<TypeStruct> {
   static void checkName(const std::string& name);
 
   template <typename CTag, typename T>
-  static decltype(auto) getId(T&& result) {
+  static decltype(auto) getName(T&& result) {
     constexpr auto id = static_cast<FieldId>(base_type_v<CTag>);
-    return op::getById<type::union_t<T>, id>(*std::forward<T>(result).id());
+    return op::getById<type::union_t<T>, id>(*std::forward<T>(result).name());
   }
 
   template <typename Tag>
   static TypeStruct makeConcrete() {
     TypeStruct result;
-    getId<Tag>(result).ensure();
+    getName<Tag>(result).ensure();
     return result;
   }
 
@@ -143,14 +141,14 @@ class Type : public detail::Wrap<TypeStruct> {
   static TypeStruct makeNamed(std::string uri) {
     TypeStruct result;
     checkName(uri);
-    getId<CTag>(result).ensure().uri_ref() = std::move(uri);
+    getName<CTag>(result).ensure().uri_ref() = std::move(uri);
     return result;
   }
 
   template <typename CTag, typename... TArgs>
   static TypeStruct makeParamed(TArgs&&... paramType) {
     TypeStruct result;
-    getId<CTag>(result).ensure();
+    getName<CTag>(result).ensure();
     result.params()->insert(result.params()->end(), {paramType...});
     return result;
   }

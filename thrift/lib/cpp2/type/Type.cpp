@@ -26,16 +26,16 @@ bool Type::isFull(const TypeUri& typeUri) {
   return typeUri.getType() == TypeUri::uri;
 }
 
-bool Type::isFull(const TypeId& typeId) {
-  switch (typeId.getType()) {
-    case TypeId::enumType:
-      return isFull(*typeId.enumType_ref());
-    case TypeId::structType:
-      return isFull(*typeId.structType_ref());
-    case TypeId::unionType:
-      return isFull(*typeId.unionType_ref());
-    case TypeId::exceptionType:
-      return isFull(*typeId.exceptionType_ref());
+bool Type::isFull(const TypeName& typeName) {
+  switch (typeName.getType()) {
+    case TypeName::enumType:
+      return isFull(*typeName.enumType_ref());
+    case TypeName::structType:
+      return isFull(*typeName.structType_ref());
+    case TypeName::unionType:
+      return isFull(*typeName.unionType_ref());
+    case TypeName::exceptionType:
+      return isFull(*typeName.exceptionType_ref());
     default:
       return true;
   }
@@ -47,7 +47,7 @@ bool Type::isFull(const TypeStruct& type) {
       return false;
     }
   }
-  return isFull(*type.id());
+  return isFull(*type.name());
 }
 
 void Type::checkName(const std::string& name) {

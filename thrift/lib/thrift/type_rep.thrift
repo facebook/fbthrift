@@ -229,7 +229,7 @@ union TypeUri {
 
 // Uniquely identifies a type.
 @thrift.Experimental
-union TypeId {
+union TypeName {
   1: Void boolType;
   2: Void byteType;
   3: Void i16Type;
@@ -250,8 +250,8 @@ union TypeId {
 
 // A concrete type.
 struct TypeStruct {
-  // The type id.
-  1: TypeId id;
+  // The type name.
+  1: TypeName name;
   // The type params, if appropriate.
   2: list<TypeStruct> params;
 } (thrift.uri = "facebook.com/thrift/type/Type")
