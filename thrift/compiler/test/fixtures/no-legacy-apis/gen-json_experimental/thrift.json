@@ -81,13 +81,19 @@
         "name" : "v1",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 111
+        "lineno" : 104
+      },
+      "v1alpha" : {
+        "name" : "v1alpha",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 116
       },
       "v1test" : {
         "name" : "v1test",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 118
+        "lineno" : 123
       }
       },
   "source_path" : "thrift/annotation/thrift",

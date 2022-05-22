@@ -23,6 +23,7 @@ namespace annotation {
   ::apache::thrift::detail::md::StructMetadata<SerializeInFieldIdOrder>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<NoLegacyAPIs>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<v1>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<v1alpha>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<v1test>::gen(metadata);
   return metadata;
 }

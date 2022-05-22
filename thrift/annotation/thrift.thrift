@@ -97,22 +97,27 @@ struct NoLegacyAPIs {} (
   thrift.uri = "facebook.com/thrift/annotation/NoLegacyAPIs",
 )
 
+// Enables all released v1 features.
+//
+// TODO: Release features ;-).
+@scope.FbthriftInternalScopeTransitive
+struct v1 {}
+
 // Enables all experimental v1 features.
 //
 // Use with *caution* and only with explicit permission. This may enable
 // features may change significantly without notice or not work correctly
 // in all contexts.
 //
-// TODO(afuller): Rename to `v1alpha` so it is more obvious this is
-// @Experimental.
-@Experimental // All uses of v1 inherit `@Experimental`.
+@Experimental // All uses of v1alpha inherit `@Experimental`.
 @NoLegacyAPIs
+@v1 // All v1 features.
 @scope.FbthriftInternalScopeTransitive
-struct v1 {}
+struct v1alpha {}
 
 // Enables experimental features, even those that are known to break common
 // use cases.
 @TerseWrite // TODO(dokwon): Fix code gen. Currently known working: c++
-@v1 // All v1 features.
+@v1alpha // All v1alpha features.
 @scope.FbthriftInternalScopeTransitive
 struct v1test {}

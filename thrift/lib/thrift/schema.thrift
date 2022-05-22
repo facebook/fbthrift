@@ -34,7 +34,7 @@ cpp_include "<thrift/lib/cpp/FieldId.h>"
 // In contrast to an AST, the definitions in this file should include
 // the absolute minimal amount of information need to work with a 'dynamic'
 // thrift value (e.g., one where the type is only known at runtime).
-@thrift.v1
+@thrift.v1alpha
 package "facebook.com/thrift/type"
 
 // An unordered set of value ids, that can contain *at most one* value
