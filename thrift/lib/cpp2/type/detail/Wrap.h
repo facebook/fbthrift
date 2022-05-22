@@ -48,7 +48,11 @@ class Wrap {
   FOLLY_NODISCARD underlying_type&& toThrift() && { return std::move(data_); }
 
   void reset() { op::clear<underlying_tag>(data_); }
-  bool empty() const { return op::isEmpty<underlying_tag>(data_); }
+  bool empty() const {
+    return op::isEmpty<underlying_tag>(data_)
+        // TODO(afuller): Remove when terse_write is enabled:
+        || data_ == T{};
+  }
 
  protected:
   T data_;

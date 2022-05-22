@@ -19,8 +19,7 @@ include "thrift/annotation/scope.thrift"
 
 cpp_include "thrift/lib/cpp2/op/detail/Patch.h"
 
-// TODO(afuller): Remove dep on TerseWrites and switch to back to `v1`.
-@thrift.v1test
+@thrift.v1alpha
 package "facebook.com/thrift/op"
 
 namespace cpp2 apache.thrift.op

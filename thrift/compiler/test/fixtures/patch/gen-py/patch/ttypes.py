@@ -2405,7 +2405,7 @@ all_structs.append(BoolPatch)
 BoolPatch.thrift_spec = (
   None, # 0
   (1, TType.BOOL, 'assign', None, None, 1, ), # 1
-  (2, TType.BOOL, 'invert', None, None, 3, ), # 2
+  (2, TType.BOOL, 'invert', None, None, 2, ), # 2
 )
 
 BoolPatch.thrift_struct_annotations = {
@@ -2434,7 +2434,7 @@ all_structs.append(BytePatch)
 BytePatch.thrift_spec = (
   None, # 0
   (1, TType.BYTE, 'assign', None, None, 1, ), # 1
-  (2, TType.BYTE, 'add', None, None, 3, ), # 2
+  (2, TType.BYTE, 'add', None, None, 2, ), # 2
 )
 
 BytePatch.thrift_struct_annotations = {
@@ -2463,7 +2463,7 @@ all_structs.append(I16Patch)
 I16Patch.thrift_spec = (
   None, # 0
   (1, TType.I16, 'assign', None, None, 1, ), # 1
-  (2, TType.I16, 'add', None, None, 3, ), # 2
+  (2, TType.I16, 'add', None, None, 2, ), # 2
 )
 
 I16Patch.thrift_struct_annotations = {
@@ -2492,7 +2492,7 @@ all_structs.append(I32Patch)
 I32Patch.thrift_spec = (
   None, # 0
   (1, TType.I32, 'assign', None, None, 1, ), # 1
-  (2, TType.I32, 'add', None, None, 3, ), # 2
+  (2, TType.I32, 'add', None, None, 2, ), # 2
 )
 
 I32Patch.thrift_struct_annotations = {
@@ -2521,7 +2521,7 @@ all_structs.append(I64Patch)
 I64Patch.thrift_spec = (
   None, # 0
   (1, TType.I64, 'assign', None, None, 1, ), # 1
-  (2, TType.I64, 'add', None, None, 3, ), # 2
+  (2, TType.I64, 'add', None, None, 2, ), # 2
 )
 
 I64Patch.thrift_struct_annotations = {
@@ -2550,7 +2550,7 @@ all_structs.append(FloatPatch)
 FloatPatch.thrift_spec = (
   None, # 0
   (1, TType.FLOAT, 'assign', None, None, 1, ), # 1
-  (2, TType.FLOAT, 'add', None, None, 3, ), # 2
+  (2, TType.FLOAT, 'add', None, None, 2, ), # 2
 )
 
 FloatPatch.thrift_struct_annotations = {
@@ -2579,7 +2579,7 @@ all_structs.append(DoublePatch)
 DoublePatch.thrift_spec = (
   None, # 0
   (1, TType.DOUBLE, 'assign', None, None, 1, ), # 1
-  (2, TType.DOUBLE, 'add', None, None, 3, ), # 2
+  (2, TType.DOUBLE, 'add', None, None, 2, ), # 2
 )
 
 DoublePatch.thrift_struct_annotations = {
@@ -2608,10 +2608,10 @@ all_structs.append(StringPatch)
 StringPatch.thrift_spec = (
   None, # 0
   (1, TType.STRING, 'assign', True, None, 1, ), # 1
-  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   None, # 3
-  (4, TType.STRING, 'prepend', True, None, 3, ), # 4
-  (5, TType.STRING, 'append', True, None, 3, ), # 5
+  (4, TType.STRING, 'prepend', True, None, 2, ), # 4
+  (5, TType.STRING, 'append', True, None, 2, ), # 5
 )
 
 StringPatch.thrift_struct_annotations = {
