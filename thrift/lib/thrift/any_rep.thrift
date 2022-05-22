@@ -18,6 +18,9 @@ include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/type.thrift"
 include "thrift/lib/thrift/type_rep.thrift"
 
+// Canonical underlying representation for Thrift: Any.
+package "facebook.com/thrift/type"
+
 namespace cpp2 apache.thrift.type
 namespace py3 apache.thrift.type
 namespace php apache_thrift_type

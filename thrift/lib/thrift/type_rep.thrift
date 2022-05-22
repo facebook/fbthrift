@@ -20,6 +20,9 @@ include "thrift/annotation/java.thrift"
 cpp_include "<folly/io/IOBuf.h>"
 cpp_include "<folly/FBString.h>"
 
+// Canonical underlying representations for well-known Thrift types.
+package "facebook.com/thrift/type"
+
 namespace cpp2 apache.thrift.type
 namespace py3 apache.thrift.type
 namespace php apache_thrift_type
@@ -243,7 +246,7 @@ union TypeId {
   14: Void listType;
   15: Void setType;
   16: Void mapType;
-} (thrift.uri = "facebook.com/thrift/type/TypeId")
+}
 
 // A concrete type.
 struct TypeStruct {

@@ -23,6 +23,9 @@ cpp_include "<thrift/lib/cpp2/type/Protocol.h>"
 cpp_include "<thrift/lib/cpp2/type/Type.h>"
 cpp_include "<thrift/lib/cpp2/type/UniversalHashAlgorithm.h>"
 
+// Canonical representations for well-known Thrift types.
+package "facebook.com/thrift/type"
+
 namespace cpp2 apache.thrift.type
 namespace py3 apache.thrift.type
 namespace php apache_thrift_type
