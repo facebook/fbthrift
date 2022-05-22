@@ -30,6 +30,18 @@ namespace py.asyncio apache_thrift_asyncio.type_rep
 namespace go thrift.lib.thrift.type_rep
 namespace py thrift.lib.thrift.type_rep
 
+// The minimum and default number of bytes that can be used to identify
+// a type.
+//
+// The expected number of types that can be hashed before a
+// collision is 2^(8*{numBytes}/2).
+// Which is ~4.3 billion types for the min, and ~18.45 quintillion
+// types for the default.
+@thrift.Experimental
+const byte minTypeHashBytes = 8;
+@thrift.Experimental
+const byte defaultTypeHashBytes = 16;
+
 // Typedef for binary data which can be represented as a string of 8-bit bytes
 //
 // Each language can map this type into a customized memory efficient object
