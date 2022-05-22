@@ -38,10 +38,11 @@ cpp_include "<thrift/lib/cpp/FieldId.h>"
 @thrift.Experimental
 package "facebook.com/thrift/type"
 
+// An unordered set of value ids, that can contain *at most one* value
+// of any type.
+typedef set<type_rep.ValueId> AnnotationIds
+
 // The attributes that can be associated with any Thrift definition.
-//
-// TODO(afuller): Some subset of structured annotations
-// based on context (schema or AST)
 struct Definition {
   // The un-scoped 'name' for this definition.
   //
@@ -77,6 +78,17 @@ struct Definition {
   //
   // TODO(afuller): Support aliases to help with renaming.
   2: string uri;
+
+  // The annotations associated with this definition, for the current context.
+  //
+  // For example, only annotations explicitly marked with '@scope.Schema' are
+  // present in the runtime schema, while all annotations are present in the AST.
+  //
+  // TODO(afuller): Add @scope.Schema to thrift/annotation/scope.thrift.
+  // TODO(afuller): Consider supporting unstructured annotations for
+  // backward compatibility, by documenting and populating a map<string, string>
+  // pseudo-structured annotation value.
+  3: AnnotationIds annotations;
 }
 
 // A Thrift enum value.
