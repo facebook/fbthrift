@@ -655,29 +655,29 @@ func (p *SerializeInFieldIdOrder) String() string {
   return fmt.Sprintf("SerializeInFieldIdOrder({})")
 }
 
-type NoLegacyAPIs struct {
+type NoExperimental struct {
 }
 
-func NewNoLegacyAPIs() *NoLegacyAPIs {
-  return &NoLegacyAPIs{}
+func NewNoExperimental() *NoExperimental {
+  return &NoExperimental{}
 }
 
-type NoLegacyAPIsBuilder struct {
-  obj *NoLegacyAPIs
+type NoExperimentalBuilder struct {
+  obj *NoExperimental
 }
 
-func NewNoLegacyAPIsBuilder() *NoLegacyAPIsBuilder{
-  return &NoLegacyAPIsBuilder{
-    obj: NewNoLegacyAPIs(),
+func NewNoExperimentalBuilder() *NoExperimentalBuilder{
+  return &NoExperimentalBuilder{
+    obj: NewNoExperimental(),
   }
 }
 
-func (p NoLegacyAPIsBuilder) Emit() *NoLegacyAPIs{
-  return &NoLegacyAPIs{
+func (p NoExperimentalBuilder) Emit() *NoExperimental{
+  return &NoExperimental{
   }
 }
 
-func (p *NoLegacyAPIs) Read(iprot thrift.Protocol) error {
+func (p *NoExperimental) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -702,8 +702,8 @@ func (p *NoLegacyAPIs) Read(iprot thrift.Protocol) error {
   return nil
 }
 
-func (p *NoLegacyAPIs) Write(oprot thrift.Protocol) error {
-  if err := oprot.WriteStructBegin("NoLegacyAPIs"); err != nil {
+func (p *NoExperimental) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("NoExperimental"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -712,12 +712,207 @@ func (p *NoLegacyAPIs) Write(oprot thrift.Protocol) error {
   return nil
 }
 
-func (p *NoLegacyAPIs) String() string {
+func (p *NoExperimental) String() string {
   if p == nil {
     return "<nil>"
   }
 
-  return fmt.Sprintf("NoLegacyAPIs({})")
+  return fmt.Sprintf("NoExperimental({})")
+}
+
+type NoBeta struct {
+}
+
+func NewNoBeta() *NoBeta {
+  return &NoBeta{}
+}
+
+type NoBetaBuilder struct {
+  obj *NoBeta
+}
+
+func NewNoBetaBuilder() *NoBetaBuilder{
+  return &NoBetaBuilder{
+    obj: NewNoBeta(),
+  }
+}
+
+func (p NoBetaBuilder) Emit() *NoBeta{
+  return &NoBeta{
+  }
+}
+
+func (p *NoBeta) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *NoBeta) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("NoBeta"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NoBeta) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("NoBeta({})")
+}
+
+type NoLegacy struct {
+}
+
+func NewNoLegacy() *NoLegacy {
+  return &NoLegacy{}
+}
+
+type NoLegacyBuilder struct {
+  obj *NoLegacy
+}
+
+func NewNoLegacyBuilder() *NoLegacyBuilder{
+  return &NoLegacyBuilder{
+    obj: NewNoLegacy(),
+  }
+}
+
+func (p NoLegacyBuilder) Emit() *NoLegacy{
+  return &NoLegacy{
+  }
+}
+
+func (p *NoLegacy) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *NoLegacy) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("NoLegacy"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NoLegacy) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("NoLegacy({})")
+}
+
+type NoDeprecated struct {
+}
+
+func NewNoDeprecated() *NoDeprecated {
+  return &NoDeprecated{}
+}
+
+type NoDeprecatedBuilder struct {
+  obj *NoDeprecated
+}
+
+func NewNoDeprecatedBuilder() *NoDeprecatedBuilder{
+  return &NoDeprecatedBuilder{
+    obj: NewNoDeprecated(),
+  }
+}
+
+func (p NoDeprecatedBuilder) Emit() *NoDeprecated{
+  return &NoDeprecated{
+  }
+}
+
+func (p *NoDeprecated) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *NoDeprecated) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("NoDeprecated"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NoDeprecated) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("NoDeprecated({})")
 }
 
 type V1 struct {
@@ -783,6 +978,71 @@ func (p *V1) String() string {
   }
 
   return fmt.Sprintf("V1({})")
+}
+
+type V1beta struct {
+}
+
+func NewV1beta() *V1beta {
+  return &V1beta{}
+}
+
+type V1betaBuilder struct {
+  obj *V1beta
+}
+
+func NewV1betaBuilder() *V1betaBuilder{
+  return &V1betaBuilder{
+    obj: NewV1beta(),
+  }
+}
+
+func (p V1betaBuilder) Emit() *V1beta{
+  return &V1beta{
+  }
+}
+
+func (p *V1beta) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *V1beta) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("v1beta"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *V1beta) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("V1beta({})")
 }
 
 type V1alpha struct {
@@ -913,5 +1173,70 @@ func (p *V1test) String() string {
   }
 
   return fmt.Sprintf("V1test({})")
+}
+
+type NoLegacyAPIs struct {
+}
+
+func NewNoLegacyAPIs() *NoLegacyAPIs {
+  return &NoLegacyAPIs{}
+}
+
+type NoLegacyAPIsBuilder struct {
+  obj *NoLegacyAPIs
+}
+
+func NewNoLegacyAPIsBuilder() *NoLegacyAPIsBuilder{
+  return &NoLegacyAPIsBuilder{
+    obj: NewNoLegacyAPIs(),
+  }
+}
+
+func (p NoLegacyAPIsBuilder) Emit() *NoLegacyAPIs{
+  return &NoLegacyAPIs{
+  }
+}
+
+func (p *NoLegacyAPIs) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *NoLegacyAPIs) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("NoLegacyAPIs"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NoLegacyAPIs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("NoLegacyAPIs({})")
 }
 

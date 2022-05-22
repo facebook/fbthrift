@@ -31,7 +31,7 @@
         },
         "end" : {
           "line" : 37,
-          "column" : 80
+          "column" : 2
         }
       }
     },
@@ -49,7 +49,7 @@
         },
         "end" : {
           "line" : 42,
-          "column" : 68
+          "column" : 15
         }
       }
     },
@@ -66,13 +66,13 @@
           "column" : 1
         },
         "end" : {
-          "line" : 50,
-          "column" : 2
+          "line" : 48,
+          "column" : 23
         }
       }
     },
     "Deprecated" : {
-      "lineno" : 59,
+      "lineno" : 57,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -80,17 +80,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 56,
+          "line" : 54,
           "column" : 1
         },
         "end" : {
-          "line" : 59,
+          "line" : 57,
           "column" : 21
         }
       }
     },
     "Legacy" : {
-      "lineno" : 69,
+      "lineno" : 67,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -98,17 +98,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 67,
+          "line" : 65,
           "column" : 1
         },
         "end" : {
-          "line" : 69,
+          "line" : 67,
           "column" : 17
         }
       }
     },
     "TerseWrite" : {
-      "lineno" : 75,
+      "lineno" : 73,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -116,17 +116,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 71,
+          "line" : 69,
           "column" : 1
         },
         "end" : {
-          "line" : 75,
-          "column" : 80
+          "line" : 73,
+          "column" : 21
         }
       }
     },
     "Box" : {
-      "lineno" : 79,
+      "lineno" : 77,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -134,17 +134,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 77,
+          "line" : 75,
           "column" : 1
         },
         "end" : {
-          "line" : 79,
-          "column" : 66
+          "line" : 77,
+          "column" : 14
         }
       }
     },
     "Mixin" : {
-      "lineno" : 82,
+      "lineno" : 80,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -152,17 +152,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 80,
+          "line" : 78,
           "column" : 1
         },
         "end" : {
-          "line" : 82,
-          "column" : 70
+          "line" : 80,
+          "column" : 16
         }
       }
     },
     "SerializeInFieldIdOrder" : {
-      "lineno" : 89,
+      "lineno" : 87,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -170,17 +170,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 87,
+          "line" : 85,
           "column" : 1
         },
         "end" : {
-          "line" : 91,
-          "column" : 2
+          "line" : 87,
+          "column" : 34
         }
       }
     },
-    "NoLegacyAPIs" : {
-      "lineno" : 107,
+    "NoExperimental" : {
+      "lineno" : 92,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -188,17 +188,71 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 101,
+          "line" : 90,
           "column" : 1
         },
         "end" : {
-          "line" : 109,
-          "column" : 2
+          "line" : 92,
+          "column" : 25
+        }
+      }
+    },
+    "NoBeta" : {
+      "lineno" : 97,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 95,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 97,
+          "column" : 17
+        }
+      }
+    },
+    "NoLegacy" : {
+      "lineno" : 103,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 100,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 103,
+          "column" : 19
+        }
+      }
+    },
+    "NoDeprecated" : {
+      "lineno" : 111,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 108,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 111,
+          "column" : 23
         }
       }
     },
     "v1" : {
-      "lineno" : 115,
+      "lineno" : 117,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -206,17 +260,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 114,
+          "line" : 116,
           "column" : 1
         },
         "end" : {
-          "line" : 115,
+          "line" : 117,
           "column" : 13
         }
       }
     },
-    "v1alpha" : {
-      "lineno" : 127,
+    "v1beta" : {
+      "lineno" : 128,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -224,17 +278,35 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 123,
+          "line" : 124,
           "column" : 1
         },
         "end" : {
-          "line" : 127,
+          "line" : 128,
+          "column" : 17
+        }
+      }
+    },
+    "v1alpha" : {
+      "lineno" : 138,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 135,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 138,
           "column" : 18
         }
       }
     },
     "v1test" : {
-      "lineno" : 134,
+      "lineno" : 146,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -242,12 +314,30 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 131,
+          "line" : 142,
           "column" : 1
         },
         "end" : {
-          "line" : 134,
+          "line" : 146,
           "column" : 17
+        }
+      }
+    },
+    "NoLegacyAPIs" : {
+      "lineno" : 155,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 149,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 155,
+          "column" : 23
         }
       }
     }

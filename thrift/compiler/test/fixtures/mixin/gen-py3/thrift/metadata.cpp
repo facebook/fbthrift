@@ -22,10 +22,15 @@ namespace annotation {
   ::apache::thrift::detail::md::StructMetadata<Box>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Mixin>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<SerializeInFieldIdOrder>::gen(metadata);
-  ::apache::thrift::detail::md::StructMetadata<NoLegacyAPIs>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<NoExperimental>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<NoBeta>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<NoLegacy>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<NoDeprecated>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<v1>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<v1beta>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<v1alpha>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<v1test>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<NoLegacyAPIs>::gen(metadata);
   return metadata;
 }
 } // namespace facebook

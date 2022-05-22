@@ -45,61 +45,91 @@
         "name" : "Deprecated",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 59
+        "lineno" : 57
       },
       "Legacy" : {
         "name" : "Legacy",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 69
+        "lineno" : 67
       },
       "TerseWrite" : {
         "name" : "TerseWrite",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 75
+        "lineno" : 73
       },
       "Box" : {
         "name" : "Box",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 79
+        "lineno" : 77
       },
       "Mixin" : {
         "name" : "Mixin",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 82
+        "lineno" : 80
       },
       "SerializeInFieldIdOrder" : {
         "name" : "SerializeInFieldIdOrder",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 89
+        "lineno" : 87
       },
-      "NoLegacyAPIs" : {
-        "name" : "NoLegacyAPIs",
+      "NoExperimental" : {
+        "name" : "NoExperimental",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 107
+        "lineno" : 92
+      },
+      "NoBeta" : {
+        "name" : "NoBeta",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 97
+      },
+      "NoLegacy" : {
+        "name" : "NoLegacy",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 103
+      },
+      "NoDeprecated" : {
+        "name" : "NoDeprecated",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 111
       },
       "v1" : {
         "name" : "v1",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 115
+        "lineno" : 117
+      },
+      "v1beta" : {
+        "name" : "v1beta",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 128
       },
       "v1alpha" : {
         "name" : "v1alpha",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 127
+        "lineno" : 138
       },
       "v1test" : {
         "name" : "v1test",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 134
+        "lineno" : 146
+      },
+      "NoLegacyAPIs" : {
+        "name" : "NoLegacyAPIs",
+        "is_exception" : false,
+        "is_union" : false,
+        "lineno" : 155
       }
       },
   "source_path" : "thrift/annotation/thrift",

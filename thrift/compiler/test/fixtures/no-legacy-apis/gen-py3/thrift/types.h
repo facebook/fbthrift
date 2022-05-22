@@ -86,8 +86,29 @@ void reset_field<::facebook::thrift::annotation::SerializeInFieldIdOrder>(
 }
 
 template<>
-void reset_field<::facebook::thrift::annotation::NoLegacyAPIs>(
-    ::facebook::thrift::annotation::NoLegacyAPIs& obj, uint16_t index) {
+void reset_field<::facebook::thrift::annotation::NoExperimental>(
+    ::facebook::thrift::annotation::NoExperimental& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
+void reset_field<::facebook::thrift::annotation::NoBeta>(
+    ::facebook::thrift::annotation::NoBeta& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
+void reset_field<::facebook::thrift::annotation::NoLegacy>(
+    ::facebook::thrift::annotation::NoLegacy& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
+void reset_field<::facebook::thrift::annotation::NoDeprecated>(
+    ::facebook::thrift::annotation::NoDeprecated& obj, uint16_t index) {
   switch (index) {
   }
 }
@@ -95,6 +116,13 @@ void reset_field<::facebook::thrift::annotation::NoLegacyAPIs>(
 template<>
 void reset_field<::facebook::thrift::annotation::v1>(
     ::facebook::thrift::annotation::v1& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
+void reset_field<::facebook::thrift::annotation::v1beta>(
+    ::facebook::thrift::annotation::v1beta& obj, uint16_t index) {
   switch (index) {
   }
 }
@@ -109,6 +137,13 @@ void reset_field<::facebook::thrift::annotation::v1alpha>(
 template<>
 void reset_field<::facebook::thrift::annotation::v1test>(
     ::facebook::thrift::annotation::v1test& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
+void reset_field<::facebook::thrift::annotation::NoLegacyAPIs>(
+    ::facebook::thrift::annotation::NoLegacyAPIs& obj, uint16_t index) {
   switch (index) {
   }
 }
@@ -205,7 +240,37 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::facebook::thrift::annotation::NoLegacyAPIs>::namesmap() {
+    ::facebook::thrift::annotation::NoExperimental>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::NoBeta>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::NoLegacy>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::NoDeprecated>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -216,6 +281,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::v1>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::v1beta>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
@@ -236,6 +311,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::v1test>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::NoLegacyAPIs>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

@@ -34,20 +34,18 @@ namespace py thrift.annotation.thrift
 @scope.Exception
 struct RequiresBackwardCompatibility {
   1: bool field_name = false;
-} (thrift.uri = "facebook.com/thrift/annotation/RequiresBackwardCompatibility")
+}
 
 // Indicates a definition may change in backwards incompatible ways.
 @scope.Program
 @scope.Definition
-struct Beta {} (thrift.uri = "facebook.com/thrift/annotation/Beta")
+struct Beta {}
 
 // Indicates a definition should only be used with permission, and may
 // change in incompatible ways or only work in specific contexts.
 @scope.Program
 @scope.Definition
-struct Experimental {} (
-  thrift.uri = "facebook.com/thrift/annotation/Experimental",
-)
+struct Experimental {}
 
 // Indicates a definition should no longer be used.
 //
@@ -72,41 +70,45 @@ struct Legacy {}
 @scope.Struct
 @scope.Field
 @Experimental
-struct TerseWrite {} (thrift.uri = "facebook.com/thrift/annotation/TerseWrite")
+struct TerseWrite {}
 
 @Beta
 @scope.Field
-struct Box {} (thrift.uri = "facebook.com/thrift/annotation/Box")
+struct Box {}
 @Beta
 @scope.Field
-struct Mixin {} (thrift.uri = "facebook.com/thrift/annotation/Mixin")
+struct Mixin {}
 
 // Option to serialize thrift struct in ascending field id order.
 // This can potentially make serialized data size smaller in compact protocol,
 // since compact protocol can write deltas between subsequent field ids.
 @scope.Struct
 @Experimental
-struct SerializeInFieldIdOrder {} (
-  thrift.uri = "facebook.com/thrift/annotation/SerializeInFieldIdOrder",
-)
+struct SerializeInFieldIdOrder {}
 
-// Disables features that are marked for removal.
-//
-// TODO(afuller): Move to `@Beta`, as everyone should able to test without
-// legacy features.
-// TODO(afuller): Rename to just `NoLegacy` because this can apply any
-// 'feature'.
-// TODO(afuller): Add `@NoDeprecated` that removes depreciated features
-// (e.g. features that we are planning to remove)
-@Experimental
+// Best-effort disables features that marked as experimental.
 @scope.Program
-@scope.Struct
-@scope.Union
-@scope.Exception
-@scope.Service
-struct NoLegacyAPIs {} (
-  thrift.uri = "facebook.com/thrift/annotation/NoLegacyAPIs",
-)
+@scope.Definition
+struct NoExperimental {}
+
+// Best-effort disables features that marked as beta.
+@NoExperimental // Implies no experimental
+@scope.FbthriftInternalScopeTransitive
+struct NoBeta {}
+
+// Best-effort disables features that are marked for removal.
+@Beta // Everyone should be able to test without legacy features.
+@scope.Program
+@scope.Definition
+struct NoLegacy {}
+
+// Best-effort disables features that are marked as deprecated.
+//
+// Should only be enabled in `test` versions.
+@Beta // Everyone should be able to test without deprecated features.
+@NoLegacy // Implies NoLegacy
+@scope.FbthriftInternalScopeTransitive
+struct NoDeprecated {}
 
 // Enables all released v1 features.
 //
@@ -114,15 +116,24 @@ struct NoLegacyAPIs {} (
 @scope.FbthriftInternalScopeTransitive
 struct v1 {}
 
+// Enables all beta v1 features.
+//
+// Beta features are guaranteed to *not* break unrelated Thrift features
+// so they should be relatively safe to test alongside other beta or
+// released Thrift features.
+@Beta // All uses of v1beta inherit `@Beta`.
+@NoLegacy // Disables features that will be removed.
+@v1 // All v1 features.
+@scope.FbthriftInternalScopeTransitive
+struct v1beta {}
+
 // Enables all experimental v1 features.
 //
 // Use with *caution* and only with explicit permission. This may enable
 // features may change significantly without notice or not work correctly
 // in all contexts.
-//
 @Experimental // All uses of v1alpha inherit `@Experimental`.
-@NoLegacyAPIs
-@v1 // All v1 features.
+@v1beta // All v1beta features.
 @scope.FbthriftInternalScopeTransitive
 struct v1alpha {}
 
@@ -130,5 +141,15 @@ struct v1alpha {}
 // use cases.
 @TerseWrite // TODO(dokwon): Fix code gen. Currently known working: c++
 @v1alpha // All v1alpha features.
+@NoDeprecated // Remove deprecated features by default for tests.
 @scope.FbthriftInternalScopeTransitive
 struct v1test {}
+
+// TODO(afuller): Replace with `NoLegacy`
+@Experimental
+@scope.Program
+@scope.Struct
+@scope.Union
+@scope.Exception
+@scope.Service
+struct NoLegacyAPIs {}
