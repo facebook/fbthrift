@@ -66,9 +66,6 @@ class Color(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Color') -> bool: ...
     def __ge__(self, other: 'Color') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.Color": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Color": ...   # type: ignore
-
 
 class Vehicle(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -115,9 +112,6 @@ class Vehicle(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'Vehicle') -> bool: ...
     def __le__(self, other: 'Vehicle') -> bool: ...
     def __ge__(self, other: 'Vehicle') -> bool: ...
-
-    def to_python_struct(self) -> "module.thrift_types.Vehicle": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Vehicle": ...   # type: ignore
 
 
 class Person(thrift.py3.types.Struct, _typing.Hashable):
@@ -190,9 +184,6 @@ class Person(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'Person') -> bool: ...
     def __le__(self, other: 'Person') -> bool: ...
     def __ge__(self, other: 'Person') -> bool: ...
-
-    def to_python_struct(self) -> "module.thrift_types.Person": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Person": ...   # type: ignore
 
 
 class Set__i64(_typing.AbstractSet[int], _typing.Hashable):

@@ -142,14 +142,6 @@ class MyData:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.MyData, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.MyData, self)
 class MyUnion(object):
   """
   Attributes:
@@ -290,14 +282,6 @@ class MyUnion(object):
   def __ne__(self, other):
     return not (self == other)
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.MyUnion, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.MyUnion, self)
 class MyStruct:
   """
   Attributes:
@@ -822,14 +806,6 @@ class MyStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.MyStruct, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.MyStruct, self)
 class MyDataPatch:
   """
   Attributes:
@@ -937,14 +913,6 @@ class MyDataPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.MyDataPatch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.MyDataPatch, self)
 class MyDataValuePatch:
   """
   Attributes:
@@ -1068,14 +1036,6 @@ class MyDataValuePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.MyDataValuePatch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.MyDataValuePatch, self)
 class OptionalMyDataValuePatch:
   """
   Attributes:
@@ -1217,14 +1177,6 @@ class OptionalMyDataValuePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.OptionalMyDataValuePatch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.OptionalMyDataValuePatch, self)
 class MyUnionPatch:
   """
   Attributes:
@@ -1332,14 +1284,6 @@ class MyUnionPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.MyUnionPatch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.MyUnionPatch, self)
 class MyUnionValuePatch:
   """
   Attributes:
@@ -1481,14 +1425,6 @@ class MyUnionValuePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.MyUnionValuePatch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.MyUnionValuePatch, self)
 class OptionalMyUnionValuePatch:
   """
   Attributes:
@@ -1630,14 +1566,6 @@ class OptionalMyUnionValuePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.OptionalMyUnionValuePatch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.OptionalMyUnionValuePatch, self)
 class MyStructPatch:
   """
   Attributes:
@@ -2141,14 +2069,6 @@ class MyStructPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.MyStructPatch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.MyStructPatch, self)
 class MyStructField21Patch:
   """
   Attributes:
@@ -2335,14 +2255,6 @@ class MyStructField21Patch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.MyStructField21Patch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.MyStructField21Patch, self)
 class OptionalMyStructField21Patch:
   """
   Attributes:
@@ -2499,14 +2411,6 @@ class OptionalMyStructField21Patch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.OptionalMyStructField21Patch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.OptionalMyStructField21Patch, self)
 class MyStructField22Patch:
   """
   Attributes:
@@ -2687,14 +2591,6 @@ class MyStructField22Patch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.MyStructField22Patch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.MyStructField22Patch, self)
 class OptionalMyStructField22Patch:
   """
   Attributes:
@@ -2849,14 +2745,6 @@ class OptionalMyStructField22Patch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.OptionalMyStructField22Patch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.OptionalMyStructField22Patch, self)
 class MyStructField23Patch:
   """
   Attributes:
@@ -3014,14 +2902,6 @@ class MyStructField23Patch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.MyStructField23Patch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.MyStructField23Patch, self)
 class OptionalMyStructField23Patch:
   """
   Attributes:
@@ -3180,14 +3060,6 @@ class OptionalMyStructField23Patch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.OptionalMyStructField23Patch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.OptionalMyStructField23Patch, self)
 class MyStructValuePatch:
   """
   Attributes:
@@ -3311,14 +3183,6 @@ class MyStructValuePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.MyStructValuePatch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.MyStructValuePatch, self)
 class OptionalMyStructValuePatch:
   """
   Attributes:
@@ -3460,14 +3324,6 @@ class OptionalMyStructValuePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.patch.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.patch.module.thrift_types.OptionalMyStructValuePatch, self)
-  def to_py3_struct(self):
-    import test.fixtures.patch.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.patch.module.types.OptionalMyStructValuePatch, self)
 all_structs.append(MyData)
 MyData.thrift_spec = (
   None, # 0

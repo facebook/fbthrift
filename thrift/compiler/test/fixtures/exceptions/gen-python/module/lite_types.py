@@ -42,20 +42,6 @@ class Fiery(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
         return field
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.Fiery, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Fiery, self
-        )
-
 
 class Serious(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
@@ -88,20 +74,6 @@ class Serious(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
             return str(field)
         return field
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.Serious, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Serious, self
-        )
 
 
 class ComplexFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
@@ -144,20 +116,6 @@ class ComplexFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMet
         return field
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.ComplexFieldNames, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.ComplexFieldNames, self
-        )
-
 
 class CustomFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
@@ -198,20 +156,6 @@ class CustomFieldNames(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
             return str(field)
         return field
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.CustomFieldNames, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.CustomFieldNames, self
-        )
 
 
 class ExceptionWithPrimitiveField(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
@@ -254,20 +198,6 @@ class ExceptionWithPrimitiveField(metaclass=_fbthrift_py3lite_exceptions.Generat
         return field
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.ExceptionWithPrimitiveField, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.ExceptionWithPrimitiveField, self
-        )
-
 
 class Banal(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
@@ -285,20 +215,6 @@ class Banal(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     def __get_metadata__():
         return _fbthrift_metadata__exception_Banal()
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.Banal, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Banal, self
-        )
 
 # This unfortunately has to be down here to prevent circular imports
 import module.lite_metadata

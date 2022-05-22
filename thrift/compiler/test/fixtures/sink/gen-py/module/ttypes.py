@@ -121,14 +121,6 @@ class InitialResponse:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.InitialResponse, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.InitialResponse, self)
 class FinalResponse:
   """
   Attributes:
@@ -216,14 +208,6 @@ class FinalResponse:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.FinalResponse, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.FinalResponse, self)
 class SinkPayload:
   """
   Attributes:
@@ -311,14 +295,6 @@ class SinkPayload:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.SinkPayload, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.SinkPayload, self)
 class CompatibleWithKeywordSink:
   """
   Attributes:
@@ -406,14 +382,6 @@ class CompatibleWithKeywordSink:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.CompatibleWithKeywordSink, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.CompatibleWithKeywordSink, self)
 class InitialException(TException):
   """
   Attributes:
@@ -508,14 +476,6 @@ class InitialException(TException):
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.InitialException, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.InitialException, self)
 class SinkException1(TException):
   """
   Attributes:
@@ -610,14 +570,6 @@ class SinkException1(TException):
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.SinkException1, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.SinkException1, self)
 class SinkException2(TException):
   """
   Attributes:
@@ -712,14 +664,6 @@ class SinkException2(TException):
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.SinkException2, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.SinkException2, self)
 all_structs.append(InitialResponse)
 InitialResponse.thrift_spec = (
   None, # 0

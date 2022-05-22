@@ -39,19 +39,6 @@ inline std::vector<std::string> get_py3_namespace(const t_program* prog) {
   });
 }
 
-inline std::string get_py3_namespace_with_name_and_prefix(
-    const t_program* prog, const std::string& prefix) {
-  std::ostringstream ss;
-  if (!prefix.empty()) {
-    ss << prefix << ".";
-  }
-  for (const auto& name : get_py3_namespace(prog)) {
-    ss << name << ".";
-  }
-  ss << prog->name();
-  return ss.str();
-}
-
 inline const std::unordered_set<std::string>& get_python_reserved_names() {
   static const std::unordered_set<std::string> keywords = {
       "False",  "None",    "True",    "and",      "as",       "assert", "async",

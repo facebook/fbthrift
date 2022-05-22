@@ -51,9 +51,6 @@ class MyStructNestedAnnotation(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStructNestedAnnotation') -> bool: ...
     def __ge__(self, other: 'MyStructNestedAnnotation') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.MyStructNestedAnnotation": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyStructNestedAnnotation": ...   # type: ignore
-
 
 class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -81,9 +78,6 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     @__property__
     def type(self) -> "MyUnion.Type": ...
 
-    def to_python_struct(self) -> "module.thrift_types.MyUnion": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyUnion": ...   # type: ignore
-
 
 class MyException(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -100,9 +94,6 @@ class MyException(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     def __gt__(self, other: 'MyException') -> bool: ...
     def __le__(self, other: 'MyException') -> bool: ...
     def __ge__(self, other: 'MyException') -> bool: ...
-
-    def to_python_struct(self) -> "module.thrift_types.MyException": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyException": ...   # type: ignore
 
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
@@ -171,9 +162,6 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.MyStruct": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyStruct": ...   # type: ignore
-
 
 class SecretStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -205,9 +193,6 @@ class SecretStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'SecretStruct') -> bool: ...
     def __le__(self, other: 'SecretStruct') -> bool: ...
     def __ge__(self, other: 'SecretStruct') -> bool: ...
-
-    def to_python_struct(self) -> "module.thrift_types.SecretStruct": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.SecretStruct": ...   # type: ignore
 
 
 _std_deque_std_string__List__stringT = _typing.TypeVar('_std_deque_std_string__List__stringT', bound=_typing.Sequence[str])

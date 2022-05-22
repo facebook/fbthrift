@@ -242,21 +242,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import test.fixtures.basic.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.basic.module.thrift_types.MyStruct,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyStruct, self
-        )
-
 
 
 
@@ -389,20 +374,5 @@ cdef class MyUnion(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
-
-    def to_python_struct(self):
-        import test.fixtures.basic.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.basic.module.thrift_types.MyUnion,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyUnion, self
-        )
 
 

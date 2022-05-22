@@ -157,21 +157,6 @@ cdef class Mixin1(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cMixin1](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.Mixin1,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Mixin1, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class Mixin2(thrift.py3.types.Struct):
@@ -291,21 +276,6 @@ cdef class Mixin2(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cMixin2](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.Mixin2,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Mixin2, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class Mixin3Base(thrift.py3.types.Struct):
@@ -403,21 +373,6 @@ cdef class Mixin3Base(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cMixin3Base](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.Mixin3Base,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Mixin3Base, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -574,21 +529,6 @@ cdef class Foo(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cFoo](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.Foo,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Foo, self
-        )
 
 
 Mixin3 = Mixin3Base

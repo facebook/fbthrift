@@ -56,7 +56,4 @@ class Fields(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Fields') -> bool: ...
     def __ge__(self, other: 'Fields') -> bool: ...
 
-    def to_python_struct(self) -> "foo.thrift_types.Fields": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "foo.ttypes.Fields": ...   # type: ignore
-
 

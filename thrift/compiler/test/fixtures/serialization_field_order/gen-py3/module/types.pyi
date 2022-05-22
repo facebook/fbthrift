@@ -56,9 +56,6 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Foo') -> bool: ...
     def __ge__(self, other: 'Foo') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.Foo": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Foo": ...   # type: ignore
-
 
 class Foo2(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -95,8 +92,5 @@ class Foo2(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'Foo2') -> bool: ...
     def __le__(self, other: 'Foo2') -> bool: ...
     def __ge__(self, other: 'Foo2') -> bool: ...
-
-    def to_python_struct(self) -> "module.thrift_types.Foo2": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Foo2": ...   # type: ignore
 
 

@@ -148,21 +148,6 @@ cdef class CustomException(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cCustomException](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import test.fixtures.interactions.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.interactions.module.thrift_types.CustomException,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import test.fixtures.interactions.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            test.fixtures.interactions.ttypes.CustomException, self
-        )
-
 
 
 cdef class ClientBufferedStream__bool(ClientBufferedStream):

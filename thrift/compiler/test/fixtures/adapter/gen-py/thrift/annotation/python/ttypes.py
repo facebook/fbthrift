@@ -139,14 +139,6 @@ class Adapter:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.python.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.python.thrift_types.Adapter, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.python.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.python.types.Adapter, self)
 all_structs.append(Adapter)
 Adapter.thrift_spec = (
   None, # 0

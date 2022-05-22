@@ -61,20 +61,6 @@ class MyStructFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_MyStructFloatFieldThrowExp()
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.MyStructFloatFieldThrowExp, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyStructFloatFieldThrowExp, self
-        )
-
 
 class MyStructMapFloatThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -108,20 +94,6 @@ class MyStructMapFloatThrowExp(metaclass=_fbthrift_py3lite_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyStructMapFloatThrowExp()
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.MyStructMapFloatThrowExp, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyStructMapFloatThrowExp, self
-        )
 
 
 class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -365,20 +337,6 @@ class MyStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_MyStruct()
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.MyStruct, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyStruct, self
-        )
-
 
 class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -412,20 +370,6 @@ class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_SimpleStruct()
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.SimpleStruct, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.SimpleStruct, self
-        )
 
 
 class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -621,20 +565,6 @@ class defaultStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_defaultStruct()
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.defaultStruct, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.defaultStruct, self
-        )
-
 
 class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -725,20 +655,6 @@ class MyStructTypeDef(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_MyStructTypeDef()
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.MyStructTypeDef, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyStructTypeDef, self
-        )
-
 
 class MyDataItem(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -756,20 +672,6 @@ class MyDataItem(metaclass=_fbthrift_py3lite_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyDataItem()
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.MyDataItem, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyDataItem, self
-        )
 
 
 class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
@@ -837,20 +739,6 @@ class MyUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         return _fbthrift_metadata__struct_MyUnion()
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.MyUnion, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyUnion, self
-        )
-
 
 class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
@@ -900,20 +788,6 @@ class MyUnionFloatFieldThrowExp(metaclass=_fbthrift_py3lite_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_MyUnionFloatFieldThrowExp()
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.MyUnionFloatFieldThrowExp, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyUnionFloatFieldThrowExp, self
-        )
 
 
 class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -1077,20 +951,6 @@ class ComplexNestedStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_ComplexNestedStruct()
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.ComplexNestedStruct, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.ComplexNestedStruct, self
-        )
-
 
 class TypeRemapped(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -1141,20 +1001,6 @@ class TypeRemapped(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_TypeRemapped()
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.TypeRemapped, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.TypeRemapped, self
-        )
-
 
 class emptyXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
@@ -1172,20 +1018,6 @@ class emptyXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     def __get_metadata__():
         return _fbthrift_metadata__exception_emptyXcep()
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.emptyXcep, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.emptyXcep, self
-        )
 
 
 class reqXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
@@ -1221,20 +1053,6 @@ class reqXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
         return _fbthrift_metadata__exception_reqXcep()
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.reqXcep, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.reqXcep, self
-        )
-
 
 class optXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     _fbthrift_SPEC = (
@@ -1268,20 +1086,6 @@ class optXcep(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
     def __get_metadata__():
         return _fbthrift_metadata__exception_optXcep()
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.optXcep, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.optXcep, self
-        )
 
 
 class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
@@ -1348,20 +1152,6 @@ class complexException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta
     def __get_metadata__():
         return _fbthrift_metadata__exception_complexException()
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.complexException, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.complexException, self
-        )
 
 # This unfortunately has to be down here to prevent circular imports
 import module.lite_metadata

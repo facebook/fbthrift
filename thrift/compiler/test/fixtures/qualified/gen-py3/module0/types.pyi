@@ -56,9 +56,6 @@ class Struct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Struct') -> bool: ...
     def __ge__(self, other: 'Struct') -> bool: ...
 
-    def to_python_struct(self) -> "module0.thrift_types.Struct": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module0.ttypes.Struct": ...   # type: ignore
-
 
 _List__EnumT = _typing.TypeVar('_List__EnumT', bound=_typing.Sequence[Enum])
 

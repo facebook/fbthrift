@@ -35,20 +35,6 @@ class HsFoo(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_HsFoo()
 
 
-    def to_py3_struct(self):
-        import py3lite_module_root.my.namespacing.test.hsmodule.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            py3lite_module_root.my.namespacing.test.hsmodule.types.HsFoo, self
-        )
-
-    def to_py_legacy_struct(self):
-        import hsmodule.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            hsmodule.ttypes.HsFoo, self
-        )
-
 # This unfortunately has to be down here to prevent circular imports
 import py3lite_module_root.my.namespacing.test.hsmodule.lite_metadata
 

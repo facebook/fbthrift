@@ -108,10 +108,6 @@ class {{struct:name}}({{> types/python_struct_class}}, _typing.Hashable):
     def type(self) -> "{{struct:name}}.Type": ...
     {{/struct:union?}}
 
-    {{!TODO: accommodate root_module_prefix}}
-    def to_python_struct(self) -> "{{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.thrift_types.{{struct:name}}": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "{{program:py_legacy_module_path}}.ttypes.{{struct:name}}": ...   # type: ignore
-
 
 {{/program:structs}}
 {{#program:containerTypes}}

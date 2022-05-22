@@ -206,21 +206,6 @@ cdef class SmallStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cSmallStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.SmallStruct,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.SmallStruct, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class containerStruct(thrift.py3.types.Struct):
@@ -548,21 +533,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[ccontainerStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.containerStruct,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.containerStruct, self
-        )
 
 
 @__cython.auto_pickle(False)

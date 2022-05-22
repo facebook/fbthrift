@@ -206,14 +206,6 @@ class Internship:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.Internship, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.Internship, self)
 class Range:
   """
   Attributes:
@@ -300,14 +292,6 @@ class Range:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.Range, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.Range, self)
 class struct1:
   """
   Attributes:
@@ -394,14 +378,6 @@ class struct1:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.struct1, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.struct1, self)
 class struct2:
   """
   Attributes:
@@ -530,14 +506,6 @@ class struct2:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.struct2, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.struct2, self)
 class struct3:
   """
   Attributes:
@@ -639,14 +607,6 @@ class struct3:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.struct3, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.struct3, self)
 class struct4:
   """
   Attributes:
@@ -747,14 +707,6 @@ class struct4:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.struct4, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.struct4, self)
 class union1(object):
   """
   Attributes:
@@ -869,14 +821,6 @@ class union1(object):
   def __ne__(self, other):
     return not (self == other)
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.union1, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.union1, self)
 class union2(object):
   """
   Attributes:
@@ -1045,14 +989,6 @@ class union2(object):
   def __ne__(self, other):
     return not (self == other)
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.union2, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.union2, self)
 MyCompany = Company
 MyStringIdentifier = UnimplementedTypedef()
 MyIntIdentifier = UnimplementedTypedef()

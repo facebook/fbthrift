@@ -52,9 +52,6 @@ class MyData(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyData') -> bool: ...
     def __ge__(self, other: 'MyData') -> bool: ...
 
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.MyData": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyData": ...   # type: ignore
-
 
 class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -91,9 +88,6 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     def value(self) -> _typing.Union[None, str, int]: ...
     @__property__
     def type(self) -> "MyUnion.Type": ...
-
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.MyUnion": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyUnion": ...   # type: ignore
 
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
@@ -237,9 +231,6 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.MyStruct": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyStruct": ...   # type: ignore
-
 
 class MyDataPatch(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -271,9 +262,6 @@ class MyDataPatch(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'MyDataPatch') -> bool: ...
     def __le__(self, other: 'MyDataPatch') -> bool: ...
     def __ge__(self, other: 'MyDataPatch') -> bool: ...
-
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.MyDataPatch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyDataPatch": ...   # type: ignore
 
 
 class MyDataValuePatch(thrift.py3.types.Struct, _typing.Hashable):
@@ -311,9 +299,6 @@ class MyDataValuePatch(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'MyDataValuePatch') -> bool: ...
     def __le__(self, other: 'MyDataValuePatch') -> bool: ...
     def __ge__(self, other: 'MyDataValuePatch') -> bool: ...
-
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.MyDataValuePatch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyDataValuePatch": ...   # type: ignore
 
 
 class OptionalMyDataValuePatch(thrift.py3.types.Struct, _typing.Hashable):
@@ -357,9 +342,6 @@ class OptionalMyDataValuePatch(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'OptionalMyDataValuePatch') -> bool: ...
     def __ge__(self, other: 'OptionalMyDataValuePatch') -> bool: ...
 
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.OptionalMyDataValuePatch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.OptionalMyDataValuePatch": ...   # type: ignore
-
 
 class MyUnionPatch(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -391,9 +373,6 @@ class MyUnionPatch(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'MyUnionPatch') -> bool: ...
     def __le__(self, other: 'MyUnionPatch') -> bool: ...
     def __ge__(self, other: 'MyUnionPatch') -> bool: ...
-
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.MyUnionPatch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyUnionPatch": ...   # type: ignore
 
 
 class MyUnionValuePatch(thrift.py3.types.Struct, _typing.Hashable):
@@ -437,9 +416,6 @@ class MyUnionValuePatch(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyUnionValuePatch') -> bool: ...
     def __ge__(self, other: 'MyUnionValuePatch') -> bool: ...
 
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.MyUnionValuePatch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyUnionValuePatch": ...   # type: ignore
-
 
 class OptionalMyUnionValuePatch(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -481,9 +457,6 @@ class OptionalMyUnionValuePatch(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'OptionalMyUnionValuePatch') -> bool: ...
     def __le__(self, other: 'OptionalMyUnionValuePatch') -> bool: ...
     def __ge__(self, other: 'OptionalMyUnionValuePatch') -> bool: ...
-
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.OptionalMyUnionValuePatch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.OptionalMyUnionValuePatch": ...   # type: ignore
 
 
 class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
@@ -627,9 +600,6 @@ class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStructPatch') -> bool: ...
     def __ge__(self, other: 'MyStructPatch') -> bool: ...
 
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.MyStructPatch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyStructPatch": ...   # type: ignore
-
 
 class MyStructField21Patch(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -671,9 +641,6 @@ class MyStructField21Patch(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'MyStructField21Patch') -> bool: ...
     def __le__(self, other: 'MyStructField21Patch') -> bool: ...
     def __ge__(self, other: 'MyStructField21Patch') -> bool: ...
-
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.MyStructField21Patch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyStructField21Patch": ...   # type: ignore
 
 
 class OptionalMyStructField21Patch(thrift.py3.types.Struct, _typing.Hashable):
@@ -717,9 +684,6 @@ class OptionalMyStructField21Patch(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'OptionalMyStructField21Patch') -> bool: ...
     def __ge__(self, other: 'OptionalMyStructField21Patch') -> bool: ...
 
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.OptionalMyStructField21Patch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.OptionalMyStructField21Patch": ...   # type: ignore
-
 
 class MyStructField22Patch(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -761,9 +725,6 @@ class MyStructField22Patch(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'MyStructField22Patch') -> bool: ...
     def __le__(self, other: 'MyStructField22Patch') -> bool: ...
     def __ge__(self, other: 'MyStructField22Patch') -> bool: ...
-
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.MyStructField22Patch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyStructField22Patch": ...   # type: ignore
 
 
 class OptionalMyStructField22Patch(thrift.py3.types.Struct, _typing.Hashable):
@@ -807,9 +768,6 @@ class OptionalMyStructField22Patch(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'OptionalMyStructField22Patch') -> bool: ...
     def __ge__(self, other: 'OptionalMyStructField22Patch') -> bool: ...
 
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.OptionalMyStructField22Patch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.OptionalMyStructField22Patch": ...   # type: ignore
-
 
 class MyStructField23Patch(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -846,9 +804,6 @@ class MyStructField23Patch(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'MyStructField23Patch') -> bool: ...
     def __le__(self, other: 'MyStructField23Patch') -> bool: ...
     def __ge__(self, other: 'MyStructField23Patch') -> bool: ...
-
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.MyStructField23Patch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyStructField23Patch": ...   # type: ignore
 
 
 class OptionalMyStructField23Patch(thrift.py3.types.Struct, _typing.Hashable):
@@ -892,9 +847,6 @@ class OptionalMyStructField23Patch(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'OptionalMyStructField23Patch') -> bool: ...
     def __ge__(self, other: 'OptionalMyStructField23Patch') -> bool: ...
 
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.OptionalMyStructField23Patch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.OptionalMyStructField23Patch": ...   # type: ignore
-
 
 class MyStructValuePatch(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -931,9 +883,6 @@ class MyStructValuePatch(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'MyStructValuePatch') -> bool: ...
     def __le__(self, other: 'MyStructValuePatch') -> bool: ...
     def __ge__(self, other: 'MyStructValuePatch') -> bool: ...
-
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.MyStructValuePatch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyStructValuePatch": ...   # type: ignore
 
 
 class OptionalMyStructValuePatch(thrift.py3.types.Struct, _typing.Hashable):
@@ -976,9 +925,6 @@ class OptionalMyStructValuePatch(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'OptionalMyStructValuePatch') -> bool: ...
     def __le__(self, other: 'OptionalMyStructValuePatch') -> bool: ...
     def __ge__(self, other: 'OptionalMyStructValuePatch') -> bool: ...
-
-    def to_python_struct(self) -> "test.fixtures.patch.module.thrift_types.OptionalMyStructValuePatch": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.OptionalMyStructValuePatch": ...   # type: ignore
 
 
 _List__i16T = _typing.TypeVar('_List__i16T', bound=_typing.Sequence[int])

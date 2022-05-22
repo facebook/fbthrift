@@ -37,20 +37,6 @@ class SimpleException(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta)
         return _fbthrift_metadata__exception_SimpleException()
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.SimpleException, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.SimpleException, self
-        )
-
 
 class OptionalRefStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -76,20 +62,6 @@ class OptionalRefStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_OptionalRefStruct()
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.OptionalRefStruct, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.OptionalRefStruct, self
-        )
 
 
 class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -172,20 +144,6 @@ class SimpleStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_SimpleStruct()
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.SimpleStruct, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.SimpleStruct, self
-        )
 
 
 class ComplexStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -277,20 +235,6 @@ class ComplexStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_ComplexStruct()
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.ComplexStruct, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.ComplexStruct, self
-        )
-
 
 class BinaryUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
@@ -317,20 +261,6 @@ class BinaryUnion(metaclass=_fbthrift_py3lite_types.UnionMeta):
         return _fbthrift_metadata__struct_BinaryUnion()
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.BinaryUnion, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.BinaryUnion, self
-        )
-
 
 class BinaryUnionStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -356,20 +286,6 @@ class BinaryUnionStruct(metaclass=_fbthrift_py3lite_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_BinaryUnionStruct()
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.BinaryUnionStruct, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.BinaryUnionStruct, self
-        )
 
 # This unfortunately has to be down here to prevent circular imports
 import module.lite_metadata

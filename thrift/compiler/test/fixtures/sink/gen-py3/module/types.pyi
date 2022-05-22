@@ -45,9 +45,6 @@ class InitialResponse(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'InitialResponse') -> bool: ...
     def __ge__(self, other: 'InitialResponse') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.InitialResponse": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.InitialResponse": ...   # type: ignore
-
 
 class FinalResponse(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -74,9 +71,6 @@ class FinalResponse(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'FinalResponse') -> bool: ...
     def __le__(self, other: 'FinalResponse') -> bool: ...
     def __ge__(self, other: 'FinalResponse') -> bool: ...
-
-    def to_python_struct(self) -> "module.thrift_types.FinalResponse": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.FinalResponse": ...   # type: ignore
 
 
 class SinkPayload(thrift.py3.types.Struct, _typing.Hashable):
@@ -105,9 +99,6 @@ class SinkPayload(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'SinkPayload') -> bool: ...
     def __ge__(self, other: 'SinkPayload') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.SinkPayload": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.SinkPayload": ...   # type: ignore
-
 
 class CompatibleWithKeywordSink(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -135,9 +126,6 @@ class CompatibleWithKeywordSink(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'CompatibleWithKeywordSink') -> bool: ...
     def __ge__(self, other: 'CompatibleWithKeywordSink') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.CompatibleWithKeywordSink": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.CompatibleWithKeywordSink": ...   # type: ignore
-
 
 class InitialException(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -158,9 +146,6 @@ class InitialException(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     def __gt__(self, other: 'InitialException') -> bool: ...
     def __le__(self, other: 'InitialException') -> bool: ...
     def __ge__(self, other: 'InitialException') -> bool: ...
-
-    def to_python_struct(self) -> "module.thrift_types.InitialException": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.InitialException": ...   # type: ignore
 
 
 class SinkException1(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
@@ -183,9 +168,6 @@ class SinkException1(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     def __le__(self, other: 'SinkException1') -> bool: ...
     def __ge__(self, other: 'SinkException1') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.SinkException1": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.SinkException1": ...   # type: ignore
-
 
 class SinkException2(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -206,8 +188,5 @@ class SinkException2(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     def __gt__(self, other: 'SinkException2') -> bool: ...
     def __le__(self, other: 'SinkException2') -> bool: ...
     def __ge__(self, other: 'SinkException2') -> bool: ...
-
-    def to_python_struct(self) -> "module.thrift_types.SinkException2": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.SinkException2": ...   # type: ignore
 
 

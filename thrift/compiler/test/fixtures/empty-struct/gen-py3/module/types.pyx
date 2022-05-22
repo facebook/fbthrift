@@ -173,21 +173,6 @@ cdef class Empty(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cEmpty](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.Empty,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Empty, self
-        )
-
 
 
 
@@ -284,20 +269,5 @@ cdef class Nada(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
-
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.Nada,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Nada, self
-        )
 
 

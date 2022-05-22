@@ -116,14 +116,6 @@ class TestStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.thrift_types.TestStruct, self)
-  def to_py3_struct(self):
-    import test.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.types.TestStruct, self)
 all_structs.append(TestStruct)
 TestStruct.thrift_spec = (
   None, # 0

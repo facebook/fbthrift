@@ -25,9 +25,6 @@ class Foo(_fbthrift_py3lite_types.Struct):
     ) -> Foo: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int]]]: ...
 
-    def to_py3_struct(self) -> "test.namespace_from_package.module.types.Foo": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "namespace_from_package.module.ttypes.Foo": ...   # type: ignore
-
 
 class _fbthrift_TestService_init_args(_fbthrift_py3lite_types.Struct):
     int1: _typing.Final[int] = ...

@@ -303,21 +303,6 @@ cdef class Foo(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cFoo](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.Foo,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Foo, self
-        )
-
 
 
 
@@ -527,21 +512,6 @@ cdef class Baz(thrift.py3.types.Union):
         self._load_cache()
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.Baz,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Baz, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class Bar(thrift.py3.types.Struct):
@@ -705,21 +675,6 @@ cdef class Bar(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cBar](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.Bar,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Bar, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class StructWithFieldAdapter(thrift.py3.types.Struct):
@@ -852,21 +807,6 @@ cdef class StructWithFieldAdapter(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cStructWithFieldAdapter](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.StructWithFieldAdapter,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.StructWithFieldAdapter, self
-        )
 
 
 @__cython.auto_pickle(False)

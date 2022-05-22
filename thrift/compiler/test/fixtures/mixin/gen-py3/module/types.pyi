@@ -46,9 +46,6 @@ class Mixin1(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Mixin1') -> bool: ...
     def __ge__(self, other: 'Mixin1') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.Mixin1": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Mixin1": ...   # type: ignore
-
 
 class Mixin2(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -83,9 +80,6 @@ class Mixin2(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Mixin2') -> bool: ...
     def __ge__(self, other: 'Mixin2') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.Mixin2": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Mixin2": ...   # type: ignore
-
 
 class Mixin3Base(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -112,9 +106,6 @@ class Mixin3Base(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'Mixin3Base') -> bool: ...
     def __le__(self, other: 'Mixin3Base') -> bool: ...
     def __ge__(self, other: 'Mixin3Base') -> bool: ...
-
-    def to_python_struct(self) -> "module.thrift_types.Mixin3Base": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Mixin3Base": ...   # type: ignore
 
 
 class Foo(thrift.py3.types.Struct, _typing.Hashable):
@@ -160,9 +151,6 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'Foo') -> bool: ...
     def __le__(self, other: 'Foo') -> bool: ...
     def __ge__(self, other: 'Foo') -> bool: ...
-
-    def to_python_struct(self) -> "module.thrift_types.Foo": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Foo": ...   # type: ignore
 
 
 Mixin3 = Mixin3Base

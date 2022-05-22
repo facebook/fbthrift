@@ -52,9 +52,6 @@ class A(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'A') -> bool: ...
     def __ge__(self, other: 'A') -> bool: ...
 
-    def to_python_struct(self) -> "a.thrift_types.A": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "a.ttypes.A": ...   # type: ignore
-
 
 _List__c_CT = _typing.TypeVar('_List__c_CT', bound=_typing.Sequence[_c_types.C])
 

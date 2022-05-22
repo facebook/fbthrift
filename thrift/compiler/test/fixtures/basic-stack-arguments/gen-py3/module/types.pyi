@@ -55,7 +55,4 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.MyStruct": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyStruct": ...   # type: ignore
-
 

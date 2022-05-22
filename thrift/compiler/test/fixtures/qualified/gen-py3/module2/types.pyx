@@ -172,21 +172,6 @@ cdef class Struct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module2.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module2.thrift_types.Struct,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module2.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module2.ttypes.Struct, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class BigStruct(thrift.py3.types.Struct):
@@ -295,21 +280,6 @@ cdef class BigStruct(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cBigStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import module2.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module2.thrift_types.BigStruct,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module2.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module2.ttypes.BigStruct, self
-        )
 
 
 c2 = Struct._fbthrift_create(constant_shared_ptr(cc2()))

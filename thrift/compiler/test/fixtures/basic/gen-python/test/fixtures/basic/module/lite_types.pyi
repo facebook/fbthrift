@@ -58,9 +58,6 @@ class MyStruct(_fbthrift_py3lite_types.Struct):
     ) -> MyStruct: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int, str, MyDataItem, MyEnum, bool, bool, bool, _typing.AbstractSet[float], str]]]: ...
 
-    def to_py3_struct(self) -> "test.fixtures.basic.module.types.MyStruct": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyStruct": ...   # type: ignore
-
 
 class MyDataItem(_fbthrift_py3lite_types.Struct):
     def __init__(
@@ -71,9 +68,6 @@ class MyDataItem(_fbthrift_py3lite_types.Struct):
         self,
     ) -> MyDataItem: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
-
-    def to_py3_struct(self) -> "test.fixtures.basic.module.types.MyDataItem": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyDataItem": ...   # type: ignore
 
 
 class MyUnion(_fbthrift_py3lite_types.Union):
@@ -102,9 +96,6 @@ class MyUnion(_fbthrift_py3lite_types.Union):
     value: _typing.Final[_typing.Union[None, MyEnum, MyStruct, MyDataItem, _typing.AbstractSet[float]]]
     type: Type
     def get_type(self) -> Type:...
-
-    def to_py3_struct(self) -> "test.fixtures.basic.module.types.MyUnion": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyUnion": ...   # type: ignore
 
 
 class _fbthrift_MyService_ping_args(_fbthrift_py3lite_types.Struct):

@@ -25,9 +25,6 @@ class HsFoo(_fbthrift_py3lite_types.Struct):
     ) -> HsFoo: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int]]]: ...
 
-    def to_py3_struct(self) -> "py3lite_module_root.my.namespacing.test.hsmodule.types.HsFoo": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "hsmodule.ttypes.HsFoo": ...   # type: ignore
-
 
 class _fbthrift_HsTestService_init_args(_fbthrift_py3lite_types.Struct):
     int1: _typing.Final[int] = ...

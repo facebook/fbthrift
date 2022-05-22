@@ -102,14 +102,6 @@ class Foo:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import my.namespacing.test.module.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(my.namespacing.test.module.module.thrift_types.Foo, self)
-  def to_py3_struct(self):
-    import my.namespacing.test.module.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(my.namespacing.test.module.module.types.Foo, self)
 all_structs.append(Foo)
 Foo.thrift_spec = (
   None, # 0

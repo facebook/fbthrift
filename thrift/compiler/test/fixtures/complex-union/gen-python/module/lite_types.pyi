@@ -47,9 +47,6 @@ class ComplexUnion(_fbthrift_py3lite_types.Union):
     type: Type
     def get_type(self) -> Type:...
 
-    def to_py3_struct(self) -> "module.types.ComplexUnion": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.ComplexUnion": ...   # type: ignore
-
 
 class ListUnion(_fbthrift_py3lite_types.Union):
     intListValue: _typing.Final[_typing.Sequence[int]] = ...
@@ -71,9 +68,6 @@ class ListUnion(_fbthrift_py3lite_types.Union):
     value: _typing.Final[_typing.Union[None, _typing.Sequence[int], _typing.Sequence[str]]]
     type: Type
     def get_type(self) -> Type:...
-
-    def to_py3_struct(self) -> "module.types.ListUnion": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.ListUnion": ...   # type: ignore
 
 
 class DataUnion(_fbthrift_py3lite_types.Union):
@@ -97,9 +91,6 @@ class DataUnion(_fbthrift_py3lite_types.Union):
     type: Type
     def get_type(self) -> Type:...
 
-    def to_py3_struct(self) -> "module.types.DataUnion": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.DataUnion": ...   # type: ignore
-
 
 class Val(_fbthrift_py3lite_types.Struct):
     strVal: _typing.Final[str] = ...
@@ -119,9 +110,6 @@ class Val(_fbthrift_py3lite_types.Struct):
         typedefValue: _typing.Optional[_typing.Mapping[int, str]]=...
     ) -> Val: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, int, _typing.Mapping[int, str]]]]: ...
-
-    def to_py3_struct(self) -> "module.types.Val": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Val": ...   # type: ignore
 
 
 class ValUnion(_fbthrift_py3lite_types.Union):
@@ -145,9 +133,6 @@ class ValUnion(_fbthrift_py3lite_types.Union):
     type: Type
     def get_type(self) -> Type:...
 
-    def to_py3_struct(self) -> "module.types.ValUnion": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.ValUnion": ...   # type: ignore
-
 
 class VirtualComplexUnion(_fbthrift_py3lite_types.Union):
     thingOne: _typing.Final[str] = ...
@@ -170,9 +155,6 @@ class VirtualComplexUnion(_fbthrift_py3lite_types.Union):
     type: Type
     def get_type(self) -> Type:...
 
-    def to_py3_struct(self) -> "module.types.VirtualComplexUnion": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.VirtualComplexUnion": ...   # type: ignore
-
 
 class NonCopyableStruct(_fbthrift_py3lite_types.Struct):
     num: _typing.Final[int] = ...
@@ -186,9 +168,6 @@ class NonCopyableStruct(_fbthrift_py3lite_types.Struct):
         num: _typing.Optional[int]=...
     ) -> NonCopyableStruct: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int]]]: ...
-
-    def to_py3_struct(self) -> "module.types.NonCopyableStruct": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.NonCopyableStruct": ...   # type: ignore
 
 
 class NonCopyableUnion(_fbthrift_py3lite_types.Union):
@@ -208,8 +187,5 @@ class NonCopyableUnion(_fbthrift_py3lite_types.Union):
     value: _typing.Final[_typing.Union[None, NonCopyableStruct]]
     type: Type
     def get_type(self) -> Type:...
-
-    def to_py3_struct(self) -> "module.types.NonCopyableUnion": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.NonCopyableUnion": ...   # type: ignore
 
 containerTypedef = _typing.Dict[int, str]

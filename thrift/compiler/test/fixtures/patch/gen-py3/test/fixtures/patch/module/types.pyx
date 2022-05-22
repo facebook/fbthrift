@@ -202,21 +202,6 @@ cdef class MyData(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cMyData](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.MyData,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyData, self
-        )
-
 
 
 
@@ -359,21 +344,6 @@ cdef class MyUnion(thrift.py3.types.Union):
         # force a cache reload since the underlying data's changed
         self._load_cache()
         return needed
-
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.MyUnion,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyUnion, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -718,21 +688,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.MyStruct,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyStruct, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class MyDataPatch(thrift.py3.types.Struct):
@@ -843,21 +798,6 @@ cdef class MyDataPatch(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cMyDataPatch](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.MyDataPatch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyDataPatch, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -980,21 +920,6 @@ cdef class MyDataValuePatch(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cMyDataValuePatch](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.MyDataValuePatch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyDataValuePatch, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -1129,21 +1054,6 @@ cdef class OptionalMyDataValuePatch(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cOptionalMyDataValuePatch](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.OptionalMyDataValuePatch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.OptionalMyDataValuePatch, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class MyUnionPatch(thrift.py3.types.Struct):
@@ -1254,21 +1164,6 @@ cdef class MyUnionPatch(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cMyUnionPatch](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.MyUnionPatch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyUnionPatch, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -1400,21 +1295,6 @@ cdef class MyUnionValuePatch(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cMyUnionValuePatch](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.MyUnionValuePatch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyUnionValuePatch, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -1548,21 +1428,6 @@ cdef class OptionalMyUnionValuePatch(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cOptionalMyUnionValuePatch](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.OptionalMyUnionValuePatch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.OptionalMyUnionValuePatch, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -1917,21 +1782,6 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cMyStructPatch](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.MyStructPatch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyStructPatch, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class MyStructField21Patch(thrift.py3.types.Struct):
@@ -2064,21 +1914,6 @@ cdef class MyStructField21Patch(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cMyStructField21Patch](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.MyStructField21Patch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyStructField21Patch, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -2213,21 +2048,6 @@ cdef class OptionalMyStructField21Patch(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cOptionalMyStructField21Patch](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.OptionalMyStructField21Patch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.OptionalMyStructField21Patch, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class MyStructField22Patch(thrift.py3.types.Struct):
@@ -2360,21 +2180,6 @@ cdef class MyStructField22Patch(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cMyStructField22Patch](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.MyStructField22Patch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyStructField22Patch, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -2509,21 +2314,6 @@ cdef class OptionalMyStructField22Patch(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cOptionalMyStructField22Patch](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.OptionalMyStructField22Patch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.OptionalMyStructField22Patch, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class MyStructField23Patch(thrift.py3.types.Struct):
@@ -2645,21 +2435,6 @@ cdef class MyStructField23Patch(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cMyStructField23Patch](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.MyStructField23Patch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyStructField23Patch, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -2794,21 +2569,6 @@ cdef class OptionalMyStructField23Patch(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cOptionalMyStructField23Patch](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.OptionalMyStructField23Patch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.OptionalMyStructField23Patch, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class MyStructValuePatch(thrift.py3.types.Struct):
@@ -2930,21 +2690,6 @@ cdef class MyStructValuePatch(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cMyStructValuePatch](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.MyStructValuePatch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.MyStructValuePatch, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -3078,21 +2823,6 @@ cdef class OptionalMyStructValuePatch(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cOptionalMyStructValuePatch](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import test.fixtures.patch.module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            test.fixtures.patch.module.thrift_types.OptionalMyStructValuePatch,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.OptionalMyStructValuePatch, self
-        )
 
 
 @__cython.auto_pickle(False)

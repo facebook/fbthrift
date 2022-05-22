@@ -126,20 +126,6 @@ class Foo(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_Foo()
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.Foo, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Foo, self
-        )
-
 
 class Baz(metaclass=_fbthrift_py3lite_types.UnionMeta):
     _fbthrift_SPEC = (
@@ -197,20 +183,6 @@ class Baz(metaclass=_fbthrift_py3lite_types.UnionMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_Baz()
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.Baz, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Baz, self
-        )
 
 
 class Bar(metaclass=_fbthrift_py3lite_types.StructMeta):
@@ -278,20 +250,6 @@ class Bar(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_Bar()
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.Bar, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Bar, self
-        )
-
 
 class StructWithFieldAdapter(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -341,20 +299,6 @@ class StructWithFieldAdapter(metaclass=_fbthrift_py3lite_types.StructMeta):
     def __get_metadata__():
         return _fbthrift_metadata__struct_StructWithFieldAdapter()
 
-
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.StructWithFieldAdapter, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.StructWithFieldAdapter, self
-        )
 
 # This unfortunately has to be down here to prevent circular imports
 import module.lite_metadata

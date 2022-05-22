@@ -149,21 +149,6 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cFiery](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.Fiery,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Fiery, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class Serious(thrift.py3.exceptions.GeneratedError):
@@ -257,21 +242,6 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
         with nogil:
             needed = serializer.cdeserialize[cSerious](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.Serious,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Serious, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -374,21 +344,6 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cComplexFieldNames](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.ComplexFieldNames,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.ComplexFieldNames, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
@@ -489,21 +444,6 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
         with nogil:
             needed = serializer.cdeserialize[cCustomFieldNames](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.CustomFieldNames,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.CustomFieldNames, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -606,21 +546,6 @@ cdef class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cExceptionWithPrimitiveField](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.ExceptionWithPrimitiveField,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.ExceptionWithPrimitiveField, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class Banal(thrift.py3.exceptions.GeneratedError):
@@ -700,20 +625,5 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
         with nogil:
             needed = serializer.cdeserialize[cBanal](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.Banal,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Banal, self
-        )
 
 

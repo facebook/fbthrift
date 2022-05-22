@@ -288,14 +288,6 @@ class MyStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.basic.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.basic.module.thrift_types.MyStruct, self)
-  def to_py3_struct(self):
-    import test.fixtures.basic.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.basic.module.types.MyStruct, self)
 class MyDataItem:
 
   thrift_spec = None
@@ -363,14 +355,6 @@ class MyDataItem:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import test.fixtures.basic.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.basic.module.thrift_types.MyDataItem, self)
-  def to_py3_struct(self):
-    import test.fixtures.basic.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.basic.module.types.MyDataItem, self)
 class MyUnion(object):
   """
   Attributes:
@@ -592,14 +576,6 @@ class MyUnion(object):
   def __ne__(self, other):
     return not (self == other)
 
-  def to_python_struct(self):
-    import test.fixtures.basic.module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(test.fixtures.basic.module.thrift_types.MyUnion, self)
-  def to_py3_struct(self):
-    import test.fixtures.basic.module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(test.fixtures.basic.module.types.MyUnion, self)
 all_structs.append(MyStruct)
 MyStruct.thrift_spec = (
   None, # 0

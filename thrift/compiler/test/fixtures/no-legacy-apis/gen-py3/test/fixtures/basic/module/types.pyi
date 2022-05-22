@@ -56,9 +56,6 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
-    def to_python_struct(self) -> "test.fixtures.basic.module.thrift_types.MyStruct": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyStruct": ...   # type: ignore
-
 
 class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -95,8 +92,5 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
     def value(self) -> _typing.Union[None, MyEnum, MyStruct]: ...
     @__property__
     def type(self) -> "MyUnion.Type": ...
-
-    def to_python_struct(self) -> "test.fixtures.basic.module.thrift_types.MyUnion": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.MyUnion": ...   # type: ignore
 
 

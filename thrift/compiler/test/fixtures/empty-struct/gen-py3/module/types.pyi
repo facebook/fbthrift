@@ -40,9 +40,6 @@ class Empty(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'Empty') -> bool: ...
     def __ge__(self, other: 'Empty') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.Empty": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Empty": ...   # type: ignore
-
 
 class Nada(thrift.py3.types.Union, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -69,8 +66,5 @@ class Nada(thrift.py3.types.Union, _typing.Hashable):
     def value(self) -> _typing.Union[None, ]: ...
     @__property__
     def type(self) -> "Nada.Type": ...
-
-    def to_python_struct(self) -> "module.thrift_types.Nada": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Nada": ...   # type: ignore
 
 

@@ -40,6 +40,19 @@ namespace compiler {
 
 namespace {
 
+std::string get_py3_namespace_with_name_and_prefix(
+    const t_program* prog, const std::string& prefix) {
+  std::ostringstream ss;
+  if (!prefix.empty()) {
+    ss << prefix << ".";
+  }
+  for (const auto& name : get_py3_namespace(prog)) {
+    ss << name << ".";
+  }
+  ss << prog->name();
+  return ss.str();
+}
+
 bool is_type_iobuf(const std::string& name) {
   return name == "folly::IOBuf" || name == "std::unique_ptr<folly::IOBuf>";
 }
@@ -405,8 +418,6 @@ class mstch_python_program : public mstch_program {
         this,
         {
             {"program:module_path", &mstch_python_program::module_path},
-            {"program:py_legacy_module_path",
-             &mstch_python_program::py_legacy_module_path},
             {"program:is_types_file?", &mstch_python_program::is_types_file},
             {"program:include_namespaces",
              &mstch_python_program::include_namespaces},
@@ -451,14 +462,6 @@ class mstch_python_program : public mstch_program {
   mstch::node module_path() {
     return get_py3_namespace_with_name_and_prefix(
         program_, get_option("root_module_prefix"));
-  }
-
-  mstch::node py_legacy_module_path() {
-    std::string module_path = program_->get_namespace("py");
-    if (module_path.empty()) {
-      return program_->name();
-    }
-    return module_path;
   }
 
   mstch::node base_library_package() {

@@ -95,9 +95,6 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
     def __str__(self) -> str: ...
     def __repr__(self) -> str: ...
 
-    def to_python_struct(self) -> "module.thrift_types.Foo": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Foo": ...   # type: ignore
-
 
 class Baz(thrift.py3.types.Union, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -145,9 +142,6 @@ class Baz(thrift.py3.types.Union, _typing.Hashable):
     def value(self) -> _typing.Union[None, int, _typing.AbstractSet[str], _typing.Mapping[str, _typing.Sequence[str]], bytes, int]: ...
     @__property__
     def type(self) -> "Baz.Type": ...
-
-    def to_python_struct(self) -> "module.thrift_types.Baz": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Baz": ...   # type: ignore
 
 
 class Bar(thrift.py3.types.Struct, _typing.Hashable):
@@ -197,9 +191,6 @@ class Bar(thrift.py3.types.Struct, _typing.Hashable):
     def __str__(self) -> str: ...
     def __repr__(self) -> str: ...
 
-    def to_python_struct(self) -> "module.thrift_types.Bar": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Bar": ...   # type: ignore
-
 
 class StructWithFieldAdapter(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -239,9 +230,6 @@ class StructWithFieldAdapter(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'StructWithFieldAdapter') -> bool: ...
     def __le__(self, other: 'StructWithFieldAdapter') -> bool: ...
     def __ge__(self, other: 'StructWithFieldAdapter') -> bool: ...
-
-    def to_python_struct(self) -> "module.thrift_types.StructWithFieldAdapter": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.StructWithFieldAdapter": ...   # type: ignore
 
 
 class Set__string(_typing.AbstractSet[str], _typing.Hashable):

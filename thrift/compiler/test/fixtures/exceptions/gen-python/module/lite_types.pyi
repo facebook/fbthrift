@@ -21,9 +21,6 @@ class Fiery(_fbthrift_py3lite_exceptions.GeneratedError):
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str]]]: ...
 
-    def to_py3_struct(self) -> "module.types.Fiery": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Fiery": ...   # type: ignore
-
 
 class Serious(_fbthrift_py3lite_exceptions.GeneratedError):
     sonnet: _typing.Final[_typing.Optional[str]] = ...
@@ -33,9 +30,6 @@ class Serious(_fbthrift_py3lite_exceptions.GeneratedError):
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str]]]: ...
-
-    def to_py3_struct(self) -> "module.types.Serious": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Serious": ...   # type: ignore
 
 
 class ComplexFieldNames(_fbthrift_py3lite_exceptions.GeneratedError):
@@ -49,9 +43,6 @@ class ComplexFieldNames(_fbthrift_py3lite_exceptions.GeneratedError):
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, str]]]: ...
 
-    def to_py3_struct(self) -> "module.types.ComplexFieldNames": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.ComplexFieldNames": ...   # type: ignore
-
 
 class CustomFieldNames(_fbthrift_py3lite_exceptions.GeneratedError):
     error_message: _typing.Final[str] = ...
@@ -63,9 +54,6 @@ class CustomFieldNames(_fbthrift_py3lite_exceptions.GeneratedError):
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, str]]]: ...
-
-    def to_py3_struct(self) -> "module.types.CustomFieldNames": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.CustomFieldNames": ...   # type: ignore
 
 
 class ExceptionWithPrimitiveField(_fbthrift_py3lite_exceptions.GeneratedError):
@@ -79,9 +67,6 @@ class ExceptionWithPrimitiveField(_fbthrift_py3lite_exceptions.GeneratedError):
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, int]]]: ...
 
-    def to_py3_struct(self) -> "module.types.ExceptionWithPrimitiveField": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.ExceptionWithPrimitiveField": ...   # type: ignore
-
 
 class Banal(_fbthrift_py3lite_exceptions.GeneratedError):
     def __init__(
@@ -89,9 +74,6 @@ class Banal(_fbthrift_py3lite_exceptions.GeneratedError):
     ) -> None: ...
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
-
-    def to_py3_struct(self) -> "module.types.Banal": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Banal": ...   # type: ignore
 
 
 class _fbthrift_Raiser_doBland_args(_fbthrift_py3lite_types.Struct):

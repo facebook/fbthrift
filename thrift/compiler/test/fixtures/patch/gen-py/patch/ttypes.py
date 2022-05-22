@@ -104,14 +104,6 @@ class GeneratePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.GeneratePatch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.GeneratePatch, self)
 class GenerateOptionalPatch:
 
   thrift_spec = None
@@ -179,14 +171,6 @@ class GenerateOptionalPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.GenerateOptionalPatch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.GenerateOptionalPatch, self)
 class BoolPatch:
   """
   Attributes:
@@ -290,14 +274,6 @@ class BoolPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.BoolPatch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.BoolPatch, self)
 class BytePatch:
   """
   Attributes:
@@ -405,14 +381,6 @@ class BytePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.BytePatch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.BytePatch, self)
 class I16Patch:
   """
   Attributes:
@@ -520,14 +488,6 @@ class I16Patch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.I16Patch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.I16Patch, self)
 class I32Patch:
   """
   Attributes:
@@ -635,14 +595,6 @@ class I32Patch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.I32Patch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.I32Patch, self)
 class I64Patch:
   """
   Attributes:
@@ -746,14 +698,6 @@ class I64Patch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.I64Patch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.I64Patch, self)
 class FloatPatch:
   """
   Attributes:
@@ -857,14 +801,6 @@ class FloatPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.FloatPatch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.FloatPatch, self)
 class DoublePatch:
   """
   Attributes:
@@ -968,14 +904,6 @@ class DoublePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.DoublePatch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.DoublePatch, self)
 class StringPatch:
   """
   Attributes:
@@ -1111,14 +1039,6 @@ class StringPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.StringPatch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.StringPatch, self)
 class BinaryPatch:
   """
   Attributes:
@@ -1206,14 +1126,6 @@ class BinaryPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.BinaryPatch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.BinaryPatch, self)
 class OptionalBoolPatch:
   """
   Attributes:
@@ -1353,14 +1265,6 @@ class OptionalBoolPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.OptionalBoolPatch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.OptionalBoolPatch, self)
 class OptionalBytePatch:
   """
   Attributes:
@@ -1502,14 +1406,6 @@ class OptionalBytePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.OptionalBytePatch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.OptionalBytePatch, self)
 class OptionalI16Patch:
   """
   Attributes:
@@ -1651,14 +1547,6 @@ class OptionalI16Patch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.OptionalI16Patch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.OptionalI16Patch, self)
 class OptionalI32Patch:
   """
   Attributes:
@@ -1800,14 +1688,6 @@ class OptionalI32Patch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.OptionalI32Patch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.OptionalI32Patch, self)
 class OptionalI64Patch:
   """
   Attributes:
@@ -1947,14 +1827,6 @@ class OptionalI64Patch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.OptionalI64Patch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.OptionalI64Patch, self)
 class OptionalFloatPatch:
   """
   Attributes:
@@ -2094,14 +1966,6 @@ class OptionalFloatPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.OptionalFloatPatch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.OptionalFloatPatch, self)
 class OptionalDoublePatch:
   """
   Attributes:
@@ -2241,14 +2105,6 @@ class OptionalDoublePatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.OptionalDoublePatch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.OptionalDoublePatch, self)
 class OptionalStringPatch:
   """
   Attributes:
@@ -2388,14 +2244,6 @@ class OptionalStringPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.OptionalStringPatch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.OptionalStringPatch, self)
 class OptionalBinaryPatch:
   """
   Attributes:
@@ -2535,14 +2383,6 @@ class OptionalBinaryPatch:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.op.patch.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.op.patch.thrift_types.OptionalBinaryPatch, self)
-  def to_py3_struct(self):
-    import facebook.thrift.op.patch.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.op.patch.types.OptionalBinaryPatch, self)
 all_structs.append(GeneratePatch)
 GeneratePatch.thrift_spec = (
 )

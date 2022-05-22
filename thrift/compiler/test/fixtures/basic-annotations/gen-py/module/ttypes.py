@@ -138,14 +138,6 @@ class MyStructNestedAnnotation:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.MyStructNestedAnnotation, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.MyStructNestedAnnotation, self)
 class MyUnion(object):
 
   thrift_spec = None
@@ -221,14 +213,6 @@ class MyUnion(object):
   def __ne__(self, other):
     return not (self == other)
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.MyUnion, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.MyUnion, self)
 class MyException(TException):
 
   thrift_spec = None
@@ -303,14 +287,6 @@ class MyException(TException):
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.MyException, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.MyException, self)
 class MyStruct:
   """
   Attributes:
@@ -549,14 +525,6 @@ class MyStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.MyStruct, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.MyStruct, self)
 class SecretStruct:
   """
   Attributes:
@@ -660,14 +628,6 @@ class SecretStruct:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.SecretStruct, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.SecretStruct, self)
 all_structs.append(MyStructNestedAnnotation)
 MyStructNestedAnnotation.thrift_spec = (
   None, # 0

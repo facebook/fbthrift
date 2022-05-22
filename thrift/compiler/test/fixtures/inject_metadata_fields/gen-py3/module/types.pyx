@@ -159,21 +159,6 @@ cdef class Fields(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cFields](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.Fields,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.Fields, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class FieldsInjectedToEmptyStruct(thrift.py3.types.Struct):
@@ -271,21 +256,6 @@ cdef class FieldsInjectedToEmptyStruct(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cFieldsInjectedToEmptyStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.FieldsInjectedToEmptyStruct,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.FieldsInjectedToEmptyStruct, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -393,21 +363,6 @@ cdef class FieldsInjectedToStruct(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cFieldsInjectedToStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.FieldsInjectedToStruct,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.FieldsInjectedToStruct, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -537,20 +492,5 @@ cdef class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cFieldsInjectedWithIncludedStruct](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.FieldsInjectedWithIncludedStruct,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.FieldsInjectedWithIncludedStruct, self
-        )
 
 

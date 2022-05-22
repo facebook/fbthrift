@@ -157,21 +157,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cMyStruct](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import matching_struct_names.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            matching_struct_names.thrift_types.MyStruct,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import matching_struct_names.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            matching_struct_names.ttypes.MyStruct, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class Combo(thrift.py3.types.Struct):
@@ -304,21 +289,6 @@ cdef class Combo(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cCombo](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import matching_struct_names.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            matching_struct_names.thrift_types.Combo,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import matching_struct_names.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            matching_struct_names.ttypes.Combo, self
-        )
 
 
 @__cython.auto_pickle(False)

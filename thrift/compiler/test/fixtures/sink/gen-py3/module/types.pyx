@@ -155,21 +155,6 @@ cdef class InitialResponse(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cInitialResponse](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.InitialResponse,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.InitialResponse, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class FinalResponse(thrift.py3.types.Struct):
@@ -267,21 +252,6 @@ cdef class FinalResponse(thrift.py3.types.Struct):
         with nogil:
             needed = serializer.cdeserialize[cFinalResponse](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.FinalResponse,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.FinalResponse, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -381,21 +351,6 @@ cdef class SinkPayload(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cSinkPayload](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.SinkPayload,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.SinkPayload, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
@@ -494,21 +449,6 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cCompatibleWithKeywordSink](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.CompatibleWithKeywordSink,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.CompatibleWithKeywordSink, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class InitialException(thrift.py3.exceptions.GeneratedError):
@@ -597,21 +537,6 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
         with nogil:
             needed = serializer.cdeserialize[cInitialException](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.InitialException,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.InitialException, self
-        )
 
 
 @__cython.auto_pickle(False)
@@ -702,21 +627,6 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
             needed = serializer.cdeserialize[cSinkException1](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.SinkException1,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.SinkException1, self
-        )
-
 
 @__cython.auto_pickle(False)
 cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
@@ -805,20 +715,5 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
         with nogil:
             needed = serializer.cdeserialize[cSinkException2](buf, self._cpp_obj.get(), proto)
         return needed
-
-    def to_python_struct(self):
-        import module.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            module.thrift_types.SinkException2,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.SinkException2, self
-        )
 
 

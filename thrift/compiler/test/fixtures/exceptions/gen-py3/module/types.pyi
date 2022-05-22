@@ -39,9 +39,6 @@ class Fiery(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     def __le__(self, other: 'Fiery') -> bool: ...
     def __ge__(self, other: 'Fiery') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.Fiery": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Fiery": ...   # type: ignore
-
 
 class Serious(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -62,9 +59,6 @@ class Serious(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     def __gt__(self, other: 'Serious') -> bool: ...
     def __le__(self, other: 'Serious') -> bool: ...
     def __ge__(self, other: 'Serious') -> bool: ...
-
-    def to_python_struct(self) -> "module.thrift_types.Serious": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Serious": ...   # type: ignore
 
 
 class ComplexFieldNames(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
@@ -91,9 +85,6 @@ class ComplexFieldNames(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     def __le__(self, other: 'ComplexFieldNames') -> bool: ...
     def __ge__(self, other: 'ComplexFieldNames') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.ComplexFieldNames": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.ComplexFieldNames": ...   # type: ignore
-
 
 class CustomFieldNames(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -118,9 +109,6 @@ class CustomFieldNames(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     def __gt__(self, other: 'CustomFieldNames') -> bool: ...
     def __le__(self, other: 'CustomFieldNames') -> bool: ...
     def __ge__(self, other: 'CustomFieldNames') -> bool: ...
-
-    def to_python_struct(self) -> "module.thrift_types.CustomFieldNames": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.CustomFieldNames": ...   # type: ignore
 
 
 class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
@@ -147,9 +135,6 @@ class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError, _typing.
     def __le__(self, other: 'ExceptionWithPrimitiveField') -> bool: ...
     def __ge__(self, other: 'ExceptionWithPrimitiveField') -> bool: ...
 
-    def to_python_struct(self) -> "module.thrift_types.ExceptionWithPrimitiveField": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.ExceptionWithPrimitiveField": ...   # type: ignore
-
 
 class Banal(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -166,8 +151,5 @@ class Banal(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
     def __gt__(self, other: 'Banal') -> bool: ...
     def __le__(self, other: 'Banal') -> bool: ...
     def __ge__(self, other: 'Banal') -> bool: ...
-
-    def to_python_struct(self) -> "module.thrift_types.Banal": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "module.ttypes.Banal": ...   # type: ignore
 
 

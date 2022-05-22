@@ -146,14 +146,6 @@ class Ref:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.cpp.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.cpp.thrift_types.Ref, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.cpp.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.cpp.types.Ref, self)
 class Lazy:
   """
   Attributes:
@@ -241,14 +233,6 @@ class Lazy:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.cpp.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.cpp.thrift_types.Lazy, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.cpp.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.cpp.types.Lazy, self)
 class DisableLazyChecksum:
 
   thrift_spec = None
@@ -316,14 +300,6 @@ class DisableLazyChecksum:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.cpp.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.cpp.thrift_types.DisableLazyChecksum, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.cpp.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.cpp.types.DisableLazyChecksum, self)
 class Adapter:
   """
   Attributes:
@@ -411,14 +387,6 @@ class Adapter:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.cpp.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.cpp.thrift_types.Adapter, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.cpp.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.cpp.types.Adapter, self)
 class PackIsset:
   """
   Attributes:
@@ -506,14 +474,6 @@ class PackIsset:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.cpp.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.cpp.thrift_types.PackIsset, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.cpp.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.cpp.types.PackIsset, self)
 class MinimizePadding:
 
   thrift_spec = None
@@ -581,14 +541,6 @@ class MinimizePadding:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.cpp.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.cpp.thrift_types.MinimizePadding, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.cpp.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.cpp.types.MinimizePadding, self)
 class TriviallyRelocatable:
 
   thrift_spec = None
@@ -656,14 +608,6 @@ class TriviallyRelocatable:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.cpp.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.cpp.thrift_types.TriviallyRelocatable, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.cpp.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.cpp.types.TriviallyRelocatable, self)
 all_structs.append(Ref)
 Ref.thrift_spec = (
   None, # 0

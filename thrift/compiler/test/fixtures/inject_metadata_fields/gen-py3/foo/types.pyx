@@ -179,19 +179,4 @@ cdef class Fields(thrift.py3.types.Struct):
             needed = serializer.cdeserialize[cFields](buf, self._cpp_obj.get(), proto)
         return needed
 
-    def to_python_struct(self):
-        import foo.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            foo.thrift_types.Fields,
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import foo.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            foo.ttypes.Fields, self
-        )
-
 

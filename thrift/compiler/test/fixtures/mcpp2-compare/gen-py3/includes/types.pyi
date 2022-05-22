@@ -50,9 +50,6 @@ class AStruct(thrift.py3.types.Struct, _typing.Hashable):
     def __le__(self, other: 'AStruct') -> bool: ...
     def __ge__(self, other: 'AStruct') -> bool: ...
 
-    def to_python_struct(self) -> "includes.thrift_types.AStruct": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "includes.ttypes.AStruct": ...   # type: ignore
-
 
 class AStructB(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
@@ -78,9 +75,6 @@ class AStructB(thrift.py3.types.Struct, _typing.Hashable):
     def __gt__(self, other: 'AStructB') -> bool: ...
     def __le__(self, other: 'AStructB') -> bool: ...
     def __ge__(self, other: 'AStructB') -> bool: ...
-
-    def to_python_struct(self) -> "includes.thrift_types.AStructB": ...   # type: ignore
-    def to_py_legacy_struct(self) -> "includes.ttypes.AStructB": ...   # type: ignore
 
 
 IncludedConstant: int = ...

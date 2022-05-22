@@ -112,14 +112,6 @@ class Fiery(TException):
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.Fiery, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.Fiery, self)
 class Serious(TException):
   """
   Attributes:
@@ -202,14 +194,6 @@ class Serious(TException):
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.Serious, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.Serious, self)
 class ComplexFieldNames(TException):
   """
   Attributes:
@@ -306,14 +290,6 @@ class ComplexFieldNames(TException):
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.ComplexFieldNames, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.ComplexFieldNames, self)
 class CustomFieldNames(TException):
   """
   Attributes:
@@ -410,14 +386,6 @@ class CustomFieldNames(TException):
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.CustomFieldNames, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.CustomFieldNames, self)
 class ExceptionWithPrimitiveField(TException):
   """
   Attributes:
@@ -514,14 +482,6 @@ class ExceptionWithPrimitiveField(TException):
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.ExceptionWithPrimitiveField, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.ExceptionWithPrimitiveField, self)
 class Banal(TException):
 
   thrift_spec = None
@@ -583,14 +543,6 @@ class Banal(TException):
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import module.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(module.thrift_types.Banal, self)
-  def to_py3_struct(self):
-    import module.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(module.types.Banal, self)
 all_structs.append(Fiery)
 Fiery.thrift_spec = (
   None, # 0

@@ -27,20 +27,6 @@ class FooEx(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
         return _fbthrift_metadata__exception_FooEx()
 
 
-    def to_py3_struct(self):
-        import module.types
-        import thrift.py3.converter
-        return thrift.py3.converter.to_py3_struct(
-            module.types.FooEx, self
-        )
-
-    def to_py_legacy_struct(self):
-        import module.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            module.ttypes.FooEx, self
-        )
-
 # This unfortunately has to be down here to prevent circular imports
 import module.lite_metadata
 

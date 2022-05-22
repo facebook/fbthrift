@@ -430,22 +430,6 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         {{/struct:union?}}
         return needed
 
-    def to_python_struct(self):
-        {{!TODO: accommodate root_module_prefix}}
-        import {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.thrift_types
-        import thrift.python.converter
-        return thrift.python.converter.to_python_struct(
-            {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.thrift_types.{{struct:name}},
-            self,
-        )
-
-    def to_py_legacy_struct(self):
-        import {{program:py_legacy_module_path}}.ttypes
-        import thrift.util.converter
-        return thrift.util.converter.to_py_struct(
-            {{program:py_legacy_module_path}}.ttypes.{{struct:name}}, self
-        )
-
 
 {{/program:structs}}
 {{#program:containerTypes}}

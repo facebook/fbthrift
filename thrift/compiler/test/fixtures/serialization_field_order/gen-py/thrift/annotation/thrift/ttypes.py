@@ -123,14 +123,6 @@ class RequiresBackwardCompatibility:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.thrift.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.thrift.thrift_types.RequiresBackwardCompatibility, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.thrift.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.thrift.types.RequiresBackwardCompatibility, self)
 class Beta:
 
   thrift_spec = None
@@ -198,14 +190,6 @@ class Beta:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.thrift.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.thrift.thrift_types.Beta, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.thrift.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.thrift.types.Beta, self)
 class Experimental:
 
   thrift_spec = None
@@ -273,14 +257,6 @@ class Experimental:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.thrift.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.thrift.thrift_types.Experimental, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.thrift.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.thrift.types.Experimental, self)
 class Deprecated:
 
   thrift_spec = None
@@ -348,14 +324,6 @@ class Deprecated:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.thrift.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.thrift.thrift_types.Deprecated, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.thrift.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.thrift.types.Deprecated, self)
 class TerseWrite:
 
   thrift_spec = None
@@ -423,14 +391,6 @@ class TerseWrite:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.thrift.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.thrift.thrift_types.TerseWrite, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.thrift.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.thrift.types.TerseWrite, self)
 class Box:
 
   thrift_spec = None
@@ -498,14 +458,6 @@ class Box:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.thrift.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.thrift.thrift_types.Box, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.thrift.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.thrift.types.Box, self)
 class Mixin:
 
   thrift_spec = None
@@ -573,14 +525,6 @@ class Mixin:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.thrift.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.thrift.thrift_types.Mixin, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.thrift.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.thrift.types.Mixin, self)
 class SerializeInFieldIdOrder:
 
   thrift_spec = None
@@ -648,14 +592,6 @@ class SerializeInFieldIdOrder:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.thrift.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.thrift.thrift_types.SerializeInFieldIdOrder, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.thrift.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.thrift.types.SerializeInFieldIdOrder, self)
 class NoLegacyAPIs:
 
   thrift_spec = None
@@ -723,14 +659,6 @@ class NoLegacyAPIs:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.thrift.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.thrift.thrift_types.NoLegacyAPIs, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.thrift.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.thrift.types.NoLegacyAPIs, self)
 class v1:
 
   thrift_spec = None
@@ -798,14 +726,6 @@ class v1:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
-  def to_python_struct(self):
-    import facebook.thrift.annotation.thrift.thrift_types
-    import thrift.python.converter
-    return thrift.python.converter.to_python_struct(facebook.thrift.annotation.thrift.thrift_types.v1, self)
-  def to_py3_struct(self):
-    import facebook.thrift.annotation.thrift.types
-    import thrift.py3.converter
-    return thrift.py3.converter.to_py3_struct(facebook.thrift.annotation.thrift.types.v1, self)
 all_structs.append(RequiresBackwardCompatibility)
 RequiresBackwardCompatibility.thrift_spec = (
   None, # 0
