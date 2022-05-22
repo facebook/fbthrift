@@ -16,6 +16,7 @@
 
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/type.thrift"
+include "thrift/lib/thrift/type_rep.thrift"
 
 cpp_include "<thrift/lib/cpp/FieldId.h>"
 
@@ -125,15 +126,6 @@ enum FieldQualifier {
 //
 // {id}: {qualifier} {type} {def.name} = {customDefault}
 //
-// TODO(afuller): Add custom default support. Note that there are many
-// possible representations for the value:
-// - Any: Serialized
-// - Protocol Value/Object: Id-based, deserialized
-// - AST Const: Name-based, deserialized and schema-less.
-// - Ordinal ID: Basically a 1-based index into external list of constant
-// values that might be any one of the other 3 options, depending on context.
-// - Union: A union of some of the above possibilities.
-// 5: ?? customDefault;
 struct Field {
   // The static ID specified for the field.
   //
@@ -153,6 +145,12 @@ struct Field {
   // The definition attributes.
   @thrift.Mixin
   4: Definition def;
+
+  // The custom default value for this field.
+  //
+  // If no value is set, the intrinsic default for the field type
+  // is used.
+  5: type_rep.ValueId customDefault;
 }
 
 // A container for the fields of a structured type (e.g. struct, union, exception).
