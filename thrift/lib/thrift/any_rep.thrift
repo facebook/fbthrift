@@ -48,6 +48,9 @@ struct AnyStruct {
 // Like Any, except type and protocol can be empty.
 //
 // Can be upgraded to an Any after all the field are populated.
+//
+// TODO(afuller): Consider making this a 'strong' typedef of `AnyStruct`, which
+// would ensure both a separate URI and native type in all languages.
 @thrift.Experimental
 struct SemiAnyStruct {
   // The type stored in `data`, if known.

@@ -63,6 +63,50 @@ typedef binary (cpp2.type = "folly::fbstring") ByteString
 }
 typedef binary (cpp2.type = "folly::IOBuf") ByteBuffer
 
+// A fixed-length span of time, represented as a signed count of seconds and
+// nanoseconds (nanos).
+//
+// Considered 'normalized', when `nanos` is in the range 0 to 999'999'999
+// inclusive, or `seconds` is 0 and `nanos` is in the range -999'999'999 to
+// 999'999'999 inclusive.
+//
+// TODO(afuller): Adapt to appropriate native types.
+@thrift.Experimental
+struct Duration {
+  // The count of seconds.
+  1: i64 seconds;
+  // The count of nanoseconds.
+  2: i32 nanos;
+}
+
+// An instant in time encoded as a count of seconds and nanoseconds (nanos)
+// since midnight on January 1, 1970 UTC (i.e. Unix epoch).
+//
+// Considered 'normalized', when `nanos` is in the range 0 to 999'999'999
+// inclusive.
+//
+// TODO(afuller): Adapt to appropriate native types.
+// TODO(afuller): Consider making this a 'strong' typedef of `Duration`, which
+// would ensure both a separate URI and native type in all languages.
+@thrift.Experimental
+struct Time {
+  // The count of seconds.
+  1: i64 seconds;
+  // The count of nanoseconds.
+  2: i32 nanos;
+}
+
+// An 'internet timestamp' as described in [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt)
+//
+// Similar to `Time`, but can only represent values in the range
+// 0001-01-01T00:00:00Z to 9999-12-31T23:59:59Z inclusive, for compatibility
+// with the 'date string' format. Thus `seconds` must be in the range
+// -62'135'769'600 to 253'402'300'799 inclusive, when normalized.
+//
+// TODO(afuller): Add extra validation when adapting to/from native types.
+@thrift.Experimental
+typedef Time Timestamp
+
 // Standard protocols.
 @thrift.Experimental
 enum StandardProtocol {
