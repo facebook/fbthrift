@@ -55,6 +55,11 @@ struct Function {} (thrift.uri = "facebook.com/thrift/annotation/Function")
 struct EnumValue {} (thrift.uri = "facebook.com/thrift/annotation/EnumValue")
 struct Const {} (thrift.uri = "facebook.com/thrift/annotation/Const")
 
+// Indicates that a definition should be included in the runtime schema.
+//
+// See thrift/lib/thrift/schema.thrift
+struct Schema {} (thrift.uri = "facebook.com/thrift/annotation/Schema")
+
 // Due to cython bug, we can not use `Enum` as class name directly
 // https://github.com/cython/cython/issues/2474
 struct FbthriftInternalEnum {} (

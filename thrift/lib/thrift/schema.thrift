@@ -84,7 +84,6 @@ struct Definition {
   // For example, only annotations explicitly marked with '@scope.Schema' are
   // present in the runtime schema, while all annotations are present in the AST.
   //
-  // TODO(afuller): Add @scope.Schema to thrift/annotation/scope.thrift.
   // TODO(afuller): Consider supporting unstructured annotations for
   // backward compatibility, by documenting and populating a map<string, string>
   // pseudo-structured annotation value.

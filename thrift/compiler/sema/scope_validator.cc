@@ -33,6 +33,9 @@ namespace compiler {
 
 namespace {
 
+// Indicates that an annotation should be preserved in the runtime schema.
+constexpr auto kSchemaAnnotationUri = "facebook.com/thrift/annotation/Schema";
+
 const std::unordered_map<std::string, std::type_index>& uri_map() {
   static const std::unordered_map<std::string, std::type_index> kUriMap = {
       {"facebook.com/thrift/annotation/Program", typeid(t_program)},
@@ -88,13 +91,13 @@ void validate_annotation_scopes(diagnostic_context& ctx, const t_named& node) {
   for (const t_const* annot : node.structured_annotations()) {
     const t_type* annot_type = &*annot->type();
     // Ignore scoping annotations themselves.
-    if (uri_map().find(annot_type->get_true_type()->uri()) != uri_map().end()) {
+    if (uri_map().find(annot_type->get_true_type()->uri()) != uri_map().end() ||
+        annot_type->get_true_type()->uri() == kSchemaAnnotationUri) {
       continue;
     }
 
     // Get the allowed set of node types.
     const auto& allowed = ctx.cache().get<allowed_scopes>(*annot);
-
     if (allowed.types.empty()) {
       // Warn that the annotation isn't marked as such.
       ctx.warning_legacy_strict(
