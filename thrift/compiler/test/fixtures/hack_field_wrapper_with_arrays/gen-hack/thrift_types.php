@@ -1750,7 +1750,7 @@ class NoLegacyAPIs implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
+        '\thrift\annotation\Legacy' => \thrift\annotation\Legacy::fromShape(
           shape(
           )
         ),

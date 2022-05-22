@@ -16,7 +16,7 @@
 
 include "thrift/annotation/thrift.thrift"
 
-@thrift.NoLegacyAPIs
+@thrift.NoLegacy
 package "facebook.com/thrift/test"
 
 namespace cpp2 thrift.test.strict

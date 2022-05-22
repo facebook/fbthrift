@@ -36,16 +36,21 @@ class Client<::test::fixtures::basic::MyService> : public apache::thrift::Genera
   }
 
 
- void query(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::test::fixtures::basic::MyUnion& p_u);
+  virtual void query(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::test::fixtures::basic::MyUnion& p_u);
+  virtual void query(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::test::fixtures::basic::MyUnion& p_u);
  protected:
   void queryImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::test::fixtures::basic::MyUnion& p_u, bool stealRpcOptions = false);
  public:
 
-  void sync_query(::test::fixtures::basic::MyStruct& _return, const ::test::fixtures::basic::MyUnion& p_u);
-  void sync_query(apache::thrift::RpcOptions& rpcOptions, ::test::fixtures::basic::MyStruct& _return, const ::test::fixtures::basic::MyUnion& p_u);
+  virtual void sync_query(::test::fixtures::basic::MyStruct& _return, const ::test::fixtures::basic::MyUnion& p_u);
+  virtual void sync_query(apache::thrift::RpcOptions& rpcOptions, ::test::fixtures::basic::MyStruct& _return, const ::test::fixtures::basic::MyUnion& p_u);
 
-  folly::SemiFuture<::test::fixtures::basic::MyStruct> semifuture_query(const ::test::fixtures::basic::MyUnion& p_u);
-  folly::SemiFuture<::test::fixtures::basic::MyStruct> semifuture_query(apache::thrift::RpcOptions& rpcOptions, const ::test::fixtures::basic::MyUnion& p_u);
+  virtual folly::Future<::test::fixtures::basic::MyStruct> future_query(const ::test::fixtures::basic::MyUnion& p_u);
+  virtual folly::SemiFuture<::test::fixtures::basic::MyStruct> semifuture_query(const ::test::fixtures::basic::MyUnion& p_u);
+  virtual folly::Future<::test::fixtures::basic::MyStruct> future_query(apache::thrift::RpcOptions& rpcOptions, const ::test::fixtures::basic::MyUnion& p_u);
+  virtual folly::SemiFuture<::test::fixtures::basic::MyStruct> semifuture_query(apache::thrift::RpcOptions& rpcOptions, const ::test::fixtures::basic::MyUnion& p_u);
+  virtual folly::Future<std::pair<::test::fixtures::basic::MyStruct, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_query(apache::thrift::RpcOptions& rpcOptions, const ::test::fixtures::basic::MyUnion& p_u);
+  virtual folly::SemiFuture<std::pair<::test::fixtures::basic::MyStruct, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_query(apache::thrift::RpcOptions& rpcOptions, const ::test::fixtures::basic::MyUnion& p_u);
 
 #if FOLLY_HAS_COROUTINES
 #if __clang__
@@ -113,9 +118,14 @@ class Client<::test::fixtures::basic::MyService> : public apache::thrift::Genera
  public:
 #endif // FOLLY_HAS_COROUTINES
 
+  virtual void query(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::test::fixtures::basic::MyUnion& p_u);
+
 
   static folly::exception_wrapper recv_wrapped_query(::test::fixtures::basic::MyStruct& _return, ::apache::thrift::ClientReceiveState& state);
   static void recv_query(::test::fixtures::basic::MyStruct& _return, ::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_query(::test::fixtures::basic::MyStruct& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_query(::test::fixtures::basic::MyStruct& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_, typename RpcOptions>
   void queryT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, const ::test::fixtures::basic::MyUnion& p_u);

@@ -145,8 +145,8 @@ struct v1alpha {}
 @scope.FbthriftInternalScopeTransitive
 struct v1test {}
 
-// TODO(afuller): Replace with `NoLegacy`
-@Experimental
+// TODO(afuller): Remove.
+@Legacy
 @scope.Program
 @scope.Struct
 @scope.Union

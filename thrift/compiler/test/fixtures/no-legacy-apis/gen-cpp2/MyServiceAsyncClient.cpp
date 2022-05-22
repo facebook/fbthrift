@@ -30,6 +30,10 @@ void apache::thrift::Client<::test::fixtures::basic::MyService>::queryT(Protocol
 
 
 
+void apache::thrift::Client<::test::fixtures::basic::MyService>::query(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::test::fixtures::basic::MyUnion& p_u) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  query(rpcOptions, std::move(callback), p_u);
+}
 
 void apache::thrift::Client<::test::fixtures::basic::MyService>::query(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::test::fixtures::basic::MyUnion& p_u) {
   auto [ctx, header] = queryCtx(&rpcOptions);
@@ -124,9 +128,22 @@ void apache::thrift::Client<::test::fixtures::basic::MyService>::sync_query(apac
 }
 
 
+folly::Future<::test::fixtures::basic::MyStruct> apache::thrift::Client<::test::fixtures::basic::MyService>::future_query(const ::test::fixtures::basic::MyUnion& p_u) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return future_query(rpcOptions, p_u);
+}
+
 folly::SemiFuture<::test::fixtures::basic::MyStruct> apache::thrift::Client<::test::fixtures::basic::MyService>::semifuture_query(const ::test::fixtures::basic::MyUnion& p_u) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_query(rpcOptions, p_u);
+}
+
+folly::Future<::test::fixtures::basic::MyStruct> apache::thrift::Client<::test::fixtures::basic::MyService>::future_query(apache::thrift::RpcOptions& rpcOptions, const ::test::fixtures::basic::MyUnion& p_u) {
+  folly::Promise<::test::fixtures::basic::MyStruct> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<::test::fixtures::basic::MyStruct>>(std::move(promise), recv_wrapped_query, channel_);
+  query(rpcOptions, std::move(callback), p_u);
+  return future;
 }
 
 folly::SemiFuture<::test::fixtures::basic::MyStruct> apache::thrift::Client<::test::fixtures::basic::MyService>::semifuture_query(apache::thrift::RpcOptions& rpcOptions, const ::test::fixtures::basic::MyUnion& p_u) {
@@ -136,7 +153,24 @@ folly::SemiFuture<::test::fixtures::basic::MyStruct> apache::thrift::Client<::te
   return std::move(callbackAndFuture.second);
 }
 
+folly::Future<std::pair<::test::fixtures::basic::MyStruct, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::test::fixtures::basic::MyService>::header_future_query(apache::thrift::RpcOptions& rpcOptions, const ::test::fixtures::basic::MyUnion& p_u) {
+  folly::Promise<std::pair<::test::fixtures::basic::MyStruct, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::test::fixtures::basic::MyStruct>>(std::move(promise), recv_wrapped_query, channel_);
+  query(rpcOptions, std::move(callback), p_u);
+  return future;
+}
 
+folly::SemiFuture<std::pair<::test::fixtures::basic::MyStruct, std::unique_ptr<apache::thrift::transport::THeader>>> apache::thrift::Client<::test::fixtures::basic::MyService>::header_semifuture_query(apache::thrift::RpcOptions& rpcOptions, const ::test::fixtures::basic::MyUnion& p_u) {
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_query, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  query(rpcOptions, std::move(callback), p_u);
+  return std::move(callbackAndFuture.second);
+}
+
+void apache::thrift::Client<::test::fixtures::basic::MyService>::query(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::test::fixtures::basic::MyUnion& p_u) {
+  query(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), p_u);
+}
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
@@ -176,5 +210,12 @@ void apache::thrift::Client<::test::fixtures::basic::MyService>::recv_query(::te
   }
 }
 
+void apache::thrift::Client<::test::fixtures::basic::MyService>::recv_instance_query(::test::fixtures::basic::MyStruct& _return, ::apache::thrift::ClientReceiveState& state) {
+  return recv_query(_return, state);
+}
+
+folly::exception_wrapper apache::thrift::Client<::test::fixtures::basic::MyService>::recv_instance_wrapped_query(::test::fixtures::basic::MyStruct& _return, ::apache::thrift::ClientReceiveState& state) {
+  return recv_wrapped_query(_return, state);
+}
 
 

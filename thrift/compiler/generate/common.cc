@@ -101,25 +101,22 @@ std::unordered_set<const t_type*> collect_types(const t_struct* strct) {
   return types;
 }
 
-const char* kNoLegacyAPIsUri = "facebook.com/thrift/annotation/NoLegacyAPIs";
+const char* kNoLegacyUri = "facebook.com/thrift/annotation/NoLegacy";
 
 bool generate_legacy_api(const t_program& p) {
-  return p.find_structured_annotation_or_null(kNoLegacyAPIsUri) == nullptr;
+  return p.find_structured_annotation_or_null(kNoLegacyUri) == nullptr;
 }
 
 bool generate_legacy_api(const t_struct& s) {
-  return s.program()->inherit_annotation_or_null(s, kNoLegacyAPIsUri) ==
-      nullptr;
+  return s.program()->inherit_annotation_or_null(s, kNoLegacyUri) == nullptr;
 }
 
 bool generate_legacy_api(const t_enum& e) {
-  return e.program()->inherit_annotation_or_null(e, kNoLegacyAPIsUri) ==
-      nullptr;
+  return e.program()->inherit_annotation_or_null(e, kNoLegacyUri) == nullptr;
 }
 
 bool generate_legacy_api(const t_service& s) {
-  return s.program()->inherit_annotation_or_null(s, kNoLegacyAPIsUri) ==
-      nullptr;
+  return s.program()->inherit_annotation_or_null(s, kNoLegacyUri) == nullptr;
 }
 
 } // namespace compiler
