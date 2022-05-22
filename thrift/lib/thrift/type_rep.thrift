@@ -78,11 +78,18 @@ enum Void {
   NoValue = 0,
 }
 
-// The name of an IDL defined type.
+// A (scheme-less) URI.
+//
+// See rfc3986.
+// TODO(afuller): Adapt.
+@thrift.Experimental
+typedef string Uri
+
+// The uri of an IDL defined type.
 @thrift.Experimental
 union TypeNameUnion {
   // The unique Thrift URI for this type.
-  1: string uri;
+  1: Uri uri;
   // A prefix of the SHA2-256 hash of the URI.
   2: ByteString typeHashPrefixSha2_256;
 }
