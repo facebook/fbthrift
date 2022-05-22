@@ -90,6 +90,22 @@ enum Void {
   NoValue = 0,
 }
 
+// A integer fraction of the form {numerator} / {denominator}
+//
+// Useful for representing ratios, rates, and metric accumulators.
+//
+// Considered 'normalized' when the denominator is positive.
+//
+// TODO(afuller): Add a wrapper that ensures the in memory form is always
+// normalized.
+@thrift.Experimental
+struct Fraction {
+  // The numerator/dividend/upper number of the fraction.
+  1: i64 numerator;
+  // The denominator/divisor/lower number of the fraction.
+  2: i64 denominator;
+}
+
 // A (scheme-less) URI.
 //
 // See rfc3986.
