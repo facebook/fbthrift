@@ -17,8 +17,6 @@
 #ifndef _THRIFT_PROTOCOL_TBINARYPROTOCOL_TCC_
 #define _THRIFT_PROTOCOL_TBINARYPROTOCOL_TCC_ 1
 
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-
 #include <limits>
 #include <string>
 
