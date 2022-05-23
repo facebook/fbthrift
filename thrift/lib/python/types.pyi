@@ -86,6 +86,7 @@ class Struct(
     metaclass=StructMeta,
 ):
     def __copy__(self: sT) -> sT: ...
+    def __dir__(self) -> typing.Sequence[str]: ...
 
 class Union(
     StructOrUnion,

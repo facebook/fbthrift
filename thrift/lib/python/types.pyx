@@ -468,6 +468,9 @@ cdef class Struct(StructOrUnion):
         for name in info.name_to_index:
             yield name, getattr(self, name)
 
+    def __dir__(self):
+        return (k for k, _ in self)
+
     cdef folly.iobuf.IOBuf _serialize(self, Protocol proto):
         cdef StructInfo info = self._fbthrift_struct_info
         return folly.iobuf.from_unique_ptr(
