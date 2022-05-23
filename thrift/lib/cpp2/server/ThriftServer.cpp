@@ -650,6 +650,10 @@ void ThriftServer::setupThreadManager() {
         threadManager =
             ThreadManager::newSimpleThreadManager(getNumCPUWorkerThreads());
         break;
+      case ThreadManagerType::PRIORITY_QUEUE:
+        threadManager = ThreadManager::newPriorityQueueThreadManager(
+            getNumCPUWorkerThreads());
+        break;
     }
     threadManager->enableCodel(getEnableCodel());
     // If a thread factory has been specified, use it.
@@ -787,6 +791,16 @@ void ThriftServer::ensureResourcePools() {
           concurrency::NORMAL});
       break;
     }
+    case ThreadManagerType::PRIORITY_QUEUE: {
+      pools.push_back(Pool{
+          "NORMAL",
+          "N",
+          0,
+          getNumCPUWorkerThreads(),
+          ResourcePoolHandle::defaultAsync(),
+          concurrency::NORMAL});
+      break;
+    }
   }
   for (auto const& pool : pools) {
     std::string name =
@@ -796,6 +810,10 @@ void ThriftServer::ensureResourcePools() {
     auto executor = std::make_shared<folly::CPUThreadPoolExecutor>(
         pool.numThreads, std::move(factory));
     apache::thrift::RoundRobinRequestPile::Options options;
+    if (threadManagerType_ == ThreadManagerType::PRIORITY_QUEUE) {
+      options.setNumPriorities(concurrency::N_PRIORITIES);
+      options.setPileSelectionFunction(options.getDefaultPileSelectionFunc());
+    }
     auto requestPile = std::make_unique<apache::thrift::RoundRobinRequestPile>(
         std::move(options));
     auto concurrencyController =

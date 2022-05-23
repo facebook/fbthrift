@@ -65,7 +65,7 @@ class RoundRobinRequestPile : public RequestPileBase {
     // buckets per priority will be set to 1.
     void setNumPriorities(unsigned int numPri) {
       numBucketsPerPriority.clear();
-      numBucketsPerPriority.resize(numPri, 1);
+      numBucketsPerPriority.resize(numPri, kDefaultNumBuckets);
     }
 
     void setNumBucketsPerPriority(Priority priority, unsigned int numBucket) {
@@ -83,6 +83,10 @@ class RoundRobinRequestPile : public RequestPileBase {
     void setPileSelectionFunction(PileSelectionFunction func) {
       pileSelectionFunction = std::move(func);
     }
+
+    // emulating PriorityQueueThreadManager
+    PileSelectionFunction getDefaultPileSelectionFunc(
+        unsigned defaultPriority = static_cast<unsigned>(concurrency::NORMAL));
   };
 
   // The default number of buckets for each priority is 1

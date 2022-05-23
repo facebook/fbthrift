@@ -174,7 +174,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   enum class ThreadManagerType : int {
     PRIORITY = 0, //! Use a PriorityThreadManager
-    SIMPLE = 1 //! Use a SimpleThreadManager
+    SIMPLE = 1, //! Use a SimpleThreadManager
+    PRIORITY_QUEUE = 2, //! Use a PriorityQueueThreadManager
   };
 
   struct RuntimeServerActions {
