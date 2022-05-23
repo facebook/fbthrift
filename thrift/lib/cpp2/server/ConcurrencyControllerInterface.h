@@ -63,6 +63,10 @@ class ConcurrencyControllerInterface {
   // Stops the concurrency controller. Stops dispatching new requests. This is
   // thread safe and does not block.
   virtual void stop() = 0;
+
+  // This is for temporarily logging pending dequeue counts
+  // in ParallelConcurrencyController
+  virtual uint64_t numPendingDequeRequest() const { return 0; }
 };
 
 } // namespace apache::thrift

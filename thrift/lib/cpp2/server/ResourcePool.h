@@ -135,6 +135,8 @@ class ResourcePoolSet {
   // This is an estimate and should not be called frequently.
   size_t numInExecution() const;
 
+  size_t numPendingDeque() const;
+
   // Returns the handle of the ResourcePool with the supplied name if it
   // exists. This should be called once and the results cached by the caller.
   std::optional<ResourcePoolHandle> findResourcePool(

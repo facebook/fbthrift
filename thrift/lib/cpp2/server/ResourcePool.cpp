@@ -158,6 +158,19 @@ size_t ResourcePoolSet::numInExecution() const {
   return sum;
 }
 
+size_t ResourcePoolSet::numPendingDeque() const {
+  if (!locked_) {
+    return 0;
+  }
+  size_t sum = 0;
+  for (auto& pool : resourcePools_) {
+    if (auto cc = pool->concurrencyController()) {
+      sum += cc.value()->numPendingDequeRequest();
+    }
+  }
+  return sum;
+}
+
 std::optional<ResourcePoolHandle> ResourcePoolSet::findResourcePool(
     std::string_view poolName) const {
   auto guard = locked_ ? std::unique_lock<std::mutex>()

@@ -48,6 +48,10 @@ class ParallelConcurrencyController : public ConcurrencyControllerBase {
 
   void stop() override;
 
+  uint64_t numPendingDequeRequest() const override {
+    return counters_.load().pendingDequeCalls;
+  }
+
  private:
   struct Counters {
     constexpr Counters() noexcept = default;
