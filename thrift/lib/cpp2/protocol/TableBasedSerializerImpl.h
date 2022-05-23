@@ -117,17 +117,133 @@ inline void setActiveId(void* object, const StructInfo& info, int value) {
   }
 }
 
-inline bool isFieldSet(
+// Checks whether if a field value is safe to retrieve. For an optional field,
+// a field is nullable, so it is safe to get the field value if it is
+// explicitly set. An unqualified and terse fields are always safe to retrive
+// their values.
+inline bool hasFieldValue(
     const void* object, const FieldInfo& info, const StructInfo& structInfo) {
-  if (structInfo.getIsset != nullptr) {
-    return structInfo.getIsset(object, info.issetOffset);
+  switch (info.qualifier) {
+    case FieldQualifier::Unqualified:
+    case FieldQualifier::Terse:
+      return true;
+    case FieldQualifier::Optional: {
+      if (structInfo.getIsset != nullptr) {
+        return structInfo.getIsset(object, info.issetOffset);
+      }
+      if (info.issetOffset == 0) {
+        return true; // return true for union fields
+      }
+      return *reinterpret_cast<const bool*>(
+          static_cast<const char*>(object) + info.issetOffset);
+    }
   }
+  return false;
+}
 
-  if (info.issetOffset == 0) {
-    return true; // return true for union fields
+// For an unqualified and optional field, the semantic is identical to
+// `hasFieldValue`. An unqualified field is not emptiable, and an optional field
+// is empty if it is not explicitly set. For a terse field, compare the value
+// with the intrinsic default to check whether a field is empty or not.
+inline bool isFieldNotEmpty(
+    const void* object,
+    const ThriftValue& value,
+    const FieldInfo& info,
+    const StructInfo& structInfo);
+
+// A terse field skips serialization if it is equal to the intrinsic default.
+// Note, for a struct terse field, serialization is skipped if it is empty. If
+// it has an unqualified field, it is not eligible to be empty. A struct is
+// empty, if optional fields are not explicitly and terse fields are equal to
+// the intrinsic default.
+inline bool isTerseFieldSet(const ThriftValue& value, const FieldInfo& info) {
+  const void* typeInfoExt = info.typeInfo->typeExt;
+  switch (info.typeInfo->type) {
+    case protocol::TType::T_STRUCT: {
+      const auto& structInfo = *static_cast<const StructInfo*>(typeInfoExt);
+      for (std::int16_t index = 0; index < structInfo.numFields; index++) {
+        const auto& fieldInfo = structInfo.fieldInfos[index];
+        if (hasFieldValue(value.object, fieldInfo, structInfo)) {
+          if (OptionalThriftValue fieldValue = getValue(
+                  *fieldInfo.typeInfo, getMember(fieldInfo, value.object))) {
+            if (isFieldNotEmpty(
+                    value.object, fieldValue.value(), fieldInfo, structInfo)) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+    }
+    case protocol::TType::T_I64:
+      return value.int64Value != 0;
+    case protocol::TType::T_I32:
+      return value.int32Value != 0;
+    case protocol::TType::T_I16:
+      return value.int16Value != 0;
+    case protocol::TType::T_BYTE:
+      return value.int8Value != 0;
+    case protocol::TType::T_BOOL:
+      return value.boolValue != false;
+    case protocol::TType::T_DOUBLE:
+      return value.doubleValue != 0.0;
+    case protocol::TType::T_FLOAT:
+      return value.floatValue != 0.0;
+    case protocol::TType::T_STRING: {
+      switch (*static_cast<const StringFieldType*>(typeInfoExt)) {
+        case StringFieldType::String:
+          return !static_cast<const std::string*>(value.object)->empty();
+        case StringFieldType::StringView:
+          return !value.stringViewValue.empty();
+        case StringFieldType::Binary:
+          return !static_cast<const std::string*>(value.object)->empty();
+        case StringFieldType::IOBufObj:
+          return !static_cast<const folly::IOBuf*>(value.iobuf)->empty();
+        case StringFieldType::IOBuf:
+          return !static_cast<const folly::IOBuf*>(value.object)->empty();
+        case StringFieldType::IOBufPtr:
+          return !(*static_cast<const std::unique_ptr<folly::IOBuf>*>(
+                       value.object))
+                      ->empty();
+      };
+    }
+    case protocol::TType::T_MAP: {
+      const auto& ext = *static_cast<const MapFieldExt*>(typeInfoExt);
+      return ext.size(value.object) != 0;
+    }
+    case protocol::TType::T_SET: {
+      const auto& ext = *static_cast<const SetFieldExt*>(typeInfoExt);
+      return ext.size(value.object) != 0;
+    }
+    case protocol::TType::T_LIST: {
+      const auto& ext = *static_cast<const ListFieldExt*>(typeInfoExt);
+      return ext.size(value.object) != 0;
+    }
+    case protocol::TType::T_STOP:
+    case protocol::TType::T_VOID:
+    case protocol::TType::T_STREAM:
+    case protocol::TType::T_UTF8:
+    case protocol::TType::T_U64:
+    case protocol::TType::T_UTF16:
+      DCHECK(false);
+      break;
   }
-  return *reinterpret_cast<const bool*>(
-      static_cast<const char*>(object) + info.issetOffset);
+  return false;
+}
+
+inline bool isFieldNotEmpty(
+    const void* object,
+    const ThriftValue& value,
+    const FieldInfo& info,
+    const StructInfo& structInfo) {
+  switch (info.qualifier) {
+    case FieldQualifier::Unqualified:
+    case FieldQualifier::Optional:
+      return hasFieldValue(object, info, structInfo);
+    case FieldQualifier::Terse:
+      return isTerseFieldSet(value, info);
+  }
+  return false;
 }
 
 inline void markFieldAsSet(
@@ -668,10 +784,13 @@ size_t write(
   } else {
     for (std::int16_t index = 0; index < structInfo.numFields; index++) {
       const auto& fieldInfo = structInfo.fieldInfos[index];
-      if (fieldInfo.qualifier == FieldQualifier::Unqualified ||
-          isFieldSet(object, fieldInfo, structInfo)) {
+      if (hasFieldValue(object, fieldInfo, structInfo)) {
         if (OptionalThriftValue value =
                 getValue(*fieldInfo.typeInfo, getMember(fieldInfo, object))) {
+          if (fieldInfo.qualifier == FieldQualifier::Terse &&
+              !isTerseFieldSet(value.value(), fieldInfo)) {
+            continue;
+          }
           written += writeField(iprot, fieldInfo, value.value());
         }
       }

@@ -19,14 +19,18 @@
 #include <vector>
 
 #include <folly/Traits.h>
+#include <folly/io/IOBuf.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/JSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
+#include <thrift/lib/cpp2/protocol/TableBasedSerializerImpl.h>
 #include <thrift/test/terse_write/gen-cpp2/deprecated_terse_write_types.h>
 #include <thrift/test/terse_write/gen-cpp2/deprecated_terse_write_types_custom_protocol.h>
+#include <thrift/test/terse_write/gen-cpp2/tablebased_terse_write_types.h>
+#include <thrift/test/terse_write/gen-cpp2/tablebased_terse_write_types_custom_protocol.h>
 #include <thrift/test/terse_write/gen-cpp2/terse_write_types.h>
 #include <thrift/test/terse_write/gen-cpp2/terse_write_types_custom_protocol.h>
 
@@ -187,7 +191,9 @@ using TerseWriteStructs = ::testing::Types<
     terse_write::FieldLevelTerseStruct,
     terse_write::StructLevelTerseStruct,
     deprecated_terse_write::FieldLevelTerseStruct,
-    deprecated_terse_write::StructLevelTerseStruct>;
+    deprecated_terse_write::StructLevelTerseStruct,
+    tablebased_terse_write::FieldLevelTerseStruct,
+    tablebased_terse_write::StructLevelTerseStruct>;
 INSTANTIATE_TYPED_TEST_CASE_P(
     TerseWriteTest, TerseWriteTests, TerseWriteStructs);
 
@@ -249,11 +255,56 @@ TYPED_TEST_P(TerseWriteSerializerTests, CppRefTerseStruct_Empty) {
   EXPECT_EQ(objs, emptys);
 }
 
+TYPED_TEST_P(TerseWriteSerializerTests, CustomStringFields) {
+  tablebased_terse_write::CustomStringFields obj;
+  terse_write::EmptyStruct empty;
+
+  obj.iobuf_field() = folly::IOBuf::wrapBufferAsValue("3", 1);
+  obj.iobuf_ptr_field() = folly::IOBuf::copyBuffer("4");
+
+  auto emptys = TypeParam::template serialize<std::string>(empty);
+  auto objs = TypeParam::template serialize<std::string>(obj);
+
+  EXPECT_NE(emptys, objs);
+
+  obj.iobuf_field()->clear();
+  (*obj.iobuf_ptr_field())->clear();
+
+  objs = TypeParam::template serialize<std::string>(obj);
+
+  EXPECT_EQ(emptys, objs);
+}
+
+TYPED_TEST_P(TerseWriteSerializerTests, EmptiableStructField) {
+  tablebased_terse_write::EmptiableStructField obj;
+  terse_write::EmptyStruct empty;
+
+  obj.emptiable_struct()->opt_int_field() = 1;
+  obj.emptiable_struct()->terse_int_field() = 2;
+
+  auto emptys = TypeParam::template serialize<std::string>(empty);
+  auto objs = TypeParam::template serialize<std::string>(obj);
+
+  EXPECT_NE(emptys, objs);
+
+  obj.emptiable_struct()->opt_int_field().reset();
+  obj.emptiable_struct()->terse_int_field() = 0;
+
+  objs = TypeParam::template serialize<std::string>(obj);
+
+  // The terse `emptiable_struct` field does not get serialized, since the
+  // optional `opt_int_field` field is not explicitly set, and the terse
+  // `terse_int_field` field is equal to the intrinsic default.
+  EXPECT_EQ(emptys, objs);
+}
+
 REGISTER_TYPED_TEST_CASE_P(
     TerseWriteSerializerTests,
     MixedFieldsStruct,
     CppRefTerseStruct,
-    CppRefTerseStruct_Empty);
+    CppRefTerseStruct_Empty,
+    CustomStringFields,
+    EmptiableStructField);
 
 using Serializers = ::testing::Types<
     BinarySerializer,
