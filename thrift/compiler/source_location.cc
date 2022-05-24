@@ -17,6 +17,7 @@
 #include <thrift/compiler/source_location.h>
 
 #include <assert.h>
+#include <errno.h>
 #include <string.h>
 #include <algorithm>
 #include <stdexcept>
