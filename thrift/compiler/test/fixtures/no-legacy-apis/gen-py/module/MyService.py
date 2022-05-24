@@ -151,6 +151,11 @@ class query_args:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'u',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -262,6 +267,11 @@ class query_result:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'success',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

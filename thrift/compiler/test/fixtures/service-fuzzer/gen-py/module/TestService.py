@@ -368,6 +368,26 @@ class init_args:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'int1',
+      'int2',
+      'int3',
+      'int4',
+      'int5',
+      'int6',
+      'int7',
+      'int8',
+      'int9',
+      'int10',
+      'int11',
+      'int12',
+      'int13',
+      'int14',
+      'int15',
+      'int16',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -507,6 +527,11 @@ class init_result:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'success',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

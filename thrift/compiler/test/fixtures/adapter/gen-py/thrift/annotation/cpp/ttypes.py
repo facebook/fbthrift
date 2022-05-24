@@ -143,6 +143,11 @@ class Ref:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'type',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -230,6 +235,11 @@ class Lazy:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'ref',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -296,6 +306,10 @@ class DisableLazyChecksum:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -384,6 +398,11 @@ class Adapter:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'name',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -471,6 +490,11 @@ class PackIsset:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'atomic',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -538,6 +562,10 @@ class MinimizePadding:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -604,6 +632,10 @@ class TriviallyRelocatable:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

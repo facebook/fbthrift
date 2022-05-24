@@ -118,6 +118,11 @@ class InitialResponse:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'content',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -204,6 +209,11 @@ class FinalResponse:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'content',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -292,6 +302,11 @@ class SinkPayload:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'content',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -378,6 +393,11 @@ class CompatibleWithKeywordSink:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'sink',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -473,6 +493,11 @@ class InitialException(TException):
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'reason',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -567,6 +592,11 @@ class SinkException1(TException):
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'reason',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -660,6 +690,11 @@ class SinkException2(TException):
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'reason',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

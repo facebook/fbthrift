@@ -153,6 +153,11 @@ class global_args:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'raise_PY_RESERVED_KEYWORD',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -263,6 +268,11 @@ class global_PY_RESERVED_KEYWORD_result:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'success',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -351,6 +361,10 @@ class import_args:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -449,6 +463,11 @@ class import_PY_RESERVED_KEYWORD_result:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'success',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

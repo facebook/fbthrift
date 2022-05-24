@@ -109,6 +109,11 @@ class Fiery(TException):
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'message',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -190,6 +195,11 @@ class Serious(TException):
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'sonnet',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -287,6 +297,12 @@ class ComplexFieldNames(TException):
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'error_message',
+      'internal_error_message',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -382,6 +398,12 @@ class CustomFieldNames(TException):
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'error_message',
+      'internal_error_message',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -479,6 +501,12 @@ class ExceptionWithPrimitiveField(TException):
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'message',
+      'error_code',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -539,6 +567,10 @@ class Banal(TException):
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

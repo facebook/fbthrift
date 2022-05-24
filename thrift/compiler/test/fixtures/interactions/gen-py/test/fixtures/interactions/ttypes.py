@@ -125,6 +125,11 @@ class CustomException(TException):
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'message',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 

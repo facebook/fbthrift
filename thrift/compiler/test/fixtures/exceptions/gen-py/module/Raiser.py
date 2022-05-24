@@ -120,6 +120,10 @@ class doBland_args:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -183,6 +187,10 @@ class doBland_result:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -245,6 +253,10 @@ class doRaise_args:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -358,6 +370,13 @@ class doRaise_result:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'b',
+      'f',
+      's',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -441,6 +460,10 @@ class get200_args:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -522,6 +545,11 @@ class get200_result:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'success',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -597,6 +625,10 @@ class get500_args:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -723,6 +755,14 @@ class get500_result:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'success',
+      'f',
+      'b',
+      's',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

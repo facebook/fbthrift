@@ -101,6 +101,10 @@ class GeneratePatch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -167,6 +171,10 @@ class GenerateOptionalPatch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -270,6 +278,12 @@ class BoolPatch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'assign',
+      'invert',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -378,6 +392,12 @@ class BytePatch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'assign',
+      'add',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -484,6 +504,12 @@ class I16Patch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'assign',
+      'add',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -592,6 +618,12 @@ class I32Patch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'assign',
+      'add',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -694,6 +726,12 @@ class I64Patch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'assign',
+      'add',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -798,6 +836,12 @@ class FloatPatch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'assign',
+      'add',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -900,6 +944,12 @@ class DoublePatch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'assign',
+      'add',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1036,6 +1086,14 @@ class StringPatch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'assign',
+      'clear',
+      'prepend',
+      'append',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1122,6 +1180,11 @@ class BinaryPatch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'assign',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1261,6 +1324,14 @@ class OptionalBoolPatch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1403,6 +1474,14 @@ class OptionalBytePatch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1543,6 +1622,14 @@ class OptionalI16Patch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1685,6 +1772,14 @@ class OptionalI32Patch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1823,6 +1918,14 @@ class OptionalI64Patch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1963,6 +2066,14 @@ class OptionalFloatPatch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -2101,6 +2212,14 @@ class OptionalDoublePatch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -2241,6 +2360,14 @@ class OptionalStringPatch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -2379,6 +2506,14 @@ class OptionalBinaryPatch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

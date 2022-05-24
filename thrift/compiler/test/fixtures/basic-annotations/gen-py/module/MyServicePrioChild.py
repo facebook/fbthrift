@@ -120,6 +120,10 @@ class pang_args:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -195,6 +199,10 @@ class pang_result:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

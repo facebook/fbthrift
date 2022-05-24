@@ -139,6 +139,12 @@ class MyData:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'data1',
+      'data2',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -803,6 +809,34 @@ class MyStruct:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'boolVal',
+      'byteVal',
+      'i16Val',
+      'i32Val',
+      'i64Val',
+      'floatVal',
+      'doubleVal',
+      'stringVal',
+      'binaryVal',
+      'structVal',
+      'optBoolVal',
+      'optByteVal',
+      'optI16Val',
+      'optI32Val',
+      'optI64Val',
+      'optFloatVal',
+      'optDoubleVal',
+      'optStringVal',
+      'optBinaryVal',
+      'optStructVal',
+      'optListVal',
+      'optSetVal',
+      'optMapVal',
+      'unionVal',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -909,6 +943,12 @@ class MyDataPatch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'data1',
+      'data2',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1032,6 +1072,13 @@ class MyDataValuePatch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'assign',
+      'clear',
+      'patch',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1174,6 +1221,14 @@ class OptionalMyDataValuePatch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1280,6 +1335,12 @@ class MyUnionPatch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'option1',
+      'option2',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1422,6 +1483,14 @@ class MyUnionValuePatch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1562,6 +1631,14 @@ class OptionalMyUnionValuePatch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -2066,6 +2143,34 @@ class MyStructPatch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'boolVal',
+      'byteVal',
+      'i16Val',
+      'i32Val',
+      'i64Val',
+      'floatVal',
+      'doubleVal',
+      'stringVal',
+      'binaryVal',
+      'structVal',
+      'optBoolVal',
+      'optByteVal',
+      'optI16Val',
+      'optI32Val',
+      'optI64Val',
+      'optFloatVal',
+      'optDoubleVal',
+      'optStringVal',
+      'optBinaryVal',
+      'optStructVal',
+      'optListVal',
+      'optSetVal',
+      'optMapVal',
+      'unionVal',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -2252,6 +2357,14 @@ class MyStructField21Patch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'assign',
+      'clear',
+      'prepend',
+      'append',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -2407,6 +2520,14 @@ class OptionalMyStructField21Patch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -2588,6 +2709,14 @@ class MyStructField22Patch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'assign',
+      'clear',
+      'remove',
+      'add',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -2741,6 +2870,14 @@ class OptionalMyStructField22Patch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -2898,6 +3035,13 @@ class MyStructField23Patch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'assign',
+      'clear',
+      'put',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -3057,6 +3201,14 @@ class OptionalMyStructField23Patch:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -3179,6 +3331,13 @@ class MyStructValuePatch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'assign',
+      'clear',
+      'patch',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -3320,6 +3479,14 @@ class OptionalMyStructValuePatch:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'clear',
+      'patch',
+      'ensure',
+      'patchAfter',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

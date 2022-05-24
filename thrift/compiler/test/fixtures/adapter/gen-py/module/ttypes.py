@@ -411,6 +411,21 @@ class Foo:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'intField',
+      'optionalIntField',
+      'intFieldWithDefault',
+      'setField',
+      'optionalSetField',
+      'mapField',
+      'optionalMapField',
+      'binaryField',
+      'longField',
+      'adaptedLongField',
+      'doubleAdaptedField',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -925,6 +940,16 @@ class Bar:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'structField',
+      'optionalStructField',
+      'structListField',
+      'optionalStructListField',
+      'unionField',
+      'optionalUnionField',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1067,6 +1092,14 @@ class StructWithFieldAdapter:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'field',
+      'shared_field',
+      'opt_shared_field',
+      'opt_boxed_field',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

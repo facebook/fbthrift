@@ -98,6 +98,10 @@ class Program:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -164,6 +168,10 @@ class Struct:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -232,6 +240,10 @@ class Union:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -298,6 +310,10 @@ class Exception:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -366,6 +382,10 @@ class Field:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -432,6 +452,10 @@ class Typedef:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -500,6 +524,10 @@ class Service:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -566,6 +594,10 @@ class Interaction:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -634,6 +666,10 @@ class Function:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -700,6 +736,10 @@ class EnumValue:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -768,6 +808,10 @@ class Const:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -834,6 +878,10 @@ class Schema:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -902,6 +950,10 @@ class FbthriftInternalEnum:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -968,6 +1020,10 @@ class FbthriftInternalScopeTransitive:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1036,6 +1092,10 @@ class Structured:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1102,6 +1162,10 @@ class Interface:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1170,6 +1234,10 @@ class RootDefinition:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1236,6 +1304,10 @@ class Definition:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

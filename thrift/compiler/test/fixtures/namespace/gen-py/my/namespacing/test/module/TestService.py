@@ -128,6 +128,11 @@ class init_args:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'int1',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -222,6 +227,11 @@ class init_result:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'success',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

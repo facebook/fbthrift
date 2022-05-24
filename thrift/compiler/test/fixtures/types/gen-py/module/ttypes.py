@@ -169,6 +169,11 @@ class decorated_struct:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'field',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -449,6 +454,18 @@ class ContainerStruct:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'fieldB',
+      'fieldC',
+      'fieldD',
+      'fieldE',
+      'fieldF',
+      'fieldG',
+      'fieldH',
+      'fieldA',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -534,6 +551,11 @@ class CppTypeStruct:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'fieldA',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -605,6 +627,11 @@ class VirtualStruct:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'MyIntField',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -692,6 +719,12 @@ class MyStructWithForwardRefEnum:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'a',
+      'b',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -777,6 +810,12 @@ class TrivialNumeric:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'a',
+      'b',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -864,6 +903,12 @@ class TrivialNestedWithDefault:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'z',
+      'n',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -967,6 +1012,12 @@ class ComplexString:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'a',
+      'b',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1053,6 +1104,12 @@ class ComplexNestedWithDefault:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'z',
+      'n',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1182,6 +1239,15 @@ class MinPadding:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'small',
+      'big',
+      'medium',
+      'biggish',
+      'tiny',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1297,6 +1363,14 @@ class MyStruct:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'MyIntField',
+      'MyStringField',
+      'majorVer',
+      'data',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1350,6 +1424,10 @@ class MyDataItem:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1422,6 +1500,11 @@ class Renaming:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'foo',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1550,6 +1633,12 @@ class AnnotatedTypes:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'binary_field',
+      'list_field',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1638,6 +1727,12 @@ class ForwardUsageRoot:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'ForwardUsageStruct',
+      'ForwardUsageByRef',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1710,6 +1805,11 @@ class ForwardUsageStruct:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'foo',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1784,6 +1884,11 @@ class ForwardUsageByRef:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'foo',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1837,6 +1942,10 @@ class NoexceptMoveEmpty:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1909,6 +2018,11 @@ class NoexceptMoveSimpleStruct:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'boolField',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -2122,6 +2236,19 @@ class NoexceptMoveComplexStruct:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'MyBoolField',
+      'MyIntField',
+      'MyStringField',
+      'MyStringField2',
+      'MyBinaryField',
+      'MyBinaryField2',
+      'MyBinaryField3',
+      'MyBinaryListField4',
+      'MyMapEnumAndInt',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -2435,6 +2562,17 @@ class AllocatorAware:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'aa_list',
+      'aa_set',
+      'aa_map',
+      'aa_string',
+      'not_a_container',
+      'aa_unique',
+      'aa_shared',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -2506,6 +2644,11 @@ class AllocatorAware2:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'not_a_container',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -2607,6 +2750,13 @@ class TypedefStruct:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'i32_field',
+      'IntTypedef_field',
+      'UintTypedef_field',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -2678,6 +2828,11 @@ class StructWithDoubleUnderscores:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      '__field',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

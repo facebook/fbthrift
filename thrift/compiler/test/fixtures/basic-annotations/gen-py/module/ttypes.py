@@ -135,6 +135,11 @@ class MyStructNestedAnnotation:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'name',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -283,6 +288,10 @@ class MyException(TException):
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -522,6 +531,19 @@ class MyStruct:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'package',
+      'major',
+      'annotation_with_quote',
+      'class_',
+      'annotation_with_trailing_comma',
+      'empty_annotations',
+      'my_enum',
+      'cpp_type_annotation',
+      'my_union',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -624,6 +646,12 @@ class SecretStruct:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'id',
+      'password',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

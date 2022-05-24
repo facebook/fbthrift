@@ -301,6 +301,21 @@ class def_PY_RESERVED_KEYWORD:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'from_PY_RESERVED_KEYWORD',
+      'in_PY_RESERVED_KEYWORD',
+      'as_PY_RESERVED_KEYWORD',
+      'if_PY_RESERVED_KEYWORD',
+      'else_PY_RESERVED_KEYWORD',
+      'try_PY_RESERVED_KEYWORD',
+      'while_PY_RESERVED_KEYWORD',
+      'yield_PY_RESERVED_KEYWORD',
+      'break_PY_RESERVED_KEYWORD',
+      'await_PY_RESERVED_KEYWORD',
+      'return_PY_RESERVED_KEYWORD',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 

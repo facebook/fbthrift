@@ -203,6 +203,15 @@ class Internship:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'weeks',
+      'title',
+      'employer',
+      'compensation',
+      'school',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -289,6 +298,12 @@ class Range:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'min',
+      'max',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -374,6 +389,12 @@ class struct1:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'a',
+      'b',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -503,6 +524,14 @@ class struct2:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'a',
+      'b',
+      'c',
+      'd',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -604,6 +633,13 @@ class struct3:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'a',
+      'b',
+      'c',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -703,6 +739,13 @@ class struct4:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'a',
+      'b',
+      'c',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

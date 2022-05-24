@@ -1841,6 +1841,19 @@ void t_py_generator::generate_py_struct_definition(
         << endl;
   }
 
+  out << indent() << "def __dir__(self):" << endl;
+  indent_up();
+  out << indent() << "return (" << endl;
+  indent_up();
+  for (m_iter = sorted_members.begin(); m_iter != sorted_members.end();
+       ++m_iter) {
+    indent(out) << "'" << rename_reserved_keywords((*m_iter)->get_name())
+                << "'," << endl;
+  }
+  indent_down();
+  indent(out) << ")" << endl << endl;
+  indent_down();
+
   indent_down();
 
   // Hash override for Python3 (t10434117)

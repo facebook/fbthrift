@@ -227,6 +227,10 @@ class ping_args:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -303,6 +307,10 @@ class ping_result:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -378,6 +386,10 @@ class getRandomData_args:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -474,6 +486,11 @@ class getRandomData_result:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'success',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -584,6 +601,11 @@ class sink_args:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'sink',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -673,6 +695,10 @@ class sink_result:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -786,6 +812,12 @@ class putDataById_args:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'id',
+      'data',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -878,6 +910,10 @@ class putDataById_result:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -974,6 +1010,11 @@ class hasDataById_args:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'id',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1085,6 +1126,11 @@ class hasDataById_result:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'success',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1193,6 +1239,11 @@ class getDataById_args:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'id',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1304,6 +1355,11 @@ class getDataById_result:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'success',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1413,6 +1469,11 @@ class deleteDataById_args:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'id',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1502,6 +1563,10 @@ class deleteDataById_result:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1615,6 +1680,12 @@ class lobDataById_args:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'id',
+      'data',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1707,6 +1778,10 @@ class invalid_return_for_hack_args:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
@@ -1819,6 +1894,11 @@ class invalid_return_for_hack_result:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'success',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1908,6 +1988,10 @@ class rpc_skipped_codegen_args:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -1983,6 +2067,10 @@ class rpc_skipped_codegen_result:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__

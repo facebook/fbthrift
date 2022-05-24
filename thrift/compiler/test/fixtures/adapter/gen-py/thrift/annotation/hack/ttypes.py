@@ -120,6 +120,11 @@ class FieldWrapper:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'name',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -207,6 +212,11 @@ class Adapter:
   def __ne__(self, other):
     return not (self == other)
 
+  def __dir__(self):
+    return (
+      'name',
+    )
+
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
@@ -293,6 +303,11 @@ class SkipCodegen:
 
   def __ne__(self, other):
     return not (self == other)
+
+  def __dir__(self):
+    return (
+      'reason',
+    )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
