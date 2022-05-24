@@ -720,18 +720,22 @@ void ThriftServer::runtimeResourcePoolsChecks() {
 }
 
 void ThriftServer::ensureResourcePools() {
-  // If the user has supplied resource pools we will believe them.
-  if (!resourcePoolSet().empty()) {
+  auto resourcePoolSupplied = !resourcePoolSet().empty();
+
+  if (!resourcePoolSet().hasResourcePool(ResourcePoolHandle::defaultSync())) {
+    // Ensure there is a sync resource pool.
+    resourcePoolSet().setResourcePool(
+        ResourcePoolHandle::defaultSync(),
+        /*requestPile=*/nullptr,
+        /*executor=*/nullptr,
+        /*concurrencyController=*/nullptr);
+  }
+
+  // The user provided the resource pool. Use it as is.
+  if (resourcePoolSupplied) {
     resourcePoolSet().lock();
     return;
   }
-
-  // Create the sync resource pool.
-  resourcePoolSet().setResourcePool(
-      ResourcePoolHandle::defaultSync(),
-      /*requestPile=*/nullptr,
-      /*executor=*/nullptr,
-      /*concurrencyController=*/nullptr);
 
   struct Pool {
     std::string_view name;
