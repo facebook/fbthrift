@@ -16,6 +16,7 @@
 
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/id.thrift"
+include "thrift/lib/thrift/standard.thrift"
 include "thrift/lib/thrift/type.thrift"
 
 cpp_include "<thrift/lib/cpp/FieldId.h>"
@@ -72,7 +73,7 @@ struct Definition {
   // URI can no longer be deserialized.
   //
   // TODO(afuller): Support aliases to help with renaming.
-  2: string uri;
+  2: standard.Uri uri;
 
   // The annotations associated with this definition, for the current context.
   //
