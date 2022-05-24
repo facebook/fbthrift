@@ -15,8 +15,8 @@
  */
 
 include "thrift/annotation/thrift.thrift"
+include "thrift/lib/thrift/id.thrift"
 include "thrift/lib/thrift/type.thrift"
-include "thrift/lib/thrift/type_rep.thrift"
 
 cpp_include "<thrift/lib/cpp/FieldId.h>"
 
@@ -36,10 +36,6 @@ cpp_include "<thrift/lib/cpp/FieldId.h>"
 // thrift value (e.g., one where the type is only known at runtime).
 @thrift.v1alpha
 package "facebook.com/thrift/type"
-
-// An unordered set of value ids, that can contain *at most one* value
-// of any type.
-typedef set<type_rep.ValueId> AnnotationIds
 
 // The attributes that can be associated with any Thrift definition.
 struct Definition {
@@ -86,7 +82,7 @@ struct Definition {
   // TODO(afuller): Consider supporting unstructured annotations for
   // backward compatibility, by documenting and populating a map<string, string>
   // pseudo-structured annotation value.
-  3: AnnotationIds annotations;
+  3: id.AnnotationIds annotations;
 }
 
 // A Thrift enum value.
@@ -160,7 +156,7 @@ struct Field {
   //
   // If no value is set, the intrinsic default for the field type
   // is used.
-  5: type_rep.ValueId customDefault;
+  5: id.ValueId customDefault;
 }
 
 // A container for the fields of a structured type (e.g. struct, union, exception).
@@ -169,6 +165,7 @@ struct Field {
 //
 // TODO(afuller): Add native wrappers that provide O(1) access to fields by id,
 // name, type, etc.
+@thrift.Experimental // TODO: Adapt!
 typedef list<Field> Fields
 
 // A Thrift struct.

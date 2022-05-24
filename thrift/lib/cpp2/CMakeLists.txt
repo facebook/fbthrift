@@ -39,6 +39,7 @@ get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
 get_property(reflection-cpp2-SOURCES GLOBAL PROPERTY reflection-cpp2-SOURCES)
 get_property(RocketUpgrade-cpp2-SOURCES GLOBAL PROPERTY
   RocketUpgrade-cpp2-SOURCES)
+get_property(id-cpp2-SOURCES GLOBAL PROPERTY id-cpp2-SOURCES)
 get_property(type_rep-cpp2-SOURCES GLOBAL PROPERTY type_rep-cpp2-SOURCES)
 get_property(type-cpp2-SOURCES GLOBAL PROPERTY type-cpp2-SOURCES)
 
@@ -115,13 +116,16 @@ target_link_libraries(
     ${LIBGFLAGS_LIBRARY}
 )
 
+bypass_source_check("${id-cpp2-SOURCES}")
 bypass_source_check("${type_rep-cpp2-SOURCES}")
 add_library(
   thrifttyperep
 
+  ${id-cpp2-SOURCES}
   ${type_rep-cpp2-SOURCES}
 )
-add_dependencies(thrifttyperep type_rep-cpp2-target thriftannotation)
+add_dependencies(thrifttyperep id-cpp2-target type_rep-cpp2-target
+  thriftannotation)
 target_link_libraries(
   thrifttyperep
   PUBLIC

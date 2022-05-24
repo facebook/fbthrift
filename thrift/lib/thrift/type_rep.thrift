@@ -16,6 +16,7 @@
 
 include "thrift/annotation/thrift.thrift"
 include "thrift/annotation/java.thrift"
+include "thrift/lib/thrift/id.thrift"
 
 cpp_include "<folly/io/IOBuf.h>"
 cpp_include "<folly/FBString.h>"
@@ -110,62 +111,6 @@ struct Time {
 @thrift.Experimental
 typedef Time Timestamp
 
-// An opaque ID for a value stored in an external location (i.e. a Thrift 'pointer').
-//
-// Typically for use in APIs when:
-//  - the ideal storage mechanism (e.g. in-memory, serialized, id-based, immutable,
-//  native pointers, etc) depends on the context, or
-//  - it is desirable to 'intern' repeated values, to minimize storage requirements.
-//
-// The exact external location (and associated lookup mechanism) is implied
-// by the context in which the `ExternId` is found.
-//
-// For purely in-memory uses cases, any ID/Handle scheme can be used to
-// associate ids with concrete values, including using native pointers.
-//
-// For serialization with protocols that encode integers as zigzag-varints
-// (e.g. Compact), the optimal id allocation scheme is to use densely-packed
-// zigzag-ids. Specifically mapping the id values:
-//   1, -1, 2, -2, ...
-// to/from the associated the index positions:
-//   0, 1, 2, 3, 4, ...
-// for retrieval in an external list of values.
-//
-// For fixed-sized protocols (e.g. Binary), all id -> value mapping
-// schemes are equally efficient. However, `noId` must always map to `0`
-// when serialized, as `0` is the intrinsic default the underlying
-// thrift type, and reserved for the `noId` constant defined below.
-// As such, zigzag-ids are always preferred when serializing ExternIds
-// in standard Thrift protocols.
-//
-// Thrift typedefs and adapter annotations may be provided to covert stored
-// ids into more ideal, in-memory native representation. For example:
-// - an index position,
-// - an offset,
-// - an ordinal,
-// - a hash or digest, or even
-// - a native pointer to the deserialized value object itself (assuming the
-// external value storage is accessible from the adapter, which *is*
-// technically supported by Thrift field adapters).
-//
-// Note that `noId` typically implies an intrinsic default value should
-// be use, and in such cases, it is safe to use some form of ~hash, digest,
-// RNG, or any other id generation algorithm, for the in-memory id, as long
-// as the intrinsic default, for that same type, also maps to `noId`.
-// This is a property guaranteed by Thrift v1+ value hashing algorithms
-// (as is also the case with most commonly used hashing/digest algorithms,
-// and normal pointers for that matter, i.e. `nullptr`).
-//
-// TODO(afuller): Consider adding a new thrift base type (or special annotation?),
-// so we are not required to double zigzag encode here, just to get normal varint
-// encoding, at least for newer Thrift protocols.
-typedef i64 ExternId
-// Unset/Empty/Null/npos/0 never refers to a valid external value.
-const ExternId noId = 0;
-
-// The id of an externally stored Value.
-typedef ExternId ValueId
-
 // Standard protocols.
 @thrift.Experimental
 enum StandardProtocol {
@@ -211,9 +156,8 @@ struct Fraction {
 
 // A (scheme-less) URI.
 //
-// See rfc3986.
-// TODO(afuller): Adapt.
-@thrift.Experimental
+// Identical to RFC 3986, but with every component optional.
+@thrift.Experimental // TODO(afuller): Adapt.
 typedef string Uri
 
 // The uri of an IDL defined type.
@@ -224,10 +168,10 @@ union TypeUri {
   // A prefix of the SHA2-256 hash of the URI.
   2: ByteString typeHashPrefixSha2_256;
   // An externally stored URI value.
-  3: ValueId id;
+  3: id.ValueId id;
 }
 
-// Uniquely identifies a type.
+// Uniquely identifies a Thrift type.
 @thrift.Experimental
 union TypeName {
   1: Void boolType;
@@ -248,13 +192,10 @@ union TypeName {
   16: Void mapType;
 }
 
-// A concrete type.
+// A concrete Thrift type.
 struct TypeStruct {
   // The type name.
   1: TypeName name;
   // The type params, if appropriate.
   2: list<TypeStruct> params;
 } (thrift.uri = "facebook.com/thrift/type/Type")
-
-// The id of an externally stored type.
-typedef ExternId TypeId
