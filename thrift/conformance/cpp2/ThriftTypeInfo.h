@@ -23,16 +23,16 @@
 #include <thrift/conformance/if/gen-cpp2/type_types.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/type/UniversalName.h>
-#include <thrift/lib/thrift/gen-cpp2/type_rep_constants.h>
+#include <thrift/lib/thrift/gen-cpp2/standard_constants.h>
 #include <thrift/lib/thrift/gen-cpp2/type_types.h>
 
 namespace apache::thrift::conformance {
 
 inline constexpr type::hash_size_t kTypeHashBytesNotSpecified = -1;
 inline constexpr type::hash_size_t kMinTypeHashBytes =
-    type::type_rep_constants::minTypeHashBytes();
+    type::standard_constants::minTypeHashBytes();
 inline constexpr type::hash_size_t kDefaultTypeHashBytes =
-    type::type_rep_constants::defaultTypeHashBytes();
+    type::standard_constants::defaultTypeHashBytes();
 
 // Creates an ThriftTypeInfo struct with the given names and configuration.
 //

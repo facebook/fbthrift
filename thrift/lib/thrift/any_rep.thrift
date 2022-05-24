@@ -16,7 +16,7 @@
 
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/type.thrift"
-include "thrift/lib/thrift/type_rep.thrift"
+include "thrift/lib/thrift/standard.thrift"
 
 // Canonical underlying representation for Thrift: Any.
 package "facebook.com/thrift/type"
@@ -45,7 +45,7 @@ struct AnyStruct {
   2: type.Protocol protocol;
 
   // The encoded data.
-  3: type_rep.ByteBuffer data;
+  3: standard.ByteBuffer data;
 } (thrift.uri = "facebook.com/thrift/type/Any")
 
 // Like Any, except type and protocol can be empty.
@@ -63,5 +63,5 @@ struct SemiAnyStruct {
   2: type.Protocol protocol;
 
   // The encoded data.
-  3: type_rep.ByteBuffer data;
+  3: standard.ByteBuffer data;
 } (thrift.uri = "facebook.com/thrift/type/SemiAny")

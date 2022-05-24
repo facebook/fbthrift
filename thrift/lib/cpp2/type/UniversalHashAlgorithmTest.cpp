@@ -17,7 +17,7 @@
 #include <thrift/lib/cpp2/type/UniversalHashAlgorithm.h>
 
 #include <folly/portability/GTest.h>
-#include <thrift/lib/thrift/gen-cpp2/type_rep_constants.h>
+#include <thrift/lib/thrift/gen-cpp2/standard_constants.h>
 #include <thrift/lib/thrift/gen-cpp2/type_types.h>
 
 namespace apache::thrift::type {
@@ -31,8 +31,8 @@ TEST(UniversalHashAlgorithmTest, Conversions) {
 
 TEST(UniversalHashAlgorithmTest, ConstConversions) {
   static_assert(
-      kDefaultHashBytes == type_rep_constants::defaultTypeHashBytes());
-  static_assert(kMinHashBytes == type_rep_constants::minTypeHashBytes());
+      kDefaultHashBytes == standard_constants::defaultTypeHashBytes());
+  static_assert(kMinHashBytes == standard_constants::minTypeHashBytes());
 }
 
 } // namespace

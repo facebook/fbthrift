@@ -15,13 +15,17 @@
  */
 
 include "thrift/annotation/thrift.thrift"
-include "thrift/annotation/java.thrift"
 include "thrift/lib/thrift/id.thrift"
+include "thrift/lib/thrift/standard.thrift"
 
-cpp_include "<folly/io/IOBuf.h>"
-cpp_include "<folly/FBString.h>"
-
-// Canonical underlying representations for well-known Thrift types.
+// The **underlying representations** for well-known Thrift types.
+//
+// The following definitions are provided as unadapted underlying
+// representations for 'public' adapted typedefs defined in 'type.thrift'.
+//
+// These definitions are named after their representations, using the form
+// '{name}{Type}. For example, for a 'public' exception `Foo`, the underlying
+// type would be `exception FooException`.
 package "facebook.com/thrift/type"
 
 namespace cpp2 apache.thrift.type
@@ -34,168 +38,66 @@ namespace py.asyncio apache_thrift_asyncio.type_rep
 namespace go thrift.lib.thrift.type_rep
 namespace py thrift.lib.thrift.type_rep
 
-// The minimum and default number of bytes that can be used to identify
-// a type.
-//
-// The expected number of types that can be hashed before a
-// collision is 2^(8*{numBytes}/2).
-// Which is ~4.3 billion types for the min, and ~18.45 quintillion
-// types for the default.
-@thrift.Experimental
-const byte minTypeHashBytes = 8;
-@thrift.Experimental
-const byte defaultTypeHashBytes = 16;
-
-// Typedef for binary data which can be represented as a string of 8-bit bytes
-//
-// Each language can map this type into a customized memory efficient object
-@thrift.Experimental
-@java.Adapter{
-  adapterClassName = "com.facebook.thrift.adapter.common.UnpooledByteBufTypeAdapter",
-  typeClassName = "io.netty.buffer.ByteBuf",
-}
-typedef binary (cpp2.type = "folly::fbstring") ByteString
-
-// Typedef for binary data
-//
-// Each language can map this type into a customized memory efficient object
-// May be used for zero-copy slice of data
-@thrift.Experimental
-@java.Adapter{
-  adapterClassName = "com.facebook.thrift.adapter.common.UnpooledByteBufTypeAdapter",
-  typeClassName = "io.netty.buffer.ByteBuf",
-}
-typedef binary (cpp2.type = "folly::IOBuf") ByteBuffer
-
 // A fixed-length span of time, represented as a signed count of seconds and
 // nanoseconds (nanos).
 //
-// Considered 'normalized', when `nanos` is in the range 0 to 999'999'999
+// Considered 'normal', when `nanos` is in the range 0 to 999'999'999
 // inclusive, or `seconds` is 0 and `nanos` is in the range -999'999'999 to
 // 999'999'999 inclusive.
-//
-// TODO(afuller): Adapt to appropriate native types.
 @thrift.Experimental
-struct Duration {
+struct DurationStruct {
   // The count of seconds.
   1: i64 seconds;
   // The count of nanoseconds.
   2: i32 nanos;
-}
+} (thrift.uri = "facebook.com/thrift/type/Duration")
 
 // An instant in time encoded as a count of seconds and nanoseconds (nanos)
 // since midnight on January 1, 1970 UTC (i.e. Unix epoch).
 //
-// Considered 'normalized', when `nanos` is in the range 0 to 999'999'999
-// inclusive.
+// Considered 'normal', when `nanos` is in the range 0 to 999'999'999 inclusive.
 //
-// TODO(afuller): Adapt to appropriate native types.
 // TODO(afuller): Consider making this a 'strong' typedef of `Duration`, which
 // would ensure both a separate URI and native type in all languages.
 @thrift.Experimental
-struct Time {
+struct TimeStruct {
   // The count of seconds.
   1: i64 seconds;
   // The count of nanoseconds.
   2: i32 nanos;
-}
-
-// An 'internet timestamp' as described in [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt)
-//
-// Similar to `Time`, but can only represent values in the range
-// 0001-01-01T00:00:00Z to 9999-12-31T23:59:59Z inclusive, for compatibility
-// with the 'date string' format. Thus `seconds` must be in the range
-// -62'135'769'600 to 253'402'300'799 inclusive, when normalized.
-//
-// TODO(afuller): Add extra validation when adapting to/from native types.
-@thrift.Experimental
-typedef Time Timestamp
-
-// Standard protocols.
-@thrift.Experimental
-enum StandardProtocol {
-  Custom = 0,
-
-  // Standard protocols.
-  Binary = 1,
-  Compact = 2,
-
-  // Deprecated protocols.
-  Json = 3,
-  SimpleJson = 4,
-}
-
-// A union representation of a protocol.
-@thrift.Experimental
-union ProtocolUnion {
-  1: StandardProtocol standard;
-  2: string custom;
-} (thrift.uri = "facebook.com/thrift/type/Protocol")
-
-// TODO(afuller): Allow 'void' type for union fields.
-@thrift.Experimental
-enum Void {
-  NoValue = 0,
-}
+} (thrift.uri = "facebook.com/thrift/type/Time")
 
 // A integer fraction of the form {numerator} / {denominator}
 //
 // Useful for representing ratios, rates, and metric accumulators.
 //
-// Considered 'normalized' when the denominator is positive.
-//
-// TODO(afuller): Add a wrapper that ensures the in memory form is always
-// normalized.
+// Considered 'normal' when the denominator is positive.
+// Considered 'simple' when `normal` and the greatest common divisor of the
+// and `numerator` and `denominator`, is 1.
 @thrift.Experimental
-struct Fraction {
-  // The numerator/dividend/upper number of the fraction.
+struct FractionStruct {
+  // The numerator/dividend/antecedent/upper integer.
   1: i64 numerator;
-  // The denominator/divisor/lower number of the fraction.
+  // The denominator/divisor/consequent/lower integer.
   2: i64 denominator;
-}
+} (thrift.uri = "facebook.com/thrift/type/Fraction")
 
-// A (scheme-less) URI.
-//
-// Identical to RFC 3986, but with every component optional.
-@thrift.Experimental // TODO(afuller): Adapt.
-typedef string Uri
-
-// The uri of an IDL defined type.
+// A union representation of a protocol.
 @thrift.Experimental
-union TypeUri {
-  // The unique Thrift URI for this type.
-  1: Uri uri;
-  // A prefix of the SHA2-256 hash of the URI.
-  2: ByteString typeHashPrefixSha2_256;
-  // An externally stored URI value.
-  3: id.ValueId id;
-}
-
-// Uniquely identifies a Thrift type.
-@thrift.Experimental
-union TypeName {
-  1: Void boolType;
-  2: Void byteType;
-  3: Void i16Type;
-  4: Void i32Type;
-  5: Void i64Type;
-  6: Void floatType;
-  7: Void doubleType;
-  8: Void stringType;
-  9: Void binaryType;
-  10: TypeUri enumType;
-  11: TypeUri structType;
-  12: TypeUri unionType;
-  13: TypeUri exceptionType;
-  14: Void listType;
-  15: Void setType;
-  16: Void mapType;
-}
+union ProtocolUnion {
+  // A standard protocol, known by all Thrift implementations.
+  1: standard.StandardProtocol standard;
+  // A custom protocol.
+  2: standard.Uri custom;
+  // An externally stored protocol.
+  3: id.ProtocolId id;
+} (thrift.uri = "facebook.com/thrift/type/Protocol")
 
 // A concrete Thrift type.
+@thrift.Experimental
 struct TypeStruct {
   // The type name.
-  1: TypeName name;
+  1: standard.TypeName name;
   // The type params, if appropriate.
   2: list<TypeStruct> params;
 } (thrift.uri = "facebook.com/thrift/type/Type")

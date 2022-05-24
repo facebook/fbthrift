@@ -38,12 +38,12 @@ namespace py thrift.lib.thrift.type
 
 // An enumeration of all base types in thrift.
 //
-// Base types are not parameterized. For example, the base
-// type of map<int, string> is BaseType::Map and the base type of
-// all thrift structs is BaseType::Struct.
+// Base types are not parameterized. For example, the base type of
+// map<int, string> is BaseType::Map and the base type of all thrift
+// structs is BaseType::Struct.
 //
-// Similar to lib/cpp/protocol/TType.h, but IDL
-// concepts instead of protocol concepts.
+// Similar to lib/cpp/protocol/TType.h, but IDL concepts instead of protocol
+// concepts.
 @thrift.Experimental
 enum BaseType {
   Void = 0,
@@ -88,6 +88,60 @@ enum UniversalHashAlgorithm {
   cpp.name = "UniversalHashAlgorithmEnum",
   cpp.adapter = "::apache::thrift::StaticCastAdapter<::apache::thrift::type::UniversalHashAlgorithm, ::apache::thrift::type::UniversalHashAlgorithmEnum>",
 )
+
+// A 'normal' Duration.
+//
+// This representation is always safe to 'normalize' or 'saturate' at
+// +/-infinite time, instead of overflowing.
+//
+// TODO(afuller): Provide const definitions for +/-infinite time.
+@thrift.Experimental // TODO(afuller): Adapt!
+typedef type_rep.DurationStruct Duration (thrift.uri = "")
+
+// A 'normal' Time.
+//
+// This representation is always safe to 'normalize' or 'saturate' at
+// the infinite future/past, instead of overflowing.
+//
+// TODO(afuller): Provide const definitions for infinite future/past.
+@thrift.Experimental // TODO(afuller): Adapt!
+typedef type_rep.TimeStruct Time (thrift.uri = "")
+
+// An 'internet timestamp' as described in [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt).
+//
+// Similar to `Time`, but can only represent values in the range
+// 0001-01-01T00:00:00Z to 9999-12-31T23:59:59Z inclusive, for compatibility
+// with the 'date string' format. Thus `seconds` must be in the range
+// -62'135'769'600 to 253'402'300'799 inclusive, when `normal`.
+//
+// This representation is always safe to 'normalize' or 'saturate' at the
+// min/max allowed 'date string' values, instead of overflowing.
+@thrift.Experimental // TODO(afuller): Adapt!
+typedef type_rep.TimeStruct Timestamp
+
+// The minimum timestamp allowed by [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt).
+//
+// TODO(afuller): Ignore single quote (') in number literals.
+// TODO(afuller): Allow unquoted identifiers as field names/string map keys.
+// TODO(afuller): Uncomment when consts in multiple files is supported by java2.
+// const Timestamp minTimestamp = {"seconds": -62135769600};
+
+// The maximum timestamp allowed by [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt).
+//
+// TODO(afuller): Uncomment when consts in multiple files is supported by java2.
+// const Timestamp maxTimestamp = {"seconds": 253402300799, "nanos": 999999999};
+
+// A 'normal' Fraction.
+//
+// This representation is always safe to 'normalize'.
+@thrift.Experimental // TODO(afuller): Adapt!
+typedef type_rep.FractionStruct Fraction (thrift.uri = "")
+
+// A 'simple' Fraction.
+//
+// This representation is always safe to 'simplify'.
+@thrift.Experimental // TODO(afuller): Adapt!
+typedef type_rep.FractionStruct SimpleFraction
 
 @cpp.Adapter{
   name = "::apache::thrift::InlineAdapter<::apache::thrift::type::Protocol>",
