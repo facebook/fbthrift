@@ -88,12 +88,12 @@ struct Definition {
 // A Thrift enum value.
 //
 // enum ... {
-//   {def.name} = {value}
+//   {definition.name} = {value}
 // }
 struct EnumValue {
   // The definition attributes.
   @thrift.Mixin
-  1: Definition def;
+  1: Definition definition;
 
   // The associated numeric value.
   //
@@ -103,11 +103,11 @@ struct EnumValue {
 
 // A Thrift enum.
 //
-// enum {def.name} { ... values ... }
+// enum {definition.name} { ... values ... }
 struct Enum {
   // The definition attributes.
   @thrift.Mixin
-  1: Definition def;
+  1: Definition definition;
 
   // The values, in the order as defined in the IDL/AST.
   //
@@ -130,7 +130,7 @@ enum FieldQualifier {
 
 // A Thrift field.
 //
-// {id}: {qualifier} {type} {def.name} = {customDefault}
+// {id}: {qualifier} {type} {definition.name} = {customDefault}
 //
 struct Field {
   // The static ID specified for the field.
@@ -150,7 +150,7 @@ struct Field {
 
   // The definition attributes.
   @thrift.Mixin
-  4: Definition def;
+  4: Definition definition;
 
   // The custom default value for this field.
   //
@@ -170,11 +170,11 @@ typedef list<Field> Fields
 
 // A Thrift struct.
 //
-// struct {def.name} { ... fields ... }
+// struct {definition.name} { ... fields ... }
 struct Struct {
   // The definition attributes.
   @thrift.Mixin
-  1: Definition def;
+  1: Definition definition;
 
   // The fields, in the order as defined in the IDL/AST.
   //
@@ -184,11 +184,11 @@ struct Struct {
 
 // A Thrift union.
 //
-// union {def.name} { ... fields ... }
+// union {definition.name} { ... fields ... }
 struct Union {
   // The definition attributes.
   @thrift.Mixin
-  1: Definition def;
+  1: Definition definition;
 
   // The fields, in the order as defined in the IDL/AST.
   //
@@ -198,11 +198,11 @@ struct Union {
 
 // A Thrift exception.
 //
-// exception {def.name} { ... fields ... }
+// exception {definition.name} { ... fields ... }
 struct Exception {
   // The definition attributes.
   @thrift.Mixin
-  1: Definition def;
+  1: Definition definition;
 
   // The fields, in the order as defined in the IDL/AST.
   //
