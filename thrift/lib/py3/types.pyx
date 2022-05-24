@@ -161,6 +161,12 @@ cdef class Struct:
             name = sv_to_str(self._fbthrift_get_field_name_by_index(i))
             yield name, getattr(self, name)
 
+    def __dir__(self):
+        return (
+            sv_to_str(self._fbthrift_get_field_name_by_index(i))
+            for i in range(self._fbthrift_struct_size)
+        )
+
     cdef bint _fbthrift_noncomparable_eq(self, other):
         if self is other:
             return True

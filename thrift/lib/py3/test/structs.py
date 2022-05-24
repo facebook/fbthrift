@@ -268,6 +268,12 @@ class StructTests(unittest.TestCase):
             ],
         )
 
+    def test_dir(self) -> None:
+        self.assertEqual(
+            ["an_int", "name", "val", "val_list"],
+            dir(easy()),
+        )
+
     def test_update_nested_fields(self) -> None:
         n = Nested1(a=Nested2(b=Nested3(c=easy(val=42, name="foo"))))
         n = Struct.update_nested_field(n, {"a.b.c": easy(val=128)})

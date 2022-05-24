@@ -20,6 +20,7 @@ from typing import (
     Mapping,
     Optional,
     Protocol,
+    Sequence,
     SupportsInt,
     Tuple,
     Type,
@@ -52,6 +53,7 @@ class Struct(Iterable[Tuple[str, Any]], metaclass=StructMeta):
     def __repr__(self) -> str: ...
     # pyre-ignore[3]: it can be anything
     def __iter__(self) -> Iterator[Tuple[str, Any]]: ...
+    def __dir__(self) -> Sequence[str]: ...
 
 class Union(Struct):
     # pyre-ignore[4]: it can be anything
