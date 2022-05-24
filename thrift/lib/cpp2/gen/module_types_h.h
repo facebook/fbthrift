@@ -46,15 +46,15 @@
 #endif
 
 //  all members are logically private to fbthrift; external use is deprecated
-#define APACHE_THRIFT_DEFINE_ACCESSOR(name)                                   \
-  template <>                                                                 \
-  struct invoke_reffer<::apache::thrift::tag::name> {                         \
-    template <typename T, typename... A>                                      \
-    FOLLY_ERASE constexpr auto operator()(T&& t, A&&... a) const noexcept(    \
-        noexcept(static_cast<T&&>(t).name##_ref(static_cast<A&&>(a)...)))     \
-        -> decltype(static_cast<T&&>(t).name##_ref(static_cast<A&&>(a)...)) { \
-      return static_cast<T&&>(t).name##_ref(static_cast<A&&>(a)...);          \
-    }                                                                         \
+#define APACHE_THRIFT_DEFINE_ACCESSOR(name)                  \
+  template <>                                                \
+  struct invoke_reffer<::apache::thrift::tag::name> {        \
+    template <typename T>                                    \
+    FOLLY_ERASE constexpr auto operator()(T&& t) const       \
+        noexcept(noexcept(static_cast<T&&>(t).name##_ref())) \
+            -> decltype(static_cast<T&&>(t).name##_ref()) {  \
+      return static_cast<T&&>(t).name##_ref();               \
+    }                                                        \
   }
 
 namespace apache {
