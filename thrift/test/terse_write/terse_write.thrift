@@ -18,6 +18,7 @@ include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
 
 namespace cpp2 apache.thrift.test.terse_write
+namespace py3 apache.thrift.test.terse_write
 
 enum MyEnum {
   ME0 = 0,

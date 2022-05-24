@@ -17,6 +17,12 @@ import asyncio
 import unittest
 from typing import Mapping
 
+from apache.thrift.test.terse_write.terse_write.thrift_types import (
+    EmptyStruct,
+    FieldLevelTerseStruct,
+    MyEnum,
+    MyStruct,
+)
 from folly.iobuf import IOBuf
 from testing.thrift_types import (
     Color,
@@ -146,3 +152,52 @@ class SerializerTests(unittest.TestCase):
         with self.assertRaises(UnicodeDecodeError):
             # Accessing the property is when the string is decoded as UTF-8.
             sb.one
+
+    def test_field_level_terse_write(self) -> None:
+        obj = FieldLevelTerseStruct(
+            bool_field=True,
+            byte_field=1,
+            short_field=2,
+            int_field=3,
+            long_field=4,
+            float_field=5,
+            double_field=6,
+            string_field="7",
+            binary_field=b"8",
+            enum_field=MyEnum.ME1,
+            list_field=[1],
+            set_field={1},
+            map_field={1: 1},
+            struct_field=MyStruct(field1=1),
+        )
+        empty = EmptyStruct()
+        for proto in Protocol:
+            encoded = serialize(obj, protocol=proto)
+            decoded, length = deserialize_with_length(
+                type(obj), encoded, protocol=proto
+            )
+            self.assertIsInstance(decoded, type(obj))
+            self.assertEqual(decoded, obj)
+            self.assertEqual(length, len(encoded))
+
+        # Set fields to their intrinsic default.
+        obj = FieldLevelTerseStruct(
+            bool_field=False,
+            byte_field=0,
+            short_field=0,
+            int_field=0,
+            long_field=0,
+            float_field=0,
+            double_field=0,
+            string_field="",
+            binary_field=b"",
+            enum_field=MyEnum.ME0,
+            list_field=[],
+            set_field=set(),
+            map_field={},
+            struct_field=MyStruct(field1=0),
+        )
+        for proto in Protocol:
+            encoded = serialize(obj, protocol=proto)
+            encoded_empty = serialize(empty, protocol=proto)
+            self.assertEqual(encoded, encoded_empty)
