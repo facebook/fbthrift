@@ -469,7 +469,7 @@ cdef class Struct(StructOrUnion):
             yield name, getattr(self, name)
 
     def __dir__(self):
-        return (k for k, _ in self)
+        return (<StructInfo>self._fbthrift_struct_info).name_to_index.keys()
 
     cdef folly.iobuf.IOBuf _serialize(self, Protocol proto):
         cdef StructInfo info = self._fbthrift_struct_info
@@ -675,6 +675,8 @@ class StructMeta(type):
     def _fbthrift_store_field_values(cls):
         (<StructInfo>cls._fbthrift_struct_info).store_field_values()
 
+    def __dir__(cls):
+        return (<StructInfo>cls._fbthrift_struct_info).name_to_index.keys()
 
 
 def gen_enum(fields):
