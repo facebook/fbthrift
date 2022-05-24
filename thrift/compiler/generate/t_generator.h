@@ -21,6 +21,8 @@
 #include <string>
 #include <unordered_set>
 
+#include <boost/filesystem.hpp>
+
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/validator/validator.h>
 
@@ -74,16 +76,21 @@ class t_generator {
   void record_genfile(const std::string& filename) {
     generated_files_.insert(filename);
   }
+  void record_genfile(const boost::filesystem::path& filename) {
+    generated_files_.insert(filename.string());
+  }
 
   /**
    * Get the current output directory
    */
-  virtual std::string get_out_dir() const {
-    if (context_.is_out_path_absolute()) {
-      return context_.get_out_path() + "/";
+  virtual std::string get_out_dir() const { return get_out_path().string(); }
+  virtual boost::filesystem::path get_out_path() const {
+    auto path = boost::filesystem::path{context_.get_out_path()};
+    if (!context_.is_out_path_absolute()) {
+      path /= out_dir_base_;
     }
-
-    return context_.get_out_path() + out_dir_base_ + "/";
+    path += boost::filesystem::path::preferred_separator;
+    return path;
   }
 
  protected:

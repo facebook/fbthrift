@@ -1411,7 +1411,11 @@ void t_mstch_py3_generator::generate_init_files() {
 
 boost::filesystem::path t_mstch_py3_generator::package_to_path() {
   auto package = get_py3_namespace(get_program());
-  return boost::algorithm::join(package, "/");
+  boost::filesystem::path path;
+  for (const auto& path_part : package) {
+    path /= path_part;
+  }
+  return path;
 }
 
 void t_mstch_py3_generator::generate_file(

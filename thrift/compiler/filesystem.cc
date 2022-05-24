@@ -30,12 +30,20 @@ boost::filesystem::path make_abs_path(
     const boost::filesystem::path& path) {
   auto abs_path = path.is_absolute() ? path : base_path / path;
   if (platform_is_windows()) {
+    return format_abs_path(abs_path.lexically_normal().string());
+  }
+  return abs_path;
+}
+
+boost::filesystem::path format_abs_path(const std::string& path) {
+  auto abs_path = boost::filesystem::path{path};
+  if (platform_is_windows()) {
     // Handles long paths on windows.
     // https://www.boost.org/doc/libs/1_69_0/libs/filesystem/doc/reference.html#long-path-warning
     static constexpr auto kExtendedLengthPathPrefix = L"\\\\?\\";
     if (!boost::algorithm::starts_with(
             abs_path.wstring(), kExtendedLengthPathPrefix)) {
-      auto native_path = abs_path.lexically_normal().make_preferred().wstring();
+      auto native_path = abs_path.make_preferred().wstring();
       // At this point the path may have a mix of '\\' and '\' separators.
       boost::algorithm::replace_all(native_path, L"\\\\", L"\\");
       abs_path = kExtendedLengthPathPrefix + native_path;

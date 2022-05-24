@@ -35,6 +35,15 @@ boost::filesystem::path make_abs_path(
     const boost::filesystem::path& base_path,
     const boost::filesystem::path& path);
 
+/**
+ * Formats `path` to include extended length prefix on windows
+ *
+ * @param path The path to prepend the prefix to (must be an absolute path)
+ * @return On Windows, the boost::filesystem::path created by prepending "\\?\"
+ * to `path` if not already so. Otherwise, `boost::filesystem::path{path}`.
+ */
+boost::filesystem::path format_abs_path(const std::string& path);
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

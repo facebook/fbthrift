@@ -261,14 +261,11 @@ void t_mstch_pyi_generator::generate_services(const t_program& program) {
 boost::filesystem::path t_mstch_pyi_generator::package_to_path(
     const t_program& program) {
   const auto ns = get_py_namespace_raw(program);
-  std::stringstream ss;
+  boost::filesystem::path path;
   for (auto itr = ns.begin(); itr != ns.end(); ++itr) {
-    ss << *itr;
-    if (itr != ns.end()) {
-      ss << "/";
-    }
+    path /= *itr;
   }
-  return boost::filesystem::path{ss.str()};
+  return path += boost::filesystem::path::preferred_separator;
 }
 
 mstch::array t_mstch_pyi_generator::get_return_types(const t_program& program) {

@@ -30,8 +30,10 @@
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 #include <thrift/compiler/ast/t_typedef.h>
+#include <thrift/compiler/filesystem.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/generate/t_generator.h>
@@ -52,7 +54,7 @@ const std::string* get_py_adapter(const t_type* type) {
   return t_typedef::get_first_annotation_or_null(type, {"py.adapter"});
 }
 
-void mark_file_executable(const std::string& path) {
+void mark_file_executable(const boost::filesystem::path& path) {
   namespace fs = boost::filesystem;
   fs::permissions(
       path, fs::add_perms | fs::owner_exe | fs::group_exe | fs::others_exe);
@@ -369,11 +371,11 @@ class t_py_generator : public t_concat_generator {
    * File streams
    */
 
-  std::ofstream f_types_;
-  std::ofstream f_consts_;
-  std::ofstream f_service_;
+  boost::filesystem::ofstream f_types_;
+  boost::filesystem::ofstream f_consts_;
+  boost::filesystem::ofstream f_service_;
 
-  std::string package_dir_;
+  boost::filesystem::path package_dir_;
 
   std::map<std::string, const std::vector<t_function*>> func_map_;
 
@@ -757,14 +759,15 @@ void t_py_generator::generate_json_reader(
  * @param tprogram The program to generate
  */
 void t_py_generator::init_generator() {
-  // Make output directory
+  // Make output directory structure
   string module = get_real_py_module(program_);
-  package_dir_ = get_out_dir();
-  assert(package_dir_.back() == '/');
+  package_dir_ = context_.is_out_path_absolute()
+      ? get_out_path()
+      : format_abs_path(get_out_dir());
+  boost::filesystem::create_directory(package_dir_);
   while (true) {
-    // TODO: Do better error checking here.
     boost::filesystem::create_directory(package_dir_);
-    std::ofstream init_py((package_dir_ + "__init__.py").c_str());
+    boost::filesystem::ofstream init_py(package_dir_ / "__init__.py");
     init_py << py_autogen_comment();
     init_py.close();
     if (module.empty()) {
@@ -772,29 +775,27 @@ void t_py_generator::init_generator() {
     }
     string::size_type pos = module.find('.');
     if (pos == string::npos) {
-      package_dir_ += module;
-      package_dir_ += "/";
+      package_dir_ /= module;
       module.clear();
     } else {
-      package_dir_ += module.substr(0, pos);
-      package_dir_ += "/";
+      package_dir_ /= module.substr(0, pos);
       module.erase(0, pos + 1);
     }
   }
 
   // Make output file
-  string f_types_name = package_dir_ + "ttypes.py";
-  f_types_.open(f_types_name.c_str());
-  record_genfile(f_types_name);
+  auto f_types_path = package_dir_ / "ttypes.py";
+  f_types_.open(f_types_path);
+  record_genfile(f_types_path);
 
-  string f_consts_name = package_dir_ + "constants.py";
-  f_consts_.open(f_consts_name.c_str());
-  record_genfile(f_consts_name);
+  auto f_consts_path = package_dir_ / "constants.py";
+  f_consts_.open(f_consts_path);
+  record_genfile(f_consts_path);
 
-  string f_init_name = package_dir_ + "__init__.py";
-  ofstream f_init;
-  f_init.open(f_init_name.c_str());
-  record_genfile(f_init_name);
+  auto f_init_path = package_dir_ / "__init__.py";
+  boost::filesystem::ofstream f_init;
+  f_init.open(f_init_path);
+  record_genfile(f_init_path);
   f_init << py_autogen_comment() << "__all__ = ['ttypes', 'constants'";
   for (const auto* tservice : program_->services()) {
     f_init << ", '" << tservice->get_name() << "'";
@@ -2050,10 +2051,10 @@ void t_py_generator::generate_py_struct_writer(
  * @param tservice The service definition
  */
 void t_py_generator::generate_service(const t_service* tservice) {
-  string f_service_name =
-      package_dir_ + rename_reserved_keywords(service_name_) + ".py";
-  f_service_.open(f_service_name.c_str());
-  record_genfile(f_service_name);
+  string f_service_filename = rename_reserved_keywords(service_name_) + ".py";
+  auto f_service_path = package_dir_ / f_service_filename;
+  f_service_.open(f_service_path);
+  record_genfile(f_service_path);
 
   f_service_ << py_autogen_comment() << endl << py_imports() << endl;
 
@@ -2634,10 +2635,11 @@ void t_py_generator::generate_service_client(const t_service* tservice) {
  * @param tservice The service to generate a remote for.
  */
 void t_py_generator::generate_service_remote(const t_service* tservice) {
-  string f_remote_name = package_dir_ + service_name_ + "-remote";
-  ofstream f_remote;
-  f_remote.open(f_remote_name.c_str());
-  record_genfile(f_remote_name);
+  string f_remote_filename = service_name_ + "-remote";
+  auto f_remote_path = package_dir_ / f_remote_filename;
+  boost::filesystem::ofstream f_remote;
+  f_remote.open(f_remote_path);
+  record_genfile(f_remote_path);
 
   f_remote << "#!/usr/bin/env python\n"
            << py_autogen_comment()
@@ -2729,7 +2731,7 @@ void t_py_generator::generate_service_remote(const t_service* tservice) {
   f_remote.close();
 
   // Make file executable
-  mark_file_executable(f_remote_name);
+  mark_file_executable(f_remote_path);
 }
 
 /**
@@ -2738,10 +2740,11 @@ void t_py_generator::generate_service_remote(const t_service* tservice) {
  * @param tservice The service to generate a fuzzer for.
  */
 void t_py_generator::generate_service_fuzzer(const t_service* /*tservice*/) {
-  string f_fuzzer_name = package_dir_ + service_name_ + "-fuzzer";
-  ofstream f_fuzzer;
-  f_fuzzer.open(f_fuzzer_name.c_str());
-  record_genfile(f_fuzzer_name);
+  string f_fuzzer_filename = service_name_ + "-fuzzer";
+  auto f_fuzzer_path = package_dir_ / f_fuzzer_filename;
+  boost::filesystem::ofstream f_fuzzer;
+  f_fuzzer.open(f_fuzzer_path);
+  record_genfile(f_fuzzer_path);
 
   f_fuzzer << "#!/usr/bin/env python\n"
            << py_autogen_comment()
@@ -2766,7 +2769,7 @@ void t_py_generator::generate_service_fuzzer(const t_service* /*tservice*/) {
            << rename_reserved_keywords(service_name_)
            << ", ttypes, constants)\n";
   f_fuzzer.close();
-  mark_file_executable(f_fuzzer_name);
+  mark_file_executable(f_fuzzer_path);
 }
 
 /**

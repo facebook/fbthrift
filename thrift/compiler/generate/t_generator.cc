@@ -20,6 +20,7 @@
 #include <utility>
 
 #include <boost/algorithm/string/split.hpp>
+#include <boost/filesystem.hpp>
 #include <fmt/core.h>
 
 namespace apache {
@@ -31,11 +32,13 @@ t_generation_context::t_generation_context(
     : out_path_(std::move(out_path)),
       is_out_path_absolute_(is_out_path_absolute),
       source_mgr_(sm) {
+  boost::filesystem::path path = {out_path_};
   if (!out_path_.empty()) {
     if (!(out_path_.back() == '/' || out_path_.back() == '\\')) {
-      out_path_.push_back('/');
+      path += boost::filesystem::path::preferred_separator;
     }
   }
+  out_path_ = path.make_preferred().string();
 }
 
 t_generator::t_generator(t_program* program, t_generation_context context)
