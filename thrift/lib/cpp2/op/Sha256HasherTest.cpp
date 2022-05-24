@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp2/hash/DeterministicHash.h>
 #include <thrift/lib/cpp2/op/Sha256Hasher.h>
+#include <thrift/lib/rust/deterministic_hash/src/tests/gen-cpp2/test_structs_constants.h>
+#include <thrift/lib/rust/deterministic_hash/src/tests/gen-cpp2/test_structs_types.h>
+#include <thrift/lib/rust/deterministic_hash/src/tests/gen-cpp2/test_structs_types_custom_protocol.h>
 
 #include <cstdint>
 
 #include <folly/Range.h>
 #include <folly/io/IOBuf.h>
 #include <folly/portability/GTest.h>
+
+using apache::thrift::hash::deterministic_hash;
 
 namespace apache {
 namespace thrift {
@@ -181,6 +187,64 @@ TEST(Sha256HasherTest, checkLess) {
   hasher3.finalize();
   EXPECT_FALSE(hasher1 < hasher3);
   EXPECT_FALSE(hasher3 < hasher1);
+}
+
+TEST(Sha256HasherTest, e2eSimpleStruct) {
+  SimpleStruct1 s;
+  s.byte_() = 8;
+  s.i_16() = 12;
+  s.i_32() = 1;
+  s.i_64() = 2;
+  s.f_32() = 1.0;
+  s.f_64() = 2.0;
+  s.str_with_value() = "abc";
+  s.str_empty() = "";
+  s.bool_true() = true;
+  s.bool_false() = false;
+  s.binary_() = {{1, 2, 3}};
+  auto result = hash::deterministic_hash<Sha256Hasher>(s);
+  std::array<std::uint8_t, 32> expectedHash;
+  for (size_t i = 0;
+       i < test_structs_constants::SimpleStructSha256Hash().size();
+       i++) {
+    expectedHash[i] = test_structs_constants::SimpleStructSha256Hash()[i];
+  }
+  EXPECT_EQ(result, expectedHash);
+}
+
+TEST(Sha256HasherTest, e2eComplexStruct) {
+  ComplexStruct s;
+
+  s.l() = {"a", "ab", "abc"};
+  s.s() = {"a", "ab", "abc"};
+  s.m() = {{"aa", "bb"}, {"cc", "dd"}, {"ee", "ff"}};
+  s.ml() = {
+      {"aa", {1, 2, 3}},
+      {"bb", {}},
+      {"cc", {3, 2}},
+      {"ee",
+       {
+           1,
+           2,
+           3,
+       }},
+      {"ff", {}}};
+
+  s.mm() = {
+      {"aa", {{1, 2}}},
+      {"bb", {}},
+      {"cc", {{2, 3}, {3, 2}}},
+      {"ee", {{3, 4}}},
+      {"ff", {}}};
+
+  auto result = hash::deterministic_hash<Sha256Hasher>(s);
+  std::array<std::uint8_t, 32> expectedHash;
+  for (size_t i = 0;
+       i < test_structs_constants::ComplexStructSha256Hash().size();
+       i++) {
+    expectedHash[i] = test_structs_constants::ComplexStructSha256Hash()[i];
+  }
+  EXPECT_EQ(result, expectedHash);
 }
 
 } // namespace op
