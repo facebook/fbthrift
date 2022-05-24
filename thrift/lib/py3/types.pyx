@@ -239,6 +239,9 @@ cdef class Union(Struct):
     def __iter__(self):
         yield from ()
 
+    def __dir__(self):
+        return tuple(super().__dir__()) + ("type", "value")
+
     def get_type(self):
         return self.type
 

@@ -26,6 +26,22 @@ class UnionTests(unittest.TestCase):
     def test_hashability(self) -> None:
         hash(Integers())
 
+    def test_union_dir(self) -> None:
+        self.assertEqual(
+            dir(Integers()),
+            [
+                "digits",
+                "large",
+                "medium",
+                "name_",
+                "small",
+                "tiny",
+                "type",
+                "unbounded",
+                "value",
+            ],
+        )
+
     def test_union_enum_dir(self) -> None:
         contents = dir(Integers.Type)
         self.assertEqual(len(contents), 4 + len(Integers.Type))
