@@ -43,15 +43,15 @@ enum Context<T: Hasher> {
     Unordered(Vec<T::Output>),
 }
 
-pub struct DeterministicAccumulator<T: Hasher> {
-    generator: fn() -> T,
+pub struct DeterministicAccumulator<T: Hasher, F: Fn() -> T> {
+    generator: F,
     result: Option<T::Output>,
     error: Option<DeterministicAccumulatorError>,
     context: Vec<Context<T>>,
 }
 
-impl<T: Hasher> DeterministicAccumulator<T> {
-    pub fn new(generator: fn() -> T) -> DeterministicAccumulator<T> {
+impl<T: Hasher, F: Fn() -> T> DeterministicAccumulator<T, F> {
+    pub fn new(generator: F) -> DeterministicAccumulator<T, F> {
         DeterministicAccumulator {
             generator,
             result: None,
@@ -184,8 +184,50 @@ pub trait Hashable<H: Hasher> {
     fn add_to_hasher(&self, hasher: &mut H);
 }
 
+impl<H: Hasher> Hashable<H> for bool {
+    fn add_to_hasher(&self, hasher: &mut H) {
+        hasher.combine_bool(*self);
+    }
+}
+
 impl<H: Hasher> Hashable<H> for i8 {
     fn add_to_hasher(&self, hasher: &mut H) {
         hasher.combine_i8(*self);
+    }
+}
+
+impl<H: Hasher> Hashable<H> for i16 {
+    fn add_to_hasher(&self, hasher: &mut H) {
+        hasher.combine_i16(*self);
+    }
+}
+
+impl<H: Hasher> Hashable<H> for i32 {
+    fn add_to_hasher(&self, hasher: &mut H) {
+        hasher.combine_i32(*self);
+    }
+}
+
+impl<H: Hasher> Hashable<H> for i64 {
+    fn add_to_hasher(&self, hasher: &mut H) {
+        hasher.combine_i64(*self);
+    }
+}
+
+impl<H: Hasher> Hashable<H> for f32 {
+    fn add_to_hasher(&self, hasher: &mut H) {
+        hasher.combine_f32(*self);
+    }
+}
+
+impl<H: Hasher> Hashable<H> for f64 {
+    fn add_to_hasher(&self, hasher: &mut H) {
+        hasher.combine_f64(*self);
+    }
+}
+
+impl<H: Hasher> Hashable<H> for &[u8] {
+    fn add_to_hasher(&self, hasher: &mut H) {
+        hasher.combine_bytes(*self);
     }
 }

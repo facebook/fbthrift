@@ -15,9 +15,26 @@
  */
 
 pub mod deterministic_accumulator;
+pub mod deterministic_protocol;
 pub mod hasher;
+use crate::deterministic_protocol::DeterministicProtocolSerializer;
+use anyhow::Result;
+use fbthrift::protocol::ProtocolWriter;
+use fbthrift::Serialize;
 
 pub use crate::deterministic_accumulator::{
     DeterministicAccumulator, DeterministicAccumulatorError,
 };
 pub use crate::hasher::{Hasher, Sha256Hasher};
+pub fn deterministic_hash<
+    H: Hasher + Default,
+    F: Fn() -> H,
+    S: Serialize<DeterministicProtocolSerializer<H, F>>,
+>(
+    data: &S,
+    hasher_generator: F,
+) -> Result<H::Output> {
+    let mut protocol_writer = DeterministicProtocolSerializer::new(hasher_generator);
+    data.write(&mut protocol_writer);
+    protocol_writer.finish()
+}

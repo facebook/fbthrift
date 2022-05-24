@@ -24,7 +24,7 @@ pub trait Hasher {
     fn combine_i64(&mut self, value: i64);
     fn combine_f32(&mut self, value: f32);
     fn combine_f64(&mut self, value: f64);
-    fn combine_bytes(&mut self, value: &mut [u8]);
+    fn combine_bytes(&mut self, value: &[u8]);
     // fn combine(&mut self,const folly::IOBuf&mut );
     fn combine_hasher(&mut self, value: &Self::Output);
 }
@@ -35,8 +35,8 @@ pub struct Sha256Hasher {
     context: Context,
 }
 
-impl Sha256Hasher {
-    pub fn new() -> Sha256Hasher {
+impl Default for Sha256Hasher {
+    fn default() -> Self {
         Sha256Hasher {
             context: Context::new(&SHA256),
         }
@@ -77,7 +77,7 @@ impl Hasher for Sha256Hasher {
     fn combine_f64(&mut self, value: f64) {
         self.context.update(&value.to_le_bytes())
     }
-    fn combine_bytes(&mut self, value: &mut [u8]) {
+    fn combine_bytes(&mut self, value: &[u8]) {
         self.context.update(value)
     }
     // fn combine(self: &mutself,Sha256Hasherconst folly::IOBuf&mut);

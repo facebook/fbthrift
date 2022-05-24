@@ -14,8 +14,17 @@
  * limitations under the License.
  */
 
-struct TestSkipV2 {
+struct SimpleStruct1 {
+  1: i32 i1;
+  2: i64 i2;
+  3: float f1;
+  4: double f2;
+}
+
+struct ComplexStruct {
   1: list<string> l;
   2: set<string> s;
   3: map<string, string> m;
+  4: map<string, list<i32>> ml;
+  5: map<string, map<i32, i32>> mm;
 }

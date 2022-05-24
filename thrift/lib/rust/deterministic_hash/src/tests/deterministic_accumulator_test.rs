@@ -22,14 +22,14 @@ use fbthrift_deterministic_hash::{
 
 #[test]
 fn deterministic_accumulator_combine_one_value() {
-    let mut da = DeterministicAccumulator::<Sha256Hasher>::new(Sha256Hasher::new);
+    let mut da = DeterministicAccumulator::new(Sha256Hasher::default);
     da.combine(5i8);
     assert!(da.get_result().is_ok(), "no error expected");
 }
 
 #[test]
 fn deterministic_accumulator_test_unordered() {
-    let mut da1 = DeterministicAccumulator::<Sha256Hasher>::new(Sha256Hasher::new);
+    let mut da1 = DeterministicAccumulator::new(Sha256Hasher::default);
     da1.begin_unordered();
     da1.combine(1i8);
     da1.combine(2i8);
@@ -37,7 +37,7 @@ fn deterministic_accumulator_test_unordered() {
     da1.combine(1i8);
     da1.end_unordered();
 
-    let mut da2 = DeterministicAccumulator::<Sha256Hasher>::new(Sha256Hasher::new);
+    let mut da2 = DeterministicAccumulator::new(Sha256Hasher::default);
     da2.begin_unordered();
     da2.combine(3i8);
     da2.combine(1i8);
@@ -54,7 +54,7 @@ fn deterministic_accumulator_test_unordered() {
 
 #[test]
 fn deterministic_accumulator_test_ordered() {
-    let mut da1 = DeterministicAccumulator::<Sha256Hasher>::new(Sha256Hasher::new);
+    let mut da1 = DeterministicAccumulator::new(Sha256Hasher::default);
     da1.begin_ordered();
     da1.combine(1i8);
     da1.combine(2i8);
@@ -62,7 +62,7 @@ fn deterministic_accumulator_test_ordered() {
     da1.combine(1i8);
     da1.end_ordered();
 
-    let mut da2 = DeterministicAccumulator::<Sha256Hasher>::new(Sha256Hasher::new);
+    let mut da2 = DeterministicAccumulator::new(Sha256Hasher::default);
     da2.begin_ordered();
     da2.combine(3i8);
     da2.combine(1i8);
@@ -84,7 +84,7 @@ fn deterministic_accumulator_test_nested() {
     //  1: list<i64> f1 = [1, 2, 3];
     //  2: set<i64>  f2 = {4, 5, 6};
     // }
-    let mut acc = DeterministicAccumulator::<Sha256Hasher>::new(Sha256Hasher::new);
+    let mut acc = DeterministicAccumulator::new(Sha256Hasher::default);
     acc.begin_unordered(); // struct data begin
     acc.begin_ordered(); // field  f1   begin
     acc.combine(TType::List as i8); // field  f1   type
@@ -125,7 +125,7 @@ fn deterministic_accumulator_test_nested() {
 
 #[test]
 fn deterministic_accumulator_end_ordered_on_empty() {
-    let mut da = DeterministicAccumulator::<Sha256Hasher>::new(Sha256Hasher::new);
+    let mut da = DeterministicAccumulator::new(Sha256Hasher::default);
     da.end_ordered();
     assert_eq!(
         da.get_result()
@@ -139,7 +139,7 @@ fn deterministic_accumulator_end_ordered_on_empty() {
 
 #[test]
 fn deterministic_accumulator_end_unordered_on_empty() {
-    let mut da = DeterministicAccumulator::<Sha256Hasher>::new(Sha256Hasher::new);
+    let mut da = DeterministicAccumulator::new(Sha256Hasher::default);
     da.end_unordered();
     assert_eq!(
         da.get_result()
@@ -153,7 +153,7 @@ fn deterministic_accumulator_end_unordered_on_empty() {
 
 #[test]
 fn deterministic_accumulator_end_unordered_on_ordered() {
-    let mut da = DeterministicAccumulator::<Sha256Hasher>::new(Sha256Hasher::new);
+    let mut da = DeterministicAccumulator::new(Sha256Hasher::default);
     da.begin_ordered();
     da.end_unordered();
     assert_eq!(
@@ -168,7 +168,7 @@ fn deterministic_accumulator_end_unordered_on_ordered() {
 
 #[test]
 fn deterministic_accumulator_end_ordered_on_unordered() {
-    let mut da = DeterministicAccumulator::<Sha256Hasher>::new(Sha256Hasher::new);
+    let mut da = DeterministicAccumulator::new(Sha256Hasher::default);
     da.begin_unordered();
     da.end_ordered();
     assert_eq!(
