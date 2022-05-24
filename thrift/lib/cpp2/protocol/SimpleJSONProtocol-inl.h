@@ -17,8 +17,6 @@
 #ifndef THRIFT2_PROTOCOL_TSIMPLEJSONPROTOCOL_TCC_
 #define THRIFT2_PROTOCOL_TSIMPLEJSONPROTOCOL_TCC_ 1
 
-#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
-
 #include <limits>
 #include <string>
 

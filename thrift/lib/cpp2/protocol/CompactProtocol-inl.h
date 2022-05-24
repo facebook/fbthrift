@@ -17,8 +17,6 @@
 #ifndef THRIFT2_PROTOCOL_COMPACTPROTOCOL_TCC_
 #define THRIFT2_PROTOCOL_COMPACTPROTOCOL_TCC_ 1
 
-#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-
 #include <limits>
 
 #include <thrift/lib/cpp/util/VarintUtils.h>

@@ -16,8 +16,6 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
-
 #include <type_traits>
 
 #include <folly/Traits.h>
