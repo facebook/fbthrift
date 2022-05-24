@@ -84,17 +84,18 @@ struct Definition {
   // For example, only annotations explicitly marked with '@scope.Schema' are
   // present in the runtime schema, while all annotations are present in the AST.
   //
-  // TODO(afuller): Consider supporting unstructured annotations for
-  // backward compatibility, by documenting and populating a map<string, string>
+  // TODO(afuller): Consider supporting unstructured annotations for backward
+  // compatibility, by documenting and populating a map<string, string>
   // pseudo-structured annotation value.
   3: id.AnnotationIds annotations;
 }
 
 // A Thrift enum value.
 //
-// enum ... {
-//   {definition.name} = {value}
-// }
+//     enum ... {
+//       {definition.name} = {value}
+//     }
+//
 struct EnumValue {
   // The definition attributes.
   @thrift.Mixin
@@ -108,7 +109,8 @@ struct EnumValue {
 
 // A Thrift enum.
 //
-// enum {definition.name} { ... values ... }
+//     enum {definition.name} { ... values ... }
+//
 struct Enum {
   // The definition attributes.
   @thrift.Mixin
@@ -135,7 +137,7 @@ enum FieldQualifier {
 
 // A Thrift field.
 //
-// {id}: {qualifier} {type} {definition.name} = {customDefault}
+//     {id}: {qualifier} {type} {definition.name} = {customDefault}
 //
 struct Field {
   // The static ID specified for the field.
@@ -175,7 +177,8 @@ typedef list<Field> Fields
 
 // A Thrift struct.
 //
-// struct {definition.name} { ... fields ... }
+//     struct {definition.name} { ... fields ... }
+//
 struct Struct {
   // The definition attributes.
   @thrift.Mixin
@@ -189,7 +192,8 @@ struct Struct {
 
 // A Thrift union.
 //
-// union {definition.name} { ... fields ... }
+//   union {definition.name} { ... fields ... }
+//
 struct Union {
   // The definition attributes.
   @thrift.Mixin
@@ -203,7 +207,8 @@ struct Union {
 
 // A Thrift exception.
 //
-// exception {definition.name} { ... fields ... }
+//   exception {definition.name} { ... fields ... }
+//
 struct Exception {
   // The definition attributes.
   @thrift.Mixin
