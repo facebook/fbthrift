@@ -111,6 +111,11 @@ typedef ExternId ProtocolId
 @thrift.Experimental // TODO(afuller): Make strong.
 typedef ExternId TypeId
 
+// The id of an externally stored definition.
+// See 'schema.thrift'.
+@thrift.Experimental // TODO(afuller): Make strong.
+typedef ExternId DefinitionId
+
 // An unordered set of value ids, that can contain *at most one* value
 // of any type.
 @thrift.Experimental // TODO(afuller): Adapt!

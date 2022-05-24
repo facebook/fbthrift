@@ -15,6 +15,7 @@
  */
 
 include "thrift/annotation/thrift.thrift"
+include "thrift/lib/thrift/any.thrift"
 include "thrift/lib/thrift/id.thrift"
 include "thrift/lib/thrift/standard.thrift"
 include "thrift/lib/thrift/type.thrift"
@@ -210,3 +211,9 @@ struct Exception {
   // Changing the order of the fields is always backward compatible.
   2: Fields fields;
 }
+
+// A list of definitions (Structs, Enums, etc), accessible by DefinitionId.
+//
+// TODO(afuller): As this can only be one of a fixed set of types, consider
+// assing 'union types' to Thrift and use that instead of Any.
+typedef any.AnyValueList DefinitionList
