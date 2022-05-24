@@ -182,13 +182,31 @@ folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
       std::make_unique<SemiFutureCallback>(std::move(promise), channel_),
       rpcKind);
   return std::move(future)
-      .deferValue([serviceAndFunction = std::move(serviceAndFunction)](
-                      ClientReceiveState&& state) {
+      .deferValue([serviceAndFunction = std::move(serviceAndFunction),
+                   protocol =
+                       getChannelProtocolId()](ClientReceiveState&& state) {
         if (state.isException()) {
           state.exception().throw_exception();
         }
+        ContextStack* ctx = state.ctx();
+        if (ctx) {
+          ctx->preRead();
+        }
         OmniClientResponseWithHeaders resp;
         if (state.messageType() == MessageType::T_REPLY) {
+          SerializedMessage smsg;
+          smsg.protocolType =
+              apache::thrift::protocol::PROTOCOL_TYPES(protocol);
+          smsg.buffer = state.serializedResponse().buffer.get();
+          if (ctx) {
+            ctx->onReadData(smsg);
+            ctx->postRead(
+                state.header(),
+                state.serializedResponse()
+                    .buffer
+                    ->computeChainDataLength()); // TODO move this call
+                                                 // to inside the python code
+          }
           resp.buf = std::move(state.serializedResponse().buffer);
         } else if (state.messageType() == MessageType::T_EXCEPTION) {
           resp.buf = folly::makeUnexpected(deserializeApplicationException(
@@ -248,6 +266,22 @@ void OmniClient::sendImpl(
   RequestCallback::Context callbackContext;
   callbackContext.protocolId = channel_->getProtocolId();
   callbackContext.ctx = std::move(ctx);
+
+  if (callbackContext.ctx) {
+    callbackContext.ctx->preWrite();
+  }
+
+  SerializedMessage smsg;
+  smsg.protocolType =
+      apache::thrift::protocol::PROTOCOL_TYPES(getChannelProtocolId());
+  smsg.buffer = args.get();
+  smsg.methodName = functionName;
+  if (callbackContext.ctx) {
+    callbackContext.ctx->onWriteData(smsg);
+    callbackContext.ctx->postWrite(
+        args->computeChainDataLength()); // TODO get data length from python
+                                         // serialize call
+  }
 
   SerializedRequest serializedRequest(std::move(args));
 
