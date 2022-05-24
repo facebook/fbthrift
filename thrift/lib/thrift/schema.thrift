@@ -39,6 +39,9 @@ cpp_include "<thrift/lib/cpp/FieldId.h>"
 @thrift.v1alpha
 package "facebook.com/thrift/type"
 
+// A list of parsed packages, accessible via a `PackageId`.
+typedef list<standard.UriStruct> PackageList
+
 // The attributes that can be associated with any Thrift definition.
 struct Definition {
   // The un-scoped 'name' for this definition.
