@@ -93,7 +93,6 @@ void diagnostics_engine::do_report(
        std::move(msg),
        std::move(file_name),
        static_cast<int>(line),
-       legacy_token(),
        std::move(name)});
 }
 

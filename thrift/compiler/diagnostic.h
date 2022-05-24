@@ -40,11 +40,6 @@ enum class diagnostic_level {
   debug,
 };
 
-// TODO: remove
-struct legacy_token {
-  explicit legacy_token() = default;
-};
-
 /**
  * A diagnostic message.
  */
@@ -64,7 +59,6 @@ class diagnostic {
       std::string message,
       std::string file,
       int line = 0,
-      legacy_token = legacy_token(),
       std::string name = "")
       : level_(level),
         message_(std::move(message)),

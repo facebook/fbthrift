@@ -115,43 +115,31 @@ class diagnostic_context : public diagnostics_engine,
   void report(
       diagnostic_level level,
       int lineno,
-      legacy_token token,
       std::string text,
       std::string name = "") {
-    report(
-        {level,
-         std::move(text),
-         program().path(),
-         lineno,
-         token,
-         std::move(name)});
+    report({level, std::move(text), program().path(), lineno, std::move(name)});
   }
 
   template <typename With, typename = if_with<With>>
   void report(
-      diagnostic_level level,
-      int lineno,
-      legacy_token token,
-      std::string name,
-      With&& with) {
+      diagnostic_level level, int lineno, std::string name, With&& with) {
     std::ostringstream o;
     with(static_cast<std::ostream&>(o));
-    report({level, o.str(), program().path(), lineno, token, std::move(name)});
+    report({level, o.str(), program().path(), lineno, std::move(name)});
   }
 
   template <typename With, typename = if_with<With>>
-  void report(
-      diagnostic_level level, int lineno, legacy_token token, With&& with) {
-    report(level, lineno, std::move(token), {}, std::forward<With>(with));
+  void report(diagnostic_level level, int lineno, With&& with) {
+    report(level, lineno, {}, std::forward<With>(with));
   }
 
   void report(diagnostic_level level, const t_node& node, std::string msg) {
-    report(level, node.lineno(), legacy_token(), std::move(msg));
+    report(level, node.lineno(), std::move(msg));
   }
 
   template <typename With, typename = if_with<With>>
   void report(diagnostic_level level, const t_node& node, With&& with) {
-    report(level, node.lineno(), legacy_token(), std::forward<With>(with));
+    report(level, node.lineno(), std::forward<With>(with));
   }
 
   void report(
@@ -159,8 +147,7 @@ class diagnostic_context : public diagnostics_engine,
       std::string name,
       const t_node& node,
       std::string msg) {
-    report(
-        level, node.lineno(), legacy_token(), std::move(msg), std::move(name));
+    report(level, node.lineno(), std::move(msg), std::move(name));
   }
 
   template <typename With>
@@ -188,15 +175,13 @@ class diagnostic_context : public diagnostics_engine,
       With&& with) {
     std::ostringstream o;
     with(static_cast<std::ostream&>(o));
-    report(
-        {level, o.str(), std::move(path), node.lineno(), legacy_token(), {}});
+    report({level, o.str(), std::move(path), node.lineno(), {}});
   }
 
   template <typename With>
   void report(diagnostic_level level, With&& with) {
     assert(current() != nullptr);
-    report(
-        level, current()->lineno(), legacy_token(), std::forward<With>(with));
+    report(level, current()->lineno(), std::forward<With>(with));
   }
 
   template <typename... Args>

@@ -30,7 +30,6 @@ class DiagnosticMessage(NamedTuple):
     level: DiagnosticLevel
     filename: str
     lineno: int
-    last_token: str
     message: str
 
 def thrift_compile(

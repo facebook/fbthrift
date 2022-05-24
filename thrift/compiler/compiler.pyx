@@ -51,8 +51,7 @@ cdef extern from "thrift/compiler/compiler.h" namespace "apache::thrift::compile
 
 DiagnosticMessage = namedtuple(
     'DiagnosticMessage',
-    # TODO: remove last_token
-    ['level', 'filename', 'lineno', 'last_token', 'message']
+    ['level', 'filename', 'lineno', 'message']
 )
 
 def thrift_compile(vector[string] args):
@@ -67,7 +66,6 @@ def thrift_compile(vector[string] args):
                 deref(it).level(),
                 deref(it).file(),
                 deref(it).lineno(),
-                "",
                 deref(it).message(),
             )
         )
