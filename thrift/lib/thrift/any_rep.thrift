@@ -18,7 +18,14 @@ include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/type.thrift"
 include "thrift/lib/thrift/standard.thrift"
 
-// Canonical underlying representation for Thrift: Any.
+// The **underlying representations** for Thrift: Any.
+//
+// The following definitions are provided as unadapted underlying
+// representations for 'public' adapted typedefs defined in 'any.thrift'.
+//
+// These definitions are named after their representations, using the form
+// '{name}{Type}. For example, for a 'public' exception `Foo`, the underlying
+// type would be `exception FooException`.
 package "facebook.com/thrift/type"
 
 namespace cpp2 apache.thrift.type
