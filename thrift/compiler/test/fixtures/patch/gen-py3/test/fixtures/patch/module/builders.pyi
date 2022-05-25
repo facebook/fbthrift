@@ -12,8 +12,8 @@ import thrift.py3.builder
 
 import facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
 import facebook.thrift.annotation.thrift.builders as _facebook_thrift_annotation_thrift_builders
-import facebook.thrift.op.patch.types as _facebook_thrift_op_patch_types
-import facebook.thrift.op.patch.builders as _facebook_thrift_op_patch_builders
+import apache.thrift.op.patch.types as _apache_thrift_op_patch_types
+import apache.thrift.op.patch.builders as _apache_thrift_op_patch_builders
 
 import test.fixtures.patch.module.types as _test_fixtures_patch_module_types
 

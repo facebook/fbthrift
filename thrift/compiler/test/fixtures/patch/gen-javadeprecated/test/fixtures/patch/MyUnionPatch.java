@@ -29,8 +29,8 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
   private static final TField OPTION1_FIELD_DESC = new TField("option1", TType.STRUCT, (short)1);
   private static final TField OPTION2_FIELD_DESC = new TField("option2", TType.STRUCT, (short)2);
 
-  public StringPatch option1;
-  public I32Patch option2;
+  public com.facebook.thrift.op.StringPatch option1;
+  public com.facebook.thrift.op.I32Patch option2;
   public static final int OPTION1 = 1;
   public static final int OPTION2 = 2;
 
@@ -41,9 +41,9 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(OPTION1, new FieldMetaData("option1", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, StringPatch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.StringPatch.class)));
     tmpMetaDataMap.put(OPTION2, new FieldMetaData("option2", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, I32Patch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.I32Patch.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -55,26 +55,26 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
   }
 
   public MyUnionPatch(
-      StringPatch option1,
-      I32Patch option2) {
+      com.facebook.thrift.op.StringPatch option1,
+      com.facebook.thrift.op.I32Patch option2) {
     this();
     this.option1 = option1;
     this.option2 = option2;
   }
 
   public static class Builder {
-    private StringPatch option1;
-    private I32Patch option2;
+    private com.facebook.thrift.op.StringPatch option1;
+    private com.facebook.thrift.op.I32Patch option2;
 
     public Builder() {
     }
 
-    public Builder setOption1(final StringPatch option1) {
+    public Builder setOption1(final com.facebook.thrift.op.StringPatch option1) {
       this.option1 = option1;
       return this;
     }
 
-    public Builder setOption2(final I32Patch option2) {
+    public Builder setOption2(final com.facebook.thrift.op.I32Patch option2) {
       this.option2 = option2;
       return this;
     }
@@ -107,11 +107,11 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
     return new MyUnionPatch(this);
   }
 
-  public StringPatch getOption1() {
+  public com.facebook.thrift.op.StringPatch getOption1() {
     return this.option1;
   }
 
-  public MyUnionPatch setOption1(StringPatch option1) {
+  public MyUnionPatch setOption1(com.facebook.thrift.op.StringPatch option1) {
     this.option1 = option1;
     return this;
   }
@@ -131,11 +131,11 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
     }
   }
 
-  public I32Patch getOption2() {
+  public com.facebook.thrift.op.I32Patch getOption2() {
     return this.option2;
   }
 
-  public MyUnionPatch setOption2(I32Patch option2) {
+  public MyUnionPatch setOption2(com.facebook.thrift.op.I32Patch option2) {
     this.option2 = option2;
     return this;
   }
@@ -161,7 +161,7 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
       if (__value == null) {
         unsetOption1();
       } else {
-        setOption1((StringPatch)__value);
+        setOption1((com.facebook.thrift.op.StringPatch)__value);
       }
       break;
 
@@ -169,7 +169,7 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
       if (__value == null) {
         unsetOption2();
       } else {
-        setOption2((I32Patch)__value);
+        setOption2((com.facebook.thrift.op.I32Patch)__value);
       }
       break;
 
@@ -257,7 +257,7 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
       {
         case OPTION1:
           if (__field.type == TType.STRUCT) {
-            this.option1 = new StringPatch();
+            this.option1 = new com.facebook.thrift.op.StringPatch();
             this.option1.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -265,7 +265,7 @@ public class MyUnionPatch implements TBase, java.io.Serializable, Cloneable, Com
           break;
         case OPTION2:
           if (__field.type == TType.STRUCT) {
-            this.option2 = new I32Patch();
+            this.option2 = new com.facebook.thrift.op.I32Patch();
             this.option2.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);

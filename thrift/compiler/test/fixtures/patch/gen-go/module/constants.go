@@ -11,7 +11,7 @@ import (
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
 	thrift0 "thrift/annotation/thrift"
-	patch1 "patch"
+	patch1 "thrift/lib/thrift/patch"
 
 )
 

@@ -15,7 +15,7 @@ from thrift.py3.reflection cimport (
 )
 
 cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
-cimport facebook.thrift.op.patch.types as _facebook_thrift_op_patch_types
+cimport apache.thrift.op.patch.types as _apache_thrift_op_patch_types
 
 cimport test.fixtures.patch.module.types as _test_fixtures_patch_module_types
 
@@ -411,7 +411,7 @@ cdef __StructSpec get_reflection__MyDataPatch():
         __FieldSpec._fbthrift_create(
             id=1,
             name="data1",
-            type=_facebook_thrift_op_patch_types.StringPatch,
+            type=_apache_thrift_op_patch_types.StringPatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -423,7 +423,7 @@ cdef __StructSpec get_reflection__MyDataPatch():
         __FieldSpec._fbthrift_create(
             id=2,
             name="data2",
-            type=_facebook_thrift_op_patch_types.I32Patch,
+            type=_apache_thrift_op_patch_types.I32Patch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -558,7 +558,7 @@ cdef __StructSpec get_reflection__MyUnionPatch():
         __FieldSpec._fbthrift_create(
             id=1,
             name="option1",
-            type=_facebook_thrift_op_patch_types.StringPatch,
+            type=_apache_thrift_op_patch_types.StringPatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -570,7 +570,7 @@ cdef __StructSpec get_reflection__MyUnionPatch():
         __FieldSpec._fbthrift_create(
             id=2,
             name="option2",
-            type=_facebook_thrift_op_patch_types.I32Patch,
+            type=_apache_thrift_op_patch_types.I32Patch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -717,7 +717,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=1,
             name="boolVal",
-            type=_facebook_thrift_op_patch_types.BoolPatch,
+            type=_apache_thrift_op_patch_types.BoolPatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -729,7 +729,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=2,
             name="byteVal",
-            type=_facebook_thrift_op_patch_types.BytePatch,
+            type=_apache_thrift_op_patch_types.BytePatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -741,7 +741,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=3,
             name="i16Val",
-            type=_facebook_thrift_op_patch_types.I16Patch,
+            type=_apache_thrift_op_patch_types.I16Patch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -753,7 +753,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=4,
             name="i32Val",
-            type=_facebook_thrift_op_patch_types.I32Patch,
+            type=_apache_thrift_op_patch_types.I32Patch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -765,7 +765,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=5,
             name="i64Val",
-            type=_facebook_thrift_op_patch_types.I64Patch,
+            type=_apache_thrift_op_patch_types.I64Patch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -777,7 +777,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=6,
             name="floatVal",
-            type=_facebook_thrift_op_patch_types.FloatPatch,
+            type=_apache_thrift_op_patch_types.FloatPatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -789,7 +789,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=7,
             name="doubleVal",
-            type=_facebook_thrift_op_patch_types.DoublePatch,
+            type=_apache_thrift_op_patch_types.DoublePatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -801,7 +801,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=8,
             name="stringVal",
-            type=_facebook_thrift_op_patch_types.StringPatch,
+            type=_apache_thrift_op_patch_types.StringPatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -813,7 +813,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=9,
             name="binaryVal",
-            type=_facebook_thrift_op_patch_types.BinaryPatch,
+            type=_apache_thrift_op_patch_types.BinaryPatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -837,7 +837,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=11,
             name="optBoolVal",
-            type=_facebook_thrift_op_patch_types.OptionalBoolPatch,
+            type=_apache_thrift_op_patch_types.OptionalBoolPatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -849,7 +849,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=12,
             name="optByteVal",
-            type=_facebook_thrift_op_patch_types.OptionalBytePatch,
+            type=_apache_thrift_op_patch_types.OptionalBytePatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -861,7 +861,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=13,
             name="optI16Val",
-            type=_facebook_thrift_op_patch_types.OptionalI16Patch,
+            type=_apache_thrift_op_patch_types.OptionalI16Patch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -873,7 +873,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=14,
             name="optI32Val",
-            type=_facebook_thrift_op_patch_types.OptionalI32Patch,
+            type=_apache_thrift_op_patch_types.OptionalI32Patch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -885,7 +885,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=15,
             name="optI64Val",
-            type=_facebook_thrift_op_patch_types.OptionalI64Patch,
+            type=_apache_thrift_op_patch_types.OptionalI64Patch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -897,7 +897,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=16,
             name="optFloatVal",
-            type=_facebook_thrift_op_patch_types.OptionalFloatPatch,
+            type=_apache_thrift_op_patch_types.OptionalFloatPatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -909,7 +909,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=17,
             name="optDoubleVal",
-            type=_facebook_thrift_op_patch_types.OptionalDoublePatch,
+            type=_apache_thrift_op_patch_types.OptionalDoublePatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -921,7 +921,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=18,
             name="optStringVal",
-            type=_facebook_thrift_op_patch_types.OptionalStringPatch,
+            type=_apache_thrift_op_patch_types.OptionalStringPatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -933,7 +933,7 @@ cdef __StructSpec get_reflection__MyStructPatch():
         __FieldSpec._fbthrift_create(
             id=19,
             name="optBinaryVal",
-            type=_facebook_thrift_op_patch_types.OptionalBinaryPatch,
+            type=_apache_thrift_op_patch_types.OptionalBinaryPatch,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,

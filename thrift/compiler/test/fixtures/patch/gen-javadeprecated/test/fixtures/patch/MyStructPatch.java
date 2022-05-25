@@ -51,25 +51,25 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
   private static final TField OPT_MAP_VAL_FIELD_DESC = new TField("optMapVal", TType.STRUCT, (short)23);
   private static final TField UNION_VAL_FIELD_DESC = new TField("unionVal", TType.STRUCT, (short)30);
 
-  public BoolPatch boolVal;
-  public BytePatch byteVal;
-  public I16Patch i16Val;
-  public I32Patch i32Val;
-  public I64Patch i64Val;
-  public FloatPatch floatVal;
-  public DoublePatch doubleVal;
-  public StringPatch stringVal;
-  public BinaryPatch binaryVal;
+  public com.facebook.thrift.op.BoolPatch boolVal;
+  public com.facebook.thrift.op.BytePatch byteVal;
+  public com.facebook.thrift.op.I16Patch i16Val;
+  public com.facebook.thrift.op.I32Patch i32Val;
+  public com.facebook.thrift.op.I64Patch i64Val;
+  public com.facebook.thrift.op.FloatPatch floatVal;
+  public com.facebook.thrift.op.DoublePatch doubleVal;
+  public com.facebook.thrift.op.StringPatch stringVal;
+  public com.facebook.thrift.op.BinaryPatch binaryVal;
   public MyDataValuePatch structVal;
-  public OptionalBoolPatch optBoolVal;
-  public OptionalBytePatch optByteVal;
-  public OptionalI16Patch optI16Val;
-  public OptionalI32Patch optI32Val;
-  public OptionalI64Patch optI64Val;
-  public OptionalFloatPatch optFloatVal;
-  public OptionalDoublePatch optDoubleVal;
-  public OptionalStringPatch optStringVal;
-  public OptionalBinaryPatch optBinaryVal;
+  public com.facebook.thrift.op.OptionalBoolPatch optBoolVal;
+  public com.facebook.thrift.op.OptionalBytePatch optByteVal;
+  public com.facebook.thrift.op.OptionalI16Patch optI16Val;
+  public com.facebook.thrift.op.OptionalI32Patch optI32Val;
+  public com.facebook.thrift.op.OptionalI64Patch optI64Val;
+  public com.facebook.thrift.op.OptionalFloatPatch optFloatVal;
+  public com.facebook.thrift.op.OptionalDoublePatch optDoubleVal;
+  public com.facebook.thrift.op.OptionalStringPatch optStringVal;
+  public com.facebook.thrift.op.OptionalBinaryPatch optBinaryVal;
   public OptionalMyDataValuePatch optStructVal;
   public OptionalMyStructField21Patch optListVal;
   public OptionalMyStructField22Patch optSetVal;
@@ -107,43 +107,43 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(BOOLVAL, new FieldMetaData("boolVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, BoolPatch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.BoolPatch.class)));
     tmpMetaDataMap.put(BYTEVAL, new FieldMetaData("byteVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, BytePatch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.BytePatch.class)));
     tmpMetaDataMap.put(I16VAL, new FieldMetaData("i16Val", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, I16Patch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.I16Patch.class)));
     tmpMetaDataMap.put(I32VAL, new FieldMetaData("i32Val", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, I32Patch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.I32Patch.class)));
     tmpMetaDataMap.put(I64VAL, new FieldMetaData("i64Val", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, I64Patch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.I64Patch.class)));
     tmpMetaDataMap.put(FLOATVAL, new FieldMetaData("floatVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, FloatPatch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.FloatPatch.class)));
     tmpMetaDataMap.put(DOUBLEVAL, new FieldMetaData("doubleVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, DoublePatch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.DoublePatch.class)));
     tmpMetaDataMap.put(STRINGVAL, new FieldMetaData("stringVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, StringPatch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.StringPatch.class)));
     tmpMetaDataMap.put(BINARYVAL, new FieldMetaData("binaryVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, BinaryPatch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.BinaryPatch.class)));
     tmpMetaDataMap.put(STRUCTVAL, new FieldMetaData("structVal", TFieldRequirementType.DEFAULT, 
         new StructMetaData(TType.STRUCT, MyDataValuePatch.class)));
     tmpMetaDataMap.put(OPTBOOLVAL, new FieldMetaData("optBoolVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, OptionalBoolPatch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalBoolPatch.class)));
     tmpMetaDataMap.put(OPTBYTEVAL, new FieldMetaData("optByteVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, OptionalBytePatch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalBytePatch.class)));
     tmpMetaDataMap.put(OPTI16VAL, new FieldMetaData("optI16Val", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, OptionalI16Patch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalI16Patch.class)));
     tmpMetaDataMap.put(OPTI32VAL, new FieldMetaData("optI32Val", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, OptionalI32Patch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalI32Patch.class)));
     tmpMetaDataMap.put(OPTI64VAL, new FieldMetaData("optI64Val", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, OptionalI64Patch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalI64Patch.class)));
     tmpMetaDataMap.put(OPTFLOATVAL, new FieldMetaData("optFloatVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, OptionalFloatPatch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalFloatPatch.class)));
     tmpMetaDataMap.put(OPTDOUBLEVAL, new FieldMetaData("optDoubleVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, OptionalDoublePatch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalDoublePatch.class)));
     tmpMetaDataMap.put(OPTSTRINGVAL, new FieldMetaData("optStringVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, OptionalStringPatch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalStringPatch.class)));
     tmpMetaDataMap.put(OPTBINARYVAL, new FieldMetaData("optBinaryVal", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, OptionalBinaryPatch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.OptionalBinaryPatch.class)));
     tmpMetaDataMap.put(OPTSTRUCTVAL, new FieldMetaData("optStructVal", TFieldRequirementType.DEFAULT, 
         new StructMetaData(TType.STRUCT, OptionalMyDataValuePatch.class)));
     tmpMetaDataMap.put(OPTLISTVAL, new FieldMetaData("optListVal", TFieldRequirementType.DEFAULT, 
@@ -165,25 +165,25 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
   }
 
   public MyStructPatch(
-      BoolPatch boolVal,
-      BytePatch byteVal,
-      I16Patch i16Val,
-      I32Patch i32Val,
-      I64Patch i64Val,
-      FloatPatch floatVal,
-      DoublePatch doubleVal,
-      StringPatch stringVal,
-      BinaryPatch binaryVal,
+      com.facebook.thrift.op.BoolPatch boolVal,
+      com.facebook.thrift.op.BytePatch byteVal,
+      com.facebook.thrift.op.I16Patch i16Val,
+      com.facebook.thrift.op.I32Patch i32Val,
+      com.facebook.thrift.op.I64Patch i64Val,
+      com.facebook.thrift.op.FloatPatch floatVal,
+      com.facebook.thrift.op.DoublePatch doubleVal,
+      com.facebook.thrift.op.StringPatch stringVal,
+      com.facebook.thrift.op.BinaryPatch binaryVal,
       MyDataValuePatch structVal,
-      OptionalBoolPatch optBoolVal,
-      OptionalBytePatch optByteVal,
-      OptionalI16Patch optI16Val,
-      OptionalI32Patch optI32Val,
-      OptionalI64Patch optI64Val,
-      OptionalFloatPatch optFloatVal,
-      OptionalDoublePatch optDoubleVal,
-      OptionalStringPatch optStringVal,
-      OptionalBinaryPatch optBinaryVal,
+      com.facebook.thrift.op.OptionalBoolPatch optBoolVal,
+      com.facebook.thrift.op.OptionalBytePatch optByteVal,
+      com.facebook.thrift.op.OptionalI16Patch optI16Val,
+      com.facebook.thrift.op.OptionalI32Patch optI32Val,
+      com.facebook.thrift.op.OptionalI64Patch optI64Val,
+      com.facebook.thrift.op.OptionalFloatPatch optFloatVal,
+      com.facebook.thrift.op.OptionalDoublePatch optDoubleVal,
+      com.facebook.thrift.op.OptionalStringPatch optStringVal,
+      com.facebook.thrift.op.OptionalBinaryPatch optBinaryVal,
       OptionalMyDataValuePatch optStructVal,
       OptionalMyStructField21Patch optListVal,
       OptionalMyStructField22Patch optSetVal,
@@ -217,25 +217,25 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
   }
 
   public static class Builder {
-    private BoolPatch boolVal;
-    private BytePatch byteVal;
-    private I16Patch i16Val;
-    private I32Patch i32Val;
-    private I64Patch i64Val;
-    private FloatPatch floatVal;
-    private DoublePatch doubleVal;
-    private StringPatch stringVal;
-    private BinaryPatch binaryVal;
+    private com.facebook.thrift.op.BoolPatch boolVal;
+    private com.facebook.thrift.op.BytePatch byteVal;
+    private com.facebook.thrift.op.I16Patch i16Val;
+    private com.facebook.thrift.op.I32Patch i32Val;
+    private com.facebook.thrift.op.I64Patch i64Val;
+    private com.facebook.thrift.op.FloatPatch floatVal;
+    private com.facebook.thrift.op.DoublePatch doubleVal;
+    private com.facebook.thrift.op.StringPatch stringVal;
+    private com.facebook.thrift.op.BinaryPatch binaryVal;
     private MyDataValuePatch structVal;
-    private OptionalBoolPatch optBoolVal;
-    private OptionalBytePatch optByteVal;
-    private OptionalI16Patch optI16Val;
-    private OptionalI32Patch optI32Val;
-    private OptionalI64Patch optI64Val;
-    private OptionalFloatPatch optFloatVal;
-    private OptionalDoublePatch optDoubleVal;
-    private OptionalStringPatch optStringVal;
-    private OptionalBinaryPatch optBinaryVal;
+    private com.facebook.thrift.op.OptionalBoolPatch optBoolVal;
+    private com.facebook.thrift.op.OptionalBytePatch optByteVal;
+    private com.facebook.thrift.op.OptionalI16Patch optI16Val;
+    private com.facebook.thrift.op.OptionalI32Patch optI32Val;
+    private com.facebook.thrift.op.OptionalI64Patch optI64Val;
+    private com.facebook.thrift.op.OptionalFloatPatch optFloatVal;
+    private com.facebook.thrift.op.OptionalDoublePatch optDoubleVal;
+    private com.facebook.thrift.op.OptionalStringPatch optStringVal;
+    private com.facebook.thrift.op.OptionalBinaryPatch optBinaryVal;
     private OptionalMyDataValuePatch optStructVal;
     private OptionalMyStructField21Patch optListVal;
     private OptionalMyStructField22Patch optSetVal;
@@ -245,47 +245,47 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     public Builder() {
     }
 
-    public Builder setBoolVal(final BoolPatch boolVal) {
+    public Builder setBoolVal(final com.facebook.thrift.op.BoolPatch boolVal) {
       this.boolVal = boolVal;
       return this;
     }
 
-    public Builder setByteVal(final BytePatch byteVal) {
+    public Builder setByteVal(final com.facebook.thrift.op.BytePatch byteVal) {
       this.byteVal = byteVal;
       return this;
     }
 
-    public Builder setI16Val(final I16Patch i16Val) {
+    public Builder setI16Val(final com.facebook.thrift.op.I16Patch i16Val) {
       this.i16Val = i16Val;
       return this;
     }
 
-    public Builder setI32Val(final I32Patch i32Val) {
+    public Builder setI32Val(final com.facebook.thrift.op.I32Patch i32Val) {
       this.i32Val = i32Val;
       return this;
     }
 
-    public Builder setI64Val(final I64Patch i64Val) {
+    public Builder setI64Val(final com.facebook.thrift.op.I64Patch i64Val) {
       this.i64Val = i64Val;
       return this;
     }
 
-    public Builder setFloatVal(final FloatPatch floatVal) {
+    public Builder setFloatVal(final com.facebook.thrift.op.FloatPatch floatVal) {
       this.floatVal = floatVal;
       return this;
     }
 
-    public Builder setDoubleVal(final DoublePatch doubleVal) {
+    public Builder setDoubleVal(final com.facebook.thrift.op.DoublePatch doubleVal) {
       this.doubleVal = doubleVal;
       return this;
     }
 
-    public Builder setStringVal(final StringPatch stringVal) {
+    public Builder setStringVal(final com.facebook.thrift.op.StringPatch stringVal) {
       this.stringVal = stringVal;
       return this;
     }
 
-    public Builder setBinaryVal(final BinaryPatch binaryVal) {
+    public Builder setBinaryVal(final com.facebook.thrift.op.BinaryPatch binaryVal) {
       this.binaryVal = binaryVal;
       return this;
     }
@@ -295,47 +295,47 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       return this;
     }
 
-    public Builder setOptBoolVal(final OptionalBoolPatch optBoolVal) {
+    public Builder setOptBoolVal(final com.facebook.thrift.op.OptionalBoolPatch optBoolVal) {
       this.optBoolVal = optBoolVal;
       return this;
     }
 
-    public Builder setOptByteVal(final OptionalBytePatch optByteVal) {
+    public Builder setOptByteVal(final com.facebook.thrift.op.OptionalBytePatch optByteVal) {
       this.optByteVal = optByteVal;
       return this;
     }
 
-    public Builder setOptI16Val(final OptionalI16Patch optI16Val) {
+    public Builder setOptI16Val(final com.facebook.thrift.op.OptionalI16Patch optI16Val) {
       this.optI16Val = optI16Val;
       return this;
     }
 
-    public Builder setOptI32Val(final OptionalI32Patch optI32Val) {
+    public Builder setOptI32Val(final com.facebook.thrift.op.OptionalI32Patch optI32Val) {
       this.optI32Val = optI32Val;
       return this;
     }
 
-    public Builder setOptI64Val(final OptionalI64Patch optI64Val) {
+    public Builder setOptI64Val(final com.facebook.thrift.op.OptionalI64Patch optI64Val) {
       this.optI64Val = optI64Val;
       return this;
     }
 
-    public Builder setOptFloatVal(final OptionalFloatPatch optFloatVal) {
+    public Builder setOptFloatVal(final com.facebook.thrift.op.OptionalFloatPatch optFloatVal) {
       this.optFloatVal = optFloatVal;
       return this;
     }
 
-    public Builder setOptDoubleVal(final OptionalDoublePatch optDoubleVal) {
+    public Builder setOptDoubleVal(final com.facebook.thrift.op.OptionalDoublePatch optDoubleVal) {
       this.optDoubleVal = optDoubleVal;
       return this;
     }
 
-    public Builder setOptStringVal(final OptionalStringPatch optStringVal) {
+    public Builder setOptStringVal(final com.facebook.thrift.op.OptionalStringPatch optStringVal) {
       this.optStringVal = optStringVal;
       return this;
     }
 
-    public Builder setOptBinaryVal(final OptionalBinaryPatch optBinaryVal) {
+    public Builder setOptBinaryVal(final com.facebook.thrift.op.OptionalBinaryPatch optBinaryVal) {
       this.optBinaryVal = optBinaryVal;
       return this;
     }
@@ -481,11 +481,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     return new MyStructPatch(this);
   }
 
-  public BoolPatch getBoolVal() {
+  public com.facebook.thrift.op.BoolPatch getBoolVal() {
     return this.boolVal;
   }
 
-  public MyStructPatch setBoolVal(BoolPatch boolVal) {
+  public MyStructPatch setBoolVal(com.facebook.thrift.op.BoolPatch boolVal) {
     this.boolVal = boolVal;
     return this;
   }
@@ -505,11 +505,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public BytePatch getByteVal() {
+  public com.facebook.thrift.op.BytePatch getByteVal() {
     return this.byteVal;
   }
 
-  public MyStructPatch setByteVal(BytePatch byteVal) {
+  public MyStructPatch setByteVal(com.facebook.thrift.op.BytePatch byteVal) {
     this.byteVal = byteVal;
     return this;
   }
@@ -529,11 +529,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public I16Patch getI16Val() {
+  public com.facebook.thrift.op.I16Patch getI16Val() {
     return this.i16Val;
   }
 
-  public MyStructPatch setI16Val(I16Patch i16Val) {
+  public MyStructPatch setI16Val(com.facebook.thrift.op.I16Patch i16Val) {
     this.i16Val = i16Val;
     return this;
   }
@@ -553,11 +553,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public I32Patch getI32Val() {
+  public com.facebook.thrift.op.I32Patch getI32Val() {
     return this.i32Val;
   }
 
-  public MyStructPatch setI32Val(I32Patch i32Val) {
+  public MyStructPatch setI32Val(com.facebook.thrift.op.I32Patch i32Val) {
     this.i32Val = i32Val;
     return this;
   }
@@ -577,11 +577,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public I64Patch getI64Val() {
+  public com.facebook.thrift.op.I64Patch getI64Val() {
     return this.i64Val;
   }
 
-  public MyStructPatch setI64Val(I64Patch i64Val) {
+  public MyStructPatch setI64Val(com.facebook.thrift.op.I64Patch i64Val) {
     this.i64Val = i64Val;
     return this;
   }
@@ -601,11 +601,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public FloatPatch getFloatVal() {
+  public com.facebook.thrift.op.FloatPatch getFloatVal() {
     return this.floatVal;
   }
 
-  public MyStructPatch setFloatVal(FloatPatch floatVal) {
+  public MyStructPatch setFloatVal(com.facebook.thrift.op.FloatPatch floatVal) {
     this.floatVal = floatVal;
     return this;
   }
@@ -625,11 +625,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public DoublePatch getDoubleVal() {
+  public com.facebook.thrift.op.DoublePatch getDoubleVal() {
     return this.doubleVal;
   }
 
-  public MyStructPatch setDoubleVal(DoublePatch doubleVal) {
+  public MyStructPatch setDoubleVal(com.facebook.thrift.op.DoublePatch doubleVal) {
     this.doubleVal = doubleVal;
     return this;
   }
@@ -649,11 +649,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public StringPatch getStringVal() {
+  public com.facebook.thrift.op.StringPatch getStringVal() {
     return this.stringVal;
   }
 
-  public MyStructPatch setStringVal(StringPatch stringVal) {
+  public MyStructPatch setStringVal(com.facebook.thrift.op.StringPatch stringVal) {
     this.stringVal = stringVal;
     return this;
   }
@@ -673,11 +673,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public BinaryPatch getBinaryVal() {
+  public com.facebook.thrift.op.BinaryPatch getBinaryVal() {
     return this.binaryVal;
   }
 
-  public MyStructPatch setBinaryVal(BinaryPatch binaryVal) {
+  public MyStructPatch setBinaryVal(com.facebook.thrift.op.BinaryPatch binaryVal) {
     this.binaryVal = binaryVal;
     return this;
   }
@@ -721,11 +721,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public OptionalBoolPatch getOptBoolVal() {
+  public com.facebook.thrift.op.OptionalBoolPatch getOptBoolVal() {
     return this.optBoolVal;
   }
 
-  public MyStructPatch setOptBoolVal(OptionalBoolPatch optBoolVal) {
+  public MyStructPatch setOptBoolVal(com.facebook.thrift.op.OptionalBoolPatch optBoolVal) {
     this.optBoolVal = optBoolVal;
     return this;
   }
@@ -745,11 +745,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public OptionalBytePatch getOptByteVal() {
+  public com.facebook.thrift.op.OptionalBytePatch getOptByteVal() {
     return this.optByteVal;
   }
 
-  public MyStructPatch setOptByteVal(OptionalBytePatch optByteVal) {
+  public MyStructPatch setOptByteVal(com.facebook.thrift.op.OptionalBytePatch optByteVal) {
     this.optByteVal = optByteVal;
     return this;
   }
@@ -769,11 +769,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public OptionalI16Patch getOptI16Val() {
+  public com.facebook.thrift.op.OptionalI16Patch getOptI16Val() {
     return this.optI16Val;
   }
 
-  public MyStructPatch setOptI16Val(OptionalI16Patch optI16Val) {
+  public MyStructPatch setOptI16Val(com.facebook.thrift.op.OptionalI16Patch optI16Val) {
     this.optI16Val = optI16Val;
     return this;
   }
@@ -793,11 +793,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public OptionalI32Patch getOptI32Val() {
+  public com.facebook.thrift.op.OptionalI32Patch getOptI32Val() {
     return this.optI32Val;
   }
 
-  public MyStructPatch setOptI32Val(OptionalI32Patch optI32Val) {
+  public MyStructPatch setOptI32Val(com.facebook.thrift.op.OptionalI32Patch optI32Val) {
     this.optI32Val = optI32Val;
     return this;
   }
@@ -817,11 +817,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public OptionalI64Patch getOptI64Val() {
+  public com.facebook.thrift.op.OptionalI64Patch getOptI64Val() {
     return this.optI64Val;
   }
 
-  public MyStructPatch setOptI64Val(OptionalI64Patch optI64Val) {
+  public MyStructPatch setOptI64Val(com.facebook.thrift.op.OptionalI64Patch optI64Val) {
     this.optI64Val = optI64Val;
     return this;
   }
@@ -841,11 +841,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public OptionalFloatPatch getOptFloatVal() {
+  public com.facebook.thrift.op.OptionalFloatPatch getOptFloatVal() {
     return this.optFloatVal;
   }
 
-  public MyStructPatch setOptFloatVal(OptionalFloatPatch optFloatVal) {
+  public MyStructPatch setOptFloatVal(com.facebook.thrift.op.OptionalFloatPatch optFloatVal) {
     this.optFloatVal = optFloatVal;
     return this;
   }
@@ -865,11 +865,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public OptionalDoublePatch getOptDoubleVal() {
+  public com.facebook.thrift.op.OptionalDoublePatch getOptDoubleVal() {
     return this.optDoubleVal;
   }
 
-  public MyStructPatch setOptDoubleVal(OptionalDoublePatch optDoubleVal) {
+  public MyStructPatch setOptDoubleVal(com.facebook.thrift.op.OptionalDoublePatch optDoubleVal) {
     this.optDoubleVal = optDoubleVal;
     return this;
   }
@@ -889,11 +889,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public OptionalStringPatch getOptStringVal() {
+  public com.facebook.thrift.op.OptionalStringPatch getOptStringVal() {
     return this.optStringVal;
   }
 
-  public MyStructPatch setOptStringVal(OptionalStringPatch optStringVal) {
+  public MyStructPatch setOptStringVal(com.facebook.thrift.op.OptionalStringPatch optStringVal) {
     this.optStringVal = optStringVal;
     return this;
   }
@@ -913,11 +913,11 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
     }
   }
 
-  public OptionalBinaryPatch getOptBinaryVal() {
+  public com.facebook.thrift.op.OptionalBinaryPatch getOptBinaryVal() {
     return this.optBinaryVal;
   }
 
-  public MyStructPatch setOptBinaryVal(OptionalBinaryPatch optBinaryVal) {
+  public MyStructPatch setOptBinaryVal(com.facebook.thrift.op.OptionalBinaryPatch optBinaryVal) {
     this.optBinaryVal = optBinaryVal;
     return this;
   }
@@ -1063,7 +1063,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetBoolVal();
       } else {
-        setBoolVal((BoolPatch)__value);
+        setBoolVal((com.facebook.thrift.op.BoolPatch)__value);
       }
       break;
 
@@ -1071,7 +1071,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetByteVal();
       } else {
-        setByteVal((BytePatch)__value);
+        setByteVal((com.facebook.thrift.op.BytePatch)__value);
       }
       break;
 
@@ -1079,7 +1079,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetI16Val();
       } else {
-        setI16Val((I16Patch)__value);
+        setI16Val((com.facebook.thrift.op.I16Patch)__value);
       }
       break;
 
@@ -1087,7 +1087,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetI32Val();
       } else {
-        setI32Val((I32Patch)__value);
+        setI32Val((com.facebook.thrift.op.I32Patch)__value);
       }
       break;
 
@@ -1095,7 +1095,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetI64Val();
       } else {
-        setI64Val((I64Patch)__value);
+        setI64Val((com.facebook.thrift.op.I64Patch)__value);
       }
       break;
 
@@ -1103,7 +1103,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetFloatVal();
       } else {
-        setFloatVal((FloatPatch)__value);
+        setFloatVal((com.facebook.thrift.op.FloatPatch)__value);
       }
       break;
 
@@ -1111,7 +1111,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetDoubleVal();
       } else {
-        setDoubleVal((DoublePatch)__value);
+        setDoubleVal((com.facebook.thrift.op.DoublePatch)__value);
       }
       break;
 
@@ -1119,7 +1119,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetStringVal();
       } else {
-        setStringVal((StringPatch)__value);
+        setStringVal((com.facebook.thrift.op.StringPatch)__value);
       }
       break;
 
@@ -1127,7 +1127,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetBinaryVal();
       } else {
-        setBinaryVal((BinaryPatch)__value);
+        setBinaryVal((com.facebook.thrift.op.BinaryPatch)__value);
       }
       break;
 
@@ -1143,7 +1143,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetOptBoolVal();
       } else {
-        setOptBoolVal((OptionalBoolPatch)__value);
+        setOptBoolVal((com.facebook.thrift.op.OptionalBoolPatch)__value);
       }
       break;
 
@@ -1151,7 +1151,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetOptByteVal();
       } else {
-        setOptByteVal((OptionalBytePatch)__value);
+        setOptByteVal((com.facebook.thrift.op.OptionalBytePatch)__value);
       }
       break;
 
@@ -1159,7 +1159,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetOptI16Val();
       } else {
-        setOptI16Val((OptionalI16Patch)__value);
+        setOptI16Val((com.facebook.thrift.op.OptionalI16Patch)__value);
       }
       break;
 
@@ -1167,7 +1167,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetOptI32Val();
       } else {
-        setOptI32Val((OptionalI32Patch)__value);
+        setOptI32Val((com.facebook.thrift.op.OptionalI32Patch)__value);
       }
       break;
 
@@ -1175,7 +1175,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetOptI64Val();
       } else {
-        setOptI64Val((OptionalI64Patch)__value);
+        setOptI64Val((com.facebook.thrift.op.OptionalI64Patch)__value);
       }
       break;
 
@@ -1183,7 +1183,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetOptFloatVal();
       } else {
-        setOptFloatVal((OptionalFloatPatch)__value);
+        setOptFloatVal((com.facebook.thrift.op.OptionalFloatPatch)__value);
       }
       break;
 
@@ -1191,7 +1191,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetOptDoubleVal();
       } else {
-        setOptDoubleVal((OptionalDoublePatch)__value);
+        setOptDoubleVal((com.facebook.thrift.op.OptionalDoublePatch)__value);
       }
       break;
 
@@ -1199,7 +1199,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetOptStringVal();
       } else {
-        setOptStringVal((OptionalStringPatch)__value);
+        setOptStringVal((com.facebook.thrift.op.OptionalStringPatch)__value);
       }
       break;
 
@@ -1207,7 +1207,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       if (__value == null) {
         unsetOptBinaryVal();
       } else {
-        setOptBinaryVal((OptionalBinaryPatch)__value);
+        setOptBinaryVal((com.facebook.thrift.op.OptionalBinaryPatch)__value);
       }
       break;
 
@@ -1621,7 +1621,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
       {
         case BOOLVAL:
           if (__field.type == TType.STRUCT) {
-            this.boolVal = new BoolPatch();
+            this.boolVal = new com.facebook.thrift.op.BoolPatch();
             this.boolVal.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1629,7 +1629,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case BYTEVAL:
           if (__field.type == TType.STRUCT) {
-            this.byteVal = new BytePatch();
+            this.byteVal = new com.facebook.thrift.op.BytePatch();
             this.byteVal.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1637,7 +1637,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case I16VAL:
           if (__field.type == TType.STRUCT) {
-            this.i16Val = new I16Patch();
+            this.i16Val = new com.facebook.thrift.op.I16Patch();
             this.i16Val.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1645,7 +1645,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case I32VAL:
           if (__field.type == TType.STRUCT) {
-            this.i32Val = new I32Patch();
+            this.i32Val = new com.facebook.thrift.op.I32Patch();
             this.i32Val.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1653,7 +1653,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case I64VAL:
           if (__field.type == TType.STRUCT) {
-            this.i64Val = new I64Patch();
+            this.i64Val = new com.facebook.thrift.op.I64Patch();
             this.i64Val.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1661,7 +1661,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case FLOATVAL:
           if (__field.type == TType.STRUCT) {
-            this.floatVal = new FloatPatch();
+            this.floatVal = new com.facebook.thrift.op.FloatPatch();
             this.floatVal.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1669,7 +1669,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case DOUBLEVAL:
           if (__field.type == TType.STRUCT) {
-            this.doubleVal = new DoublePatch();
+            this.doubleVal = new com.facebook.thrift.op.DoublePatch();
             this.doubleVal.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1677,7 +1677,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case STRINGVAL:
           if (__field.type == TType.STRUCT) {
-            this.stringVal = new StringPatch();
+            this.stringVal = new com.facebook.thrift.op.StringPatch();
             this.stringVal.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1685,7 +1685,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case BINARYVAL:
           if (__field.type == TType.STRUCT) {
-            this.binaryVal = new BinaryPatch();
+            this.binaryVal = new com.facebook.thrift.op.BinaryPatch();
             this.binaryVal.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1701,7 +1701,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case OPTBOOLVAL:
           if (__field.type == TType.STRUCT) {
-            this.optBoolVal = new OptionalBoolPatch();
+            this.optBoolVal = new com.facebook.thrift.op.OptionalBoolPatch();
             this.optBoolVal.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1709,7 +1709,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case OPTBYTEVAL:
           if (__field.type == TType.STRUCT) {
-            this.optByteVal = new OptionalBytePatch();
+            this.optByteVal = new com.facebook.thrift.op.OptionalBytePatch();
             this.optByteVal.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1717,7 +1717,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case OPTI16VAL:
           if (__field.type == TType.STRUCT) {
-            this.optI16Val = new OptionalI16Patch();
+            this.optI16Val = new com.facebook.thrift.op.OptionalI16Patch();
             this.optI16Val.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1725,7 +1725,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case OPTI32VAL:
           if (__field.type == TType.STRUCT) {
-            this.optI32Val = new OptionalI32Patch();
+            this.optI32Val = new com.facebook.thrift.op.OptionalI32Patch();
             this.optI32Val.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1733,7 +1733,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case OPTI64VAL:
           if (__field.type == TType.STRUCT) {
-            this.optI64Val = new OptionalI64Patch();
+            this.optI64Val = new com.facebook.thrift.op.OptionalI64Patch();
             this.optI64Val.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1741,7 +1741,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case OPTFLOATVAL:
           if (__field.type == TType.STRUCT) {
-            this.optFloatVal = new OptionalFloatPatch();
+            this.optFloatVal = new com.facebook.thrift.op.OptionalFloatPatch();
             this.optFloatVal.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1749,7 +1749,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case OPTDOUBLEVAL:
           if (__field.type == TType.STRUCT) {
-            this.optDoubleVal = new OptionalDoublePatch();
+            this.optDoubleVal = new com.facebook.thrift.op.OptionalDoublePatch();
             this.optDoubleVal.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1757,7 +1757,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case OPTSTRINGVAL:
           if (__field.type == TType.STRUCT) {
-            this.optStringVal = new OptionalStringPatch();
+            this.optStringVal = new com.facebook.thrift.op.OptionalStringPatch();
             this.optStringVal.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -1765,7 +1765,7 @@ public class MyStructPatch implements TBase, java.io.Serializable, Cloneable, Co
           break;
         case OPTBINARYVAL:
           if (__field.type == TType.STRUCT) {
-            this.optBinaryVal = new OptionalBinaryPatch();
+            this.optBinaryVal = new com.facebook.thrift.op.OptionalBinaryPatch();
             this.optBinaryVal.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);

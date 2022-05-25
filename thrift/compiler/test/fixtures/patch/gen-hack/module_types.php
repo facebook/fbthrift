@@ -1354,7 +1354,7 @@ class MyDataPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'data2' => ?\thrift\op\I32Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 6838201112512803660;
+  const int STRUCTURAL_ID = 4934641526205074734;
   /**
    * Original thrift field:-
    * 1: struct patch.StringPatch data1
@@ -1535,7 +1535,7 @@ class MyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     ?'patch' => ?\fixtures\patch\MyDataPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 3788431670946880573;
+  const int STRUCTURAL_ID = 7283474392984754945;
   /**
    * Assigns a value. If set, all other operations are ignored.
    * 
@@ -1736,7 +1736,7 @@ class OptionalMyDataValuePatch implements \IThriftSyncStruct, \IThriftShapishSyn
     ?'patchAfter' => ?\fixtures\patch\MyDataValuePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 7951490030433375737;
+  const int STRUCTURAL_ID = 3365710564040561421;
   /**
    * Clears any set value. Applies first.
    * 
@@ -1954,7 +1954,7 @@ class MyUnionPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'option2' => ?\thrift\op\I32Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 5886980803206528534;
+  const int STRUCTURAL_ID = 5589256399990868404;
   /**
    * Original thrift field:-
    * 1: struct patch.StringPatch option1
@@ -2143,7 +2143,7 @@ class MyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     ?'patchAfter' => ?\fixtures\patch\MyUnionPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 4542531292588103659;
+  const int STRUCTURAL_ID = 305167005019819383;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2375,7 +2375,7 @@ class OptionalMyUnionValuePatch implements \IThriftSyncStruct, \IThriftShapishSy
     ?'patchAfter' => ?\fixtures\patch\MyUnionValuePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 1268025857994486738;
+  const int STRUCTURAL_ID = 3542537273181542021;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2769,7 +2769,7 @@ class MyStructPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     ?'unionVal' => ?\fixtures\patch\MyUnionValuePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 7507825226095496861;
+  const int STRUCTURAL_ID = 8167881917270625394;
   /**
    * Original thrift field:-
    * 1: struct patch.BoolPatch boolVal
@@ -3693,7 +3693,7 @@ class MyStructField21Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
     'append' => vec<int>,
     ...
   );
-  const int STRUCTURAL_ID = 8926399708196000015;
+  const int STRUCTURAL_ID = 4256906023524413972;
   /**
    * Assigns a value. If set, all other operations are ignored.
    * 
@@ -3970,7 +3970,7 @@ class OptionalMyStructField21Patch implements \IThriftSyncStruct, \IThriftShapis
     ?'patchAfter' => ?\fixtures\patch\MyStructField21Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 2539352043513030315;
+  const int STRUCTURAL_ID = 4095824536033136952;
   /**
    * Clears any set value. Applies first.
    * 
@@ -4229,7 +4229,7 @@ class MyStructField22Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
     'add' => dict<string, bool>,
     ...
   );
-  const int STRUCTURAL_ID = 3786953850343586867;
+  const int STRUCTURAL_ID = 8177727502465209939;
   /**
    * Assigns a value. If set, all other operations are ignored.
    * 
@@ -4491,7 +4491,7 @@ class OptionalMyStructField22Patch implements \IThriftSyncStruct, \IThriftShapis
     ?'patchAfter' => ?\fixtures\patch\MyStructField22Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 538516277866350462;
+  const int STRUCTURAL_ID = 2046524193018424240;
   /**
    * Clears any set value. Applies first.
    * 
@@ -4741,7 +4741,7 @@ class MyStructField23Patch implements \IThriftSyncStruct, \IThriftShapishSyncStr
     'put' => dict<string, string>,
     ...
   );
-  const int STRUCTURAL_ID = 3108140902371026640;
+  const int STRUCTURAL_ID = 703634612098794818;
   /**
    * Assigns a value. If set, all other operations are ignored.
    * 
@@ -4977,7 +4977,7 @@ class OptionalMyStructField23Patch implements \IThriftSyncStruct, \IThriftShapis
     ?'patchAfter' => ?\fixtures\patch\MyStructField23Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 7974181378426791717;
+  const int STRUCTURAL_ID = 5711935609534114541;
   /**
    * Clears any set value. Applies first.
    * 
@@ -5216,7 +5216,7 @@ class MyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
     ?'patch' => ?\fixtures\patch\MyStructPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 7671876747903930798;
+  const int STRUCTURAL_ID = 2768499115510098920;
   /**
    * Assigns a value. If set, all other operations are ignored.
    * 
@@ -5417,7 +5417,7 @@ class OptionalMyStructValuePatch implements \IThriftSyncStruct, \IThriftShapishS
     ?'patchAfter' => ?\fixtures\patch\MyStructValuePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 8161960229420258971;
+  const int STRUCTURAL_ID = 5228484313055784520;
   /**
    * Clears any set value. Applies first.
    * 

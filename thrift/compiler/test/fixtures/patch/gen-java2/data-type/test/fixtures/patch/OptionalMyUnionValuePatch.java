@@ -25,10 +25,10 @@ public final class OptionalMyUnionValuePatch implements com.facebook.thrift.payl
 
     @ThriftConstructor
     public OptionalMyUnionValuePatch(
-        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=) final test.fixtures.patch.MyUnionValuePatch patch,
+        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
+        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.MyUnionValuePatch patch,
         @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.OPTIONAL) final test.fixtures.patch.MyUnion ensure,
-        @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=) final test.fixtures.patch.MyUnionValuePatch patchAfter
+        @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE) final test.fixtures.patch.MyUnionValuePatch patchAfter
     ) {
         this.clear = clear;
         this.patch = patch;
@@ -51,7 +51,7 @@ public final class OptionalMyUnionValuePatch implements com.facebook.thrift.payl
         private test.fixtures.patch.MyUnion ensure = null;
         private test.fixtures.patch.MyUnionValuePatch patchAfter = null;
     
-        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=)
+        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
         public Builder setClear(boolean clear) {
             this.clear = clear;
             return this;
@@ -59,7 +59,7 @@ public final class OptionalMyUnionValuePatch implements com.facebook.thrift.payl
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
         public Builder setPatch(test.fixtures.patch.MyUnionValuePatch patch) {
             this.patch = patch;
             return this;
@@ -75,7 +75,7 @@ public final class OptionalMyUnionValuePatch implements com.facebook.thrift.payl
     
         public test.fixtures.patch.MyUnion getEnsure() { return ensure; }
     
-            @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE)
         public Builder setPatchAfter(test.fixtures.patch.MyUnionValuePatch patchAfter) {
             this.patchAfter = patchAfter;
             return this;
@@ -137,12 +137,12 @@ public final class OptionalMyUnionValuePatch implements com.facebook.thrift.payl
     }
     
     
-    @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
     public boolean isClear() { return clear; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
     public test.fixtures.patch.MyUnionValuePatch getPatch() { return patch; }
     
     
@@ -152,7 +152,7 @@ public final class OptionalMyUnionValuePatch implements com.facebook.thrift.payl
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE)
     public test.fixtures.patch.MyUnionValuePatch getPatchAfter() { return patchAfter; }
     
     @java.lang.Override

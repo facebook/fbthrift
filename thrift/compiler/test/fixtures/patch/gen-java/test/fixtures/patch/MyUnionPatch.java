@@ -25,8 +25,8 @@ public final class MyUnionPatch implements com.facebook.thrift.payload.ThriftSer
 
     @ThriftConstructor
     public MyUnionPatch(
-        @com.facebook.swift.codec.ThriftField(value=1, name="option1", requiredness=) final com.facebook.thrift.op_swift.StringPatch option1,
-        @com.facebook.swift.codec.ThriftField(value=2, name="option2", requiredness=) final com.facebook.thrift.op_swift.I32Patch option2
+        @com.facebook.swift.codec.ThriftField(value=1, name="option1", requiredness=Requiredness.NONE) final com.facebook.thrift.op_swift.StringPatch option1,
+        @com.facebook.swift.codec.ThriftField(value=2, name="option2", requiredness=Requiredness.NONE) final com.facebook.thrift.op_swift.I32Patch option2
     ) {
         this.option1 = option1;
         this.option2 = option2;
@@ -43,7 +43,7 @@ public final class MyUnionPatch implements com.facebook.thrift.payload.ThriftSer
         private com.facebook.thrift.op_swift.StringPatch option1 = null;
         private com.facebook.thrift.op_swift.I32Patch option2 = null;
     
-        @com.facebook.swift.codec.ThriftField(value=1, name="option1", requiredness=)
+        @com.facebook.swift.codec.ThriftField(value=1, name="option1", requiredness=Requiredness.NONE)
         public Builder setOption1(com.facebook.thrift.op_swift.StringPatch option1) {
             this.option1 = option1;
             return this;
@@ -51,7 +51,7 @@ public final class MyUnionPatch implements com.facebook.thrift.payload.ThriftSer
     
         public com.facebook.thrift.op_swift.StringPatch getOption1() { return option1; }
     
-            @com.facebook.swift.codec.ThriftField(value=2, name="option2", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=2, name="option2", requiredness=Requiredness.NONE)
         public Builder setOption2(com.facebook.thrift.op_swift.I32Patch option2) {
             this.option2 = option2;
             return this;
@@ -97,12 +97,12 @@ public final class MyUnionPatch implements com.facebook.thrift.payload.ThriftSer
     }
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=1, name="option1", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=1, name="option1", requiredness=Requiredness.NONE)
     public com.facebook.thrift.op_swift.StringPatch getOption1() { return option1; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=2, name="option2", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=2, name="option2", requiredness=Requiredness.NONE)
     public com.facebook.thrift.op_swift.I32Patch getOption2() { return option2; }
     
     @java.lang.Override

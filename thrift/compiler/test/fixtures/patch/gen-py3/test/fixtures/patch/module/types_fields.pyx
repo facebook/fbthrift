@@ -338,18 +338,18 @@ cdef class __MyDataPatch_FieldsSetter(__StructFieldsSetter):
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyDataPatch](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.StringPatch):
-            raise TypeError(f'data1 is not a { _facebook_thrift_op_patch_types.StringPatch !r}.')
-        deref(self._struct_cpp_obj).data1_ref().assign(deref((<_facebook_thrift_op_patch_types.StringPatch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.StringPatch):
+            raise TypeError(f'data1 is not a { _apache_thrift_op_patch_types.StringPatch !r}.')
+        deref(self._struct_cpp_obj).data1_ref().assign(deref((<_apache_thrift_op_patch_types.StringPatch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field data2
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyDataPatch](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.I32Patch):
-            raise TypeError(f'data2 is not a { _facebook_thrift_op_patch_types.I32Patch !r}.')
-        deref(self._struct_cpp_obj).data2_ref().assign(deref((<_facebook_thrift_op_patch_types.I32Patch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.I32Patch):
+            raise TypeError(f'data2 is not a { _apache_thrift_op_patch_types.I32Patch !r}.')
+        deref(self._struct_cpp_obj).data2_ref().assign(deref((<_apache_thrift_op_patch_types.I32Patch?> _fbthrift_value)._cpp_obj))
 
 
 @__cython.auto_pickle(False)
@@ -479,18 +479,18 @@ cdef class __MyUnionPatch_FieldsSetter(__StructFieldsSetter):
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyUnionPatch](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.StringPatch):
-            raise TypeError(f'option1 is not a { _facebook_thrift_op_patch_types.StringPatch !r}.')
-        deref(self._struct_cpp_obj).option1_ref().assign(deref((<_facebook_thrift_op_patch_types.StringPatch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.StringPatch):
+            raise TypeError(f'option1 is not a { _apache_thrift_op_patch_types.StringPatch !r}.')
+        deref(self._struct_cpp_obj).option1_ref().assign(deref((<_apache_thrift_op_patch_types.StringPatch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field option2
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyUnionPatch](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.I32Patch):
-            raise TypeError(f'option2 is not a { _facebook_thrift_op_patch_types.I32Patch !r}.')
-        deref(self._struct_cpp_obj).option2_ref().assign(deref((<_facebook_thrift_op_patch_types.I32Patch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.I32Patch):
+            raise TypeError(f'option2 is not a { _apache_thrift_op_patch_types.I32Patch !r}.')
+        deref(self._struct_cpp_obj).option2_ref().assign(deref((<_apache_thrift_op_patch_types.I32Patch?> _fbthrift_value)._cpp_obj))
 
 
 @__cython.auto_pickle(False)
@@ -652,81 +652,81 @@ cdef class __MyStructPatch_FieldsSetter(__StructFieldsSetter):
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.BoolPatch):
-            raise TypeError(f'boolVal is not a { _facebook_thrift_op_patch_types.BoolPatch !r}.')
-        deref(self._struct_cpp_obj).boolVal_ref().assign(deref((<_facebook_thrift_op_patch_types.BoolPatch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.BoolPatch):
+            raise TypeError(f'boolVal is not a { _apache_thrift_op_patch_types.BoolPatch !r}.')
+        deref(self._struct_cpp_obj).boolVal_ref().assign(deref((<_apache_thrift_op_patch_types.BoolPatch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field byteVal
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.BytePatch):
-            raise TypeError(f'byteVal is not a { _facebook_thrift_op_patch_types.BytePatch !r}.')
-        deref(self._struct_cpp_obj).byteVal_ref().assign(deref((<_facebook_thrift_op_patch_types.BytePatch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.BytePatch):
+            raise TypeError(f'byteVal is not a { _apache_thrift_op_patch_types.BytePatch !r}.')
+        deref(self._struct_cpp_obj).byteVal_ref().assign(deref((<_apache_thrift_op_patch_types.BytePatch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field i16Val
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 2)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.I16Patch):
-            raise TypeError(f'i16Val is not a { _facebook_thrift_op_patch_types.I16Patch !r}.')
-        deref(self._struct_cpp_obj).i16Val_ref().assign(deref((<_facebook_thrift_op_patch_types.I16Patch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.I16Patch):
+            raise TypeError(f'i16Val is not a { _apache_thrift_op_patch_types.I16Patch !r}.')
+        deref(self._struct_cpp_obj).i16Val_ref().assign(deref((<_apache_thrift_op_patch_types.I16Patch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field i32Val
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 3)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.I32Patch):
-            raise TypeError(f'i32Val is not a { _facebook_thrift_op_patch_types.I32Patch !r}.')
-        deref(self._struct_cpp_obj).i32Val_ref().assign(deref((<_facebook_thrift_op_patch_types.I32Patch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.I32Patch):
+            raise TypeError(f'i32Val is not a { _apache_thrift_op_patch_types.I32Patch !r}.')
+        deref(self._struct_cpp_obj).i32Val_ref().assign(deref((<_apache_thrift_op_patch_types.I32Patch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_4(self, _fbthrift_value) except *:
         # for field i64Val
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 4)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.I64Patch):
-            raise TypeError(f'i64Val is not a { _facebook_thrift_op_patch_types.I64Patch !r}.')
-        deref(self._struct_cpp_obj).i64Val_ref().assign(deref((<_facebook_thrift_op_patch_types.I64Patch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.I64Patch):
+            raise TypeError(f'i64Val is not a { _apache_thrift_op_patch_types.I64Patch !r}.')
+        deref(self._struct_cpp_obj).i64Val_ref().assign(deref((<_apache_thrift_op_patch_types.I64Patch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_5(self, _fbthrift_value) except *:
         # for field floatVal
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 5)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.FloatPatch):
-            raise TypeError(f'floatVal is not a { _facebook_thrift_op_patch_types.FloatPatch !r}.')
-        deref(self._struct_cpp_obj).floatVal_ref().assign(deref((<_facebook_thrift_op_patch_types.FloatPatch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.FloatPatch):
+            raise TypeError(f'floatVal is not a { _apache_thrift_op_patch_types.FloatPatch !r}.')
+        deref(self._struct_cpp_obj).floatVal_ref().assign(deref((<_apache_thrift_op_patch_types.FloatPatch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_6(self, _fbthrift_value) except *:
         # for field doubleVal
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 6)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.DoublePatch):
-            raise TypeError(f'doubleVal is not a { _facebook_thrift_op_patch_types.DoublePatch !r}.')
-        deref(self._struct_cpp_obj).doubleVal_ref().assign(deref((<_facebook_thrift_op_patch_types.DoublePatch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.DoublePatch):
+            raise TypeError(f'doubleVal is not a { _apache_thrift_op_patch_types.DoublePatch !r}.')
+        deref(self._struct_cpp_obj).doubleVal_ref().assign(deref((<_apache_thrift_op_patch_types.DoublePatch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_7(self, _fbthrift_value) except *:
         # for field stringVal
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 7)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.StringPatch):
-            raise TypeError(f'stringVal is not a { _facebook_thrift_op_patch_types.StringPatch !r}.')
-        deref(self._struct_cpp_obj).stringVal_ref().assign(deref((<_facebook_thrift_op_patch_types.StringPatch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.StringPatch):
+            raise TypeError(f'stringVal is not a { _apache_thrift_op_patch_types.StringPatch !r}.')
+        deref(self._struct_cpp_obj).stringVal_ref().assign(deref((<_apache_thrift_op_patch_types.StringPatch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_8(self, _fbthrift_value) except *:
         # for field binaryVal
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 8)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.BinaryPatch):
-            raise TypeError(f'binaryVal is not a { _facebook_thrift_op_patch_types.BinaryPatch !r}.')
-        deref(self._struct_cpp_obj).binaryVal_ref().assign(deref((<_facebook_thrift_op_patch_types.BinaryPatch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.BinaryPatch):
+            raise TypeError(f'binaryVal is not a { _apache_thrift_op_patch_types.BinaryPatch !r}.')
+        deref(self._struct_cpp_obj).binaryVal_ref().assign(deref((<_apache_thrift_op_patch_types.BinaryPatch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_9(self, _fbthrift_value) except *:
         # for field structVal
@@ -742,81 +742,81 @@ cdef class __MyStructPatch_FieldsSetter(__StructFieldsSetter):
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 10)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.OptionalBoolPatch):
-            raise TypeError(f'optBoolVal is not a { _facebook_thrift_op_patch_types.OptionalBoolPatch !r}.')
-        deref(self._struct_cpp_obj).optBoolVal_ref().assign(deref((<_facebook_thrift_op_patch_types.OptionalBoolPatch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.OptionalBoolPatch):
+            raise TypeError(f'optBoolVal is not a { _apache_thrift_op_patch_types.OptionalBoolPatch !r}.')
+        deref(self._struct_cpp_obj).optBoolVal_ref().assign(deref((<_apache_thrift_op_patch_types.OptionalBoolPatch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_11(self, _fbthrift_value) except *:
         # for field optByteVal
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 11)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.OptionalBytePatch):
-            raise TypeError(f'optByteVal is not a { _facebook_thrift_op_patch_types.OptionalBytePatch !r}.')
-        deref(self._struct_cpp_obj).optByteVal_ref().assign(deref((<_facebook_thrift_op_patch_types.OptionalBytePatch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.OptionalBytePatch):
+            raise TypeError(f'optByteVal is not a { _apache_thrift_op_patch_types.OptionalBytePatch !r}.')
+        deref(self._struct_cpp_obj).optByteVal_ref().assign(deref((<_apache_thrift_op_patch_types.OptionalBytePatch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_12(self, _fbthrift_value) except *:
         # for field optI16Val
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 12)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.OptionalI16Patch):
-            raise TypeError(f'optI16Val is not a { _facebook_thrift_op_patch_types.OptionalI16Patch !r}.')
-        deref(self._struct_cpp_obj).optI16Val_ref().assign(deref((<_facebook_thrift_op_patch_types.OptionalI16Patch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.OptionalI16Patch):
+            raise TypeError(f'optI16Val is not a { _apache_thrift_op_patch_types.OptionalI16Patch !r}.')
+        deref(self._struct_cpp_obj).optI16Val_ref().assign(deref((<_apache_thrift_op_patch_types.OptionalI16Patch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_13(self, _fbthrift_value) except *:
         # for field optI32Val
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 13)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.OptionalI32Patch):
-            raise TypeError(f'optI32Val is not a { _facebook_thrift_op_patch_types.OptionalI32Patch !r}.')
-        deref(self._struct_cpp_obj).optI32Val_ref().assign(deref((<_facebook_thrift_op_patch_types.OptionalI32Patch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.OptionalI32Patch):
+            raise TypeError(f'optI32Val is not a { _apache_thrift_op_patch_types.OptionalI32Patch !r}.')
+        deref(self._struct_cpp_obj).optI32Val_ref().assign(deref((<_apache_thrift_op_patch_types.OptionalI32Patch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_14(self, _fbthrift_value) except *:
         # for field optI64Val
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 14)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.OptionalI64Patch):
-            raise TypeError(f'optI64Val is not a { _facebook_thrift_op_patch_types.OptionalI64Patch !r}.')
-        deref(self._struct_cpp_obj).optI64Val_ref().assign(deref((<_facebook_thrift_op_patch_types.OptionalI64Patch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.OptionalI64Patch):
+            raise TypeError(f'optI64Val is not a { _apache_thrift_op_patch_types.OptionalI64Patch !r}.')
+        deref(self._struct_cpp_obj).optI64Val_ref().assign(deref((<_apache_thrift_op_patch_types.OptionalI64Patch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_15(self, _fbthrift_value) except *:
         # for field optFloatVal
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 15)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.OptionalFloatPatch):
-            raise TypeError(f'optFloatVal is not a { _facebook_thrift_op_patch_types.OptionalFloatPatch !r}.')
-        deref(self._struct_cpp_obj).optFloatVal_ref().assign(deref((<_facebook_thrift_op_patch_types.OptionalFloatPatch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.OptionalFloatPatch):
+            raise TypeError(f'optFloatVal is not a { _apache_thrift_op_patch_types.OptionalFloatPatch !r}.')
+        deref(self._struct_cpp_obj).optFloatVal_ref().assign(deref((<_apache_thrift_op_patch_types.OptionalFloatPatch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_16(self, _fbthrift_value) except *:
         # for field optDoubleVal
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 16)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.OptionalDoublePatch):
-            raise TypeError(f'optDoubleVal is not a { _facebook_thrift_op_patch_types.OptionalDoublePatch !r}.')
-        deref(self._struct_cpp_obj).optDoubleVal_ref().assign(deref((<_facebook_thrift_op_patch_types.OptionalDoublePatch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.OptionalDoublePatch):
+            raise TypeError(f'optDoubleVal is not a { _apache_thrift_op_patch_types.OptionalDoublePatch !r}.')
+        deref(self._struct_cpp_obj).optDoubleVal_ref().assign(deref((<_apache_thrift_op_patch_types.OptionalDoublePatch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_17(self, _fbthrift_value) except *:
         # for field optStringVal
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 17)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.OptionalStringPatch):
-            raise TypeError(f'optStringVal is not a { _facebook_thrift_op_patch_types.OptionalStringPatch !r}.')
-        deref(self._struct_cpp_obj).optStringVal_ref().assign(deref((<_facebook_thrift_op_patch_types.OptionalStringPatch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.OptionalStringPatch):
+            raise TypeError(f'optStringVal is not a { _apache_thrift_op_patch_types.OptionalStringPatch !r}.')
+        deref(self._struct_cpp_obj).optStringVal_ref().assign(deref((<_apache_thrift_op_patch_types.OptionalStringPatch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_18(self, _fbthrift_value) except *:
         # for field optBinaryVal
         if _fbthrift_value is None:
             __reset_field[_test_fixtures_patch_module_types.cMyStructPatch](deref(self._struct_cpp_obj), 18)
             return
-        if not isinstance(_fbthrift_value, _facebook_thrift_op_patch_types.OptionalBinaryPatch):
-            raise TypeError(f'optBinaryVal is not a { _facebook_thrift_op_patch_types.OptionalBinaryPatch !r}.')
-        deref(self._struct_cpp_obj).optBinaryVal_ref().assign(deref((<_facebook_thrift_op_patch_types.OptionalBinaryPatch?> _fbthrift_value)._cpp_obj))
+        if not isinstance(_fbthrift_value, _apache_thrift_op_patch_types.OptionalBinaryPatch):
+            raise TypeError(f'optBinaryVal is not a { _apache_thrift_op_patch_types.OptionalBinaryPatch !r}.')
+        deref(self._struct_cpp_obj).optBinaryVal_ref().assign(deref((<_apache_thrift_op_patch_types.OptionalBinaryPatch?> _fbthrift_value)._cpp_obj))
 
     cdef void _set_field_19(self, _fbthrift_value) except *:
         # for field optStructVal

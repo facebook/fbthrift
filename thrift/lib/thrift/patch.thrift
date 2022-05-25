@@ -19,12 +19,18 @@ include "thrift/annotation/scope.thrift"
 
 cpp_include "thrift/lib/cpp2/op/detail/Patch.h"
 
-@thrift.v1alpha
+// TODO(afuller): Re-enable when supported by hs2
+// @thrift.v1alpha
 package "facebook.com/thrift/op"
 
 namespace cpp2 apache.thrift.op
+namespace py3 apache.thrift.op
+namespace java com.facebook.thrift.op
 namespace java.swift com.facebook.thrift.op_swift
 namespace java2 com.facebook.thrift.op
+namespace py.asyncio apache_thrift_asyncio.patch
+namespace go thrift.lib.thrift.patch
+namespace py thrift.lib.thrift.patch
 
 // An annotation that indicates a patch representation
 // should be generated for the associated definition.

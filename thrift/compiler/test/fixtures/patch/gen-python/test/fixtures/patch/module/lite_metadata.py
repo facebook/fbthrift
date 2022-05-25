@@ -7,9 +7,9 @@
 import apache.thrift.metadata.lite_types as _fbthrift_metadata
 
 
-import facebook.thrift.annotation.thrift.lite_metadata
+import apache.thrift.op.patch.lite_metadata
 
-import facebook.thrift.op.patch.lite_metadata
+import facebook.thrift.annotation.thrift.lite_metadata
 
 # TODO (ffrancet): This general pattern can be optimized by using tuples and dicts
 # instead of re-generating thrift structs
@@ -179,8 +179,8 @@ def _fbthrift_gen_metadata_struct_MyDataPatch(metadata_struct: _fbthrift_metadat
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_StringPatch(new_struct) # data1
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_I32Patch(new_struct) # data2
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_StringPatch(new_struct) # data1
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_I32Patch(new_struct) # data2
 
     return new_struct
 def gen_metadata_struct_MyDataPatch() -> _fbthrift_metadata.ThriftMetadata:
@@ -269,8 +269,8 @@ def _fbthrift_gen_metadata_struct_MyUnionPatch(metadata_struct: _fbthrift_metada
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_StringPatch(new_struct) # option1
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_I32Patch(new_struct) # option2
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_StringPatch(new_struct) # option1
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_I32Patch(new_struct) # option2
 
     return new_struct
 def gen_metadata_struct_MyUnionPatch() -> _fbthrift_metadata.ThriftMetadata:
@@ -406,25 +406,25 @@ def _fbthrift_gen_metadata_struct_MyStructPatch(metadata_struct: _fbthrift_metad
         ])
     new_struct = metadata_struct(structs=struct_dict)
 
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_BoolPatch(new_struct) # boolVal
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_BytePatch(new_struct) # byteVal
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_I16Patch(new_struct) # i16Val
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_I32Patch(new_struct) # i32Val
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_I64Patch(new_struct) # i64Val
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_FloatPatch(new_struct) # floatVal
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_DoublePatch(new_struct) # doubleVal
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_StringPatch(new_struct) # stringVal
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_BinaryPatch(new_struct) # binaryVal
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_BoolPatch(new_struct) # boolVal
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_BytePatch(new_struct) # byteVal
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_I16Patch(new_struct) # i16Val
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_I32Patch(new_struct) # i32Val
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_I64Patch(new_struct) # i64Val
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_FloatPatch(new_struct) # floatVal
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_DoublePatch(new_struct) # doubleVal
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_StringPatch(new_struct) # stringVal
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_BinaryPatch(new_struct) # binaryVal
     new_struct = _fbthrift_gen_metadata_struct_MyDataValuePatch(new_struct) # structVal
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalBoolPatch(new_struct) # optBoolVal
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalBytePatch(new_struct) # optByteVal
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalI16Patch(new_struct) # optI16Val
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalI32Patch(new_struct) # optI32Val
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalI64Patch(new_struct) # optI64Val
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalFloatPatch(new_struct) # optFloatVal
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalDoublePatch(new_struct) # optDoubleVal
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalStringPatch(new_struct) # optStringVal
-    new_struct = facebook.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalBinaryPatch(new_struct) # optBinaryVal
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalBoolPatch(new_struct) # optBoolVal
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalBytePatch(new_struct) # optByteVal
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalI16Patch(new_struct) # optI16Val
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalI32Patch(new_struct) # optI32Val
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalI64Patch(new_struct) # optI64Val
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalFloatPatch(new_struct) # optFloatVal
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalDoublePatch(new_struct) # optDoubleVal
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalStringPatch(new_struct) # optStringVal
+    new_struct = apache.thrift.op.patch.lite_metadata._fbthrift_gen_metadata_struct_OptionalBinaryPatch(new_struct) # optBinaryVal
     new_struct = _fbthrift_gen_metadata_struct_OptionalMyDataValuePatch(new_struct) # optStructVal
     new_struct = _fbthrift_gen_metadata_struct_OptionalMyStructField21Patch(new_struct) # optListVal
     new_struct = _fbthrift_gen_metadata_struct_OptionalMyStructField22Patch(new_struct) # optSetVal

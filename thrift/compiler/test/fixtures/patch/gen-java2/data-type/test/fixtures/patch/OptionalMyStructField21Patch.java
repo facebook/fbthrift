@@ -25,10 +25,10 @@ public final class OptionalMyStructField21Patch implements com.facebook.thrift.p
 
     @ThriftConstructor
     public OptionalMyStructField21Patch(
-        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=) final test.fixtures.patch.MyStructField21Patch patch,
+        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
+        @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStructField21Patch patch,
         @com.facebook.swift.codec.ThriftField(value=4, name="ensure", requiredness=Requiredness.OPTIONAL) final List<Short> ensure,
-        @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=) final test.fixtures.patch.MyStructField21Patch patchAfter
+        @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE) final test.fixtures.patch.MyStructField21Patch patchAfter
     ) {
         this.clear = clear;
         this.patch = patch;
@@ -51,7 +51,7 @@ public final class OptionalMyStructField21Patch implements com.facebook.thrift.p
         private List<Short> ensure = null;
         private test.fixtures.patch.MyStructField21Patch patchAfter = null;
     
-        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=)
+        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
         public Builder setClear(boolean clear) {
             this.clear = clear;
             return this;
@@ -59,7 +59,7 @@ public final class OptionalMyStructField21Patch implements com.facebook.thrift.p
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
         public Builder setPatch(test.fixtures.patch.MyStructField21Patch patch) {
             this.patch = patch;
             return this;
@@ -75,7 +75,7 @@ public final class OptionalMyStructField21Patch implements com.facebook.thrift.p
     
         public List<Short> getEnsure() { return ensure; }
     
-            @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE)
         public Builder setPatchAfter(test.fixtures.patch.MyStructField21Patch patchAfter) {
             this.patchAfter = patchAfter;
             return this;
@@ -137,12 +137,12 @@ public final class OptionalMyStructField21Patch implements com.facebook.thrift.p
     }
     
     
-    @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
     public boolean isClear() { return clear; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=3, name="patch", requiredness=Requiredness.NONE)
     public test.fixtures.patch.MyStructField21Patch getPatch() { return patch; }
     
     
@@ -152,7 +152,7 @@ public final class OptionalMyStructField21Patch implements com.facebook.thrift.p
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=5, name="patchAfter", requiredness=Requiredness.NONE)
     public test.fixtures.patch.MyStructField21Patch getPatchAfter() { return patchAfter; }
     
     @java.lang.Override

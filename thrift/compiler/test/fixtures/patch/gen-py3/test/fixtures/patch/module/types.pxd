@@ -39,7 +39,7 @@ from thrift.py3.common cimport (
 )
 from folly.optional cimport cOptional as __cOptional
 cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
-cimport facebook.thrift.op.patch.types as _facebook_thrift_op_patch_types
+cimport apache.thrift.op.patch.types as _apache_thrift_op_patch_types
 
 cimport test.fixtures.patch.module.types_fields as _fbthrift_types_fields
 
@@ -126,6 +126,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cMyDataPatch&)
         bint operator<=(cMyDataPatch&)
         bint operator>=(cMyDataPatch&)
+        __field_ref[_apache_thrift_op_patch_types.cStringPatch] data1_ref()
+        __field_ref[_apache_thrift_op_patch_types.cI32Patch] data2_ref()
 
 
     cdef cppclass cMyDataValuePatch "::test::fixtures::patch::MyDataValuePatch":
@@ -138,6 +140,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator<=(cMyDataValuePatch&)
         bint operator>=(cMyDataValuePatch&)
         __optional_field_ref[cMyData] assign_ref()
+        __field_ref[cbool] clear_ref()
+        __field_ref[cMyDataPatch] patch_ref()
 
 
     cdef cppclass cOptionalMyDataValuePatch "::test::fixtures::patch::OptionalMyDataValuePatch":
@@ -149,7 +153,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cOptionalMyDataValuePatch&)
         bint operator<=(cOptionalMyDataValuePatch&)
         bint operator>=(cOptionalMyDataValuePatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cMyDataValuePatch] patch_ref()
         __optional_field_ref[cMyData] ensure_ref()
+        __field_ref[cMyDataValuePatch] patchAfter_ref()
 
 
     cdef cppclass cMyUnionPatch "::test::fixtures::patch::MyUnionPatch":
@@ -161,6 +168,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cMyUnionPatch&)
         bint operator<=(cMyUnionPatch&)
         bint operator>=(cMyUnionPatch&)
+        __field_ref[_apache_thrift_op_patch_types.cStringPatch] option1_ref()
+        __field_ref[_apache_thrift_op_patch_types.cI32Patch] option2_ref()
 
 
     cdef cppclass cMyUnionValuePatch "::test::fixtures::patch::MyUnionValuePatch":
@@ -172,6 +181,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cMyUnionValuePatch&)
         bint operator<=(cMyUnionValuePatch&)
         bint operator>=(cMyUnionValuePatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cMyUnionPatch] patch_ref()
+        __field_ref[cMyUnion] ensure_ref()
+        __field_ref[cMyUnionPatch] patchAfter_ref()
 
 
     cdef cppclass cOptionalMyUnionValuePatch "::test::fixtures::patch::OptionalMyUnionValuePatch":
@@ -183,7 +196,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cOptionalMyUnionValuePatch&)
         bint operator<=(cOptionalMyUnionValuePatch&)
         bint operator>=(cOptionalMyUnionValuePatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cMyUnionValuePatch] patch_ref()
         __optional_field_ref[cMyUnion] ensure_ref()
+        __field_ref[cMyUnionValuePatch] patchAfter_ref()
 
 
     cdef cppclass cMyStructPatch "::test::fixtures::patch::MyStructPatch":
@@ -195,6 +211,30 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cMyStructPatch&)
         bint operator<=(cMyStructPatch&)
         bint operator>=(cMyStructPatch&)
+        __field_ref[_apache_thrift_op_patch_types.cBoolPatch] boolVal_ref()
+        __field_ref[_apache_thrift_op_patch_types.cBytePatch] byteVal_ref()
+        __field_ref[_apache_thrift_op_patch_types.cI16Patch] i16Val_ref()
+        __field_ref[_apache_thrift_op_patch_types.cI32Patch] i32Val_ref()
+        __field_ref[_apache_thrift_op_patch_types.cI64Patch] i64Val_ref()
+        __field_ref[_apache_thrift_op_patch_types.cFloatPatch] floatVal_ref()
+        __field_ref[_apache_thrift_op_patch_types.cDoublePatch] doubleVal_ref()
+        __field_ref[_apache_thrift_op_patch_types.cStringPatch] stringVal_ref()
+        __field_ref[_apache_thrift_op_patch_types.cBinaryPatch] binaryVal_ref()
+        __field_ref[cMyDataValuePatch] structVal_ref()
+        __field_ref[_apache_thrift_op_patch_types.cOptionalBoolPatch] optBoolVal_ref()
+        __field_ref[_apache_thrift_op_patch_types.cOptionalBytePatch] optByteVal_ref()
+        __field_ref[_apache_thrift_op_patch_types.cOptionalI16Patch] optI16Val_ref()
+        __field_ref[_apache_thrift_op_patch_types.cOptionalI32Patch] optI32Val_ref()
+        __field_ref[_apache_thrift_op_patch_types.cOptionalI64Patch] optI64Val_ref()
+        __field_ref[_apache_thrift_op_patch_types.cOptionalFloatPatch] optFloatVal_ref()
+        __field_ref[_apache_thrift_op_patch_types.cOptionalDoublePatch] optDoubleVal_ref()
+        __field_ref[_apache_thrift_op_patch_types.cOptionalStringPatch] optStringVal_ref()
+        __field_ref[_apache_thrift_op_patch_types.cOptionalBinaryPatch] optBinaryVal_ref()
+        __field_ref[cOptionalMyDataValuePatch] optStructVal_ref()
+        __field_ref[cOptionalMyStructField21Patch] optListVal_ref()
+        __field_ref[cOptionalMyStructField22Patch] optSetVal_ref()
+        __field_ref[cOptionalMyStructField23Patch] optMapVal_ref()
+        __field_ref[cMyUnionValuePatch] unionVal_ref()
 
 
     cdef cppclass cMyStructField21Patch "::test::fixtures::patch::MyStructField21Patch":
@@ -207,6 +247,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator<=(cMyStructField21Patch&)
         bint operator>=(cMyStructField21Patch&)
         __optional_field_ref[vector[cint16_t]] assign_ref()
+        __field_ref[cbool] clear_ref()
+        __field_ref[vector[cint16_t]] prepend_ref()
+        __field_ref[vector[cint16_t]] append_ref()
 
 
     cdef cppclass cOptionalMyStructField21Patch "::test::fixtures::patch::OptionalMyStructField21Patch":
@@ -218,7 +261,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cOptionalMyStructField21Patch&)
         bint operator<=(cOptionalMyStructField21Patch&)
         bint operator>=(cOptionalMyStructField21Patch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cMyStructField21Patch] patch_ref()
         __optional_field_ref[vector[cint16_t]] ensure_ref()
+        __field_ref[cMyStructField21Patch] patchAfter_ref()
 
 
     cdef cppclass cMyStructField22Patch "::test::fixtures::patch::MyStructField22Patch":
@@ -231,6 +277,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator<=(cMyStructField22Patch&)
         bint operator>=(cMyStructField22Patch&)
         __optional_field_ref[cset[string]] assign_ref()
+        __field_ref[cbool] clear_ref()
+        __field_ref[cset[string]] remove_ref()
+        __field_ref[cset[string]] add_ref()
 
 
     cdef cppclass cOptionalMyStructField22Patch "::test::fixtures::patch::OptionalMyStructField22Patch":
@@ -242,7 +291,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cOptionalMyStructField22Patch&)
         bint operator<=(cOptionalMyStructField22Patch&)
         bint operator>=(cOptionalMyStructField22Patch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cMyStructField22Patch] patch_ref()
         __optional_field_ref[cset[string]] ensure_ref()
+        __field_ref[cMyStructField22Patch] patchAfter_ref()
 
 
     cdef cppclass cMyStructField23Patch "::test::fixtures::patch::MyStructField23Patch":
@@ -255,6 +307,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator<=(cMyStructField23Patch&)
         bint operator>=(cMyStructField23Patch&)
         __optional_field_ref[cmap[string,string]] assign_ref()
+        __field_ref[cbool] clear_ref()
+        __field_ref[cmap[string,string]] put_ref()
 
 
     cdef cppclass cOptionalMyStructField23Patch "::test::fixtures::patch::OptionalMyStructField23Patch":
@@ -266,7 +320,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cOptionalMyStructField23Patch&)
         bint operator<=(cOptionalMyStructField23Patch&)
         bint operator>=(cOptionalMyStructField23Patch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cMyStructField23Patch] patch_ref()
         __optional_field_ref[cmap[string,string]] ensure_ref()
+        __field_ref[cMyStructField23Patch] patchAfter_ref()
 
 
     cdef cppclass cMyStructValuePatch "::test::fixtures::patch::MyStructValuePatch":
@@ -279,6 +336,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator<=(cMyStructValuePatch&)
         bint operator>=(cMyStructValuePatch&)
         __optional_field_ref[cMyStruct] assign_ref()
+        __field_ref[cbool] clear_ref()
+        __field_ref[cMyStructPatch] patch_ref()
 
 
     cdef cppclass cOptionalMyStructValuePatch "::test::fixtures::patch::OptionalMyStructValuePatch":
@@ -290,7 +349,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cOptionalMyStructValuePatch&)
         bint operator<=(cOptionalMyStructValuePatch&)
         bint operator>=(cOptionalMyStructValuePatch&)
+        __field_ref[cbool] clear_ref()
+        __field_ref[cMyStructValuePatch] patch_ref()
         __optional_field_ref[cMyStruct] ensure_ref()
+        __field_ref[cMyStructValuePatch] patchAfter_ref()
 
 
 
@@ -372,8 +434,8 @@ cdef class MyDataPatch(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__MyDataPatch_FieldsSetter _fields_setter
     cdef inline object data1_impl(self)
     cdef inline object data2_impl(self)
-    cdef _facebook_thrift_op_patch_types.StringPatch __fbthrift_cached_data1
-    cdef _facebook_thrift_op_patch_types.I32Patch __fbthrift_cached_data2
+    cdef _apache_thrift_op_patch_types.StringPatch __fbthrift_cached_data1
+    cdef _apache_thrift_op_patch_types.I32Patch __fbthrift_cached_data2
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyDataPatch])
@@ -415,8 +477,8 @@ cdef class MyUnionPatch(thrift.py3.types.Struct):
     cdef _fbthrift_types_fields.__MyUnionPatch_FieldsSetter _fields_setter
     cdef inline object option1_impl(self)
     cdef inline object option2_impl(self)
-    cdef _facebook_thrift_op_patch_types.StringPatch __fbthrift_cached_option1
-    cdef _facebook_thrift_op_patch_types.I32Patch __fbthrift_cached_option2
+    cdef _apache_thrift_op_patch_types.StringPatch __fbthrift_cached_option1
+    cdef _apache_thrift_op_patch_types.I32Patch __fbthrift_cached_option2
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cMyUnionPatch])
@@ -482,25 +544,25 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline object optSetVal_impl(self)
     cdef inline object optMapVal_impl(self)
     cdef inline object unionVal_impl(self)
-    cdef _facebook_thrift_op_patch_types.BoolPatch __fbthrift_cached_boolVal
-    cdef _facebook_thrift_op_patch_types.BytePatch __fbthrift_cached_byteVal
-    cdef _facebook_thrift_op_patch_types.I16Patch __fbthrift_cached_i16Val
-    cdef _facebook_thrift_op_patch_types.I32Patch __fbthrift_cached_i32Val
-    cdef _facebook_thrift_op_patch_types.I64Patch __fbthrift_cached_i64Val
-    cdef _facebook_thrift_op_patch_types.FloatPatch __fbthrift_cached_floatVal
-    cdef _facebook_thrift_op_patch_types.DoublePatch __fbthrift_cached_doubleVal
-    cdef _facebook_thrift_op_patch_types.StringPatch __fbthrift_cached_stringVal
-    cdef _facebook_thrift_op_patch_types.BinaryPatch __fbthrift_cached_binaryVal
+    cdef _apache_thrift_op_patch_types.BoolPatch __fbthrift_cached_boolVal
+    cdef _apache_thrift_op_patch_types.BytePatch __fbthrift_cached_byteVal
+    cdef _apache_thrift_op_patch_types.I16Patch __fbthrift_cached_i16Val
+    cdef _apache_thrift_op_patch_types.I32Patch __fbthrift_cached_i32Val
+    cdef _apache_thrift_op_patch_types.I64Patch __fbthrift_cached_i64Val
+    cdef _apache_thrift_op_patch_types.FloatPatch __fbthrift_cached_floatVal
+    cdef _apache_thrift_op_patch_types.DoublePatch __fbthrift_cached_doubleVal
+    cdef _apache_thrift_op_patch_types.StringPatch __fbthrift_cached_stringVal
+    cdef _apache_thrift_op_patch_types.BinaryPatch __fbthrift_cached_binaryVal
     cdef MyDataValuePatch __fbthrift_cached_structVal
-    cdef _facebook_thrift_op_patch_types.OptionalBoolPatch __fbthrift_cached_optBoolVal
-    cdef _facebook_thrift_op_patch_types.OptionalBytePatch __fbthrift_cached_optByteVal
-    cdef _facebook_thrift_op_patch_types.OptionalI16Patch __fbthrift_cached_optI16Val
-    cdef _facebook_thrift_op_patch_types.OptionalI32Patch __fbthrift_cached_optI32Val
-    cdef _facebook_thrift_op_patch_types.OptionalI64Patch __fbthrift_cached_optI64Val
-    cdef _facebook_thrift_op_patch_types.OptionalFloatPatch __fbthrift_cached_optFloatVal
-    cdef _facebook_thrift_op_patch_types.OptionalDoublePatch __fbthrift_cached_optDoubleVal
-    cdef _facebook_thrift_op_patch_types.OptionalStringPatch __fbthrift_cached_optStringVal
-    cdef _facebook_thrift_op_patch_types.OptionalBinaryPatch __fbthrift_cached_optBinaryVal
+    cdef _apache_thrift_op_patch_types.OptionalBoolPatch __fbthrift_cached_optBoolVal
+    cdef _apache_thrift_op_patch_types.OptionalBytePatch __fbthrift_cached_optByteVal
+    cdef _apache_thrift_op_patch_types.OptionalI16Patch __fbthrift_cached_optI16Val
+    cdef _apache_thrift_op_patch_types.OptionalI32Patch __fbthrift_cached_optI32Val
+    cdef _apache_thrift_op_patch_types.OptionalI64Patch __fbthrift_cached_optI64Val
+    cdef _apache_thrift_op_patch_types.OptionalFloatPatch __fbthrift_cached_optFloatVal
+    cdef _apache_thrift_op_patch_types.OptionalDoublePatch __fbthrift_cached_optDoubleVal
+    cdef _apache_thrift_op_patch_types.OptionalStringPatch __fbthrift_cached_optStringVal
+    cdef _apache_thrift_op_patch_types.OptionalBinaryPatch __fbthrift_cached_optBinaryVal
     cdef OptionalMyDataValuePatch __fbthrift_cached_optStructVal
     cdef OptionalMyStructField21Patch __fbthrift_cached_optListVal
     cdef OptionalMyStructField22Patch __fbthrift_cached_optSetVal

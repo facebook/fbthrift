@@ -15,7 +15,7 @@ from typing_extensions import Final
 import sys
 import itertools
 import facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
-import facebook.thrift.op.patch.types as _facebook_thrift_op_patch_types
+import apache.thrift.op.patch.types as _apache_thrift_op_patch_types
 
 
 __property__ = property
@@ -238,20 +238,20 @@ class MyDataPatch(thrift.py3.types.Struct, _typing.Hashable):
         data2: bool
         pass
 
-    data1: Final[_facebook_thrift_op_patch_types.StringPatch] = ...
+    data1: Final[_apache_thrift_op_patch_types.StringPatch] = ...
 
-    data2: Final[_facebook_thrift_op_patch_types.I32Patch] = ...
+    data2: Final[_apache_thrift_op_patch_types.I32Patch] = ...
 
     def __init__(
         self, *,
-        data1: _typing.Optional[_facebook_thrift_op_patch_types.StringPatch]=None,
-        data2: _typing.Optional[_facebook_thrift_op_patch_types.I32Patch]=None
+        data1: _typing.Optional[_apache_thrift_op_patch_types.StringPatch]=None,
+        data2: _typing.Optional[_apache_thrift_op_patch_types.I32Patch]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        data1: _typing.Union[_facebook_thrift_op_patch_types.StringPatch, '__NotSet', None]=NOTSET,
-        data2: _typing.Union[_facebook_thrift_op_patch_types.I32Patch, '__NotSet', None]=NOTSET
+        data1: _typing.Union[_apache_thrift_op_patch_types.StringPatch, '__NotSet', None]=NOTSET,
+        data2: _typing.Union[_apache_thrift_op_patch_types.I32Patch, '__NotSet', None]=NOTSET
     ) -> MyDataPatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyDataPatch'], bytes]]: ...
@@ -349,20 +349,20 @@ class MyUnionPatch(thrift.py3.types.Struct, _typing.Hashable):
         option2: bool
         pass
 
-    option1: Final[_facebook_thrift_op_patch_types.StringPatch] = ...
+    option1: Final[_apache_thrift_op_patch_types.StringPatch] = ...
 
-    option2: Final[_facebook_thrift_op_patch_types.I32Patch] = ...
+    option2: Final[_apache_thrift_op_patch_types.I32Patch] = ...
 
     def __init__(
         self, *,
-        option1: _typing.Optional[_facebook_thrift_op_patch_types.StringPatch]=None,
-        option2: _typing.Optional[_facebook_thrift_op_patch_types.I32Patch]=None
+        option1: _typing.Optional[_apache_thrift_op_patch_types.StringPatch]=None,
+        option2: _typing.Optional[_apache_thrift_op_patch_types.I32Patch]=None
     ) -> None: ...
 
     def __call__(
         self, *,
-        option1: _typing.Union[_facebook_thrift_op_patch_types.StringPatch, '__NotSet', None]=NOTSET,
-        option2: _typing.Union[_facebook_thrift_op_patch_types.I32Patch, '__NotSet', None]=NOTSET
+        option1: _typing.Union[_apache_thrift_op_patch_types.StringPatch, '__NotSet', None]=NOTSET,
+        option2: _typing.Union[_apache_thrift_op_patch_types.I32Patch, '__NotSet', None]=NOTSET
     ) -> MyUnionPatch: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyUnionPatch'], bytes]]: ...
@@ -487,43 +487,43 @@ class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
         unionVal: bool
         pass
 
-    boolVal: Final[_facebook_thrift_op_patch_types.BoolPatch] = ...
+    boolVal: Final[_apache_thrift_op_patch_types.BoolPatch] = ...
 
-    byteVal: Final[_facebook_thrift_op_patch_types.BytePatch] = ...
+    byteVal: Final[_apache_thrift_op_patch_types.BytePatch] = ...
 
-    i16Val: Final[_facebook_thrift_op_patch_types.I16Patch] = ...
+    i16Val: Final[_apache_thrift_op_patch_types.I16Patch] = ...
 
-    i32Val: Final[_facebook_thrift_op_patch_types.I32Patch] = ...
+    i32Val: Final[_apache_thrift_op_patch_types.I32Patch] = ...
 
-    i64Val: Final[_facebook_thrift_op_patch_types.I64Patch] = ...
+    i64Val: Final[_apache_thrift_op_patch_types.I64Patch] = ...
 
-    floatVal: Final[_facebook_thrift_op_patch_types.FloatPatch] = ...
+    floatVal: Final[_apache_thrift_op_patch_types.FloatPatch] = ...
 
-    doubleVal: Final[_facebook_thrift_op_patch_types.DoublePatch] = ...
+    doubleVal: Final[_apache_thrift_op_patch_types.DoublePatch] = ...
 
-    stringVal: Final[_facebook_thrift_op_patch_types.StringPatch] = ...
+    stringVal: Final[_apache_thrift_op_patch_types.StringPatch] = ...
 
-    binaryVal: Final[_facebook_thrift_op_patch_types.BinaryPatch] = ...
+    binaryVal: Final[_apache_thrift_op_patch_types.BinaryPatch] = ...
 
     structVal: Final[MyDataValuePatch] = ...
 
-    optBoolVal: Final[_facebook_thrift_op_patch_types.OptionalBoolPatch] = ...
+    optBoolVal: Final[_apache_thrift_op_patch_types.OptionalBoolPatch] = ...
 
-    optByteVal: Final[_facebook_thrift_op_patch_types.OptionalBytePatch] = ...
+    optByteVal: Final[_apache_thrift_op_patch_types.OptionalBytePatch] = ...
 
-    optI16Val: Final[_facebook_thrift_op_patch_types.OptionalI16Patch] = ...
+    optI16Val: Final[_apache_thrift_op_patch_types.OptionalI16Patch] = ...
 
-    optI32Val: Final[_facebook_thrift_op_patch_types.OptionalI32Patch] = ...
+    optI32Val: Final[_apache_thrift_op_patch_types.OptionalI32Patch] = ...
 
-    optI64Val: Final[_facebook_thrift_op_patch_types.OptionalI64Patch] = ...
+    optI64Val: Final[_apache_thrift_op_patch_types.OptionalI64Patch] = ...
 
-    optFloatVal: Final[_facebook_thrift_op_patch_types.OptionalFloatPatch] = ...
+    optFloatVal: Final[_apache_thrift_op_patch_types.OptionalFloatPatch] = ...
 
-    optDoubleVal: Final[_facebook_thrift_op_patch_types.OptionalDoublePatch] = ...
+    optDoubleVal: Final[_apache_thrift_op_patch_types.OptionalDoublePatch] = ...
 
-    optStringVal: Final[_facebook_thrift_op_patch_types.OptionalStringPatch] = ...
+    optStringVal: Final[_apache_thrift_op_patch_types.OptionalStringPatch] = ...
 
-    optBinaryVal: Final[_facebook_thrift_op_patch_types.OptionalBinaryPatch] = ...
+    optBinaryVal: Final[_apache_thrift_op_patch_types.OptionalBinaryPatch] = ...
 
     optStructVal: Final[OptionalMyDataValuePatch] = ...
 
@@ -537,25 +537,25 @@ class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __init__(
         self, *,
-        boolVal: _typing.Optional[_facebook_thrift_op_patch_types.BoolPatch]=None,
-        byteVal: _typing.Optional[_facebook_thrift_op_patch_types.BytePatch]=None,
-        i16Val: _typing.Optional[_facebook_thrift_op_patch_types.I16Patch]=None,
-        i32Val: _typing.Optional[_facebook_thrift_op_patch_types.I32Patch]=None,
-        i64Val: _typing.Optional[_facebook_thrift_op_patch_types.I64Patch]=None,
-        floatVal: _typing.Optional[_facebook_thrift_op_patch_types.FloatPatch]=None,
-        doubleVal: _typing.Optional[_facebook_thrift_op_patch_types.DoublePatch]=None,
-        stringVal: _typing.Optional[_facebook_thrift_op_patch_types.StringPatch]=None,
-        binaryVal: _typing.Optional[_facebook_thrift_op_patch_types.BinaryPatch]=None,
+        boolVal: _typing.Optional[_apache_thrift_op_patch_types.BoolPatch]=None,
+        byteVal: _typing.Optional[_apache_thrift_op_patch_types.BytePatch]=None,
+        i16Val: _typing.Optional[_apache_thrift_op_patch_types.I16Patch]=None,
+        i32Val: _typing.Optional[_apache_thrift_op_patch_types.I32Patch]=None,
+        i64Val: _typing.Optional[_apache_thrift_op_patch_types.I64Patch]=None,
+        floatVal: _typing.Optional[_apache_thrift_op_patch_types.FloatPatch]=None,
+        doubleVal: _typing.Optional[_apache_thrift_op_patch_types.DoublePatch]=None,
+        stringVal: _typing.Optional[_apache_thrift_op_patch_types.StringPatch]=None,
+        binaryVal: _typing.Optional[_apache_thrift_op_patch_types.BinaryPatch]=None,
         structVal: _typing.Optional[MyDataValuePatch]=None,
-        optBoolVal: _typing.Optional[_facebook_thrift_op_patch_types.OptionalBoolPatch]=None,
-        optByteVal: _typing.Optional[_facebook_thrift_op_patch_types.OptionalBytePatch]=None,
-        optI16Val: _typing.Optional[_facebook_thrift_op_patch_types.OptionalI16Patch]=None,
-        optI32Val: _typing.Optional[_facebook_thrift_op_patch_types.OptionalI32Patch]=None,
-        optI64Val: _typing.Optional[_facebook_thrift_op_patch_types.OptionalI64Patch]=None,
-        optFloatVal: _typing.Optional[_facebook_thrift_op_patch_types.OptionalFloatPatch]=None,
-        optDoubleVal: _typing.Optional[_facebook_thrift_op_patch_types.OptionalDoublePatch]=None,
-        optStringVal: _typing.Optional[_facebook_thrift_op_patch_types.OptionalStringPatch]=None,
-        optBinaryVal: _typing.Optional[_facebook_thrift_op_patch_types.OptionalBinaryPatch]=None,
+        optBoolVal: _typing.Optional[_apache_thrift_op_patch_types.OptionalBoolPatch]=None,
+        optByteVal: _typing.Optional[_apache_thrift_op_patch_types.OptionalBytePatch]=None,
+        optI16Val: _typing.Optional[_apache_thrift_op_patch_types.OptionalI16Patch]=None,
+        optI32Val: _typing.Optional[_apache_thrift_op_patch_types.OptionalI32Patch]=None,
+        optI64Val: _typing.Optional[_apache_thrift_op_patch_types.OptionalI64Patch]=None,
+        optFloatVal: _typing.Optional[_apache_thrift_op_patch_types.OptionalFloatPatch]=None,
+        optDoubleVal: _typing.Optional[_apache_thrift_op_patch_types.OptionalDoublePatch]=None,
+        optStringVal: _typing.Optional[_apache_thrift_op_patch_types.OptionalStringPatch]=None,
+        optBinaryVal: _typing.Optional[_apache_thrift_op_patch_types.OptionalBinaryPatch]=None,
         optStructVal: _typing.Optional[OptionalMyDataValuePatch]=None,
         optListVal: _typing.Optional[OptionalMyStructField21Patch]=None,
         optSetVal: _typing.Optional[OptionalMyStructField22Patch]=None,
@@ -565,25 +565,25 @@ class MyStructPatch(thrift.py3.types.Struct, _typing.Hashable):
 
     def __call__(
         self, *,
-        boolVal: _typing.Union[_facebook_thrift_op_patch_types.BoolPatch, '__NotSet', None]=NOTSET,
-        byteVal: _typing.Union[_facebook_thrift_op_patch_types.BytePatch, '__NotSet', None]=NOTSET,
-        i16Val: _typing.Union[_facebook_thrift_op_patch_types.I16Patch, '__NotSet', None]=NOTSET,
-        i32Val: _typing.Union[_facebook_thrift_op_patch_types.I32Patch, '__NotSet', None]=NOTSET,
-        i64Val: _typing.Union[_facebook_thrift_op_patch_types.I64Patch, '__NotSet', None]=NOTSET,
-        floatVal: _typing.Union[_facebook_thrift_op_patch_types.FloatPatch, '__NotSet', None]=NOTSET,
-        doubleVal: _typing.Union[_facebook_thrift_op_patch_types.DoublePatch, '__NotSet', None]=NOTSET,
-        stringVal: _typing.Union[_facebook_thrift_op_patch_types.StringPatch, '__NotSet', None]=NOTSET,
-        binaryVal: _typing.Union[_facebook_thrift_op_patch_types.BinaryPatch, '__NotSet', None]=NOTSET,
+        boolVal: _typing.Union[_apache_thrift_op_patch_types.BoolPatch, '__NotSet', None]=NOTSET,
+        byteVal: _typing.Union[_apache_thrift_op_patch_types.BytePatch, '__NotSet', None]=NOTSET,
+        i16Val: _typing.Union[_apache_thrift_op_patch_types.I16Patch, '__NotSet', None]=NOTSET,
+        i32Val: _typing.Union[_apache_thrift_op_patch_types.I32Patch, '__NotSet', None]=NOTSET,
+        i64Val: _typing.Union[_apache_thrift_op_patch_types.I64Patch, '__NotSet', None]=NOTSET,
+        floatVal: _typing.Union[_apache_thrift_op_patch_types.FloatPatch, '__NotSet', None]=NOTSET,
+        doubleVal: _typing.Union[_apache_thrift_op_patch_types.DoublePatch, '__NotSet', None]=NOTSET,
+        stringVal: _typing.Union[_apache_thrift_op_patch_types.StringPatch, '__NotSet', None]=NOTSET,
+        binaryVal: _typing.Union[_apache_thrift_op_patch_types.BinaryPatch, '__NotSet', None]=NOTSET,
         structVal: _typing.Union[MyDataValuePatch, '__NotSet', None]=NOTSET,
-        optBoolVal: _typing.Union[_facebook_thrift_op_patch_types.OptionalBoolPatch, '__NotSet', None]=NOTSET,
-        optByteVal: _typing.Union[_facebook_thrift_op_patch_types.OptionalBytePatch, '__NotSet', None]=NOTSET,
-        optI16Val: _typing.Union[_facebook_thrift_op_patch_types.OptionalI16Patch, '__NotSet', None]=NOTSET,
-        optI32Val: _typing.Union[_facebook_thrift_op_patch_types.OptionalI32Patch, '__NotSet', None]=NOTSET,
-        optI64Val: _typing.Union[_facebook_thrift_op_patch_types.OptionalI64Patch, '__NotSet', None]=NOTSET,
-        optFloatVal: _typing.Union[_facebook_thrift_op_patch_types.OptionalFloatPatch, '__NotSet', None]=NOTSET,
-        optDoubleVal: _typing.Union[_facebook_thrift_op_patch_types.OptionalDoublePatch, '__NotSet', None]=NOTSET,
-        optStringVal: _typing.Union[_facebook_thrift_op_patch_types.OptionalStringPatch, '__NotSet', None]=NOTSET,
-        optBinaryVal: _typing.Union[_facebook_thrift_op_patch_types.OptionalBinaryPatch, '__NotSet', None]=NOTSET,
+        optBoolVal: _typing.Union[_apache_thrift_op_patch_types.OptionalBoolPatch, '__NotSet', None]=NOTSET,
+        optByteVal: _typing.Union[_apache_thrift_op_patch_types.OptionalBytePatch, '__NotSet', None]=NOTSET,
+        optI16Val: _typing.Union[_apache_thrift_op_patch_types.OptionalI16Patch, '__NotSet', None]=NOTSET,
+        optI32Val: _typing.Union[_apache_thrift_op_patch_types.OptionalI32Patch, '__NotSet', None]=NOTSET,
+        optI64Val: _typing.Union[_apache_thrift_op_patch_types.OptionalI64Patch, '__NotSet', None]=NOTSET,
+        optFloatVal: _typing.Union[_apache_thrift_op_patch_types.OptionalFloatPatch, '__NotSet', None]=NOTSET,
+        optDoubleVal: _typing.Union[_apache_thrift_op_patch_types.OptionalDoublePatch, '__NotSet', None]=NOTSET,
+        optStringVal: _typing.Union[_apache_thrift_op_patch_types.OptionalStringPatch, '__NotSet', None]=NOTSET,
+        optBinaryVal: _typing.Union[_apache_thrift_op_patch_types.OptionalBinaryPatch, '__NotSet', None]=NOTSET,
         optStructVal: _typing.Union[OptionalMyDataValuePatch, '__NotSet', None]=NOTSET,
         optListVal: _typing.Union[OptionalMyStructField21Patch, '__NotSet', None]=NOTSET,
         optSetVal: _typing.Union[OptionalMyStructField22Patch, '__NotSet', None]=NOTSET,

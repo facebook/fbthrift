@@ -26,9 +26,9 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     @ThriftConstructor
     public MyStructField21Patch(
         @com.facebook.swift.codec.ThriftField(value=1, name="assign", requiredness=Requiredness.OPTIONAL) final List<Short> assign,
-        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=) final boolean clear,
-        @com.facebook.swift.codec.ThriftField(value=4, name="prepend", requiredness=) final List<Short> prepend,
-        @com.facebook.swift.codec.ThriftField(value=5, name="append", requiredness=) final List<Short> append
+        @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE) final boolean clear,
+        @com.facebook.swift.codec.ThriftField(value=4, name="prepend", requiredness=Requiredness.NONE) final List<Short> prepend,
+        @com.facebook.swift.codec.ThriftField(value=5, name="append", requiredness=Requiredness.NONE) final List<Short> append
     ) {
         this.assign = assign;
         this.clear = clear;
@@ -59,7 +59,7 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     
         public List<Short> getAssign() { return assign; }
     
-            @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
         public Builder setClear(boolean clear) {
             this.clear = clear;
             return this;
@@ -67,7 +67,7 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     
         public boolean isClear() { return clear; }
     
-            @com.facebook.swift.codec.ThriftField(value=4, name="prepend", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=4, name="prepend", requiredness=Requiredness.NONE)
         public Builder setPrepend(List<Short> prepend) {
             this.prepend = prepend;
             return this;
@@ -75,7 +75,7 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     
         public List<Short> getPrepend() { return prepend; }
     
-            @com.facebook.swift.codec.ThriftField(value=5, name="append", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=5, name="append", requiredness=Requiredness.NONE)
         public Builder setAppend(List<Short> append) {
             this.append = append;
             return this;
@@ -142,17 +142,17 @@ public final class MyStructField21Patch implements com.facebook.thrift.payload.T
     
     
     
-    @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=2, name="clear", requiredness=Requiredness.NONE)
     public boolean isClear() { return clear; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=4, name="prepend", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=4, name="prepend", requiredness=Requiredness.NONE)
     public List<Short> getPrepend() { return prepend; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=5, name="append", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=5, name="append", requiredness=Requiredness.NONE)
     public List<Short> getAppend() { return append; }
     
     @java.lang.Override

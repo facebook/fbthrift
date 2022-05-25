@@ -1601,7 +1601,7 @@ class OptionalBoolPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     ?'patchAfter' => ?\thrift\op\BoolPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 6691565396912112271;
+  const int STRUCTURAL_ID = 3751779734282343356;
   /**
    * Clears any set value. Applies first.
    * 
@@ -1844,7 +1844,7 @@ class OptionalBytePatch implements \IThriftSyncStruct, \IThriftShapishSyncStruct
     ?'patchAfter' => ?\thrift\op\BytePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 2067761348694020790;
+  const int STRUCTURAL_ID = 4314158567468765392;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2092,7 +2092,7 @@ class OptionalI16Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     ?'patchAfter' => ?\thrift\op\I16Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 1793927858747488051;
+  const int STRUCTURAL_ID = 6915320046793404558;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2340,7 +2340,7 @@ class OptionalI32Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     ?'patchAfter' => ?\thrift\op\I32Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 4946185160750098244;
+  const int STRUCTURAL_ID = 3728127711020667513;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2588,7 +2588,7 @@ class OptionalI64Patch implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
     ?'patchAfter' => ?\thrift\op\I64Patch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 7746812328133112937;
+  const int STRUCTURAL_ID = 6609118293538896493;
   /**
    * Clears any set value. Applies first.
    * 
@@ -2831,7 +2831,7 @@ class OptionalFloatPatch implements \IThriftSyncStruct, \IThriftShapishSyncStruc
     ?'patchAfter' => ?\thrift\op\FloatPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 1899356860026137801;
+  const int STRUCTURAL_ID = 8186456629717104138;
   /**
    * Clears any set value. Applies first.
    * 
@@ -3074,7 +3074,7 @@ class OptionalDoublePatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     ?'patchAfter' => ?\thrift\op\DoublePatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 2308638469785348247;
+  const int STRUCTURAL_ID = 8246390203967350121;
   /**
    * Clears any set value. Applies first.
    * 
@@ -3317,7 +3317,7 @@ class OptionalStringPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     ?'patchAfter' => ?\thrift\op\StringPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 427094996783607290;
+  const int STRUCTURAL_ID = 4184291972930407740;
   /**
    * Clears any set value. Applies first.
    * 
@@ -3560,7 +3560,7 @@ class OptionalBinaryPatch implements \IThriftSyncStruct, \IThriftShapishSyncStru
     ?'patchAfter' => ?\thrift\op\BinaryPatch::TShape,
     ...
   );
-  const int STRUCTURAL_ID = 2189223766532786882;
+  const int STRUCTURAL_ID = 4422024576090953307;
   /**
    * Clears any set value. Applies first.
    * 

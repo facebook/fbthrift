@@ -55,8 +55,8 @@ import weakref as __weakref
 import builtins as _builtins
 cimport facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
 import facebook.thrift.annotation.thrift.types as _facebook_thrift_annotation_thrift_types
-cimport facebook.thrift.op.patch.types as _facebook_thrift_op_patch_types
-import facebook.thrift.op.patch.types as _facebook_thrift_op_patch_types
+cimport apache.thrift.op.patch.types as _apache_thrift_op_patch_types
+import apache.thrift.op.patch.types as _apache_thrift_op_patch_types
 
 cimport test.fixtures.patch.module.types_reflection as _types_reflection
 
@@ -724,7 +724,7 @@ cdef class MyDataPatch(thrift.py3.types.Struct):
     cdef inline data1_impl(self):
 
         if self.__fbthrift_cached_data1 is None:
-            self.__fbthrift_cached_data1 = _facebook_thrift_op_patch_types.StringPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).data1_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_data1 = _apache_thrift_op_patch_types.StringPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).data1_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_data1
 
     @property
@@ -734,7 +734,7 @@ cdef class MyDataPatch(thrift.py3.types.Struct):
     cdef inline data2_impl(self):
 
         if self.__fbthrift_cached_data2 is None:
-            self.__fbthrift_cached_data2 = _facebook_thrift_op_patch_types.I32Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).data2_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_data2 = _apache_thrift_op_patch_types.I32Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).data2_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_data2
 
     @property
@@ -1090,7 +1090,7 @@ cdef class MyUnionPatch(thrift.py3.types.Struct):
     cdef inline option1_impl(self):
 
         if self.__fbthrift_cached_option1 is None:
-            self.__fbthrift_cached_option1 = _facebook_thrift_op_patch_types.StringPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).option1_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_option1 = _apache_thrift_op_patch_types.StringPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).option1_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_option1
 
     @property
@@ -1100,7 +1100,7 @@ cdef class MyUnionPatch(thrift.py3.types.Struct):
     cdef inline option2_impl(self):
 
         if self.__fbthrift_cached_option2 is None:
-            self.__fbthrift_cached_option2 = _facebook_thrift_op_patch_types.I32Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).option2_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_option2 = _apache_thrift_op_patch_types.I32Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).option2_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_option2
 
     @property
@@ -1487,7 +1487,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline boolVal_impl(self):
 
         if self.__fbthrift_cached_boolVal is None:
-            self.__fbthrift_cached_boolVal = _facebook_thrift_op_patch_types.BoolPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).boolVal_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_boolVal = _apache_thrift_op_patch_types.BoolPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).boolVal_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_boolVal
 
     @property
@@ -1497,7 +1497,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline byteVal_impl(self):
 
         if self.__fbthrift_cached_byteVal is None:
-            self.__fbthrift_cached_byteVal = _facebook_thrift_op_patch_types.BytePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).byteVal_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_byteVal = _apache_thrift_op_patch_types.BytePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).byteVal_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_byteVal
 
     @property
@@ -1507,7 +1507,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline i16Val_impl(self):
 
         if self.__fbthrift_cached_i16Val is None:
-            self.__fbthrift_cached_i16Val = _facebook_thrift_op_patch_types.I16Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).i16Val_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_i16Val = _apache_thrift_op_patch_types.I16Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).i16Val_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_i16Val
 
     @property
@@ -1517,7 +1517,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline i32Val_impl(self):
 
         if self.__fbthrift_cached_i32Val is None:
-            self.__fbthrift_cached_i32Val = _facebook_thrift_op_patch_types.I32Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).i32Val_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_i32Val = _apache_thrift_op_patch_types.I32Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).i32Val_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_i32Val
 
     @property
@@ -1527,7 +1527,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline i64Val_impl(self):
 
         if self.__fbthrift_cached_i64Val is None:
-            self.__fbthrift_cached_i64Val = _facebook_thrift_op_patch_types.I64Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).i64Val_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_i64Val = _apache_thrift_op_patch_types.I64Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).i64Val_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_i64Val
 
     @property
@@ -1537,7 +1537,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline floatVal_impl(self):
 
         if self.__fbthrift_cached_floatVal is None:
-            self.__fbthrift_cached_floatVal = _facebook_thrift_op_patch_types.FloatPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).floatVal_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_floatVal = _apache_thrift_op_patch_types.FloatPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).floatVal_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_floatVal
 
     @property
@@ -1547,7 +1547,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline doubleVal_impl(self):
 
         if self.__fbthrift_cached_doubleVal is None:
-            self.__fbthrift_cached_doubleVal = _facebook_thrift_op_patch_types.DoublePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).doubleVal_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_doubleVal = _apache_thrift_op_patch_types.DoublePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).doubleVal_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_doubleVal
 
     @property
@@ -1557,7 +1557,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline stringVal_impl(self):
 
         if self.__fbthrift_cached_stringVal is None:
-            self.__fbthrift_cached_stringVal = _facebook_thrift_op_patch_types.StringPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).stringVal_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_stringVal = _apache_thrift_op_patch_types.StringPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).stringVal_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_stringVal
 
     @property
@@ -1567,7 +1567,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline binaryVal_impl(self):
 
         if self.__fbthrift_cached_binaryVal is None:
-            self.__fbthrift_cached_binaryVal = _facebook_thrift_op_patch_types.BinaryPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).binaryVal_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_binaryVal = _apache_thrift_op_patch_types.BinaryPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).binaryVal_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_binaryVal
 
     @property
@@ -1587,7 +1587,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline optBoolVal_impl(self):
 
         if self.__fbthrift_cached_optBoolVal is None:
-            self.__fbthrift_cached_optBoolVal = _facebook_thrift_op_patch_types.OptionalBoolPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optBoolVal_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_optBoolVal = _apache_thrift_op_patch_types.OptionalBoolPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optBoolVal_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_optBoolVal
 
     @property
@@ -1597,7 +1597,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline optByteVal_impl(self):
 
         if self.__fbthrift_cached_optByteVal is None:
-            self.__fbthrift_cached_optByteVal = _facebook_thrift_op_patch_types.OptionalBytePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optByteVal_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_optByteVal = _apache_thrift_op_patch_types.OptionalBytePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optByteVal_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_optByteVal
 
     @property
@@ -1607,7 +1607,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline optI16Val_impl(self):
 
         if self.__fbthrift_cached_optI16Val is None:
-            self.__fbthrift_cached_optI16Val = _facebook_thrift_op_patch_types.OptionalI16Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optI16Val_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_optI16Val = _apache_thrift_op_patch_types.OptionalI16Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optI16Val_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_optI16Val
 
     @property
@@ -1617,7 +1617,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline optI32Val_impl(self):
 
         if self.__fbthrift_cached_optI32Val is None:
-            self.__fbthrift_cached_optI32Val = _facebook_thrift_op_patch_types.OptionalI32Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optI32Val_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_optI32Val = _apache_thrift_op_patch_types.OptionalI32Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optI32Val_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_optI32Val
 
     @property
@@ -1627,7 +1627,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline optI64Val_impl(self):
 
         if self.__fbthrift_cached_optI64Val is None:
-            self.__fbthrift_cached_optI64Val = _facebook_thrift_op_patch_types.OptionalI64Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optI64Val_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_optI64Val = _apache_thrift_op_patch_types.OptionalI64Patch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optI64Val_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_optI64Val
 
     @property
@@ -1637,7 +1637,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline optFloatVal_impl(self):
 
         if self.__fbthrift_cached_optFloatVal is None:
-            self.__fbthrift_cached_optFloatVal = _facebook_thrift_op_patch_types.OptionalFloatPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optFloatVal_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_optFloatVal = _apache_thrift_op_patch_types.OptionalFloatPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optFloatVal_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_optFloatVal
 
     @property
@@ -1647,7 +1647,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline optDoubleVal_impl(self):
 
         if self.__fbthrift_cached_optDoubleVal is None:
-            self.__fbthrift_cached_optDoubleVal = _facebook_thrift_op_patch_types.OptionalDoublePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optDoubleVal_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_optDoubleVal = _apache_thrift_op_patch_types.OptionalDoublePatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optDoubleVal_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_optDoubleVal
 
     @property
@@ -1657,7 +1657,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline optStringVal_impl(self):
 
         if self.__fbthrift_cached_optStringVal is None:
-            self.__fbthrift_cached_optStringVal = _facebook_thrift_op_patch_types.OptionalStringPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optStringVal_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_optStringVal = _apache_thrift_op_patch_types.OptionalStringPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optStringVal_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_optStringVal
 
     @property
@@ -1667,7 +1667,7 @@ cdef class MyStructPatch(thrift.py3.types.Struct):
     cdef inline optBinaryVal_impl(self):
 
         if self.__fbthrift_cached_optBinaryVal is None:
-            self.__fbthrift_cached_optBinaryVal = _facebook_thrift_op_patch_types.OptionalBinaryPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optBinaryVal_ref().ref(), self._cpp_obj))
+            self.__fbthrift_cached_optBinaryVal = _apache_thrift_op_patch_types.OptionalBinaryPatch._fbthrift_create(__reference_shared_ptr(deref(self._cpp_obj).optBinaryVal_ref().ref(), self._cpp_obj))
         return self.__fbthrift_cached_optBinaryVal
 
     @property

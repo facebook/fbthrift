@@ -29,8 +29,8 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
   private static final TField DATA1_FIELD_DESC = new TField("data1", TType.STRUCT, (short)1);
   private static final TField DATA2_FIELD_DESC = new TField("data2", TType.STRUCT, (short)2);
 
-  public StringPatch data1;
-  public I32Patch data2;
+  public com.facebook.thrift.op.StringPatch data1;
+  public com.facebook.thrift.op.I32Patch data2;
   public static final int DATA1 = 1;
   public static final int DATA2 = 2;
 
@@ -41,9 +41,9 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(DATA1, new FieldMetaData("data1", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, StringPatch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.StringPatch.class)));
     tmpMetaDataMap.put(DATA2, new FieldMetaData("data2", TFieldRequirementType.DEFAULT, 
-        new StructMetaData(TType.STRUCT, I32Patch.class)));
+        new StructMetaData(TType.STRUCT, com.facebook.thrift.op.I32Patch.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -55,26 +55,26 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
   }
 
   public MyDataPatch(
-      StringPatch data1,
-      I32Patch data2) {
+      com.facebook.thrift.op.StringPatch data1,
+      com.facebook.thrift.op.I32Patch data2) {
     this();
     this.data1 = data1;
     this.data2 = data2;
   }
 
   public static class Builder {
-    private StringPatch data1;
-    private I32Patch data2;
+    private com.facebook.thrift.op.StringPatch data1;
+    private com.facebook.thrift.op.I32Patch data2;
 
     public Builder() {
     }
 
-    public Builder setData1(final StringPatch data1) {
+    public Builder setData1(final com.facebook.thrift.op.StringPatch data1) {
       this.data1 = data1;
       return this;
     }
 
-    public Builder setData2(final I32Patch data2) {
+    public Builder setData2(final com.facebook.thrift.op.I32Patch data2) {
       this.data2 = data2;
       return this;
     }
@@ -107,11 +107,11 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
     return new MyDataPatch(this);
   }
 
-  public StringPatch getData1() {
+  public com.facebook.thrift.op.StringPatch getData1() {
     return this.data1;
   }
 
-  public MyDataPatch setData1(StringPatch data1) {
+  public MyDataPatch setData1(com.facebook.thrift.op.StringPatch data1) {
     this.data1 = data1;
     return this;
   }
@@ -131,11 +131,11 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
     }
   }
 
-  public I32Patch getData2() {
+  public com.facebook.thrift.op.I32Patch getData2() {
     return this.data2;
   }
 
-  public MyDataPatch setData2(I32Patch data2) {
+  public MyDataPatch setData2(com.facebook.thrift.op.I32Patch data2) {
     this.data2 = data2;
     return this;
   }
@@ -161,7 +161,7 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
       if (__value == null) {
         unsetData1();
       } else {
-        setData1((StringPatch)__value);
+        setData1((com.facebook.thrift.op.StringPatch)__value);
       }
       break;
 
@@ -169,7 +169,7 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
       if (__value == null) {
         unsetData2();
       } else {
-        setData2((I32Patch)__value);
+        setData2((com.facebook.thrift.op.I32Patch)__value);
       }
       break;
 
@@ -257,7 +257,7 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
       {
         case DATA1:
           if (__field.type == TType.STRUCT) {
-            this.data1 = new StringPatch();
+            this.data1 = new com.facebook.thrift.op.StringPatch();
             this.data1.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);
@@ -265,7 +265,7 @@ public class MyDataPatch implements TBase, java.io.Serializable, Cloneable, Comp
           break;
         case DATA2:
           if (__field.type == TType.STRUCT) {
-            this.data2 = new I32Patch();
+            this.data2 = new com.facebook.thrift.op.I32Patch();
             this.data2.read(iprot);
           } else {
             TProtocolUtil.skip(iprot, __field.type);

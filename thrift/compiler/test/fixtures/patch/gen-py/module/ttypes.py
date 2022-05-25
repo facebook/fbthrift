@@ -17,7 +17,7 @@ if sys.version_info[0] >= 3:
   long = int
 
 import thrift.annotation.thrift.ttypes
-import patch.ttypes
+import thrift.lib.thrift.patch.ttypes
 
 
 import pprint
@@ -869,13 +869,13 @@ class MyDataPatch:
         break
       if fid == 1:
         if ftype == TType.STRUCT:
-          self.data1 = patch.ttypes.StringPatch()
+          self.data1 = thrift.lib.thrift.patch.ttypes.StringPatch()
           self.data1.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 2:
         if ftype == TType.STRUCT:
-          self.data2 = patch.ttypes.I32Patch()
+          self.data2 = thrift.lib.thrift.patch.ttypes.I32Patch()
           self.data2.read(iprot)
         else:
           iprot.skip(ftype)
@@ -916,10 +916,10 @@ class MyDataPatch:
     if is_text:
       json_obj = loads(json)
     if 'data1' in json_obj and json_obj['data1'] is not None:
-      self.data1 = patch.ttypes.StringPatch()
+      self.data1 = thrift.lib.thrift.patch.ttypes.StringPatch()
       self.data1.readFromJson(json_obj['data1'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'data2' in json_obj and json_obj['data2'] is not None:
-      self.data2 = patch.ttypes.I32Patch()
+      self.data2 = thrift.lib.thrift.patch.ttypes.I32Patch()
       self.data2.readFromJson(json_obj['data2'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
 
   def __repr__(self):
@@ -1261,13 +1261,13 @@ class MyUnionPatch:
         break
       if fid == 1:
         if ftype == TType.STRUCT:
-          self.option1 = patch.ttypes.StringPatch()
+          self.option1 = thrift.lib.thrift.patch.ttypes.StringPatch()
           self.option1.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 2:
         if ftype == TType.STRUCT:
-          self.option2 = patch.ttypes.I32Patch()
+          self.option2 = thrift.lib.thrift.patch.ttypes.I32Patch()
           self.option2.read(iprot)
         else:
           iprot.skip(ftype)
@@ -1308,10 +1308,10 @@ class MyUnionPatch:
     if is_text:
       json_obj = loads(json)
     if 'option1' in json_obj and json_obj['option1'] is not None:
-      self.option1 = patch.ttypes.StringPatch()
+      self.option1 = thrift.lib.thrift.patch.ttypes.StringPatch()
       self.option1.readFromJson(json_obj['option1'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'option2' in json_obj and json_obj['option2'] is not None:
-      self.option2 = patch.ttypes.I32Patch()
+      self.option2 = thrift.lib.thrift.patch.ttypes.I32Patch()
       self.option2.readFromJson(json_obj['option2'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
 
   def __repr__(self):
@@ -1694,55 +1694,55 @@ class MyStructPatch:
         break
       if fid == 1:
         if ftype == TType.STRUCT:
-          self.boolVal = patch.ttypes.BoolPatch()
+          self.boolVal = thrift.lib.thrift.patch.ttypes.BoolPatch()
           self.boolVal.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 2:
         if ftype == TType.STRUCT:
-          self.byteVal = patch.ttypes.BytePatch()
+          self.byteVal = thrift.lib.thrift.patch.ttypes.BytePatch()
           self.byteVal.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 3:
         if ftype == TType.STRUCT:
-          self.i16Val = patch.ttypes.I16Patch()
+          self.i16Val = thrift.lib.thrift.patch.ttypes.I16Patch()
           self.i16Val.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 4:
         if ftype == TType.STRUCT:
-          self.i32Val = patch.ttypes.I32Patch()
+          self.i32Val = thrift.lib.thrift.patch.ttypes.I32Patch()
           self.i32Val.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 5:
         if ftype == TType.STRUCT:
-          self.i64Val = patch.ttypes.I64Patch()
+          self.i64Val = thrift.lib.thrift.patch.ttypes.I64Patch()
           self.i64Val.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 6:
         if ftype == TType.STRUCT:
-          self.floatVal = patch.ttypes.FloatPatch()
+          self.floatVal = thrift.lib.thrift.patch.ttypes.FloatPatch()
           self.floatVal.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 7:
         if ftype == TType.STRUCT:
-          self.doubleVal = patch.ttypes.DoublePatch()
+          self.doubleVal = thrift.lib.thrift.patch.ttypes.DoublePatch()
           self.doubleVal.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 8:
         if ftype == TType.STRUCT:
-          self.stringVal = patch.ttypes.StringPatch()
+          self.stringVal = thrift.lib.thrift.patch.ttypes.StringPatch()
           self.stringVal.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 9:
         if ftype == TType.STRUCT:
-          self.binaryVal = patch.ttypes.BinaryPatch()
+          self.binaryVal = thrift.lib.thrift.patch.ttypes.BinaryPatch()
           self.binaryVal.read(iprot)
         else:
           iprot.skip(ftype)
@@ -1754,55 +1754,55 @@ class MyStructPatch:
           iprot.skip(ftype)
       elif fid == 11:
         if ftype == TType.STRUCT:
-          self.optBoolVal = patch.ttypes.OptionalBoolPatch()
+          self.optBoolVal = thrift.lib.thrift.patch.ttypes.OptionalBoolPatch()
           self.optBoolVal.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 12:
         if ftype == TType.STRUCT:
-          self.optByteVal = patch.ttypes.OptionalBytePatch()
+          self.optByteVal = thrift.lib.thrift.patch.ttypes.OptionalBytePatch()
           self.optByteVal.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 13:
         if ftype == TType.STRUCT:
-          self.optI16Val = patch.ttypes.OptionalI16Patch()
+          self.optI16Val = thrift.lib.thrift.patch.ttypes.OptionalI16Patch()
           self.optI16Val.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 14:
         if ftype == TType.STRUCT:
-          self.optI32Val = patch.ttypes.OptionalI32Patch()
+          self.optI32Val = thrift.lib.thrift.patch.ttypes.OptionalI32Patch()
           self.optI32Val.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 15:
         if ftype == TType.STRUCT:
-          self.optI64Val = patch.ttypes.OptionalI64Patch()
+          self.optI64Val = thrift.lib.thrift.patch.ttypes.OptionalI64Patch()
           self.optI64Val.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 16:
         if ftype == TType.STRUCT:
-          self.optFloatVal = patch.ttypes.OptionalFloatPatch()
+          self.optFloatVal = thrift.lib.thrift.patch.ttypes.OptionalFloatPatch()
           self.optFloatVal.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 17:
         if ftype == TType.STRUCT:
-          self.optDoubleVal = patch.ttypes.OptionalDoublePatch()
+          self.optDoubleVal = thrift.lib.thrift.patch.ttypes.OptionalDoublePatch()
           self.optDoubleVal.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 18:
         if ftype == TType.STRUCT:
-          self.optStringVal = patch.ttypes.OptionalStringPatch()
+          self.optStringVal = thrift.lib.thrift.patch.ttypes.OptionalStringPatch()
           self.optStringVal.read(iprot)
         else:
           iprot.skip(ftype)
       elif fid == 19:
         if ftype == TType.STRUCT:
-          self.optBinaryVal = patch.ttypes.OptionalBinaryPatch()
+          self.optBinaryVal = thrift.lib.thrift.patch.ttypes.OptionalBinaryPatch()
           self.optBinaryVal.read(iprot)
         else:
           iprot.skip(ftype)
@@ -1961,61 +1961,61 @@ class MyStructPatch:
     if is_text:
       json_obj = loads(json)
     if 'boolVal' in json_obj and json_obj['boolVal'] is not None:
-      self.boolVal = patch.ttypes.BoolPatch()
+      self.boolVal = thrift.lib.thrift.patch.ttypes.BoolPatch()
       self.boolVal.readFromJson(json_obj['boolVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'byteVal' in json_obj and json_obj['byteVal'] is not None:
-      self.byteVal = patch.ttypes.BytePatch()
+      self.byteVal = thrift.lib.thrift.patch.ttypes.BytePatch()
       self.byteVal.readFromJson(json_obj['byteVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'i16Val' in json_obj and json_obj['i16Val'] is not None:
-      self.i16Val = patch.ttypes.I16Patch()
+      self.i16Val = thrift.lib.thrift.patch.ttypes.I16Patch()
       self.i16Val.readFromJson(json_obj['i16Val'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'i32Val' in json_obj and json_obj['i32Val'] is not None:
-      self.i32Val = patch.ttypes.I32Patch()
+      self.i32Val = thrift.lib.thrift.patch.ttypes.I32Patch()
       self.i32Val.readFromJson(json_obj['i32Val'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'i64Val' in json_obj and json_obj['i64Val'] is not None:
-      self.i64Val = patch.ttypes.I64Patch()
+      self.i64Val = thrift.lib.thrift.patch.ttypes.I64Patch()
       self.i64Val.readFromJson(json_obj['i64Val'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'floatVal' in json_obj and json_obj['floatVal'] is not None:
-      self.floatVal = patch.ttypes.FloatPatch()
+      self.floatVal = thrift.lib.thrift.patch.ttypes.FloatPatch()
       self.floatVal.readFromJson(json_obj['floatVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'doubleVal' in json_obj and json_obj['doubleVal'] is not None:
-      self.doubleVal = patch.ttypes.DoublePatch()
+      self.doubleVal = thrift.lib.thrift.patch.ttypes.DoublePatch()
       self.doubleVal.readFromJson(json_obj['doubleVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'stringVal' in json_obj and json_obj['stringVal'] is not None:
-      self.stringVal = patch.ttypes.StringPatch()
+      self.stringVal = thrift.lib.thrift.patch.ttypes.StringPatch()
       self.stringVal.readFromJson(json_obj['stringVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'binaryVal' in json_obj and json_obj['binaryVal'] is not None:
-      self.binaryVal = patch.ttypes.BinaryPatch()
+      self.binaryVal = thrift.lib.thrift.patch.ttypes.BinaryPatch()
       self.binaryVal.readFromJson(json_obj['binaryVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'structVal' in json_obj and json_obj['structVal'] is not None:
       self.structVal = MyDataValuePatch()
       self.structVal.readFromJson(json_obj['structVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'optBoolVal' in json_obj and json_obj['optBoolVal'] is not None:
-      self.optBoolVal = patch.ttypes.OptionalBoolPatch()
+      self.optBoolVal = thrift.lib.thrift.patch.ttypes.OptionalBoolPatch()
       self.optBoolVal.readFromJson(json_obj['optBoolVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'optByteVal' in json_obj and json_obj['optByteVal'] is not None:
-      self.optByteVal = patch.ttypes.OptionalBytePatch()
+      self.optByteVal = thrift.lib.thrift.patch.ttypes.OptionalBytePatch()
       self.optByteVal.readFromJson(json_obj['optByteVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'optI16Val' in json_obj and json_obj['optI16Val'] is not None:
-      self.optI16Val = patch.ttypes.OptionalI16Patch()
+      self.optI16Val = thrift.lib.thrift.patch.ttypes.OptionalI16Patch()
       self.optI16Val.readFromJson(json_obj['optI16Val'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'optI32Val' in json_obj and json_obj['optI32Val'] is not None:
-      self.optI32Val = patch.ttypes.OptionalI32Patch()
+      self.optI32Val = thrift.lib.thrift.patch.ttypes.OptionalI32Patch()
       self.optI32Val.readFromJson(json_obj['optI32Val'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'optI64Val' in json_obj and json_obj['optI64Val'] is not None:
-      self.optI64Val = patch.ttypes.OptionalI64Patch()
+      self.optI64Val = thrift.lib.thrift.patch.ttypes.OptionalI64Patch()
       self.optI64Val.readFromJson(json_obj['optI64Val'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'optFloatVal' in json_obj and json_obj['optFloatVal'] is not None:
-      self.optFloatVal = patch.ttypes.OptionalFloatPatch()
+      self.optFloatVal = thrift.lib.thrift.patch.ttypes.OptionalFloatPatch()
       self.optFloatVal.readFromJson(json_obj['optFloatVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'optDoubleVal' in json_obj and json_obj['optDoubleVal'] is not None:
-      self.optDoubleVal = patch.ttypes.OptionalDoublePatch()
+      self.optDoubleVal = thrift.lib.thrift.patch.ttypes.OptionalDoublePatch()
       self.optDoubleVal.readFromJson(json_obj['optDoubleVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'optStringVal' in json_obj and json_obj['optStringVal'] is not None:
-      self.optStringVal = patch.ttypes.OptionalStringPatch()
+      self.optStringVal = thrift.lib.thrift.patch.ttypes.OptionalStringPatch()
       self.optStringVal.readFromJson(json_obj['optStringVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'optBinaryVal' in json_obj and json_obj['optBinaryVal'] is not None:
-      self.optBinaryVal = patch.ttypes.OptionalBinaryPatch()
+      self.optBinaryVal = thrift.lib.thrift.patch.ttypes.OptionalBinaryPatch()
       self.optBinaryVal.readFromJson(json_obj['optBinaryVal'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'optStructVal' in json_obj and json_obj['optStructVal'] is not None:
       self.optStructVal = OptionalMyDataValuePatch()
@@ -3644,8 +3644,8 @@ MyStruct.__setstate__ = MyStruct__setstate__
 all_structs.append(MyDataPatch)
 MyDataPatch.thrift_spec = (
   None, # 0
-  (1, TType.STRUCT, 'data1', [patch.ttypes.StringPatch, patch.ttypes.StringPatch.thrift_spec, False], None, 3, ), # 1
-  (2, TType.STRUCT, 'data2', [patch.ttypes.I32Patch, patch.ttypes.I32Patch.thrift_spec, False], None, 3, ), # 2
+  (1, TType.STRUCT, 'data1', [thrift.lib.thrift.patch.ttypes.StringPatch, thrift.lib.thrift.patch.ttypes.StringPatch.thrift_spec, False], None, 2, ), # 1
+  (2, TType.STRUCT, 'data2', [thrift.lib.thrift.patch.ttypes.I32Patch, thrift.lib.thrift.patch.ttypes.I32Patch.thrift_spec, False], None, 2, ), # 2
 )
 
 MyDataPatch.thrift_struct_annotations = {
@@ -3674,8 +3674,8 @@ all_structs.append(MyDataValuePatch)
 MyDataValuePatch.thrift_spec = (
   None, # 0
   (1, TType.STRUCT, 'assign', [MyData, MyData.thrift_spec, False], None, 1, ), # 1
-  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
-  (3, TType.STRUCT, 'patch', [MyDataPatch, MyDataPatch.thrift_spec, False], None, 3, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (3, TType.STRUCT, 'patch', [MyDataPatch, MyDataPatch.thrift_spec, False], None, 2, ), # 3
 )
 
 MyDataValuePatch.thrift_struct_annotations = {
@@ -3709,10 +3709,10 @@ all_structs.append(OptionalMyDataValuePatch)
 OptionalMyDataValuePatch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
-  (3, TType.STRUCT, 'patch', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 3, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (3, TType.STRUCT, 'patch', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [MyData, MyData.thrift_spec, False], None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 3, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalMyDataValuePatch.thrift_struct_annotations = {
@@ -3747,8 +3747,8 @@ OptionalMyDataValuePatch.__setstate__ = OptionalMyDataValuePatch__setstate__
 all_structs.append(MyUnionPatch)
 MyUnionPatch.thrift_spec = (
   None, # 0
-  (1, TType.STRUCT, 'option1', [patch.ttypes.StringPatch, patch.ttypes.StringPatch.thrift_spec, False], None, 3, ), # 1
-  (2, TType.STRUCT, 'option2', [patch.ttypes.I32Patch, patch.ttypes.I32Patch.thrift_spec, False], None, 3, ), # 2
+  (1, TType.STRUCT, 'option1', [thrift.lib.thrift.patch.ttypes.StringPatch, thrift.lib.thrift.patch.ttypes.StringPatch.thrift_spec, False], None, 2, ), # 1
+  (2, TType.STRUCT, 'option2', [thrift.lib.thrift.patch.ttypes.I32Patch, thrift.lib.thrift.patch.ttypes.I32Patch.thrift_spec, False], None, 2, ), # 2
 )
 
 MyUnionPatch.thrift_struct_annotations = {
@@ -3777,10 +3777,10 @@ all_structs.append(MyUnionValuePatch)
 MyUnionValuePatch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
-  (3, TType.STRUCT, 'patch', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 3, ), # 3
-  (4, TType.STRUCT, 'ensure', [MyUnion, MyUnion.thrift_spec, True], None, 3, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 3, ), # 5
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (3, TType.STRUCT, 'patch', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 2, ), # 3
+  (4, TType.STRUCT, 'ensure', [MyUnion, MyUnion.thrift_spec, True], None, 2, ), # 4
+  (5, TType.STRUCT, 'patchAfter', [MyUnionPatch, MyUnionPatch.thrift_spec, False], None, 2, ), # 5
 )
 
 MyUnionValuePatch.thrift_struct_annotations = {
@@ -3813,10 +3813,10 @@ all_structs.append(OptionalMyUnionValuePatch)
 OptionalMyUnionValuePatch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
-  (3, TType.STRUCT, 'patch', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 3, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (3, TType.STRUCT, 'patch', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [MyUnion, MyUnion.thrift_spec, True], None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 3, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalMyUnionValuePatch.thrift_struct_annotations = {
@@ -3851,36 +3851,36 @@ OptionalMyUnionValuePatch.__setstate__ = OptionalMyUnionValuePatch__setstate__
 all_structs.append(MyStructPatch)
 MyStructPatch.thrift_spec = (
   None, # 0
-  (1, TType.STRUCT, 'boolVal', [patch.ttypes.BoolPatch, patch.ttypes.BoolPatch.thrift_spec, False], None, 3, ), # 1
-  (2, TType.STRUCT, 'byteVal', [patch.ttypes.BytePatch, patch.ttypes.BytePatch.thrift_spec, False], None, 3, ), # 2
-  (3, TType.STRUCT, 'i16Val', [patch.ttypes.I16Patch, patch.ttypes.I16Patch.thrift_spec, False], None, 3, ), # 3
-  (4, TType.STRUCT, 'i32Val', [patch.ttypes.I32Patch, patch.ttypes.I32Patch.thrift_spec, False], None, 3, ), # 4
-  (5, TType.STRUCT, 'i64Val', [patch.ttypes.I64Patch, patch.ttypes.I64Patch.thrift_spec, False], None, 3, ), # 5
-  (6, TType.STRUCT, 'floatVal', [patch.ttypes.FloatPatch, patch.ttypes.FloatPatch.thrift_spec, False], None, 3, ), # 6
-  (7, TType.STRUCT, 'doubleVal', [patch.ttypes.DoublePatch, patch.ttypes.DoublePatch.thrift_spec, False], None, 3, ), # 7
-  (8, TType.STRUCT, 'stringVal', [patch.ttypes.StringPatch, patch.ttypes.StringPatch.thrift_spec, False], None, 3, ), # 8
-  (9, TType.STRUCT, 'binaryVal', [patch.ttypes.BinaryPatch, patch.ttypes.BinaryPatch.thrift_spec, False], None, 3, ), # 9
-  (10, TType.STRUCT, 'structVal', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 3, ), # 10
-  (11, TType.STRUCT, 'optBoolVal', [patch.ttypes.OptionalBoolPatch, patch.ttypes.OptionalBoolPatch.thrift_spec, False], None, 3, ), # 11
-  (12, TType.STRUCT, 'optByteVal', [patch.ttypes.OptionalBytePatch, patch.ttypes.OptionalBytePatch.thrift_spec, False], None, 3, ), # 12
-  (13, TType.STRUCT, 'optI16Val', [patch.ttypes.OptionalI16Patch, patch.ttypes.OptionalI16Patch.thrift_spec, False], None, 3, ), # 13
-  (14, TType.STRUCT, 'optI32Val', [patch.ttypes.OptionalI32Patch, patch.ttypes.OptionalI32Patch.thrift_spec, False], None, 3, ), # 14
-  (15, TType.STRUCT, 'optI64Val', [patch.ttypes.OptionalI64Patch, patch.ttypes.OptionalI64Patch.thrift_spec, False], None, 3, ), # 15
-  (16, TType.STRUCT, 'optFloatVal', [patch.ttypes.OptionalFloatPatch, patch.ttypes.OptionalFloatPatch.thrift_spec, False], None, 3, ), # 16
-  (17, TType.STRUCT, 'optDoubleVal', [patch.ttypes.OptionalDoublePatch, patch.ttypes.OptionalDoublePatch.thrift_spec, False], None, 3, ), # 17
-  (18, TType.STRUCT, 'optStringVal', [patch.ttypes.OptionalStringPatch, patch.ttypes.OptionalStringPatch.thrift_spec, False], None, 3, ), # 18
-  (19, TType.STRUCT, 'optBinaryVal', [patch.ttypes.OptionalBinaryPatch, patch.ttypes.OptionalBinaryPatch.thrift_spec, False], None, 3, ), # 19
-  (20, TType.STRUCT, 'optStructVal', [OptionalMyDataValuePatch, OptionalMyDataValuePatch.thrift_spec, False], None, 3, ), # 20
-  (21, TType.STRUCT, 'optListVal', [OptionalMyStructField21Patch, OptionalMyStructField21Patch.thrift_spec, False], None, 3, ), # 21
-  (22, TType.STRUCT, 'optSetVal', [OptionalMyStructField22Patch, OptionalMyStructField22Patch.thrift_spec, False], None, 3, ), # 22
-  (23, TType.STRUCT, 'optMapVal', [OptionalMyStructField23Patch, OptionalMyStructField23Patch.thrift_spec, False], None, 3, ), # 23
+  (1, TType.STRUCT, 'boolVal', [thrift.lib.thrift.patch.ttypes.BoolPatch, thrift.lib.thrift.patch.ttypes.BoolPatch.thrift_spec, False], None, 2, ), # 1
+  (2, TType.STRUCT, 'byteVal', [thrift.lib.thrift.patch.ttypes.BytePatch, thrift.lib.thrift.patch.ttypes.BytePatch.thrift_spec, False], None, 2, ), # 2
+  (3, TType.STRUCT, 'i16Val', [thrift.lib.thrift.patch.ttypes.I16Patch, thrift.lib.thrift.patch.ttypes.I16Patch.thrift_spec, False], None, 2, ), # 3
+  (4, TType.STRUCT, 'i32Val', [thrift.lib.thrift.patch.ttypes.I32Patch, thrift.lib.thrift.patch.ttypes.I32Patch.thrift_spec, False], None, 2, ), # 4
+  (5, TType.STRUCT, 'i64Val', [thrift.lib.thrift.patch.ttypes.I64Patch, thrift.lib.thrift.patch.ttypes.I64Patch.thrift_spec, False], None, 2, ), # 5
+  (6, TType.STRUCT, 'floatVal', [thrift.lib.thrift.patch.ttypes.FloatPatch, thrift.lib.thrift.patch.ttypes.FloatPatch.thrift_spec, False], None, 2, ), # 6
+  (7, TType.STRUCT, 'doubleVal', [thrift.lib.thrift.patch.ttypes.DoublePatch, thrift.lib.thrift.patch.ttypes.DoublePatch.thrift_spec, False], None, 2, ), # 7
+  (8, TType.STRUCT, 'stringVal', [thrift.lib.thrift.patch.ttypes.StringPatch, thrift.lib.thrift.patch.ttypes.StringPatch.thrift_spec, False], None, 2, ), # 8
+  (9, TType.STRUCT, 'binaryVal', [thrift.lib.thrift.patch.ttypes.BinaryPatch, thrift.lib.thrift.patch.ttypes.BinaryPatch.thrift_spec, False], None, 2, ), # 9
+  (10, TType.STRUCT, 'structVal', [MyDataValuePatch, MyDataValuePatch.thrift_spec, False], None, 2, ), # 10
+  (11, TType.STRUCT, 'optBoolVal', [thrift.lib.thrift.patch.ttypes.OptionalBoolPatch, thrift.lib.thrift.patch.ttypes.OptionalBoolPatch.thrift_spec, False], None, 2, ), # 11
+  (12, TType.STRUCT, 'optByteVal', [thrift.lib.thrift.patch.ttypes.OptionalBytePatch, thrift.lib.thrift.patch.ttypes.OptionalBytePatch.thrift_spec, False], None, 2, ), # 12
+  (13, TType.STRUCT, 'optI16Val', [thrift.lib.thrift.patch.ttypes.OptionalI16Patch, thrift.lib.thrift.patch.ttypes.OptionalI16Patch.thrift_spec, False], None, 2, ), # 13
+  (14, TType.STRUCT, 'optI32Val', [thrift.lib.thrift.patch.ttypes.OptionalI32Patch, thrift.lib.thrift.patch.ttypes.OptionalI32Patch.thrift_spec, False], None, 2, ), # 14
+  (15, TType.STRUCT, 'optI64Val', [thrift.lib.thrift.patch.ttypes.OptionalI64Patch, thrift.lib.thrift.patch.ttypes.OptionalI64Patch.thrift_spec, False], None, 2, ), # 15
+  (16, TType.STRUCT, 'optFloatVal', [thrift.lib.thrift.patch.ttypes.OptionalFloatPatch, thrift.lib.thrift.patch.ttypes.OptionalFloatPatch.thrift_spec, False], None, 2, ), # 16
+  (17, TType.STRUCT, 'optDoubleVal', [thrift.lib.thrift.patch.ttypes.OptionalDoublePatch, thrift.lib.thrift.patch.ttypes.OptionalDoublePatch.thrift_spec, False], None, 2, ), # 17
+  (18, TType.STRUCT, 'optStringVal', [thrift.lib.thrift.patch.ttypes.OptionalStringPatch, thrift.lib.thrift.patch.ttypes.OptionalStringPatch.thrift_spec, False], None, 2, ), # 18
+  (19, TType.STRUCT, 'optBinaryVal', [thrift.lib.thrift.patch.ttypes.OptionalBinaryPatch, thrift.lib.thrift.patch.ttypes.OptionalBinaryPatch.thrift_spec, False], None, 2, ), # 19
+  (20, TType.STRUCT, 'optStructVal', [OptionalMyDataValuePatch, OptionalMyDataValuePatch.thrift_spec, False], None, 2, ), # 20
+  (21, TType.STRUCT, 'optListVal', [OptionalMyStructField21Patch, OptionalMyStructField21Patch.thrift_spec, False], None, 2, ), # 21
+  (22, TType.STRUCT, 'optSetVal', [OptionalMyStructField22Patch, OptionalMyStructField22Patch.thrift_spec, False], None, 2, ), # 22
+  (23, TType.STRUCT, 'optMapVal', [OptionalMyStructField23Patch, OptionalMyStructField23Patch.thrift_spec, False], None, 2, ), # 23
   None, # 24
   None, # 25
   None, # 26
   None, # 27
   None, # 28
   None, # 29
-  (30, TType.STRUCT, 'unionVal', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 3, ), # 30
+  (30, TType.STRUCT, 'unionVal', [MyUnionValuePatch, MyUnionValuePatch.thrift_spec, False], None, 2, ), # 30
 )
 
 MyStructPatch.thrift_struct_annotations = {
@@ -3953,10 +3953,10 @@ all_structs.append(MyStructField21Patch)
 MyStructField21Patch.thrift_spec = (
   None, # 0
   (1, TType.LIST, 'assign', (TType.I16,None), None, 1, ), # 1
-  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   None, # 3
-  (4, TType.LIST, 'prepend', (TType.I16,None), None, 3, ), # 4
-  (5, TType.LIST, 'append', (TType.I16,None), None, 3, ), # 5
+  (4, TType.LIST, 'prepend', (TType.I16,None), None, 2, ), # 4
+  (5, TType.LIST, 'append', (TType.I16,None), None, 2, ), # 5
 )
 
 MyStructField21Patch.thrift_struct_annotations = {
@@ -3989,10 +3989,10 @@ all_structs.append(OptionalMyStructField21Patch)
 OptionalMyStructField21Patch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 3, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (3, TType.STRUCT, 'patch', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 2, ), # 3
   (4, TType.LIST, 'ensure', (TType.I16,None), None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 3, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [MyStructField21Patch, MyStructField21Patch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalMyStructField21Patch.thrift_struct_annotations = {
@@ -4025,10 +4025,10 @@ all_structs.append(MyStructField22Patch)
 MyStructField22Patch.thrift_spec = (
   None, # 0
   (1, TType.SET, 'assign', (TType.STRING,True), None, 1, ), # 1
-  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   None, # 3
-  (4, TType.SET, 'remove', (TType.STRING,True), None, 3, ), # 4
-  (5, TType.SET, 'add', (TType.STRING,True), None, 3, ), # 5
+  (4, TType.SET, 'remove', (TType.STRING,True), None, 2, ), # 4
+  (5, TType.SET, 'add', (TType.STRING,True), None, 2, ), # 5
 )
 
 MyStructField22Patch.thrift_struct_annotations = {
@@ -4061,10 +4061,10 @@ all_structs.append(OptionalMyStructField22Patch)
 OptionalMyStructField22Patch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 3, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (3, TType.STRUCT, 'patch', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 2, ), # 3
   (4, TType.SET, 'ensure', (TType.STRING,True), None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 3, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [MyStructField22Patch, MyStructField22Patch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalMyStructField22Patch.thrift_struct_annotations = {
@@ -4097,12 +4097,12 @@ all_structs.append(MyStructField23Patch)
 MyStructField23Patch.thrift_spec = (
   None, # 0
   (1, TType.MAP, 'assign', (TType.STRING,True,TType.STRING,True), None, 1, ), # 1
-  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
   None, # 3
   None, # 4
   None, # 5
   None, # 6
-  (7, TType.MAP, 'put', (TType.STRING,True,TType.STRING,True), None, 3, ), # 7
+  (7, TType.MAP, 'put', (TType.STRING,True,TType.STRING,True), None, 2, ), # 7
 )
 
 MyStructField23Patch.thrift_struct_annotations = {
@@ -4133,10 +4133,10 @@ all_structs.append(OptionalMyStructField23Patch)
 OptionalMyStructField23Patch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 3, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (3, TType.STRUCT, 'patch', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 2, ), # 3
   (4, TType.MAP, 'ensure', (TType.STRING,True,TType.STRING,True), None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 3, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [MyStructField23Patch, MyStructField23Patch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalMyStructField23Patch.thrift_struct_annotations = {
@@ -4169,8 +4169,8 @@ all_structs.append(MyStructValuePatch)
 MyStructValuePatch.thrift_spec = (
   None, # 0
   (1, TType.STRUCT, 'assign', [MyStruct, MyStruct.thrift_spec, False], None, 1, ), # 1
-  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructPatch, MyStructPatch.thrift_spec, False], None, 3, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (3, TType.STRUCT, 'patch', [MyStructPatch, MyStructPatch.thrift_spec, False], None, 2, ), # 3
 )
 
 MyStructValuePatch.thrift_struct_annotations = {
@@ -4204,10 +4204,10 @@ all_structs.append(OptionalMyStructValuePatch)
 OptionalMyStructValuePatch.thrift_spec = (
   None, # 0
   None, # 1
-  (2, TType.BOOL, 'clear', None, None, 3, ), # 2
-  (3, TType.STRUCT, 'patch', [MyStructValuePatch, MyStructValuePatch.thrift_spec, False], None, 3, ), # 3
+  (2, TType.BOOL, 'clear', None, None, 2, ), # 2
+  (3, TType.STRUCT, 'patch', [MyStructValuePatch, MyStructValuePatch.thrift_spec, False], None, 2, ), # 3
   (4, TType.STRUCT, 'ensure', [MyStruct, MyStruct.thrift_spec, False], None, 1, ), # 4
-  (5, TType.STRUCT, 'patchAfter', [MyStructValuePatch, MyStructValuePatch.thrift_spec, False], None, 3, ), # 5
+  (5, TType.STRUCT, 'patchAfter', [MyStructValuePatch, MyStructValuePatch.thrift_spec, False], None, 2, ), # 5
 )
 
 OptionalMyStructValuePatch.thrift_struct_annotations = {
