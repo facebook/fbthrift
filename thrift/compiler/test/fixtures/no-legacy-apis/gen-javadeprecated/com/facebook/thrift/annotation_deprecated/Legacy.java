@@ -26,11 +26,19 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class Legacy implements TBase, java.io.Serializable, Cloneable, Comparable<Legacy> {
   private static final TStruct STRUCT_DESC = new TStruct("Legacy");
+  private static final TField MESSAGE_FIELD_DESC = new TField("message", TType.STRING, (short)1);
+
+  public String message;
+  public static final int MESSAGE = 1;
+
+  // isset id assignments
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+    tmpMetaDataMap.put(MESSAGE, new FieldMetaData("message", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -41,13 +49,26 @@ public class Legacy implements TBase, java.io.Serializable, Cloneable, Comparabl
   public Legacy() {
   }
 
+  public Legacy(
+      String message) {
+    this();
+    this.message = message;
+  }
+
   public static class Builder {
+    private String message;
 
     public Builder() {
     }
 
+    public Builder setMessage(final String message) {
+      this.message = message;
+      return this;
+    }
+
     public Legacy build() {
       Legacy result = new Legacy();
+      result.setMessage(this.message);
       return result;
     }
   }
@@ -60,14 +81,49 @@ public class Legacy implements TBase, java.io.Serializable, Cloneable, Comparabl
    * Performs a deep copy on <i>other</i>.
    */
   public Legacy(Legacy other) {
+    if (other.isSetMessage()) {
+      this.message = TBaseHelper.deepCopy(other.message);
+    }
   }
 
   public Legacy deepCopy() {
     return new Legacy(this);
   }
 
+  public String getMessage() {
+    return this.message;
+  }
+
+  public Legacy setMessage(String message) {
+    this.message = message;
+    return this;
+  }
+
+  public void unsetMessage() {
+    this.message = null;
+  }
+
+  // Returns true if field message is set (has been assigned a value) and false otherwise
+  public boolean isSetMessage() {
+    return this.message != null;
+  }
+
+  public void setMessageIsSet(boolean __value) {
+    if (!__value) {
+      this.message = null;
+    }
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
+    case MESSAGE:
+      if (__value == null) {
+        unsetMessage();
+      } else {
+        setMessage((String)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -75,6 +131,9 @@ public class Legacy implements TBase, java.io.Serializable, Cloneable, Comparabl
 
   public Object getFieldValue(int fieldID) {
     switch (fieldID) {
+    case MESSAGE:
+      return getMessage();
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -90,12 +149,14 @@ public class Legacy implements TBase, java.io.Serializable, Cloneable, Comparabl
       return false;
     Legacy that = (Legacy)_that;
 
+    if (!TBaseHelper.equalsNobinary(this.isSetMessage(), that.isSetMessage(), this.message, that.message)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {});
+    return Arrays.deepHashCode(new Object[] {message});
   }
 
   @Override
@@ -110,6 +171,14 @@ public class Legacy implements TBase, java.io.Serializable, Cloneable, Comparabl
     }
     int lastComparison = 0;
 
+    lastComparison = Boolean.valueOf(isSetMessage()).compareTo(other.isSetMessage());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(message, other.message);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -124,6 +193,13 @@ public class Legacy implements TBase, java.io.Serializable, Cloneable, Comparabl
       }
       switch (__field.id)
       {
+        case MESSAGE:
+          if (__field.type == TType.STRING) {
+            this.message = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -141,6 +217,11 @@ public class Legacy implements TBase, java.io.Serializable, Cloneable, Comparabl
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    if (this.message != null) {
+      oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
+      oprot.writeString(this.message);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -161,6 +242,16 @@ public class Legacy implements TBase, java.io.Serializable, Cloneable, Comparabl
     sb.append(newLine);
     boolean first = true;
 
+    sb.append(indentStr);
+    sb.append("message");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getMessage() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getMessage(), indent + 1, prettyPrint));
+    }
+    first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");
     return sb.toString();

@@ -340,18 +340,31 @@ class Deprecated implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'message',
+      'type' => \TType::STRING,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
+    'message' => 1,
   ];
 
   const type TConstructorShape = shape(
+    ?'message' => ?string,
   );
 
   const type TShape = shape(
+    'message' => string,
   );
-  const int STRUCTURAL_ID = 957977401221134810;
+  const int STRUCTURAL_ID = 2427562471238739676;
+  /**
+   * Original thrift field:-
+   * 1: string message
+   */
+  public string $message;
 
-  public function __construct(  )[] {
+  public function __construct(?string $message = null  )[] {
+    $this->message = $message ?? '';
   }
 
   public static function withDefaultValues()[]: this {
@@ -360,11 +373,14 @@ class Deprecated implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
+      Shapes::idx($shape, 'message'),
     );
   }
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'message'),
     );
   }
 
@@ -376,6 +392,19 @@ class Deprecated implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "thrift.Deprecated",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "message",
+            )
+          ),
+        ],
         "is_union" => false,
       )
     );
@@ -408,11 +437,13 @@ class Deprecated implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
+      $shape['message'],
     );
   }
 
   public function __toShape()[]: self::TShape {
     return shape(
+      'message' => $this->message,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -426,6 +457,9 @@ class Deprecated implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
+    if (idx($parsed, 'message') !== null) {
+      $this->message = /* HH_FIXME[4110] */ $parsed['message'];
+    }    
   }
 
 }
@@ -439,18 +473,31 @@ class Legacy implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'message',
+      'type' => \TType::STRING,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
+    'message' => 1,
   ];
 
   const type TConstructorShape = shape(
+    ?'message' => ?string,
   );
 
   const type TShape = shape(
+    'message' => string,
   );
-  const int STRUCTURAL_ID = 957977401221134810;
+  const int STRUCTURAL_ID = 2427562471238739676;
+  /**
+   * Original thrift field:-
+   * 1: string message
+   */
+  public string $message;
 
-  public function __construct(  )[] {
+  public function __construct(?string $message = null  )[] {
+    $this->message = $message ?? '';
   }
 
   public static function withDefaultValues()[]: this {
@@ -459,11 +506,14 @@ class Legacy implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
+      Shapes::idx($shape, 'message'),
     );
   }
 
   public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map)[]: this {
     return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'message'),
     );
   }
 
@@ -475,6 +525,19 @@ class Legacy implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
     return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "thrift.Legacy",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "message",
+            )
+          ),
+        ],
         "is_union" => false,
       )
     );
@@ -503,11 +566,13 @@ class Legacy implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
 
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
+      $shape['message'],
     );
   }
 
   public function __toShape()[]: self::TShape {
     return shape(
+      'message' => $this->message,
     );
   }
   public function getInstanceKey()[write_props]: string {
@@ -521,6 +586,9 @@ class Legacy implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
+    if (idx($parsed, 'message') !== null) {
+      $this->message = /* HH_FIXME[4110] */ $parsed['message'];
+    }    
   }
 
 }

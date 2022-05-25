@@ -271,10 +271,15 @@ class Experimental:
   __hash__ = object.__hash__
 
 class Deprecated:
+  """
+  Attributes:
+   - message
+  """
 
   thrift_spec = None
   thrift_field_annotations = None
   thrift_struct_annotations = None
+  __init__ = None
   @staticmethod
   def isUnion():
     return False
@@ -291,6 +296,11 @@ class Deprecated:
       (fname, ftype, fid) = iprot.readFieldBegin()
       if ftype == TType.STOP:
         break
+      if fid == 1:
+        if ftype == TType.STRING:
+          self.message = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -304,6 +314,10 @@ class Deprecated:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('Deprecated')
+    if self.message != None:
+      oprot.writeFieldBegin('message', TType.STRING, 1)
+      oprot.writeString(self.message.encode('utf-8')) if UTF8STRINGS and not isinstance(self.message, bytes) else oprot.writeString(self.message)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -319,10 +333,16 @@ class Deprecated:
     json_obj = json
     if is_text:
       json_obj = loads(json)
+    if 'message' in json_obj and json_obj['message'] is not None:
+      self.message = json_obj['message']
 
   def __repr__(self):
     L = []
     padding = ' ' * 4
+    if self.message is not None:
+      value = pprint.pformat(self.message, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    message=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -336,16 +356,22 @@ class Deprecated:
 
   def __dir__(self):
     return (
+      'message',
     )
 
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
 class Legacy:
+  """
+  Attributes:
+   - message
+  """
 
   thrift_spec = None
   thrift_field_annotations = None
   thrift_struct_annotations = None
+  __init__ = None
   @staticmethod
   def isUnion():
     return False
@@ -362,6 +388,11 @@ class Legacy:
       (fname, ftype, fid) = iprot.readFieldBegin()
       if ftype == TType.STOP:
         break
+      if fid == 1:
+        if ftype == TType.STRING:
+          self.message = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -375,6 +406,10 @@ class Legacy:
       oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
       return
     oprot.writeStructBegin('Legacy')
+    if self.message != None:
+      oprot.writeFieldBegin('message', TType.STRING, 1)
+      oprot.writeString(self.message.encode('utf-8')) if UTF8STRINGS and not isinstance(self.message, bytes) else oprot.writeString(self.message)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -390,10 +425,16 @@ class Legacy:
     json_obj = json
     if is_text:
       json_obj = loads(json)
+    if 'message' in json_obj and json_obj['message'] is not None:
+      self.message = json_obj['message']
 
   def __repr__(self):
     L = []
     padding = ' ' * 4
+    if self.message is not None:
+      value = pprint.pformat(self.message, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    message=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -407,6 +448,7 @@ class Legacy:
 
   def __dir__(self):
     return (
+      'message',
     )
 
   # Override the __hash__ function for Python3 - t10434117
@@ -1378,6 +1420,8 @@ Experimental.thrift_field_annotations = {
 
 all_structs.append(Deprecated)
 Deprecated.thrift_spec = (
+  None, # 0
+  (1, TType.STRING, 'message', True, None, 2, ), # 1
 )
 
 Deprecated.thrift_struct_annotations = {
@@ -1385,14 +1429,40 @@ Deprecated.thrift_struct_annotations = {
 Deprecated.thrift_field_annotations = {
 }
 
+def Deprecated__init__(self, message=None,):
+  self.message = message
+
+Deprecated.__init__ = Deprecated__init__
+
+def Deprecated__setstate__(self, state):
+  state.setdefault('message', None)
+  self.__dict__ = state
+
+Deprecated.__getstate__ = lambda self: self.__dict__.copy()
+Deprecated.__setstate__ = Deprecated__setstate__
+
 all_structs.append(Legacy)
 Legacy.thrift_spec = (
+  None, # 0
+  (1, TType.STRING, 'message', True, None, 2, ), # 1
 )
 
 Legacy.thrift_struct_annotations = {
 }
 Legacy.thrift_field_annotations = {
 }
+
+def Legacy__init__(self, message=None,):
+  self.message = message
+
+Legacy.__init__ = Legacy__init__
+
+def Legacy__setstate__(self, state):
+  state.setdefault('message', None)
+  self.__dict__ = state
+
+Legacy.__getstate__ = lambda self: self.__dict__.copy()
+Legacy.__setstate__ = Legacy__setstate__
 
 all_structs.append(TerseWrite)
 TerseWrite.thrift_spec = (

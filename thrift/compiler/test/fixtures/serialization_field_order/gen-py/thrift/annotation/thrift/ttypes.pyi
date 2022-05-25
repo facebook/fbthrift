@@ -105,10 +105,15 @@ class Deprecated:
     thrift_struct_annotations: __T.Dict[str, str]
 
     def __init__(
-        self
+        self,
+        message: __T.Optional[str] = ...
     ) -> None:
         ...
 
+    @__property__
+    def message(self) -> str: ...
+    @message.setter
+    def message(self, value: __T.Optional[str]) -> None: ...
 
 
     def isUnion(self) -> bool: ...
@@ -130,10 +135,15 @@ class Legacy:
     thrift_struct_annotations: __T.Dict[str, str]
 
     def __init__(
-        self
+        self,
+        message: __T.Optional[str] = ...
     ) -> None:
         ...
 
+    @__property__
+    def message(self) -> str: ...
+    @message.setter
+    def message(self, value: __T.Optional[str]) -> None: ...
 
 
     def isUnion(self) -> bool: ...

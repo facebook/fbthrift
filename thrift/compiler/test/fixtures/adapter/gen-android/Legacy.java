@@ -24,19 +24,38 @@ import com.facebook.thrift.protocol.*;
 @SuppressWarnings({ "unused", "serial" })
 public class Legacy implements TBase, java.io.Serializable, Cloneable {
   private static final TStruct STRUCT_DESC = new TStruct("Legacy");
+  private static final TField MESSAGE_FIELD_DESC = new TField("message", TType.STRING, (short)1);
 
+  public final String message;
+  public static final int MESSAGE = 1;
 
-  public Legacy() {
+  public Legacy(
+      String message) {
+    this.message = message;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public Legacy(Legacy other) {
+    if (other.isSetMessage()) {
+      this.message = TBaseHelper.deepCopy(other.message);
+    } else {
+      this.message = null;
+    }
   }
 
   public Legacy deepCopy() {
     return new Legacy(this);
+  }
+
+  public String getMessage() {
+    return this.message;
+  }
+
+  // Returns true if field message is set (has been assigned a value) and false otherwise
+  public boolean isSetMessage() {
+    return this.message != null;
   }
 
   @Override
@@ -49,12 +68,14 @@ public class Legacy implements TBase, java.io.Serializable, Cloneable {
       return false;
     Legacy that = (Legacy)_that;
 
+    if (!TBaseHelper.equalsNobinary(this.isSetMessage(), that.isSetMessage(), this.message, that.message)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {});
+    return Arrays.deepHashCode(new Object[] {message});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -63,6 +84,7 @@ public class Legacy implements TBase, java.io.Serializable, Cloneable {
   }
 
   public static Legacy deserialize(TProtocol iprot) throws TException {
+    String tmp_message = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -73,6 +95,13 @@ public class Legacy implements TBase, java.io.Serializable, Cloneable {
       }
       switch (__field.id)
       {
+        case MESSAGE:
+          if (__field.type == TType.STRING) {
+            tmp_message = iprot.readString();
+          } else {
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -83,6 +112,7 @@ public class Legacy implements TBase, java.io.Serializable, Cloneable {
 
     Legacy _that;
     _that = new Legacy(
+      tmp_message
     );
     _that.validate();
     return _that;
@@ -92,6 +122,11 @@ public class Legacy implements TBase, java.io.Serializable, Cloneable {
     validate();
 
     oprot.writeStructBegin(STRUCT_DESC);
+    if (this.message != null) {
+      oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
+      oprot.writeString(this.message);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }

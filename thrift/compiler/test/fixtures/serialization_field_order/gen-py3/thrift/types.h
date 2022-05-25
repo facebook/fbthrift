@@ -47,6 +47,9 @@ template<>
 void reset_field<::facebook::thrift::annotation::Deprecated>(
     ::facebook::thrift::annotation::Deprecated& obj, uint16_t index) {
   switch (index) {
+    case 0:
+      obj.message_ref().copy_from(default_inst<::facebook::thrift::annotation::Deprecated>().message_ref());
+      return;
   }
 }
 
@@ -54,6 +57,9 @@ template<>
 void reset_field<::facebook::thrift::annotation::Legacy>(
     ::facebook::thrift::annotation::Legacy& obj, uint16_t index) {
   switch (index) {
+    case 0:
+      obj.message_ref().copy_from(default_inst<::facebook::thrift::annotation::Legacy>().message_ref());
+      return;
   }
 }
 

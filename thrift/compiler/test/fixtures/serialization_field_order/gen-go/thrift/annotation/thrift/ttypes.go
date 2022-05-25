@@ -265,13 +265,20 @@ func (p *Experimental) String() string {
   return fmt.Sprintf("Experimental({})")
 }
 
+// Attributes:
+//  - Message
 type Deprecated struct {
+  Message string `thrift:"message,1" db:"message" json:"message"`
 }
 
 func NewDeprecated() *Deprecated {
   return &Deprecated{}
 }
 
+
+func (p *Deprecated) GetMessage() string {
+  return p.Message
+}
 type DeprecatedBuilder struct {
   obj *Deprecated
 }
@@ -284,7 +291,18 @@ func NewDeprecatedBuilder() *DeprecatedBuilder{
 
 func (p DeprecatedBuilder) Emit() *Deprecated{
   return &Deprecated{
+    Message: p.obj.Message,
   }
+}
+
+func (d *DeprecatedBuilder) Message(message string) *DeprecatedBuilder {
+  d.obj.Message = message
+  return d
+}
+
+func (d *Deprecated) SetMessage(message string) *Deprecated {
+  d.Message = message
+  return d
 }
 
 func (p *Deprecated) Read(iprot thrift.Protocol) error {
@@ -299,8 +317,15 @@ func (p *Deprecated) Read(iprot thrift.Protocol) error {
       return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
     }
     if fieldTypeId == thrift.STOP { break; }
-    if err := iprot.Skip(fieldTypeId); err != nil {
-      return err
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
     }
     if err := iprot.ReadFieldEnd(); err != nil {
       return err
@@ -312,9 +337,19 @@ func (p *Deprecated) Read(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Deprecated)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Message = v
+  }
+  return nil
+}
+
 func (p *Deprecated) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Deprecated"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -322,21 +357,39 @@ func (p *Deprecated) Write(oprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Deprecated) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("message", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:message: ", p), err) }
+  if err := oprot.WriteString(string(p.Message)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.message (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:message: ", p), err) }
+  return err
+}
+
 func (p *Deprecated) String() string {
   if p == nil {
     return "<nil>"
   }
 
-  return fmt.Sprintf("Deprecated({})")
+  messageVal := fmt.Sprintf("%v", p.Message)
+  return fmt.Sprintf("Deprecated({Message:%s})", messageVal)
 }
 
+// Attributes:
+//  - Message
 type Legacy struct {
+  Message string `thrift:"message,1" db:"message" json:"message"`
 }
 
 func NewLegacy() *Legacy {
   return &Legacy{}
 }
 
+
+func (p *Legacy) GetMessage() string {
+  return p.Message
+}
 type LegacyBuilder struct {
   obj *Legacy
 }
@@ -349,7 +402,18 @@ func NewLegacyBuilder() *LegacyBuilder{
 
 func (p LegacyBuilder) Emit() *Legacy{
   return &Legacy{
+    Message: p.obj.Message,
   }
+}
+
+func (l *LegacyBuilder) Message(message string) *LegacyBuilder {
+  l.obj.Message = message
+  return l
+}
+
+func (l *Legacy) SetMessage(message string) *Legacy {
+  l.Message = message
+  return l
 }
 
 func (p *Legacy) Read(iprot thrift.Protocol) error {
@@ -364,8 +428,15 @@ func (p *Legacy) Read(iprot thrift.Protocol) error {
       return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
     }
     if fieldTypeId == thrift.STOP { break; }
-    if err := iprot.Skip(fieldTypeId); err != nil {
-      return err
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
     }
     if err := iprot.ReadFieldEnd(); err != nil {
       return err
@@ -377,9 +448,19 @@ func (p *Legacy) Read(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Legacy)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Message = v
+  }
+  return nil
+}
+
 func (p *Legacy) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Legacy"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -387,12 +468,23 @@ func (p *Legacy) Write(oprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Legacy) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("message", thrift.STRING, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:message: ", p), err) }
+  if err := oprot.WriteString(string(p.Message)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.message (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:message: ", p), err) }
+  return err
+}
+
 func (p *Legacy) String() string {
   if p == nil {
     return "<nil>"
   }
 
-  return fmt.Sprintf("Legacy({})")
+  messageVal := fmt.Sprintf("%v", p.Message)
+  return fmt.Sprintf("Legacy({Message:%s})", messageVal)
 }
 
 type TerseWrite struct {

@@ -54,7 +54,9 @@ struct Experimental {}
 @Beta // TODO(afuller): Hook up to code gen.
 @scope.Program
 @scope.Definition
-struct Deprecated {}
+struct Deprecated {
+  1: string message;
+}
 
 // Indicates will be removed in the next release.
 //
@@ -64,7 +66,9 @@ struct Deprecated {}
 // are used.
 @Deprecated // Legacy implies deprecated.
 @scope.FbthriftInternalScopeTransitive
-struct Legacy {}
+struct Legacy {
+  1: string message;
+}
 
 @scope.Program
 @scope.Struct

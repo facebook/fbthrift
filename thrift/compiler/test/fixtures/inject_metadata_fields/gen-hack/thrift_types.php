@@ -245,16 +245,28 @@ class Deprecated implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'message',
+      'type' => \TType::STRING,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
+    'message' => 1,
   ];
 
   const type TConstructorShape = shape(
+    ?'message' => ?string,
   );
 
-  const int STRUCTURAL_ID = 957977401221134810;
+  const int STRUCTURAL_ID = 2427562471238739676;
+  /**
+   * Original thrift field:-
+   * 1: string message
+   */
+  public string $message;
 
-  public function __construct(  )[] {
+  public function __construct(?string $message = null  )[] {
+    $this->message = $message ?? '';
   }
 
   public static function withDefaultValues()[]: this {
@@ -263,6 +275,7 @@ class Deprecated implements \IThriftSyncStruct {
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
+      Shapes::idx($shape, 'message'),
     );
   }
 
@@ -274,6 +287,19 @@ class Deprecated implements \IThriftSyncStruct {
     return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "thrift.Deprecated",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "message",
+            )
+          ),
+        ],
         "is_union" => false,
       )
     );
@@ -315,16 +341,28 @@ class Legacy implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'message',
+      'type' => \TType::STRING,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
+    'message' => 1,
   ];
 
   const type TConstructorShape = shape(
+    ?'message' => ?string,
   );
 
-  const int STRUCTURAL_ID = 957977401221134810;
+  const int STRUCTURAL_ID = 2427562471238739676;
+  /**
+   * Original thrift field:-
+   * 1: string message
+   */
+  public string $message;
 
-  public function __construct(  )[] {
+  public function __construct(?string $message = null  )[] {
+    $this->message = $message ?? '';
   }
 
   public static function withDefaultValues()[]: this {
@@ -333,6 +371,7 @@ class Legacy implements \IThriftSyncStruct {
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
+      Shapes::idx($shape, 'message'),
     );
   }
 
@@ -344,6 +383,19 @@ class Legacy implements \IThriftSyncStruct {
     return \tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "thrift.Legacy",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "message",
+            )
+          ),
+        ],
         "is_union" => false,
       )
     );
