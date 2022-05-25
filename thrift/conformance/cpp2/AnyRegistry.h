@@ -37,6 +37,9 @@
 #include <thrift/conformance/cpp2/AnyStructSerializer.h>
 #include <thrift/conformance/cpp2/ThriftTypeInfo.h>
 #include <thrift/conformance/if/gen-cpp2/any_types.h>
+#include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/op/StdSerializer.h>
+#include <thrift/lib/cpp2/type/TypeRegistry.h>
 
 namespace apache::thrift::conformance {
 
@@ -254,13 +257,22 @@ bool AnyRegistry::registerType(
 
 namespace detail {
 
-template <typename Struct, StandardProtocol... Ps>
+template <typename T, StandardProtocol... Ps>
 void registerGeneratedStruct() {
-  const ThriftTypeInfo& type = getGeneratedThriftTypeInfo<Struct>();
-  if (!getGeneratedAnyRegistry().registerType<Struct, Ps...>(type)) {
+  const ThriftTypeInfo& type = getGeneratedThriftTypeInfo<T>();
+  if (!getGeneratedAnyRegistry().registerType<T, Ps...>(type)) {
     folly::throw_exception<std::runtime_error>(
         "Could not register: " + type.get_uri());
   }
+  using Tag = std::conditional_t<
+      is_thrift_union_v<T>,
+      type::union_t<T>,
+      std::conditional_t<
+          is_thrift_exception_v<T>,
+          type::exception_t<T>,
+          type::struct_t<T>>>;
+  op::registerStdSerializers<Tag, static_cast<type::StandardProtocol>(Ps)...>(
+      type::detail::getGeneratedTypeRegistry());
 }
 
 } // namespace detail

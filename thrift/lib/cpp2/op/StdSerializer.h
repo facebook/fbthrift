@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/protocol/JSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 #include <thrift/lib/cpp2/type/Protocol.h>
+#include <thrift/lib/cpp2/type/TypeRegistry.h>
 
 namespace apache {
 namespace thrift {
@@ -60,6 +61,17 @@ class StdSerializer : public ProtocolSerializer<
     return type::Protocol::get<P>();
   }
 };
+
+template <typename Tag, type::StandardProtocol... Ps>
+void registerStdSerializers(type::TypeRegistry& registry) {
+  for (auto result : (bool[]){registry.registerSerializer(
+           std::make_unique<StdSerializer<Tag, Ps>>(),
+           type::Type::get<Tag>())...}) {
+    if (!result) {
+      folly::throw_exception<std::runtime_error>("Could not register type.");
+    }
+  }
+}
 
 } // namespace op
 } // namespace thrift
