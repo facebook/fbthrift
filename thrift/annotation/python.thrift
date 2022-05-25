@@ -44,7 +44,8 @@ namespace py thrift.annotation.python
 @scope.Field
 @scope.Typedef
 struct Adapter {
-  // Fully qualified name of a Python adapter class
+  // Fully qualified name of a Python adapter class that's subclass of
+  // thrift/lib/python/adapters/base.py
   1: string name;
   // Fully qualified type hint the above implmenantion adapts too
   2: string typeHint;

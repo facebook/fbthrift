@@ -55,7 +55,7 @@ struct FieldWrapper {
 @scope.Typedef
 @scope.Field
 struct Adapter {
-  // The name of a Hack adapter class
+  // The name of a Hack adapter class that implements IThriftAdapter
   1: string name;
 } (thrift.uri = "facebook.com/thrift/annotation/hack/Adapter")
 

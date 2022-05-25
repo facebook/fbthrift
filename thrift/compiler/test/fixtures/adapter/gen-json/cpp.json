@@ -116,11 +116,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 71,
+              "line" : 89,
               "column" : 3
             },
             "end" : {
-              "line" : 71,
+              "line" : 89,
               "column" : 17
             }
           }
@@ -132,13 +132,13 @@
           "column" : 1
         },
         "end" : {
-          "line" : 72,
+          "line" : 90,
           "column" : 62
         }
       }
     },
     "PackIsset" : {
-      "lineno" : 75,
+      "lineno" : 93,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -149,11 +149,11 @@
           "default_value" : true,
           "source_range" : {
             "begin" : {
-              "line" : 76,
+              "line" : 94,
               "column" : 3
             },
             "end" : {
-              "line" : 76,
+              "line" : 94,
               "column" : 24
             }
           }
@@ -161,17 +161,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 74,
+          "line" : 92,
           "column" : 1
         },
         "end" : {
-          "line" : 77,
+          "line" : 95,
           "column" : 64
         }
       }
     },
     "MinimizePadding" : {
-      "lineno" : 80,
+      "lineno" : 98,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -179,17 +179,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 79,
+          "line" : 97,
           "column" : 1
         },
         "end" : {
-          "line" : 82,
+          "line" : 100,
           "column" : 2
         }
       }
     },
     "TriviallyRelocatable" : {
-      "lineno" : 85,
+      "lineno" : 103,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -197,11 +197,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 84,
+          "line" : 102,
           "column" : 1
         },
         "end" : {
-          "line" : 87,
+          "line" : 105,
           "column" : 2
         }
       }

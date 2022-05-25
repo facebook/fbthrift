@@ -67,7 +67,25 @@ struct DisableLazyChecksum {} (
 @scope.Typedef
 struct Adapter {
   // The name of a C++ adapter type used to convert between Thrift and native
-  // C++ representation.
+  // C++ representation. The Adapter either Type adapter of Field adapter that
+  // provides following APIs
+  //
+  //  struct ThriftTypeAdapter {
+  //    static AdaptedType fromThrift(ThriftType thrift);
+  //    static {const ThriftType& | ThriftType} toThrift(const AdaptedType& native);
+  //  };
+  //
+  //  struct ThriftFieldAdapter {
+  //    // Context is an instantiation of apache::thrift::FieldAdapterContext
+  //    template <class Context>
+  //    static void construct(AdaptedType& field, Context ctx);
+  //
+  //    template <class Context>
+  //    static AdaptedType fromThriftField(ThriftType value, Context ctx);
+  //
+  //    template <class Context>
+  //    static {const ThriftType& | ThriftType} toThrift(const AdaptedType& adapted, Context ctx);
+  //  };
   1: string name;
 } (thrift.uri = "facebook.com/thrift/annotation/cpp/Adapter")
 
