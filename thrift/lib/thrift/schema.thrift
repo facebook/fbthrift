@@ -266,3 +266,6 @@ struct Program {
   // original definitions.
   4: id.DefinitionIds definitions;
 }
+
+// A list of programs, accessible by `ProgramId`.
+typedef list<Program> ProgramList
