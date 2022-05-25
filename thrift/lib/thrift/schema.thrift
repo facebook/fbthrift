@@ -269,3 +269,27 @@ struct Program {
 
 // A list of programs, accessible by `ProgramId`.
 typedef list<Program> ProgramList
+
+// A Thrift schema represented as a collection of Thrift programs and associated
+// schema values.
+//
+// TODO(afuller): Add native wrappers/adapters that 'index' all the stored
+// information and maybe even converts stored `ExternId`s into pointers to the
+// values owned by the schema.
+@thrift.Experimental // TODO(afuller): Adapt!
+struct Schema {
+  // The programs included in the schema, accessible by ProgramId.
+  1: ProgramList programs;
+
+  // The instantiated types, accessible by TypeId.
+  2: type.TypeList types;
+
+  // The values, accessible by ValueId.
+  3: any.AnyValueList values;
+
+  // The packages, accessible by PackageId.
+  4: PackageList packages;
+
+  // The definitions, accessible by DefinitionId.
+  5: DefinitionList definitions;
+}

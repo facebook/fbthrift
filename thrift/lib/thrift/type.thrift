@@ -153,5 +153,5 @@ typedef type_rep.ProtocolUnion Protocol (thrift.uri = "")
 typedef type_rep.TypeStruct Type (thrift.uri = "")
 
 // A list of Types, accessible by `TypeId`.
-@thrift.Experimental // TODO(afuller): Adapt!
-typedef list<Type> TypeList
+@thrift.Experimental // TODO(afuller): Adapt! and use Type direclty when supported.
+typedef list<type_rep.TypeStruct> TypeList
