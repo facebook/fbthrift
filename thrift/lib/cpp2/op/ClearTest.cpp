@@ -21,7 +21,6 @@
 #include <thrift/lib/cpp2/op/Testing.h>
 #include <thrift/lib/cpp2/type/Name.h>
 #include <thrift/lib/cpp2/type/Traits.h>
-#include <thrift/lib/thrift/gen-cpp2/type_fatal_all.h>
 #include <thrift/lib/thrift/gen-cpp2/type_types.h>
 #include <thrift/test/testset/gen-cpp2/testset_fatal_all.h>
 #include <thrift/test/testset/gen-cpp2/testset_types.h>
@@ -37,7 +36,8 @@ void testClearImpl(
     const type::native_type<Tag>& expected,
     type::native_type<Tag> unexpected,
     bool emptiable) {
-  SCOPED_TRACE(type::getName<Tag>());
+  // TODO(afuller): Remove dep on fatal.
+  // SCOPED_TRACE(type::getName<Tag>());
 
   EXPECT_EQ(isEmpty<Tag>(expected), emptiable);
   EXPECT_THAT(
