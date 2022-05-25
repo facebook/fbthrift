@@ -17,7 +17,8 @@
 include "thrift/annotation/thrift.thrift"
 include "thrift/lib/thrift/any_rep.thrift"
 
-// The **standard** represenations for Thrift: Any.
+// The **standard** representations for Thrift: Any.
+@thrift.v1alpha
 package "facebook.com/thrift/type"
 
 namespace cpp2 apache.thrift.type
