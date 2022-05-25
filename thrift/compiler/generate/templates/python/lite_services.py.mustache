@@ -86,6 +86,7 @@ class {{service:name}}Interface(
     async def _fbthrift__handler_{{function:name}}(self, args: _fbthrift_iobuf.IOBuf, protocol: Protocol) {{!
             }}-> {{#function:oneway?}}None{{/function:oneway?}}{{^function:oneway?}}_fbthrift_iobuf.IOBuf{{/function:oneway?}}:
         args_struct = deserialize({{> types/function_args_type}}, args, protocol)
+        {{! TODO: call the postWrite hook here }}
         {{#function:exceptions?}}
         try:
             value = await self.{{function:name}}({{#function:args}}args_struct.{{field:py_name}},{{/function:args}})
