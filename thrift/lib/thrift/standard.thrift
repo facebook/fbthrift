@@ -22,6 +22,7 @@ cpp_include "<folly/io/IOBuf.h>"
 cpp_include "<folly/FBString.h>"
 
 // The **standard** types all Thrift implementations support.
+@thrift.v1 // TODO(afuller): Remove dep on 'reflection' and switch to v1alpha.
 package "facebook.com/thrift/type"
 
 namespace cpp2 apache.thrift.type
@@ -41,15 +42,12 @@ namespace py thrift.lib.thrift.standard
 // collision is 2^(8*{numBytes}/2).
 // Which is ~4.3 billion types for the min, and ~18.45 quintillion
 // types for the default.
-@thrift.Experimental
 const byte minTypeHashBytes = 8;
-@thrift.Experimental
 const byte defaultTypeHashBytes = 16;
 
 // Typedef for binary data which can be represented as a string of 8-bit bytes
 //
 // Each language can map this type into a customized memory efficient object
-@thrift.Experimental
 @java.Adapter{
   adapterClassName = "com.facebook.thrift.adapter.common.UnpooledByteBufTypeAdapter",
   typeClassName = "io.netty.buffer.ByteBuf",
@@ -63,7 +61,6 @@ typedef binary (cpp2.type = "folly::fbstring") ByteString
 //
 // TODO(afuller): Consider switching to std::unique_ptr<folly::IOBuf> for c++,
 // to make moves cheaper (benchmark to see if this is better).
-@thrift.Experimental
 @java.Adapter{
   adapterClassName = "com.facebook.thrift.adapter.common.UnpooledByteBufTypeAdapter",
   typeClassName = "io.netty.buffer.ByteBuf",
@@ -71,7 +68,6 @@ typedef binary (cpp2.type = "folly::fbstring") ByteString
 typedef binary (cpp2.type = "folly::IOBuf") ByteBuffer
 
 // The standard Thrift protocols.
-@thrift.Experimental
 enum StandardProtocol {
   Custom = 0,
 
@@ -85,7 +81,6 @@ enum StandardProtocol {
 }
 
 // TODO(afuller): Allow 'void' type for union fields.
-@thrift.Experimental
 enum Void {
   NoValue = 0,
 }
@@ -122,7 +117,6 @@ struct UriStruct {
 } (thrift.uri = "facebook.com/thrift/type/Uri")
 
 // The uri of an IDL defined type.
-@thrift.Experimental
 union TypeUri {
   // The unique Thrift URI for this type.
   1: Uri uri;
@@ -133,7 +127,6 @@ union TypeUri {
 }
 
 // Uniquely identifies a Thrift type.
-@thrift.Experimental
 union TypeName {
   1: Void boolType;
   2: Void byteType;

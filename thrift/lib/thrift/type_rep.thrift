@@ -26,6 +26,7 @@ include "thrift/lib/thrift/standard.thrift"
 // These definitions are named after their representations, using the form
 // '{name}{Type}. For example, for a 'public' exception `Foo`, the underlying
 // type would be `exception FooException`.
+@thrift.v1alpha
 package "facebook.com/thrift/type"
 
 namespace cpp2 apache.thrift.type
@@ -44,7 +45,6 @@ namespace py thrift.lib.thrift.type_rep
 // Considered 'normal', when `nanos` is in the range 0 to 999'999'999
 // inclusive, or `seconds` is 0 and `nanos` is in the range -999'999'999 to
 // 999'999'999 inclusive.
-@thrift.Experimental
 struct DurationStruct {
   // The count of seconds.
   1: i64 seconds;
@@ -59,7 +59,6 @@ struct DurationStruct {
 //
 // TODO(afuller): Consider making this a 'strong' typedef of `Duration`, which
 // would ensure both a separate URI and native type in all languages.
-@thrift.Experimental
 struct TimeStruct {
   // The count of seconds.
   1: i64 seconds;
@@ -74,7 +73,6 @@ struct TimeStruct {
 // Considered 'normal' when the denominator is positive.
 // Considered 'simple' when `normal` and the greatest common divisor of the
 // and `numerator` and `denominator`, is 1.
-@thrift.Experimental
 struct FractionStruct {
   // The numerator/dividend/antecedent/upper integer.
   1: i64 numerator;
@@ -83,7 +81,6 @@ struct FractionStruct {
 } (thrift.uri = "facebook.com/thrift/type/Fraction")
 
 // A union representation of a protocol.
-@thrift.Experimental
 union ProtocolUnion {
   // A standard protocol, known by all Thrift implementations.
   1: standard.StandardProtocol standard;
@@ -94,7 +91,6 @@ union ProtocolUnion {
 } (thrift.uri = "facebook.com/thrift/type/Protocol")
 
 // A concrete Thrift type.
-@thrift.Experimental
 struct TypeStruct {
   // The type name.
   1: standard.TypeName name;
