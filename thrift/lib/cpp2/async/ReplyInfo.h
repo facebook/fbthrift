@@ -31,7 +31,7 @@ class QueueReplyInfo {
       folly::Optional<uint32_t> crc32c)
       : req_(std::move(req)), response_(std::move(response)), crc32c_(crc32c) {}
 
-  void operator()(folly::EventBase&) noexcept {
+  void operator()() noexcept {
     req_->sendReply(std::move(response_), nullptr, crc32c_);
   }
 
@@ -52,7 +52,7 @@ class StreamReplyInfo {
         response_(std::move(response)),
         crc32c_(crc32c) {}
 
-  void operator()(folly::EventBase&) noexcept {
+  void operator()() noexcept {
     req_->sendStreamReply(std::move(response_), std::move(stream_), crc32c_);
   }
 
@@ -74,7 +74,7 @@ class SinkConsumerReplyInfo {
         response_(std::move(response)),
         crc32c_(crc32c) {}
 
-  void operator()(folly::EventBase&) noexcept {
+  void operator()() noexcept {
 #if FOLLY_HAS_COROUTINES
     req_->sendSinkReply(
         std::move(response_), std::move(sinkConsumer_), crc32c_);
@@ -95,13 +95,10 @@ using ReplyInfo =
  */
 class ReplyInfoConsumer {
  public:
-  explicit ReplyInfoConsumer(folly::EventBase& evb) : evb_(evb) {}
+  explicit ReplyInfoConsumer() {}
   void operator()(ReplyInfo&& info) noexcept {
-    std::visit([&evb = evb_](auto&& visitInfo) { visitInfo(evb); }, info);
+    std::visit([](auto&& visitInfo) { visitInfo(); }, info);
   }
-
- private:
-  folly::EventBase& evb_;
 };
 
 } // namespace thrift

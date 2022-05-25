@@ -57,7 +57,7 @@ class IOWorkerContext {
    */
   void init(folly::EventBase& eventBase) {
     eventBase_ = &eventBase;
-    replyQueue_ = std::make_unique<ReplyQueue>(ReplyInfoConsumer(eventBase));
+    replyQueue_ = std::make_unique<ReplyQueue>(ReplyInfoConsumer());
     replyQueue_->setMaxReadAtOnce(0);
     eventBase.runInEventBaseThread(
         [queue = replyQueue_.get(), &evb = eventBase, alive = alive_] {

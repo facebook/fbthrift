@@ -501,8 +501,7 @@ void HandlerCallbackBase::sendReply(SerializedResponse response) {
       reqCtx_->getMethodName());
   payload = transform(std::move(payload));
   if (getEventBase() && getEventBase()->inRunningEventBaseThread()) {
-    QueueReplyInfo(
-        std::move(req_), std::move(payload), crc32c)(*getEventBase());
+    QueueReplyInfo(std::move(req_), std::move(payload), crc32c)();
   } else {
     putMessageInReplyQueue(
         std::in_place_type_t<QueueReplyInfo>(),
@@ -528,8 +527,7 @@ void HandlerCallbackBase::sendReply(
   stream.setInteraction(std::move(interaction_));
   if (getEventBase()->isInEventBaseThread()) {
     StreamReplyInfo(
-        std::move(req_), std::move(stream), std::move(payload), crc32c)(
-        *getEventBase());
+        std::move(req_), std::move(stream), std::move(payload), crc32c)();
   } else {
     putMessageInReplyQueue(
         std::in_place_type_t<StreamReplyInfo>(),
@@ -560,8 +558,7 @@ void HandlerCallbackBase::sendReply(
 
   if (getEventBase()->isInEventBaseThread()) {
     SinkConsumerReplyInfo(
-        std::move(req_), std::move(sinkConsumer), std::move(payload), crc32c)(
-        *getEventBase());
+        std::move(req_), std::move(sinkConsumer), std::move(payload), crc32c)();
   } else {
     putMessageInReplyQueue(
         std::in_place_type_t<SinkConsumerReplyInfo>(),

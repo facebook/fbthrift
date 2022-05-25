@@ -1652,7 +1652,7 @@ void HandlerCallbackBase::putMessageInReplyQueue(
     std::in_place_type_t<Reply> tag, A&&... a) {
   auto eb = getEventBase();
   if (!eb) {
-    Reply(std::forward<A>(a)...)(*eb);
+    Reply(std::forward<A>(a)...)();
     return;
   }
   if constexpr (folly::kIsWindows) {
@@ -1660,7 +1660,7 @@ void HandlerCallbackBase::putMessageInReplyQueue(
     // use the reply queue. The exact cause is under investigation. Before it is
     // fixed, we can use the default EventBase queue on Windows for now.
     eb->runInEventBaseThread(
-        [eb, reply = Reply(static_cast<A&&>(a)...)]() mutable { reply(*eb); });
+        [reply = Reply(static_cast<A&&>(a)...)]() mutable { reply(); });
   } else {
     getReplyQueue().putMessage(tag, static_cast<A&&>(a)...);
   }
