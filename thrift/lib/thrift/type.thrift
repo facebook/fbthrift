@@ -24,6 +24,7 @@ cpp_include "<thrift/lib/cpp2/type/Type.h>"
 cpp_include "<thrift/lib/cpp2/type/UniversalHashAlgorithm.h>"
 
 // Canonical representations for well-known Thrift types.
+@thrift.v1alpha
 package "facebook.com/thrift/type"
 
 namespace cpp2 apache.thrift.type
@@ -44,7 +45,6 @@ namespace py thrift.lib.thrift.type
 //
 // Similar to lib/cpp/protocol/TType.h, but IDL concepts instead of protocol
 // concepts.
-@thrift.Experimental
 enum BaseType {
   Void = 0,
 
@@ -81,7 +81,6 @@ enum BaseType {
 )
 
 // The hash algorithms that can be used with type names.
-@thrift.Experimental
 enum UniversalHashAlgorithm {
   Sha2_256 = 2, // = getFieldId(TypeUri::typeHashPrefixSha2_256).
 } (
@@ -146,13 +145,11 @@ typedef type_rep.FractionStruct SimpleFraction
 @cpp.Adapter{
   name = "::apache::thrift::InlineAdapter<::apache::thrift::type::Protocol>",
 }
-@thrift.Experimental
 typedef type_rep.ProtocolUnion Protocol (thrift.uri = "")
 
 @cpp.Adapter{
   name = "::apache::thrift::InlineAdapter<::apache::thrift::type::Type>",
 }
-@thrift.Experimental
 typedef type_rep.TypeStruct Type (thrift.uri = "")
 
 // A list of Types, accessible by `TypeId`.
