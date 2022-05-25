@@ -225,3 +225,44 @@ struct Exception {
 // TODO(afuller): As this can only be one of a fixed set of types, consider
 // assing 'union types' to Thrift and use that instead of Any.
 typedef any.AnyValueList DefinitionList
+
+// A Thrift program.
+//
+//     {definition.name}.thrift:
+//       ... {definition.annotations} ...
+//       package {package/definition.uri}
+//
+//       ... {includes} ...
+//
+//       ... {definitions} ...
+//
+struct Program {
+  // The definition attributes.
+  @thrift.Mixin
+  1: Definition definition;
+
+  // The parsed package for the program, if available.
+  //
+  // The unparsed package is available as {definition.uri}.
+  //
+  // TODO(afuller): Allow 'package' as an ident in Thrift and remove trailing
+  // '_' (or change the name slightly in some other way).
+  2: id.PackageId package_;
+
+  // The included programs, in the order included in the IDL/AST.
+  //
+  // Changing the order of includes is always backward compatible.
+  3: id.IncludeIds includes;
+
+  // The definitions included in this program, in the order declared in the
+  // IDL/AST.
+  //
+  // Changing the order of definitions is always backward compatible.
+  // TODO(afuller): Fix type resolution bugs in the parser to make this true
+  // in all cases.
+  //
+  // TODO(afuller): Add support for all definitions, e.g. service, interface,
+  // etc. which currently show up as `void`, to preserve the ordering of the
+  // original definitions.
+  4: id.DefinitionIds definitions;
+}
