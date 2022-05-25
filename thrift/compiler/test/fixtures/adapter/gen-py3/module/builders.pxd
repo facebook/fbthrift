@@ -59,3 +59,11 @@ cdef class StructWithFieldAdapter_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint opt_boxed_field
 
 
+cdef class B_Builder(thrift.py3.builder.StructBuilder):
+    cdef public object a
+
+
+cdef class A_Builder(thrift.py3.builder.StructBuilder):
+    pass
+
+

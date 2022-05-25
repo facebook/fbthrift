@@ -114,6 +114,23 @@ void reset_field<::cpp2::StructWithFieldAdapter>(
 }
 
 template<>
+void reset_field<::cpp2::B>(
+    ::cpp2::B& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.a_ref().copy_from(default_inst<::cpp2::B>().a_ref());
+      return;
+  }
+}
+
+template<>
+void reset_field<::cpp2::A>(
+    ::cpp2::A& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::Foo>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -146,6 +163,26 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::StructWithFieldAdapter>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::B>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::A>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

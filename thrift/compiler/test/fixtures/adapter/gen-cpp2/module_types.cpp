@@ -733,6 +733,183 @@ template uint32_t StructWithFieldAdapter::serializedSizeZC<>(apache::thrift::Com
 
 } // cpp2
 
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::A>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::cpp2::A>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace cpp2 {
+
+
+A::A(apache::thrift::FragileConstructor) {}
+
+
+void A::__fbthrift_clear() {
+  // clear all fields
+}
+
+bool A::__fbthrift_is_empty() const {
+  return true;
+}
+
+bool A::operator==(const A& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  return true;
+}
+
+bool A::operator<(const A& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  return false;
+}
+
+
+void swap(A& a, A& b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+}
+
+template void A::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t A::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t A::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t A::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void A::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t A::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t A::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t A::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+} // cpp2
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::B>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::cpp2::B>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace cpp2 {
+
+B::B(const B& srcObj) {
+  __fbthrift_field_a = srcObj.__fbthrift_field_a;
+  __isset.set(0,srcObj.__isset.get(0));
+  ::apache::thrift::adapt_detail::construct<my::Adapter, 1>(__fbthrift_field_a, *this);
+}
+
+B& B::operator=(const B& src) {
+  B tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
+B::B(B&& other) noexcept  :
+    __fbthrift_field_a(std::move(other.__fbthrift_field_a)),
+    __isset(other.__isset) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter, 1>(__fbthrift_field_a, *this);
+}
+
+B& B::operator=(FOLLY_MAYBE_UNUSED B&& other) noexcept {
+    this->__fbthrift_field_a = std::move(other.__fbthrift_field_a);
+    __isset = other.__isset;
+    return *this;
+}
+
+
+B::B(apache::thrift::FragileConstructor, ::cpp2::AdaptedA a__arg) :
+    __fbthrift_field_a(std::move(a__arg)) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter, 1>(__fbthrift_field_a, *this);
+  __isset.set(folly::index_constant<0>(), true);
+}
+
+
+void B::__fbthrift_clear() {
+  // clear all fields
+  __isset = {};
+}
+
+bool B::__fbthrift_is_empty() const {
+  return false;
+}
+
+bool B::operator==(const B& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter>(lhs.__fbthrift_field_a, rhs.__fbthrift_field_a)) {
+    return false;
+  }
+  return true;
+}
+
+bool B::operator<(const B& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter>(lhs.__fbthrift_field_a, rhs.__fbthrift_field_a)) {
+    return ::apache::thrift::adapt_detail::less<my::Adapter>(lhs.__fbthrift_field_a, rhs.__fbthrift_field_a);
+  }
+  return false;
+}
+
+
+void swap(B& a, B& b) {
+  using ::std::swap;
+  swap(a.a_ref().value(), b.a_ref().value());
+  swap(a.__isset, b.__isset);
+}
+
+template void B::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t B::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t B::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t B::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void B::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t B::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t B::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t B::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+static_assert(
+    ::apache::thrift::detail::st::gen_check_json<
+        B,
+        ::apache::thrift::type_class::structure,
+        ::cpp2::AdaptedA>,
+    "inconsistent use of json option");
+
+} // cpp2
+
 namespace cpp2 { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::std::int32_t, ::cpp2::Foo>();
@@ -759,6 +936,7 @@ FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 2, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 3, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 4, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter, 1, ::cpp2::A, ::cpp2::B>();
   ::apache::thrift::adapt_detail::validateAdapter<my::Adapter2, ::std::set<::std::string>>();
   ::apache::thrift::adapt_detail::validateAdapter<my::Adapter1, ::std::string>();
   ::apache::thrift::adapt_detail::validateAdapter<my::Adapter1, ::std::int64_t>();

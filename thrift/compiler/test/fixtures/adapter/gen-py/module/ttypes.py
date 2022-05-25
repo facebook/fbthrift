@@ -39,7 +39,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Foo', 'Baz', 'Bar', 'StructWithFieldAdapter', 'SetWithAdapter', 'StringWithAdapter', 'ListWithElemAdapter', 'ListWithElemAdapter_withAdapter', 'MyI64', 'DoubleTypedefI64', 'MyI32', 'FooWithAdapter', 'StructWithAdapter', 'UnionWithAdapter']
+__all__ = ['UTF8STRINGS', 'Foo', 'Baz', 'Bar', 'StructWithFieldAdapter', 'B', 'A', 'SetWithAdapter', 'StringWithAdapter', 'ListWithElemAdapter', 'ListWithElemAdapter_withAdapter', 'MyI64', 'DoubleTypedefI64', 'MyI32', 'FooWithAdapter', 'StructWithAdapter', 'UnionWithAdapter', 'AdaptedA']
 
 class Foo:
   """
@@ -1104,6 +1104,171 @@ class StructWithFieldAdapter:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+class B:
+  """
+  Attributes:
+   - a
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRUCT:
+          self.a = A()
+          self.a.read(iprot)
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('B')
+    if self.a != None:
+      oprot.writeFieldBegin('a', TType.STRUCT, 1)
+      self.a.write(oprot)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+    if 'a' in json_obj and json_obj['a'] is not None:
+      self.a = A()
+      self.a.readFromJson(json_obj['a'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.a is not None:
+      value = pprint.pformat(self.a, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    a=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  def __dir__(self):
+    return (
+      'a',
+    )
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
+class A:
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('A')
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
+    json_obj = json
+    if is_text:
+      json_obj = loads(json)
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  def __dir__(self):
+    return (
+    )
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
 SetWithAdapter = UnimplementedTypedef()
 StringWithAdapter = UnimplementedTypedef()
 ListWithElemAdapter = UnimplementedTypedef()
@@ -1114,6 +1279,7 @@ MyI32 = UnimplementedTypedef()
 FooWithAdapter = Foo
 StructWithAdapter = my.Adapter2.Type
 UnionWithAdapter = my.Adapter2.Type
+AdaptedA = A
 all_structs.append(Foo)
 Foo.thrift_spec = (
   None, # 0
@@ -1282,6 +1448,38 @@ def StructWithFieldAdapter__setstate__(self, state):
 
 StructWithFieldAdapter.__getstate__ = lambda self: self.__dict__.copy()
 StructWithFieldAdapter.__setstate__ = StructWithFieldAdapter__setstate__
+
+all_structs.append(B)
+B.thrift_spec = (
+  None, # 0
+  (1, TType.STRUCT, 'a', [A, A.thrift_spec, False], None, 2, ), # 1
+)
+
+B.thrift_struct_annotations = {
+}
+B.thrift_field_annotations = {
+}
+
+def B__init__(self, a=None,):
+  self.a = a
+
+B.__init__ = B__init__
+
+def B__setstate__(self, state):
+  state.setdefault('a', None)
+  self.__dict__ = state
+
+B.__getstate__ = lambda self: self.__dict__.copy()
+B.__setstate__ = B__setstate__
+
+all_structs.append(A)
+A.thrift_spec = (
+)
+
+A.thrift_struct_annotations = {
+}
+A.thrift_field_annotations = {
+}
 
 fix_spec(all_structs)
 del all_structs

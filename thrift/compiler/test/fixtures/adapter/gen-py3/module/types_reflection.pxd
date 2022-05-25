@@ -22,6 +22,10 @@ cdef __StructSpec get_reflection__Bar()
 
 cdef __StructSpec get_reflection__StructWithFieldAdapter()
 
+cdef __StructSpec get_reflection__B()
+
+cdef __StructSpec get_reflection__A()
+
 cdef __SetSpec get_reflection__Set__string()
 
 cdef __ListSpec get_reflection__List__string()

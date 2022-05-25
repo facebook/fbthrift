@@ -150,6 +150,31 @@ class StructWithFieldAdapter(_fbthrift_py3lite_types.Struct):
     ) -> StructWithFieldAdapter: ...
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[my.AdaptedType1, int, int, int]]]: ...
 
+
+class B(_fbthrift_py3lite_types.Struct):
+    a: _typing.Final[A] = ...
+    def __init__(
+        self, *,
+        a: _typing.Optional[A]=...
+    ) -> None: ...
+
+    def __call__(
+        self, *,
+        a: _typing.Optional[A]=...
+    ) -> B: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[A]]]: ...
+
+
+class A(_fbthrift_py3lite_types.Struct):
+    def __init__(
+        self,
+    ) -> None: ...
+
+    def __call__(
+        self,
+    ) -> A: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[None]]]: ...
+
 SetWithAdapter = _typing.Set[str]
 StringWithAdapter = str
 ListWithElemAdapter = _typing.List[str]
@@ -160,6 +185,7 @@ MyI32 = int
 FooWithAdapter = Foo
 StructWithAdapter = Bar
 UnionWithAdapter = Baz
+AdaptedA = A
 
 
 class _fbthrift_Service_func_args(_fbthrift_py3lite_types.Struct):

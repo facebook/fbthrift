@@ -276,3 +276,47 @@ cdef class __StructWithFieldAdapter_FieldsSetter(__StructFieldsSetter):
         _fbthrift_value = <cint32_t> _fbthrift_value
         deref(self._struct_cpp_obj).opt_boxed_field_ref().assign(_fbthrift_value)
 
+
+@__cython.auto_pickle(False)
+cdef class __B_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __B_FieldsSetter _fbthrift_create(_module_types.cB* struct_cpp_obj):
+        cdef __B_FieldsSetter __fbthrift_inst = __B_FieldsSetter.__new__(__B_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        __fbthrift_inst._setters[__cstring_view(<const char*>"a")] = __B_FieldsSetter._set_field_0
+        return __fbthrift_inst
+
+    cdef void set_field(__B_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __B_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
+
+    cdef void _set_field_0(self, _fbthrift_value) except *:
+        # for field a
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cB](deref(self._struct_cpp_obj), 0)
+            return
+        if not isinstance(_fbthrift_value, _module_types.A):
+            raise TypeError(f'a is not a { _module_types.A !r}.')
+        deref(self._struct_cpp_obj).a_ref().assign(deref((<_module_types.A?> _fbthrift_value)._cpp_obj))
+
+
+@__cython.auto_pickle(False)
+cdef class __A_FieldsSetter(__StructFieldsSetter):
+
+    @staticmethod
+    cdef __A_FieldsSetter _fbthrift_create(_module_types.cA* struct_cpp_obj):
+        cdef __A_FieldsSetter __fbthrift_inst = __A_FieldsSetter.__new__(__A_FieldsSetter)
+        __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
+        return __fbthrift_inst
+
+    cdef void set_field(__A_FieldsSetter self, const char* name, object value) except *:
+        cdef __cstring_view cname = __cstring_view(name)
+        cdef cumap[__cstring_view, __A_FieldsSetterFunc].iterator found = self._setters.find(cname)
+        if found == self._setters.end():
+            raise TypeError(f"invalid field name {name.decode('utf-8')}")
+        deref(found).second(self, value)
+

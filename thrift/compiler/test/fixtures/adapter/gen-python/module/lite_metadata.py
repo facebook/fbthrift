@@ -203,6 +203,51 @@ def _fbthrift_gen_metadata_struct_StructWithFieldAdapter(metadata_struct: _fbthr
 def gen_metadata_struct_StructWithFieldAdapter() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_struct_StructWithFieldAdapter(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
 
+# TODO (ffrancet): This general pattern can be optimized by using tuples and dicts
+# instead of re-generating thrift structs
+def _fbthrift_gen_metadata_struct_B(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
+    qualified_name = "module.B"
+
+    if qualified_name in metadata_struct.structs:
+        return metadata_struct
+    fields = [
+        _fbthrift_metadata.ThriftField(id=1, type=_fbthrift_metadata.ThriftType(t_struct=_fbthrift_metadata.ThriftStructType(name="module.A")), name="a", is_optional=False, structured_annotations=[
+        ]),
+    ]
+    struct_dict = dict(metadata_struct.structs)
+    struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
+        is_union=False,
+        structured_annotations=[
+        ])
+    new_struct = metadata_struct(structs=struct_dict)
+
+    new_struct = _fbthrift_gen_metadata_struct_A(new_struct) # a
+
+    return new_struct
+def gen_metadata_struct_B() -> _fbthrift_metadata.ThriftMetadata:
+    return _fbthrift_gen_metadata_struct_B(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
+
+# TODO (ffrancet): This general pattern can be optimized by using tuples and dicts
+# instead of re-generating thrift structs
+def _fbthrift_gen_metadata_struct_A(metadata_struct: _fbthrift_metadata.ThriftMetadata) -> _fbthrift_metadata.ThriftMetadata:
+    qualified_name = "module.A"
+
+    if qualified_name in metadata_struct.structs:
+        return metadata_struct
+    fields = [
+    ]
+    struct_dict = dict(metadata_struct.structs)
+    struct_dict[qualified_name] = _fbthrift_metadata.ThriftStruct(name=qualified_name, fields=fields,
+        is_union=False,
+        structured_annotations=[
+        ])
+    new_struct = metadata_struct(structs=struct_dict)
+
+
+    return new_struct
+def gen_metadata_struct_A() -> _fbthrift_metadata.ThriftMetadata:
+    return _fbthrift_gen_metadata_struct_A(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
+
 
 def gen_metadata_service_Service() -> _fbthrift_metadata.ThriftMetadata:
     return _fbthrift_gen_metadata_service_Service(_fbthrift_metadata.ThriftMetadata(structs={}, enums={}, exceptions={}, services={}))
@@ -250,5 +295,7 @@ def getThriftModuleMetadata() -> _fbthrift_metadata.ThriftMetadata:
     meta = _fbthrift_gen_metadata_struct_Baz(meta)
     meta = _fbthrift_gen_metadata_struct_Bar(meta)
     meta = _fbthrift_gen_metadata_struct_StructWithFieldAdapter(meta)
+    meta = _fbthrift_gen_metadata_struct_B(meta)
+    meta = _fbthrift_gen_metadata_struct_A(meta)
     meta = _fbthrift_gen_metadata_service_Service(meta)
     return meta

@@ -168,6 +168,13 @@ typedef Baz (
   py.adapter = 'my.Adapter2',
 ) UnionWithAdapter
 
+struct B {
+  1: AdaptedA a;
+}
+@cpp.Adapter{name = "my::Adapter"}
+typedef A AdaptedA
+struct A {}
+
 service Service {
   MyI32 (cpp.adapter = 'my::Adapter1', py.adapter = 'my.Adapter1') func(
     1: StringWithAdapter (

@@ -133,6 +133,29 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cint32_t] opt_boxed_field_ref()
 
 
+    cdef cppclass cB "::cpp2::B":
+        cB() except +
+        cB(const cB&) except +
+        bint operator==(cB&)
+        bint operator!=(cB&)
+        bint operator<(cB&)
+        bint operator>(cB&)
+        bint operator<=(cB&)
+        bint operator>=(cB&)
+        __field_ref[cA] a_ref()
+
+
+    cdef cppclass cA "::cpp2::A":
+        cA() except +
+        cA(const cA&) except +
+        bint operator==(cA&)
+        bint operator!=(cA&)
+        bint operator<(cA&)
+        bint operator>(cA&)
+        bint operator<=(cA&)
+        bint operator>=(cA&)
+
+
 
 
 cdef class Foo(thrift.py3.types.Struct):
@@ -215,6 +238,26 @@ cdef class StructWithFieldAdapter(thrift.py3.types.Struct):
 
     @staticmethod
     cdef _fbthrift_create(shared_ptr[cStructWithFieldAdapter])
+
+
+
+cdef class B(thrift.py3.types.Struct):
+    cdef shared_ptr[cB] _cpp_obj
+    cdef _fbthrift_types_fields.__B_FieldsSetter _fields_setter
+    cdef inline object a_impl(self)
+    cdef A __fbthrift_cached_a
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cB])
+
+
+
+cdef class A(thrift.py3.types.Struct):
+    cdef shared_ptr[cA] _cpp_obj
+    cdef _fbthrift_types_fields.__A_FieldsSetter _fields_setter
+
+    @staticmethod
+    cdef _fbthrift_create(shared_ptr[cA])
 
 
 cdef class Set__string(thrift.py3.types.Set):

@@ -50,3 +50,15 @@ cdef class StructWithFieldAdapter_Builder(thrift.py3.builder.StructBuilder):
         yield "opt_shared_field", self.opt_shared_field
         yield "opt_boxed_field", self.opt_boxed_field
 
+cdef class B_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.B
+
+    def __iter__(self):
+        yield "a", self.a
+
+cdef class A_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _module_types.A
+
+    def __iter__(self):
+        pass
+

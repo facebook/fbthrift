@@ -151,6 +151,21 @@
           "column" : 19
         }
       }
+    },
+    "AdaptedA" : {
+      "lineno" : 175,
+      "type_enum" : "STRUCT",
+      "spec_args" : "A",
+      "source_range" : {
+        "begin" : {
+          "line" : 174,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 175,
+          "column" : 19
+        }
+      }
     }
   },
   "structs" : {
@@ -612,11 +627,61 @@
           "column" : 2
         }
       }
+    },
+    "B" : {
+      "lineno" : 171,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "a" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "A",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 172,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 172,
+              "column" : 16
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 171,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 173,
+          "column" : 2
+        }
+      }
+    },
+    "A" : {
+      "lineno" : 176,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 176,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 176,
+          "column" : 12
+        }
+      }
     }
   },
   "services" : {
     "Service" : {
-      "lineno" : 171,
+      "lineno" : 178,
       "functions" : {
         "Service.func" : {
           "return_type" : {
@@ -640,11 +705,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 172,
+              "line" : 179,
               "column" : 3
             },
             "end" : {
-              "line" : 180,
+              "line" : 187,
               "column" : 4
             }
           }
@@ -652,11 +717,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 171,
+          "line" : 178,
           "column" : 1
         },
         "end" : {
-          "line" : 181,
+          "line" : 188,
           "column" : 2
         }
       }

@@ -300,6 +300,50 @@ class StructWithFieldAdapter(metaclass=_fbthrift_py3lite_types.StructMeta):
         return _fbthrift_metadata__struct_StructWithFieldAdapter()
 
 
+
+class B(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "a",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(A),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.B"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_B()
+
+
+
+class A(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.A"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__struct_A()
+
+
 # This unfortunately has to be down here to prevent circular imports
 import module.lite_metadata
 
@@ -312,12 +356,18 @@ def _fbthrift_metadata__struct_Bar():
     return module.lite_metadata.gen_metadata_struct_Bar()
 def _fbthrift_metadata__struct_StructWithFieldAdapter():
     return module.lite_metadata.gen_metadata_struct_StructWithFieldAdapter()
+def _fbthrift_metadata__struct_B():
+    return module.lite_metadata.gen_metadata_struct_B()
+def _fbthrift_metadata__struct_A():
+    return module.lite_metadata.gen_metadata_struct_A()
 
 _fbthrift_all_structs = [
     Foo,
     Baz,
     Bar,
     StructWithFieldAdapter,
+    B,
+    A,
 ]
 _fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
 
@@ -331,6 +381,7 @@ MyI32 = int
 FooWithAdapter = Foo
 StructWithAdapter = Bar
 UnionWithAdapter = Baz
+AdaptedA = A
 
 
 class _fbthrift_Service_func_args(metaclass=_fbthrift_py3lite_types.StructMeta):

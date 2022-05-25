@@ -66,6 +66,21 @@ struct ForEachField<::cpp2::StructWithFieldAdapter> {
     f(3, static_cast<T&&>(t).opt_boxed_field_ref()...);
   }
 };
+
+template <>
+struct ForEachField<::cpp2::A> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+  }
+};
+
+template <>
+struct ForEachField<::cpp2::B> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).a_ref()...);
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

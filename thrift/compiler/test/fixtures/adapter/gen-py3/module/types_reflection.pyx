@@ -386,6 +386,44 @@ cdef __StructSpec get_reflection__StructWithFieldAdapter():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__B():
+    cdef _module_types.B defaults = _module_types.B._fbthrift_create(
+        constant_shared_ptr[_module_types.cB](
+            default_inst[_module_types.cB]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="B",
+        kind=__StructType.STRUCT,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec._fbthrift_create(
+            id=1,
+            name="a",
+            type=_module_types.A,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
+cdef __StructSpec get_reflection__A():
+    cdef _module_types.A defaults = _module_types.A._fbthrift_create(
+        constant_shared_ptr[_module_types.cA](
+            default_inst[_module_types.cA]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec._fbthrift_create(
+        name="A",
+        kind=__StructType.STRUCT,
+        annotations={
+        },
+    )
+    return spec
 cdef __SetSpec get_reflection__Set__string():
     return __SetSpec._fbthrift_create(
         value=str,

@@ -108,6 +108,30 @@ struct VisitByFieldId<::cpp2::StructWithFieldAdapter> {
     }
   }
 };
+
+template <>
+struct VisitByFieldId<::cpp2::A> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::A");
+    }
+  }
+};
+
+template <>
+struct VisitByFieldId<::cpp2::B> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
+    case 1:
+      return f(0, static_cast<T&&>(t).a_ref());
+    default:
+      throwInvalidThriftId(fieldId, "::cpp2::B");
+    }
+  }
+};
 } // namespace detail
 } // namespace thrift
 } // namespace apache

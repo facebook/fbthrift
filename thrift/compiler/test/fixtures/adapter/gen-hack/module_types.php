@@ -16,6 +16,7 @@ type MyI32 = \Adapter1::THackType;
 type FooWithAdapter = \Adapter1::THackType;
 type StructWithAdapter = \Adapter2::THackType;
 type UnionWithAdapter = \Adapter2::THackType;
+type AdaptedA = A;
 /**
  * Original thrift struct:-
  * Foo
@@ -2216,6 +2217,235 @@ class StructWithFieldAdapter implements \IThriftSyncStruct, \IThriftShapishSyncS
         $this->opt_boxed_field = (int)$_tmp3;
       }
     }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * B
+ */
+class B implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'a',
+      'type' => \TType::STRUCT,
+      'class' => A::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'a' => 1,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'a' => ?A,
+  );
+
+  const type TShape = shape(
+    ?'a' => ?A::TShape,
+  );
+  const int STRUCTURAL_ID = 1135805466744601735;
+  /**
+   * Original thrift field:-
+   * 1: struct module.A a
+   */
+  public ?A $a;
+
+  public function __construct(?A $a = null  )[] {
+    $this->a = $a;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'a'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'B';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.B",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.AdaptedA",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                            shape(
+                              "name" => "module.AdaptedA",
+                              "underlyingType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                    shape(
+                                      "name" => "module.A",
+                                      "underlyingType" => tmeta_ThriftType::fromShape(
+                                        shape(
+                                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                                            shape(
+                                              "name" => "module.A",
+                                            )
+                                          ),
+                                        )
+                                      ),
+                                    )
+                                  ),
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "a",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+        'a' => shape(
+          'field' => dict[],
+          'type' => dict[
+            '\thrift\annotation\cpp\Adapter' => \thrift\annotation\cpp\Adapter::fromShape(
+              shape(
+                "name" => "my::Adapter",
+              )
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'a') === null ? null : (A::__fromShape($shape['a'])),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'a' => $this->a?->__toShape(),
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'a') !== null) {
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['a']);
+      $_tmp1 = A::withDefaultValues();
+      $_tmp1->readFromJson($_tmp0);
+      $this->a = $_tmp1;
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * A
+ */
+class A implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const type TShape = shape(
+  );
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'A';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.A",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+    );
+  }
+  public function getInstanceKey()[write_props]: string {
+    return \TCompactSerializer::serialize($this);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
   }
 
 }

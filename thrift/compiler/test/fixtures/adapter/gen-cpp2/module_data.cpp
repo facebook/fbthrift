@@ -133,5 +133,22 @@ const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::StructWithFieldA
   TType::T_I32,
 }};
 
+const std::array<folly::StringPiece, 0> TStructDataStorage<::cpp2::A>::fields_names = {{
+}};
+const std::array<int16_t, 0> TStructDataStorage<::cpp2::A>::fields_ids = {{
+}};
+const std::array<protocol::TType, 0> TStructDataStorage<::cpp2::A>::fields_types = {{
+}};
+
+const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::B>::fields_names = {{
+  "a",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::cpp2::B>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::B>::fields_types = {{
+  TType::T_STRUCT,
+}};
+
 } // namespace thrift
 } // namespace apache

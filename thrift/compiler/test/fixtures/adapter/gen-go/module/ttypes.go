@@ -76,6 +76,12 @@ func UnionWithAdapterPtr(v UnionWithAdapter) *UnionWithAdapter { return &v }
 
 func NewUnionWithAdapter() UnionWithAdapter { return NewBaz() }
 
+type AdaptedA = A
+
+func AdaptedAPtr(v AdaptedA) *AdaptedA { return &v }
+
+func NewAdaptedA() *AdaptedA { return NewA() }
+
 // Attributes:
 //  - IntField
 //  - OptionalIntField
@@ -1915,5 +1921,195 @@ func (p *StructWithFieldAdapter) String() string {
     optBoxedFieldVal = fmt.Sprintf("%v", *p.OptBoxedField)
   }
   return fmt.Sprintf("StructWithFieldAdapter({Field:%s SharedField:%s OptSharedField:%s OptBoxedField:%s})", fieldVal, sharedFieldVal, optSharedFieldVal, optBoxedFieldVal)
+}
+
+// Attributes:
+//  - A
+type B struct {
+  A *A `thrift:"a,1" db:"a" json:"a"`
+}
+
+func NewB() *B {
+  return &B{
+    A: NewAdaptedA(),
+  }
+}
+
+var B_A_DEFAULT *A
+func (p *B) GetA() *A {
+  if !p.IsSetA() {
+    return B_A_DEFAULT
+  }
+return p.A
+}
+func (p *B) IsSetA() bool {
+  return p != nil && p.A != nil
+}
+
+type BBuilder struct {
+  obj *B
+}
+
+func NewBBuilder() *BBuilder{
+  return &BBuilder{
+    obj: NewB(),
+  }
+}
+
+func (p BBuilder) Emit() *B{
+  return &B{
+    A: p.obj.A,
+  }
+}
+
+func (b *BBuilder) A(a *A) *BBuilder {
+  b.obj.A = a
+  return b
+}
+
+func (b *B) SetA(a *A) *B {
+  b.A = a
+  return b
+}
+
+func (p *B) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *B)  ReadField1(iprot thrift.Protocol) error {
+  p.A = NewAdaptedA()
+  if err := p.A.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.A), err)
+  }
+  return nil
+}
+
+func (p *B) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("B"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *B) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("a", thrift.STRUCT, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:a: ", p), err) }
+  if err := p.A.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.A), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:a: ", p), err) }
+  return err
+}
+
+func (p *B) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  var aVal string
+  if p.A == nil {
+    aVal = "<nil>"
+  } else {
+    aVal = fmt.Sprintf("%v", p.A)
+  }
+  return fmt.Sprintf("B({A:%s})", aVal)
+}
+
+type A struct {
+}
+
+func NewA() *A {
+  return &A{}
+}
+
+type ABuilder struct {
+  obj *A
+}
+
+func NewABuilder() *ABuilder{
+  return &ABuilder{
+    obj: NewA(),
+  }
+}
+
+func (p ABuilder) Emit() *A{
+  return &A{
+  }
+}
+
+func (p *A) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *A) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("A"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *A) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  return fmt.Sprintf("A({})")
 }
 
