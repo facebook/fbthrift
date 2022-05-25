@@ -170,7 +170,7 @@ cdef class ClientBufferedStream__i32(ClientBufferedStream):
                     _value = opt_val.value()
                     pyfuture.set_result(_value)
                 except Exception as ex:
-                    pyfuture.set_exception(ex.with_trackback(None))
+                    pyfuture.set_exception(ex.with_traceback(None))
             else:
                 pyfuture.set_exception(StopAsyncIteration())
 
