@@ -144,10 +144,11 @@ class PythonAsyncProcessor : public apache::thrift::AsyncProcessor {
       apache::thrift::Cpp2RequestContext* ctx,
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm) {
-    const std::string funcName =
-        fmt::format("{}.{}", serviceName_, ctx->getMethodName());
+    auto functionName = std::make_unique<std::string>(
+        fmt::format("{}.{}", serviceName_, ctx->getMethodName()));
     std::unique_ptr<apache::thrift::ContextStack> ctxStack(
-        this->getContextStack(serviceName_.c_str(), funcName.c_str(), ctx));
+        this->getContextStack(
+            serviceName_.c_str(), functionName->c_str(), ctx));
     static_assert(ProtocolIn_::protocolType() == ProtocolOut_::protocolType());
     ProtocolIn_ prot;
 
@@ -167,6 +168,7 @@ class PythonAsyncProcessor : public apache::thrift::AsyncProcessor {
          prot,
          ctx,
          callback = std::move(callback),
+         functionName = std::move(functionName),
          serializedRequest = std::move(serializedRequest)]() mutable {
           auto [promise, future] =
               folly::makePromiseContract<std::unique_ptr<folly::IOBuf>>();
@@ -177,7 +179,8 @@ class PythonAsyncProcessor : public apache::thrift::AsyncProcessor {
               std::move(serializedRequest).uncompress());
           std::move(future)
               .via(this->executor)
-              .thenTry([callback = std::move(callback)](
+              .thenTry([callback = std::move(callback),
+                        functionName = std::move(functionName)](
                            folly::Try<std::unique_ptr<folly::IOBuf>>&& t) {
                 callback->complete(std::move(t));
               });
@@ -193,10 +196,11 @@ class PythonAsyncProcessor : public apache::thrift::AsyncProcessor {
       apache::thrift::concurrency::ThreadManager* tm) {
     static_assert(ProtocolIn_::protocolType() == ProtocolOut_::protocolType());
     ProtocolIn_ prot;
-    const std::string funcName =
-        fmt::format("{}.{}", serviceName_, ctx->getMethodName());
+    auto functionName = std::make_unique<std::string>(
+        fmt::format("{}.{}", serviceName_, ctx->getMethodName()));
     std::unique_ptr<apache::thrift::ContextStack> ctxStack(
-        this->getContextStack(serviceName_.c_str(), funcName.c_str(), ctx));
+        this->getContextStack(
+            serviceName_.c_str(), functionName->c_str(), ctx));
     auto callback = std::make_unique<apache::thrift::HandlerCallbackBase>(
         std::move(req), std::move(ctxStack), nullptr, eb, tm, ctx);
 
@@ -206,6 +210,7 @@ class PythonAsyncProcessor : public apache::thrift::AsyncProcessor {
          prot,
          ctx,
          callback = std::move(callback),
+         functionName = std::move(functionName),
          serializedRequest = std::move(serializedRequest)]() mutable {
           auto [promise, future] = folly::makePromiseContract<folly::Unit>();
           handlePythonServerCallbackOneway(
@@ -215,7 +220,8 @@ class PythonAsyncProcessor : public apache::thrift::AsyncProcessor {
               std::move(serializedRequest).uncompress());
           std::move(future)
               .via(this->executor)
-              .thenTry([callback = std::move(callback)](
+              .thenTry([callback = std::move(callback),
+                        functionName = std::move(functionName)](
                            folly::Try<folly::Unit>&& /* t */) {});
         });
   }
