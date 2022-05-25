@@ -26,6 +26,7 @@ include "thrift/lib/thrift/standard.thrift"
 // These definitions are named after their representations, using the form
 // '{name}{Type}. For example, for a 'public' exception `Foo`, the underlying
 // type would be `exception FooException`.
+@thrift.v1alpha
 package "facebook.com/thrift/type"
 
 namespace cpp2 apache.thrift.type
@@ -39,7 +40,6 @@ namespace go thrift.lib.thrift.any_rep
 namespace py thrift.lib.thrift.any_rep
 
 // A struct that can hold any thrift supported value, encoded in any format.
-@thrift.Experimental
 struct AnyStruct {
   // The type stored in `data`.
   //
@@ -61,7 +61,6 @@ struct AnyStruct {
 //
 // TODO(afuller): Consider making this a 'strong' typedef of `AnyStruct`, which
 // would ensure both a separate URI and native type in all languages.
-@thrift.Experimental
 struct SemiAnyStruct {
   // The type stored in `data`, if known.
   1: type.Type type;
