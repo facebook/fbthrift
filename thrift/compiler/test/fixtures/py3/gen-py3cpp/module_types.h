@@ -248,14 +248,6 @@ class BinaryUnion;
 class BinaryUnionStruct;
 }} // py3::simple
 // END forward_declare
-// BEGIN typedefs
-namespace py3 { namespace simple {
-typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
-typedef folly::IOBuf IOBuf;
-typedef foo::Bar foo_bar;
-
-}} // py3::simple
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace py3 { namespace simple {
@@ -263,8 +255,11 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}} // py3::simple
-namespace py3 { namespace simple {
+
+typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
+typedef folly::IOBuf IOBuf;
+typedef foo::Bar foo_bar;
+
 class FOLLY_EXPORT SimpleException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -373,8 +368,7 @@ unsigned long SimpleException::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // py3::simple
-namespace py3 { namespace simple {
+
 class OptionalRefStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -475,8 +469,7 @@ unsigned long OptionalRefStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // py3::simple
-namespace py3 { namespace simple {
+
 class SimpleStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -964,8 +957,7 @@ unsigned long SimpleStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // py3::simple
-namespace py3 { namespace simple {
+
 class ComplexStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1523,8 +1515,7 @@ unsigned long ComplexStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // py3::simple
-namespace py3 { namespace simple {
+
 class BinaryUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1629,6 +1620,7 @@ class BinaryUnion final  {
   ~BinaryUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::py3::simple::IOBuf iobuf_val;
 
@@ -1727,8 +1719,7 @@ unsigned long BinaryUnion::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // py3::simple
-namespace py3 { namespace simple {
+
 class BinaryUnionStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1839,6 +1830,7 @@ unsigned long BinaryUnionStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }} // py3::simple
 

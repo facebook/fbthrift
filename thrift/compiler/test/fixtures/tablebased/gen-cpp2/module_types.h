@@ -165,12 +165,6 @@ class ContainerStruct;
 class ExampleUnion;
 }}} // test::fixtures::tablebased
 // END forward_declare
-// BEGIN typedefs
-namespace test { namespace fixtures { namespace tablebased {
-typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
-
-}}} // test::fixtures::tablebased
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace test { namespace fixtures { namespace tablebased {
@@ -178,8 +172,9 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}}} // test::fixtures::tablebased
-namespace test { namespace fixtures { namespace tablebased {
+
+typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
+
 class TrivialTypesStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -510,8 +505,7 @@ unsigned long TrivialTypesStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::tablebased
-namespace test { namespace fixtures { namespace tablebased {
+
 class ContainerStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -988,8 +982,7 @@ unsigned long ContainerStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::tablebased
-namespace test { namespace fixtures { namespace tablebased {
+
 class ExampleUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1115,6 +1108,7 @@ class ExampleUnion final  {
   ~ExampleUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::test::fixtures::tablebased::ContainerStruct fieldA;
     ::test::fixtures::tablebased::TrivialTypesStruct fieldB;
@@ -1274,6 +1268,7 @@ unsigned long ExampleUnion::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }}} // test::fixtures::tablebased
 

@@ -650,17 +650,6 @@ class optXcep;
 class complexException;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
-namespace cpp2 {
-typedef ::std::string stringTypedef;
-typedef ::std::int64_t longTypeDef;
-typedef ::std::map<::std::int16_t, ::std::string> mapTypedef;
-typedef ::std::vector<double> listTypedef;
-typedef float floatTypedef;
-typedef ::std::map<::std::int32_t, ::std::int64_t> FMap;
-
-} // cpp2
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
@@ -668,8 +657,14 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+
+typedef ::std::string stringTypedef;
+typedef ::std::int64_t longTypeDef;
+typedef ::std::map<::std::int16_t, ::std::string> mapTypedef;
+typedef ::std::vector<double> listTypedef;
+typedef float floatTypedef;
+typedef ::std::map<::std::int32_t, ::std::int64_t> FMap;
+
 class MyStructFloatFieldThrowExp final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -949,8 +944,7 @@ unsigned long MyStructFloatFieldThrowExp::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class MyStructMapFloatThrowExp final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1118,8 +1112,7 @@ unsigned long MyStructMapFloatThrowExp::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class MyDataItem final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1182,8 +1175,7 @@ unsigned long MyDataItem::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2691,8 +2683,7 @@ unsigned long MyStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class SimpleStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2867,8 +2858,7 @@ unsigned long SimpleStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class ComplexNestedStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3853,8 +3843,7 @@ unsigned long ComplexNestedStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class MyUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -4064,6 +4053,7 @@ class MyUnion final  {
   ~MyUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::cpp2::MyEnum myEnum;
     ::cpp2::MyStruct myStruct;
@@ -4413,8 +4403,7 @@ unsigned long MyUnion::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class defaultStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5624,8 +5613,7 @@ unsigned long defaultStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class MyStructTypeDef final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -6165,8 +6153,7 @@ unsigned long MyStructTypeDef::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class MyUnionFloatFieldThrowExp final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -6334,6 +6321,7 @@ class MyUnionFloatFieldThrowExp final  {
   ~MyUnionFloatFieldThrowExp() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::cpp2::MyEnum myEnum;
     ::std::vector<::std::vector<float>> setFloat;
@@ -6595,8 +6583,7 @@ unsigned long MyUnionFloatFieldThrowExp::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class TypeRemapped final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -6872,8 +6859,7 @@ unsigned long TypeRemapped::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FOLLY_EXPORT emptyXcep : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -6948,8 +6934,7 @@ unsigned long emptyXcep::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FOLLY_EXPORT reqXcep : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -7093,8 +7078,7 @@ unsigned long reqXcep::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FOLLY_EXPORT optXcep : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -7246,8 +7230,7 @@ unsigned long optXcep::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FOLLY_EXPORT complexException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -7517,6 +7500,7 @@ unsigned long complexException::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2
 

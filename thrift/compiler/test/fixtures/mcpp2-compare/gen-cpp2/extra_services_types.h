@@ -94,9 +94,6 @@ namespace extra { namespace svc {
 class containerStruct2;
 }} // extra::svc
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace extra { namespace svc {
@@ -104,8 +101,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}} // extra::svc
-namespace extra { namespace svc {
+
+
 class containerStruct2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -869,5 +866,6 @@ unsigned long containerStruct2::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }} // extra::svc

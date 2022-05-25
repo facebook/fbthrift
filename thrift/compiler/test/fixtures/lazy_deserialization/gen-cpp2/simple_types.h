@@ -196,9 +196,6 @@ class OptionalIndexedFoo;
 class Empty;
 }}} // apache::thrift::test
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace apache { namespace thrift { namespace test {
@@ -206,8 +203,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
+
+
 class Foo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -475,8 +472,7 @@ unsigned long Foo::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
+
 class LazyFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -748,8 +744,7 @@ unsigned long LazyFoo::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
+
 class OptionalFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1021,8 +1016,7 @@ unsigned long OptionalFoo::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
+
 class OptionalLazyFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1296,8 +1290,7 @@ unsigned long OptionalLazyFoo::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
+
 class LazyCppRef final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1446,8 +1439,7 @@ unsigned long LazyCppRef::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
+
 class IndexedFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1821,8 +1813,7 @@ unsigned long IndexedFoo::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
+
 class OptionalIndexedFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2200,8 +2191,7 @@ unsigned long OptionalIndexedFoo::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
+
 class Empty final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2263,5 +2253,6 @@ unsigned long Empty::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }}} // apache::thrift::test

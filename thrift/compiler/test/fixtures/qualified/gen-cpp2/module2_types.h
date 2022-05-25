@@ -51,9 +51,6 @@ class Struct;
 class BigStruct;
 } // module2
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace module2 {
@@ -61,8 +58,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // module2
-namespace module2 {
+
+
 class Struct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -228,8 +225,7 @@ unsigned long Struct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // module2
-namespace module2 {
+
 class BigStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -396,5 +392,6 @@ unsigned long BigStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // module2

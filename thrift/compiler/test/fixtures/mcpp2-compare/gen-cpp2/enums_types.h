@@ -269,9 +269,6 @@ namespace facebook { namespace ns { namespace qwerty {
 class SomeStruct;
 }}} // facebook::ns::qwerty
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace facebook { namespace ns { namespace qwerty {
@@ -279,8 +276,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}}} // facebook::ns::qwerty
-namespace facebook { namespace ns { namespace qwerty {
+
+
 class SomeStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -397,5 +394,6 @@ unsigned long SomeStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }}} // facebook::ns::qwerty

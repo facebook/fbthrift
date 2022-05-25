@@ -140,9 +140,6 @@ class MyStruct;
 class MyUnion;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
@@ -150,8 +147,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+
+
 class MyDataItem final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -214,8 +211,7 @@ unsigned long MyDataItem::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -650,8 +646,7 @@ unsigned long MyStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class MyUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -798,6 +793,7 @@ class MyUnion final  {
   ~MyUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::cpp2::MyEnum myEnum;
     ::cpp2::MyStruct myStruct;
@@ -1000,6 +996,7 @@ unsigned long MyUnion::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2
 

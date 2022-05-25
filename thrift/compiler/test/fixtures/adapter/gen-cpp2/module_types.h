@@ -166,8 +166,14 @@ class Bar;
 class StructWithFieldAdapter;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
+// BEGIN hash_and_equal_to
+// END hash_and_equal_to
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::set<::std::string>> SetWithAdapter;
 typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> StringWithAdapter;
 typedef ::std::vector<::cpp2::StringWithAdapter> ListWithElemAdapter;
@@ -179,17 +185,6 @@ typedef ::cpp2::Foo FooWithAdapter;
 typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Bar> StructWithAdapter;
 typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Baz> UnionWithAdapter;
 
-} // cpp2
-// END typedefs
-// BEGIN hash_and_equal_to
-// END hash_and_equal_to
-namespace cpp2 {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
 class Foo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -761,8 +756,7 @@ unsigned long Foo::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class Baz final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -951,6 +945,7 @@ class Baz final  {
   ~Baz() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intField;
     ::cpp2::SetWithAdapter setField;
@@ -1256,8 +1251,7 @@ unsigned long Baz::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class Bar final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1594,8 +1588,7 @@ unsigned long Bar::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class StructWithFieldAdapter final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1771,6 +1764,7 @@ unsigned long StructWithFieldAdapter::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2
 

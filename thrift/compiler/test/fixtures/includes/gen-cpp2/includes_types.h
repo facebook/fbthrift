@@ -39,13 +39,6 @@ namespace cpp2 {
 class Included;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
-namespace cpp2 {
-typedef ::std::int64_t IncludedInt64;
-typedef ::cpp2::Foo TransitiveFoo;
-
-} // cpp2
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
@@ -53,8 +46,10 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+
+typedef ::std::int64_t IncludedInt64;
+typedef ::cpp2::Foo TransitiveFoo;
+
 class Included final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -223,5 +218,6 @@ unsigned long Included::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2

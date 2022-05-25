@@ -567,9 +567,6 @@ class OptionalMyStructValuePatchStruct;
 using OptionalMyStructValuePatch = ::apache::thrift::adapt_detail::adapted_t<::apache::thrift::op::detail::OptionalPatchAdapter, ::test::fixtures::patch::OptionalMyStructValuePatchStruct>;
 }}} // test::fixtures::patch
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace test { namespace fixtures { namespace patch {
@@ -577,8 +574,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
+
 class MyData final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -767,8 +764,7 @@ unsigned long MyData::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class MyUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -911,6 +907,7 @@ class MyUnion final  {
   ~MyUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::std::string option1;
     ::std::int32_t option2;
@@ -1056,8 +1053,7 @@ unsigned long MyUnion::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2510,8 +2506,7 @@ unsigned long MyStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class MyDataPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2675,8 +2670,7 @@ unsigned long MyDataPatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class MyDataValuePatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2895,8 +2889,7 @@ unsigned long MyDataValuePatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class OptionalMyDataValuePatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3161,8 +3154,7 @@ unsigned long OptionalMyDataValuePatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class MyUnionPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3326,8 +3318,7 @@ unsigned long MyUnionPatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class MyUnionValuePatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3601,8 +3592,7 @@ unsigned long MyUnionValuePatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class OptionalMyUnionValuePatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3867,8 +3857,7 @@ unsigned long OptionalMyUnionValuePatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class MyStructField21PatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -4162,8 +4151,7 @@ unsigned long MyStructField21PatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class OptionalMyStructField21PatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -4440,8 +4428,7 @@ unsigned long OptionalMyStructField21PatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class MyStructField22PatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -4735,8 +4722,7 @@ unsigned long MyStructField22PatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class OptionalMyStructField22PatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5013,8 +4999,7 @@ unsigned long OptionalMyStructField22PatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class MyStructField23PatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5254,8 +5239,7 @@ unsigned long MyStructField23PatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class OptionalMyStructField23PatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5532,8 +5516,7 @@ unsigned long OptionalMyStructField23PatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class MyStructPatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -6709,8 +6692,7 @@ unsigned long MyStructPatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class MyStructValuePatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -6929,8 +6911,7 @@ unsigned long MyStructValuePatchStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::patch
-namespace test { namespace fixtures { namespace patch {
+
 class OptionalMyStructValuePatchStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -7194,6 +7175,7 @@ unsigned long OptionalMyStructValuePatchStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }}} // test::fixtures::patch
 

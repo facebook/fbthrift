@@ -100,12 +100,6 @@ class AStruct;
 class AStructB;
 }}} // a::different::ns
 // END forward_declare
-// BEGIN typedefs
-namespace a { namespace different { namespace ns {
-typedef ::std::int64_t IncludedInt64;
-
-}}} // a::different::ns
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace a { namespace different { namespace ns {
@@ -113,8 +107,9 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}}} // a::different::ns
-namespace a { namespace different { namespace ns {
+
+typedef ::std::int64_t IncludedInt64;
+
 class AStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -232,8 +227,7 @@ unsigned long AStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // a::different::ns
-namespace a { namespace different { namespace ns {
+
 class AStructB final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -308,5 +302,6 @@ unsigned long AStructB::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }}} // a::different::ns

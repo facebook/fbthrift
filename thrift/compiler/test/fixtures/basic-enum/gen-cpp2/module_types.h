@@ -202,9 +202,6 @@ namespace test { namespace fixtures { namespace enumstrict {
 class MyStruct;
 }}} // test::fixtures::enumstrict
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace test { namespace fixtures { namespace enumstrict {
@@ -212,8 +209,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}}} // test::fixtures::enumstrict
-namespace test { namespace fixtures { namespace enumstrict {
+
+
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -383,5 +380,6 @@ unsigned long MyStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }}} // test::fixtures::enumstrict

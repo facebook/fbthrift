@@ -310,15 +310,6 @@ class union1;
 class union2;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
-namespace cpp2 {
-typedef ::cpp2::Company MyCompany;
-typedef ::std::string MyStringIdentifier;
-typedef ::std::int32_t MyIntIdentifier;
-typedef ::std::map<::std::string, ::std::string> MyMapIdentifier;
-
-} // cpp2
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
@@ -326,8 +317,12 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+
+typedef ::cpp2::Company MyCompany;
+typedef ::std::string MyStringIdentifier;
+typedef ::std::int32_t MyIntIdentifier;
+typedef ::std::map<::std::string, ::std::string> MyMapIdentifier;
+
 class Internship final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -675,8 +670,7 @@ unsigned long Internship::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class Range final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -845,8 +839,7 @@ unsigned long Range::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class struct1 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1021,8 +1014,7 @@ unsigned long struct1::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class struct2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1298,8 +1290,7 @@ unsigned long struct2::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class struct3 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1524,8 +1515,7 @@ unsigned long struct3::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class struct4 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1758,8 +1748,7 @@ unsigned long struct4::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class union1 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1885,6 +1874,7 @@ class union1 final  {
   ~union1() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::std::int32_t i;
     double d;
@@ -2016,8 +2006,7 @@ unsigned long union1::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class union2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2185,6 +2174,7 @@ class union2 final  {
   ~union2() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::std::int32_t i;
     double d;
@@ -2431,6 +2421,7 @@ unsigned long union2::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2
 

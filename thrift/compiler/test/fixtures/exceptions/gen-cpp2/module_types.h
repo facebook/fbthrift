@@ -73,9 +73,6 @@ class ExceptionWithPrimitiveField;
 class Banal;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
@@ -83,8 +80,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+
+
 class FOLLY_EXPORT Fiery : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -197,8 +194,7 @@ unsigned long Fiery::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FOLLY_EXPORT Serious : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -314,8 +310,7 @@ unsigned long Serious::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -467,8 +462,7 @@ unsigned long ComplexFieldNames::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -620,8 +614,7 @@ unsigned long CustomFieldNames::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -768,8 +761,7 @@ unsigned long ExceptionWithPrimitiveField::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FOLLY_EXPORT Banal : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -843,5 +835,6 @@ unsigned long Banal::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2

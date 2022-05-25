@@ -109,13 +109,6 @@ class U;
 class Bang;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
-namespace cpp2 {
-typedef ::std::string lanyard;
-typedef ::std::int32_t number;
-
-} // cpp2
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
@@ -123,8 +116,10 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+
+typedef ::std::string lanyard;
+typedef ::std::int32_t number;
+
 class A final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -242,8 +237,7 @@ unsigned long A::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class U final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -369,6 +363,7 @@ class U final  {
   ~U() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::std::int32_t i;
     ::std::string s;
@@ -514,8 +509,7 @@ unsigned long U::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FOLLY_EXPORT Bang : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -628,6 +622,7 @@ unsigned long Bang::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2
 

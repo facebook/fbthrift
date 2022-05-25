@@ -153,9 +153,6 @@ class YourStruct;
 class SecretStruct;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
@@ -163,8 +160,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+
+
 class MyStructNestedAnnotation final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -285,8 +282,7 @@ unsigned long MyStructNestedAnnotation::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class YourUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -370,6 +366,7 @@ class YourUnion final  {
   ~YourUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
 
     storage_type() {}
@@ -413,8 +410,7 @@ unsigned long YourUnion::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FOLLY_EXPORT YourException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -489,8 +485,7 @@ unsigned long YourException::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class YourStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1072,8 +1067,7 @@ unsigned long YourStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class SecretStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1246,6 +1240,7 @@ unsigned long SecretStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2
 

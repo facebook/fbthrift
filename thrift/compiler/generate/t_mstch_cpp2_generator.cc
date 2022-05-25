@@ -1634,26 +1634,23 @@ class mstch_cpp2_program : public mstch_program {
         split_structs_(split_structs) {
     register_methods(
         this,
-        {
-            {"program:cpp_includes", &mstch_cpp2_program::cpp_includes},
-            {"program:namespace_cpp2", &mstch_cpp2_program::namespace_cpp2},
-            {"program:include_prefix", &mstch_cpp2_program::include_prefix},
-            {"program:cpp_declare_hash?",
-             &mstch_cpp2_program::cpp_declare_hash},
-            {"program:thrift_includes", &mstch_cpp2_program::thrift_includes},
-            {"program:frozen_packed?", &mstch_cpp2_program::frozen_packed},
-            {"program:legacy_api?", &mstch_cpp2_program::legacy_api},
-            {"program:fatal_languages", &mstch_cpp2_program::fatal_languages},
-            {"program:fatal_enums", &mstch_cpp2_program::fatal_enums},
-            {"program:fatal_unions", &mstch_cpp2_program::fatal_unions},
-            {"program:fatal_structs", &mstch_cpp2_program::fatal_structs},
-            {"program:fatal_constants", &mstch_cpp2_program::fatal_constants},
-            {"program:fatal_services", &mstch_cpp2_program::fatal_services},
-            {"program:fatal_identifiers",
-             &mstch_cpp2_program::fatal_identifiers},
-            {"program:fatal_data_member",
-             &mstch_cpp2_program::fatal_data_member},
-        });
+        {{"program:cpp_includes", &mstch_cpp2_program::cpp_includes},
+         {"program:namespace_cpp2", &mstch_cpp2_program::namespace_cpp2},
+         {"program:include_prefix", &mstch_cpp2_program::include_prefix},
+         {"program:cpp_declare_hash?", &mstch_cpp2_program::cpp_declare_hash},
+         {"program:thrift_includes", &mstch_cpp2_program::thrift_includes},
+         {"program:frozen_packed?", &mstch_cpp2_program::frozen_packed},
+         {"program:legacy_api?", &mstch_cpp2_program::legacy_api},
+         {"program:fatal_languages", &mstch_cpp2_program::fatal_languages},
+         {"program:fatal_enums", &mstch_cpp2_program::fatal_enums},
+         {"program:fatal_unions", &mstch_cpp2_program::fatal_unions},
+         {"program:fatal_structs", &mstch_cpp2_program::fatal_structs},
+         {"program:fatal_constants", &mstch_cpp2_program::fatal_constants},
+         {"program:fatal_services", &mstch_cpp2_program::fatal_services},
+         {"program:fatal_identifiers", &mstch_cpp2_program::fatal_identifiers},
+         {"program:fatal_data_member", &mstch_cpp2_program::fatal_data_member},
+         {"program:structs_and_typedefs",
+          &mstch_cpp2_program::structs_and_typedefs}});
     register_has_option("program:tablebased?", "tablebased");
     register_has_option("program:no_metadata?", "no_metadata");
     register_has_option(
@@ -1907,6 +1904,14 @@ class mstch_cpp2_program : public mstch_program {
       a.push_back(*f);
     }
     return a;
+  }
+  mstch::node structs_and_typedefs() {
+    mstch::array ret = boost::get<mstch::array>(typedefs());
+    mstch::array strcts = boost::get<mstch::array>(structs());
+    for (auto& strct : strcts) {
+      ret.push_back(std::move(strct));
+    }
+    return ret;
   }
 
  private:

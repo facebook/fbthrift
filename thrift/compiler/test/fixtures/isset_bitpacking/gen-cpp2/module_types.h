@@ -112,9 +112,6 @@ class Atomic;
 class AtomicFoo;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
@@ -122,8 +119,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+
+
 class Default final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -419,8 +416,7 @@ unsigned long Default::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class NonAtomic final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -716,8 +712,7 @@ unsigned long NonAtomic::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class Atomic final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1013,8 +1008,7 @@ unsigned long Atomic::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class AtomicFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1309,5 +1303,6 @@ unsigned long AtomicFoo::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2

@@ -210,14 +210,6 @@ class SmallStruct;
 class containerStruct;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
-namespace cpp2 {
-typedef Foo IndirectionA;
-typedef Baz IndirectionC;
-typedef Bar IndirectionB;
-
-} // cpp2
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
@@ -225,8 +217,11 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+
+typedef Foo IndirectionA;
+typedef Baz IndirectionC;
+typedef Bar IndirectionB;
+
 class SmallStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -397,8 +392,7 @@ unsigned long SmallStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class containerStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1410,5 +1404,6 @@ unsigned long containerStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2

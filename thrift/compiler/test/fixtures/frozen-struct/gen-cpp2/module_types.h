@@ -130,9 +130,6 @@ class ModuleA;
 class ModuleB;
 }} // some::ns
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace some { namespace ns {
@@ -140,8 +137,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}} // some::ns
-namespace some { namespace ns {
+
+
 class ModuleA final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -521,8 +518,7 @@ unsigned long ModuleA::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // some::ns
-namespace some { namespace ns {
+
 class ModuleB final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -692,5 +688,6 @@ unsigned long ModuleB::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }} // some::ns

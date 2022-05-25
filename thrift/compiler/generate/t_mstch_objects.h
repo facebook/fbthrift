@@ -400,6 +400,7 @@ class mstch_base : public mstch::object {
         {
             {"first?", &mstch_base::first},
             {"last?", &mstch_base::last},
+            {"is_struct?", &mstch_base::is_struct},
         });
   }
   virtual ~mstch_base() = default;
@@ -412,6 +413,7 @@ class mstch_base : public mstch::object {
     return pos_ == ELEMENT_POSITION::LAST ||
         pos_ == ELEMENT_POSITION::FIRST_AND_LAST;
   }
+  mstch::node is_struct();
 
   mstch::node annotations(t_named const* annotated) {
     return generate_annotations(annotated->annotations());

@@ -156,9 +156,6 @@ class MyStruct;
 class MyUnion;
 }}} // test::fixtures::basic
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace test { namespace fixtures { namespace basic {
@@ -166,8 +163,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}}} // test::fixtures::basic
-namespace test { namespace fixtures { namespace basic {
+
+
 class MyDataItem final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -241,8 +238,7 @@ unsigned long MyDataItem::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::basic
-namespace test { namespace fixtures { namespace basic {
+
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -823,8 +819,7 @@ unsigned long MyStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::basic
-namespace test { namespace fixtures { namespace basic {
+
 class MyUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1015,6 +1010,7 @@ class MyUnion final  {
   ~MyUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::test::fixtures::basic::MyEnum myEnum;
     ::test::fixtures::basic::MyStruct myStruct;
@@ -1275,6 +1271,7 @@ unsigned long MyUnion::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }}} // test::fixtures::basic
 

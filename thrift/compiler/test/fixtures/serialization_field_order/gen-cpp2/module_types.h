@@ -60,9 +60,6 @@ class Foo;
 class Foo2;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
@@ -70,8 +67,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+
+
 class Foo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -295,8 +292,7 @@ unsigned long Foo::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class Foo2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -519,5 +515,6 @@ unsigned long Foo2::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2

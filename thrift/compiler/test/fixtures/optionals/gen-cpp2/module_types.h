@@ -186,12 +186,6 @@ class Vehicle;
 class Person;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
-namespace cpp2 {
-typedef ::std::int64_t PersonID;
-
-} // cpp2
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
@@ -199,8 +193,9 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+
+typedef ::std::int64_t PersonID;
+
 class Color final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -477,8 +472,7 @@ unsigned long Color::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class Vehicle final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -827,8 +821,7 @@ unsigned long Vehicle::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class Person final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1440,5 +1433,6 @@ unsigned long Person::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2

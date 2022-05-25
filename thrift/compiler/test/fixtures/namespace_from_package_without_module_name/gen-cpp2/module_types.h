@@ -33,9 +33,6 @@ namespace test { namespace namespace_from_package_without_module_name {
 class Foo;
 }} // test::namespace_from_package_without_module_name
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace test { namespace namespace_from_package_without_module_name {
@@ -43,8 +40,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}} // test::namespace_from_package_without_module_name
-namespace test { namespace namespace_from_package_without_module_name {
+
+
 class Foo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -175,5 +172,6 @@ unsigned long Foo::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }} // test::namespace_from_package_without_module_name

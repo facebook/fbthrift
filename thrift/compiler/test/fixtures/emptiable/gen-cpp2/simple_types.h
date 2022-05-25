@@ -302,9 +302,6 @@ class EmptiableTerseStruct;
 class NotEmptiableStruct;
 }}} // apache::thrift::test
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace apache { namespace thrift { namespace test {
@@ -312,8 +309,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
+
+
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -376,8 +373,7 @@ unsigned long MyStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
+
 class EmptiableStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1224,8 +1220,7 @@ unsigned long EmptiableStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
+
 class EmptiableTerseStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2024,8 +2019,7 @@ unsigned long EmptiableTerseStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // apache::thrift::test
-namespace apache { namespace thrift { namespace test {
+
 class NotEmptiableStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2866,5 +2860,6 @@ unsigned long NotEmptiableStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }}} // apache::thrift::test

@@ -130,12 +130,6 @@ class NonCopyableStruct;
 class NonCopyableUnion;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
-namespace cpp2 {
-typedef ::std::map<::std::int16_t, ::std::string> containerTypedef;
-
-} // cpp2
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
@@ -143,8 +137,9 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+
+typedef ::std::map<::std::int16_t, ::std::string> containerTypedef;
+
 class ComplexUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -354,6 +349,7 @@ class ComplexUnion final  {
   ~ComplexUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::std::int64_t intValue;
     ::std::string stringValue;
@@ -731,8 +727,7 @@ unsigned long ComplexUnion::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class ListUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -858,6 +853,7 @@ class ListUnion final  {
   ~ListUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::std::vector<::std::int64_t> intListValue;
     ::std::vector<::std::string> stringListValue;
@@ -1017,8 +1013,7 @@ unsigned long ListUnion::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class DataUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1144,6 +1139,7 @@ class DataUnion final  {
   ~DataUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::std::string binaryData;
     ::std::string stringData;
@@ -1303,8 +1299,7 @@ unsigned long DataUnion::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class Val final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1529,8 +1524,7 @@ unsigned long Val::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class ValUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1656,6 +1650,7 @@ class ValUnion final  {
   ~ValUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::cpp2::Val v1;
     ::cpp2::Val v2;
@@ -1815,8 +1810,7 @@ unsigned long ValUnion::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class VirtualComplexUnion  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2102,8 +2096,7 @@ unsigned long VirtualComplexUnion::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class NonCopyableStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2217,8 +2210,7 @@ unsigned long NonCopyableStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class NonCopyableUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2286,6 +2278,7 @@ class NonCopyableUnion final  {
   ~NonCopyableUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::cpp2::NonCopyableStruct s;
 
@@ -2380,6 +2373,7 @@ unsigned long NonCopyableUnion::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2
 

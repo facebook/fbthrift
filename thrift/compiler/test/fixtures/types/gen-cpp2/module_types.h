@@ -588,14 +588,6 @@ class TypedefStruct;
 class StructWithDoubleUnderscores;
 }}}} // apache::thrift::fixtures::types
 // END forward_declare
-// BEGIN typedefs
-namespace apache { namespace thrift { namespace fixtures { namespace types {
-typedef ::std::string TBinary;
-typedef ::std::int32_t IntTypedef;
-typedef ::apache::thrift::fixtures::types::IntTypedef UintTypedef;
-
-}}}} // apache::thrift::fixtures::types
-// END typedefs
 // BEGIN hash_and_equal_to
 namespace std {
 
@@ -612,8 +604,11 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+typedef ::std::string TBinary;
+typedef ::std::int32_t IntTypedef;
+typedef ::apache::thrift::fixtures::types::IntTypedef UintTypedef;
+
 class decorated_struct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -734,8 +729,7 @@ unsigned long decorated_struct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class ContainerStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1210,8 +1204,7 @@ unsigned long ContainerStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class CppTypeStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1326,8 +1319,7 @@ unsigned long CppTypeStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class VirtualStruct  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1447,8 +1439,7 @@ unsigned long VirtualStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class MyStructWithForwardRefEnum final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1618,8 +1609,7 @@ unsigned long MyStructWithForwardRefEnum::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class TrivialNumeric final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1790,8 +1780,7 @@ unsigned long TrivialNumeric::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class TrivialNestedWithDefault final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1961,8 +1950,7 @@ unsigned long TrivialNestedWithDefault::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class ComplexString final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2134,8 +2122,7 @@ unsigned long ComplexString::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class ComplexNestedWithDefault final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2309,8 +2296,7 @@ unsigned long ComplexNestedWithDefault::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class MinPadding final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2637,8 +2623,7 @@ unsigned long MinPadding::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class MyDataItem final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2698,8 +2683,7 @@ unsigned long MyDataItem::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2974,8 +2958,7 @@ unsigned long MyStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class Renaming final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3093,8 +3076,7 @@ unsigned long Renaming::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class AnnotatedTypes final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3266,8 +3248,7 @@ unsigned long AnnotatedTypes::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class ForwardUsageStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3383,8 +3364,7 @@ unsigned long ForwardUsageStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class ForwardUsageRoot final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3512,8 +3492,7 @@ unsigned long ForwardUsageRoot::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class ForwardUsageByRef final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3629,8 +3608,7 @@ unsigned long ForwardUsageByRef::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class NoexceptMoveEmpty final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3693,8 +3671,7 @@ unsigned long NoexceptMoveEmpty::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class NoexceptMoveSimpleStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3812,8 +3789,7 @@ unsigned long NoexceptMoveSimpleStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class NoexceptMoveComplexStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -4372,8 +4348,7 @@ unsigned long NoexceptMoveComplexStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class NoExceptMoveUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -4499,6 +4474,7 @@ class NoExceptMoveUnion final  {
   ~NoExceptMoveUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::std::string string_field;
     ::std::int32_t i32_field;
@@ -4644,8 +4620,7 @@ unsigned long NoExceptMoveUnion::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class AllocatorAware final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5037,8 +5012,7 @@ unsigned long AllocatorAware::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class AllocatorAware2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5175,8 +5149,7 @@ unsigned long AllocatorAware2::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class TypedefStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5399,8 +5372,7 @@ unsigned long TypedefStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 class StructWithDoubleUnderscores final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5517,6 +5489,7 @@ unsigned long StructWithDoubleUnderscores::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }}}} // apache::thrift::fixtures::types
 

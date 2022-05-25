@@ -1103,8 +1103,30 @@ class FloatUnion;
 class AllRequiredNoExceptMoveCtrStruct;
 }}} // some::valid::ns
 // END forward_declare
-// BEGIN typedefs
+// BEGIN hash_and_equal_to
+namespace std {
+
+template<> struct hash<typename ::some::valid::ns::MyIncludedStruct> {
+  size_t operator()(const ::some::valid::ns::MyIncludedStruct&) const;
+};
+template<> struct equal_to<typename ::some::valid::ns::MyIncludedStruct> {
+  bool operator()(const ::some::valid::ns::MyIncludedStruct&,const ::some::valid::ns::MyIncludedStruct&) const;
+};
+
+template<> struct hash<typename ::some::valid::ns::AnnotatedStruct> {
+  size_t operator()(const ::some::valid::ns::AnnotatedStruct&) const;
+};
+template<> struct equal_to<typename ::some::valid::ns::AnnotatedStruct> {
+  bool operator()(const ::some::valid::ns::AnnotatedStruct&,const ::some::valid::ns::AnnotatedStruct&) const;
+};
+} // std
+// END hash_and_equal_to
 namespace some { namespace valid { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 typedef ::a::different::ns::AStruct AStruct;
 typedef ::apache::thrift::adapt_detail::adapted_t<CustomProtocolAdapter, ::folly::IOBuf> CustomProtocolType;
 typedef ::std::int32_t simpleTypeDef;
@@ -1131,33 +1153,6 @@ typedef folly::sorted_vector_map<::std::int64_t, ::std::string> folly_map;
 typedef folly::IOBuf IOBuf;
 typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
 
-}}} // some::valid::ns
-// END typedefs
-// BEGIN hash_and_equal_to
-namespace std {
-
-template<> struct hash<typename ::some::valid::ns::MyIncludedStruct> {
-  size_t operator()(const ::some::valid::ns::MyIncludedStruct&) const;
-};
-template<> struct equal_to<typename ::some::valid::ns::MyIncludedStruct> {
-  bool operator()(const ::some::valid::ns::MyIncludedStruct&,const ::some::valid::ns::MyIncludedStruct&) const;
-};
-
-template<> struct hash<typename ::some::valid::ns::AnnotatedStruct> {
-  size_t operator()(const ::some::valid::ns::AnnotatedStruct&) const;
-};
-template<> struct equal_to<typename ::some::valid::ns::AnnotatedStruct> {
-  bool operator()(const ::some::valid::ns::AnnotatedStruct&,const ::some::valid::ns::AnnotatedStruct&) const;
-};
-} // std
-// END hash_and_equal_to
-namespace some { namespace valid { namespace ns {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
 class Empty final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1220,8 +1215,7 @@ unsigned long Empty::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
+
 class ASimpleStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1339,8 +1333,7 @@ unsigned long ASimpleStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
+
 class ASimpleStructNoexcept final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1458,8 +1451,7 @@ unsigned long ASimpleStructNoexcept::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
+
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2101,8 +2093,7 @@ unsigned long MyStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
+
 class SimpleUnion  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2374,8 +2365,7 @@ unsigned long SimpleUnion::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
+
 class ComplexUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3047,6 +3037,7 @@ class ComplexUnion final  {
   ~ComplexUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::std::int64_t intValue;
     ::std::int64_t opt_intValue;
@@ -4596,8 +4587,7 @@ unsigned long ComplexUnion::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
+
 class FOLLY_EXPORT AnException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5198,8 +5188,7 @@ unsigned long AnException::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
+
 class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5377,8 +5366,7 @@ unsigned long AnotherException::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
+
 class containerStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -6927,8 +6915,7 @@ unsigned long containerStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
+
 class MyIncludedStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -7160,8 +7147,7 @@ unsigned long MyIncludedStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
+
 class AnnotatedStruct  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -8169,8 +8155,7 @@ unsigned long AnnotatedStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
+
 class ComplexContainerStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -8335,8 +8320,7 @@ unsigned long ComplexContainerStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
+
 class FloatStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -8507,8 +8491,7 @@ unsigned long FloatStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
+
 class FloatUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -8634,6 +8617,7 @@ class FloatUnion final  {
   ~FloatUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     float floatSide;
     double doubleSide;
@@ -8765,8 +8749,7 @@ unsigned long FloatUnion::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // some::valid::ns
-namespace some { namespace valid { namespace ns {
+
 class AllRequiredNoExceptMoveCtrStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -8881,6 +8864,7 @@ unsigned long AllRequiredNoExceptMoveCtrStruct::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }}} // some::valid::ns
 

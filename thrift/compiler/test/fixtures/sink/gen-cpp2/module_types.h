@@ -69,9 +69,6 @@ class SinkException1;
 class SinkException2;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
-
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
@@ -79,8 +76,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+
+
 class InitialResponse final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -201,8 +198,7 @@ unsigned long InitialResponse::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FinalResponse final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -323,8 +319,7 @@ unsigned long FinalResponse::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class SinkPayload final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -445,8 +440,7 @@ unsigned long SinkPayload::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class CompatibleWithKeywordSink final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -567,8 +561,7 @@ unsigned long CompatibleWithKeywordSink::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FOLLY_EXPORT InitialException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -682,8 +675,7 @@ unsigned long InitialException::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FOLLY_EXPORT SinkException1 : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -797,8 +789,7 @@ unsigned long SinkException1::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class FOLLY_EXPORT SinkException2 : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -906,5 +897,6 @@ unsigned long SinkException2::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2

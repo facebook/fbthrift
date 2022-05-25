@@ -177,14 +177,6 @@ class MyException;
 class MyUnion;
 }}} // test::fixtures::basic-structured-annotations
 // END forward_declare
-// BEGIN typedefs
-namespace test { namespace fixtures { namespace basic-structured-annotations {
-typedef ::std::string annotated_with_default_string;
-typedef ::std::string annotated_inline_string;
-typedef ::std::int64_t annotated_inline_i64;
-
-}}} // test::fixtures::basic-structured-annotations
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace test { namespace fixtures { namespace basic-structured-annotations {
@@ -192,8 +184,11 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
+
+typedef ::std::string annotated_with_default_string;
+typedef ::std::string annotated_inline_string;
+typedef ::std::int64_t annotated_inline_i64;
+
 class structured_annotation_inline final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -385,8 +380,7 @@ unsigned long structured_annotation_inline::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
+
 class structured_annotation_with_default final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -522,8 +516,7 @@ unsigned long structured_annotation_with_default::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
+
 class structured_annotation_forward final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -655,8 +648,7 @@ unsigned long structured_annotation_forward::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
+
 class structured_annotation_recursive final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -899,8 +891,7 @@ unsigned long structured_annotation_recursive::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
+
 class structured_annotation_nested final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1089,8 +1080,7 @@ unsigned long structured_annotation_nested::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
+
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1397,8 +1387,7 @@ unsigned long MyStruct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
+
 class FOLLY_EXPORT MyException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1526,8 +1515,7 @@ unsigned long MyException::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}}} // test::fixtures::basic-structured-annotations
-namespace test { namespace fixtures { namespace basic-structured-annotations {
+
 class MyUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1670,6 +1658,7 @@ class MyUnion final  {
   ~MyUnion() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::test::fixtures::basic-structured-annotations::annotated_inline_string first;
     ::test::fixtures::basic-structured-annotations::annotated_inline_i64 second;
@@ -1814,6 +1803,7 @@ unsigned long MyUnion::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }}} // test::fixtures::basic-structured-annotations
 

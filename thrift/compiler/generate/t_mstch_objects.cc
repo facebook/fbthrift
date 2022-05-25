@@ -39,6 +39,10 @@ void mstch_base::register_has_option(std::string key, std::string option) {
       });
 }
 
+mstch::node mstch_base::is_struct() {
+  return dynamic_cast<mstch_struct*>(this) != nullptr;
+}
+
 std::shared_ptr<mstch_base> enum_value_generator::generate(
     t_enum_value const* enum_value,
     std::shared_ptr<mstch_generators const> generators,

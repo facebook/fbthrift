@@ -1079,16 +1079,6 @@ class struct_with_indirections;
 class StructWithFieldAdapter;
 }} // test_cpp2::cpp_reflection
 // END forward_declare
-// BEGIN typedefs
-namespace test_cpp2 { namespace cpp_reflection {
-typedef test_cpp_reflection::custom_structA my_structA;
-typedef CppFakeI32 FakeI32;
-typedef CppHasANumber HasANumber;
-typedef CppHasAResult HasAResult;
-typedef CppHasAPhrase HasAPhrase;
-
-}} // test_cpp2::cpp_reflection
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace test_cpp2 { namespace cpp_reflection {
@@ -1096,8 +1086,13 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
+typedef test_cpp_reflection::custom_structA my_structA;
+typedef CppFakeI32 FakeI32;
+typedef CppHasANumber HasANumber;
+typedef CppHasAResult HasAResult;
+typedef CppHasAPhrase HasAPhrase;
+
 class union1 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1265,6 +1260,7 @@ class union1 final  {
   ~union1() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::std::int32_t ui;
     double ud;
@@ -1498,8 +1494,7 @@ unsigned long union1::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class union2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1667,6 +1662,7 @@ class union2 final  {
   ~union2() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::std::int32_t ui_2;
     double ud_2;
@@ -1900,8 +1896,7 @@ unsigned long union2::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class union3 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2069,6 +2064,7 @@ class union3 final  {
   ~union3() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::std::int32_t ui_3;
     double ud_3;
@@ -2302,8 +2298,7 @@ unsigned long union3::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class structA final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2477,8 +2472,7 @@ unsigned long structA::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class unionA final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2667,6 +2661,7 @@ class unionA final  {
   ~unionA() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::std::int32_t i;
     double d;
@@ -2958,8 +2953,7 @@ unsigned long unionA::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class structB final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -3130,8 +3124,7 @@ unsigned long structB::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class structC final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -4739,8 +4732,7 @@ unsigned long structC::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class struct1 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5125,8 +5117,7 @@ unsigned long struct1::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class struct2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5559,8 +5550,7 @@ unsigned long struct2::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class struct3 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -6554,8 +6544,7 @@ unsigned long struct3::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class struct4 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -6796,8 +6785,7 @@ unsigned long struct4::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class struct5 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -7128,8 +7116,7 @@ unsigned long struct5::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class struct_binary final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -7250,8 +7237,7 @@ unsigned long struct_binary::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class dep_A_struct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -7471,8 +7457,7 @@ unsigned long dep_A_struct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class dep_B_struct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -7692,8 +7677,7 @@ unsigned long dep_B_struct::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class annotated final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -7811,8 +7795,7 @@ unsigned long annotated::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class union_with_special_names final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -8484,6 +8467,7 @@ class union_with_special_names final  {
   ~union_with_special_names() {
     apache::thrift::clear(*this);
   }
+
   union storage_type {
     ::std::int32_t get;
     ::std::int32_t getter;
@@ -9759,8 +9743,7 @@ unsigned long union_with_special_names::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class struct_with_special_names final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -11309,8 +11292,7 @@ unsigned long struct_with_special_names::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class struct_with_indirections final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -11642,8 +11624,7 @@ unsigned long struct_with_indirections::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-}} // test_cpp2::cpp_reflection
-namespace test_cpp2 { namespace cpp_reflection {
+
 class StructWithFieldAdapter final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -11749,6 +11730,7 @@ unsigned long StructWithFieldAdapter::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 }} // test_cpp2::cpp_reflection
 

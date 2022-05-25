@@ -67,12 +67,6 @@ class Mixin3Base;
 class Foo;
 } // cpp2
 // END forward_declare
-// BEGIN typedefs
-namespace cpp2 {
-typedef ::cpp2::Mixin3Base Mixin3;
-
-} // cpp2
-// END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
 namespace cpp2 {
@@ -80,8 +74,9 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-} // cpp2
-namespace cpp2 {
+
+typedef ::cpp2::Mixin3Base Mixin3;
+
 class Mixin1 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -202,8 +197,7 @@ unsigned long Mixin1::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class Mixin2 final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -384,8 +378,7 @@ unsigned long Mixin2::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class Mixin3Base final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -506,8 +499,7 @@ unsigned long Mixin3Base::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
-} // cpp2
-namespace cpp2 {
+
 class Foo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -761,5 +753,6 @@ unsigned long Foo::read(Protocol_* iprot) {
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
 }
+
 
 } // cpp2
