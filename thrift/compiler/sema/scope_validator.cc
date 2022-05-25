@@ -79,7 +79,7 @@ void validate_annotation_scopes(diagnostic_context& ctx, const t_named& node) {
   // annotations that apply at other scopes. For example:
   //
   //   @cpp.Ref{type = cpp.RefType.Unique}
-  //   @meta.Transitive
+  //   @scope.Transitive
   //   struct MyAnnotation {}
   //
   // Although @cpp.Ref is a field annotation we don't emit a diagnostic here

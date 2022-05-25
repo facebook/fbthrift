@@ -872,29 +872,29 @@ func (p *FbthriftInternalEnum) String() string {
   return fmt.Sprintf("FbthriftInternalEnum({})")
 }
 
-type FbthriftInternalScopeTransitive struct {
+type Transitive struct {
 }
 
-func NewFbthriftInternalScopeTransitive() *FbthriftInternalScopeTransitive {
-  return &FbthriftInternalScopeTransitive{}
+func NewTransitive() *Transitive {
+  return &Transitive{}
 }
 
-type FbthriftInternalScopeTransitiveBuilder struct {
-  obj *FbthriftInternalScopeTransitive
+type TransitiveBuilder struct {
+  obj *Transitive
 }
 
-func NewFbthriftInternalScopeTransitiveBuilder() *FbthriftInternalScopeTransitiveBuilder{
-  return &FbthriftInternalScopeTransitiveBuilder{
-    obj: NewFbthriftInternalScopeTransitive(),
+func NewTransitiveBuilder() *TransitiveBuilder{
+  return &TransitiveBuilder{
+    obj: NewTransitive(),
   }
 }
 
-func (p FbthriftInternalScopeTransitiveBuilder) Emit() *FbthriftInternalScopeTransitive{
-  return &FbthriftInternalScopeTransitive{
+func (p TransitiveBuilder) Emit() *Transitive{
+  return &Transitive{
   }
 }
 
-func (p *FbthriftInternalScopeTransitive) Read(iprot thrift.Protocol) error {
+func (p *Transitive) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
   }
@@ -919,8 +919,8 @@ func (p *FbthriftInternalScopeTransitive) Read(iprot thrift.Protocol) error {
   return nil
 }
 
-func (p *FbthriftInternalScopeTransitive) Write(oprot thrift.Protocol) error {
-  if err := oprot.WriteStructBegin("FbthriftInternalScopeTransitive"); err != nil {
+func (p *Transitive) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("Transitive"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
@@ -929,12 +929,12 @@ func (p *FbthriftInternalScopeTransitive) Write(oprot thrift.Protocol) error {
   return nil
 }
 
-func (p *FbthriftInternalScopeTransitive) String() string {
+func (p *Transitive) String() string {
   if p == nil {
     return "<nil>"
   }
 
-  return fmt.Sprintf("FbthriftInternalScopeTransitive({})")
+  return fmt.Sprintf("Transitive({})")
 }
 
 type Structured struct {

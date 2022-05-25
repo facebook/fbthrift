@@ -550,7 +550,7 @@ class Legacy implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        '\thrift\annotation\FbthriftInternalScopeTransitive' => \thrift\annotation\FbthriftInternalScopeTransitive::fromShape(
+        '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
           shape(
           )
         ),
@@ -1133,7 +1133,7 @@ class NoBeta implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        '\thrift\annotation\FbthriftInternalScopeTransitive' => \thrift\annotation\FbthriftInternalScopeTransitive::fromShape(
+        '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
           shape(
           )
         ),
@@ -1331,7 +1331,7 @@ class NoDeprecated implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        '\thrift\annotation\FbthriftInternalScopeTransitive' => \thrift\annotation\FbthriftInternalScopeTransitive::fromShape(
+        '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
           shape(
           )
         ),
@@ -1422,7 +1422,7 @@ class v1 implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\FbthriftInternalScopeTransitive' => \thrift\annotation\FbthriftInternalScopeTransitive::fromShape(
+        '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
           shape(
           )
         ),
@@ -1525,7 +1525,7 @@ class v1beta implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        '\thrift\annotation\FbthriftInternalScopeTransitive' => \thrift\annotation\FbthriftInternalScopeTransitive::fromShape(
+        '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
           shape(
           )
         ),
@@ -1624,7 +1624,7 @@ class v1alpha implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        '\thrift\annotation\FbthriftInternalScopeTransitive' => \thrift\annotation\FbthriftInternalScopeTransitive::fromShape(
+        '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
           shape(
           )
         ),
@@ -1727,7 +1727,7 @@ class v1test implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        '\thrift\annotation\FbthriftInternalScopeTransitive' => \thrift\annotation\FbthriftInternalScopeTransitive::fromShape(
+        '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
           shape(
           )
         ),

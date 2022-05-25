@@ -82,7 +82,7 @@ class t_named : public t_node {
 };
 
 // Returns true iff the node is a definition of a transitive annotation,
-// i.e. it has the @meta.Transitive annotation itself.
+// i.e. it has the @scope.Transitive annotation itself.
 bool is_transitive_annotation(const t_named& node);
 
 } // namespace compiler

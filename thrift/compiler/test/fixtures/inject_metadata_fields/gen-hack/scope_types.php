@@ -751,10 +751,10 @@ class FbthriftInternalEnum implements \IThriftSyncStruct {
 
 /**
  * Original thrift struct:-
- * FbthriftInternalScopeTransitive
+ * Transitive
  */
 <<\ThriftTypeInfo(shape('uri' => 'facebook.com/thrift/annotation/Transitive'))>>
-class FbthriftInternalScopeTransitive implements \IThriftSyncStruct {
+class Transitive implements \IThriftSyncStruct {
   use \ThriftSerializationTrait;
 
   const dict<int, this::TFieldSpec> SPEC = dict[
@@ -780,13 +780,13 @@ class FbthriftInternalScopeTransitive implements \IThriftSyncStruct {
   }
 
   public function getName()[]: string {
-    return 'FbthriftInternalScopeTransitive';
+    return 'Transitive';
   }
 
   public static function getStructMetadata()[]: \tmeta_ThriftStruct {
     return \tmeta_ThriftStruct::fromShape(
       shape(
-        "name" => "scope.FbthriftInternalScopeTransitive",
+        "name" => "scope.Transitive",
         "is_union" => false,
       )
     );
@@ -864,7 +864,7 @@ class Structured implements \IThriftSyncStruct {
           shape(
           )
         ),
-        '\thrift\annotation\FbthriftInternalScopeTransitive' => \thrift\annotation\FbthriftInternalScopeTransitive::fromShape(
+        '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
           shape(
           )
         ),
@@ -934,7 +934,7 @@ class Interface implements \IThriftSyncStruct {
           shape(
           )
         ),
-        '\thrift\annotation\FbthriftInternalScopeTransitive' => \thrift\annotation\FbthriftInternalScopeTransitive::fromShape(
+        '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
           shape(
           )
         ),
@@ -1016,7 +1016,7 @@ class RootDefinition implements \IThriftSyncStruct {
           shape(
           )
         ),
-        '\thrift\annotation\FbthriftInternalScopeTransitive' => \thrift\annotation\FbthriftInternalScopeTransitive::fromShape(
+        '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
           shape(
           )
         ),
@@ -1094,7 +1094,7 @@ class Definition implements \IThriftSyncStruct {
           shape(
           )
         ),
-        '\thrift\annotation\FbthriftInternalScopeTransitive' => \thrift\annotation\FbthriftInternalScopeTransitive::fromShape(
+        '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
           shape(
           )
         ),

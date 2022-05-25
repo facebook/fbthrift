@@ -22,21 +22,21 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class FbthriftInternalScopeTransitive implements TBase, java.io.Serializable, Cloneable {
-  private static final TStruct STRUCT_DESC = new TStruct("FbthriftInternalScopeTransitive");
+public class Transitive implements TBase, java.io.Serializable, Cloneable {
+  private static final TStruct STRUCT_DESC = new TStruct("Transitive");
 
 
-  public FbthriftInternalScopeTransitive() {
+  public Transitive() {
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public FbthriftInternalScopeTransitive(FbthriftInternalScopeTransitive other) {
+  public Transitive(Transitive other) {
   }
 
-  public FbthriftInternalScopeTransitive deepCopy() {
-    return new FbthriftInternalScopeTransitive(this);
+  public Transitive deepCopy() {
+    return new Transitive(this);
   }
 
   @Override
@@ -45,9 +45,9 @@ public class FbthriftInternalScopeTransitive implements TBase, java.io.Serializa
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof FbthriftInternalScopeTransitive))
+    if (!(_that instanceof Transitive))
       return false;
-    FbthriftInternalScopeTransitive that = (FbthriftInternalScopeTransitive)_that;
+    Transitive that = (Transitive)_that;
 
     return true;
   }
@@ -62,7 +62,7 @@ public class FbthriftInternalScopeTransitive implements TBase, java.io.Serializa
     throw new TException("unimplemented in android immutable structure");
   }
 
-  public static FbthriftInternalScopeTransitive deserialize(TProtocol iprot) throws TException {
+  public static Transitive deserialize(TProtocol iprot) throws TException {
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -81,8 +81,8 @@ public class FbthriftInternalScopeTransitive implements TBase, java.io.Serializa
     }
     iprot.readStructEnd();
 
-    FbthriftInternalScopeTransitive _that;
-    _that = new FbthriftInternalScopeTransitive(
+    Transitive _that;
+    _that = new Transitive(
     );
     _that.validate();
     return _that;

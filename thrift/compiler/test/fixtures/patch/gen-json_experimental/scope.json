@@ -91,35 +91,35 @@
         "is_union" : false,
         "lineno" : 65
       },
-      "FbthriftInternalScopeTransitive" : {
-        "name" : "FbthriftInternalScopeTransitive",
+      "Transitive" : {
+        "name" : "Transitive",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 70
+        "lineno" : 93
       },
       "Structured" : {
         "name" : "Structured",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 78
+        "lineno" : 99
       },
       "Interface" : {
         "name" : "Interface",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 83
+        "lineno" : 104
       },
       "RootDefinition" : {
         "name" : "RootDefinition",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 91
+        "lineno" : 112
       },
       "Definition" : {
         "name" : "Definition",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 98
+        "lineno" : 119
       }
       },
   "source_path" : "thrift/annotation/scope",

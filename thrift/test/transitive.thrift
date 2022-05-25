@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,12 @@
 namespace cpp2 apache.thrift.test
 
 include "thrift/annotation/cpp.thrift"
-include "thrift/annotation/meta.thrift"
+include "thrift/annotation/scope.thrift"
 
 cpp_include "thrift/test/AdapterTest.h"
 
 @cpp.Adapter{name = "::apache::thrift::test::AdaptTestMsAdapter"}
-@meta.Transitive
+@scope.Transitive
 struct MsAdapter {}
 
 struct TestStruct {

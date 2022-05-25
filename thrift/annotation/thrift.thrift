@@ -65,7 +65,7 @@ struct Deprecated {
 // TODO(afuller): Add a linter to produce failures when annotated definitions
 // are used.
 @Deprecated // Legacy implies deprecated.
-@scope.FbthriftInternalScopeTransitive
+@scope.Transitive
 struct Legacy {
   1: string message;
 }
@@ -97,7 +97,7 @@ struct NoExperimental {}
 
 // Best-effort disables features that marked as beta.
 @NoExperimental // Implies no experimental
-@scope.FbthriftInternalScopeTransitive
+@scope.Transitive
 struct NoBeta {}
 
 // Best-effort disables features that are marked for removal.
@@ -111,13 +111,13 @@ struct NoLegacy {}
 // Should only be enabled in `test` versions.
 @Beta // Everyone should be able to test without deprecated features.
 @NoLegacy // Implies NoLegacy
-@scope.FbthriftInternalScopeTransitive
+@scope.Transitive
 struct NoDeprecated {}
 
 // Enables all released v1 features.
 //
 // TODO: Release features ;-).
-@scope.FbthriftInternalScopeTransitive
+@scope.Transitive
 struct v1 {}
 
 // Enables all beta v1 features.
@@ -128,7 +128,7 @@ struct v1 {}
 @Beta // All uses of v1beta inherit `@Beta`.
 @NoLegacy // Disables features that will be removed.
 @v1 // All v1 features.
-@scope.FbthriftInternalScopeTransitive
+@scope.Transitive
 struct v1beta {}
 
 // Enables all experimental v1 features.
@@ -138,7 +138,7 @@ struct v1beta {}
 // in all contexts.
 @Experimental // All uses of v1alpha inherit `@Experimental`.
 @v1beta // All v1beta features.
-@scope.FbthriftInternalScopeTransitive
+@scope.Transitive
 struct v1alpha {}
 
 // Enables experimental features, even those that are known to break common
@@ -146,7 +146,7 @@ struct v1alpha {}
 @TerseWrite // TODO(dokwon): Fix code gen. Currently known working: c++
 @v1alpha // All v1alpha features.
 @NoDeprecated // Remove deprecated features by default for tests.
-@scope.FbthriftInternalScopeTransitive
+@scope.Transitive
 struct v1test {}
 
 // TODO(afuller): Remove.

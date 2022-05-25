@@ -26,7 +26,7 @@ namespace annotation {
   ::apache::thrift::detail::md::StructMetadata<Const>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Schema>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<FbthriftInternalEnum>::gen(metadata);
-  ::apache::thrift::detail::md::StructMetadata<FbthriftInternalScopeTransitive>::gen(metadata);
+  ::apache::thrift::detail::md::StructMetadata<Transitive>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Structured>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Interface>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<RootDefinition>::gen(metadata);

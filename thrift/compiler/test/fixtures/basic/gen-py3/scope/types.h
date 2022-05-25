@@ -111,8 +111,8 @@ void reset_field<::facebook::thrift::annotation::FbthriftInternalEnum>(
 }
 
 template<>
-void reset_field<::facebook::thrift::annotation::FbthriftInternalScopeTransitive>(
-    ::facebook::thrift::annotation::FbthriftInternalScopeTransitive& obj, uint16_t index) {
+void reset_field<::facebook::thrift::annotation::Transitive>(
+    ::facebook::thrift::annotation::Transitive& obj, uint16_t index) {
   switch (index) {
   }
 }
@@ -277,7 +277,7 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
-    ::facebook::thrift::annotation::FbthriftInternalScopeTransitive>::namesmap() {
+    ::facebook::thrift::annotation::Transitive>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

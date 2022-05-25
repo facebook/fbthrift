@@ -20,47 +20,29 @@
 include "thrift/annotation/scope.thrift"
 include "thrift/annotation/thrift.thrift"
 
-package "facebook.com/thrift/annotation"
+package "facebook.com/thrift/annotation/deprecated"
 
-namespace cpp2 facebook.thrift.annotation
-namespace py3 facebook.thrift.annotation
-namespace php facebook_thrift_annotation
-namespace java2 com.facebook.thrift.annotation
-namespace java.swift com.facebook.thrift.annotation
-namespace java com.facebook.thrift.annotation_deprecated
+namespace cpp2 facebook.thrift.annotation.deprecated
+namespace py3 facebook.thrift.annotation.deprecated
+namespace php facebook_thrift_annotation_deprecated
+namespace java2 com.facebook.thrift.annotation.deprecated
+namespace java.swift com.facebook.thrift.annotation_swift.deprecated
+namespace java com.facebook.thrift.annotation_deprecated.deprecated
 namespace py.asyncio facebook_thrift_asyncio.annotation.meta
 namespace go thrift.annotation.meta
 namespace py thrift.annotation.meta
 
-// A meta-annotation that applies its sibling annotations through the one it
-// annotates. For example:
-//
-//   @scope.Struct
-//   @scope.Union
-//   @scope.Exception
-//   @meta.Transitive
-//   struct Structured {}
-//
-// Annotating a Thrift struct with @Structured automatically applies
-// @scope.Struct, @scope.Union and @scope.Exception annotations, i.e.
-//
-//   @Structured
-//   struct MyAnnotation {}
-//
-// is equivalent to
-//
-//   @scope.Struct
-//   @scope.Union
-//   @scope.Exception
-//   struct MyAnnotation {}
-@scope.Struct
-struct Transitive {} (thrift.uri = "facebook.com/thrift/annotation/Transitive")
-
 // Calls t_struct::set_generated().
 //
 // Useful for testing.
+// TODO(afuller): Move to internal.thrift.
 @scope.Struct
 @thrift.Experimental
 struct SetGenerated {} (
   thrift.uri = "facebook.com/thrift/annotation/SetGenerated",
 )
+
+// TODO(afuller): Delete.
+@scope.Struct
+@thrift.Deprecated
+struct Transitive {} (thrift.uri = "facebook.com/thrift/annotation/Transitive")

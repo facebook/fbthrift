@@ -53,7 +53,7 @@ class AnnotationStruct implements \IThriftSyncStruct, \IThriftShapishSyncStruct 
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\Transitive' => \thrift\annotation\Transitive::fromShape(
+        '\thrift\annotation\deprecated\Transitive' => \thrift\annotation\deprecated\Transitive::fromShape(
           shape(
           )
         ),

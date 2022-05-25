@@ -66,20 +66,41 @@ struct FbthriftInternalEnum {} (
   thrift.uri = "facebook.com/thrift/annotation/Enum",
 )
 typedef FbthriftInternalEnum Enum (thrift.uri = "")
-// Declare our own Transitive, to avoid circular dep with meta.thrift
-struct FbthriftInternalScopeTransitive {} (
-  thrift.uri = "facebook.com/thrift/annotation/Transitive",
-)
+
+// Indicates that the scope of sibling annotations is transitive.
+//
+// For example:
+//
+//     @scope.Struct
+//     @scope.Union
+//     @scope.Exception
+//     @scope.Transitive
+//     struct Structured {}
+//
+// Annotating a Thrift struct with @Structured automatically applies
+// @scope.Struct, @scope.Union and @scope.Exception annotations, i.e.
+//
+//     @Structured
+//     struct MyAnnotation {}
+//
+// is equivalent to
+//
+//     @scope.Struct
+//     @scope.Union
+//     @scope.Exception
+//     struct MyAnnotation {}
+//
+struct Transitive {} (thrift.uri = "facebook.com/thrift/annotation/Transitive")
 
 @Struct
 @Union
 @Exception
-@FbthriftInternalScopeTransitive
+@Transitive
 struct Structured {}
 
 @Service
 @Interaction
-@FbthriftInternalScopeTransitive
+@Transitive
 struct Interface {}
 
 @Structured
@@ -87,12 +108,12 @@ struct Interface {}
 @Typedef
 @FbthriftInternalEnum // TODO(afuller): Use the enum typedef directly.
 @Const
-@FbthriftInternalScopeTransitive
+@Transitive
 struct RootDefinition {}
 
 @RootDefinition
 @Field
 @Function
 @EnumValue
-@FbthriftInternalScopeTransitive
+@Transitive
 struct Definition {}

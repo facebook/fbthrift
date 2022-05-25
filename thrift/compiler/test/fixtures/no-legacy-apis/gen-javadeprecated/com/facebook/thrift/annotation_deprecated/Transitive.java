@@ -24,8 +24,8 @@ import com.facebook.thrift.transport.*;
 import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial" })
-public class FbthriftInternalScopeTransitive implements TBase, java.io.Serializable, Cloneable, Comparable<FbthriftInternalScopeTransitive> {
-  private static final TStruct STRUCT_DESC = new TStruct("FbthriftInternalScopeTransitive");
+public class Transitive implements TBase, java.io.Serializable, Cloneable, Comparable<Transitive> {
+  private static final TStruct STRUCT_DESC = new TStruct("Transitive");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -35,10 +35,10 @@ public class FbthriftInternalScopeTransitive implements TBase, java.io.Serializa
   }
 
   static {
-    FieldMetaData.addStructMetaDataMap(FbthriftInternalScopeTransitive.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(Transitive.class, metaDataMap);
   }
 
-  public FbthriftInternalScopeTransitive() {
+  public Transitive() {
   }
 
   public static class Builder {
@@ -46,8 +46,8 @@ public class FbthriftInternalScopeTransitive implements TBase, java.io.Serializa
     public Builder() {
     }
 
-    public FbthriftInternalScopeTransitive build() {
-      FbthriftInternalScopeTransitive result = new FbthriftInternalScopeTransitive();
+    public Transitive build() {
+      Transitive result = new Transitive();
       return result;
     }
   }
@@ -59,11 +59,11 @@ public class FbthriftInternalScopeTransitive implements TBase, java.io.Serializa
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public FbthriftInternalScopeTransitive(FbthriftInternalScopeTransitive other) {
+  public Transitive(Transitive other) {
   }
 
-  public FbthriftInternalScopeTransitive deepCopy() {
-    return new FbthriftInternalScopeTransitive(this);
+  public Transitive deepCopy() {
+    return new Transitive(this);
   }
 
   public void setFieldValue(int fieldID, Object __value) {
@@ -86,9 +86,9 @@ public class FbthriftInternalScopeTransitive implements TBase, java.io.Serializa
       return false;
     if (this == _that)
       return true;
-    if (!(_that instanceof FbthriftInternalScopeTransitive))
+    if (!(_that instanceof Transitive))
       return false;
-    FbthriftInternalScopeTransitive that = (FbthriftInternalScopeTransitive)_that;
+    Transitive that = (Transitive)_that;
 
     return true;
   }
@@ -99,7 +99,7 @@ public class FbthriftInternalScopeTransitive implements TBase, java.io.Serializa
   }
 
   @Override
-  public int compareTo(FbthriftInternalScopeTransitive other) {
+  public int compareTo(Transitive other) {
     if (other == null) {
       // See java.lang.Comparable docs
       throw new NullPointerException();
@@ -155,7 +155,7 @@ public class FbthriftInternalScopeTransitive implements TBase, java.io.Serializa
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("FbthriftInternalScopeTransitive");
+    StringBuilder sb = new StringBuilder("Transitive");
     sb.append(space);
     sb.append("(");
     sb.append(newLine);

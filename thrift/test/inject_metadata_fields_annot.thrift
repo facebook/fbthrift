@@ -15,7 +15,7 @@
  */
 
 include "thrift/annotation/internal.thrift"
-include "thrift/annotation/meta.thrift"
+include "thrift/annotation/scope.thrift"
 include "thrift/annotation/thrift.thrift"
 
 struct FieldsWithAnnotation {
@@ -25,5 +25,5 @@ struct FieldsWithAnnotation {
 }
 
 @internal.InjectMetadataFields{type = "FieldsWithAnnotation"}
-@meta.Transitive
+@scope.Transitive
 struct TransitiveInjectMetadataFields {}
