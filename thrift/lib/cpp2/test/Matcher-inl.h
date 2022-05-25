@@ -140,7 +140,7 @@ class IsThriftUnionWithMatcher {
   operator testing::Matcher<ThriftUnion>() const {
     static_assert(
         SupportsReflection<folly::remove_cvref_t<ThriftUnion>>,
-        "Include the _fatal_union.h header for the Thrift file defining this union");
+        "Include the _fatal_types.h header for the Thrift file defining this union");
     return testing::Matcher<ThriftUnion>(
         new Impl<const ThriftUnion&>(matcher_));
   }

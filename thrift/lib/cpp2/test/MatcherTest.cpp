@@ -16,7 +16,7 @@
 
 #include <optional>
 #include <thrift/lib/cpp2/test/Matcher.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/Matcher_fatal_union.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/Matcher_fatal_types.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Matcher_types.h>
 
 #include <folly/portability/GTest.h>

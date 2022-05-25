@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/test/AdapterTest.h>
-#include <thrift/test/reflection/gen-cpp2/reflection_fatal_struct.h>
+#include <thrift/test/reflection/gen-cpp2/reflection_fatal_types.h>
 
 #include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
 
