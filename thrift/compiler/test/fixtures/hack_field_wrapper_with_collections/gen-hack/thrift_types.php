@@ -1202,7 +1202,7 @@ class NoLegacy implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
   public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
-        '\thrift\annotation\Beta' => \thrift\annotation\Beta::fromShape(
+        '\thrift\annotation\Experimental' => \thrift\annotation\Experimental::fromShape(
           shape(
           )
         ),
@@ -1492,10 +1492,6 @@ class v1beta implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           shape(
           )
         ),
-        '\thrift\annotation\NoLegacy' => \thrift\annotation\NoLegacy::fromShape(
-          shape(
-          )
-        ),
         '\thrift\annotation\v1' => \thrift\annotation\v1::fromShape(
           shape(
           )
@@ -1595,6 +1591,10 @@ class v1alpha implements \IThriftSyncStruct, \IThriftShapishSyncStruct {
           )
         ),
         '\thrift\annotation\v1beta' => \thrift\annotation\v1beta::fromShape(
+          shape(
+          )
+        ),
+        '\thrift\annotation\NoLegacy' => \thrift\annotation\NoLegacy::fromShape(
           shape(
           )
         ),

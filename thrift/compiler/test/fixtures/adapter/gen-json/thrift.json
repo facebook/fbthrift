@@ -244,7 +244,7 @@
       }
     },
     "NoLegacy" : {
-      "lineno" : 103,
+      "lineno" : 104,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -252,17 +252,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 100,
+          "line" : 101,
           "column" : 1
         },
         "end" : {
-          "line" : 103,
+          "line" : 104,
           "column" : 19
         }
       }
     },
     "NoDeprecated" : {
-      "lineno" : 111,
+      "lineno" : 112,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -270,17 +270,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 108,
+          "line" : 109,
           "column" : 1
         },
         "end" : {
-          "line" : 111,
+          "line" : 112,
           "column" : 23
         }
       }
     },
     "v1" : {
-      "lineno" : 117,
+      "lineno" : 118,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -288,11 +288,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 116,
+          "line" : 117,
           "column" : 1
         },
         "end" : {
-          "line" : 117,
+          "line" : 118,
           "column" : 13
         }
       }
@@ -306,7 +306,7 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 124,
+          "line" : 125,
           "column" : 1
         },
         "end" : {
@@ -316,7 +316,7 @@
       }
     },
     "v1alpha" : {
-      "lineno" : 138,
+      "lineno" : 139,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -328,13 +328,13 @@
           "column" : 1
         },
         "end" : {
-          "line" : 138,
+          "line" : 139,
           "column" : 18
         }
       }
     },
     "v1test" : {
-      "lineno" : 146,
+      "lineno" : 147,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -342,17 +342,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 142,
+          "line" : 143,
           "column" : 1
         },
         "end" : {
-          "line" : 146,
+          "line" : 147,
           "column" : 17
         }
       }
     },
     "NoLegacyAPIs" : {
-      "lineno" : 155,
+      "lineno" : 156,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -360,11 +360,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 149,
+          "line" : 150,
           "column" : 1
         },
         "end" : {
-          "line" : 155,
+          "line" : 156,
           "column" : 23
         }
       }

@@ -107,19 +107,19 @@
         "name" : "NoLegacy",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 103
+        "lineno" : 104
       },
       "NoDeprecated" : {
         "name" : "NoDeprecated",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 111
+        "lineno" : 112
       },
       "v1" : {
         "name" : "v1",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 117
+        "lineno" : 118
       },
       "v1beta" : {
         "name" : "v1beta",
@@ -131,19 +131,19 @@
         "name" : "v1alpha",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 138
+        "lineno" : 139
       },
       "v1test" : {
         "name" : "v1test",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 146
+        "lineno" : 147
       },
       "NoLegacyAPIs" : {
         "name" : "NoLegacyAPIs",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 155
+        "lineno" : 156
       }
       },
   "source_path" : "thrift/annotation/thrift",

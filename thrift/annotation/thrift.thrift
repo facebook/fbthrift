@@ -97,7 +97,8 @@ struct NoExperimental {}
 struct NoBeta {}
 
 // Best-effort disables features that are marked for removal.
-@Beta // Everyone should be able to test without legacy features.
+// TODO(ytj): Fix compatibility with legacy reflection and move to @Beta.
+@Experimental // Everyone should be able to test without legacy features.
 @scope.Program
 @scope.Definition
 struct NoLegacy {}
@@ -122,7 +123,6 @@ struct v1 {}
 // so they should be relatively safe to test alongside other beta or
 // released Thrift features.
 @Beta // All uses of v1beta inherit `@Beta`.
-@NoLegacy // Disables features that will be removed.
 @v1 // All v1 features.
 @scope.Transitive
 struct v1beta {}
@@ -134,6 +134,7 @@ struct v1beta {}
 // in all contexts.
 @Experimental // All uses of v1alpha inherit `@Experimental`.
 @v1beta // All v1beta features.
+@NoLegacy // Disables features that will be removed.
 @scope.Transitive
 struct v1alpha {}
 
