@@ -19,10 +19,6 @@ include "thrift/annotation/scope.thrift"
 package "facebook.com/thrift/annotation/cpp"
 
 namespace cpp2 facebook.thrift.annotation.cpp
-namespace py3 facebook.thrift.annotation
-namespace php facebook_thrift_annotation_cpp
-namespace java2 com.facebook.thrift.annotation.cpp
-namespace java.swift com.facebook.thrift.annotation.cpp
 namespace java com.facebook.thrift.annotation.cpp_deprecated
 namespace py.asyncio facebook_thrift_asyncio.annotation.cpp
 namespace go thrift.annotation.cpp

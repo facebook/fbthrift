@@ -3,7 +3,7 @@
   "thrift_module" : "cpp",
   "enumerations" : {
     "RefType" : {
-      "lineno" : 31,
+      "lineno" : 27,
       "constants" : {
         "Unique" : 0,
         "Shared" : 1,
@@ -11,11 +11,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 31,
+          "line" : 27,
           "column" : 1
         },
         "end" : {
-          "line" : 35,
+          "line" : 31,
           "column" : 2
         }
       }
@@ -23,7 +23,7 @@
   },
   "structs" : {
     "Ref" : {
-      "lineno" : 38,
+      "lineno" : 34,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -33,11 +33,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 39,
+              "line" : 35,
               "column" : 3
             },
             "end" : {
-              "line" : 39,
+              "line" : 35,
               "column" : 18
             }
           }
@@ -45,17 +45,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 37,
+          "line" : 33,
           "column" : 1
         },
         "end" : {
-          "line" : 40,
+          "line" : 36,
           "column" : 58
         }
       }
     },
     "Lazy" : {
-      "lineno" : 43,
+      "lineno" : 39,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -66,11 +66,11 @@
           "default_value" : false,
           "source_range" : {
             "begin" : {
-              "line" : 45,
+              "line" : 41,
               "column" : 3
             },
             "end" : {
-              "line" : 45,
+              "line" : 41,
               "column" : 22
             }
           }
@@ -78,17 +78,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 42,
+          "line" : 38,
           "column" : 1
         },
         "end" : {
-          "line" : 46,
+          "line" : 42,
           "column" : 59
         }
       }
     },
     "DisableLazyChecksum" : {
-      "lineno" : 49,
+      "lineno" : 45,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -96,17 +96,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 48,
+          "line" : 44,
           "column" : 1
         },
         "end" : {
-          "line" : 51,
+          "line" : 47,
           "column" : 2
         }
       }
     },
     "Adapter" : {
-      "lineno" : 68,
+      "lineno" : 64,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -116,11 +116,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 89,
+              "line" : 85,
               "column" : 3
             },
             "end" : {
-              "line" : 89,
+              "line" : 85,
               "column" : 17
             }
           }
@@ -128,17 +128,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 66,
+          "line" : 62,
           "column" : 1
         },
         "end" : {
-          "line" : 90,
+          "line" : 86,
           "column" : 62
         }
       }
     },
     "PackIsset" : {
-      "lineno" : 93,
+      "lineno" : 89,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -149,11 +149,11 @@
           "default_value" : true,
           "source_range" : {
             "begin" : {
-              "line" : 94,
+              "line" : 90,
               "column" : 3
             },
             "end" : {
-              "line" : 94,
+              "line" : 90,
               "column" : 24
             }
           }
@@ -161,17 +161,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 92,
+          "line" : 88,
           "column" : 1
         },
         "end" : {
-          "line" : 95,
+          "line" : 91,
           "column" : 64
         }
       }
     },
     "MinimizePadding" : {
-      "lineno" : 98,
+      "lineno" : 94,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -179,17 +179,17 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 97,
+          "line" : 93,
           "column" : 1
         },
         "end" : {
-          "line" : 100,
+          "line" : 96,
           "column" : 2
         }
       }
     },
     "TriviallyRelocatable" : {
-      "lineno" : 103,
+      "lineno" : 99,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -197,11 +197,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 102,
+          "line" : 98,
           "column" : 1
         },
         "end" : {
-          "line" : 105,
+          "line" : 101,
           "column" : 2
         }
       }

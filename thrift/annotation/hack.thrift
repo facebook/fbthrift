@@ -19,10 +19,6 @@ include "thrift/annotation/scope.thrift"
 package "facebook.com/thrift/annotation/hack"
 
 namespace cpp2 facebook.thrift.annotation.hack
-namespace hack facebook.thrift.annotation
-namespace py3 facebook.thrift.annotation
-namespace java2 com.facebook.thrift.annotation.hack
-namespace java.swift com.facebook.thrift.annotation.hack
 namespace py thrift.annotation.hack
 namespace java com.facebook.thrift.annotation.java_deprecated
 namespace py.asyncio facebook_thrift_asyncio.annotation.hack

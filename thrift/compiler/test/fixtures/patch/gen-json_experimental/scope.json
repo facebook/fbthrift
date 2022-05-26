@@ -5,121 +5,117 @@
     "cpp2": "facebook.thrift.annotation",
     "go": "thrift.annotation.scope",
     "java": "com.facebook.thrift.annotation_deprecated",
-    "java.swift": "com.facebook.thrift.annotation",
-    "java2": "com.facebook.thrift.annotation",
-    "php": "facebook_thrift_annotation",
     "py": "thrift.annotation.scope",
-    "py.asyncio": "facebook_thrift_asyncio.annotation.scope",
-    "py3": "facebook.thrift.annotation"
+    "py.asyncio": "facebook_thrift_asyncio.annotation.scope"
   },  "structs" :
   {
       "Program" : {
         "name" : "Program",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 44
+        "lineno" : 40
       },
       "Struct" : {
         "name" : "Struct",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 45
+        "lineno" : 41
       },
       "Union" : {
         "name" : "Union",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 46
+        "lineno" : 42
       },
       "Exception" : {
         "name" : "Exception",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 47
+        "lineno" : 43
       },
       "Field" : {
         "name" : "Field",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 48
+        "lineno" : 44
       },
       "Typedef" : {
         "name" : "Typedef",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 49
+        "lineno" : 45
       },
       "Service" : {
         "name" : "Service",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 50
+        "lineno" : 46
       },
       "Interaction" : {
         "name" : "Interaction",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 51
+        "lineno" : 47
       },
       "Function" : {
         "name" : "Function",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 54
+        "lineno" : 50
       },
       "EnumValue" : {
         "name" : "EnumValue",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 55
+        "lineno" : 51
       },
       "Const" : {
         "name" : "Const",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 56
+        "lineno" : 52
       },
       "Schema" : {
         "name" : "Schema",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 61
+        "lineno" : 57
       },
       "FbthriftInternalEnum" : {
         "name" : "FbthriftInternalEnum",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 65
+        "lineno" : 61
       },
       "Transitive" : {
         "name" : "Transitive",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 93
+        "lineno" : 89
       },
       "Structured" : {
         "name" : "Structured",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 99
+        "lineno" : 95
       },
       "Interface" : {
         "name" : "Interface",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 104
+        "lineno" : 100
       },
       "RootDefinition" : {
         "name" : "RootDefinition",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 112
+        "lineno" : 108
       },
       "Definition" : {
         "name" : "Definition",
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 119
+        "lineno" : 115
       }
       },
   "source_path" : "thrift/annotation/scope",

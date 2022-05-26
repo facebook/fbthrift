@@ -3498,14 +3498,14 @@ class MyServiceStaticMetadata implements \IThriftServiceStaticMetadata {
       'service' => dict[],
       'functions' => dict[
         'invalid_return_for_hack' => dict[
-          '\facebook\thrift\annotation\SkipCodegen' => \facebook\thrift\annotation\SkipCodegen::fromShape(
+          '\thrift\annotation\hack\SkipCodegen' => \thrift\annotation\hack\SkipCodegen::fromShape(
             shape(
               "reason" => "Invalid key type",
             )
           ),
         ],
         'rpc_skipped_codegen' => dict[
-          '\facebook\thrift\annotation\SkipCodegen' => \facebook\thrift\annotation\SkipCodegen::fromShape(
+          '\thrift\annotation\hack\SkipCodegen' => \thrift\annotation\hack\SkipCodegen::fromShape(
             shape(
               "reason" => "Skip function deprecation",
             )

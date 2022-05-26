@@ -4,14 +4,10 @@
   "namespaces": {
     "cpp2": "facebook.thrift.annotation.hack",
     "go": "thrift.annotation.hack",
-    "hack": "facebook.thrift.annotation",
     "hs2": "facebook.thrift.annotation.hack",
     "java": "com.facebook.thrift.annotation.java_deprecated",
-    "java.swift": "com.facebook.thrift.annotation.hack",
-    "java2": "com.facebook.thrift.annotation.hack",
     "py": "thrift.annotation.hack",
-    "py.asyncio": "facebook_thrift_asyncio.annotation.hack",
-    "py3": "facebook.thrift.annotation"
+    "py.asyncio": "facebook_thrift_asyncio.annotation.hack"
   },  "structs" :
   {
       "FieldWrapper" : {
@@ -20,14 +16,14 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 43,
+            "lineno" : 39,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 41
+        "lineno" : 37
       },
       "Adapter" : {
         "name" : "Adapter",
@@ -35,14 +31,14 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 59,
+            "lineno" : 55,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 57
+        "lineno" : 53
       },
       "SkipCodegen" : {
         "name" : "SkipCodegen",
@@ -50,14 +46,14 @@
           "reason" : {
             "name" : "reason",
             "key" : 1,
-            "lineno" : 65,
+            "lineno" : 61,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 64
+        "lineno" : 60
       }
       },
   "source_path" : "thrift/annotation/hack",
