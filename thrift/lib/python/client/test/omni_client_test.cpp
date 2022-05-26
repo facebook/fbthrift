@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
+#include <chrono>
 #include <stdexcept>
-#include <thread>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <folly/SocketAddress.h>
+#include <folly/experimental/coro/BlockingWait.h>
+#include <folly/experimental/coro/Task.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBaseManager.h>
 #include <thrift/lib/cpp/server/TServerEventHandler.h>
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-
 #include <thrift/lib/python/client/OmniClient.h> // @manual=//thrift/lib/python/client:omni_client__cython-lib
 #include <thrift/lib/python/client/test/gen-cpp2/TestService.h>
 #include <thrift/lib/python/client/test/gen-cpp2/test_types.h>
@@ -75,137 +77,123 @@ class TestServiceHandler : virtual public TestServiceSvIf {
  */
 class ServerReadyEventHandler : public server::TServerEventHandler {
  public:
-  explicit ServerReadyEventHandler(
-      folly::Promise<const folly::SocketAddress*>& promise)
-      : promise_(promise) {}
-
   void preServe(const folly::SocketAddress* address) override {
-    promise_.setValue(address);
+    port_ = address->getPort();
+    baton_.post();
+  }
+
+  int32_t waitForPortAssignment() {
+    baton_.wait();
+    return port_;
   }
 
  private:
-  folly::Promise<const folly::SocketAddress*>& promise_;
+  folly::Baton<> baton_;
+  int32_t port_;
 };
+
+std::unique_ptr<ThriftServer> createServer(
+    std::shared_ptr<AsyncProcessorFactory> processorFactory, uint16_t& port) {
+  auto server = std::make_unique<ThriftServer>();
+  server->setPort(0);
+  server->setInterface(std::move(processorFactory));
+  server->setNumIOWorkerThreads(1);
+  server->setNumCPUWorkerThreads(1);
+  server->setQueueTimeout(std::chrono::milliseconds(0));
+  server->setIdleTimeout(std::chrono::milliseconds(0));
+  server->setTaskExpireTime(std::chrono::milliseconds(0));
+  server->setStreamExpireTime(std::chrono::milliseconds(0));
+  auto eventHandler = std::make_shared<ServerReadyEventHandler>();
+  server->setServerEventHandler(eventHandler);
+  server->setup();
+
+  // Get the port that the server has bound to
+  port = eventHandler->waitForPortAssignment();
+  return server;
+}
 
 class OmniClientTest : public ::testing::Test {
  protected:
   void SetUp() override {
     // Startup the test server.
-    folly::SocketAddress addr;
-    addr.setFromLocalPort((uint16_t)0);
-    server_ = std::make_unique<ThriftServer>();
-    server_->setServerEventHandler(
-        std::make_shared<ServerReadyEventHandler>(addressPromise_));
-    server_->setAddress(addr);
-    server_->setInterface(std::make_shared<TestServiceHandler>());
-    serverThread_ = std::thread([this]() { server_->run(); });
-
-    // Wait for the server to be ready.
-    auto port = addressPromise_.getFuture()
-                    .get(std::chrono::milliseconds(5000))
-                    ->getPort();
-
-    // Create the RequestChannel to pass onto the clients.
-    auto channel =
-        HeaderClientChannel::newChannel(folly::AsyncSocket::newSocket(
-            eb_, folly::SocketAddress("::1", port, true), 5 * 1000LL /* 5 sec */
-            ));
-
-    // Create clients.
-    client_ = std::make_unique<OmniClient>(std::move(channel));
+    server_ = createServer(std::make_shared<TestServiceHandler>(), serverPort_);
   }
 
   void TearDown() override {
     // Stop the server and wait for it to complete.
-    server_->stop();
-    serverThread_.join();
-  }
-
-  // Send a request and compare the results to the expected value.
-  template <class S, class Request, class Result, class Client>
-  void testSendHeaders(
-      const std::unique_ptr<Client>& client,
-      const std::string& service,
-      const std::string& function,
-      const Request& req,
-      const std::unordered_map<std::string, std::string>& headers,
-      const Result& expected,
-      const RpcKind rpcKind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE) {
-    std::string args = S::template serialize<std::string>(req);
-    testContains<S>(
-        client->semifuture_send(service, function, args, headers, rpcKind)
-            .via(eb_)
-            .waitVia(eb_)
-            .get(),
-        expected);
-  }
-
-  // Send a request and compare the results to the expected value.
-  template <class Request, class Result, class Client>
-  void testSendHeaders(
-      const std::unique_ptr<Client>& client,
-      const std::string& service,
-      const std::string& function,
-      const Request& req,
-      const std::unordered_map<std::string, std::string>& headers,
-      const Result& expected,
-      const RpcKind rpcKind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE) {
-    switch (client->getChannelProtocolId()) {
-      case protocol::T_BINARY_PROTOCOL:
-        testSendHeaders<BinarySerializer>(
-            client, service, function, req, headers, expected, rpcKind);
-        break;
-      case protocol::T_COMPACT_PROTOCOL:
-        testSendHeaders<CompactSerializer>(
-            client, service, function, req, headers, expected, rpcKind);
-        break;
-      default:
-        FAIL() << "Channel protocol not supported";
+    if (server_) {
+      server_->cleanUp();
+      server_.reset();
     }
   }
 
-  template <class Request, class Result, class Client>
+  template <class S>
+  void connectToServer(
+      folly::Function<folly::coro::Task<void>(OmniClient&)> callMe) {
+    constexpr protocol::PROTOCOL_TYPES prot =
+        std::is_same_v<S, apache::thrift::BinarySerializer>
+        ? protocol::T_BINARY_PROTOCOL
+        : protocol::T_COMPACT_PROTOCOL;
+    folly::coro::blockingWait([this, &callMe]() -> folly::coro::Task<void> {
+      CHECK_GT(serverPort_, 0) << "Check if the server has started already";
+      folly::Executor* executor = co_await folly::coro::co_current_executor;
+      auto channel = PooledRequestChannel::newChannel(
+          executor,
+          ioThread_,
+          [this](folly::EventBase& evb) {
+            auto chan = apache::thrift::RocketClientChannel::newChannel(
+                folly::AsyncSocket::UniquePtr(
+                    new folly::AsyncSocket(&evb, "::1", serverPort_)));
+            chan->setProtocolId(prot);
+            chan->setTimeout(500 /* ms */);
+            return chan;
+          },
+          prot);
+      OmniClient client(std::move(channel));
+      co_await callMe(client);
+    }());
+  }
+
+  // Send a request and compare the results to the expected value.
+  template <class S = CompactSerializer, class Request, class Result>
+  void testSendHeaders(
+      const std::string& service,
+      const std::string& function,
+      const Request& req,
+      const std::unordered_map<std::string, std::string>& headers,
+      const Result& expected,
+      const RpcKind rpcKind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE) {
+    connectToServer<S>([=](OmniClient& client) -> folly::coro::Task<void> {
+      std::string args = S::template serialize<std::string>(req);
+      testContains<S>(
+          co_await client.semifuture_send(
+              service, function, args, headers, rpcKind),
+          expected);
+    });
+  }
+
+  template <class S = CompactSerializer, class Request, class Result>
   void testSend(
-      const std::unique_ptr<Client>& client,
       const std::string& service,
       const std::string& function,
       const Request& req,
       const Result& expected,
       const RpcKind rpcKind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE) {
-    testSendHeaders(client, service, function, req, {}, expected, rpcKind);
+    testSendHeaders<S>(service, function, req, {}, expected, rpcKind);
   }
 
   // Send a request and compare the results to the expected value.
-  template <class S, class Request, class Client>
+  template <class S, class Request>
   void testOnewaySendHeaders(
-      const std::unique_ptr<Client>& client,
       const std::string& service,
       const std::string& function,
       const Request& req,
-      const std::unordered_map<std::string, std::string>& headers) {
-    std::string args = S::template serialize<std::string>(req);
-    client->oneway_send(service, function, args, headers);
-  }
-
-  template <class Request, class Client>
-  void testOnewaySend(
-      const std::unique_ptr<Client>& client,
-      const std::string& service,
-      const std::string& function,
-      const Request& req) {
-    std::string args;
-    switch (client->getChannelProtocolId()) {
-      case protocol::T_BINARY_PROTOCOL:
-        testOnewaySendHeaders<BinarySerializer>(
-            client, service, function, req, {});
-        break;
-      case protocol::T_COMPACT_PROTOCOL:
-        testOnewaySendHeaders<CompactSerializer>(
-            client, service, function, req, {});
-        break;
-      default:
-        FAIL() << "Channel protocol not supported";
-    }
+      const std::unordered_map<std::string, std::string>& headers = {}) {
+    connectToServer<S>([=](OmniClient& client) -> folly::coro::Task<void> {
+      std::string args = S::template serialize<std::string>(req);
+      client.oneway_send(service, function, args, headers);
+      co_return;
+    });
   }
 
   template <class S, typename T>
@@ -217,40 +205,11 @@ class OmniClientTest : public ::testing::Test {
   }
 
  protected:
-  std::thread serverThread_;
   std::unique_ptr<ThriftServer> server_;
-  std::unique_ptr<OmniClient> client_;
-  folly::Promise<const folly::SocketAddress*> addressPromise_;
   folly::EventBase* eb_ = folly::EventBaseManager::get()->getEventBase();
-};
-
-class OmniClientSinkTest : public OmniClientTest {
- protected:
-  void SetUp() override {
-    // Startup the test server.
-    folly::SocketAddress addr;
-    addr.setFromLocalPort((uint16_t)0);
-    server_ = std::make_unique<ThriftServer>();
-    server_->setServerEventHandler(
-        std::make_shared<ServerReadyEventHandler>(addressPromise_));
-    server_->setAddress(addr);
-    server_->setInterface(std::make_shared<TestServiceHandler>());
-    serverThread_ = std::thread([this]() { server_->run(); });
-
-    // Wait for the server to be ready.
-    auto port = addressPromise_.getFuture()
-                    .get(std::chrono::milliseconds(5000))
-                    ->getPort();
-
-    // Create the RequestChannel to pass onto the clients.
-    auto channel =
-        RocketClientChannel::newChannel(folly::AsyncSocket::newSocket(
-            eb_, folly::SocketAddress("::1", port, true), 5 * 1000LL /* 5 sec */
-            ));
-
-    // Create clients.
-    client_ = std::make_unique<OmniClient>(std::move(channel));
-  }
+  uint16_t serverPort_{0};
+  std::shared_ptr<folly::IOExecutor> ioThread_{
+      std::make_shared<folly::ScopedEventBaseThread>()};
 };
 
 TEST_F(OmniClientTest, AddTest) {
@@ -258,12 +217,14 @@ TEST_F(OmniClientTest, AddTest) {
   request.num1_ref() = 1;
   request.num2_ref() = 41;
 
-  testSend(client_, "TestService", "add", request, 42);
+  testSend<CompactSerializer>("TestService", "add", request, 42);
+  testSend<BinarySerializer>("TestService", "add", request, 42);
 }
 
 TEST_F(OmniClientTest, OnewayTest) {
   EmptyRequest request;
-  testOnewaySend(client_, "TestService", "oneway", request);
+  testOnewaySendHeaders<CompactSerializer>("TestService", "oneway", request);
+  testOnewaySendHeaders<BinarySerializer>("TestService", "oneway", request);
 }
 
 TEST_F(OmniClientTest, ReadHeaderTest) {
@@ -271,7 +232,6 @@ TEST_F(OmniClientTest, ReadHeaderTest) {
   request.key() = kTestHeaderKey;
 
   testSendHeaders(
-      client_,
       "TestService",
       "readHeader",
       request,
@@ -279,10 +239,9 @@ TEST_F(OmniClientTest, ReadHeaderTest) {
       kTestHeaderValue);
 }
 
-TEST_F(OmniClientSinkTest, SinkRequestTest) {
+TEST_F(OmniClientTest, SinkRequestTest) {
   EmptyRequest request;
   SimpleResponse response;
   response.value_ref() = "initial";
-  testSend(
-      client_, "TestService", "dumbSink", request, response, RpcKind::SINK);
+  testSend("TestService", "dumbSink", request, response, RpcKind::SINK);
 }
