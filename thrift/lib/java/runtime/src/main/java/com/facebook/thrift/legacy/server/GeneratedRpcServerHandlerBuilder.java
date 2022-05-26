@@ -24,6 +24,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class GeneratedRpcServerHandlerBuilder {
   private static final String ASYNC_TYPE_NAME = "Async";
   private static final String REACTIVE_TYPE_NAME = "Reactive";
