@@ -14,7 +14,8 @@
 
 import asyncio
 
-from later.unittest import TestCase
+from unittest import IsolatedAsyncioTestCase
+
 from thrift.python.client import ClientType, get_client
 from thrift.python.exceptions import (
     ApplicationError,
@@ -33,7 +34,7 @@ TEST_HEADER_KEY = "headerKey"
 TEST_HEADER_VALUE = "headerValue"
 
 
-class AsyncClientTests(TestCase):
+class AsyncClientTests(IsolatedAsyncioTestCase):
     async def test_basic(self) -> None:
         async with server_in_event_loop() as addr:
             async with get_client(TestService, host=addr.ip, port=addr.port) as client:
