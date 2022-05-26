@@ -204,6 +204,7 @@ class _fbthrift_MyService_ping_args(metaclass=_fbthrift_py3lite_types.StructMeta
     _fbthrift_SPEC = (
     )
 
+
 class _fbthrift_MyService_ping_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
@@ -212,6 +213,7 @@ class _fbthrift_MyService_ping_result(metaclass=_fbthrift_py3lite_types.StructMe
 class _fbthrift_MyService_getRandomData_args(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
+
 
 class _fbthrift_MyService_getRandomData_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -238,6 +240,7 @@ class _fbthrift_MyService_sink_args(metaclass=_fbthrift_py3lite_types.StructMeta
         ),
     )
 
+
 class _fbthrift_MyService_sink_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
@@ -263,6 +266,7 @@ class _fbthrift_MyService_putDataById_args(metaclass=_fbthrift_py3lite_types.Str
         ),
     )
 
+
 class _fbthrift_MyService_putDataById_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
@@ -279,6 +283,7 @@ class _fbthrift_MyService_hasDataById_args(metaclass=_fbthrift_py3lite_types.Str
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_MyService_hasDataById_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -305,6 +310,7 @@ class _fbthrift_MyService_getDataById_args(metaclass=_fbthrift_py3lite_types.Str
         ),
     )
 
+
 class _fbthrift_MyService_getDataById_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -329,6 +335,7 @@ class _fbthrift_MyService_deleteDataById_args(metaclass=_fbthrift_py3lite_types.
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_MyService_deleteDataById_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -356,10 +363,10 @@ class _fbthrift_MyService_lobDataById_args(metaclass=_fbthrift_py3lite_types.Str
     )
 
 
-
 class _fbthrift_MyService_invalid_return_for_hack_args(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
+
 
 class _fbthrift_MyService_invalid_return_for_hack_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -378,6 +385,7 @@ class _fbthrift_MyService_rpc_skipped_codegen_args(metaclass=_fbthrift_py3lite_t
     _fbthrift_SPEC = (
     )
 
+
 class _fbthrift_MyService_rpc_skipped_codegen_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
@@ -394,6 +402,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey0_args(metaclass=_fbthrift_py3
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_DbMixedStackArguments_getDataByKey0_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -419,6 +428,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey1_args(metaclass=_fbthrift_py3
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_DbMixedStackArguments_getDataByKey1_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (

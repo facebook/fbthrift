@@ -42,7 +42,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
         async def ping(
             self
         ) -> None:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "MyService",
                 "ping",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_ping_args(),
@@ -52,15 +52,15 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
         async def getRandomData(
             self
         ) -> str:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "MyService",
                 "getRandomData",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_getRandomData_args(),
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_getRandomData_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -70,7 +70,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             self,
             sink: int
         ) -> None:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "MyService",
                 "sink",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_sink_args(
@@ -83,7 +83,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             id: int,
             data: str
         ) -> None:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "MyService",
                 "putDataById",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_putDataById_args(
@@ -96,7 +96,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             self,
             id: int
         ) -> bool:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "MyService",
                 "hasDataById",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_hasDataById_args(
@@ -104,8 +104,8 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_hasDataById_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -115,7 +115,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             self,
             id: int
         ) -> str:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "MyService",
                 "getDataById",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_getDataById_args(
@@ -123,8 +123,8 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_getDataById_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -134,7 +134,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             self,
             id: int
         ) -> None:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "MyService",
                 "deleteDataById",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_deleteDataById_args(
@@ -147,7 +147,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             id: int,
             data: str
         ) -> None:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "MyService",
                 "lobDataById",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_lobDataById_args(
@@ -159,15 +159,15 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
         async def invalid_return_for_hack(
             self
         ) -> _typing.AbstractSet[float]:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "MyService",
                 "invalid_return_for_hack",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_invalid_return_for_hack_args(),
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_invalid_return_for_hack_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -176,13 +176,12 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
         async def rpc_skipped_codegen(
             self
         ) -> None:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "MyService",
                 "rpc_skipped_codegen",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_rpc_skipped_codegen_args(),
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_rpc_skipped_codegen_result,
             )
-
 
     class Sync(_fbthrift_py3lite_SyncClient):
         @staticmethod
@@ -196,7 +195,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
         def ping(
             self
         ) -> None:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "MyService",
                 "ping",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_ping_args(),
@@ -206,15 +205,15 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
         def getRandomData(
             self
         ) -> str:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "MyService",
                 "getRandomData",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_getRandomData_args(),
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_getRandomData_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -224,7 +223,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             self,
             sink: int
         ) -> None:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "MyService",
                 "sink",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_sink_args(
@@ -237,7 +236,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             id: int,
             data: str
         ) -> None:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "MyService",
                 "putDataById",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_putDataById_args(
@@ -250,7 +249,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             self,
             id: int
         ) -> bool:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "MyService",
                 "hasDataById",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_hasDataById_args(
@@ -258,8 +257,8 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_hasDataById_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -269,7 +268,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             self,
             id: int
         ) -> str:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "MyService",
                 "getDataById",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_getDataById_args(
@@ -277,8 +276,8 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_getDataById_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -288,7 +287,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             self,
             id: int
         ) -> None:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "MyService",
                 "deleteDataById",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_deleteDataById_args(
@@ -301,7 +300,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             id: int,
             data: str
         ) -> None:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "MyService",
                 "lobDataById",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_lobDataById_args(
@@ -313,15 +312,15 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
         def invalid_return_for_hack(
             self
         ) -> _typing.AbstractSet[float]:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "MyService",
                 "invalid_return_for_hack",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_invalid_return_for_hack_args(),
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_invalid_return_for_hack_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -330,7 +329,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
         def rpc_skipped_codegen(
             self
         ) -> None:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "MyService",
                 "rpc_skipped_codegen",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_rpc_skipped_codegen_args(),
@@ -360,7 +359,7 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
             self,
             key: str
         ) -> bytes:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "DbMixedStackArguments",
                 "getDataByKey0",
                 test.fixtures.basic.module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_args(
@@ -368,8 +367,8 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
                 test.fixtures.basic.module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -379,7 +378,7 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
             self,
             key: str
         ) -> bytes:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "DbMixedStackArguments",
                 "getDataByKey1",
                 test.fixtures.basic.module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_args(
@@ -387,13 +386,12 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
                 test.fixtures.basic.module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
 
     class Sync(_fbthrift_py3lite_SyncClient):
         @staticmethod
@@ -408,7 +406,7 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
             self,
             key: str
         ) -> bytes:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "DbMixedStackArguments",
                 "getDataByKey0",
                 test.fixtures.basic.module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_args(
@@ -416,8 +414,8 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
                 test.fixtures.basic.module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -427,7 +425,7 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
             self,
             key: str
         ) -> bytes:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "DbMixedStackArguments",
                 "getDataByKey1",
                 test.fixtures.basic.module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_args(
@@ -435,11 +433,9 @@ class DbMixedStackArguments(_fbthrift_py3lite_Client["DbMixedStackArguments.Asyn
                 test.fixtures.basic.module.lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
-

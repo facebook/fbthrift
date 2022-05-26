@@ -72,6 +72,7 @@ class _fbthrift_MyService_query_args(_fbthrift_py3lite_types.Struct):
         str,
         _typing.Union[None, MyUnion]]]: ...
 
+
 class _fbthrift_MyService_query_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[MyStruct]
 
@@ -84,5 +85,3 @@ class _fbthrift_MyService_query_result(_fbthrift_py3lite_types.Struct):
         _typing.Union[
             MyStruct,
         ]]]: ...
-
-

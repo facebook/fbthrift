@@ -108,6 +108,7 @@ class _fbthrift_MyService_ping_args(_fbthrift_py3lite_types.Struct):
         str,
         _typing.Union[None]]]: ...
 
+
 class _fbthrift_MyService_ping_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[None]
 
@@ -122,8 +123,6 @@ class _fbthrift_MyService_ping_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-
-
 class _fbthrift_MyService_getRandomData_args(_fbthrift_py3lite_types.Struct):
 
     def __init__(
@@ -133,6 +132,7 @@ class _fbthrift_MyService_getRandomData_args(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
         _typing.Union[None]]]: ...
+
 
 class _fbthrift_MyService_getRandomData_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[str]
@@ -148,8 +148,6 @@ class _fbthrift_MyService_getRandomData_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-
-
 class _fbthrift_MyService_sink_args(_fbthrift_py3lite_types.Struct):
     sink: _typing.Final[int] = ...
 
@@ -161,6 +159,7 @@ class _fbthrift_MyService_sink_args(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
         _typing.Union[None, int]]]: ...
+
 
 class _fbthrift_MyService_sink_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[None]
@@ -174,8 +173,6 @@ class _fbthrift_MyService_sink_result(_fbthrift_py3lite_types.Struct):
         _typing.Union[
             None,
         ]]]: ...
-
-
 
 
 class _fbthrift_MyService_putDataById_args(_fbthrift_py3lite_types.Struct):
@@ -192,6 +189,7 @@ class _fbthrift_MyService_putDataById_args(_fbthrift_py3lite_types.Struct):
         str,
         _typing.Union[None, int, str]]]: ...
 
+
 class _fbthrift_MyService_putDataById_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[None]
 
@@ -206,8 +204,6 @@ class _fbthrift_MyService_putDataById_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-
-
 class _fbthrift_MyService_hasDataById_args(_fbthrift_py3lite_types.Struct):
     id: _typing.Final[int] = ...
 
@@ -219,6 +215,7 @@ class _fbthrift_MyService_hasDataById_args(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
         _typing.Union[None, int]]]: ...
+
 
 class _fbthrift_MyService_hasDataById_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[bool]
@@ -234,8 +231,6 @@ class _fbthrift_MyService_hasDataById_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-
-
 class _fbthrift_MyService_getDataById_args(_fbthrift_py3lite_types.Struct):
     id: _typing.Final[int] = ...
 
@@ -247,6 +242,7 @@ class _fbthrift_MyService_getDataById_args(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
         _typing.Union[None, int]]]: ...
+
 
 class _fbthrift_MyService_getDataById_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[str]
@@ -262,8 +258,6 @@ class _fbthrift_MyService_getDataById_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-
-
 class _fbthrift_MyService_deleteDataById_args(_fbthrift_py3lite_types.Struct):
     id: _typing.Final[int] = ...
 
@@ -275,6 +269,7 @@ class _fbthrift_MyService_deleteDataById_args(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
         _typing.Union[None, int]]]: ...
+
 
 class _fbthrift_MyService_deleteDataById_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[None]
@@ -288,8 +283,6 @@ class _fbthrift_MyService_deleteDataById_result(_fbthrift_py3lite_types.Struct):
         _typing.Union[
             None,
         ]]]: ...
-
-
 
 
 class _fbthrift_MyService_lobDataById_args(_fbthrift_py3lite_types.Struct):
@@ -307,7 +300,6 @@ class _fbthrift_MyService_lobDataById_args(_fbthrift_py3lite_types.Struct):
         _typing.Union[None, int, str]]]: ...
 
 
-
 class _fbthrift_MyService_invalid_return_for_hack_args(_fbthrift_py3lite_types.Struct):
 
     def __init__(
@@ -317,6 +309,7 @@ class _fbthrift_MyService_invalid_return_for_hack_args(_fbthrift_py3lite_types.S
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
         _typing.Union[None]]]: ...
+
 
 class _fbthrift_MyService_invalid_return_for_hack_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[_typing.AbstractSet[float]]
@@ -332,8 +325,6 @@ class _fbthrift_MyService_invalid_return_for_hack_result(_fbthrift_py3lite_types
         ]]]: ...
 
 
-
-
 class _fbthrift_MyService_rpc_skipped_codegen_args(_fbthrift_py3lite_types.Struct):
 
     def __init__(
@@ -343,6 +334,7 @@ class _fbthrift_MyService_rpc_skipped_codegen_args(_fbthrift_py3lite_types.Struc
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
         _typing.Union[None]]]: ...
+
 
 class _fbthrift_MyService_rpc_skipped_codegen_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[None]
@@ -358,8 +350,6 @@ class _fbthrift_MyService_rpc_skipped_codegen_result(_fbthrift_py3lite_types.Str
         ]]]: ...
 
 
-
-
 class _fbthrift_DbMixedStackArguments_getDataByKey0_args(_fbthrift_py3lite_types.Struct):
     key: _typing.Final[str] = ...
 
@@ -371,6 +361,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey0_args(_fbthrift_py3lite_types
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
         _typing.Union[None, str]]]: ...
+
 
 class _fbthrift_DbMixedStackArguments_getDataByKey0_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[bytes]
@@ -386,8 +377,6 @@ class _fbthrift_DbMixedStackArguments_getDataByKey0_result(_fbthrift_py3lite_typ
         ]]]: ...
 
 
-
-
 class _fbthrift_DbMixedStackArguments_getDataByKey1_args(_fbthrift_py3lite_types.Struct):
     key: _typing.Final[str] = ...
 
@@ -399,6 +388,7 @@ class _fbthrift_DbMixedStackArguments_getDataByKey1_args(_fbthrift_py3lite_types
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
         _typing.Union[None, str]]]: ...
+
 
 class _fbthrift_DbMixedStackArguments_getDataByKey1_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[bytes]
@@ -412,5 +402,3 @@ class _fbthrift_DbMixedStackArguments_getDataByKey1_result(_fbthrift_py3lite_typ
         _typing.Union[
             bytes,
         ]]]: ...
-
-

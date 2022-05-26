@@ -204,6 +204,7 @@ class _fbthrift_Service_func_args(_fbthrift_py3lite_types.Struct):
         str,
         _typing.Union[None, str, str, Foo]]]: ...
 
+
 class _fbthrift_Service_func_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[int]
 
@@ -216,5 +217,3 @@ class _fbthrift_Service_func_result(_fbthrift_py3lite_types.Struct):
         _typing.Union[
             int,
         ]]]: ...
-
-

@@ -38,7 +38,6 @@ class PubSubStreamingService(_fbthrift_py3lite_Client["PubSubStreamingService.As
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return module.lite_metadata.gen_metadata_service_PubSubStreamingService()
 
-
     class Sync(_fbthrift_py3lite_SyncClient):
         @staticmethod
         def __get_thrift_name__() -> str:
@@ -47,5 +46,3 @@ class PubSubStreamingService(_fbthrift_py3lite_Client["PubSubStreamingService.As
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return module.lite_metadata.gen_metadata_service_PubSubStreamingService()
-
-

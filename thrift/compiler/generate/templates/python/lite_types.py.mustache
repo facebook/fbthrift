@@ -150,8 +150,9 @@ class {{> types/function_args_type}}(metaclass=_fbthrift_py3lite_types.StructMet
         ),
         {{/function:args}}
     )
-
 {{^function:oneway?}}
+
+
 class {{> types/function_return_type}}(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         {{#function:return_type}}

@@ -42,7 +42,7 @@ class TestService(_fbthrift_py3lite_Client["TestService.Async", "TestService.Syn
             self,
             int1: int
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "TestService",
                 "init",
                 emptyns.lite_types._fbthrift_TestService_init_args(
@@ -50,13 +50,12 @@ class TestService(_fbthrift_py3lite_Client["TestService.Async", "TestService.Syn
                 emptyns.lite_types._fbthrift_TestService_init_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
 
     class Sync(_fbthrift_py3lite_SyncClient):
         @staticmethod
@@ -71,7 +70,7 @@ class TestService(_fbthrift_py3lite_Client["TestService.Async", "TestService.Syn
             self,
             int1: int
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "TestService",
                 "init",
                 emptyns.lite_types._fbthrift_TestService_init_args(
@@ -79,11 +78,9 @@ class TestService(_fbthrift_py3lite_Client["TestService.Async", "TestService.Syn
                 emptyns.lite_types._fbthrift_TestService_init_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
-

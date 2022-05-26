@@ -86,6 +86,7 @@ class _fbthrift_Raiser_doBland_args(_fbthrift_py3lite_types.Struct):
         str,
         _typing.Union[None]]]: ...
 
+
 class _fbthrift_Raiser_doBland_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[None]
 
@@ -100,8 +101,6 @@ class _fbthrift_Raiser_doBland_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-
-
 class _fbthrift_Raiser_doRaise_args(_fbthrift_py3lite_types.Struct):
 
     def __init__(
@@ -111,6 +110,7 @@ class _fbthrift_Raiser_doRaise_args(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
         _typing.Union[None]]]: ...
+
 
 class _fbthrift_Raiser_doRaise_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[None]
@@ -132,8 +132,6 @@ class _fbthrift_Raiser_doRaise_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-
-
 class _fbthrift_Raiser_get200_args(_fbthrift_py3lite_types.Struct):
 
     def __init__(
@@ -143,6 +141,7 @@ class _fbthrift_Raiser_get200_args(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
         _typing.Union[None]]]: ...
+
 
 class _fbthrift_Raiser_get200_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[str]
@@ -158,8 +157,6 @@ class _fbthrift_Raiser_get200_result(_fbthrift_py3lite_types.Struct):
         ]]]: ...
 
 
-
-
 class _fbthrift_Raiser_get500_args(_fbthrift_py3lite_types.Struct):
 
     def __init__(
@@ -169,6 +166,7 @@ class _fbthrift_Raiser_get500_args(_fbthrift_py3lite_types.Struct):
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[
         str,
         _typing.Union[None]]]: ...
+
 
 class _fbthrift_Raiser_get500_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[str]
@@ -188,5 +186,3 @@ class _fbthrift_Raiser_get500_result(_fbthrift_py3lite_types.Struct):
             Banal,
             Serious,
         ]]]: ...
-
-

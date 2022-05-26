@@ -377,6 +377,7 @@ class _fbthrift_SimpleService_get_five_args(metaclass=_fbthrift_py3lite_types.St
     _fbthrift_SPEC = (
     )
 
+
 class _fbthrift_SimpleService_get_five_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -402,6 +403,7 @@ class _fbthrift_SimpleService_add_five_args(metaclass=_fbthrift_py3lite_types.St
         ),
     )
 
+
 class _fbthrift_SimpleService_add_five_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -418,6 +420,7 @@ class _fbthrift_SimpleService_add_five_result(metaclass=_fbthrift_py3lite_types.
 class _fbthrift_SimpleService_do_nothing_args(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
+
 
 class _fbthrift_SimpleService_do_nothing_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -444,6 +447,7 @@ class _fbthrift_SimpleService_concat_args(metaclass=_fbthrift_py3lite_types.Stru
         ),
     )
 
+
 class _fbthrift_SimpleService_concat_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -468,6 +472,7 @@ class _fbthrift_SimpleService_get_value_args(metaclass=_fbthrift_py3lite_types.S
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_get_value_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -494,6 +499,7 @@ class _fbthrift_SimpleService_negate_args(metaclass=_fbthrift_py3lite_types.Stru
         ),
     )
 
+
 class _fbthrift_SimpleService_negate_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -518,6 +524,7 @@ class _fbthrift_SimpleService_tiny_args(metaclass=_fbthrift_py3lite_types.Struct
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_tiny_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -544,6 +551,7 @@ class _fbthrift_SimpleService_small_args(metaclass=_fbthrift_py3lite_types.Struc
         ),
     )
 
+
 class _fbthrift_SimpleService_small_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -568,6 +576,7 @@ class _fbthrift_SimpleService_big_args(metaclass=_fbthrift_py3lite_types.StructM
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_big_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -594,6 +603,7 @@ class _fbthrift_SimpleService_two_args(metaclass=_fbthrift_py3lite_types.StructM
         ),
     )
 
+
 class _fbthrift_SimpleService_two_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -611,6 +621,7 @@ class _fbthrift_SimpleService_expected_exception_args(metaclass=_fbthrift_py3lit
     _fbthrift_SPEC = (
     )
 
+
 class _fbthrift_SimpleService_expected_exception_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -627,6 +638,7 @@ class _fbthrift_SimpleService_expected_exception_result(metaclass=_fbthrift_py3l
 class _fbthrift_SimpleService_unexpected_exception_args(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
+
 
 class _fbthrift_SimpleService_unexpected_exception_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -653,6 +665,7 @@ class _fbthrift_SimpleService_sum_i16_list_args(metaclass=_fbthrift_py3lite_type
         ),
     )
 
+
 class _fbthrift_SimpleService_sum_i16_list_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -677,6 +690,7 @@ class _fbthrift_SimpleService_sum_i32_list_args(metaclass=_fbthrift_py3lite_type
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_sum_i32_list_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -703,6 +717,7 @@ class _fbthrift_SimpleService_sum_i64_list_args(metaclass=_fbthrift_py3lite_type
         ),
     )
 
+
 class _fbthrift_SimpleService_sum_i64_list_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -727,6 +742,7 @@ class _fbthrift_SimpleService_concat_many_args(metaclass=_fbthrift_py3lite_types
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_concat_many_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -753,6 +769,7 @@ class _fbthrift_SimpleService_count_structs_args(metaclass=_fbthrift_py3lite_typ
         ),
     )
 
+
 class _fbthrift_SimpleService_count_structs_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -777,6 +794,7 @@ class _fbthrift_SimpleService_sum_set_args(metaclass=_fbthrift_py3lite_types.Str
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_sum_set_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -811,6 +829,7 @@ class _fbthrift_SimpleService_contains_word_args(metaclass=_fbthrift_py3lite_typ
         ),
     )
 
+
 class _fbthrift_SimpleService_contains_word_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -844,6 +863,7 @@ class _fbthrift_SimpleService_get_map_value_args(metaclass=_fbthrift_py3lite_typ
         ),
     )
 
+
 class _fbthrift_SimpleService_get_map_value_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -868,6 +888,7 @@ class _fbthrift_SimpleService_map_length_args(metaclass=_fbthrift_py3lite_types.
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_map_length_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -894,6 +915,7 @@ class _fbthrift_SimpleService_sum_map_values_args(metaclass=_fbthrift_py3lite_ty
         ),
     )
 
+
 class _fbthrift_SimpleService_sum_map_values_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -918,6 +940,7 @@ class _fbthrift_SimpleService_complex_sum_i32_args(metaclass=_fbthrift_py3lite_t
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_complex_sum_i32_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -944,6 +967,7 @@ class _fbthrift_SimpleService_repeat_name_args(metaclass=_fbthrift_py3lite_types
         ),
     )
 
+
 class _fbthrift_SimpleService_repeat_name_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -960,6 +984,7 @@ class _fbthrift_SimpleService_repeat_name_result(metaclass=_fbthrift_py3lite_typ
 class _fbthrift_SimpleService_get_struct_args(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
+
 
 class _fbthrift_SimpleService_get_struct_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -986,6 +1011,7 @@ class _fbthrift_SimpleService_fib_args(metaclass=_fbthrift_py3lite_types.StructM
         ),
     )
 
+
 class _fbthrift_SimpleService_fib_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -1010,6 +1036,7 @@ class _fbthrift_SimpleService_unique_words_args(metaclass=_fbthrift_py3lite_type
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_unique_words_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -1036,6 +1063,7 @@ class _fbthrift_SimpleService_words_count_args(metaclass=_fbthrift_py3lite_types
         ),
     )
 
+
 class _fbthrift_SimpleService_words_count_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -1060,6 +1088,7 @@ class _fbthrift_SimpleService_set_enum_args(metaclass=_fbthrift_py3lite_types.St
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_set_enum_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -1094,6 +1123,7 @@ class _fbthrift_SimpleService_list_of_lists_args(metaclass=_fbthrift_py3lite_typ
         ),
     )
 
+
 class _fbthrift_SimpleService_list_of_lists_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -1118,6 +1148,7 @@ class _fbthrift_SimpleService_word_character_frequency_args(metaclass=_fbthrift_
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_word_character_frequency_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -1144,6 +1175,7 @@ class _fbthrift_SimpleService_list_of_sets_args(metaclass=_fbthrift_py3lite_type
         ),
     )
 
+
 class _fbthrift_SimpleService_list_of_sets_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -1168,6 +1200,7 @@ class _fbthrift_SimpleService_nested_map_argument_args(metaclass=_fbthrift_py3li
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_nested_map_argument_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -1194,6 +1227,7 @@ class _fbthrift_SimpleService_make_sentence_args(metaclass=_fbthrift_py3lite_typ
         ),
     )
 
+
 class _fbthrift_SimpleService_make_sentence_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -1218,6 +1252,7 @@ class _fbthrift_SimpleService_get_union_args(metaclass=_fbthrift_py3lite_types.S
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_get_union_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -1244,6 +1279,7 @@ class _fbthrift_SimpleService_get_keys_args(metaclass=_fbthrift_py3lite_types.St
         ),
     )
 
+
 class _fbthrift_SimpleService_get_keys_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -1268,6 +1304,7 @@ class _fbthrift_SimpleService_lookup_double_args(metaclass=_fbthrift_py3lite_typ
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_lookup_double_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -1294,6 +1331,7 @@ class _fbthrift_SimpleService_retrieve_binary_args(metaclass=_fbthrift_py3lite_t
         ),
     )
 
+
 class _fbthrift_SimpleService_retrieve_binary_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -1318,6 +1356,7 @@ class _fbthrift_SimpleService_contain_binary_args(metaclass=_fbthrift_py3lite_ty
             None,  # adapter class
         ),
     )
+
 
 class _fbthrift_SimpleService_contain_binary_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -1344,6 +1383,7 @@ class _fbthrift_SimpleService_contain_enum_args(metaclass=_fbthrift_py3lite_type
         ),
     )
 
+
 class _fbthrift_SimpleService_contain_enum_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -1369,6 +1409,7 @@ class _fbthrift_SimpleService_get_binary_union_struct_args(metaclass=_fbthrift_p
         ),
     )
 
+
 class _fbthrift_SimpleService_get_binary_union_struct_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -1386,6 +1427,7 @@ class _fbthrift_DerivedService_get_six_args(metaclass=_fbthrift_py3lite_types.St
     _fbthrift_SPEC = (
     )
 
+
 class _fbthrift_DerivedService_get_six_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -1402,6 +1444,7 @@ class _fbthrift_DerivedService_get_six_result(metaclass=_fbthrift_py3lite_types.
 class _fbthrift_RederivedService_get_seven_args(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
+
 
 class _fbthrift_RederivedService_get_seven_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (

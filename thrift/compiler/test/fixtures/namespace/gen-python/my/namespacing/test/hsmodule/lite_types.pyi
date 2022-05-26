@@ -38,6 +38,7 @@ class _fbthrift_HsTestService_init_args(_fbthrift_py3lite_types.Struct):
         str,
         _typing.Union[None, int]]]: ...
 
+
 class _fbthrift_HsTestService_init_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[int]
 
@@ -50,5 +51,3 @@ class _fbthrift_HsTestService_init_result(_fbthrift_py3lite_types.Struct):
         _typing.Union[
             int,
         ]]]: ...
-
-

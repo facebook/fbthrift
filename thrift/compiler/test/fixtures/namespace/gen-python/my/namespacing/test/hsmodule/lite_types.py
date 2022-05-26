@@ -60,6 +60,7 @@ class _fbthrift_HsTestService_init_args(metaclass=_fbthrift_py3lite_types.Struct
         ),
     )
 
+
 class _fbthrift_HsTestService_init_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (

@@ -248,6 +248,7 @@ class _fbthrift_Raiser_doBland_args(metaclass=_fbthrift_py3lite_types.StructMeta
     _fbthrift_SPEC = (
     )
 
+
 class _fbthrift_Raiser_doBland_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
@@ -256,6 +257,7 @@ class _fbthrift_Raiser_doBland_result(metaclass=_fbthrift_py3lite_types.StructMe
 class _fbthrift_Raiser_doRaise_args(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
+
 
 class _fbthrift_Raiser_doRaise_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
@@ -290,6 +292,7 @@ class _fbthrift_Raiser_get200_args(metaclass=_fbthrift_py3lite_types.StructMeta)
     _fbthrift_SPEC = (
     )
 
+
 class _fbthrift_Raiser_get200_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (
@@ -306,6 +309,7 @@ class _fbthrift_Raiser_get200_result(metaclass=_fbthrift_py3lite_types.StructMet
 class _fbthrift_Raiser_get500_args(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
+
 
 class _fbthrift_Raiser_get500_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (

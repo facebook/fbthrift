@@ -32,6 +32,7 @@ class _fbthrift_ExtendTestService_check_args(metaclass=_fbthrift_py3lite_types.S
         ),
     )
 
+
 class _fbthrift_ExtendTestService_check_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (

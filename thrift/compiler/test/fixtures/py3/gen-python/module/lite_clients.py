@@ -41,15 +41,15 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
         async def get_five(
             self
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "get_five",
                 module.lite_types._fbthrift_SimpleService_get_five_args(),
                 module.lite_types._fbthrift_SimpleService_get_five_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -59,7 +59,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             num: int
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "add_five",
                 module.lite_types._fbthrift_SimpleService_add_five_args(
@@ -67,8 +67,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_add_five_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -77,7 +77,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
         async def do_nothing(
             self
         ) -> None:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "do_nothing",
                 module.lite_types._fbthrift_SimpleService_do_nothing_args(),
@@ -89,7 +89,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             first: str,
             second: str
         ) -> str:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "concat",
                 module.lite_types._fbthrift_SimpleService_concat_args(
@@ -98,8 +98,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_concat_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -109,7 +109,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             simple_struct: module.lite_types.SimpleStruct
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "get_value",
                 module.lite_types._fbthrift_SimpleService_get_value_args(
@@ -117,8 +117,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_get_value_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -128,7 +128,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             input: bool
         ) -> bool:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "negate",
                 module.lite_types._fbthrift_SimpleService_negate_args(
@@ -136,8 +136,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_negate_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -147,7 +147,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             input: int
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "tiny",
                 module.lite_types._fbthrift_SimpleService_tiny_args(
@@ -155,8 +155,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_tiny_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -166,7 +166,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             input: int
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "small",
                 module.lite_types._fbthrift_SimpleService_small_args(
@@ -174,8 +174,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_small_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -185,7 +185,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             input: int
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "big",
                 module.lite_types._fbthrift_SimpleService_big_args(
@@ -193,8 +193,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_big_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -204,7 +204,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             input: float
         ) -> float:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "two",
                 module.lite_types._fbthrift_SimpleService_two_args(
@@ -212,8 +212,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_two_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -222,27 +222,27 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
         async def expected_exception(
             self
         ) -> None:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "expected_exception",
                 module.lite_types._fbthrift_SimpleService_expected_exception_args(),
                 module.lite_types._fbthrift_SimpleService_expected_exception_result,
             )
-            if resp.se is not None:
-                raise resp.se
+            if _fbthrift_resp.se is not None:
+                raise _fbthrift_resp.se
 
         async def unexpected_exception(
             self
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "unexpected_exception",
                 module.lite_types._fbthrift_SimpleService_unexpected_exception_args(),
                 module.lite_types._fbthrift_SimpleService_unexpected_exception_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -252,7 +252,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             numbers: _typing.Sequence[int]
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "sum_i16_list",
                 module.lite_types._fbthrift_SimpleService_sum_i16_list_args(
@@ -260,8 +260,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_sum_i16_list_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -271,7 +271,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             numbers: _typing.Sequence[int]
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "sum_i32_list",
                 module.lite_types._fbthrift_SimpleService_sum_i32_list_args(
@@ -279,8 +279,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_sum_i32_list_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -290,7 +290,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             numbers: _typing.Sequence[int]
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "sum_i64_list",
                 module.lite_types._fbthrift_SimpleService_sum_i64_list_args(
@@ -298,8 +298,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_sum_i64_list_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -309,7 +309,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             words: _typing.Sequence[str]
         ) -> str:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "concat_many",
                 module.lite_types._fbthrift_SimpleService_concat_many_args(
@@ -317,8 +317,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_concat_many_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -328,7 +328,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             items: _typing.Sequence[module.lite_types.SimpleStruct]
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "count_structs",
                 module.lite_types._fbthrift_SimpleService_count_structs_args(
@@ -336,8 +336,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_count_structs_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -347,7 +347,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             numbers: _typing.AbstractSet[int]
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "sum_set",
                 module.lite_types._fbthrift_SimpleService_sum_set_args(
@@ -355,8 +355,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_sum_set_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -367,7 +367,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             words: _typing.AbstractSet[str],
             word: str
         ) -> bool:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "contains_word",
                 module.lite_types._fbthrift_SimpleService_contains_word_args(
@@ -376,8 +376,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_contains_word_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -388,7 +388,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             words: _typing.Mapping[str, str],
             key: str
         ) -> str:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "get_map_value",
                 module.lite_types._fbthrift_SimpleService_get_map_value_args(
@@ -397,8 +397,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_get_map_value_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -408,7 +408,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             items: _typing.Mapping[str, module.lite_types.SimpleStruct]
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "map_length",
                 module.lite_types._fbthrift_SimpleService_map_length_args(
@@ -416,8 +416,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_map_length_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -427,7 +427,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             items: _typing.Mapping[str, int]
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "sum_map_values",
                 module.lite_types._fbthrift_SimpleService_sum_map_values_args(
@@ -435,8 +435,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_sum_map_values_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -446,7 +446,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             counter: module.lite_types.ComplexStruct
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "complex_sum_i32",
                 module.lite_types._fbthrift_SimpleService_complex_sum_i32_args(
@@ -454,8 +454,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_complex_sum_i32_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -465,7 +465,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             counter: module.lite_types.ComplexStruct
         ) -> str:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "repeat_name",
                 module.lite_types._fbthrift_SimpleService_repeat_name_args(
@@ -473,8 +473,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_repeat_name_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -483,15 +483,15 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
         async def get_struct(
             self
         ) -> module.lite_types.SimpleStruct:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "get_struct",
                 module.lite_types._fbthrift_SimpleService_get_struct_args(),
                 module.lite_types._fbthrift_SimpleService_get_struct_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -501,7 +501,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             n: int
         ) -> _typing.Sequence[int]:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "fib",
                 module.lite_types._fbthrift_SimpleService_fib_args(
@@ -509,8 +509,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_fib_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -520,7 +520,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             words: _typing.Sequence[str]
         ) -> _typing.AbstractSet[str]:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "unique_words",
                 module.lite_types._fbthrift_SimpleService_unique_words_args(
@@ -528,8 +528,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_unique_words_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -539,7 +539,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             words: _typing.Sequence[str]
         ) -> _typing.Mapping[str, int]:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "words_count",
                 module.lite_types._fbthrift_SimpleService_words_count_args(
@@ -547,8 +547,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_words_count_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -558,7 +558,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             in_enum: module.lite_types.AnEnum
         ) -> module.lite_types.AnEnum:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "set_enum",
                 module.lite_types._fbthrift_SimpleService_set_enum_args(
@@ -566,8 +566,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_set_enum_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -578,7 +578,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             num_lists: int,
             num_items: int
         ) -> _typing.Sequence[_typing.Sequence[int]]:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "list_of_lists",
                 module.lite_types._fbthrift_SimpleService_list_of_lists_args(
@@ -587,8 +587,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_list_of_lists_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -598,7 +598,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             sentence: str
         ) -> _typing.Mapping[str, _typing.Mapping[str, int]]:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "word_character_frequency",
                 module.lite_types._fbthrift_SimpleService_word_character_frequency_args(
@@ -606,8 +606,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_word_character_frequency_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -617,7 +617,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             some_words: str
         ) -> _typing.Sequence[_typing.AbstractSet[str]]:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "list_of_sets",
                 module.lite_types._fbthrift_SimpleService_list_of_sets_args(
@@ -625,8 +625,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_list_of_sets_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -636,7 +636,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             struct_map: _typing.Mapping[str, _typing.Sequence[module.lite_types.SimpleStruct]]
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "nested_map_argument",
                 module.lite_types._fbthrift_SimpleService_nested_map_argument_args(
@@ -644,8 +644,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_nested_map_argument_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -655,7 +655,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             word_chars: _typing.Sequence[_typing.Sequence[str]]
         ) -> str:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "make_sentence",
                 module.lite_types._fbthrift_SimpleService_make_sentence_args(
@@ -663,8 +663,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_make_sentence_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -674,7 +674,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             sets: _typing.Sequence[_typing.AbstractSet[int]]
         ) -> _typing.AbstractSet[int]:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "get_union",
                 module.lite_types._fbthrift_SimpleService_get_union_args(
@@ -682,8 +682,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_get_union_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -693,7 +693,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             string_map: _typing.Sequence[_typing.Mapping[str, str]]
         ) -> _typing.AbstractSet[str]:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "get_keys",
                 module.lite_types._fbthrift_SimpleService_get_keys_args(
@@ -701,8 +701,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_get_keys_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -712,7 +712,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             key: int
         ) -> float:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "lookup_double",
                 module.lite_types._fbthrift_SimpleService_lookup_double_args(
@@ -720,8 +720,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_lookup_double_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -731,7 +731,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             something: bytes
         ) -> bytes:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "retrieve_binary",
                 module.lite_types._fbthrift_SimpleService_retrieve_binary_args(
@@ -739,8 +739,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_retrieve_binary_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -750,7 +750,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             binaries: _typing.Sequence[bytes]
         ) -> _typing.AbstractSet[bytes]:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "contain_binary",
                 module.lite_types._fbthrift_SimpleService_contain_binary_args(
@@ -758,8 +758,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_contain_binary_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -769,7 +769,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             the_enum: _typing.Sequence[module.lite_types.AnEnum]
         ) -> _typing.Sequence[module.lite_types.AnEnum]:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "contain_enum",
                 module.lite_types._fbthrift_SimpleService_contain_enum_args(
@@ -777,8 +777,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_contain_enum_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -788,7 +788,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             u: module.lite_types.BinaryUnion
         ) -> module.lite_types.BinaryUnionStruct:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "SimpleService",
                 "get_binary_union_struct",
                 module.lite_types._fbthrift_SimpleService_get_binary_union_struct_args(
@@ -796,13 +796,12 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_get_binary_union_struct_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
 
     class Sync(_fbthrift_py3lite_SyncClient):
         @staticmethod
@@ -816,15 +815,15 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
         def get_five(
             self
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "get_five",
                 module.lite_types._fbthrift_SimpleService_get_five_args(),
                 module.lite_types._fbthrift_SimpleService_get_five_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -834,7 +833,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             num: int
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "add_five",
                 module.lite_types._fbthrift_SimpleService_add_five_args(
@@ -842,8 +841,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_add_five_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -852,7 +851,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
         def do_nothing(
             self
         ) -> None:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "do_nothing",
                 module.lite_types._fbthrift_SimpleService_do_nothing_args(),
@@ -864,7 +863,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             first: str,
             second: str
         ) -> str:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "concat",
                 module.lite_types._fbthrift_SimpleService_concat_args(
@@ -873,8 +872,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_concat_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -884,7 +883,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             simple_struct: module.lite_types.SimpleStruct
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "get_value",
                 module.lite_types._fbthrift_SimpleService_get_value_args(
@@ -892,8 +891,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_get_value_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -903,7 +902,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             input: bool
         ) -> bool:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "negate",
                 module.lite_types._fbthrift_SimpleService_negate_args(
@@ -911,8 +910,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_negate_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -922,7 +921,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             input: int
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "tiny",
                 module.lite_types._fbthrift_SimpleService_tiny_args(
@@ -930,8 +929,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_tiny_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -941,7 +940,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             input: int
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "small",
                 module.lite_types._fbthrift_SimpleService_small_args(
@@ -949,8 +948,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_small_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -960,7 +959,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             input: int
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "big",
                 module.lite_types._fbthrift_SimpleService_big_args(
@@ -968,8 +967,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_big_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -979,7 +978,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             input: float
         ) -> float:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "two",
                 module.lite_types._fbthrift_SimpleService_two_args(
@@ -987,8 +986,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_two_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -997,27 +996,27 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
         def expected_exception(
             self
         ) -> None:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "expected_exception",
                 module.lite_types._fbthrift_SimpleService_expected_exception_args(),
                 module.lite_types._fbthrift_SimpleService_expected_exception_result,
             )
-            if resp.se is not None:
-                raise resp.se
+            if _fbthrift_resp.se is not None:
+                raise _fbthrift_resp.se
 
         def unexpected_exception(
             self
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "unexpected_exception",
                 module.lite_types._fbthrift_SimpleService_unexpected_exception_args(),
                 module.lite_types._fbthrift_SimpleService_unexpected_exception_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1027,7 +1026,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             numbers: _typing.Sequence[int]
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "sum_i16_list",
                 module.lite_types._fbthrift_SimpleService_sum_i16_list_args(
@@ -1035,8 +1034,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_sum_i16_list_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1046,7 +1045,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             numbers: _typing.Sequence[int]
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "sum_i32_list",
                 module.lite_types._fbthrift_SimpleService_sum_i32_list_args(
@@ -1054,8 +1053,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_sum_i32_list_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1065,7 +1064,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             numbers: _typing.Sequence[int]
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "sum_i64_list",
                 module.lite_types._fbthrift_SimpleService_sum_i64_list_args(
@@ -1073,8 +1072,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_sum_i64_list_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1084,7 +1083,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             words: _typing.Sequence[str]
         ) -> str:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "concat_many",
                 module.lite_types._fbthrift_SimpleService_concat_many_args(
@@ -1092,8 +1091,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_concat_many_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1103,7 +1102,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             items: _typing.Sequence[module.lite_types.SimpleStruct]
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "count_structs",
                 module.lite_types._fbthrift_SimpleService_count_structs_args(
@@ -1111,8 +1110,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_count_structs_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1122,7 +1121,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             numbers: _typing.AbstractSet[int]
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "sum_set",
                 module.lite_types._fbthrift_SimpleService_sum_set_args(
@@ -1130,8 +1129,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_sum_set_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1142,7 +1141,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             words: _typing.AbstractSet[str],
             word: str
         ) -> bool:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "contains_word",
                 module.lite_types._fbthrift_SimpleService_contains_word_args(
@@ -1151,8 +1150,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_contains_word_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1163,7 +1162,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             words: _typing.Mapping[str, str],
             key: str
         ) -> str:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "get_map_value",
                 module.lite_types._fbthrift_SimpleService_get_map_value_args(
@@ -1172,8 +1171,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_get_map_value_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1183,7 +1182,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             items: _typing.Mapping[str, module.lite_types.SimpleStruct]
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "map_length",
                 module.lite_types._fbthrift_SimpleService_map_length_args(
@@ -1191,8 +1190,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_map_length_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1202,7 +1201,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             items: _typing.Mapping[str, int]
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "sum_map_values",
                 module.lite_types._fbthrift_SimpleService_sum_map_values_args(
@@ -1210,8 +1209,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_sum_map_values_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1221,7 +1220,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             counter: module.lite_types.ComplexStruct
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "complex_sum_i32",
                 module.lite_types._fbthrift_SimpleService_complex_sum_i32_args(
@@ -1229,8 +1228,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_complex_sum_i32_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1240,7 +1239,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             counter: module.lite_types.ComplexStruct
         ) -> str:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "repeat_name",
                 module.lite_types._fbthrift_SimpleService_repeat_name_args(
@@ -1248,8 +1247,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_repeat_name_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1258,15 +1257,15 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
         def get_struct(
             self
         ) -> module.lite_types.SimpleStruct:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "get_struct",
                 module.lite_types._fbthrift_SimpleService_get_struct_args(),
                 module.lite_types._fbthrift_SimpleService_get_struct_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1276,7 +1275,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             n: int
         ) -> _typing.Sequence[int]:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "fib",
                 module.lite_types._fbthrift_SimpleService_fib_args(
@@ -1284,8 +1283,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_fib_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1295,7 +1294,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             words: _typing.Sequence[str]
         ) -> _typing.AbstractSet[str]:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "unique_words",
                 module.lite_types._fbthrift_SimpleService_unique_words_args(
@@ -1303,8 +1302,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_unique_words_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1314,7 +1313,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             words: _typing.Sequence[str]
         ) -> _typing.Mapping[str, int]:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "words_count",
                 module.lite_types._fbthrift_SimpleService_words_count_args(
@@ -1322,8 +1321,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_words_count_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1333,7 +1332,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             in_enum: module.lite_types.AnEnum
         ) -> module.lite_types.AnEnum:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "set_enum",
                 module.lite_types._fbthrift_SimpleService_set_enum_args(
@@ -1341,8 +1340,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_set_enum_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1353,7 +1352,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             num_lists: int,
             num_items: int
         ) -> _typing.Sequence[_typing.Sequence[int]]:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "list_of_lists",
                 module.lite_types._fbthrift_SimpleService_list_of_lists_args(
@@ -1362,8 +1361,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_list_of_lists_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1373,7 +1372,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             sentence: str
         ) -> _typing.Mapping[str, _typing.Mapping[str, int]]:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "word_character_frequency",
                 module.lite_types._fbthrift_SimpleService_word_character_frequency_args(
@@ -1381,8 +1380,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_word_character_frequency_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1392,7 +1391,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             some_words: str
         ) -> _typing.Sequence[_typing.AbstractSet[str]]:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "list_of_sets",
                 module.lite_types._fbthrift_SimpleService_list_of_sets_args(
@@ -1400,8 +1399,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_list_of_sets_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1411,7 +1410,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             struct_map: _typing.Mapping[str, _typing.Sequence[module.lite_types.SimpleStruct]]
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "nested_map_argument",
                 module.lite_types._fbthrift_SimpleService_nested_map_argument_args(
@@ -1419,8 +1418,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_nested_map_argument_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1430,7 +1429,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             word_chars: _typing.Sequence[_typing.Sequence[str]]
         ) -> str:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "make_sentence",
                 module.lite_types._fbthrift_SimpleService_make_sentence_args(
@@ -1438,8 +1437,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_make_sentence_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1449,7 +1448,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             sets: _typing.Sequence[_typing.AbstractSet[int]]
         ) -> _typing.AbstractSet[int]:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "get_union",
                 module.lite_types._fbthrift_SimpleService_get_union_args(
@@ -1457,8 +1456,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_get_union_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1468,7 +1467,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             string_map: _typing.Sequence[_typing.Mapping[str, str]]
         ) -> _typing.AbstractSet[str]:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "get_keys",
                 module.lite_types._fbthrift_SimpleService_get_keys_args(
@@ -1476,8 +1475,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_get_keys_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1487,7 +1486,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             key: int
         ) -> float:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "lookup_double",
                 module.lite_types._fbthrift_SimpleService_lookup_double_args(
@@ -1495,8 +1494,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_lookup_double_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1506,7 +1505,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             something: bytes
         ) -> bytes:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "retrieve_binary",
                 module.lite_types._fbthrift_SimpleService_retrieve_binary_args(
@@ -1514,8 +1513,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_retrieve_binary_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1525,7 +1524,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             binaries: _typing.Sequence[bytes]
         ) -> _typing.AbstractSet[bytes]:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "contain_binary",
                 module.lite_types._fbthrift_SimpleService_contain_binary_args(
@@ -1533,8 +1532,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_contain_binary_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1544,7 +1543,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             the_enum: _typing.Sequence[module.lite_types.AnEnum]
         ) -> _typing.Sequence[module.lite_types.AnEnum]:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "contain_enum",
                 module.lite_types._fbthrift_SimpleService_contain_enum_args(
@@ -1552,8 +1551,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_contain_enum_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1563,7 +1562,7 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
             self,
             u: module.lite_types.BinaryUnion
         ) -> module.lite_types.BinaryUnionStruct:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "SimpleService",
                 "get_binary_union_struct",
                 module.lite_types._fbthrift_SimpleService_get_binary_union_struct_args(
@@ -1571,8 +1570,8 @@ class SimpleService(_fbthrift_py3lite_Client["SimpleService.Async", "SimpleServi
                 module.lite_types._fbthrift_SimpleService_get_binary_union_struct_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1600,20 +1599,19 @@ class DerivedService(_fbthrift_py3lite_Client["DerivedService.Async", "DerivedSe
         async def get_six(
             self
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "DerivedService",
                 "get_six",
                 module.lite_types._fbthrift_DerivedService_get_six_args(),
                 module.lite_types._fbthrift_DerivedService_get_six_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
 
     class Sync(SimpleService.Sync):
         @staticmethod
@@ -1627,15 +1625,15 @@ class DerivedService(_fbthrift_py3lite_Client["DerivedService.Async", "DerivedSe
         def get_six(
             self
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "DerivedService",
                 "get_six",
                 module.lite_types._fbthrift_DerivedService_get_six_args(),
                 module.lite_types._fbthrift_DerivedService_get_six_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
@@ -1663,20 +1661,19 @@ class RederivedService(_fbthrift_py3lite_Client["RederivedService.Async", "Reder
         async def get_seven(
             self
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "RederivedService",
                 "get_seven",
                 module.lite_types._fbthrift_RederivedService_get_seven_args(),
                 module.lite_types._fbthrift_RederivedService_get_seven_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
 
     class Sync(DerivedService.Sync):
         @staticmethod
@@ -1690,18 +1687,16 @@ class RederivedService(_fbthrift_py3lite_Client["RederivedService.Async", "Reder
         def get_seven(
             self
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "RederivedService",
                 "get_seven",
                 module.lite_types._fbthrift_RederivedService_get_seven_args(),
                 module.lite_types._fbthrift_RederivedService_get_seven_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
-

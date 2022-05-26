@@ -119,6 +119,7 @@ class _fbthrift_MyService_query_args(metaclass=_fbthrift_py3lite_types.StructMet
         ),
     )
 
+
 class _fbthrift_MyService_query_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
         (

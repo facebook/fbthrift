@@ -48,7 +48,7 @@ class Service(_fbthrift_py3lite_Client["Service.Async", "Service.Sync"]):
             arg2: str,
             arg3: module.lite_types.Foo
         ) -> int:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "Service",
                 "func",
                 module.lite_types._fbthrift_Service_func_args(
@@ -58,13 +58,12 @@ class Service(_fbthrift_py3lite_Client["Service.Async", "Service.Sync"]):
                 module.lite_types._fbthrift_Service_func_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
 
     class Sync(_fbthrift_py3lite_SyncClient):
         @staticmethod
@@ -81,7 +80,7 @@ class Service(_fbthrift_py3lite_Client["Service.Async", "Service.Sync"]):
             arg2: str,
             arg3: module.lite_types.Foo
         ) -> int:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "Service",
                 "func",
                 module.lite_types._fbthrift_Service_func_args(
@@ -91,11 +90,9 @@ class Service(_fbthrift_py3lite_Client["Service.Async", "Service.Sync"]):
                 module.lite_types._fbthrift_Service_func_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
-

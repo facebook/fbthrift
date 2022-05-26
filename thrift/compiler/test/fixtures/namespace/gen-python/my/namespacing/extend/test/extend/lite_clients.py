@@ -44,7 +44,7 @@ class ExtendTestService(_fbthrift_py3lite_Client["ExtendTestService.Async", "Ext
             self,
             struct1: py3lite_module_root.my.namespacing.test.hsmodule.lite_types.HsFoo
         ) -> bool:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "ExtendTestService",
                 "check",
                 py3lite_module_root.my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_args(
@@ -52,13 +52,12 @@ class ExtendTestService(_fbthrift_py3lite_Client["ExtendTestService.Async", "Ext
                 py3lite_module_root.my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
 
     class Sync(py3lite_module_root.my.namespacing.test.hsmodule.lite_clients.HsTestService.Sync):
         @staticmethod
@@ -73,7 +72,7 @@ class ExtendTestService(_fbthrift_py3lite_Client["ExtendTestService.Async", "Ext
             self,
             struct1: py3lite_module_root.my.namespacing.test.hsmodule.lite_types.HsFoo
         ) -> bool:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "ExtendTestService",
                 "check",
                 py3lite_module_root.my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_args(
@@ -81,11 +80,9 @@ class ExtendTestService(_fbthrift_py3lite_Client["ExtendTestService.Async", "Ext
                 py3lite_module_root.my.namespacing.extend.test.extend.lite_types._fbthrift_ExtendTestService_check_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
-

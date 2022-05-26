@@ -40,10 +40,10 @@ import {{included_module_path}}.lite_types
 import {{included_module_path}}.lite_clients
 {{/has_services?}}
 {{/program:include_namespaces}}
-
-
 {{#program:services?}}
 {{#program:services}}
+
+
 class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{service:name}}.Sync"]):
     @staticmethod
     def __get_thrift_name__() -> str:
@@ -65,13 +65,13 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return {{program:module_path}}.lite_metadata.gen_metadata_service_{{service:name}}()
-
         {{#service:supported_functions}}
+
         async def {{function:name}}(
             self{{#function:args}},
             {{field:py_name}}: {{#field:type}}{{> types/pep484_type}}{{/field:type}}{{/function:args}}
         ) -> {{#function:return_type}}{{> types/pep484_type}}{{/function:return_type}}:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "{{service:name}}",
                 "{{function:name}}",
                 {{> types/function_args_type}}({{#function:args}}
@@ -81,12 +81,12 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
             )
             {{#function:return_type}}{{^type:void?}}
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             {{/type:void?}}{{/function:return_type}}
             {{#function:exceptions}}
-            if resp.{{field:py_name}} is not None:
-                raise resp.{{field:py_name}}
+            if _fbthrift_resp.{{field:py_name}} is not None:
+                raise _fbthrift_resp.{{field:py_name}}
             {{/function:exceptions}}
             {{#function:return_type}}{{^type:void?}}
             raise _fbthrift_py3lite_exceptions.ApplicationError(
@@ -94,7 +94,6 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
                 "Empty Response",
             )
             {{/type:void?}}{{/function:return_type}}
-
         {{/service:supported_functions}}
 
     class Sync({{#service:extends}}{{!
@@ -109,13 +108,13 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
         @staticmethod
         def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
             return {{program:module_path}}.lite_metadata.gen_metadata_service_{{service:name}}()
-
         {{#service:supported_functions}}
+
         def {{function:name}}(
             self{{#function:args}},
             {{field:py_name}}: {{#field:type}}{{> types/pep484_type}}{{/field:type}}{{/function:args}}
         ) -> {{#function:return_type}}{{> types/pep484_type}}{{/function:return_type}}:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "{{service:name}}",
                 "{{function:name}}",
                 {{> types/function_args_type}}({{#function:args}}
@@ -125,12 +124,12 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
             )
             {{#function:return_type}}{{^type:void?}}
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             {{/type:void?}}{{/function:return_type}}
             {{#function:exceptions}}
-            if resp.{{field:py_name}} is not None:
-                raise resp.{{field:py_name}}
+            if _fbthrift_resp.{{field:py_name}} is not None:
+                raise _fbthrift_resp.{{field:py_name}}
             {{/function:exceptions}}
             {{#function:return_type}}{{^type:void?}}
             raise _fbthrift_py3lite_exceptions.ApplicationError(
@@ -138,8 +137,6 @@ class {{service:name}}(_fbthrift_py3lite_Client["{{service:name}}.Async", "{{ser
                 "Empty Response",
             )
             {{/type:void?}}{{/function:return_type}}
-
         {{/service:supported_functions}}
-
 {{/program:services}}
 {{/program:services?}}

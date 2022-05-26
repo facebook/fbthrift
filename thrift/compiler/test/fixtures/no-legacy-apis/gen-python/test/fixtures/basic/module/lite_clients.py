@@ -43,7 +43,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             self,
             u: test.fixtures.basic.module.lite_types.MyUnion
         ) -> test.fixtures.basic.module.lite_types.MyStruct:
-            resp = await self._send_request(
+            _fbthrift_resp = await self._send_request(
                 "MyService",
                 "query",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_query_args(
@@ -51,13 +51,12 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_query_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
 
     class Sync(_fbthrift_py3lite_SyncClient):
         @staticmethod
@@ -72,7 +71,7 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
             self,
             u: test.fixtures.basic.module.lite_types.MyUnion
         ) -> test.fixtures.basic.module.lite_types.MyStruct:
-            resp = self._send_request(
+            _fbthrift_resp = self._send_request(
                 "MyService",
                 "query",
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_query_args(
@@ -80,11 +79,9 @@ class MyService(_fbthrift_py3lite_Client["MyService.Async", "MyService.Sync"]):
                 test.fixtures.basic.module.lite_types._fbthrift_MyService_query_result,
             )
             # shortcut to success path for non-void returns
-            if resp.success is not None:
-                return resp.success
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success
             raise _fbthrift_py3lite_exceptions.ApplicationError(
                 _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
                 "Empty Response",
             )
-
-

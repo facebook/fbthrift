@@ -26,6 +26,7 @@ class _fbthrift_ExtendTestService_check_args(_fbthrift_py3lite_types.Struct):
         str,
         _typing.Union[None, py3lite_module_root.my.namespacing.test.hsmodule.lite_types.HsFoo]]]: ...
 
+
 class _fbthrift_ExtendTestService_check_result(_fbthrift_py3lite_types.Struct):
     success: _typing.Final[bool]
 
@@ -38,5 +39,3 @@ class _fbthrift_ExtendTestService_check_result(_fbthrift_py3lite_types.Struct):
         _typing.Union[
             bool,
         ]]]: ...
-
-
