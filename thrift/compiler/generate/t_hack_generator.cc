@@ -601,11 +601,6 @@ class t_hack_generator : public t_oop_generator {
   }
 
   const std::string* find_hack_adapter(const t_type* type) {
-    auto annotation =
-        t_typedef::get_first_annotation_or_null(type, {"hack.adapter"});
-    if (annotation) {
-      return annotation;
-    }
     if (const auto annotation =
             t_typedef::get_first_structured_annotation_or_null(
                 type, "facebook.com/thrift/annotation/hack/Adapter")) {
