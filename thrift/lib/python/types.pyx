@@ -191,6 +191,7 @@ cdef class UnionInfo:
                 type_info = type_info()
             self.type_infos[id] = type_info
             self.id_to_adapter_class[id] = adapter_class
+            self.name_to_index[name] = idx
             info_ptr.addFieldInfo(
                 id, qualifier, name.encode("utf-8"), getCTypeInfo(type_info)
             )
@@ -469,7 +470,7 @@ cdef class Struct(StructOrUnion):
             yield name, getattr(self, name)
 
     def __dir__(self):
-        return (<StructInfo>self._fbthrift_struct_info).name_to_index.keys()
+        return dir(type(self))
 
     cdef folly.iobuf.IOBuf _serialize(self, Protocol proto):
         cdef StructInfo info = self._fbthrift_struct_info
@@ -635,6 +636,9 @@ cdef class Union(StructOrUnion):
     def __bool__(self):
         return self.type.value != 0
 
+    def __dir__(self):
+        return dir(type(self))
+
 
 cdef make_fget_struct(i, field_id, adapter_class):
     if adapter_class:
@@ -694,6 +698,10 @@ class UnionMeta(type):
         for f in fields:
             dct[f[2]] = make_fget_union(f[0], f[5])
         return super().__new__(cls, name, (Union,), dct)
+
+    def __dir__(cls):
+        return tuple((<UnionInfo>cls._fbthrift_struct_info).name_to_index.keys()) + (
+            "type", "value")
 
     def _fbthrift_fill_spec(cls):
         (<UnionInfo>cls._fbthrift_struct_info).fill()
