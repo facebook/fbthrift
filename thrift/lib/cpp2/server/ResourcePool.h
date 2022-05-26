@@ -21,8 +21,8 @@
 #include <string>
 #include <string_view>
 
+#include <folly/Executor.h>
 #include <folly/Synchronized.h>
-#include <folly/executors/ThreadPoolExecutor.h>
 
 #include <thrift/lib/cpp2/async/AsyncProcessorHelper.h>
 #include <thrift/lib/cpp2/server/ConcurrencyControllerInterface.h>
@@ -53,7 +53,7 @@ class ResourcePool {
   }
 
   // Access to executor if it exists.
-  std::optional<folly::ThreadPoolExecutor*> executor() {
+  std::optional<folly::Executor*> executor() {
     auto result = executor_.get();
     if (result) {
       return result;
@@ -80,16 +80,21 @@ class ResourcePool {
   // timeout/expired or executed.
   std::optional<ServerRequestRejection> accept(ServerRequest&& request);
 
+  // Stop the resource pool. Prevent the concurrency controller from scheduling
+  // new requests and join the threads in the executor to ensure all requests
+  // have completed.
+  void stop();
+
  private:
   friend class ResourcePoolSet;
   ResourcePool(
       std::unique_ptr<RequestPileInterface>&& requestPile,
-      std::shared_ptr<folly::ThreadPoolExecutor> executor,
+      std::shared_ptr<folly::Executor> executor,
       std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController,
       std::string_view name);
 
   std::unique_ptr<RequestPileInterface> requestPile_;
-  std::shared_ptr<folly::ThreadPoolExecutor> executor_;
+  std::shared_ptr<folly::Executor> executor_;
   std::unique_ptr<ConcurrencyControllerInterface> concurrencyController_;
   std::string name_;
 };
@@ -110,7 +115,7 @@ class ResourcePoolSet {
   void setResourcePool(
       ResourcePoolHandle const& handle,
       std::unique_ptr<RequestPileInterface>&& requestPile,
-      std::shared_ptr<folly::ThreadPoolExecutor> executor,
+      std::shared_ptr<folly::Executor> executor,
       std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController,
       std::optional<concurrency::PRIORITY> priorityHint = std::nullopt);
 
@@ -119,7 +124,7 @@ class ResourcePoolSet {
   ResourcePoolHandle addResourcePool(
       std::string_view poolName,
       std::unique_ptr<RequestPileInterface>&& requestPile,
-      std::shared_ptr<folly::ThreadPoolExecutor> executor,
+      std::shared_ptr<folly::Executor> executor,
       std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController,
       std::optional<concurrency::PRIORITY> priorityHint = std::nullopt);
 

@@ -143,7 +143,8 @@ void SampleServer<Service>::setupServer() {
     server_->ensureResourcePools();
     auto& resourcePool = server_->resourcePoolSet().resourcePool(
         ResourcePoolHandle::defaultAsync());
-    resourcePool.executor().value()->setNumThreads(numWorkerThreads_);
+    dynamic_cast<folly::ThreadPoolExecutor*>(resourcePool.executor().value())
+        ->setNumThreads(numWorkerThreads_);
     resourcePool.concurrencyController().value()->setExecutionLimitRequests(
         numWorkerThreads_);
   }

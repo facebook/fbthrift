@@ -15,6 +15,7 @@
  */
 
 #include <stdexcept>
+#include <folly/executors/ThreadPoolExecutor.h>
 #include <thrift/lib/cpp2/server/ResourcePool.h>
 
 namespace apache::thrift {
@@ -23,7 +24,7 @@ namespace apache::thrift {
 
 ResourcePool::ResourcePool(
     std::unique_ptr<RequestPileInterface>&& requestPile,
-    std::shared_ptr<folly::ThreadPoolExecutor> executor,
+    std::shared_ptr<folly::Executor> executor,
     std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController,
     std::string_view name)
     : requestPile_(std::move(requestPile)),
@@ -39,11 +40,21 @@ ResourcePool::ResourcePool(
   }
 }
 
-ResourcePool::~ResourcePool() {
+void ResourcePool::stop() {
   if (concurrencyController_) {
     concurrencyController_->stop();
   }
+  if (executor_) {
+    if (auto threadPoolExecutor =
+            dynamic_cast<folly::ThreadPoolExecutor*>(executor_.get())) {
+      threadPoolExecutor->join();
+    } else {
+      LOG(WARNING) << "Could not join executor threads";
+    }
+  }
 }
+
+ResourcePool::~ResourcePool() {}
 
 std::optional<ServerRequestRejection> ResourcePool::accept(
     ServerRequest&& request) {
@@ -75,7 +86,7 @@ std::optional<ServerRequestRejection> ResourcePool::accept(
 void ResourcePoolSet::setResourcePool(
     ResourcePoolHandle const& handle,
     std::unique_ptr<RequestPileInterface>&& requestPile,
-    std::shared_ptr<folly::ThreadPoolExecutor> executor,
+    std::shared_ptr<folly::Executor> executor,
     std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController,
     std::optional<concurrency::PRIORITY> priorityHint_deprecated) {
   std::lock_guard<std::mutex> lock(mutex_);
@@ -101,7 +112,7 @@ void ResourcePoolSet::setResourcePool(
 ResourcePoolHandle ResourcePoolSet::addResourcePool(
     std::string_view poolName,
     std::unique_ptr<RequestPileInterface>&& requestPile,
-    std::shared_ptr<folly::ThreadPoolExecutor> executor,
+    std::shared_ptr<folly::Executor> executor,
     std::unique_ptr<ConcurrencyControllerInterface>&& concurrencyController,
     std::optional<concurrency::PRIORITY> priorityHint_deprecated) {
   std::lock_guard<std::mutex> lock(mutex_);
@@ -225,16 +236,7 @@ void ResourcePoolSet::stopAndJoin() {
   }
   for (auto& resourcePool : resourcePools_) {
     if (resourcePool) {
-      if (auto cc = resourcePool->concurrencyController()) {
-        cc.value()->stop();
-      }
-    }
-  }
-  for (auto& resourcePool : resourcePools_) {
-    if (resourcePool) {
-      if (auto ex = resourcePool->executor()) {
-        ex.value()->join();
-      }
+      resourcePool->stop();
     }
   }
 }
