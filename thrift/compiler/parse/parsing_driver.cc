@@ -585,7 +585,7 @@ t_type_ref parsing_driver::new_type_ref(
         name);
   }
 
-  if (auto* node = result.get_unresolve_type()) { // A newly created ph.
+  if (auto* node = result.get_unresolved_type()) { // A newly created ph.
     node->set_lineno(get_lineno());
     set_annotations(node, std::move(annotations));
   } else if (annotations != nullptr) { // Oh no!

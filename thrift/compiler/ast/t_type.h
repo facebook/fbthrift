@@ -264,8 +264,9 @@ class t_type_ref final {
   // TODO(afuller): Move all lazy type resolution logic here, and delete
   // t_placeholder_typedef.
   t_placeholder_typedef* unresolved_type_ = nullptr;
-  explicit t_type_ref(const t_type& type, t_placeholder_typedef& unresolve_type)
-      : type_(&type), unresolved_type_(&unresolve_type) {}
+  explicit t_type_ref(
+      const t_type& type, t_placeholder_typedef& unresolved_type)
+      : type_(&type), unresolved_type_(&unresolved_type) {}
 
   // Note: Use from_ptr or from_req_ptr for public access.
   explicit t_type_ref(const t_type* type) : type_(type) {}
@@ -277,8 +278,8 @@ class t_type_ref final {
   // for backwards compatibility.
  public:
   const t_type* get_type() const { return type_; }
-  static t_type_ref for_placeholder(t_placeholder_typedef& unresolve_type);
-  t_placeholder_typedef* get_unresolve_type() { return unresolved_type_; }
+  static t_type_ref for_placeholder(t_placeholder_typedef& unresolved_type);
+  t_placeholder_typedef* get_unresolved_type() { return unresolved_type_; }
 };
 
 } // namespace compiler

@@ -121,8 +121,8 @@ const t_type& t_type_ref::deref_or_throw() const {
   return *type_;
 }
 
-t_type_ref t_type_ref::for_placeholder(t_placeholder_typedef& unresolve_type) {
-  return t_type_ref{unresolve_type, unresolve_type};
+t_type_ref t_type_ref::for_placeholder(t_placeholder_typedef& unresolved_type) {
+  return t_type_ref{unresolved_type, unresolved_type};
 }
 
 const t_type_ref& t_type_ref::none() {
