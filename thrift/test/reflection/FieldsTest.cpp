@@ -79,22 +79,22 @@ static_assert(
 
 static_assert(
     ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
-        FieldId{1}) == 1);
+        FieldId{1}) == Ordinal{1});
 static_assert(
     ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
-        FieldId{2}) == 2);
+        FieldId{2}) == Ordinal{2});
 static_assert(
     ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
-        FieldId{3}) == 3);
+        FieldId{3}) == Ordinal{3});
 static_assert(
     ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
-        FieldId{4}) == 4);
+        FieldId{4}) == Ordinal{4});
 static_assert(
     ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
-        FieldId{5}) == 5);
+        FieldId{5}) == Ordinal{5});
 static_assert(
     ordinal<struct_t<::test_cpp2::cpp_reflection::StructWithAdaptedField>>(
-        FieldId{6}) == 6);
+        FieldId{6}) == Ordinal{6});
 
 static_assert(
     test::same_tag<
@@ -168,12 +168,12 @@ TEST(FieldsTest, Fields) {
     EXPECT_EQ(
         ordinal<type::struct_t<test_cpp2::cpp_reflection::struct3>>(
             FieldId{expectedIds[idx]}),
-        idx + 1);
+        static_cast<Ordinal>(idx + 1));
   }
 
   static_assert(
       ordinal<type::struct_t<test_cpp2::cpp_reflection::struct3>>(
-          FieldId{19}) == 0);
+          FieldId{19}) == Ordinal{0});
 }
 
 TEST(FieldsTest, Get) {
@@ -230,13 +230,13 @@ TEST(FieldsTest, field_tag_by_id) {
 
 TEST(FieldsTest, field_id_by_ordinal) {
   using StructTag = struct_t<test_cpp2::cpp_reflection::struct3>;
-  test::same_tag<field_tag_by_ordinal<StructTag, 0>, void>;
+  test::same_tag<field_tag_by_ordinal<StructTag, Ordinal{0}>, void>;
   EXPECT_EQ(field_size_v<StructTag>, 19);
-  test::same_tag<field_tag_by_ordinal<StructTag, 20>, void>;
-  EXPECT_EQ((field_id_by_ordinal_v<StructTag, 1>), FieldId{2});
-  EXPECT_EQ((field_id_by_ordinal_v<StructTag, 2>), FieldId{1});
-  EXPECT_EQ((field_id_by_ordinal_v<StructTag, 3>), FieldId{3});
-  EXPECT_EQ((field_id_by_ordinal_v<StructTag, 19>), FieldId{20});
+  test::same_tag<field_tag_by_ordinal<StructTag, Ordinal{20}>, void>;
+  EXPECT_EQ((field_id_by_ordinal_v<StructTag, Ordinal{1}>), FieldId{2});
+  EXPECT_EQ((field_id_by_ordinal_v<StructTag, Ordinal{2}>), FieldId{1});
+  EXPECT_EQ((field_id_by_ordinal_v<StructTag, Ordinal{3}>), FieldId{3});
+  EXPECT_EQ((field_id_by_ordinal_v<StructTag, Ordinal{19}>), FieldId{20});
 }
 
 TEST(UnionFieldsTest, Get) {

@@ -55,11 +55,11 @@ class Foo final  {
   
   static ::apache::thrift::tag::MyInt __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
-  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return 1;
+      case 1: return ::apache::thrift::Ordinal{1};
     }
-    return 0;
+    return ::apache::thrift::Ordinal{0};
   }
 
 

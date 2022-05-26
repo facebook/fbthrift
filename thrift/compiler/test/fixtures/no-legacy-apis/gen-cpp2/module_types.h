@@ -134,12 +134,12 @@ class MyStruct final  {
   static ::apache::thrift::tag::myIntField __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::myStringField __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
-  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return 1;
-      case 2: return 2;
+      case 1: return ::apache::thrift::Ordinal{1};
+      case 2: return ::apache::thrift::Ordinal{2};
     }
-    return 0;
+    return ::apache::thrift::Ordinal{0};
   }
 
 
@@ -325,12 +325,12 @@ class MyUnion final  {
   static ::apache::thrift::tag::myEnum __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::myDataItem __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
-  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return 1;
-      case 2: return 2;
+      case 1: return ::apache::thrift::Ordinal{1};
+      case 2: return ::apache::thrift::Ordinal{2};
     }
-    return 0;
+    return ::apache::thrift::Ordinal{0};
   }
 
 

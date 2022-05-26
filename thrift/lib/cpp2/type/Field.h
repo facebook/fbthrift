@@ -45,17 +45,17 @@ template <typename StructTag>
 FOLLY_INLINE_VARIABLE constexpr int16_t field_size_v =
     detail::fields_size<detail::struct_fields<StructTag>>::value;
 
-template <typename StructTag, int16_t Ordinal>
+template <typename StructTag, Ordinal ord>
 using field_tag_by_ordinal =
-    typename detail::field_tag_by_ord<StructTag, Ordinal>::type;
+    typename detail::field_tag_by_ord<StructTag, ord>::type;
 
-template <typename Structured, int16_t Ordinal>
+template <typename Structured, Ordinal ord>
 FOLLY_INLINE_VARIABLE constexpr FieldId field_id_by_ordinal_v =
-    field_id_v<field_tag_by_ordinal<Structured, Ordinal>>;
+    field_id_v<field_tag_by_ordinal<Structured, ord>>;
 
-template <typename Structured, int16_t Ordinal>
+template <typename Structured, Ordinal ord>
 using field_type_tag_by_ordinal =
-    field_type_tag<field_tag_by_ordinal<Structured, Ordinal>>;
+    field_type_tag<field_tag_by_ordinal<Structured, ord>>;
 
 // field_tag_t<StructTag, Id> is an alias for the field_t of the field in given
 // thrift struct where corresponding field id == Id, or for void if there is no

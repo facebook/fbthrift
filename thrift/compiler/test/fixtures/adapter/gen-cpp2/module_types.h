@@ -226,21 +226,21 @@ class Foo final  {
   static ::apache::thrift::tag::adaptedLongField __fbthrift_ident(::apache::thrift::type::field_id_u_c<10>);
   static ::apache::thrift::tag::doubleAdaptedField __fbthrift_ident(::apache::thrift::type::field_id_u_c<11>);
 
-  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return 1;
-      case 2: return 2;
-      case 3: return 3;
-      case 4: return 4;
-      case 5: return 5;
-      case 6: return 6;
-      case 7: return 7;
-      case 8: return 8;
-      case 9: return 9;
-      case 10: return 10;
-      case 11: return 11;
+      case 1: return ::apache::thrift::Ordinal{1};
+      case 2: return ::apache::thrift::Ordinal{2};
+      case 3: return ::apache::thrift::Ordinal{3};
+      case 4: return ::apache::thrift::Ordinal{4};
+      case 5: return ::apache::thrift::Ordinal{5};
+      case 6: return ::apache::thrift::Ordinal{6};
+      case 7: return ::apache::thrift::Ordinal{7};
+      case 8: return ::apache::thrift::Ordinal{8};
+      case 9: return ::apache::thrift::Ordinal{9};
+      case 10: return ::apache::thrift::Ordinal{10};
+      case 11: return ::apache::thrift::Ordinal{11};
     }
-    return 0;
+    return ::apache::thrift::Ordinal{0};
   }
 
 

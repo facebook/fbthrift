@@ -204,12 +204,12 @@ class structured_annotation_inline final  {
   static ::apache::thrift::tag::count __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
-  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return 1;
-      case 2: return 2;
+      case 1: return ::apache::thrift::Ordinal{1};
+      case 2: return ::apache::thrift::Ordinal{2};
     }
-    return 0;
+    return ::apache::thrift::Ordinal{0};
   }
 
 
@@ -394,11 +394,11 @@ class structured_annotation_with_default final  {
   
   static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
-  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return 1;
+      case 1: return ::apache::thrift::Ordinal{1};
     }
-    return 0;
+    return ::apache::thrift::Ordinal{0};
   }
 
 
@@ -530,11 +530,11 @@ class structured_annotation_forward final  {
   
   static ::apache::thrift::tag::count __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
-  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return 1;
+      case 1: return ::apache::thrift::Ordinal{1};
     }
-    return 0;
+    return ::apache::thrift::Ordinal{0};
   }
 
 
@@ -666,13 +666,13 @@ class structured_annotation_recursive final  {
   static ::apache::thrift::tag::recurse __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
   static ::apache::thrift::tag::forward __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
 
-  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return 1;
-      case 2: return 2;
-      case 3: return 3;
+      case 1: return ::apache::thrift::Ordinal{1};
+      case 2: return ::apache::thrift::Ordinal{2};
+      case 3: return ::apache::thrift::Ordinal{3};
     }
-    return 0;
+    return ::apache::thrift::Ordinal{0};
   }
 
 
@@ -907,12 +907,12 @@ class structured_annotation_nested final  {
   static ::apache::thrift::tag::name __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::nest __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
-  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return 1;
-      case 2: return 2;
+      case 1: return ::apache::thrift::Ordinal{1};
+      case 2: return ::apache::thrift::Ordinal{2};
     }
-    return 0;
+    return ::apache::thrift::Ordinal{0};
   }
 
 
@@ -1100,14 +1100,14 @@ class MyStruct final  {
   static ::apache::thrift::tag::annotated_recursive __fbthrift_ident(::apache::thrift::type::field_id_u_c<3>);
   static ::apache::thrift::tag::annotated_nested __fbthrift_ident(::apache::thrift::type::field_id_u_c<4>);
 
-  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return 1;
-      case 2: return 2;
-      case 3: return 3;
-      case 4: return 4;
+      case 1: return ::apache::thrift::Ordinal{1};
+      case 2: return ::apache::thrift::Ordinal{2};
+      case 3: return ::apache::thrift::Ordinal{3};
+      case 4: return ::apache::thrift::Ordinal{4};
     }
-    return 0;
+    return ::apache::thrift::Ordinal{0};
   }
 
 
@@ -1401,11 +1401,11 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   
   static ::apache::thrift::tag::context __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
 
-  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return 1;
+      case 1: return ::apache::thrift::Ordinal{1};
     }
-    return 0;
+    return ::apache::thrift::Ordinal{0};
   }
 
 
@@ -1531,12 +1531,12 @@ class MyUnion final  {
   static ::apache::thrift::tag::first __fbthrift_ident(::apache::thrift::type::field_id_u_c<1>);
   static ::apache::thrift::tag::second __fbthrift_ident(::apache::thrift::type::field_id_u_c<2>);
 
-  static constexpr uint16_t __fbthrift_ordinal(::apache::thrift::FieldId id) {
+  static constexpr ::apache::thrift::Ordinal __fbthrift_ordinal(::apache::thrift::FieldId id) {
     switch (::folly::to_underlying(id)) {
-      case 1: return 1;
-      case 2: return 2;
+      case 1: return ::apache::thrift::Ordinal{1};
+      case 2: return ::apache::thrift::Ordinal{2};
     }
-    return 0;
+    return ::apache::thrift::Ordinal{0};
   }
 
 

@@ -80,9 +80,12 @@ struct field_to_tag {
   };
 };
 
-template <class StructTag, size_t Ordinal>
+template <class StructTag, Ordinal ord>
 struct field_tag_by_ord {
-  using type = field_at_t<struct_fields<StructTag>, Ordinal - 1>;
+  using type = field_at_t<
+      struct_fields<StructTag>,
+      ord == Ordinal{0} ? static_cast<std::size_t>(-1)
+                        : folly::to_underlying(ord) - 1>;
 };
 
 } // namespace detail
