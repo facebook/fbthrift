@@ -143,6 +143,10 @@ public class MyLeafRpcServerHandler  extends test.fixtures.inheritance.MyNodeRpc
           _result =  super.singleRequestSingleResponse(_payload);
         }
       }
+    } catch (org.apache.thrift.TApplicationException _tApplicationException) {
+      final com.facebook.swift.service.ContextChain _chain = new com.facebook.swift.service.ContextChain(_eventHandlers, _name, _payload.getRequestContext());
+      com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload = com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), _chain);
+      return reactor.core.publisher.Mono.just(_serverResponsePayload);
     } catch (Throwable _t) {
       _result = reactor.core.publisher.Mono.error(_t);
     }
