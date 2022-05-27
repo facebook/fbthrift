@@ -455,11 +455,14 @@ void ThriftServer::setup() {
       DCHECK(!threadManager_);
       ensureResourcePools();
       // Keep concurrency controller in sync with max requests for now.
+      auto maxRequests = getMaxRequests();
       resourcePoolSet()
           .resourcePool(ResourcePoolHandle::defaultAsync())
           .concurrencyController()
           .value()
-          ->setExecutionLimitRequests(getMaxRequests());
+          ->setExecutionLimitRequests(
+              maxRequests != 0 ? maxRequests
+                               : std::numeric_limits<uint32_t>::max());
 
       if (resourcePoolSet().hasResourcePool(
               ResourcePoolHandle::defaultAsync())) {
