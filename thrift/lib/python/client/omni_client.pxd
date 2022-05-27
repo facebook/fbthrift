@@ -22,17 +22,24 @@ from libcpp.string cimport string
 from libcpp.unordered_map cimport unordered_map
 from thrift.python.client.request_channel cimport cRequestChannel_ptr
 
+
 cdef extern from "thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h" namespace "::apache::thrift":
     cpdef enum class RpcKind:
-        SINGLE_REQUEST_SINGLE_RESPONSE = 0,
-        SINGLE_REQUEST_NO_RESPONSE = 1,
-        SINGLE_REQUEST_STREAMING_RESPONSE = 4,
-        SINK = 6,
+        SINGLE_REQUEST_SINGLE_RESPONSE = 0
+        SINGLE_REQUEST_NO_RESPONSE = 1
+        SINGLE_REQUEST_STREAMING_RESPONSE = 4
+        SINK = 6
+
 
 cdef extern from "thrift/lib/python/client/OmniClient.h" namespace "::thrift::python::client":
+    cdef cppclass cIOBufClientBufferedStream "::thrift::python::client::IOBufClientBufferedStream":
+        pass
+
     cdef cppclass cOmniClientResponseWithHeaders "::thrift::python::client::OmniClientResponseWithHeaders":
         cExpected[unique_ptr[cIOBuf], cFollyExceptionWrapper] buf
         cmap[string, string] headers
+        unique_ptr[cIOBufClientBufferedStream] stream
+
 
     cdef cppclass cOmniClient "::thrift::python::client::OmniClient":
         cOmniClient(cRequestChannel_ptr channel, const string& serviceName)

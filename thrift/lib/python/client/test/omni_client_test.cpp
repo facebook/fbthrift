@@ -23,10 +23,10 @@
 #include <folly/SocketAddress.h>
 #include <folly/experimental/coro/BlockingWait.h>
 #include <folly/experimental/coro/Task.h>
-#include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBaseManager.h>
 #include <thrift/lib/cpp/server/TServerEventHandler.h>
+#include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
@@ -55,6 +55,48 @@ class TestServiceHandler : virtual public TestServiceSvIf {
       std::string& value, std::unique_ptr<std::string> key) override {
     value = getRequestContext()->getHeader()->getHeaders().at(*key);
   }
+  ServerStream<SimpleResponse> nums(int f, int t) override {
+    if (t < f) {
+      ArithmeticException e;
+      e.msg_ref() = "my_magic_arithmetic_exception";
+      throw e;
+    }
+    return folly::coro::co_invoke(
+        [f, t]() -> folly::coro::AsyncGenerator<SimpleResponse&&> {
+          for (int i = f; i <= t; ++i) {
+            SimpleResponse r;
+            r.value() = std::to_string(i);
+            co_yield std::move(r);
+          }
+          if (f < 0) {
+            throw std::logic_error("negative_number_detected");
+          }
+          ArithmeticException e;
+          e.msg_ref() = "throw_from_inside_stream";
+          throw e;
+        });
+  }
+
+  ResponseAndServerStream<std::int64_t, SimpleResponse> sumAndNums(
+      int f, int t) override {
+    if (t < f) {
+      ArithmeticException e;
+      e.msg_ref() = "my_magic_arithmetic_exception";
+      throw e;
+    }
+    return {
+        (f + t) * (t - f + 1) / 2,
+        folly::coro::co_invoke(
+            [f, t]() -> folly::coro::AsyncGenerator<SimpleResponse&&> {
+              for (int i = f; i <= t; ++i) {
+                SimpleResponse r;
+                r.value() = std::to_string(i);
+                co_yield std::move(r);
+              }
+            }),
+    };
+  }
+
   ResponseAndSinkConsumer<SimpleResponse, EmptyChunk, SimpleResponse> dumbSink(
       std::unique_ptr<EmptyRequest> request) override {
     (void)request;
@@ -165,10 +207,9 @@ class OmniClientTest : public ::testing::Test {
       const RpcKind rpcKind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE) {
     connectToServer<S>([=](OmniClient& client) -> folly::coro::Task<void> {
       std::string args = S::template serialize<std::string>(req);
-      testContains<S>(
-          co_await client.semifuture_send(
-              service, function, args, headers, rpcKind),
-          expected);
+      auto resp = co_await client.semifuture_send(
+          service, function, args, headers, rpcKind);
+      testContains<S>(std::move(*resp.buf.value()), expected);
     });
   }
 
@@ -197,11 +238,30 @@ class OmniClientTest : public ::testing::Test {
   }
 
   template <class S, typename T>
-  void testContains(OmniClientResponseWithHeaders response, const T& expected) {
+  void testContains(folly::IOBuf buf, const T& expected) {
     std::string expectedStr = S::template serialize<std::string>(expected);
-    std::string result = response.buf.value()->moveToFbString().toStdString();
+    std::string result = buf.moveToFbString().toStdString();
     // Contains instead of equals because of the envelope around the response.
     EXPECT_THAT(result, testing::HasSubstr(expectedStr));
+  }
+
+  template <class S = CompactSerializer, class Request>
+  void testSendStream(
+      const std::string& service,
+      const std::string& function,
+      const Request& req,
+      folly::Function<folly::coro::Task<void>(OmniClientResponseWithHeaders&&)>
+          onResponse) {
+    connectToServer<S>(
+        [&](OmniClient& client) mutable -> folly::coro::Task<void> {
+          std::string args = S::template serialize<std::string>(req);
+          co_await onResponse(co_await client.semifuture_send(
+              service,
+              function,
+              args,
+              {},
+              RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE));
+        });
   }
 
  protected:
@@ -244,4 +304,82 @@ TEST_F(OmniClientTest, SinkRequestTest) {
   SimpleResponse response;
   response.value_ref() = "initial";
   testSend("TestService", "dumbSink", request, response, RpcKind::SINK);
+}
+
+TEST_F(OmniClientTest, StreamNumsTest) {
+  NumsRequest request;
+  request.f() = 2;
+  request.t() = 4;
+  testSendStream(
+      "TestService",
+      "nums",
+      request,
+      [this](OmniClientResponseWithHeaders&& resp) -> folly::coro::Task<void> {
+        auto gen = std::move(*resp.stream).toAsyncGenerator();
+        for (int i = 2; i <= 4; ++i) {
+          auto val = co_await gen.next();
+          EXPECT_TRUE(val);
+          testContains<CompactSerializer>(std::move(*val), std::to_string(i));
+        }
+        auto val = co_await gen.next();
+        testContains<CompactSerializer>(
+            std::move(*val), std::string{"throw_from_inside_stream"});
+      });
+}
+
+TEST_F(OmniClientTest, StreamNumsUndeclaredExceptionTest) {
+  NumsRequest request;
+  request.f() = -1;
+  request.t() = 4;
+  testSendStream(
+      "TestService",
+      "nums",
+      request,
+      [this](OmniClientResponseWithHeaders&& resp) -> folly::coro::Task<void> {
+        auto gen = std::move(*resp.stream).toAsyncGenerator();
+        for (int i = -1; i <= 4; ++i) {
+          auto val = co_await gen.next();
+          EXPECT_TRUE(val);
+          testContains<CompactSerializer>(std::move(*val), std::to_string(i));
+        }
+        EXPECT_THROW(co_await gen.next(), TApplicationException);
+      });
+}
+
+TEST_F(OmniClientTest, StreamSumAndNumsTest) {
+  NumsRequest request;
+  request.f() = 2;
+  request.t() = 4;
+  testSendStream(
+      "TestService",
+      "sumAndNums",
+      request,
+      [this](OmniClientResponseWithHeaders&& resp) -> folly::coro::Task<void> {
+        testContains<CompactSerializer, int64_t>(
+            std::move(*resp.buf.value()), 9);
+        auto gen = std::move(*resp.stream).toAsyncGenerator();
+        for (int i = 2; i <= 4; ++i) {
+          auto val = co_await gen.next();
+          EXPECT_TRUE(val);
+          testContains<CompactSerializer>(std::move(*val), std::to_string(i));
+        }
+        EXPECT_FALSE(co_await gen.next());
+      });
+}
+
+TEST_F(OmniClientTest, StreamSumAndNumsExceptionTest) {
+  NumsRequest request;
+  request.f() = 4;
+  request.t() = 2;
+  testSendStream(
+      "TestService",
+      "sumAndNums",
+      request,
+      [this](OmniClientResponseWithHeaders&& resp) -> folly::coro::Task<void> {
+        testContains<CompactSerializer>(
+            std::move(*resp.buf.value()),
+            std::string{"my_magic_arithmetic_exception"});
+        auto gen = std::move(*resp.stream).toAsyncGenerator();
+        EXPECT_FALSE(co_await gen.next());
+      });
 }

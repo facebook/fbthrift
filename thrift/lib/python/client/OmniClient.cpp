@@ -86,6 +86,74 @@ TApplicationException deserializeApplicationException(
   }
 }
 
+folly::Try<folly::IOBuf> decode_stream_exception(folly::exception_wrapper ew) {
+  using IOBufTry = folly::Try<folly::IOBuf>;
+  IOBufTry ret;
+  ew.handle(
+      [&ret](apache::thrift::detail::EncodedError& err) {
+        ret = IOBufTry(std::move(*err.encoded));
+      },
+      [&ret](apache::thrift::detail::EncodedStreamError& err) {
+        auto& payload = err.encoded;
+        DCHECK_EQ(payload.metadata.payloadMetadata().has_value(), true);
+        DCHECK_EQ(
+            payload.metadata.payloadMetadata()->getType(),
+            PayloadMetadata::exceptionMetadata);
+        auto& exceptionMetadataBase =
+            payload.metadata.payloadMetadata()->get_exceptionMetadata();
+        if (auto exceptionMetadataRef = exceptionMetadataBase.metadata()) {
+          if (exceptionMetadataRef->getType() ==
+              PayloadExceptionMetadata::declaredException) {
+            ret = IOBufTry(std::move(*payload.payload));
+          } else {
+            ret = IOBufTry(TApplicationException(
+                exceptionMetadataBase.what_utf8().value_or("")));
+          }
+        } else {
+          ret = IOBufTry(
+              TApplicationException("Missing payload exception metadata"));
+        }
+      },
+      [&ret](apache::thrift::detail::EncodedStreamRpcError& err) {
+        StreamRpcError streamRpcError;
+        CompactProtocolReader reader;
+        reader.setInput(err.encoded.get());
+        streamRpcError.read(&reader);
+        TApplicationException::TApplicationExceptionType exType{
+            TApplicationException::UNKNOWN};
+        auto code = streamRpcError.code();
+        if (code &&
+            (code.value() == StreamRpcErrorCode::CREDIT_TIMEOUT ||
+             code.value() == StreamRpcErrorCode::CHUNK_TIMEOUT)) {
+          exType = TApplicationException::TIMEOUT;
+        }
+        ret = IOBufTry(TApplicationException(
+            exType, streamRpcError.what_utf8().value_or("")));
+      },
+      [](...) {});
+
+  return ret;
+}
+
+folly::Try<folly::IOBuf> decode_stream_element(
+    folly::Try<apache::thrift::StreamPayload>&& payload) {
+  if (payload.hasValue()) {
+    return folly::Try<folly::IOBuf>(std::move(*payload->payload));
+  } else if (payload.hasException()) {
+    return decode_stream_exception(std::move(payload).exception());
+  } else {
+    return {};
+  }
+}
+
+std::unique_ptr<IOBufClientBufferedStream> extractClientStream(
+    apache::thrift::ClientReceiveState& state) {
+  return std::make_unique<IOBufClientBufferedStream>(
+      state.extractStreamBridge(),
+      decode_stream_element,
+      state.bufferOptions());
+}
+
 } // namespace
 
 OmniClient::OmniClient(RequestChannel_ptr channel)
@@ -183,8 +251,8 @@ folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
       rpcKind);
   return std::move(future)
       .deferValue([serviceAndFunction = std::move(serviceAndFunction),
-                   protocol =
-                       getChannelProtocolId()](ClientReceiveState&& state) {
+                   protocol = getChannelProtocolId(),
+                   rpcKind](ClientReceiveState&& state) {
         if (state.isException()) {
           state.exception().throw_exception();
         }
@@ -208,6 +276,10 @@ folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
                                                  // to inside the python code
           }
           resp.buf = std::move(state.serializedResponse().buffer);
+          if (rpcKind == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE) {
+            resp.stream = extractClientStream(state);
+          }
+
         } else if (state.messageType() == MessageType::T_EXCEPTION) {
           resp.buf = folly::makeUnexpected(deserializeApplicationException(
               state.protocolId(),
@@ -286,31 +358,47 @@ void OmniClient::sendImpl(
   SerializedRequest serializedRequest(std::move(args));
 
   // Send the request!
-  if (rpcKind == RpcKind::SINK) {
-    channel_->sendRequestAsync<RpcKind::SINK>(
-        std::move(rpcOptions),
-        functionName,
-        std::move(serializedRequest),
-        std::move(header),
-        createSinkClientCallback(toRequestClientCallbackPtr(
-            std::move(callback), std::move(callbackContext))));
-  } else if (rpcKind == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
-    callbackContext.oneWay = true;
-    channel_->sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
-        std::move(rpcOptions),
-        functionName,
-        std::move(serializedRequest),
-        std::move(header),
-        toRequestClientCallbackPtr(
-            std::move(callback), std::move(callbackContext)));
-  } else {
-    channel_->sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
-        std::move(rpcOptions),
-        functionName,
-        std::move(serializedRequest),
-        std::move(header),
-        toRequestClientCallbackPtr(
-            std::move(callback), std::move(callbackContext)));
+  switch (rpcKind) {
+    case RpcKind::SINK:
+      channel_->sendRequestAsync<RpcKind::SINK>(
+          std::move(rpcOptions),
+          functionName,
+          std::move(serializedRequest),
+          std::move(header),
+          createSinkClientCallback(toRequestClientCallbackPtr(
+              std::move(callback), std::move(callbackContext))));
+      break;
+    case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+      callbackContext.oneWay = true;
+      channel_->sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
+          std::move(rpcOptions),
+          functionName,
+          std::move(serializedRequest),
+          std::move(header),
+          toRequestClientCallbackPtr(
+              std::move(callback), std::move(callbackContext)));
+      break;
+    case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+      channel_->sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
+          std::move(rpcOptions),
+          functionName,
+          std::move(serializedRequest),
+          std::move(header),
+          toRequestClientCallbackPtr(
+              std::move(callback), std::move(callbackContext)));
+      break;
+    case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
+      BufferOptions bufferOptions = rpcOptions.getBufferOptions();
+      channel_->sendRequestAsync<RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE>(
+          std::move(rpcOptions),
+          functionName,
+          std::move(serializedRequest),
+          std::move(header),
+          createStreamClientCallback(
+              toRequestClientCallbackPtr(
+                  std::move(callback), std::move(callbackContext)),
+              bufferOptions));
+      break;
   }
 }
 

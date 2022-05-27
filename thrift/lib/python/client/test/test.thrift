@@ -34,6 +34,13 @@ service TestService {
   oneway void oneway();
   void surprise();
   string readHeader(1: string key);
+  stream<SimpleResponse throws (1: ArithmeticException e)> nums(
+    1: i32 f,
+    2: i32 t,
+  ) throws (1: ArithmeticException ee);
+  i64, stream<SimpleResponse> sumAndNums(1: i32 f, 2: i32 t) throws (
+    1: ArithmeticException ee,
+  );
   SimpleResponse, sink<EmptyChunk, SimpleResponse> dumbSink(
     1: EmptyRequest request,
   );
@@ -63,4 +70,9 @@ struct EmptyChunk {}
 
 struct ReadHeaderRequest {
   1: string key;
+}
+
+struct NumsRequest {
+  1: i32 f;
+  2: i32 t;
 }

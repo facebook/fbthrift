@@ -22,6 +22,7 @@
 #include <folly/io/async/DelayedDestruction.h>
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -34,9 +35,13 @@ using RequestChannel_ptr = std::unique_ptr<
     apache::thrift::RequestChannel,
     folly::DelayedDestruction::Destructor>;
 
+using IOBufClientBufferedStream =
+    apache::thrift::ClientBufferedStream<folly::IOBuf>;
+
 struct OmniClientResponseWithHeaders {
   folly::Expected<std::unique_ptr<folly::IOBuf>, folly::exception_wrapper> buf;
   apache::thrift::transport::THeader::StringToStringMap headers;
+  std::unique_ptr<IOBufClientBufferedStream> stream;
 };
 
 /**

@@ -22,7 +22,7 @@ from multiprocessing import Process
 from thrift.py3.server import get_context, SocketAddress, ThriftServer
 from thrift.python.leaf.services import LeafServiceInterface
 from thrift.python.test.services import EchoServiceInterface, TestServiceInterface
-from thrift.python.test.types import ArithmeticException, EmptyException
+from thrift.python.test.types import ArithmeticException, EmptyException, SimpleResponse
 
 
 class TestServiceHandler(TestServiceInterface):
@@ -49,6 +49,31 @@ class TestServiceHandler(TestServiceInterface):
 
     async def readHeader(self, key: str) -> str:
         return get_context().read_headers.get(key, "")
+
+    async def nums(self, f: int, t: int) -> typing.AsyncGenerator[SimpleResponse, None]:
+        if f > t:
+            raise ArithmeticException(msg="from outside of stream")
+
+        async def gen() -> typing.AsyncGenerator[SimpleResponse, None]:
+            for i in range(f, t + 1):
+                yield SimpleResponse(value=f"{i}")
+            if f < 0:
+                raise ValueError("from is negative")
+            raise ArithmeticException(msg="from inside of stream")
+
+        return gen()
+
+    async def sumAndNums(
+        self, f: int, t: int
+    ) -> typing.Tuple[int, typing.AsyncGenerator[SimpleResponse, None]]:
+        if f > t:
+            raise ArithmeticException(msg="from outside of stream")
+
+        async def gen() -> typing.AsyncGenerator[SimpleResponse, None]:
+            for i in range(f, t + 1):
+                yield SimpleResponse(value=f"{i}")
+
+        return (f + t) * (t - f + 1) // 2, gen()
 
 
 class EchoServiceHandler(TestServiceHandler, EchoServiceInterface):
