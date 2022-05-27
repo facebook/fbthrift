@@ -124,6 +124,8 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
   }
 
  protected:
+  std::shared_ptr<apache::thrift::AsyncProcessorFactory>
+      processorFactoryOverride_;
   apache::thrift::AsyncProcessorFactory& processorFactory_;
   Cpp2Worker::PerServiceMetadata& serviceMetadata_;
   std::unique_ptr<apache::thrift::AsyncProcessor> processor_;

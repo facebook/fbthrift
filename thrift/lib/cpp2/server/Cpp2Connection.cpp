@@ -110,6 +110,15 @@ class TransportUpgradeSendCallback : public MessageChannel::SendCallback {
   Cpp2Connection* cpp2Conn_;
   HeaderServerChannel* headerChannel_;
 };
+
+std::shared_ptr<apache::thrift::AsyncProcessorFactory>
+getProcessorFactoryOverride(folly::AsyncTransport& transport) {
+  if (auto newConnectionContext =
+          ThriftServer::extractNewConnectionContext(transport)) {
+    return newConnectionContext->processorFactory;
+  }
+  return {};
+}
 } // namespace
 
 Cpp2Connection::Cpp2Connection(
@@ -117,8 +126,14 @@ Cpp2Connection::Cpp2Connection(
     const folly::SocketAddress* address,
     std::shared_ptr<Cpp2Worker> worker,
     const std::shared_ptr<HeaderServerChannel>& serverChannel)
-    : processorFactory_(worker->getServer()->getDecoratedProcessorFactory()),
-      serviceMetadata_(worker->getMetadataForService(processorFactory_)),
+    : processorFactoryOverride_(
+          transport ? getProcessorFactoryOverride(*transport) : nullptr),
+      processorFactory_(
+          processorFactoryOverride_
+              ? *processorFactoryOverride_
+              : worker->getServer()->getDecoratedProcessorFactory()),
+      serviceMetadata_(worker->getMetadataForService(
+          processorFactory_, processorFactoryOverride_)),
       processor_(processorFactory_.getProcessor()),
       duplexChannel_(
           worker->getServer()->isDuplex()

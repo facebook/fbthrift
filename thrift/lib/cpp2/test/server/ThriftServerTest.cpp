@@ -3388,21 +3388,36 @@ TEST(ThriftServer, acceptConnection) {
   auto client1 = runner.newClient<TestServiceAsyncClient>();
   EXPECT_EQ("echo", client1->semifuture_echoRequest("echo").get());
 
-  folly::NetworkSocket fds[2];
-  CHECK(!folly::netops::socketpair(PF_UNIX, SOCK_STREAM, 0, fds));
+  folly::NetworkSocket fds_rocket[2];
+  CHECK(!folly::netops::socketpair(PF_UNIX, SOCK_STREAM, 0, fds_rocket));
+  folly::NetworkSocket fds_header[2];
+  CHECK(!folly::netops::socketpair(PF_UNIX, SOCK_STREAM, 0, fds_header));
 
   dynamic_cast<ThriftServer&>(runner.getThriftServer())
-      .acceptConnection(fds[0], {}, {}, std::make_shared<Interface2>());
+      .acceptConnection(fds_rocket[0], {}, {}, std::make_shared<Interface2>());
+  dynamic_cast<ThriftServer&>(runner.getThriftServer())
+      .acceptConnection(fds_header[0], {}, {}, std::make_shared<Interface2>());
 
-  auto client2 =
+  auto client2_rocket =
       std::make_unique<TestServiceAsyncClient>(PooledRequestChannel::newChannel(
-          [fd = fds[1]](folly::EventBase& evb) {
+          [fd = fds_rocket[1]](folly::EventBase& evb) {
             return RocketClientChannel::newChannel(
                 folly::AsyncSocket::newSocket(&evb, fd));
           },
           1));
 
-  EXPECT_EQ("echoOverride", client2->semifuture_echoRequest("echo").get());
+  auto client2_header =
+      std::make_unique<TestServiceAsyncClient>(PooledRequestChannel::newChannel(
+          [fd = fds_header[1]](folly::EventBase& evb) {
+            return HeaderClientChannel::newChannel(
+                folly::AsyncSocket::newSocket(&evb, fd));
+          },
+          1));
+
+  EXPECT_EQ(
+      "echoOverride", client2_rocket->semifuture_echoRequest("echo").get());
+  EXPECT_EQ(
+      "echoOverride", client2_header->semifuture_echoRequest("echo").get());
   EXPECT_EQ("echo", client1->semifuture_echoRequest("echo").get());
 }
 
