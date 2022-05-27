@@ -20,7 +20,7 @@
 
 namespace apache::thrift {
 
-template <class GuardType>
+template <class RequestGuardType>
 class GuardedRequestClientCallback : public RequestClientCallback {
  public:
   GuardedRequestClientCallback(RequestClientCallback::Ptr cb)
@@ -42,34 +42,38 @@ class GuardedRequestClientCallback : public RequestClientCallback {
 
  private:
   RequestClientCallback::Ptr cb_;
-  GuardType guard_;
+  RequestGuardType guard_;
 };
 
-template <class GuardType>
-void GuardedRequestChannel<GuardType>::setCloseCallback(
-    CloseCallback* callback) {
+template <class RequestGuardType, class ChannelGuardType>
+void GuardedRequestChannel<RequestGuardType, ChannelGuardType>::
+    setCloseCallback(CloseCallback* callback) {
   impl_->setCloseCallback(std::move(callback));
 }
 
-template <class GuardType>
-folly::EventBase* GuardedRequestChannel<GuardType>::getEventBase() const {
+template <class RequestGuardType, class ChannelGuardType>
+folly::EventBase*
+GuardedRequestChannel<RequestGuardType, ChannelGuardType>::getEventBase()
+    const {
   return impl_->getEventBase();
 }
 
-template <class GuardType>
-uint16_t GuardedRequestChannel<GuardType>::getProtocolId() {
+template <class RequestGuardType, class ChannelGuardType>
+uint16_t
+GuardedRequestChannel<RequestGuardType, ChannelGuardType>::getProtocolId() {
   return impl_->getProtocolId();
 }
 
-template <class GuardType>
-void GuardedRequestChannel<GuardType>::sendRequestResponse(
-    RpcOptions&& rpcOptions,
-    MethodMetadata&& methodMetadata,
-    SerializedRequest&& serializedRequest,
-    std::shared_ptr<transport::THeader> header,
-    RequestClientCallback::Ptr cb) {
+template <class RequestGuardType, class ChannelGuardType>
+void GuardedRequestChannel<RequestGuardType, ChannelGuardType>::
+    sendRequestResponse(
+        RpcOptions&& rpcOptions,
+        MethodMetadata&& methodMetadata,
+        SerializedRequest&& serializedRequest,
+        std::shared_ptr<transport::THeader> header,
+        RequestClientCallback::Ptr cb) {
   auto wrappedCb = RequestClientCallback::Ptr(
-      new GuardedRequestClientCallback<GuardType>(std::move(cb)));
+      new GuardedRequestClientCallback<RequestGuardType>(std::move(cb)));
 
   impl_->sendRequestResponse(
       std::move(rpcOptions),

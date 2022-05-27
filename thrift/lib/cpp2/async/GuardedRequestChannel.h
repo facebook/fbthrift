@@ -21,9 +21,10 @@
 
 namespace apache::thrift {
 
-// Wrapper around a RequestChannel object an RAII guard is held
-// during the execution of each request
-template <class GuardType>
+// Wrapper around a RequestChannel object where an RAII guard is held during
+// execution of the request if RequestGuardType is a valid RAII guard, and/or
+// lifetime of the guard if ChannelGuardType is a valilid RAII guard
+template <class RequestGuardType, class ChannelGuardType>
 class GuardedRequestChannel : public RequestChannel {
  public:
   using Impl = RequestChannel;
@@ -49,6 +50,7 @@ class GuardedRequestChannel : public RequestChannel {
  private:
   GuardedRequestChannel(ImplPtr impl) : impl_{std::move(impl)} {}
   ImplPtr impl_;
+  ChannelGuardType guard_;
 };
 } // namespace apache::thrift
 #include <thrift/lib/cpp2/async/GuardedRequestChannel-inl.h>
