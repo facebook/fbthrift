@@ -34,7 +34,7 @@ similar to the older first-generation implementation:
   to prevent large allocations of memory.
 
 * Allows true zero-copy from client to server and back using IOBufs
-  (vs. previously generated code that used std::string for binary type).
+  (vs. previous generated code that used std::string for binary type).
 
 * It's about 4x as fast as NonblockingServer in our load tests
   (`perf/cpp`) for small requests. Latency is also much improved
@@ -102,7 +102,7 @@ Will generate an interface similar to
       ...
     }
 
-So you have three choices of handler types to implement:
+So you have three choices of handler type to implement:
 
 1. `sendResponse(...)` is the synchronous method. It will be read and
    deserialized in an IO thread, and then passed to a pool thread to be

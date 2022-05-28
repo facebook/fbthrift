@@ -131,7 +131,7 @@ about the context.
 
 Lists represent zero or more elements of some other type, and function similar
 to for-each loops in other languages. The body of the loop will be expanded
-once per element in the list, and on each iteration, the context will be
+once per element in the list, and, on each iteration the context will be
 extended using each member of the list. While expanding lists, two boolean keys
 named `first?` and `last?` will be available, indicating whether the current
 iteration is the first or the last iteration, respectively.
@@ -326,7 +326,7 @@ mstch::map extend_struct(const t_struct& strct) const override {
 ```
 
 Where `my_escaping_function` is some function that performs the desired
-escape. From within templates now, as long as a struct is currently in scope,
+escaping. From within templates now, as long as a struct is currently in scope,
 `{{struct:escapedName}}` will refer to the escaped name as defined above, as the
 builtin `dump` functions are aware of the `extend_*` functions.
 
