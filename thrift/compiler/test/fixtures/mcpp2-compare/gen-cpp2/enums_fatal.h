@@ -119,4 +119,3 @@ class enums_tags {
 THRIFT_REGISTER_REFLECTION_METADATA(enums_tags::module, __fbthrift_refl::enums_module_traits);
 
 }}} // facebook::ns::qwerty
-#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_fatal_types.h"

@@ -317,4 +317,3 @@ class module_tags {
 THRIFT_REGISTER_REFLECTION_METADATA(module_tags::module, __fbthrift_refl::module_module_traits);
 
 }}}} // apache::thrift::fixtures::types
-#include "thrift/compiler/test/fixtures/types/gen-cpp2/module_fatal_types.h"
