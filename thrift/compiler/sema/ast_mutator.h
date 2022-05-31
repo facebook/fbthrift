@@ -72,7 +72,7 @@ struct ast_mutators {
 
   mutation_result operator()(
       diagnostic_context& ctx, t_program_bundle& bundle) {
-    // Best effort try to egarly resolve types.
+    // Best effort try to eagerly resolve types.
     // NOTE: It is allowed to reference types that haven't been generated yet,
     // so it is ok if this fails. The call after applying mutators will catch
     // any real issues.
