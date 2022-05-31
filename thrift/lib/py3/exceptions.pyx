@@ -125,21 +125,16 @@ cdef class GeneratedError(Error):
     cdef void _fbthrift_set_field(self, str name, object value) except *:
         pass
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
+    cdef string_view _fbthrift_get_field_name_by_index(self, size_t idx):
         raise NotImplementedError()
 
     def __repr__(self):
         fields = ", ".join(f"{name}={repr(value)}" for name, value in self)
         return f"{type(self).__name__}({fields})"
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        raise NotImplementedError()
-
     def __iter_names(self):
-        for i in range(self._fbthrift_get_struct_size()):
-            yield self._fbthrift_get_field_name_by_index(i)
+        for i in range(self._fbthrift_struct_size):
+            yield sv_to_str(self._fbthrift_get_field_name_by_index(i))
 
     def __iter__(self):
         for name in self.__iter_names():

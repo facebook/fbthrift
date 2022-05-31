@@ -140,13 +140,11 @@ cdef class Fields(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.Fields"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cFields](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cFields](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 1
+    def __cinit__(self):
+        self._fbthrift_struct_size = 1
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Fields self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -240,13 +238,11 @@ cdef class FieldsInjectedToEmptyStruct(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.FieldsInjectedToEmptyStruct"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cFieldsInjectedToEmptyStruct](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cFieldsInjectedToEmptyStruct](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 1
+    def __cinit__(self):
+        self._fbthrift_struct_size = 1
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(FieldsInjectedToEmptyStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -349,13 +345,11 @@ cdef class FieldsInjectedToStruct(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.FieldsInjectedToStruct"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cFieldsInjectedToStruct](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cFieldsInjectedToStruct](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 2
+    def __cinit__(self):
+        self._fbthrift_struct_size = 2
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(FieldsInjectedToStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -480,13 +474,11 @@ cdef class FieldsInjectedWithIncludedStruct(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.FieldsInjectedWithIncludedStruct"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cFieldsInjectedWithIncludedStruct](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cFieldsInjectedWithIncludedStruct](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 4
+    def __cinit__(self):
+        self._fbthrift_struct_size = 4
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(FieldsInjectedWithIncludedStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

@@ -205,13 +205,11 @@ cdef class Color(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.Color"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cColor](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cColor](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 4
+    def __cinit__(self):
+        self._fbthrift_struct_size = 4
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Color self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -349,13 +347,11 @@ cdef class Vehicle(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.Vehicle"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cVehicle](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cVehicle](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 5
+    def __cinit__(self):
+        self._fbthrift_struct_size = 5
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Vehicle self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -556,13 +552,11 @@ cdef class Person(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.Person"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cPerson](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cPerson](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 10
+    def __cinit__(self):
+        self._fbthrift_struct_size = 10
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Person self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

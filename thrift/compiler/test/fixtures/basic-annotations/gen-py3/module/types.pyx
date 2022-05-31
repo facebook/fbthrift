@@ -212,13 +212,11 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.MyStructNestedAnnotation"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cMyStructNestedAnnotation](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyStructNestedAnnotation](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 1
+    def __cinit__(self):
+        self._fbthrift_struct_size = 1
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStructNestedAnnotation self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -309,13 +307,11 @@ cdef class MyUnion(thrift.py3.types.Union):
     def __get_thrift_name__():
         return "module.MyUnion"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cMyUnion](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyUnion](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 0
+    def __cinit__(self):
+        self._fbthrift_struct_size = 0
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyUnion self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -393,13 +389,11 @@ cdef class MyException(thrift.py3.exceptions.GeneratedError):
     def __get_thrift_name__():
         return "module.MyException"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cMyException](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyException](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 0
+    def __cinit__(self):
+        self._fbthrift_struct_size = 0
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyException self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -571,13 +565,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.MyStruct"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cMyStruct](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cMyStruct](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 9
+    def __cinit__(self):
+        self._fbthrift_struct_size = 9
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(MyStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -680,13 +672,11 @@ cdef class SecretStruct(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.SecretStruct"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cSecretStruct](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cSecretStruct](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 2
+    def __cinit__(self):
+        self._fbthrift_struct_size = 2
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(SecretStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

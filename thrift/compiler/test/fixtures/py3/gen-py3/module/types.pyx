@@ -248,13 +248,11 @@ cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
     def __get_thrift_name__():
         return "module.SimpleException"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cSimpleException](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cSimpleException](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 1
+    def __cinit__(self):
+        self._fbthrift_struct_size = 1
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(SimpleException self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -354,13 +352,11 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.OptionalRefStruct"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cOptionalRefStruct](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cOptionalRefStruct](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 1
+    def __cinit__(self):
+        self._fbthrift_struct_size = 1
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(OptionalRefStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -508,13 +504,11 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.SimpleStruct"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cSimpleStruct](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cSimpleStruct](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 7
+    def __cinit__(self):
+        self._fbthrift_struct_size = 7
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(SimpleStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -686,13 +680,11 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.ComplexStruct"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cComplexStruct](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cComplexStruct](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 9
+    def __cinit__(self):
+        self._fbthrift_struct_size = 9
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(ComplexStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -796,13 +788,11 @@ cdef class BinaryUnion(thrift.py3.types.Union):
     def __get_thrift_name__():
         return "module.BinaryUnion"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cBinaryUnion](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cBinaryUnion](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 1
+    def __cinit__(self):
+        self._fbthrift_struct_size = 1
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(BinaryUnion self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -895,13 +885,11 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.BinaryUnionStruct"
 
-    @classmethod
-    def _fbthrift_get_field_name_by_index(cls, idx):
-        return __sv_to_str(__get_field_name_by_index[cBinaryUnionStruct](idx))
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cBinaryUnionStruct](idx)
 
-    @classmethod
-    def _fbthrift_get_struct_size(cls):
-        return 1
+    def __cinit__(self):
+        self._fbthrift_struct_size = 1
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(BinaryUnionStruct self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
