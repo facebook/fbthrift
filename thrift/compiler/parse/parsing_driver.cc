@@ -183,13 +183,6 @@ void parsing_driver::parse_file() {
     end_parsing(ex.what());
   }
 
-  // Compute locations in the program mode.
-  for (size_t i = 0; i < src.text.size(); ++i) {
-    if (src.text[i] == '\n') {
-      program->add_line_offset(i + 1);
-    }
-  }
-
   mode = parsing_mode::PROGRAM;
   info("Parsing {} for types\n", path);
   try {

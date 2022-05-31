@@ -86,9 +86,6 @@ class file_manager {
   }
 
  private:
-  // Gets the line number of the first include in program's includes_.
-  size_t get_last_include_offset() const;
-
   // Expands backwards begin_offset and forwards end_offset for all whitespaces.
   void expand_over_whitespaces(
       size_t& begin_offset, size_t& end_offset) const noexcept;

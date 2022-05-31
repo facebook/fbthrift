@@ -27,17 +27,6 @@
 namespace apache::thrift::compiler {
 namespace {
 
-// Simulates parsing a thrift file, only adding the offsets to the program.
-void addOffsets(t_program& program, const std::string& content) {
-  size_t offset = 0;
-  for (const auto& c : content) {
-    offset++;
-    if (c == '\n') {
-      program.add_line_offset(offset);
-    }
-  }
-}
-
 TEST(PackageTest, Empty) {
   t_package pkg;
   EXPECT_TRUE(pkg.empty());
@@ -142,39 +131,6 @@ TEST(TProgram, ComputeNameFromFilePath) {
   EXPECT_EQ(expect, program.compute_name_from_file_path(file_path_1));
   EXPECT_EQ(expect, program.compute_name_from_file_path(file_path_2));
   EXPECT_EQ(expect, program.compute_name_from_file_path(file_path_3));
-}
-
-TEST(TProgram, GetByteOffset) {
-  t_program program("");
-
-  addOffsets(
-      program,
-      "struct A {\n"
-      "  1: optional A a (cpp.ref);\n"
-      "}\n");
-
-  EXPECT_EQ(program.get_byte_offset(0),
-            t_program::noffset); // unknown line.
-  EXPECT_EQ(
-      program.get_byte_offset(0, 7),
-      t_program::noffset); // unknown line, ignored col.
-  EXPECT_EQ(program.get_byte_offset(1), 0); // first line.
-  EXPECT_EQ(program.get_byte_offset(1, 0), 0); // first line, no extra offset.
-
-  EXPECT_EQ(program.get_byte_offset(1, 0), 0); // struct begin
-  EXPECT_EQ(program.get_byte_offset(3, 1), 41); // struct end
-
-  EXPECT_EQ(program.get_byte_offset(2, 2), 13); // field begin
-  EXPECT_EQ(program.get_byte_offset(2, 28), 39); // field end
-
-  // We can't compute the offset for a line past the end of the file.
-  EXPECT_EQ(program.get_byte_offset(100, 0), t_program::noffset);
-  // We can compute the offset if the line_offset is past the end of the line.
-  EXPECT_EQ(program.get_byte_offset(1, 14), 14);
-  // We currently can compute the line_offset when past the end of the line and
-  // file, though this is techically UB.
-  // TODO(afuller): Consider returning noffset in this case.
-  EXPECT_EQ(program.get_byte_offset(1, 100), 100);
 }
 
 } // namespace

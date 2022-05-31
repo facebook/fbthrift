@@ -51,11 +51,8 @@ TEST(FileManagerTest, apply_replacements_test) {
 
   codemod::file_manager fm(source_mgr, *program);
 
-  fm.add(
-      {program->get_byte_offset(2, 2),
-       program->get_byte_offset(2, 28),
-       "@cpp.Ref{cpp.RefType.Unique}\n  1: optional string a;"});
-  fm.add({program->get_byte_offset(3, 1), program->get_byte_offset(3, 21), ""});
+  fm.add({13, 39, "@cpp.Ref{cpp.RefType.Unique}\n  1: optional string a;"});
+  fm.add({41, 61, ""});
 
   fm.apply_replacements();
 

@@ -65,16 +65,6 @@ void file_manager::remove(const t_annotation& annotation) {
   add({begin_offset, end_offset, ""});
 }
 
-size_t file_manager::get_last_include_offset() const {
-  int lineno = 0;
-
-  for (const auto* include : program_->includes()) {
-    lineno = std::max(lineno, include->lineno());
-  }
-
-  return program_->get_byte_offset(lineno + 1);
-}
-
 void file_manager::expand_over_whitespaces(
     size_t& begin_offset, size_t& end_offset) const noexcept {
   while (begin_offset >= 1 && std::isspace(old_content_[begin_offset - 1])) {
@@ -91,7 +81,9 @@ void file_manager::add_include(std::string include) {
   if (includes_.find(include) == includes_.end()) {
     std::string curr_include = "include \"" + include + "\"\n";
     includes_.insert(std::move(include));
-    auto offset = get_last_include_offset();
+    auto offset = !program_->includes().empty()
+        ? to_offset(program_->includes().back()->src_range().end) + 1
+        : 0;
     replacements_.insert({offset, offset, curr_include});
   }
 }
