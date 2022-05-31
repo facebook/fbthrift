@@ -28,7 +28,8 @@ namespace thrift {
 
 struct ClientHostMetadata {
   std::optional<std::string> hostname;
-  std::optional<std::map<std::string, std::string>> otherMetadata;
+  std::optional<apache::thrift::transport::THeader::StringToStringMap>
+      otherMetadata;
 };
 
 namespace detail {
