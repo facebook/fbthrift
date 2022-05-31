@@ -129,11 +129,13 @@ cdef class CustomException(thrift.py3.exceptions.GeneratedError):
     def __get_thrift_name__():
         return "module.CustomException"
 
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cCustomException](idx)
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cCustomException](idx))
 
-    def __cinit__(self):
-        self._fbthrift_struct_size = 1
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 1
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(CustomException self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

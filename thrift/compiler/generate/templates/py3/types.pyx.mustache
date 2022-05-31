@@ -400,11 +400,13 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
     def __get_thrift_name__():
         return "{{program:name}}.{{struct:name}}"
 
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[c{{struct:name}}](idx)
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[c{{struct:name}}](idx))
 
-    def __cinit__(self):
-        self._fbthrift_struct_size = {{struct:size}}
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return {{struct:size}}
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize({{struct:name}} self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

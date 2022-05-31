@@ -27,20 +27,19 @@ class UnionTests(unittest.TestCase):
         hash(Integers())
 
     def test_union_dir(self) -> None:
-        self.assertEqual(
-            dir(Integers()),
-            [
-                "digits",
-                "large",
-                "medium",
-                "name_",
-                "small",
-                "tiny",
-                "type",
-                "unbounded",
-                "value",
-            ],
-        )
+        expected = [
+            "digits",
+            "large",
+            "medium",
+            "name_",
+            "small",
+            "tiny",
+            "type",
+            "unbounded",
+            "value",
+        ]
+        self.assertEqual(expected, dir(Integers()))
+        self.assertEqual(expected, dir(Integers))
 
     def test_union_enum_dir(self) -> None:
         contents = dir(Integers.Type)

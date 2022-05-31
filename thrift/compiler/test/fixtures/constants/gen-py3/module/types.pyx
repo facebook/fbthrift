@@ -374,11 +374,13 @@ cdef class Internship(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.Internship"
 
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cInternship](idx)
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cInternship](idx))
 
-    def __cinit__(self):
-        self._fbthrift_struct_size = 5
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 5
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Internship self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -481,11 +483,13 @@ cdef class Range(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.Range"
 
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cRange](idx)
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cRange](idx))
 
-    def __cinit__(self):
-        self._fbthrift_struct_size = 2
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 2
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Range self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -588,11 +592,13 @@ cdef class struct1(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.struct1"
 
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cstruct1](idx)
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cstruct1](idx))
 
-    def __cinit__(self):
-        self._fbthrift_struct_size = 2
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 2
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(struct1 self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -717,11 +723,13 @@ cdef class struct2(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.struct2"
 
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cstruct2](idx)
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cstruct2](idx))
 
-    def __cinit__(self):
-        self._fbthrift_struct_size = 4
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 4
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(struct2 self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -835,11 +843,13 @@ cdef class struct3(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.struct3"
 
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cstruct3](idx)
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cstruct3](idx))
 
-    def __cinit__(self):
-        self._fbthrift_struct_size = 3
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 3
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(struct3 self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -955,11 +965,13 @@ cdef class struct4(thrift.py3.types.Struct):
     def __get_thrift_name__():
         return "module.struct4"
 
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cstruct4](idx)
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cstruct4](idx))
 
-    def __cinit__(self):
-        self._fbthrift_struct_size = 3
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 3
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(struct4 self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -1110,11 +1122,13 @@ cdef class union1(thrift.py3.types.Union):
     def __get_thrift_name__():
         return "module.union1"
 
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cunion1](idx)
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cunion1](idx))
 
-    def __cinit__(self):
-        self._fbthrift_struct_size = 2
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 2
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(union1 self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -1303,11 +1317,13 @@ cdef class union2(thrift.py3.types.Union):
     def __get_thrift_name__():
         return "module.union2"
 
-    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cunion2](idx)
+    @classmethod
+    def _fbthrift_get_field_name_by_index(cls, idx):
+        return __sv_to_str(__get_field_name_by_index[cunion2](idx))
 
-    def __cinit__(self):
-        self._fbthrift_struct_size = 4
+    @classmethod
+    def _fbthrift_get_struct_size(cls):
+        return 4
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(union2 self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
