@@ -83,9 +83,7 @@ std::pair<FrameType, Flags> readFrameTypeAndFlags(folly::io::Cursor& cursor) {
 ExtFrameType readExtFrameType(folly::io::Cursor& cursor) {
   const auto extFrameType = cursor.readBE<uint32_t>();
   switch (static_cast<ExtFrameType>(extFrameType)) {
-    case ExtFrameType::HEADERS_PUSH:
     case ExtFrameType::ALIGNED_PAGE:
-    case ExtFrameType::INTERACTION_TERMINATE:
     case ExtFrameType::CUSTOM_ALLOC:
       return static_cast<ExtFrameType>(extFrameType);
     default:

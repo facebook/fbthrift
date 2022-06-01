@@ -56,7 +56,7 @@
 
 namespace {
 const int64_t kRocketClientMaxVersion = 9;
-const int64_t kRocketClientMinVersion = 6;
+const int64_t kRocketClientMinVersion = 8;
 } // namespace
 
 THRIFT_FLAG_DEFINE_bool(rocket_client_new_protocol_key, true);
@@ -274,10 +274,6 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
               break;
             default:
               switch (metaType) {
-                case PayloadExceptionMetadata::DEPRECATED_appClientException:
-                  (*otherMetadataRef)[isProxiedResponse ? "pex" : "ex"] =
-                      kAppClientErrorCode;
-                  break;
                 case PayloadExceptionMetadata::appUnknownException:
                   if (auto ec = exceptionMetadataRef->appUnknownException_ref()
                                     ->errorClassification_ref()) {

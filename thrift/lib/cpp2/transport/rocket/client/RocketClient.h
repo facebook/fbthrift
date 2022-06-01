@@ -116,7 +116,8 @@ class RocketClient : public virtual folly::DelayedDestruction,
 
   FOLLY_NODISCARD bool sendRequestN(StreamId streamId, int32_t n);
   void cancelStream(StreamId streamId);
-  void sendPayload(StreamId streamId, StreamPayload&& payload, Flags flags);
+  FOLLY_NODISCARD bool sendPayload(
+      StreamId streamId, StreamPayload&& payload, Flags flags);
   void sendError(StreamId streamId, RocketException&& rex);
   void sendComplete(StreamId streamId, bool closeStream);
   void sendExtAlignedPage(

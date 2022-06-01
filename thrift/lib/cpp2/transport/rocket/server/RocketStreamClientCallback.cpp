@@ -157,25 +157,17 @@ void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
                 ErrorCode::APPLICATION_ERROR, std::move(err.encoded)));
       },
       [this](::apache::thrift::detail::EncodedStreamError& err) {
-        if (connection_.getVersion() >= 8) {
-          // apply compression if client has specified compression codec
-          if (compressionConfig_) {
-            apache::thrift::rocket::detail::setCompressionCodec(
-                *compressionConfig_,
-                err.encoded.metadata,
-                err.encoded.payload->computeChainDataLength());
-          }
-          connection_.sendPayload(
-              streamId_,
-              pack(std::move(err.encoded)),
-              Flags().next(true).complete(true));
-        } else {
-          connection_.sendError(
-              streamId_,
-              RocketException(
-                  ErrorCode::APPLICATION_ERROR,
-                  std::move(err.encoded.payload)));
+        // apply compression if client has specified compression codec
+        if (compressionConfig_) {
+          apache::thrift::rocket::detail::setCompressionCodec(
+              *compressionConfig_,
+              err.encoded.metadata,
+              err.encoded.payload->computeChainDataLength());
         }
+        connection_.sendPayload(
+            streamId_,
+            pack(std::move(err.encoded)),
+            Flags().next(true).complete(true));
       },
       [this, &ew](...) {
         connection_.sendError(
@@ -186,20 +178,12 @@ void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
 }
 
 bool RocketStreamClientCallback::onStreamHeaders(HeadersPayload&& payload) {
-  if (connection_.getVersion() >= 7) {
-    ServerPushMetadata serverMeta;
-    serverMeta.streamHeadersPush_ref().ensure().streamId_ref() =
-        static_cast<uint32_t>(streamId_);
-    serverMeta.streamHeadersPush_ref()->headersPayloadContent_ref() =
-        std::move(payload.payload);
-    connection_.sendMetadataPush(packCompact(std::move(serverMeta)));
-  } else {
-    connection_.sendExt(
-        streamId_,
-        pack(payload),
-        Flags().ignore(true),
-        ExtFrameType::HEADERS_PUSH);
-  }
+  ServerPushMetadata serverMeta;
+  serverMeta.streamHeadersPush_ref().ensure().streamId_ref() =
+      static_cast<uint32_t>(streamId_);
+  serverMeta.streamHeadersPush_ref()->headersPayloadContent_ref() =
+      std::move(payload.payload);
+  connection_.sendMetadataPush(packCompact(std::move(serverMeta)));
   return true;
 }
 
@@ -249,25 +233,15 @@ void RocketStreamClientCallback::timeoutExpired() noexcept {
   DCHECK_EQ(0u, tokens_);
 
   serverCallback()->onStreamCancel();
-  if (connection_.getVersion() >= 8) {
-    StreamRpcError streamRpcError;
-    streamRpcError.code_ref() = StreamRpcErrorCode::CREDIT_TIMEOUT;
-    streamRpcError.name_utf8_ref() =
-        apache::thrift::TEnumTraits<StreamRpcErrorCode>::findName(
-            StreamRpcErrorCode::CREDIT_TIMEOUT);
-    streamRpcError.what_utf8_ref() =
-        "Stream expire timeout(no credit from client)";
-    onStreamError(folly::make_exception_wrapper<rocket::RocketException>(
-        rocket::ErrorCode::CANCELED, packCompact(streamRpcError)));
-  } else {
-    onStreamError(folly::make_exception_wrapper<rocket::RocketException>(
-        rocket::ErrorCode::APPLICATION_ERROR,
-        serializeErrorStruct(
-            protoId_,
-            TApplicationException(
-                TApplicationException::TApplicationExceptionType::TIMEOUT,
-                "Stream expire timeout(no credit from client)"))));
-  }
+  StreamRpcError streamRpcError;
+  streamRpcError.code_ref() = StreamRpcErrorCode::CREDIT_TIMEOUT;
+  streamRpcError.name_utf8_ref() =
+      apache::thrift::TEnumTraits<StreamRpcErrorCode>::findName(
+          StreamRpcErrorCode::CREDIT_TIMEOUT);
+  streamRpcError.what_utf8_ref() =
+      "Stream expire timeout(no credit from client)";
+  onStreamError(folly::make_exception_wrapper<rocket::RocketException>(
+      rocket::ErrorCode::CANCELED, packCompact(streamRpcError)));
 }
 
 void RocketStreamClientCallback::setProtoId(protocol::PROTOCOL_TYPES protoId) {

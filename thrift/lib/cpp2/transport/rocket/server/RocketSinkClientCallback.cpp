@@ -119,25 +119,17 @@ void RocketSinkClientCallback::onFinalResponseError(
             RocketException(ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
       },
       [this](::apache::thrift::detail::EncodedStreamError& err) {
-        if (connection_.getVersion() >= 8) {
-          // apply compression if client has specified compression codec
-          if (compressionConfig_) {
-            apache::thrift::rocket::detail::setCompressionCodec(
-                *compressionConfig_,
-                err.encoded.metadata,
-                err.encoded.payload->computeChainDataLength());
-          }
-          connection_.sendPayload(
-              streamId_,
-              pack(std::move(err.encoded)),
-              Flags().next(true).complete(true));
-        } else {
-          connection_.sendError(
-              streamId_,
-              RocketException(
-                  ErrorCode::APPLICATION_ERROR,
-                  std::move(err.encoded.payload)));
+        // apply compression if client has specified compression codec
+        if (compressionConfig_) {
+          apache::thrift::rocket::detail::setCompressionCodec(
+              *compressionConfig_,
+              err.encoded.metadata,
+              err.encoded.payload->computeChainDataLength());
         }
+        connection_.sendPayload(
+            streamId_,
+            pack(std::move(err.encoded)),
+            Flags().next(true).complete(true));
       },
       [&](...) {
         connection_.sendError(
@@ -209,20 +201,14 @@ void RocketSinkClientCallback::timeoutExpired() noexcept {
       TApplicationException::TApplicationExceptionType::TIMEOUT,
       "Sink chunk timeout");
   onSinkError(folly::make_exception_wrapper<TApplicationException>(ex));
-  if (connection_.getVersion() >= 8) {
-    StreamRpcError streamRpcError;
-    streamRpcError.code_ref() = StreamRpcErrorCode::CHUNK_TIMEOUT;
-    streamRpcError.name_utf8_ref() =
-        apache::thrift::TEnumTraits<StreamRpcErrorCode>::findName(
-            StreamRpcErrorCode::CHUNK_TIMEOUT);
-    streamRpcError.what_utf8_ref() = "Sink chunk timeout";
-    onFinalResponseError(folly::make_exception_wrapper<rocket::RocketException>(
-        rocket::ErrorCode::CANCELED, packCompact(streamRpcError)));
-  } else {
-    onFinalResponseError(folly::make_exception_wrapper<rocket::RocketException>(
-        rocket::ErrorCode::APPLICATION_ERROR,
-        serializeErrorStruct(protoId_, ex)));
-  }
+  StreamRpcError streamRpcError;
+  streamRpcError.code_ref() = StreamRpcErrorCode::CHUNK_TIMEOUT;
+  streamRpcError.name_utf8_ref() =
+      apache::thrift::TEnumTraits<StreamRpcErrorCode>::findName(
+          StreamRpcErrorCode::CHUNK_TIMEOUT);
+  streamRpcError.what_utf8_ref() = "Sink chunk timeout";
+  onFinalResponseError(folly::make_exception_wrapper<rocket::RocketException>(
+      rocket::ErrorCode::CANCELED, packCompact(streamRpcError)));
 }
 
 void RocketSinkClientCallback::setProtoId(protocol::PROTOCOL_TYPES protoId) {

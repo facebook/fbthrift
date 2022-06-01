@@ -17,7 +17,7 @@ If the upgrade was successful - both server and client MUST treat the connection
 
 ## Versioning
 
-Rocket follows a versioning scheme consisting of a single numeric version. This document describes protocol versions 6 through 9.
+Rocket follows a versioning scheme consisting of a single numeric version. This document describes protocol versions 8 through 9.
 
 ## Connection setup (Rocket protocol version 9+)
 RSocket setup frame MUST use application/x-rocket-metadata+compact as Metadata Encoding MIME Type and application/x-rocket-payload as Data Encoding MIME Type.
@@ -26,7 +26,7 @@ RSocket setup payload MUST consist of a compact-serialized RequestSetupMetadata 
 
 If connection establishment was successful, the server MUST respond with a SetupResponse control message.
 
-## Connection setup (Rocket protocol version 6-8)
+## Connection setup (Rocket protocol version 8)
 RSocket setup payload MUST consist of a 32-bit kRocketProtocolKey followed by a compact-serialized RequestSetupMetadata struct.
 
 If connection establishment was successful, the server MUST respond with a SetupResponse control message.
@@ -59,19 +59,13 @@ PAYLOAD RSocket frame is used for responses, declared exceptions, and undeclared
 
 If first response contains an exception sent in a PAYLOAD frame, it SHOULD have the Complete bit set.
 
-#### Streaming responses (Rocket protocol version 8+)
+#### Streaming responses
 
 ERROR RSocket frame is only used for internal server errors. ERROR frame error data MUST contain a compact-serialized StreamRpcError struct. ERROR frame MUST only use REJECTED, CANCELED or INVALID error codes.
 
 PAYLOAD RSocket frame is used for responses, declared exceptions, and undeclared exceptions. PAYLOAD frame metadata MUST contain compact-serialized StreamPayloadMetadata struct. PAYLOAD frame payload MUST contain response serialized using format determined by StreamPayloadMetadata struct.
 
 If stream response contains an exception sent in a PAYLOAD frame, it SHOULD have the Complete bit set.
-
-#### Streaming responses (Rocket protocol version 6-7)
-
-ERROR RSocket frame is used for internal server errors, declared exceptions, and undeclared exceptions. ERROR frame error data MUST contain a Thrift-serialized declared exception or TApplicationException. Serialization protocol MUST match RequestRpcMetadata protocol. ERROR frame MUST only use APPLICATION_ERROR error code.
-
-PAYLOAD RSocket frame is used for responses. PAYLOAD frame metadata MUST contain a compact-serialized StreamPayloadMetadata struct. PAYLOAD frame payload MUST contain response serialized using format determined by StreamPayloadMetadata struct.
 
 ### Sink
 
@@ -84,7 +78,7 @@ All Control messages are sent via METADATA_PUSH RSocket frame.
 ### Control messages from the server
 METADATA_PUSH frame sent by the server MUST contain a compact-serialized ServerPushMetadata struct.
 
-### Control messages from the client (Rocket protocol version 7+)
+### Control messages from the client
 METADATA_PUSH frame sent by the client MUST contain a compact-serialized ClientPushMetadata struct.
 
 ## Interactions

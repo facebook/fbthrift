@@ -158,9 +158,8 @@ bool RocketSinkServerCallback::onSinkNext(StreamPayload&& payload) {
             payload.metadata,
             payload.payload->computeChainDataLength());
       }
-      client_.sendPayload(
+      return client_.sendPayload(
           streamId_, std::move(payload), rocket::Flags().next(true));
-      break;
     }
     case RpcOptions::MemAllocType::ALLOC_PAGE_ALIGN: {
       client_.sendExtAlignedPage(

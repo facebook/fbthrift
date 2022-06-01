@@ -51,7 +51,7 @@
 
 namespace {
 const int64_t kRocketServerMaxVersion = 9;
-const int64_t kRocketServerMinVersion = 6;
+const int64_t kRocketServerMinVersion = 8;
 } // namespace
 
 THRIFT_FLAG_DEFINE_bool(rocket_server_legacy_protocol_key, true);
@@ -234,7 +234,6 @@ void ThriftRocketServerHandler::handleSetupFrame(
       connection.applyDscpAndMarkToSocket(meta);
     }
 
-    DCHECK_GE(version_, 5);
     ServerPushMetadata serverMeta;
     serverMeta.set_setupResponse();
     serverMeta.setupResponse_ref()->version_ref() = version_;

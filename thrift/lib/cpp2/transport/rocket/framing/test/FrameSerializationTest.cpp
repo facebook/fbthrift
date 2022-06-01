@@ -650,11 +650,11 @@ TEST(FrameSerialization, ExtSanity) {
       kTestStreamId,
       Payload::makeFromMetadataAndData(kMetadata, kData),
       Flags().ignore(true),
-      ExtFrameType::HEADERS_PUSH);
+      ExtFrameType::ALIGNED_PAGE);
 
   auto validate = [](const ExtFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
-    EXPECT_EQ(ExtFrameType::HEADERS_PUSH, f.extFrameType());
+    EXPECT_EQ(ExtFrameType::ALIGNED_PAGE, f.extFrameType());
     EXPECT_TRUE(f.hasIgnore());
     validateMetadataAndData(f.payload());
   };
@@ -683,7 +683,7 @@ TEST(FrameSerialization, ExtUnknownSanity) {
 TEST(FrameSerialization, ExtEmptyMetadataSanity) {
   auto validate = [](const ExtFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
-    EXPECT_EQ(ExtFrameType::HEADERS_PUSH, f.extFrameType());
+    EXPECT_EQ(ExtFrameType::ALIGNED_PAGE, f.extFrameType());
     EXPECT_TRUE(f.hasIgnore());
     EXPECT_FALSE(f.payload().hasNonemptyMetadata());
     auto dam = splitMetadataAndData(f.payload());
@@ -696,7 +696,7 @@ TEST(FrameSerialization, ExtEmptyMetadataSanity) {
         kTestStreamId,
         Payload::makeFromData(kData),
         Flags().ignore(true),
-        ExtFrameType::HEADERS_PUSH);
+        ExtFrameType::ALIGNED_PAGE);
 
     validate(frame);
     validate(serializeAndDeserialize(std::move(frame)));
@@ -709,7 +709,7 @@ TEST(FrameSerialization, ExtEmptyMetadataSanity) {
         Payload::makeFromMetadataAndData(
             folly::ByteRange{folly::StringPiece{""}}, kData),
         Flags().ignore(true),
-        ExtFrameType::HEADERS_PUSH);
+        ExtFrameType::ALIGNED_PAGE);
 
     validate(frame);
     validate(serializeAndDeserialize(std::move(frame)));

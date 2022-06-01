@@ -51,7 +51,6 @@ import java.net.SocketAddress;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
-import org.apache.thrift.PayloadAppServerExceptionMetadata;
 import org.apache.thrift.PayloadAppUnknownExceptionMetdata;
 import org.apache.thrift.PayloadDeclaredExceptionMetadata;
 import org.apache.thrift.PayloadExceptionMetadata;
@@ -350,8 +349,8 @@ public class RpcClientUtilsTest {
                 PayloadMetadata.fromExceptionMetadata(
                     new PayloadExceptionMetadataBase.Builder()
                         .setMetadata(
-                            PayloadExceptionMetadata.fromDEPRECATEDAppServerException(
-                                PayloadAppServerExceptionMetadata.defaultInstance()))
+                            PayloadExceptionMetadata.fromAppUnknownException(
+                                PayloadAppUnknownExceptionMetdata.defaultInstance()))
                         .build()))
             .build();
     Optional<? extends TException> undeclaredException =

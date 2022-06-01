@@ -203,10 +203,6 @@ struct PayloadProxyExceptionMetadata {}
 
 struct PayloadProxiedExceptionMetadata {}
 
-struct PayloadAppClientExceptionMetadata {}
-
-struct PayloadAppServerExceptionMetadata {}
-
 struct PayloadAppUnknownExceptionMetdata {
   1: optional ErrorClassification errorClassification;
 }
@@ -218,11 +214,8 @@ union PayloadExceptionMetadata {
   // defined by a proxy.
   2: PayloadProxyExceptionMetadata proxyException;
   // 3: Deprecated
-  // Deprecated:
-  // replaced by PayloadAppUnknownExceptionMetdata
-  4: PayloadAppClientExceptionMetadata DEPRECATED_appClientException;
-  // replaced by PayloadAppUnknownExceptionMetdata
-  5: PayloadAppServerExceptionMetadata DEPRECATED_appServerException;
+  // 4: Deprecated
+  // 5: Deprecated
   // If set response payload SHOULD be empty.
   // Supported in Rocket protocol version 8+
   6: PayloadAppUnknownExceptionMetdata appUnknownException;

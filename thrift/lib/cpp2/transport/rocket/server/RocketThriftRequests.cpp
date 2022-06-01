@@ -97,8 +97,7 @@ RocketException makeResponseRpcError(
 
 void preprocessProxiedExceptionHeaders(
     ResponseRpcMetadata& metadata, int32_t version) {
-  DCHECK_GE(version, 4);
-
+  DCHECK_GE(version, 8);
   auto otherMetadataRef = metadata.otherMetadata_ref();
   if (!otherMetadataRef) {
     return;
@@ -209,8 +208,6 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
         break;
       }
       case MessageType::T_EXCEPTION: {
-        DCHECK_GE(version, 2);
-
         preprocessProxiedExceptionHeaders(metadata, version);
 
         TApplicationException ex;
@@ -237,8 +234,6 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
           otherMetadataRef->erase("servicerouter:sr_internal_error");
           otherMetadataRef->erase("ex");
         } else {
-          DCHECK_GE(version, 3);
-
           auto exPtr = otherMetadataRef
               ? folly::get_ptr(*otherMetadataRef, "ex")
               : nullptr;
@@ -298,29 +293,16 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
             exceptionMetadataBase.name_utf8_ref() = *uexPtr;
             otherMetadataRef->erase("uex");
           }
-          PayloadExceptionMetadata exceptionMetadata;
-          if (exPtr && *exPtr == kAppClientErrorCode) {
-            if (version < 8) {
-              exceptionMetadata.set_DEPRECATED_appClientException(
-                  PayloadAppClientExceptionMetadata());
-            } else {
-              PayloadAppUnknownExceptionMetdata aue;
-              aue.errorClassification_ref().ensure().blame_ref() =
-                  ErrorBlame::CLIENT;
-              exceptionMetadata.set_appUnknownException(std::move(aue));
-            }
-          } else {
-            if (version < 8) {
-              exceptionMetadata.set_DEPRECATED_appServerException(
-                  PayloadAppServerExceptionMetadata());
-            } else {
-              PayloadAppUnknownExceptionMetdata aue;
-              aue.errorClassification_ref().ensure().blame_ref() =
-                  ErrorBlame::SERVER;
-              exceptionMetadata.set_appUnknownException(std::move(aue));
-            }
-          }
-          exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
+
+          const auto isClientError = exPtr && *exPtr == kAppClientErrorCode;
+          exceptionMetadataBase.metadata_ref()
+              .ensure()
+              .appUnknownException_ref()
+              .ensure()
+              .errorClassification_ref()
+              .ensure()
+              .blame_ref() =
+              isClientError ? ErrorBlame::CLIENT : ErrorBlame::SERVER;
 
           payload->clear();
 
@@ -337,12 +319,10 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
         break;
       }
       default:
-        DCHECK_GE(version, 3);
         return makeResponseRpcError(
             ResponseRpcErrorCode::UNKNOWN, "Invalid message type", metadata);
     }
   } catch (...) {
-    DCHECK_GE(version, 3);
     return makeResponseRpcError(
         ResponseRpcErrorCode::UNKNOWN,
         fmt::format(
@@ -386,7 +366,6 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
         *compressionConfig, metadata, payload->computeChainDataLength());
   }
 
-  DCHECK_GE(version, 1);
   switch (protType) {
     case protocol::T_BINARY_PROTOCOL:
       return processFirstResponseHelper<BinaryProtocolReader>(
@@ -395,7 +374,6 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
       return processFirstResponseHelper<CompactProtocolReader>(
           metadata, payload, version);
     default: {
-      DCHECK_GE(version, 3);
       return makeResponseRpcError(
           ResponseRpcErrorCode::UNKNOWN,
           "Invalid response payload protocol id",

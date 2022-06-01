@@ -168,7 +168,6 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
         break;
       }
       case ServerPushMetadata::streamHeadersPush: {
-        DCHECK(serverVersion_ == -1 || serverVersion_ >= 7);
         StreamId sid(
             serverMeta.streamHeadersPush_ref()->streamId_ref().value_or(0));
         auto it = streams_.find(sid);
@@ -188,7 +187,6 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
         return;
       }
       case ServerPushMetadata::drainCompletePush: {
-        DCHECK(serverVersion_ == -1 || serverVersion_ >= 7);
         auto drainCode =
             serverMeta.drainCompletePush_ref()->drainCompleteCode_ref();
         if (drainCode &&
@@ -495,25 +493,6 @@ StreamChannelStatusResponse RocketClient::handleExtFrame(
         "Received Ext frame but missing initial response";
     serverCallback.onInitialError(makeContractViolation(kErrorMsg));
     return {StreamChannelStatus::ContractViolation, kErrorMsg};
-  }
-
-  if (extFrame.extFrameType() == ExtFrameType::HEADERS_PUSH) {
-    DCHECK(serverVersion_ == -1 || serverVersion_ >= 7);
-    auto headersPayload = unpack<HeadersPayload>(std::move(extFrame.payload()));
-    if (headersPayload.hasException()) {
-      if constexpr (std::is_same_v<CallbackType, RocketSinkServerCallback>) {
-        return serverCallback.onFinalResponseError(
-            std::move(headersPayload.exception()));
-      } else {
-        return serverCallback.onStreamError(
-            std::move(headersPayload.exception()));
-      }
-    }
-    // Sink currently ignores this frame
-    if constexpr (!std::is_same_v<CallbackType, RocketSinkServerCallback>) {
-      serverCallback.onStreamHeaders(std::move(*headersPayload));
-    }
-    return StreamChannelStatus::Alive;
   }
 
   if (extFrame.hasIgnore()) {
@@ -966,9 +945,9 @@ void RocketClient::cancelStream(StreamId streamId) {
       });
 }
 
-void RocketClient::sendPayload(
+bool RocketClient::sendPayload(
     StreamId streamId, StreamPayload&& payload, Flags flags) {
-  std::ignore = sendFrame(
+  return sendFrame(
       PayloadFrame(streamId, pack(std::move(payload)), flags),
       [this,
        dg = DestructorGuard(this),
@@ -999,7 +978,7 @@ void RocketClient::sendComplete(StreamId streamId, bool closeStream) {
   if (closeStream) {
     freeStream(streamId);
   }
-  sendPayload(
+  std::ignore = sendPayload(
       streamId,
       StreamPayload(std::unique_ptr<folly::IOBuf>{}, {}),
       rocket::Flags().complete(true));
@@ -1014,66 +993,20 @@ bool RocketClient::sendHeadersPush(
         << "sendHeadersPush failed, closing now: " << ex.what();
     close(std::move(ex));
   };
-  return sendVersionDependentFrame(
-      [=, payload = std::move(payload)](int32_t serverVersion) mutable {
-        if (serverVersion >= 7) {
-          ClientPushMetadata clientMeta;
-          clientMeta.streamHeadersPush_ref().ensure().streamId_ref() =
-              static_cast<uint32_t>(streamId);
-          clientMeta.streamHeadersPush_ref()->headersPayloadContent_ref() =
-              std::move(payload.payload);
-          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
-              MetadataPushFrame::makeFromMetadata(
-                  packCompact(std::move(clientMeta)))
-                  .serialize(),
-              FrameType::METADATA_PUSH);
-        } else {
-          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
-              ExtFrame(
-                  streamId,
-                  pack(std::move(payload)),
-                  rocket::Flags().ignore(true),
-                  ExtFrameType::HEADERS_PUSH)
-                  .serialize(),
-              FrameType::EXT);
-        }
-      },
-      streamId,
+  ClientPushMetadata clientMeta;
+  clientMeta.streamHeadersPush_ref().ensure().streamId_ref() =
+      static_cast<uint32_t>(streamId);
+  clientMeta.streamHeadersPush_ref()->headersPayloadContent_ref() =
+      std::move(payload.payload);
+  return sendFrame(
+      MetadataPushFrame::makeFromMetadata(packCompact(std::move(clientMeta))),
       std::move(onError));
 }
 
 bool RocketClient::sendSinkError(StreamId streamId, StreamPayload&& payload) {
   freeStream(streamId);
-  auto g = makeRequestCountGuard(RequestType::INTERNAL);
-  auto onError = [dg = DestructorGuard(this), this, g = std::move(g)](
-                     transport::TTransportException ex) {
-    FB_LOG_EVERY_MS(ERROR, 1000)
-        << "sendSinkError failed, closing now: " << ex.what();
-    close(std::move(ex));
-  };
-  return sendVersionDependentFrame(
-      [streamId = streamId,
-       payload = std::move(payload)](int32_t serverVersion) mutable {
-        if (serverVersion >= 8) {
-          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
-              PayloadFrame(
-                  streamId,
-                  pack(std::move(payload)),
-                  Flags().next(true).complete(true))
-                  .serialize(),
-              FrameType::PAYLOAD);
-        } else {
-          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
-              ErrorFrame(
-                  streamId,
-                  RocketException(
-                      ErrorCode::APPLICATION_ERROR, std::move(payload.payload)))
-                  .serialize(),
-              FrameType::ERROR);
-        }
-      },
-      streamId,
-      std::move(onError));
+  return sendPayload(
+      streamId, std::move(payload), Flags().next(true).complete(true));
 }
 
 void RocketClient::sendExtAlignedPage(
@@ -1469,30 +1402,10 @@ void RocketClient::terminateInteraction(int64_t id) {
         close(std::move(ex));
       };
 
-  std::ignore = sendVersionDependentFrame(
-      [id](int32_t serverVersion) {
-        InteractionTerminate term;
-        term.interactionId_ref() = id;
-        if (serverVersion >= 7) {
-          ClientPushMetadata clientMeta;
-          clientMeta.interactionTerminate_ref() = std::move(term);
-          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
-              MetadataPushFrame::makeFromMetadata(
-                  packCompact(std::move(clientMeta)))
-                  .serialize(),
-              FrameType::METADATA_PUSH);
-        } else {
-          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
-              ExtFrame(
-                  StreamId(),
-                  Payload::makeFromData(packCompact(std::move(term))),
-                  Flags(),
-                  ExtFrameType::INTERACTION_TERMINATE)
-                  .serialize(),
-              FrameType::EXT);
-        }
-      },
-      StreamId(),
+  ClientPushMetadata clientMeta;
+  clientMeta.interactionTerminate_ref().ensure().interactionId_ref() = id;
+  std::ignore = sendFrame(
+      MetadataPushFrame::makeFromMetadata(packCompact(std::move(clientMeta))),
       std::move(onError));
 }
 

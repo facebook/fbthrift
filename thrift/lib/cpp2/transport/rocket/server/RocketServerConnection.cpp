@@ -386,24 +386,14 @@ void RocketServerConnection::handleUntrackedFrame(
 
     case FrameType::EXT: {
       ExtFrame extFrame(streamId, flags, cursor, std::move(frame));
-      switch (extFrame.extFrameType()) {
-        case ExtFrameType::INTERACTION_TERMINATE: {
-          DCHECK_LT(getVersion(), 7);
-          InteractionTerminate term;
-          unpackCompact(term, extFrame.payload().buffer());
-          frameHandler_->terminateInteraction(term.get_interactionId());
-          return;
-        }
-        default:
-          if (!extFrame.hasIgnore()) {
-            close(folly::make_exception_wrapper<RocketException>(
-                ErrorCode::INVALID,
-                fmt::format(
-                    "Received unhandleable ext frame type ({}) without ignore flag",
-                    static_cast<uint32_t>(extFrame.extFrameType()))));
-          }
-          return;
+      if (!extFrame.hasIgnore()) {
+        close(folly::make_exception_wrapper<RocketException>(
+            ErrorCode::INVALID,
+            fmt::format(
+                "Received unhandleable ext frame type ({}) without ignore flag",
+                static_cast<uint32_t>(extFrame.extFrameType()))));
       }
+      return;
     }
 
     case FrameType::METADATA_PUSH: {
@@ -418,13 +408,11 @@ void RocketServerConnection::handleUntrackedFrame(
       }
       switch (clientMeta.getType()) {
         case ClientPushMetadata::interactionTerminate: {
-          DCHECK_GE(getVersion(), 7);
           frameHandler_->terminateInteraction(
               *clientMeta.interactionTerminate_ref()->interactionId_ref());
           break;
         }
         case ClientPushMetadata::streamHeadersPush: {
-          DCHECK_GE(getVersion(), 7);
           StreamId sid(
               clientMeta.streamHeadersPush_ref()->streamId_ref().value_or(0));
           auto it = streams_.find(sid);
@@ -495,34 +483,15 @@ void RocketServerConnection::handleStreamFrame(
 
     case FrameType::EXT: {
       ExtFrame extFrame(streamId, flags, cursor, std::move(frame));
-      switch (extFrame.extFrameType()) {
-        case ExtFrameType::HEADERS_PUSH: {
-          DCHECK_LT(getVersion(), 7);
-          auto& serverCallback = clientCallback.getStreamServerCallback();
-          auto headers = unpack<HeadersPayload>(std::move(extFrame.payload()));
-          if (headers.hasException()) {
-            serverCallback.onStreamCancel();
-            freeStream(streamId, true);
-            return;
-          }
-          std::ignore = serverCallback.onSinkHeaders(std::move(*headers));
-          return;
-        }
-        case ExtFrameType::ALIGNED_PAGE:
-        case ExtFrameType::INTERACTION_TERMINATE:
-        case ExtFrameType::CUSTOM_ALLOC:
-        case ExtFrameType::UNKNOWN:
-          if (extFrame.hasIgnore()) {
-            return;
-          }
-          close(folly::make_exception_wrapper<RocketException>(
-              ErrorCode::INVALID,
-              fmt::format(
-                  "Received unhandleable EXT frame type ({}) for stream (id {})",
-                  static_cast<uint32_t>(extFrame.extFrameType()),
-                  static_cast<uint32_t>(streamId))));
-          return;
+      if (!extFrame.hasIgnore()) {
+        close(folly::make_exception_wrapper<RocketException>(
+            ErrorCode::INVALID,
+            fmt::format(
+                "Received unhandleable EXT frame type ({}) for stream (id {})",
+                static_cast<uint32_t>(extFrame.extFrameType()),
+                static_cast<uint32_t>(streamId))));
       }
+      return;
     }
 
     default:
