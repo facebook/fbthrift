@@ -33,17 +33,7 @@ class t_paramlist : public t_struct {
   // 'unnamed' t_type (or more accurately, not a type at all).
   explicit t_paramlist(t_program* program) : t_struct(program, "") {}
 
-  t_field* get_stream_field() {
-    return has_stream_field_ ? fields_[0].get() : nullptr;
-  }
-
-  void set_stream_field(std::unique_ptr<t_field> stream_field);
-
  private:
-  // not stored as a normal member, as it's not serialized like a normal
-  // field into the pargs struct
-  bool has_stream_field_ = false;
-
   friend class t_structured;
   t_paramlist* clone_DO_NOT_USE() const override;
 
