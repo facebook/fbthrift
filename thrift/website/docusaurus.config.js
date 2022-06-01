@@ -23,7 +23,7 @@
 const config = {
   title: 'Facebook Thrift',
   tagline: 'A serialization and RPC framework',
-  url: 'https://github.com/facebook/fbthrift',
+  url: 'https://www.internalfb.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
