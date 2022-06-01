@@ -45,11 +45,11 @@ bool t_typedef::is_defined() const {
 }
 
 bool t_placeholder_typedef::resolve() {
-  if (type_.get_type() == nullptr) {
-    type_.set_type(
+  if (type_.empty()) {
+    type_ = t_type_ref::from_ptr(
         program()->scope()->find_type(program()->name() + "." + name()));
   }
-  return type_.get_type() != nullptr;
+  return !type_.empty();
 }
 
 } // namespace compiler

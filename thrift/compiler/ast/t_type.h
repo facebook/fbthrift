@@ -256,7 +256,6 @@ class t_type_ref final {
   static const t_type_ref& none();
 
  private:
-  friend class t_placeholder_typedef;
   const t_type* type_ = nullptr;
   // The placeholder we have write access to, if we need to resolve the type
   // before derefing.
@@ -271,7 +270,6 @@ class t_type_ref final {
   // Note: Use from_ptr or from_req_ptr for public access.
   explicit t_type_ref(const t_type* type) : type_(type) {}
 
-  void set_type(const t_type* type) { type_ = type; }
   const t_type& deref_or_throw() const;
 
   // TODO(afuller): Remove everything below this comment. It is only provided
