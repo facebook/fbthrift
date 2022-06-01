@@ -59,7 +59,7 @@ ThriftTypeInfo createThriftTypeInfo(R&& uris, type::hash_size_t typeHashBytes) {
     folly::throw_exception<std::invalid_argument>(
         "At least one name must be provided.");
   }
-  type.uri_ref() = std::string{std::forward<decltype(*itr)>(*itr++)};
+  type.uri() = std::string{std::forward<decltype(*itr)>(*itr++)};
   for (; itr != iend; ++itr) {
     type.altUris()->emplace(std::string{std::forward<decltype(*itr)>(*itr++)});
   }
