@@ -260,8 +260,7 @@ add_library(
   async/ThreadBoundAdaptorChannel.cpp
   gen/module_metadata_cpp.cpp
   gen/module_types_cpp.cpp
-  # TODO(dokwon): Uncomment after removing folly::Poly dependency in Any.
-  # op/Serializer.cpp
+  op/Serializer.cpp
   security/AsyncStopTLS.cpp
   security/FizzPeeker.cpp
   security/SSLUtil.cpp
@@ -317,13 +316,11 @@ add_library(
   transport/rocket/server/RocketStreamClientCallback.cpp
   transport/rocket/server/RocketThriftRequests.cpp
   transport/rocket/server/ThriftRocketServerHandler.cpp
-  # TODO(dokwon): Uncomment after removing folly::Poly dependency in Any.
-  # type/Any.cpp
+  type/Any.cpp
   type/BaseType.cpp
   type/Protocol.cpp
   type/Type.cpp
-  # TODO(dokwon): Uncomment after removing folly::Poly dependency in Any.
-  # type/TypeRegistry.cpp
+  type/TypeRegistry.cpp
   type/UniversalName.cpp
   util/Checksum.cpp
   util/DebugString.cpp
