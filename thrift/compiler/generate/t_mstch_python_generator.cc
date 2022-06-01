@@ -57,11 +57,6 @@ bool is_type_iobuf(const std::string& name) {
   return name == "folly::IOBuf" || name == "std::unique_ptr<folly::IOBuf>";
 }
 
-bool is_func_supported(const t_function* func) {
-  return !func->returns_stream() && !func->returns_sink() &&
-      !func->get_returntype()->is_service();
-}
-
 const t_const* find_structured_adapter_annotation(const t_named& node) {
   return node.find_structured_annotation_or_null(
       "facebook.com/thrift/annotation/python/Adapter");
@@ -158,6 +153,8 @@ class mstch_python_type : public mstch_type {
             {"type:has_adapter?", &mstch_python_type::has_adapter},
             {"type:adapter_name", &mstch_python_type::adapter_name},
             {"type:adapter_type_hint", &mstch_python_type::adapter_type_hint},
+            {"type:with_regular_response?",
+             &mstch_python_type::with_regular_response},
         });
   }
 
@@ -217,6 +214,14 @@ class mstch_python_type : public mstch_type {
 
   mstch::node adapter_type_hint() {
     return get_annotation_property(adapter_annotation_, "typeHint");
+  }
+
+  mstch::node with_regular_response() {
+    if (!resolved_type_->is_streamresponse()) {
+      return !resolved_type_->is_void();
+    }
+    auto stream = dynamic_cast<const t_stream_response*>(resolved_type_);
+    return stream && !stream->first_response_type().empty();
   }
 
  protected:
@@ -852,11 +857,49 @@ class mstch_python_function : public mstch_function {
         this,
         {
             {"function:args?", &mstch_python_function::has_args},
+            {"function:regular_response_type",
+             &mstch_python_function::regular_response_type},
+            {"function:return_stream_elem_type",
+             &mstch_python_function::return_stream_elem_type},
+            {"function:async_only?", &mstch_python_function::async_only},
         });
   }
 
   mstch::node has_args() {
     return !function_->get_paramlist()->get_members().empty();
+  }
+
+  mstch::node regular_response_type() {
+    if (function_->is_oneway()) {
+      return {};
+    }
+    const t_type* rettype = function_->return_type()->get_true_type();
+    if (rettype->is_streamresponse()) {
+      auto stream = dynamic_cast<const t_stream_response*>(rettype);
+      rettype = stream->has_first_response() ? stream->get_first_response_type()
+                                             : &t_base_type::t_void();
+    }
+    return generators_->type_generator_->generate(
+        rettype, generators_, cache_, pos_);
+  }
+
+  mstch::node return_stream_elem_type() {
+    if (function_->is_oneway()) {
+      return {};
+    }
+    const t_type* rettype = function_->return_type()->get_true_type();
+    if (!rettype->is_streamresponse()) {
+      return {};
+    }
+    return generators_->type_generator_->generate(
+        dynamic_cast<const t_stream_response*>(rettype)->get_elem_type(),
+        generators_,
+        cache_,
+        pos_);
+  }
+
+  mstch::node async_only() {
+    return function_->returns_stream() || function_->returns_sink();
   }
 
  protected:
@@ -896,8 +939,8 @@ class mstch_python_service : public mstch_service {
              &mstch_python_service::parent_service_name},
             {"service:supported_functions",
              &mstch_python_service::supported_functions},
-            {"service:supported_functions?",
-             &mstch_python_service::has_supported_functions},
+            {"service:supported_service_functions",
+             &mstch_python_service::supported_service_functions},
             {"service:external_program?",
              &mstch_python_service::is_external_program},
         });
@@ -914,10 +957,11 @@ class mstch_python_service : public mstch_service {
     return cache_->parsed_options_.at("parent_service_name");
   }
 
-  std::vector<t_function*> get_supported_functions() {
+  std::vector<t_function*> get_supported_functions(
+      std::function<bool(const t_function*)> func_filter) {
     std::vector<t_function*> funcs;
     for (auto func : service_->get_functions()) {
-      if (is_func_supported(func)) {
+      if (func_filter(func)) {
         funcs.push_back(func);
       }
     }
@@ -925,11 +969,18 @@ class mstch_python_service : public mstch_service {
   }
 
   mstch::node supported_functions() {
-    return generate_functions(get_supported_functions());
+    return generate_functions(
+        get_supported_functions([](const t_function* func) -> bool {
+          return !func->returns_sink() && !func->get_returntype()->is_service();
+        }));
   }
 
-  mstch::node has_supported_functions() {
-    return !get_supported_functions().empty();
+  mstch::node supported_service_functions() {
+    return generate_functions(
+        get_supported_functions([](const t_function* func) -> bool {
+          return !func->returns_stream() && !func->returns_sink() &&
+              !func->get_returntype()->is_service();
+        }));
   }
 
   mstch::node is_external_program() { return prog_ != service_->program(); }

@@ -27,7 +27,11 @@ from thrift.python.leaf.thrift_clients import LeafService
 from thrift.python.serializer import Protocol
 from thrift.python.test.test_server import server_in_event_loop
 from thrift.python.test.thrift_clients import EchoService, TestService
-from thrift.python.test.thrift_types import ArithmeticException, EmptyException
+from thrift.python.test.thrift_types import (
+    ArithmeticException,
+    EmptyException,
+    SimpleResponse,
+)
 
 
 TEST_HEADER_KEY = "headerKey"
@@ -140,3 +144,99 @@ class AsyncClientTests(IsolatedAsyncioTestCase):
                 client.set_persistent_header(TEST_HEADER_KEY, TEST_HEADER_VALUE)
                 value = await client.readHeader(TEST_HEADER_KEY)
                 self.assertEqual(TEST_HEADER_VALUE, value)
+
+    async def test_stream_nums(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(
+                TestService,
+                host="localhost",
+                port=addr.port,
+                client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+            ) as client:
+                stream = await client.nums(2, 4)
+                result = []
+                async for num in stream:
+                    result.append(num)
+                self.assertEqual(
+                    result, [SimpleResponse(value=f"{i}") for i in (2, 3, 4)]
+                )
+
+    async def test_stream_nums_throws_inside(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(
+                TestService,
+                host="localhost",
+                port=addr.port,
+                client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+            ) as client:
+                stream = await client.nums(8, 11)
+                result = []
+                with self.assertRaises(ArithmeticException) as e:
+                    async for num in stream:
+                        result.append(num)
+                self.assertEqual(
+                    result, [SimpleResponse(value=f"{i}") for i in (8, 9, 10)]
+                )
+                self.assertEqual(e.exception.msg, "from inside of stream")
+
+    async def test_stream_nums_throws_undeclared(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(
+                TestService,
+                host="localhost",
+                port=addr.port,
+                client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+            ) as client:
+                stream = await client.nums(-1, 2)
+                result = []
+                with self.assertRaises(ApplicationError) as e:
+                    async for num in stream:
+                        result.append(num)
+                self.assertEqual(
+                    result, [SimpleResponse(value=f"{i}") for i in (-1, 0, 1, 2)]
+                )
+                self.assertEqual(
+                    e.exception.message,
+                    "apache::thrift::TApplicationException: ValueError('from is negative')",
+                )
+
+    async def test_stream_nums_throws_outside(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(
+                TestService,
+                host="localhost",
+                port=addr.port,
+                client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+            ) as client:
+                with self.assertRaises(ArithmeticException) as e:
+                    await client.nums(4, 2)
+                self.assertEqual(e.exception.msg, "from outside of stream")
+
+    async def test_stream_sumAndNums(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(
+                TestService,
+                host="localhost",
+                port=addr.port,
+                client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+            ) as client:
+                resp, stream = await client.sumAndNums(2, 4)
+                self.assertEqual(resp, 9)
+                result = []
+                async for num in stream:
+                    result.append(num)
+                self.assertEqual(
+                    result, [SimpleResponse(value=f"{i}") for i in (2, 3, 4)]
+                )
+
+    async def test_stream_sumAndNums_throws(self) -> None:
+        async with server_in_event_loop() as addr:
+            async with get_client(
+                TestService,
+                host="localhost",
+                port=addr.port,
+                client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+            ) as client:
+                with self.assertRaises(ArithmeticException) as e:
+                    await client.nums(4, 2)
+                self.assertEqual(e.exception.msg, "from outside of stream")

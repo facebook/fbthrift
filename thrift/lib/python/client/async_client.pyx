@@ -30,7 +30,7 @@ from thrift.python.client.omni_client cimport cOmniClientResponseWithHeaders, Rp
 from thrift.python.exceptions cimport create_py_exception
 from thrift.python.exceptions import ApplicationError, ApplicationErrorType
 from thrift.python.serializer import serialize_iobuf, deserialize
-
+from thrift.python.stream cimport ClientBufferedStream
 
 @cython.auto_pickle(False)
 cdef class AsyncClient:
@@ -68,7 +68,6 @@ cdef class AsyncClient:
         string function_name,
         args,
         response_cls,
-        rpc_kind = RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE,
     ):
         protocol = deref(self._omni_client).getChannelProtocolId()
         cdef IOBuf args_iobuf = serialize_iobuf(args, protocol=protocol)
@@ -87,6 +86,8 @@ cdef class AsyncClient:
             return future
         else:
             userdata = (future, response_cls, protocol)
+            rpc_kind = RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE if isinstance(
+                response_cls, tuple) else RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE
             bridgeSemiFutureWith[cOmniClientResponseWithHeaders](
                 self._executor,
                 deref(self._omni_client).semifuture_send(
@@ -110,16 +111,26 @@ cdef void _async_client_send_request_callback(
     PyObject* userdata,
 ):
     pyfuture, response_cls, protocol = <object> userdata
-    if result.value().buf.hasValue():
-        response_iobuf = folly.iobuf.from_unique_ptr(cmove(result.value().buf.value()))
-        pyfuture.set_result(
-            deserialize(response_cls, response_iobuf, protocol=protocol)
-        )
-    elif result.value().buf.hasError():
+    cdef cOmniClientResponseWithHeaders resp = cmove(result.value())
+
+    if resp.buf.hasError():
         # TODO: pass a proper RpcOptions value
-        pyfuture.set_exception(create_py_exception(result.value().buf.error(), None))
-    else:
+        pyfuture.set_exception(create_py_exception(resp.buf.error(), None))
+        return
+    if not resp.buf.hasValue():
         pyfuture.set_exception(ApplicationError(
             ApplicationErrorType.MISSING_RESULT,
             "Received no result nor error",
         ))
+        return
+    response_iobuf = folly.iobuf.from_unique_ptr(cmove(resp.buf.value()))
+    py_stream = None
+    if isinstance(response_cls, tuple):
+        response_cls, stream_cls = response_cls
+        py_stream = ClientBufferedStream._fbthrift_create(
+            cmove(resp.stream),
+            stream_cls,
+            protocol,
+        )
+    py_resp = deserialize(response_cls, response_iobuf, protocol=protocol)
+    pyfuture.set_result(py_resp if py_stream is None else (py_resp, py_stream))

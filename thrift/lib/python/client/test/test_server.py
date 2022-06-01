@@ -55,11 +55,12 @@ class TestServiceHandler(TestServiceInterface):
             raise ArithmeticException(msg="from outside of stream")
 
         async def gen() -> typing.AsyncGenerator[SimpleResponse, None]:
-            for i in range(f, t + 1):
+            for i in range(f, min(t + 1, 11)):
                 yield SimpleResponse(value=f"{i}")
             if f < 0:
                 raise ValueError("from is negative")
-            raise ArithmeticException(msg="from inside of stream")
+            elif t > 10:
+                raise ArithmeticException(msg="from inside of stream")
 
         return gen()
 

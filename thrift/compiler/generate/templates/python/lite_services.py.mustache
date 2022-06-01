@@ -57,9 +57,9 @@ class {{service:name}}Interface(
     # pyre-ignore[3]: it can return anything
     def getFunctionTable(self) -> _typing.Mapping[bytes, _typing.Callable[..., _typing.Any]]:
         functionTable = {
-        {{#service:supported_functions}}
+        {{#service:supported_service_functions}}
             b"{{function:name}}": self._fbthrift__handler_{{function:name}},
-        {{/service:supported_functions}}
+        {{/service:supported_service_functions}}
         }
         return {**super().getFunctionTable(), **functionTable}
 
@@ -72,7 +72,7 @@ class {{service:name}}Interface(
         return {{program:module_path}}.lite_metadata.gen_metadata_service_{{service:name}}()
 
 
-{{#service:supported_functions}}
+{{#service:supported_service_functions}}
 
     async def {{function:name}}(
             self{{#function:args}},
@@ -115,5 +115,5 @@ class {{service:name}}Interface(
         return serialize_iobuf(return_struct, protocol)
         {{/function:oneway?}}
 
-{{/service:supported_functions}}
+{{/service:supported_service_functions}}
 {{/program:services}}

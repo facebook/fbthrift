@@ -16,4 +16,11 @@
 
 }}{{!
 This is the struct that wraps function return
-}}{{^program:is_types_file?}}{{program:module_path}}.lite_types.{{/program:is_types_file?}}_fbthrift_{{service:name}}_{{function:name}}_result
+}}{{#function:oneway?}}None{{/function:oneway?}}{{!!
+}}{{^function:oneway?}}{{^function:returns_stream?}}{{!
+  }}{{program:module_path}}.lite_types._fbthrift_{{service:name}}_{{function:name}}_result{{!
+}}{{/function:returns_stream?}}{{!
+}}{{#function:returns_stream?}}({{!
+  }}{{program:module_path}}.lite_types._fbthrift_{{service:name}}_{{function:name}}_result, {{!
+  }}{{program:module_path}}.lite_types._fbthrift_{{service:name}}_{{function:name}}_result_stream{{!
+}}){{/function:returns_stream?}}{{/function:oneway?}}

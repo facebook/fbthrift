@@ -153,20 +153,20 @@ class {{> types/function_args_type}}(metaclass=_fbthrift_py3lite_types.StructMet
 {{^function:oneway?}}
 
 
-class {{> types/function_return_type}}(metaclass=_fbthrift_py3lite_types.StructMeta):
+class _fbthrift_{{service:name}}_{{function:name}}_result(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
-        {{#function:return_type}}
+        {{#function:regular_response_type}}
         {{^type:void?}}
         (
             0,  # id
             _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
             "success",  # name
-            {{#function:return_type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/function:return_type}},  # typeinfo
+            {{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }},  # typeinfo
             None,  # default value
             {{> fields/adapter_class }},  # adapter class
         ),
         {{/type:void?}}
-        {{/function:return_type}}
+        {{/function:regular_response_type}}
         {{#function:exceptions}}
         (
             {{field:key}},  # id
@@ -179,6 +179,33 @@ class {{> types/function_return_type}}(metaclass=_fbthrift_py3lite_types.StructM
         {{/function:exceptions}}
     )
 {{/function:oneway?}}
+{{#function:returns_stream?}}
+
+
+class _fbthrift_{{service:name}}_{{function:name}}_result_stream(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        {{#function:return_stream_elem_type}}
+        (
+            0,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            {{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }},  # typeinfo
+            None,  # default value
+            {{> fields/adapter_class }},  # adapter class
+        ),
+        {{/function:return_stream_elem_type}}
+        {{#function:stream_exceptions}}
+        (
+            {{field:key}},  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "{{field:py_name}}",  # name
+            {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
+            None,  # default value
+            {{> fields/adapter_class }},  # adapter class
+        ),
+        {{/function:stream_exceptions}}
+    )
+{{/function:returns_stream?}}
 {{/service:supported_functions}}
 {{/program:services}}
 
@@ -188,8 +215,11 @@ _fbthrift_py3lite_types.fill_specs(
     {{#service:supported_functions}}
     {{> types/function_args_type}},
     {{^function:oneway?}}
-    {{> types/function_return_type}},
+    _fbthrift_{{service:name}}_{{function:name}}_result,
     {{/function:oneway?}}
+    {{#function:returns_stream?}}
+    _fbthrift_{{service:name}}_{{function:name}}_result_stream,
+    {{/function:returns_stream?}}
     {{/service:supported_functions}}
     {{/program:services}}
 )
