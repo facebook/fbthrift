@@ -4,6 +4,7 @@
   "namespaces": {
     "cpp2": "facebook.thrift.annotation.hack",
     "go": "thrift.annotation.hack",
+    "hack": "facebook.thrift.annotation",
     "hs2": "facebook.thrift.annotation.hack",
     "java": "com.facebook.thrift.annotation.java_deprecated",
     "py": "thrift.annotation.hack",
@@ -16,14 +17,14 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 39,
+            "lineno" : 40,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 37
+        "lineno" : 38
       },
       "Adapter" : {
         "name" : "Adapter",
@@ -31,14 +32,14 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 55,
+            "lineno" : 56,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 53
+        "lineno" : 54
       },
       "SkipCodegen" : {
         "name" : "SkipCodegen",
@@ -46,14 +47,14 @@
           "reason" : {
             "name" : "reason",
             "key" : 1,
-            "lineno" : 61,
+            "lineno" : 62,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 60
+        "lineno" : 61
       }
       },
   "source_path" : "thrift/annotation/hack",

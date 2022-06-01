@@ -6,7 +6,7 @@
  *  @generated
  */
 
-namespace thrift\annotation\hack;
+namespace facebook\thrift\annotation;
 
 /**
  * Original thrift struct:-

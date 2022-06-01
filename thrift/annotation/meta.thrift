@@ -23,6 +23,7 @@ include "thrift/annotation/thrift.thrift"
 package "facebook.com/thrift/annotation/deprecated"
 
 namespace cpp2 facebook.thrift.annotation.deprecated
+namespace php facebook_thrift_annotation_deprecated
 namespace java com.facebook.thrift.annotation_deprecated.deprecated
 namespace py.asyncio facebook_thrift_asyncio.annotation.meta
 namespace go thrift.annotation.meta

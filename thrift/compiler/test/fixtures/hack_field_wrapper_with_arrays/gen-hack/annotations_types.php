@@ -448,7 +448,7 @@ class structured_annotation_recursive implements \IThriftAsyncStruct, \IThriftSh
       'fields' => dict[
         'recurse' => shape(
           'field' => dict[
-            '\thrift\annotation\hack\FieldWrapper' => \thrift\annotation\hack\FieldWrapper::fromShape(
+            '\facebook\thrift\annotation\FieldWrapper' => \facebook\thrift\annotation\FieldWrapper::fromShape(
               shape(
                 "name" => "MyFieldWrapper",
               )
