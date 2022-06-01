@@ -17,6 +17,8 @@
 include "thrift/annotation/thrift.thrift"
 
 namespace cpp2 apache.thrift.test
+namespace java2 apache.thrift.test
+namespace java.swift apache.thrift.test
 
 enum MyEnum {
   ME0 = 0,
