@@ -49,20 +49,6 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
 
 class StructLevelTerseStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
-        bool_field: bool
-        byte_field: bool
-        short_field: bool
-        int_field: bool
-        long_field: bool
-        float_field: bool
-        double_field: bool
-        string_field: bool
-        binary_field: bool
-        enum_field: bool
-        list_field: bool
-        set_field: bool
-        map_field: bool
-        struct_field: bool
         pass
 
     bool_field: Final[bool] = ...
@@ -141,20 +127,6 @@ class StructLevelTerseStruct(thrift.py3.types.Struct, _typing.Hashable):
 
 class FieldLevelTerseStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
-        terse_bool_field: bool
-        terse_byte_field: bool
-        terse_short_field: bool
-        terse_int_field: bool
-        terse_long_field: bool
-        terse_float_field: bool
-        terse_double_field: bool
-        terse_string_field: bool
-        terse_binary_field: bool
-        terse_enum_field: bool
-        terse_list_field: bool
-        terse_set_field: bool
-        terse_map_field: bool
-        terse_struct_field: bool
         bool_field: bool
         byte_field: bool
         short_field: bool

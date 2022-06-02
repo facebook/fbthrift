@@ -49,6 +49,7 @@ from thrift.py3.types cimport (
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
+    terse_field_ref as __terse_field_ref,
 )
 from thrift.py3.common cimport (
     RpcOptions as __RpcOptions,
@@ -154,6 +155,10 @@ cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:na
         __field_ref[{{#field:type}}{{> types/cython_cpp_struct_field_type}}{{/field:type}}] {{!
             }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
         {{/field:opt_in_req_out?}}
+        {{#field:terse?}}
+        __terse_field_ref[{{#field:type}}{{> types/cython_cpp_struct_field_type}}{{/field:type}}] {{!
+            }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
+        {{/field:terse?}}
         {{/field:has_ref_accessor?}}
         {{^field:has_ref_accessor?}}
         {{#field:reference?}}

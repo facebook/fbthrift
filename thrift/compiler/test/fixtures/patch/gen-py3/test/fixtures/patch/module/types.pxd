@@ -30,6 +30,7 @@ from thrift.py3.types cimport (
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
+    terse_field_ref as __terse_field_ref,
 )
 from thrift.py3.common cimport (
     RpcOptions as __RpcOptions,
@@ -71,6 +72,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cMyData&)
         bint operator<=(cMyData&)
         bint operator>=(cMyData&)
+        __terse_field_ref[string] data1_ref()
+        __terse_field_ref[cint32_t] data2_ref()
 
     cdef enum cMyUnion__type "::test::fixtures::patch::MyUnion::Type":
         cMyUnion__type___EMPTY__ "::test::fixtures::patch::MyUnion::Type::__EMPTY__",
@@ -102,6 +105,16 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
+        __terse_field_ref[cbool] boolVal_ref()
+        __terse_field_ref[cint8_t] byteVal_ref()
+        __terse_field_ref[cint16_t] i16Val_ref()
+        __terse_field_ref[cint32_t] i32Val_ref()
+        __terse_field_ref[cint64_t] i64Val_ref()
+        __terse_field_ref[float] floatVal_ref()
+        __terse_field_ref[double] doubleVal_ref()
+        __terse_field_ref[string] stringVal_ref()
+        __terse_field_ref[_folly_IOBuf] binaryVal_ref()
+        __terse_field_ref[cMyData] structVal_ref()
         __optional_field_ref[cbool] optBoolVal_ref()
         __optional_field_ref[cint8_t] optByteVal_ref()
         __optional_field_ref[cint16_t] optI16Val_ref()
@@ -115,6 +128,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::test
         __optional_field_ref[vector[cint16_t]] optListVal_ref()
         __optional_field_ref[cset[string]] optSetVal_ref()
         __optional_field_ref[cmap[string,string]] optMapVal_ref()
+        __terse_field_ref[cMyUnion] unionVal_ref()
 
 
     cdef cppclass cMyDataPatch "::test::fixtures::patch::MyDataPatch":

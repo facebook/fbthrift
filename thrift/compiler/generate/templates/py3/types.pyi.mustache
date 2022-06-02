@@ -59,7 +59,9 @@ class {{struct:name}}({{> types/python_struct_class}}, _typing.Hashable):
     class __fbthrift_IsSet:
     {{#struct:py3_fields}}
         {{#field:has_ref_accessor?}}
+        {{^field:terse?}}
         {{field:py_name}}: bool
+        {{/field:terse?}}
         {{/field:has_ref_accessor?}}
     {{/struct:py3_fields}}
         pass

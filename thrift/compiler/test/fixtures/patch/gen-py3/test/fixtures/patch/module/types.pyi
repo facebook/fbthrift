@@ -23,8 +23,6 @@ __property__ = property
 
 class MyData(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
-        data1: bool
-        data2: bool
         pass
 
     data1: Final[str] = ...
@@ -92,16 +90,6 @@ class MyUnion(thrift.py3.types.Union, _typing.Hashable):
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
-        boolVal: bool
-        byteVal: bool
-        i16Val: bool
-        i32Val: bool
-        i64Val: bool
-        floatVal: bool
-        doubleVal: bool
-        stringVal: bool
-        binaryVal: bool
-        structVal: bool
         optBoolVal: bool
         optByteVal: bool
         optI16Val: bool
@@ -115,7 +103,6 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         optListVal: bool
         optSetVal: bool
         optMapVal: bool
-        unionVal: bool
         pass
 
     boolVal: Final[bool] = ...

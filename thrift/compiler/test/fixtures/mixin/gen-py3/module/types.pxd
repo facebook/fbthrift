@@ -30,6 +30,7 @@ from thrift.py3.types cimport (
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
+    terse_field_ref as __terse_field_ref,
 )
 from thrift.py3.common cimport (
     RpcOptions as __RpcOptions,

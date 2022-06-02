@@ -118,8 +118,6 @@ cdef class MyData(thrift.py3.types.Struct):
 
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyData", {
-          "data1": deref(self._cpp_obj).data1_ref().has_value(),
-          "data2": deref(self._cpp_obj).data2_ref().has_value(),
         })
 
     @staticmethod
@@ -368,16 +366,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyStruct", {
-          "boolVal": deref(self._cpp_obj).boolVal_ref().has_value(),
-          "byteVal": deref(self._cpp_obj).byteVal_ref().has_value(),
-          "i16Val": deref(self._cpp_obj).i16Val_ref().has_value(),
-          "i32Val": deref(self._cpp_obj).i32Val_ref().has_value(),
-          "i64Val": deref(self._cpp_obj).i64Val_ref().has_value(),
-          "floatVal": deref(self._cpp_obj).floatVal_ref().has_value(),
-          "doubleVal": deref(self._cpp_obj).doubleVal_ref().has_value(),
-          "stringVal": deref(self._cpp_obj).stringVal_ref().has_value(),
-          "binaryVal": deref(self._cpp_obj).binaryVal_ref().has_value(),
-          "structVal": deref(self._cpp_obj).structVal_ref().has_value(),
           "optBoolVal": deref(self._cpp_obj).optBoolVal_ref().has_value(),
           "optByteVal": deref(self._cpp_obj).optByteVal_ref().has_value(),
           "optI16Val": deref(self._cpp_obj).optI16Val_ref().has_value(),
@@ -391,7 +379,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
           "optListVal": deref(self._cpp_obj).optListVal_ref().has_value(),
           "optSetVal": deref(self._cpp_obj).optSetVal_ref().has_value(),
           "optMapVal": deref(self._cpp_obj).optMapVal_ref().has_value(),
-          "unionVal": deref(self._cpp_obj).unionVal_ref().has_value(),
         })
 
     @staticmethod

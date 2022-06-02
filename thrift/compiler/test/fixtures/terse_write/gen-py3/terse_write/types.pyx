@@ -206,20 +206,6 @@ cdef class StructLevelTerseStruct(thrift.py3.types.Struct):
 
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("StructLevelTerseStruct", {
-          "bool_field": deref(self._cpp_obj).bool_field_ref().has_value(),
-          "byte_field": deref(self._cpp_obj).byte_field_ref().has_value(),
-          "short_field": deref(self._cpp_obj).short_field_ref().has_value(),
-          "int_field": deref(self._cpp_obj).int_field_ref().has_value(),
-          "long_field": deref(self._cpp_obj).long_field_ref().has_value(),
-          "float_field": deref(self._cpp_obj).float_field_ref().has_value(),
-          "double_field": deref(self._cpp_obj).double_field_ref().has_value(),
-          "string_field": deref(self._cpp_obj).string_field_ref().has_value(),
-          "binary_field": deref(self._cpp_obj).binary_field_ref().has_value(),
-          "enum_field": deref(self._cpp_obj).enum_field_ref().has_value(),
-          "list_field": deref(self._cpp_obj).list_field_ref().has_value(),
-          "set_field": deref(self._cpp_obj).set_field_ref().has_value(),
-          "map_field": deref(self._cpp_obj).map_field_ref().has_value(),
-          "struct_field": deref(self._cpp_obj).struct_field_ref().has_value(),
         })
 
     @staticmethod
@@ -431,20 +417,6 @@ cdef class FieldLevelTerseStruct(thrift.py3.types.Struct):
 
     cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("FieldLevelTerseStruct", {
-          "terse_bool_field": deref(self._cpp_obj).terse_bool_field_ref().has_value(),
-          "terse_byte_field": deref(self._cpp_obj).terse_byte_field_ref().has_value(),
-          "terse_short_field": deref(self._cpp_obj).terse_short_field_ref().has_value(),
-          "terse_int_field": deref(self._cpp_obj).terse_int_field_ref().has_value(),
-          "terse_long_field": deref(self._cpp_obj).terse_long_field_ref().has_value(),
-          "terse_float_field": deref(self._cpp_obj).terse_float_field_ref().has_value(),
-          "terse_double_field": deref(self._cpp_obj).terse_double_field_ref().has_value(),
-          "terse_string_field": deref(self._cpp_obj).terse_string_field_ref().has_value(),
-          "terse_binary_field": deref(self._cpp_obj).terse_binary_field_ref().has_value(),
-          "terse_enum_field": deref(self._cpp_obj).terse_enum_field_ref().has_value(),
-          "terse_list_field": deref(self._cpp_obj).terse_list_field_ref().has_value(),
-          "terse_set_field": deref(self._cpp_obj).terse_set_field_ref().has_value(),
-          "terse_map_field": deref(self._cpp_obj).terse_map_field_ref().has_value(),
-          "terse_struct_field": deref(self._cpp_obj).terse_struct_field_ref().has_value(),
           "bool_field": deref(self._cpp_obj).bool_field_ref().has_value(),
           "byte_field": deref(self._cpp_obj).byte_field_ref().has_value(),
           "short_field": deref(self._cpp_obj).short_field_ref().has_value(),

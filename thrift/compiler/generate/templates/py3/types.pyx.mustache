@@ -133,7 +133,9 @@ cdef class {{struct:name}}({{> types/python_struct_class}}):
         return thrift.py3.types._IsSet("{{struct:name}}", {
         {{#struct:py3_fields}}
         {{#field:has_ref_accessor?}}
+        {{^field:terse?}}
           "{{field:py_name}}": deref(self._cpp_obj).{{field:py_name}}_ref().has_value(),
+        {{/field:terse?}}
         {{/field:has_ref_accessor?}}
         {{/struct:py3_fields}}
         })
@@ -152,8 +154,10 @@ cdef class {{struct:name}}({{> types/python_struct_class}}):
         {{#field:optional?}}
         {{^field:hasDefaultValue?}}
         {{#field:has_ref_accessor?}}
+        {{^field:terse?}}
         if not deref(self._cpp_obj).{{field:py_name}}_ref().has_value():
             return None
+        {{/field:terse?}}
         {{/field:has_ref_accessor?}}
         {{/field:hasDefaultValue?}}
         {{/field:optional?}}

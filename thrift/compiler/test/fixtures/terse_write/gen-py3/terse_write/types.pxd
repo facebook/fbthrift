@@ -30,6 +30,7 @@ from thrift.py3.types cimport (
     field_ref as __field_ref,
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
+    terse_field_ref as __terse_field_ref,
 )
 from thrift.py3.common cimport (
     RpcOptions as __RpcOptions,
@@ -91,6 +92,20 @@ cdef extern from "src/gen-cpp2/terse_write_types_custom_protocol.h" namespace ":
         bint operator>(cStructLevelTerseStruct&)
         bint operator<=(cStructLevelTerseStruct&)
         bint operator>=(cStructLevelTerseStruct&)
+        __terse_field_ref[cbool] bool_field_ref()
+        __terse_field_ref[cint8_t] byte_field_ref()
+        __terse_field_ref[cint16_t] short_field_ref()
+        __terse_field_ref[cint32_t] int_field_ref()
+        __terse_field_ref[cint64_t] long_field_ref()
+        __terse_field_ref[float] float_field_ref()
+        __terse_field_ref[double] double_field_ref()
+        __terse_field_ref[string] string_field_ref()
+        __terse_field_ref[string] binary_field_ref()
+        __terse_field_ref[cMyEnum] enum_field_ref()
+        __terse_field_ref[vector[cint16_t]] list_field_ref()
+        __terse_field_ref[cset[cint16_t]] set_field_ref()
+        __terse_field_ref[cmap[cint16_t,cint16_t]] map_field_ref()
+        __terse_field_ref[cMyStruct] struct_field_ref()
 
 
     cdef cppclass cFieldLevelTerseStruct "::apache::thrift::test::FieldLevelTerseStruct":
@@ -102,6 +117,20 @@ cdef extern from "src/gen-cpp2/terse_write_types_custom_protocol.h" namespace ":
         bint operator>(cFieldLevelTerseStruct&)
         bint operator<=(cFieldLevelTerseStruct&)
         bint operator>=(cFieldLevelTerseStruct&)
+        __terse_field_ref[cbool] terse_bool_field_ref()
+        __terse_field_ref[cint8_t] terse_byte_field_ref()
+        __terse_field_ref[cint16_t] terse_short_field_ref()
+        __terse_field_ref[cint32_t] terse_int_field_ref()
+        __terse_field_ref[cint64_t] terse_long_field_ref()
+        __terse_field_ref[float] terse_float_field_ref()
+        __terse_field_ref[double] terse_double_field_ref()
+        __terse_field_ref[string] terse_string_field_ref()
+        __terse_field_ref[string] terse_binary_field_ref()
+        __terse_field_ref[cMyEnum] terse_enum_field_ref()
+        __terse_field_ref[vector[cint16_t]] terse_list_field_ref()
+        __terse_field_ref[cset[cint16_t]] terse_set_field_ref()
+        __terse_field_ref[cmap[cint16_t,cint16_t]] terse_map_field_ref()
+        __terse_field_ref[cMyStruct] terse_struct_field_ref()
         __field_ref[cbool] bool_field_ref()
         __field_ref[cint8_t] byte_field_ref()
         __field_ref[cint16_t] short_field_ref()
