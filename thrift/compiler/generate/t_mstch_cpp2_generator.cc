@@ -863,9 +863,10 @@ class mstch_cpp2_field : public mstch_field {
         return std::string("optional");
       case t_field::e_req::opt_in_req_out:
         return std::string("required_of_writer");
-      default:
-        throw std::runtime_error("unknown required qualifier");
+      case t_field::e_req::terse:
+        return std::string("terse");
     }
+    throw std::runtime_error("unknown required qualifier");
   }
 
   mstch::node visibility() {

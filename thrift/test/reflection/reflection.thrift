@@ -23,6 +23,7 @@ namespace php test_php.cpp_reflection
 namespace py3 test_py.cpp_reflection
 
 include "thrift/annotation/cpp.thrift"
+include "thrift/annotation/thrift.thrift"
 include "thrift/test/reflection/reflection_dep_B.thrift"
 include "thrift/test/reflection/reflection_dep_C.thrift"
 
@@ -163,6 +164,7 @@ struct struct1 {
 }
 
 struct struct2 {
+  @thrift.TerseWrite
   1: i32 fieldA;
   2: string fieldB;
   3: enum1 fieldC;

@@ -690,5 +690,12 @@ TEST(fatal_struct, StructWithAdaptedField) {
           decltype(get_field_adapted(a))>);
 }
 
+TEST(fatal_struct, Terse) {
+  using traits = apache::thrift::reflect_struct<struct2>;
+  EXPECT_SAME<
+      required<apache::thrift::optionality::terse>,
+      fatal::get<traits::members, fieldAs, fatal::get_type::name>::optional>();
+}
+
 } // namespace cpp_reflection
 } // namespace test_cpp2

@@ -152,7 +152,13 @@ enum class optionality {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  required_of_writer
+  required_of_writer,
+  /**
+   * Field has terse write semantics.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  terse,
 };
 
 /////////////////////////////
