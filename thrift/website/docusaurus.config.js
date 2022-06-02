@@ -65,7 +65,7 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'index',
+            docId: 'intro',
             position: 'left',
             label: 'Docs',
           },
