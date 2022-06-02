@@ -15,6 +15,7 @@
 import copy
 import math
 import unittest
+from unittest import mock
 
 from testing.thrift_types import (
     Color,
@@ -185,9 +186,15 @@ class StructTests(unittest.TestCase):
         )
 
     def test_dir(self) -> None:
-        expected = ["an_int", "name", "val", "val_list"]
+        expected = ["__iter__", "an_int", "name", "val", "val_list"]
         self.assertEqual(expected, dir(easy()))
         self.assertEqual(expected, dir(easy))
+
+    def test_autospec_iterable(self) -> None:
+        for _ in mock.create_autospec(easy):
+            pass
+        for _ in mock.create_autospec(easy()):
+            pass
 
     def test_update_nested_fields(self) -> None:
         n = Nested1(a=Nested2(b=Nested3(c=easy(val=42, name="foo"))))
