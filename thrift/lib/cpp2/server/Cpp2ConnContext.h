@@ -71,42 +71,43 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
       const folly::AsyncTransport* transport,
       folly::EventBaseManager* manager,
       const std::shared_ptr<RequestChannel>& duplexChannel,
-      const std::shared_ptr<X509> peerCert,
+      std::shared_ptr<X509> peerCert,
       apache::thrift::ClientIdentityHook clientIdentityHook,
       const Cpp2Worker* worker,
       const IOWorkerContext* workerContext)
-      : manager_(manager),
+      : transport_(transport),
+        manager_(manager),
         duplexChannel_(duplexChannel),
-        transport_(transport),
         worker_(worker),
         workerContext_(workerContext) {
     if (address) {
-      peerAddress_ = *address;
+      transportInfo_.peerAddress = *address;
     }
-    X509* x509 = peerCert.get();
     if (transport) {
       // require worker to be passed when wrapping a real connection
       DCHECK(worker != nullptr);
       DCHECK(workerContext != nullptr);
-      transport->getLocalAddress(&localAddress_);
-      auto cert = transport->getPeerCertificate();
-      if (cert) {
-        auto osslCert =
-            dynamic_cast<const folly::OpenSSLTransportCertificate*>(cert);
-        x509 = osslCert ? osslCert->getX509().get() : nullptr;
+      transport->getLocalAddress(&transportInfo_.localAddress);
+      if (auto osslCert = folly::OpenSSLTransportCertificate::tryExtractX509(
+              transport->getPeerCertificate())) {
+        peerCert = std::move(osslCert);
       }
-      securityProtocol_ = transport->getSecurityProtocol();
+      transportInfo_.securityProtocol = transport->getSecurityProtocol();
 
-      if (localAddress_.getFamily() == AF_UNIX) {
+      if (transportInfo_.localAddress.getFamily() == AF_UNIX) {
         auto wrapper = transport->getUnderlyingTransport<folly::AsyncSocket>();
         if (wrapper) {
           peerCred_ = PeerCred::queryFromSocket(wrapper->getNetworkSocket());
         }
       }
     }
+    transportInfo_.peerCertificate = std::move(peerCert);
 
     if (clientIdentityHook) {
-      peerIdentities_ = clientIdentityHook(transport, x509, peerAddress_);
+      transportInfo_.peerIdentities = clientIdentityHook(
+          transport,
+          transportInfo_.peerCertificate.get(),
+          transportInfo_.peerAddress);
     }
   }
 
@@ -158,19 +159,21 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   Cpp2ConnContext& operator=(Cpp2ConnContext&&) = default;
 
   void reset() {
-    peerAddress_.reset();
-    localAddress_.reset();
+    transportInfo_.peerAddress.reset();
+    transportInfo_.localAddress.reset();
     userData_.reset();
   }
 
   const folly::SocketAddress* getPeerAddress() const final {
-    return &peerAddress_;
+    return &transportInfo_.peerAddress;
   }
 
-  const folly::SocketAddress* getLocalAddress() const { return &localAddress_; }
+  const folly::SocketAddress* getLocalAddress() const {
+    return &transportInfo_.localAddress;
+  }
 
   void setLocalAddress(const folly::SocketAddress& localAddress) {
-    localAddress_ = localAddress;
+    transportInfo_.localAddress = localAddress;
   }
 
   void setRequestHeader(apache::thrift::transport::THeader* header) {
@@ -203,10 +206,16 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   }
 
   virtual const std::string& getSecurityProtocol() const {
-    return securityProtocol_;
+    return transportInfo_.securityProtocol;
   }
 
-  virtual void* getPeerIdentities() const { return peerIdentities_.get(); }
+  virtual void* getPeerIdentities() const {
+    return transportInfo_.peerIdentities.get();
+  }
+
+  const X509* FOLLY_NULLABLE getPeerCertificate() const {
+    return transportInfo_.peerCertificate.get();
+  }
 
   virtual const folly::AsyncTransport* getTransport() const {
     return transport_;
@@ -434,14 +443,20 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   };
 
   folly::erased_unique_ptr userData_{folly::empty_erased_unique_ptr()};
-  folly::SocketAddress peerAddress_;
-  folly::SocketAddress localAddress_;
+
+  // Snapshot of info from AsyncTransport since this object may outlive it
+  struct TransportInfo {
+    folly::SocketAddress peerAddress;
+    folly::SocketAddress localAddress;
+    folly::erased_unique_ptr peerIdentities{folly::empty_erased_unique_ptr()};
+    std::string securityProtocol;
+    std::shared_ptr<X509> peerCertificate;
+  } transportInfo_;
+  const folly::AsyncTransport* transport_;
+
   folly::EventBaseManager* manager_;
   std::shared_ptr<RequestChannel> duplexChannel_;
   std::shared_ptr<TClientBase> duplexClient_;
-  folly::erased_unique_ptr peerIdentities_{folly::empty_erased_unique_ptr()};
-  std::string securityProtocol_;
-  const folly::AsyncTransport* transport_;
   PeerCred peerCred_;
   // A CancellationSource that will be signaled when the connection is closed.
   folly::CancellationSource cancellationSource_;
