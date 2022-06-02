@@ -680,9 +680,13 @@ class StructMeta(type):
         (<StructInfo>cls._fbthrift_struct_info).store_field_values()
 
     def __dir__(cls):
-        return tuple((<StructInfo>cls._fbthrift_struct_info).name_to_index.keys()) + (
+        return tuple(name for name, _ in cls) + (
             "__iter__",
         )
+
+    def __iter__(cls):
+        for name in (<StructInfo>cls._fbthrift_struct_info).name_to_index.keys():
+            yield name, None
 
 
 def gen_enum(fields):
