@@ -25,20 +25,20 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
 
     @ThriftConstructor
     public FieldLevelTerseStruct(
-        @com.facebook.swift.codec.ThriftField(value=1, name="terse_bool_field", requiredness=) final boolean terseBoolField,
-        @com.facebook.swift.codec.ThriftField(value=2, name="terse_byte_field", requiredness=) final byte terseByteField,
-        @com.facebook.swift.codec.ThriftField(value=3, name="terse_short_field", requiredness=) final short terseShortField,
-        @com.facebook.swift.codec.ThriftField(value=4, name="terse_int_field", requiredness=) final int terseIntField,
-        @com.facebook.swift.codec.ThriftField(value=5, name="terse_long_field", requiredness=) final long terseLongField,
-        @com.facebook.swift.codec.ThriftField(value=6, name="terse_float_field", requiredness=) final float terseFloatField,
-        @com.facebook.swift.codec.ThriftField(value=7, name="terse_double_field", requiredness=) final double terseDoubleField,
-        @com.facebook.swift.codec.ThriftField(value=8, name="terse_string_field", requiredness=) final String terseStringField,
-        @com.facebook.swift.codec.ThriftField(value=9, name="terse_binary_field", requiredness=) final byte[] terseBinaryField,
-        @com.facebook.swift.codec.ThriftField(value=10, name="terse_enum_field", requiredness=) final apache.thrift.test.MyEnum terseEnumField,
-        @com.facebook.swift.codec.ThriftField(value=11, name="terse_list_field", requiredness=) final List<Short> terseListField,
-        @com.facebook.swift.codec.ThriftField(value=12, name="terse_set_field", requiredness=) final Set<Short> terseSetField,
-        @com.facebook.swift.codec.ThriftField(value=13, name="terse_map_field", requiredness=) final Map<Short, Short> terseMapField,
-        @com.facebook.swift.codec.ThriftField(value=14, name="terse_struct_field", requiredness=) final apache.thrift.test.MyStruct terseStructField,
+        @com.facebook.swift.codec.ThriftField(value=1, name="terse_bool_field", requiredness=Requiredness.NONE) final boolean terseBoolField,
+        @com.facebook.swift.codec.ThriftField(value=2, name="terse_byte_field", requiredness=Requiredness.NONE) final byte terseByteField,
+        @com.facebook.swift.codec.ThriftField(value=3, name="terse_short_field", requiredness=Requiredness.NONE) final short terseShortField,
+        @com.facebook.swift.codec.ThriftField(value=4, name="terse_int_field", requiredness=Requiredness.NONE) final int terseIntField,
+        @com.facebook.swift.codec.ThriftField(value=5, name="terse_long_field", requiredness=Requiredness.NONE) final long terseLongField,
+        @com.facebook.swift.codec.ThriftField(value=6, name="terse_float_field", requiredness=Requiredness.NONE) final float terseFloatField,
+        @com.facebook.swift.codec.ThriftField(value=7, name="terse_double_field", requiredness=Requiredness.NONE) final double terseDoubleField,
+        @com.facebook.swift.codec.ThriftField(value=8, name="terse_string_field", requiredness=Requiredness.NONE) final String terseStringField,
+        @com.facebook.swift.codec.ThriftField(value=9, name="terse_binary_field", requiredness=Requiredness.NONE) final byte[] terseBinaryField,
+        @com.facebook.swift.codec.ThriftField(value=10, name="terse_enum_field", requiredness=Requiredness.NONE) final apache.thrift.test.MyEnum terseEnumField,
+        @com.facebook.swift.codec.ThriftField(value=11, name="terse_list_field", requiredness=Requiredness.NONE) final List<Short> terseListField,
+        @com.facebook.swift.codec.ThriftField(value=12, name="terse_set_field", requiredness=Requiredness.NONE) final Set<Short> terseSetField,
+        @com.facebook.swift.codec.ThriftField(value=13, name="terse_map_field", requiredness=Requiredness.NONE) final Map<Short, Short> terseMapField,
+        @com.facebook.swift.codec.ThriftField(value=14, name="terse_struct_field", requiredness=Requiredness.NONE) final apache.thrift.test.MyStruct terseStructField,
         @com.facebook.swift.codec.ThriftField(value=15, name="bool_field", requiredness=Requiredness.NONE) final boolean boolField,
         @com.facebook.swift.codec.ThriftField(value=16, name="byte_field", requiredness=Requiredness.NONE) final byte byteField,
         @com.facebook.swift.codec.ThriftField(value=17, name="short_field", requiredness=Requiredness.NONE) final short shortField,
@@ -147,7 +147,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
         private Map<Short, Short> mapField = null;
         private apache.thrift.test.MyStruct structField = null;
     
-        @com.facebook.swift.codec.ThriftField(value=1, name="terse_bool_field", requiredness=)
+        @com.facebook.swift.codec.ThriftField(value=1, name="terse_bool_field", requiredness=Requiredness.NONE)
         public Builder setTerseBoolField(boolean terseBoolField) {
             this.terseBoolField = terseBoolField;
             return this;
@@ -155,7 +155,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
         public boolean isTerseBoolField() { return terseBoolField; }
     
-            @com.facebook.swift.codec.ThriftField(value=2, name="terse_byte_field", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=2, name="terse_byte_field", requiredness=Requiredness.NONE)
         public Builder setTerseByteField(byte terseByteField) {
             this.terseByteField = terseByteField;
             return this;
@@ -163,7 +163,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
         public byte getTerseByteField() { return terseByteField; }
     
-            @com.facebook.swift.codec.ThriftField(value=3, name="terse_short_field", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=3, name="terse_short_field", requiredness=Requiredness.NONE)
         public Builder setTerseShortField(short terseShortField) {
             this.terseShortField = terseShortField;
             return this;
@@ -171,7 +171,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
         public short getTerseShortField() { return terseShortField; }
     
-            @com.facebook.swift.codec.ThriftField(value=4, name="terse_int_field", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=4, name="terse_int_field", requiredness=Requiredness.NONE)
         public Builder setTerseIntField(int terseIntField) {
             this.terseIntField = terseIntField;
             return this;
@@ -179,7 +179,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
         public int getTerseIntField() { return terseIntField; }
     
-            @com.facebook.swift.codec.ThriftField(value=5, name="terse_long_field", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=5, name="terse_long_field", requiredness=Requiredness.NONE)
         public Builder setTerseLongField(long terseLongField) {
             this.terseLongField = terseLongField;
             return this;
@@ -187,7 +187,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
         public long getTerseLongField() { return terseLongField; }
     
-            @com.facebook.swift.codec.ThriftField(value=6, name="terse_float_field", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=6, name="terse_float_field", requiredness=Requiredness.NONE)
         public Builder setTerseFloatField(float terseFloatField) {
             this.terseFloatField = terseFloatField;
             return this;
@@ -195,7 +195,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
         public float getTerseFloatField() { return terseFloatField; }
     
-            @com.facebook.swift.codec.ThriftField(value=7, name="terse_double_field", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=7, name="terse_double_field", requiredness=Requiredness.NONE)
         public Builder setTerseDoubleField(double terseDoubleField) {
             this.terseDoubleField = terseDoubleField;
             return this;
@@ -203,7 +203,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
         public double getTerseDoubleField() { return terseDoubleField; }
     
-            @com.facebook.swift.codec.ThriftField(value=8, name="terse_string_field", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=8, name="terse_string_field", requiredness=Requiredness.NONE)
         public Builder setTerseStringField(String terseStringField) {
             this.terseStringField = terseStringField;
             return this;
@@ -211,7 +211,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
         public String getTerseStringField() { return terseStringField; }
     
-            @com.facebook.swift.codec.ThriftField(value=9, name="terse_binary_field", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=9, name="terse_binary_field", requiredness=Requiredness.NONE)
         public Builder setTerseBinaryField(byte[] terseBinaryField) {
             this.terseBinaryField = terseBinaryField;
             return this;
@@ -219,7 +219,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
         public byte[] getTerseBinaryField() { return terseBinaryField; }
     
-            @com.facebook.swift.codec.ThriftField(value=10, name="terse_enum_field", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=10, name="terse_enum_field", requiredness=Requiredness.NONE)
         public Builder setTerseEnumField(apache.thrift.test.MyEnum terseEnumField) {
             this.terseEnumField = terseEnumField;
             return this;
@@ -227,7 +227,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
         public apache.thrift.test.MyEnum getTerseEnumField() { return terseEnumField; }
     
-            @com.facebook.swift.codec.ThriftField(value=11, name="terse_list_field", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=11, name="terse_list_field", requiredness=Requiredness.NONE)
         public Builder setTerseListField(List<Short> terseListField) {
             this.terseListField = terseListField;
             return this;
@@ -235,7 +235,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
         public List<Short> getTerseListField() { return terseListField; }
     
-            @com.facebook.swift.codec.ThriftField(value=12, name="terse_set_field", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=12, name="terse_set_field", requiredness=Requiredness.NONE)
         public Builder setTerseSetField(Set<Short> terseSetField) {
             this.terseSetField = terseSetField;
             return this;
@@ -243,7 +243,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
         public Set<Short> getTerseSetField() { return terseSetField; }
     
-            @com.facebook.swift.codec.ThriftField(value=13, name="terse_map_field", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=13, name="terse_map_field", requiredness=Requiredness.NONE)
         public Builder setTerseMapField(Map<Short, Short> terseMapField) {
             this.terseMapField = terseMapField;
             return this;
@@ -251,7 +251,7 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     
         public Map<Short, Short> getTerseMapField() { return terseMapField; }
     
-            @com.facebook.swift.codec.ThriftField(value=14, name="terse_struct_field", requiredness=)
+            @com.facebook.swift.codec.ThriftField(value=14, name="terse_struct_field", requiredness=Requiredness.NONE)
         public Builder setTerseStructField(apache.thrift.test.MyStruct terseStructField) {
             this.terseStructField = terseStructField;
             return this;
@@ -614,72 +614,72 @@ public final class FieldLevelTerseStruct implements com.facebook.thrift.payload.
     }
     
     
-    @com.facebook.swift.codec.ThriftField(value=1, name="terse_bool_field", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=1, name="terse_bool_field", requiredness=Requiredness.NONE)
     public boolean isTerseBoolField() { return terseBoolField; }
     
     
     
-    @com.facebook.swift.codec.ThriftField(value=2, name="terse_byte_field", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=2, name="terse_byte_field", requiredness=Requiredness.NONE)
     public byte getTerseByteField() { return terseByteField; }
     
     
     
-    @com.facebook.swift.codec.ThriftField(value=3, name="terse_short_field", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=3, name="terse_short_field", requiredness=Requiredness.NONE)
     public short getTerseShortField() { return terseShortField; }
     
     
     
-    @com.facebook.swift.codec.ThriftField(value=4, name="terse_int_field", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=4, name="terse_int_field", requiredness=Requiredness.NONE)
     public int getTerseIntField() { return terseIntField; }
     
     
     
-    @com.facebook.swift.codec.ThriftField(value=5, name="terse_long_field", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=5, name="terse_long_field", requiredness=Requiredness.NONE)
     public long getTerseLongField() { return terseLongField; }
     
     
     
-    @com.facebook.swift.codec.ThriftField(value=6, name="terse_float_field", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=6, name="terse_float_field", requiredness=Requiredness.NONE)
     public float getTerseFloatField() { return terseFloatField; }
     
     
     
-    @com.facebook.swift.codec.ThriftField(value=7, name="terse_double_field", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=7, name="terse_double_field", requiredness=Requiredness.NONE)
     public double getTerseDoubleField() { return terseDoubleField; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=8, name="terse_string_field", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=8, name="terse_string_field", requiredness=Requiredness.NONE)
     public String getTerseStringField() { return terseStringField; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=9, name="terse_binary_field", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=9, name="terse_binary_field", requiredness=Requiredness.NONE)
     public byte[] getTerseBinaryField() { return terseBinaryField; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=10, name="terse_enum_field", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=10, name="terse_enum_field", requiredness=Requiredness.NONE)
     public apache.thrift.test.MyEnum getTerseEnumField() { return terseEnumField; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=11, name="terse_list_field", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=11, name="terse_list_field", requiredness=Requiredness.NONE)
     public List<Short> getTerseListField() { return terseListField; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=12, name="terse_set_field", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=12, name="terse_set_field", requiredness=Requiredness.NONE)
     public Set<Short> getTerseSetField() { return terseSetField; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=13, name="terse_map_field", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=13, name="terse_map_field", requiredness=Requiredness.NONE)
     public Map<Short, Short> getTerseMapField() { return terseMapField; }
     
     
     @Nullable
-    @com.facebook.swift.codec.ThriftField(value=14, name="terse_struct_field", requiredness=)
+    @com.facebook.swift.codec.ThriftField(value=14, name="terse_struct_field", requiredness=Requiredness.NONE)
     public apache.thrift.test.MyStruct getTerseStructField() { return terseStructField; }
     
     
