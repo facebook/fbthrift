@@ -86,6 +86,31 @@ enum Void {
 }
 
 /**
+ * The binary form of a universally unique identifier (UUID).
+ *
+ * Considered 'valid' if contains exactly 0 or 16 bytes.
+ * Considered 'normal' if not all zeros.
+ *
+ * See rfc4122
+ */
+@thrift.Experimental // TODO(afuller): Adapt.
+typedef binary Uuid
+
+/**
+ * The string form of a universally unique identifier (UUID).
+ *
+ * For example: "6ba7b810-9dad-11d1-80b4-00c04fd430c8". Use `standard.Uuid` for
+ * a more compact representation.
+ *
+ * Considered 'normal', if not all zeros **and** 'urn:uuid:', {', '}' and
+ * capital hex letters are not present.
+ *
+ * See rfc4122
+ */
+@thrift.Experimental // TODO(afuller): Adapt.
+typedef string UuidString
+
+/**
  * A slash('/')-delimitated path.
  */
 @thrift.Experimental // TODO(afuller): Adapt.
