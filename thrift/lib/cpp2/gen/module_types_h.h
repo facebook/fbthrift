@@ -46,25 +46,15 @@
 #endif
 
 //  all members are logically private to fbthrift; external use is deprecated
-#define APACHE_THRIFT_DEFINE_ACCESSOR(name)                                   \
-  template <>                                                                 \
-  struct invoke_reffer<::apache::thrift::tag::name> {                         \
-   private:                                                                   \
-    template <class T>                                                        \
-    using has_ref = decltype(FOLLY_DECLVAL(T).name##_ref());                  \
-                                                                              \
-   public:                                                                    \
-    template <typename T>                                                     \
-    FOLLY_ERASE constexpr auto operator()(T&& t) const noexcept               \
-        -> decltype(static_cast<T&&>(t).name##_ref()) {                       \
-      return static_cast<T&&>(t).name##_ref();                                \
-    }                                                                         \
-    template <typename T>                                                     \
-    FOLLY_ERASE constexpr auto operator()(T&& t) const noexcept -> decltype(( \
-        (std::enable_if_t<!folly::is_detected_v<has_ref, T&&>>*)nullptr,      \
-        static_cast<T&&>(t).name())) {                                        \
-      return static_cast<T&&>(t).name();                                      \
-    }                                                                         \
+#define APACHE_THRIFT_DEFINE_ACCESSOR(name)                  \
+  template <>                                                \
+  struct invoke_reffer<::apache::thrift::tag::name> {        \
+    template <typename T>                                    \
+    FOLLY_ERASE constexpr auto operator()(T&& t) const       \
+        noexcept(noexcept(static_cast<T&&>(t).name##_ref())) \
+            -> decltype(static_cast<T&&>(t).name##_ref()) {  \
+      return static_cast<T&&>(t).name##_ref();               \
+    }                                                        \
   }
 
 namespace apache {
