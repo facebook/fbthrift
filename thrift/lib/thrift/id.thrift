@@ -130,6 +130,12 @@ typedef ExternId PackageId
 @thrift.Experimental // TODO(afuller): Make strong.
 typedef ExternId ProgramId
 
+// The id of externally stored source code.
+//
+// TODO(afuller): Add concrete definitions for 'source'.
+@thrift.Experimental // TODO(afuller): Make strong.
+typedef ExternId SourceId
+
 // An unordered set of value ids, that can contain *at most one* value
 // of any type.
 @thrift.Experimental // TODO(afuller): Adapt!
