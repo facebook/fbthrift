@@ -256,6 +256,7 @@ namespace util {
 
 void appendExceptionToHeader(
     const folly::exception_wrapper& ew, Cpp2RequestContext& ctx) {
+  ctx.setException();
   auto* ex = ew.get_exception();
   if (const auto* aex = dynamic_cast<const AppBaseError*>(ex)) {
     setUserExceptionHeader(

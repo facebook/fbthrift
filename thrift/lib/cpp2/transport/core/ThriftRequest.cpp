@@ -182,11 +182,11 @@ void ThriftRequestCore::sendReply(
     // to compress the response in rocket today (which happens in
     // ThriftServerRequestResponse::sendThriftResponse).
     // TODO: refactor to move response compression to CPU thread.
-    ;
     auto& timestamps = getTimestamps();
     if (UNLIKELY(timestamps.getSamplingStatus().isEnabled())) {
       timestamps.processEnd = std::chrono::steady_clock::now();
     }
+    auto* observer = serverConfigs_.getObserver();
     if (!isOneway()) {
       auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
@@ -196,9 +196,12 @@ void ThriftRequestCore::sendReply(
           std::move(metadata),
           std::move(response).buffer(),
           std::move(cbWrapper));
-      if (auto* observer = serverConfigs_.getObserver()) {
+      if (observer) {
         observer->sentReply();
       }
+    }
+    if (getRequestContext()->isException() && observer) {
+      observer->declaredException();
     }
   }
 }
@@ -213,11 +216,11 @@ void ThriftRequestCore::sendException(
     // to compress the response in rocket today (which happens in
     // ThriftServerRequestResponse::sendThriftResponse).
     // TODO: refactor to move response compression to CPU thread.
-    ;
     auto& timestamps = getTimestamps();
     if (UNLIKELY(timestamps.getSamplingStatus().isEnabled())) {
       timestamps.processEnd = std::chrono::steady_clock::now();
     }
+    auto* observer = serverConfigs_.getObserver();
     if (!isOneway()) {
       auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (checkResponseSize(*response.buffer())) {
@@ -228,9 +231,12 @@ void ThriftRequestCore::sendException(
       } else {
         sendResponseTooBigEx();
       }
-      if (auto* observer = serverConfigs_.getObserver()) {
+      if (observer) {
         observer->sentReply();
       }
+    }
+    if (getRequestContext()->isException() && observer) {
+      observer->undeclaredException();
     }
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -158,6 +158,10 @@ class TServerObserver {
   virtual void protocolError() {}
 
   virtual void tlsWithClientCert() {}
+
+  virtual void declaredException() {}
+
+  virtual void undeclaredException() {}
 
   // The observer has to specify a sample rate for callCompleted notifications
   inline uint32_t getSampleRate() const { return sampleRate_; }

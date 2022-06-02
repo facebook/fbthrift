@@ -508,6 +508,10 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return ctx_->getEventBaseManager();
   }
 
+  void setException() { isException_ = true; }
+
+  bool isException() const { return isException_; }
+
   void* getUserData() const override { return ctx_->getUserData(); }
 
   void* setUserData(folly::erased_unique_ptr data) override {
@@ -589,6 +593,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
   std::string methodName_;
   int32_t protoSeqId_{0};
   int64_t interactionId_{0};
+  bool isException_{false};
   folly::Optional<InteractionCreate> interactionCreate_;
   TilePtr tile_;
   concurrency::ThreadManager::ExecutionScope executionScope_{

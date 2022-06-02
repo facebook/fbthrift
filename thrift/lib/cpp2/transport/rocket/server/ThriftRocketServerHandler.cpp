@@ -668,6 +668,9 @@ void ThriftRocketServerHandler::handleAppError(
     const std::string& name,
     const std::string& message,
     bool isClientError) {
+  if (auto* observer = serverConfigs_->getObserver()) {
+    observer->taskKilled();
+  }
   static const std::string headerEx = "uex";
   static const std::string headerExWhat = "uexw";
   auto header = request->getRequestContext()->getHeader();
