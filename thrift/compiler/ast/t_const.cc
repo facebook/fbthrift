@@ -26,15 +26,23 @@ namespace compiler {
 
 const t_const_value& t_const::get_value_from_structured_annotation(
     const char* key) const {
+  const t_const_value* value =
+      get_value_from_structured_annotation_or_null(key);
+
+  if (!value) {
+    throw std::runtime_error(fmt::format("key `{}` not found.", key));
+  }
+  return *value;
+}
+
+const t_const_value* t_const::get_value_from_structured_annotation_or_null(
+    const char* key) const {
   const auto& annotations = value()->get_map();
   const auto it = std::find_if(
       annotations.begin(), annotations.end(), [key](const auto& item) {
         return item.first->get_string() == key;
       });
-  if (it == annotations.end()) {
-    throw std::runtime_error(fmt::format("key `{}` not found.", key));
-  }
-  return *it->second;
+  return (it != annotations.end()) ? it->second : nullptr;
 }
 
 } // namespace compiler
