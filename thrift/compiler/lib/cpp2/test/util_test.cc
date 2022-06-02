@@ -16,7 +16,9 @@
 
 #include <thrift/compiler/lib/cpp2/util.h>
 
+#include <algorithm>
 #include <memory>
+#include <random>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -35,6 +37,8 @@
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/ast/t_typedef.h>
 #include <thrift/compiler/ast/t_union.h>
+#include <thrift/compiler/gen/cpp/testing.h>
+#include <thrift/compiler/util.h>
 
 namespace apache::thrift::compiler {
 namespace {
@@ -333,6 +337,60 @@ TEST_F(UtilTest, get_internal_injected_field_id) {
   EXPECT_EQ(cpp2::get_internal_injected_field_id(0), -1000);
   EXPECT_EQ(cpp2::get_internal_injected_field_id(999), -1999);
   EXPECT_THROW(cpp2::get_internal_injected_field_id(1000), std::runtime_error);
+}
+
+TEST_F(UtilTest, gen_adapter_dependency_graph) {
+  t_program p("path/to/program.thrift");
+  auto adapter = gen::cpp::adapter_builder(&p);
+  std::mt19937 gen;
+  auto test = [&](std::string name, std::vector<const t_type*> expected) {
+    constexpr int kIters = 42;
+    for (int iter = 0; iter < kIters; iter++) {
+      std::vector<const t_type*> objects = expected;
+      std::vector<t_typedef*> typedefs;
+      for (auto type : objects) {
+        if (auto typedf = dynamic_cast<t_typedef const*>(type)) {
+          typedefs.push_back(const_cast<t_typedef*>(typedf));
+        }
+      }
+      std::shuffle(objects.begin(), objects.end(), gen);
+      auto deps = cpp2::gen_adapter_dependency_graph(&p, objects, typedefs);
+      auto sorted_objects =
+          topological_sort<const t_type*>(objects.begin(), objects.end(), deps);
+      ASSERT_EQ(sorted_objects.size(), expected.size()) << name;
+      for (size_t i = 0; i < expected.size(); ++i) {
+        EXPECT_EQ(sorted_objects[i], expected[i])
+            << name << ": got " << sorted_objects[i]->name() << " instead of "
+            << expected[i]->name();
+      }
+    }
+  };
+
+  t_struct s1(&p, "struct");
+  t_typedef t1(&p, "typedef_with_adapter", s1);
+  t1.add_structured_annotation(adapter.make());
+  test("adapted typedef after struct", {&s1, &t1});
+
+  t_struct f2(nullptr, "foreign_struct");
+  t_typedef t2(&p, "typedef_with_adapter", f2);
+  t2.add_structured_annotation(adapter.make());
+  t_struct s2(&p, "dependent_struct");
+  s2.append_field(std::make_unique<t_field>(t2, "field"));
+  test("dependent struct after typedef", {&t2, &s2});
+
+  t_union u3(&p, "union");
+  t_typedef t3(&p, "typedef_with_adapter", u3);
+  t3.add_structured_annotation(adapter.make());
+  test("adapted typedef after union", {&u3, &t3});
+
+  t_typedef t4(&p, "typedef_with_adapter", f2);
+  t4.add_structured_annotation(adapter.make());
+  t_exception e4(&p, "exception");
+  e4.append_field(std::make_unique<t_field>(t4, "field"));
+  test("dependent exception after typedef", {&t4, &e4});
+
+  t_typedef t5(&p, "typedef_of_typedef", t2);
+  test("dependent typedef after typedef", {&t2, &t5});
 }
 
 } // namespace

@@ -128,7 +128,11 @@ struct AdaptedStruct {
   1: i64 data;
 } (cpp.name = "ThriftAdaptedStruct")
 
+@cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
+typedef AdaptedStruct AdaptedTypedef
+
 struct StructFieldAdaptedStruct {
   @cpp.Adapter{name = "::apache::thrift::test::TemplatedTestAdapter"}
   1: AdaptedStruct adaptedStruct;
+  2: AdaptedTypedef adaptedTypedef;
 }

@@ -1907,11 +1907,50 @@ class mstch_cpp2_program : public mstch_program {
     return a;
   }
   mstch::node structs_and_typedefs() {
-    mstch::array ret = boost::get<mstch::array>(typedefs());
-    mstch::array strcts = boost::get<mstch::array>(structs());
-    for (auto& strct : strcts) {
-      ret.push_back(std::move(strct));
+    // We combine these because the adapter trait used in typedefs requires the
+    // typedefed struct to be complete, and the typedefs themselves cannot be
+    // forward declared.
+    // Topo sort the combined set to fulfill these requirements.
+    // As in other parts of this codebase, structs includes unions and
+    // exceptions.
+    std::vector<const t_type*> nodes;
+    nodes.reserve(program_->objects().size() + program_->typedefs().size());
+    nodes.insert(
+        nodes.end(), program_->typedefs().begin(), program_->typedefs().end());
+    nodes.insert(
+        nodes.end(), program_->objects().begin(), program_->objects().end());
+    auto deps = cpp2::gen_adapter_dependency_graph(
+        program_, nodes, program_->typedefs());
+    auto struct_deps =
+        cpp2::gen_struct_dependency_graph(program_, program_->objects());
+    for (auto& [k, v] : struct_deps) {
+      deps[k].insert(deps[k].end(), v.begin(), v.end());
     }
+    auto sorted =
+        topological_sort<const t_type*>(nodes.begin(), nodes.end(), deps);
+
+    // Generate the sorted nodes
+    mstch::array ret;
+    ret.reserve(sorted.size());
+    std::string id = program_->name() + get_program_namespace(program_);
+    std::transform(
+        sorted.begin(),
+        sorted.end(),
+        std::back_inserter(ret),
+        [&](const t_type* node) -> mstch::node {
+          if (auto typedf = dynamic_cast<t_typedef const*>(node)) {
+            return generators_->typedef_generator_->generate(
+                typedf, generators_, cache_);
+          } else {
+            return generate_element_cached(
+                static_cast<t_struct const*>(node),
+                generators_->struct_generator_.get(),
+                cache_->structs_,
+                id,
+                0,
+                0);
+          }
+        });
     return ret;
   }
 
@@ -1942,7 +1981,7 @@ class mstch_cpp2_program : public mstch_program {
     const auto& prog_enums = program_->enums();
 
     if (!split_id_) {
-      auto edges = cpp2::gen_dependency_graph(program_, prog_objects);
+      auto edges = cpp2::gen_struct_dependency_graph(program_, prog_objects);
       objects_ = topological_sort<t_struct*>(
           prog_objects.begin(), prog_objects.end(), edges);
       enums_ = prog_enums;

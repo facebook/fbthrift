@@ -73,7 +73,8 @@ bool is_custom_type(const t_type& type) {
       });
 }
 
-std::unordered_map<t_struct*, std::vector<t_struct*>> gen_dependency_graph(
+std::unordered_map<t_struct*, std::vector<t_struct*>>
+gen_struct_dependency_graph(
     const t_program* program, const std::vector<t_struct*>& objects) {
   auto edges =
       std::unordered_map<t_struct*, std::vector<t_struct*>>(objects.size());
@@ -117,6 +118,71 @@ std::unordered_map<t_struct*, std::vector<t_struct*>> gen_dependency_graph(
         });
 
     edges[obj] = std::move(deps);
+  };
+  return edges;
+}
+
+std::unordered_map<const t_type*, std::vector<const t_type*>>
+gen_adapter_dependency_graph(
+    const t_program* program,
+    const std::vector<const t_type*>& objects,
+    const std::vector</* const */ t_typedef*>& typedefs) {
+  std::unordered_set<const t_type*> named_typedefs(
+      typedefs.begin(), typedefs.end());
+  std::unordered_map<const t_type*, std::vector<const t_type*>> edges(
+      objects.size());
+  for (const auto* obj : objects) {
+    auto& deps = edges[obj];
+    auto add_dependency = [&](const t_type* type, bool include_structs) {
+      // We want to unwrap the unnamed typedefs used to store unstructured
+      // annotations since we depend on the underlying type.
+      if (auto typedf = dynamic_cast<t_typedef const*>(type)) {
+        if (!named_typedefs.count(typedf)) {
+          type = typedf->get_type();
+
+          // Make sure it's still a type we care about
+          if (!dynamic_cast<t_typedef const*>(type) &&
+              !(dynamic_cast<t_struct const*>(type) && include_structs)) {
+            return;
+          }
+        }
+      }
+
+      // We're only interested in types defined in the current program.
+      if (type->program() != program) {
+        return;
+      }
+
+      deps.emplace_back(type);
+    };
+
+    if (auto* typedf = dynamic_cast<t_typedef const*>(obj)) {
+      // The adjacency list of a typedef is the list of structs and typedefs
+      // named in its underlying type, but we only care about structs if the
+      // typedef has an adapter annotation.
+      const auto* type = &*typedf->type();
+      bool has_adapter = gen::cpp::type_resolver::find_first_adapter(*typedf);
+      if (dynamic_cast<t_typedef const*>(type) ||
+          (dynamic_cast<t_struct const*>(type) && has_adapter)) {
+        add_dependency(type, has_adapter);
+      }
+    } else if (auto* strct = dynamic_cast<t_struct const*>(obj)) {
+      // The adjacency list of a struct is the typedefs named in its fields.
+      cpp2::for_each_transitive_field(strct, [&](const t_field* field) {
+        const auto* type = field->get_type();
+        if (dynamic_cast<t_typedef const*>(type)) {
+          add_dependency(type, false);
+        }
+        return true;
+      });
+    } else {
+      assert(false);
+    }
+
+    // Order all deps in the order they are defined in.
+    std::sort(deps.begin(), deps.end(), [](const t_type* a, const t_type* b) {
+      return a->get_lineno() < b->get_lineno();
+    });
   };
   return edges;
 }

@@ -189,9 +189,6 @@ typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> 
 typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int64_t> DoubleTypedefI64;
 typedef ::std::int32_t MyI32;
 typedef ::cpp2::Foo FooWithAdapter;
-typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Bar> StructWithAdapter;
-typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Baz> UnionWithAdapter;
-typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter, ::cpp2::A> AdaptedA;
 
 class Foo final  {
  private:
@@ -1596,6 +1593,72 @@ unsigned long Bar::read(Protocol_* iprot) {
   return iprot->getCursorPosition() - _xferStart;
 }
 
+typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Bar> StructWithAdapter;
+typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Baz> UnionWithAdapter;
+
+class A final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+
+  void __fbthrift_clear();
+  bool __fbthrift_is_empty() const;
+
+ public:
+  using __fbthrift_cpp2_type = A;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  A() {
+  }
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  A(apache::thrift::FragileConstructor);
+
+  A(A&&) = default;
+
+  A(const A&) = default;
+
+
+  A& operator=(A&&) = default;
+
+  A& operator=(const A&) = default;
+
+ public:
+
+  bool operator==(const A&) const;
+  bool operator<(const A&) const;
+
+  template <class Protocol_>
+  unsigned long read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<A>;
+  friend void swap(A& a, A& b);
+};
+
+template <class Protocol_>
+unsigned long A::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter, ::cpp2::A> AdaptedA;
 
 class StructWithFieldAdapter final  {
  private:
@@ -1768,69 +1831,6 @@ class StructWithFieldAdapter final  {
 
 template <class Protocol_>
 unsigned long StructWithFieldAdapter::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCursorPosition();
-  readNoXfer(iprot);
-  return iprot->getCursorPosition() - _xferStart;
-}
-
-
-class A final  {
- private:
-  friend struct ::apache::thrift::detail::st::struct_private_access;
-
-  //  used by a static_assert in the corresponding source
-  static constexpr bool __fbthrift_cpp2_gen_json = false;
-
-  void __fbthrift_clear();
-  bool __fbthrift_is_empty() const;
-
- public:
-  using __fbthrift_cpp2_type = A;
-  static constexpr bool __fbthrift_cpp2_is_union =
-    false;
-
-
- public:
-
-  A() {
-  }
-  // FragileConstructor for use in initialization lists only.
-  [[deprecated("This constructor is deprecated")]]
-  A(apache::thrift::FragileConstructor);
-
-  A(A&&) = default;
-
-  A(const A&) = default;
-
-
-  A& operator=(A&&) = default;
-
-  A& operator=(const A&) = default;
-
- public:
-
-  bool operator==(const A&) const;
-  bool operator<(const A&) const;
-
-  template <class Protocol_>
-  unsigned long read(Protocol_* iprot);
-  template <class Protocol_>
-  uint32_t serializedSize(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t write(Protocol_* prot_) const;
-
- private:
-  template <class Protocol_>
-  void readNoXfer(Protocol_* iprot);
-
-  friend class ::apache::thrift::Cpp2Ops<A>;
-  friend void swap(A& a, A& b);
-};
-
-template <class Protocol_>
-unsigned long A::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
