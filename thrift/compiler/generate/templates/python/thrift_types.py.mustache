@@ -14,12 +14,213 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{!
+Generated Python classes for Thrift types
 }}
 {{> common/auto_generated_py}}
+{{#program:enums?}}
+import enum
 
-# lint-ignore-every F403 This is just a temporary measure
-# lint-ignore-every F401
-from {{program:module_path}}.lite_types import *  # noqa F403 F401
-from {{program:module_path}}.lite_types import (  # noqa F401
-    _fbthrift_all_structs,
+{{/program:enums?}}
+import folly.iobuf as _fbthrift_iobuf
+import {{program:base_library_package}}.types as _fbthrift_py3lite_types
+import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptions
+
+{{#program:include_namespaces}}
+{{#has_types?}}
+
+import {{included_module_path}}.thrift_types
+{{/has_types?}}
+{{/program:include_namespaces}}
+{{#program:adapter_modules}}
+import {{module_path}}
+{{/program:adapter_modules}}
+{{#program:structs}}
+
+
+class {{struct:name}}(metaclass={{!
+        }}{{#struct:union?}}_fbthrift_py3lite_types.UnionMeta{{/struct:union?}}{{!
+        }}{{^struct:union?}}{{!
+        }}{{#struct:exception?}}_fbthrift_py3lite_exceptions.GeneratedErrorMeta{{/struct:exception?}}{{!
+        }}{{^struct:exception?}}_fbthrift_py3lite_types.StructMeta{{/struct:exception?}}{{!
+        }}{{/struct:union?}}{{!
+        }}):
+    _fbthrift_SPEC = (
+        {{#struct:fields_and_mixin_fields}}
+        (
+            {{field:key}},  # id
+            _fbthrift_py3lite_types.{{field:tablebased_qualifier}}, # qualifier
+            "{{field:py_name}}",  # name
+            {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
+            {{#field:user_default_value}}{{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{/field:type}}{{> types/constant_value }}{{/field:user_default_value}}{{!
+            }}{{^field:user_default_value}}None{{/field:user_default_value}},  # default value
+            {{> fields/adapter_class }},  # adapter class
+        ),
+        {{/struct:fields_and_mixin_fields}}
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "{{program:name}}.{{struct:name}}"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return {{#struct:thrift_uri}}"{{struct:thrift_uri}}"{{/struct:thrift_uri}}{{!
+            }}{{^struct:thrift_uri}}None{{/struct:thrift_uri}}
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{struct:name}}()
+
+    {{#struct:exception?}}
+    {{#struct:exception_message?}}
+
+    def __str__(self):
+        field = self.{{struct:exception_message}}
+        if field is None:
+            {{! optional field, stringify }}
+            return str(field)
+        return field
+
+    {{/struct:exception_message?}}
+    {{/struct:exception?}}
+{{/program:structs}}
+
+# This unfortunately has to be down here to prevent circular imports
+import {{program:module_path}}.thrift_metadata
+
+{{#program:enums}}
+class {{enum:name}}(_fbthrift_py3lite_types.Enum, enum.{{!
+        }}{{#enum:flags?}}Flag{{/enum:flags?}}{{!
+        }}{{^enum:flags?}}Enum{{/enum:flags?}}):
+    {{#enum:values}}
+    {{enum_value:py_name}} = {{enum_value:value}}
+    {{/enum:values}}
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "{{program:name}}.{{enum:name}}"
+
+    @staticmethod
+    def __get_metadata__():
+        return {{program:module_path}}.thrift_metadata.gen_metadata_enum_{{enum:name}}()
+{{/program:enums}}
+
+{{#program:structs}}
+def _fbthrift_metadata__{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{struct:name}}():
+    return {{program:module_path}}.thrift_metadata.gen_metadata_{{#struct:exception?}}exception{{/struct:exception?}}{{^struct:exception?}}struct{{/struct:exception?}}_{{struct:name}}()
+{{/program:structs}}
+
+_fbthrift_all_structs = [
+    {{#program:structs}}
+    {{struct:name}},
+    {{/program:structs}}
+]
+{{#program:structs?}}
+_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
+{{/program:structs?}}
+{{#program:constants?}}
+
+{{#program:constants}}
+
+{{constant:name}} = {{#constant:value}}{{> types/constant_value}}{{/constant:value}}
+{{/program:constants}}
+{{/program:constants?}}
+{{#program:typedefs?}}
+
+{{#program:typedefs}}
+{{typedef:name}} = {{#typedef:has_adapter?}}{{typedef:adapter_type_hint}}{{/typedef:has_adapter?}}{{!
+}}{{^typedef:has_adapter?}}{{#typedef:type}}{{> types/python_type}}{{/typedef:type}}{{/typedef:has_adapter?}}
+{{/program:typedefs}}
+{{/program:typedefs?}}
+{{#program:services?}}
+{{#program:services}}
+{{#service:supported_functions}}
+
+
+class {{> types/function_args_type}}(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        {{#function:args}}
+        (
+            {{field:key}},  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "{{field:py_name}}",  # name
+            {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
+            None,  # default value
+            {{> fields/adapter_class }},  # adapter class
+        ),
+        {{/function:args}}
+    )
+{{^function:oneway?}}
+
+
+class _fbthrift_{{service:name}}_{{function:name}}_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        {{#function:regular_response_type}}
+        {{^type:void?}}
+        (
+            0,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            {{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }},  # typeinfo
+            None,  # default value
+            {{> fields/adapter_class }},  # adapter class
+        ),
+        {{/type:void?}}
+        {{/function:regular_response_type}}
+        {{#function:exceptions}}
+        (
+            {{field:key}},  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "{{field:py_name}}",  # name
+            {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
+            None,  # default value
+            {{> fields/adapter_class }},  # adapter class
+        ),
+        {{/function:exceptions}}
+    )
+{{/function:oneway?}}
+{{#function:returns_stream?}}
+
+
+class _fbthrift_{{service:name}}_{{function:name}}_result_stream(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        {{#function:return_stream_elem_type}}
+        (
+            0,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            {{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }},  # typeinfo
+            None,  # default value
+            {{> fields/adapter_class }},  # adapter class
+        ),
+        {{/function:return_stream_elem_type}}
+        {{#function:stream_exceptions}}
+        (
+            {{field:key}},  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "{{field:py_name}}",  # name
+            {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
+            None,  # default value
+            {{> fields/adapter_class }},  # adapter class
+        ),
+        {{/function:stream_exceptions}}
+    )
+{{/function:returns_stream?}}
+{{/service:supported_functions}}
+{{/program:services}}
+
+
+_fbthrift_py3lite_types.fill_specs(
+    {{#program:services}}
+    {{#service:supported_functions}}
+    {{> types/function_args_type}},
+    {{^function:oneway?}}
+    _fbthrift_{{service:name}}_{{function:name}}_result,
+    {{/function:oneway?}}
+    {{#function:returns_stream?}}
+    _fbthrift_{{service:name}}_{{function:name}}_result_stream,
+    {{/function:returns_stream?}}
+    {{/service:supported_functions}}
+    {{/program:services}}
 )
+{{/program:services?}}

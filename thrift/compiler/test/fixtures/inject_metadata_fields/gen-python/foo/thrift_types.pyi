@@ -5,6 +5,30 @@
 #  @generated
 #
 
-# lint-ignore-every F403 This is just a temporary measure
-# lint-ignore-every F401
-from foo.lite_types import *  # noqa F403 F401
+import typing as _typing
+
+import folly.iobuf as _fbthrift_iobuf
+import thrift.python.types as _fbthrift_py3lite_types
+import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+
+import facebook.thrift.annotation.thrift.thrift_types
+
+
+class Fields(_fbthrift_py3lite_types.Struct):
+    injected_field: _typing.Final[str] = ...
+    injected_structured_annotation_field: _typing.Final[_typing.Optional[str]] = ...
+    injected_unstructured_annotation_field: _typing.Final[_typing.Optional[str]] = ...
+    def __init__(
+        self, *,
+        injected_field: _typing.Optional[str]=...,
+        injected_structured_annotation_field: _typing.Optional[str]=...,
+        injected_unstructured_annotation_field: _typing.Optional[str]=...
+    ) -> None: ...
+
+    def __call__(
+        self, *,
+        injected_field: _typing.Optional[str]=...,
+        injected_structured_annotation_field: _typing.Optional[str]=...,
+        injected_unstructured_annotation_field: _typing.Optional[str]=...
+    ) -> Fields: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[str, str, str]]]: ...

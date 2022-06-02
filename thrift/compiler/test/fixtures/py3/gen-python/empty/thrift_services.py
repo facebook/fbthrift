@@ -4,7 +4,39 @@
 # DO NOT EDIT
 #  @generated
 #
+from abc import ABCMeta
+import typing as _typing
 
-# lint-ignore-every F403 This is just a temporary measure
-# lint-ignore-every F401
-from empty.lite_services import *  # noqa F403 F401
+import folly.iobuf as _fbthrift_iobuf
+
+import apache.thrift.metadata.thrift_types as _fbthrift_metadata
+from thrift.python.serializer import serialize_iobuf, deserialize, Protocol
+from thrift.python.server import ServiceInterface, oneway, PythonUserException
+
+import empty.thrift_types
+import empty.thrift_metadata
+
+class NullServiceInterface(
+    ServiceInterface,
+    metaclass=ABCMeta
+):
+
+    @staticmethod
+    def service_name() -> bytes:
+        return b"NullService"
+
+    # pyre-ignore[3]: it can return anything
+    def getFunctionTable(self) -> _typing.Mapping[bytes, _typing.Callable[..., _typing.Any]]:
+        functionTable = {
+        }
+        return {**super().getFunctionTable(), **functionTable}
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "empty.NullService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return empty.thrift_metadata.gen_metadata_service_NullService()
+
+

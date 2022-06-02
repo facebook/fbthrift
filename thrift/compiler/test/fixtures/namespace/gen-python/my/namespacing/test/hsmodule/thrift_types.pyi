@@ -5,6 +5,49 @@
 #  @generated
 #
 
-# lint-ignore-every F403 This is just a temporary measure
-# lint-ignore-every F401
-from py3lite_module_root.my.namespacing.test.hsmodule.lite_types import *  # noqa F403 F401
+import typing as _typing
+
+import folly.iobuf as _fbthrift_iobuf
+import thrift.python.types as _fbthrift_py3lite_types
+import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+
+
+class HsFoo(_fbthrift_py3lite_types.Struct):
+    MyInt: _typing.Final[int] = ...
+    def __init__(
+        self, *,
+        MyInt: _typing.Optional[int]=...
+    ) -> None: ...
+
+    def __call__(
+        self, *,
+        MyInt: _typing.Optional[int]=...
+    ) -> HsFoo: ...
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Union[int]]]: ...
+
+
+class _fbthrift_HsTestService_init_args(_fbthrift_py3lite_types.Struct):
+    int1: _typing.Final[int] = ...
+
+    def __init__(
+        self, *,
+        int1: _typing.Optional[int]=...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[None, int]]]: ...
+
+
+class _fbthrift_HsTestService_init_result(_fbthrift_py3lite_types.Struct):
+    success: _typing.Final[int]
+
+    def __init__(
+        self, *, success: _typing.Optional[int] = ...
+    ) -> None: ...
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[
+        str,
+        _typing.Union[
+            int,
+        ]]]: ...

@@ -4,10 +4,49 @@
 # DO NOT EDIT
 #  @generated
 #
+import folly.iobuf as _fbthrift_iobuf
+import thrift.python.types as _fbthrift_py3lite_types
+import thrift.python.exceptions as _fbthrift_py3lite_exceptions
 
-# lint-ignore-every F403 This is just a temporary measure
-# lint-ignore-every F401
-from py3lite_module_root.my.namespacing.extend.test.extend.lite_types import *  # noqa F403 F401
-from py3lite_module_root.my.namespacing.extend.test.extend.lite_types import (  # noqa F401
-    _fbthrift_all_structs,
+
+import py3lite_module_root.my.namespacing.test.hsmodule.thrift_types
+
+# This unfortunately has to be down here to prevent circular imports
+import py3lite_module_root.my.namespacing.extend.test.extend.thrift_metadata
+
+
+
+_fbthrift_all_structs = [
+]
+
+
+class _fbthrift_ExtendTestService_check_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "struct1",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(py3lite_module_root.my.namespacing.test.hsmodule.thrift_types.HsFoo),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+class _fbthrift_ExtendTestService_check_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            0,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            _fbthrift_py3lite_types.typeinfo_bool,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+_fbthrift_py3lite_types.fill_specs(
+    _fbthrift_ExtendTestService_check_args,
+    _fbthrift_ExtendTestService_check_result,
 )

@@ -4,10 +4,275 @@
 # DO NOT EDIT
 #  @generated
 #
+import folly.iobuf as _fbthrift_iobuf
+import thrift.python.types as _fbthrift_py3lite_types
+import thrift.python.exceptions as _fbthrift_py3lite_exceptions
 
-# lint-ignore-every F403 This is just a temporary measure
-# lint-ignore-every F401
-from module.lite_types import *  # noqa F403 F401
-from module.lite_types import (  # noqa F401
-    _fbthrift_all_structs,
+
+
+class FooEx(metaclass=_fbthrift_py3lite_exceptions.GeneratedErrorMeta):
+    _fbthrift_SPEC = (
+    )
+
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.FooEx"
+
+    @staticmethod
+    def __get_thrift_uri__():
+        return None
+
+    @staticmethod
+    def __get_metadata__():
+        return _fbthrift_metadata__exception_FooEx()
+
+
+# This unfortunately has to be down here to prevent circular imports
+import module.thrift_metadata
+
+
+def _fbthrift_metadata__exception_FooEx():
+    return module.thrift_metadata.gen_metadata_exception_FooEx()
+
+_fbthrift_all_structs = [
+    FooEx,
+]
+_fbthrift_py3lite_types.fill_specs(*_fbthrift_all_structs)
+
+
+class _fbthrift_PubSubStreamingService_returnstream_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "i32_from",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            2,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "i32_to",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+class _fbthrift_PubSubStreamingService_returnstream_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_PubSubStreamingService_returnstream_result_stream(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            0,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+class _fbthrift_PubSubStreamingService_streamthrows_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "foo",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+class _fbthrift_PubSubStreamingService_streamthrows_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_PubSubStreamingService_streamthrows_result_stream(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            0,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "e",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(FooEx),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+class _fbthrift_PubSubStreamingService_boththrows_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "foo",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+class _fbthrift_PubSubStreamingService_boththrows_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "e",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(FooEx),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+class _fbthrift_PubSubStreamingService_boththrows_result_stream(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            0,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "e",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(FooEx),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+class _fbthrift_PubSubStreamingService_responseandstreamthrows_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "foo",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+class _fbthrift_PubSubStreamingService_responseandstreamthrows_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            0,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "e",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(FooEx),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+class _fbthrift_PubSubStreamingService_responseandstreamthrows_result_stream(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            0,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "e",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(FooEx),  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+class _fbthrift_PubSubStreamingService_returnstreamFast_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "i32_from",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+        (
+            2,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Unqualified, # qualifier
+            "i32_to",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+class _fbthrift_PubSubStreamingService_returnstreamFast_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_PubSubStreamingService_returnstreamFast_result_stream(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            0,  # id
+            _fbthrift_py3lite_types.FieldQualifier.Optional, # qualifier
+            "success",  # name
+            _fbthrift_py3lite_types.typeinfo_i32,  # typeinfo
+            None,  # default value
+            None,  # adapter class
+        ),
+    )
+
+
+_fbthrift_py3lite_types.fill_specs(
+    _fbthrift_PubSubStreamingService_returnstream_args,
+    _fbthrift_PubSubStreamingService_returnstream_result,
+    _fbthrift_PubSubStreamingService_returnstream_result_stream,
+    _fbthrift_PubSubStreamingService_streamthrows_args,
+    _fbthrift_PubSubStreamingService_streamthrows_result,
+    _fbthrift_PubSubStreamingService_streamthrows_result_stream,
+    _fbthrift_PubSubStreamingService_boththrows_args,
+    _fbthrift_PubSubStreamingService_boththrows_result,
+    _fbthrift_PubSubStreamingService_boththrows_result_stream,
+    _fbthrift_PubSubStreamingService_responseandstreamthrows_args,
+    _fbthrift_PubSubStreamingService_responseandstreamthrows_result,
+    _fbthrift_PubSubStreamingService_responseandstreamthrows_result_stream,
+    _fbthrift_PubSubStreamingService_returnstreamFast_args,
+    _fbthrift_PubSubStreamingService_returnstreamFast_result,
+    _fbthrift_PubSubStreamingService_returnstreamFast_result_stream,
 )

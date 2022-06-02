@@ -161,7 +161,7 @@ class mstch_python_type : public mstch_type {
   mstch::node module_path() {
     return get_py3_namespace_with_name_and_prefix(
                get_type_program(), get_option("root_module_prefix")) +
-        ".lite_types";
+        ".thrift_types";
   }
 
   mstch::node program_name() { return get_type_program()->name(); }
@@ -169,7 +169,7 @@ class mstch_python_type : public mstch_type {
   mstch::node metadata_path() {
     return get_py3_namespace_with_name_and_prefix(
                get_type_program(), get_option("root_module_prefix")) +
-        ".lite_metadata";
+        ".thrift_metadata";
   }
 
   mstch::node py3_namespace() {
@@ -1244,14 +1244,11 @@ void t_mstch_python_generator::generate_file(
 }
 
 void t_mstch_python_generator::generate_types() {
-  generate_file("lite_types.py", IsTypesFile, generate_root_path_);
-  generate_file("lite_types.pyi", IsTypesFile, generate_root_path_);
   generate_file("thrift_types.py", IsTypesFile, generate_root_path_);
   generate_file("thrift_types.pyi", IsTypesFile, generate_root_path_);
 }
 
 void t_mstch_python_generator::generate_metadata() {
-  generate_file("lite_metadata.py", IsTypesFile, generate_root_path_);
   generate_file("thrift_metadata.py", IsTypesFile, generate_root_path_);
 }
 
@@ -1262,7 +1259,6 @@ void t_mstch_python_generator::generate_clients() {
     return;
   }
 
-  generate_file("lite_clients.py", NotTypesFile, generate_root_path_);
   generate_file("thrift_clients.py", NotTypesFile, generate_root_path_);
 }
 
@@ -1272,7 +1268,6 @@ void t_mstch_python_generator::generate_services() {
     // services.
     return;
   }
-  generate_file("lite_services.py", NotTypesFile, generate_root_path_);
   generate_file("thrift_services.py", NotTypesFile, generate_root_path_);
 }
 

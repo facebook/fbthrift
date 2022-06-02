@@ -5,6 +5,127 @@
 #  @generated
 #
 
-# lint-ignore-every F403 This is just a temporary measure
-# lint-ignore-every F401
-from module.lite_clients import *  # noqa F403 F401
+import typing as _typing
+
+import apache.thrift.metadata.thrift_types as _fbthrift_metadata
+import folly.iobuf as _fbthrift_iobuf
+from thrift.python.client import (
+    AsyncClient as _fbthrift_py3lite_AsyncClient,
+    SyncClient as _fbthrift_py3lite_SyncClient,
+    Client as _fbthrift_py3lite_Client,
+)
+import thrift.python.exceptions as _fbthrift_py3lite_exceptions
+import thrift.python.types as _fbthrift_py3lite_types
+import module.thrift_types
+import module.thrift_metadata
+
+
+class PubSubStreamingService(_fbthrift_py3lite_Client["PubSubStreamingService.Async", "PubSubStreamingService.Sync"]):
+    @staticmethod
+    def __get_thrift_name__() -> str:
+        return "module.PubSubStreamingService"
+
+    @staticmethod
+    def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+        return module.thrift_metadata.gen_metadata_service_PubSubStreamingService()
+
+    class Async(_fbthrift_py3lite_AsyncClient):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.PubSubStreamingService"
+
+        @staticmethod
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+            return module.thrift_metadata.gen_metadata_service_PubSubStreamingService()
+
+        async def returnstream(
+            self,
+            i32_from: int,
+            i32_to: int
+        ) -> _typing.AsyncGenerator[int, None]:
+            _fbthrift_resp = await self._send_request(
+                "PubSubStreamingService",
+                "returnstream",
+                module.thrift_types._fbthrift_PubSubStreamingService_returnstream_args(
+                    i32_from=i32_from,
+                    i32_to=i32_to,),
+                (module.thrift_types._fbthrift_PubSubStreamingService_returnstream_result, module.thrift_types._fbthrift_PubSubStreamingService_returnstream_result_stream),
+            )
+            _fbthrift_resp, _fbthrift_stream = _fbthrift_resp
+            return _fbthrift_stream
+
+        async def streamthrows(
+            self,
+            foo: int
+        ) -> _typing.AsyncGenerator[int, None]:
+            _fbthrift_resp = await self._send_request(
+                "PubSubStreamingService",
+                "streamthrows",
+                module.thrift_types._fbthrift_PubSubStreamingService_streamthrows_args(
+                    foo=foo,),
+                (module.thrift_types._fbthrift_PubSubStreamingService_streamthrows_result, module.thrift_types._fbthrift_PubSubStreamingService_streamthrows_result_stream),
+            )
+            _fbthrift_resp, _fbthrift_stream = _fbthrift_resp
+            return _fbthrift_stream
+
+        async def boththrows(
+            self,
+            foo: int
+        ) -> _typing.AsyncGenerator[int, None]:
+            _fbthrift_resp = await self._send_request(
+                "PubSubStreamingService",
+                "boththrows",
+                module.thrift_types._fbthrift_PubSubStreamingService_boththrows_args(
+                    foo=foo,),
+                (module.thrift_types._fbthrift_PubSubStreamingService_boththrows_result, module.thrift_types._fbthrift_PubSubStreamingService_boththrows_result_stream),
+            )
+            _fbthrift_resp, _fbthrift_stream = _fbthrift_resp
+            if _fbthrift_resp.e is not None:
+                raise _fbthrift_resp.e
+            return _fbthrift_stream
+
+        async def responseandstreamthrows(
+            self,
+            foo: int
+        ) -> (int, _typing.AsyncGenerator[int, None]):
+            _fbthrift_resp = await self._send_request(
+                "PubSubStreamingService",
+                "responseandstreamthrows",
+                module.thrift_types._fbthrift_PubSubStreamingService_responseandstreamthrows_args(
+                    foo=foo,),
+                (module.thrift_types._fbthrift_PubSubStreamingService_responseandstreamthrows_result, module.thrift_types._fbthrift_PubSubStreamingService_responseandstreamthrows_result_stream),
+            )
+            _fbthrift_resp, _fbthrift_stream = _fbthrift_resp
+            if _fbthrift_resp.success is not None:
+                return _fbthrift_resp.success, _fbthrift_stream
+            if _fbthrift_resp.e is not None:
+                raise _fbthrift_resp.e
+            raise _fbthrift_py3lite_exceptions.ApplicationError(
+                _fbthrift_py3lite_exceptions.ApplicationErrorType.MISSING_RESULT,
+                "Empty Response",
+            )
+
+        async def returnstreamFast(
+            self,
+            i32_from: int,
+            i32_to: int
+        ) -> _typing.AsyncGenerator[int, None]:
+            _fbthrift_resp = await self._send_request(
+                "PubSubStreamingService",
+                "returnstreamFast",
+                module.thrift_types._fbthrift_PubSubStreamingService_returnstreamFast_args(
+                    i32_from=i32_from,
+                    i32_to=i32_to,),
+                (module.thrift_types._fbthrift_PubSubStreamingService_returnstreamFast_result, module.thrift_types._fbthrift_PubSubStreamingService_returnstreamFast_result_stream),
+            )
+            _fbthrift_resp, _fbthrift_stream = _fbthrift_resp
+            return _fbthrift_stream
+
+    class Sync(_fbthrift_py3lite_SyncClient):
+        @staticmethod
+        def __get_thrift_name__() -> str:
+            return "module.PubSubStreamingService"
+
+        @staticmethod
+        def __get_metadata__() -> _fbthrift_metadata.ThriftMetadata:
+            return module.thrift_metadata.gen_metadata_service_PubSubStreamingService()

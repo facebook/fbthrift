@@ -5,6 +5,8 @@
 #  @generated
 #
 
-# lint-ignore-every F403 This is just a temporary measure
-# lint-ignore-every F401
-from empty.lite_types import *  # noqa F403 F401
+import typing as _typing
+
+import folly.iobuf as _fbthrift_iobuf
+import thrift.python.types as _fbthrift_py3lite_types
+import thrift.python.exceptions as _fbthrift_py3lite_exceptions
