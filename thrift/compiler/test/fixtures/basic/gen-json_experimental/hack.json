@@ -2,7 +2,6 @@
   "__fbthrift": "@generated",
   "thrift_module" : "hack",
   "namespaces": {
-    "cpp2": "facebook.thrift.annotation.hack",
     "go": "thrift.annotation.hack",
     "hack": "facebook.thrift.annotation",
     "hs2": "facebook.thrift.annotation.hack",
@@ -17,14 +16,14 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 40,
+            "lineno" : 39,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 38
+        "lineno" : 37
       },
       "Adapter" : {
         "name" : "Adapter",
@@ -32,14 +31,14 @@
           "name" : {
             "name" : "name",
             "key" : 1,
-            "lineno" : 56,
+            "lineno" : 55,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 54
+        "lineno" : 53
       },
       "SkipCodegen" : {
         "name" : "SkipCodegen",
@@ -47,14 +46,14 @@
           "reason" : {
             "name" : "reason",
             "key" : 1,
-            "lineno" : 62,
+            "lineno" : 61,
             "required" : "opt-in-req-out",
             "type" : "string"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 61
+        "lineno" : 60
       }
       },
   "source_path" : "thrift/annotation/hack",

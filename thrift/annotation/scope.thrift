@@ -16,7 +16,6 @@
 
 package "facebook.com/thrift/annotation"
 
-namespace cpp2 facebook.thrift.annotation
 namespace php facebook_thrift_annotation
 namespace java com.facebook.thrift.annotation_deprecated
 namespace py.asyncio facebook_thrift_asyncio.annotation.scope

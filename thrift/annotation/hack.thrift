@@ -18,7 +18,6 @@ include "thrift/annotation/scope.thrift"
 
 package "facebook.com/thrift/annotation/hack"
 
-namespace cpp2 facebook.thrift.annotation.hack
 namespace hack facebook.thrift.annotation
 namespace py thrift.annotation.hack
 namespace java com.facebook.thrift.annotation.java_deprecated
