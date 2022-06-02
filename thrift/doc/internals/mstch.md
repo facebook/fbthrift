@@ -1,4 +1,3 @@
-
 # mstch-based code generators
 
 * [Thrift Generators](#thrift-generators)

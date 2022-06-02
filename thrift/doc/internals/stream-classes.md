@@ -1,7 +1,8 @@
+# Stream classes
+
 The class diagram for the stream classes is shown below:
 
-
-
+```
 *===========================*                     *============================*
 | InputStreamCallback<S, T> |                     | OutputStreamCallback<S, T> |
 *===========================*                     *============================*
@@ -67,3 +68,4 @@ Legend:
      / - - - - - \              +-------+          +=====================+
      | Interface |              | Class |          | ClassExposedToUsers |
      \ - - - - - /              +-------+          +=====================+
+```

@@ -1,7 +1,4 @@
-<link href="http://kevinburke.bitbucket.org/markdowncss/markdown.css" rel="stylesheet"></link>
-
-Header format for the THeader.h
-===============================
+# Header format for the THeader.h
 
       0 1 2 3 4 5 6 7 8 9 a b c d e f 0 1 2 3 4 5 6 7 8 9 a b c d e f
     +----------------------------------------------------------------+
@@ -82,7 +79,7 @@ Header will be padded out to next 4-byte boundary with `0x00`.
     SNAPPY_TRANSFORM  0x03  - Deprecated and no longer supported.
 
 
-###Info IDs:
+### Info IDs:
 
     INFO_KEYVALUE 0x01 - varint32 number of headers.
                        - key/value pairs of varstrings (varint16 length plus
