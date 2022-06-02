@@ -85,16 +85,71 @@ enum Void {
   NoValue = 0,
 }
 
-// A (scheme-less) URI.
-//
-// Of the form described in RFC 3986, but with every component optional.
+/**
+ * A slash('/')-delimitated path.
+ */
+@thrift.Experimental // TODO(afuller): Adapt.
+typedef string Path
+
+/**
+ * Parsed path segments.
+ *
+ * Considered 'valid' if no segment contains a slash('/').
+ */
+@thrift.Experimental // TODO(afuller): Adapt.
+typedef list<string> PathSegments
+
+/**
+ * A dot('.')-delimitated domain name.
+ *
+ * See rfc1034.
+ */
+@thrift.Experimental // TODO(afuller): Adapt.
+typedef string Domain
+
+/**
+ * Parsed domain labels.
+ *
+ * Considered 'valid' if no label contains a dot('.').
+ */
+@thrift.Experimental // TODO(afuller): Adapt.
+typedef list<string> DomainLabels
+
+/**
+ * A URI Query string.
+ *
+ * Of the form {name}={value}&...
+ *
+ * See rfc3986.
+ */
+@thrift.Experimental // TODO(afuller): Adapt.
+typedef string QueryString
+
+/**
+ * A parsed QueryString.
+ *
+ * Considered 'valid' if no key or value contains a equal('=') or
+ * ampersand('&').
+ */
+@thrift.Experimental // TODO(afuller): Adapt.
+typedef map<string, string> QueryArgs
+
+
+/**
+ * A (scheme-less) URI.
+ *
+ * Of the form described in RFC 3986, but with every component optional.
+ *
+ * See rfc3986
+ */
 @thrift.Experimental // TODO(afuller): Adapt.
 typedef string Uri (thrift.uri = "")
 
-// The 'parsed' form of a `Uri`.
-//
-//   {scheme}://{domain}/{path}?{query}#{fragment}
-//
+/**
+ * The 'parsed' form of a `Uri`.
+ *
+ *   {scheme}://{domain}/{path}?{query}#{fragment}
+ */
 // TODO(afuller): Add adapters and native classes, e.g. BasicUri, Uri,
 // and UriView, which use std::basic_string, std::string, std::string_view
 // respectively.
@@ -104,13 +159,13 @@ struct UriStruct {
   1: string scheme;
 
   // The parsed domain, for example "meta.com" -> ["meta", "com"]
-  2: list<string> domain;
+  2: DomainLabels domain;
 
   // The parsed path, for example "path/to/file" -> ["path", "to", "file"]
-  4: list<string> path;
+  4: PathSegments path;
 
   // The parsed query args.
-  5: map<string, string> query;
+  5: QueryArgs query;
 
   // The fragment, if present.
   6: string fragment;
