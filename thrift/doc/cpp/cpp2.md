@@ -1,11 +1,4 @@
----
-sidebar_position: 2
----
-
-<link href="http://kevinburke.bitbucket.org/markdowncss/markdown.css" rel="stylesheet"></link>
-
-Cpp2 ThriftServer
-=============
+# Cpp2 ThriftServer
 
 This is a re-implementation of both the generated cpp code, and a
 fully asynchronous version of the c++ server code. In many ways it is
@@ -199,7 +192,7 @@ the usage of expensive syscalls. A secondary advantage is that we only
 need malloc small blocks of data at a time, which is much easier on
 the allocator than trying to allocate large megabytes of data.
 
-![IO Readahead](IOBufReadahead.png)
+![IO Readahead](iobuf-readahead.png)
 
 When the thrift channel reads the last part of a frame, it clones the
 IOBuf. There are now two 'views' on the same shared memory segment:
@@ -207,7 +200,7 @@ One part has the first part of the buffer (which is the last part of
 the frame), the other is the last part of the buffer, which is the
 first part of the readahead data.
 
-![IO Write Buffering](IOBufWriteBuffering.png)
+![IO Write Buffering](iobuf-write-buffering.png)
 
 Write buffering is similar but in reverse: When sending a response, we
 serialize it, then add it to an IOBuf queue. Once per TEventBase loop,
@@ -240,13 +233,13 @@ we call writeV with the whole of the queue.
   key-value store or similar) is at least 20% better than previous
   servers.
 
-  ![Thrift Noop Performance](Thrift2ServerNoopPerf.png)
+  ![Thrift Noop Performance](thrift2-server-noop-perf.png)
 
   To show off the out of order responses, we send a mix of burn (which
   happens in a task queue), and noop. We would expect noop to have a
   much lower std dev if out of order is working properly.
 
-  ![Thrift Out Of Order Performance](Thrift2ServerOutOfOrderPerf.png)
+  ![Thrift Out Of Order Performance](thrift2-server-out-of-order-perf.png)
 
   (times in ms, QPS happen to be in k, but these numbers highly
   dependent on burn time) In practice, out of order does indeed
