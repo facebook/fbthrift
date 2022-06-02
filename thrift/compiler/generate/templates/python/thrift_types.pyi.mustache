@@ -64,9 +64,9 @@ class {{struct:name}}({{!
         }}{{/struct:union?}}{{!
         }}):
     {{#struct:fields_and_mixin_fields}}
-    {{field:py_name}}: _typing.Final[{{^field:opt_in_req_out?}}_typing.Optional[{{/field:opt_in_req_out?}}{{!
+    {{field:py_name}}: _typing.Final[{{#field:optional?}}_typing.Optional[{{/field:optional?}}{{!
             }}{{> fields/adapted_type}}{{!
-            }}{{^field:opt_in_req_out?}}]{{/field:opt_in_req_out?}}] = ...
+            }}{{#field:optional?}}]{{/field:optional?}}] = ...
     {{/struct:fields_and_mixin_fields}}
     def __init__(
         self,{{#struct:fields?}} *{{/struct:fields?}}{{#struct:fields_and_mixin_fields}},
