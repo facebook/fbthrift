@@ -1658,6 +1658,8 @@ class mstch_cpp2_program : public mstch_program {
         "program:enforce_required?", "deprecated_enforce_required");
     register_has_option(
         "program:deprecated_tag_incompatible?", "deprecated_tag_incompatible");
+
+    init_objects_and_enums();
   }
   std::string get_program_namespace(t_program const* program) override {
     return t_mstch_cpp2_generator::get_cpp2_namespace(program);
@@ -1955,28 +1957,18 @@ class mstch_cpp2_program : public mstch_program {
   }
 
  private:
-  boost::optional<std::vector<t_struct*>> objects_;
-  boost::optional<std::vector<t_enum*>> enums_;
+  std::vector<t_struct*> objects_;
+  std::vector<t_enum*> enums_;
   const boost::optional<int32_t> split_id_;
   const boost::optional<std::vector<t_struct*>> split_structs_;
 
-  const std::vector<t_enum*>& get_program_enums() override {
-    if (!enums_) {
-      init_objects_enums();
-    }
-
-    return *enums_;
-  }
+  const std::vector<t_enum*>& get_program_enums() override { return enums_; }
 
   const std::vector<t_struct*>& get_program_objects() override {
-    if (!objects_) {
-      init_objects_enums();
-    }
-
-    return *objects_;
+    return objects_;
   }
 
-  void init_objects_enums() {
+  void init_objects_and_enums() {
     const auto& prog_objects = program_->objects();
     const auto& prog_enums = program_->enums();
 
@@ -1992,11 +1984,10 @@ class mstch_cpp2_program : public mstch_program {
         std::max(cpp2::get_split_count(cache_->parsed_options_), 1);
 
     objects_ = *split_structs_;
-    enums_.emplace();
 
     const size_t cnt = prog_enums.size();
-    for (size_t i = split_id_.value_or(0); i < cnt; i += split_count) {
-      enums_->push_back(prog_enums[i]);
+    for (size_t i = *split_id_; i < cnt; i += split_count) {
+      enums_.push_back(prog_enums[i]);
     }
   }
 };
