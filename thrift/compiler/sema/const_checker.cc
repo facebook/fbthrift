@@ -57,11 +57,13 @@ bool is_valid_custom_default_float(const t_const_value* value) {
 }
 
 } // namespace detail
+
 namespace {
 class const_checker {
  public:
-  const_checker(diagnostic_context& ctx, const t_named& node, std::string name)
-      : ctx_{ctx}, node_{node}, name_{std::move(name)} {}
+  const_checker(
+      diagnostics_engine& diags, const t_named& node, std::string name)
+      : diags_(diags), node_(node), name_(std::move(name)) {}
 
   void check(const t_type* type, const t_const_value* value) {
     type = type->get_true_type();
@@ -89,39 +91,34 @@ class const_checker {
   }
 
  private:
-  diagnostic_context& ctx_;
+  diagnostics_engine& diags_;
   const t_named& node_;
   std::string name_;
 
-  template <typename... Args>
-  void failure(Args&&... args) {
-    ctx_.failure(node_, std::forward<Args>(args)...);
+  template <typename... T>
+  void failure(fmt::format_string<T...> msg, T&&... args) {
+    diags_.failure(node_, msg, std::forward<T>(args)...);
   }
 
   template <typename... T>
   void warning(fmt::format_string<T...> msg, T&&... args) {
-    ctx_.warning(node_, msg, std::forward<T>(args)...);
+    diags_.warning(node_, msg, std::forward<T>(args)...);
   }
 
   void report_value_precision() {
-    failure([&](auto& o) {
-      o << "value error: const `" << name_
-        << "` cannot be represented precisely as `float` or `double`.";
-    });
+    failure(
+        "value error: const `{}` cannot be represented precisely as `float` "
+        "or `double`.",
+        name_);
   }
 
   void report_value_mistmatch() {
-    failure([&](auto& o) {
-      o << "value error: const `" << name_
-        << "` has an invalid custom default value.";
-    });
+    failure(
+        "value error: const `{}` has an invalid custom default value.", name_);
   }
 
   void report_type_mismatch(const char* expected) {
-    failure([&](auto& o) {
-      o << "type error: const `" << name_ << "` was declared as " << expected
-        << ".";
-    });
+    failure("type error: const `{}` was declared as {}.", name_, expected);
   }
 
   void report_type_mismatch_warning(const char* expected) {
@@ -180,9 +177,7 @@ class const_checker {
   void check_base_type(const t_base_type* type, const t_const_value* value) {
     switch (type->base_type()) {
       case t_base_type::type::t_void:
-        failure([&](auto& o) {
-          o << "type error: cannot declare a void const: " << name_;
-        });
+        failure("type error: cannot declare a void const: {}", name_);
         break;
       case t_base_type::type::t_string:
       case t_base_type::type::t_binary:
@@ -248,10 +243,10 @@ class const_checker {
     }
     auto const& map = value->get_map();
     if (map.size() > 1) {
-      failure([&](auto& o) {
-        o << "type error: const `" << name_
-          << "` is a union and can't have more than one field set.";
-      });
+      failure(
+          "type error: const `{}` is a union and can't have more than one "
+          "field set.",
+          name_);
     }
     check_fields(type, map);
   }
@@ -275,20 +270,18 @@ class const_checker {
       const std::vector<std::pair<t_const_value*, t_const_value*>>& map) {
     for (const auto& entry : map) {
       if (entry.first->get_type() != t_const_value::CV_STRING) {
-        failure([&](auto& o) {
-          o << "type error: `" << name_ << "` field name must be string.";
-        });
+        failure("type error: `{}` field name must be string.", name_);
       }
       const auto* field = type->get_field_by_name(entry.first->get_string());
       if (field == nullptr) {
-        failure([&](auto& o) {
-          o << "type error: `" << type->name() << "` has no field `"
-            << entry.first->get_string() << "`.";
-        });
+        failure(
+            "type error: `{}` has no field `{}`.",
+            type->name(),
+            entry.first->get_string());
         continue;
       }
       const t_type* field_type = &field->type().deref();
-      const_checker(ctx_, node_, name_ + "." + entry.first->get_string())
+      const_checker(diags_, node_, name_ + "." + entry.first->get_string())
           .check(field_type, entry.second);
     }
   }
@@ -306,8 +299,8 @@ class const_checker {
     const t_type* k_type = &type->key_type().deref();
     const t_type* v_type = &type->val_type().deref();
     for (const auto& entry : value->get_map()) {
-      const_checker(ctx_, node_, name_ + "<key>").check(k_type, entry.first);
-      const_checker(ctx_, node_, name_ + "<val>").check(v_type, entry.second);
+      const_checker(diags_, node_, name_ + "<key>").check(k_type, entry.first);
+      const_checker(diags_, node_, name_ + "<val>").check(v_type, entry.second);
     }
   }
 
@@ -340,7 +333,7 @@ class const_checker {
   void check_elements(
       const t_type* elem_type, const std::vector<t_const_value*>& list) {
     for (const auto& elem : list) {
-      const_checker(ctx_, node_, name_ + "<elem>").check(elem_type, elem);
+      const_checker(diags_, node_, name_ + "<elem>").check(elem_type, elem);
     }
   }
 };

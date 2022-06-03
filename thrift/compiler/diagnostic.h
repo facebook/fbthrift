@@ -235,6 +235,12 @@ class diagnostics_engine {
     }
   }
 
+  template <typename... T>
+  void failure(
+      diagnostic_location loc, fmt::format_string<T...> msg, T&&... args) {
+    report(loc.loc, diagnostic_level::failure, msg, std::forward<T>(args)...);
+  }
+
  private:
   void do_report(
       source_location loc,

@@ -460,8 +460,6 @@ TEST_F(StandardValidatorTest, RepeatedStructuredAnnotation) {
 }
 
 TEST_F(StandardValidatorTest, CustomDefaultValue) {
-  auto foo = std::make_unique<t_struct>(&program_, "Foo");
-
   auto custom_byte = std::make_unique<t_const_value>(
       static_cast<int64_t>(std::numeric_limits<int8_t>::max()) + 1);
   auto custom_short = std::make_unique<t_const_value>(
@@ -495,29 +493,34 @@ TEST_F(StandardValidatorTest, CustomDefaultValue) {
       "const_float_precision_loss",
       std::move(custom_float_precision_loss));
 
-  program_.add_const(std::move(const_byte));
-  program_.add_const(std::move(const_short));
-  program_.add_const(std::move(const_integer));
-  program_.add_const(std::move(const_float));
-  program_.add_const(std::move(const_float_precision_loss));
+  for (auto const_ptr :
+       {&const_byte,
+        &const_short,
+        &const_integer,
+        &const_float,
+        &const_float_precision_loss}) {
+    auto& c = *const_ptr;
+    c->set_src_range({loc, loc});
+    program_.add_const(std::move(c));
+  }
 
   EXPECT_THAT(
       validate(),
       UnorderedElementsAre(
           failure(
-              -1,
+              1,
               "value error: const `const_byte` has an invalid custom default value."),
           failure(
-              -1,
+              1,
               "value error: const `const_short` has an invalid custom default value."),
           failure(
-              -1,
+              1,
               "value error: const `const_integer` has an invalid custom default value."),
           failure(
-              -1,
+              1,
               "value error: const `const_float` has an invalid custom default value."),
           failure(
-              -1,
+              1,
               "value error: const `const_float_precision_loss` cannot be represented precisely as `float` or `double`.")));
 }
 
