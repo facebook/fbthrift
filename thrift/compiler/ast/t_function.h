@@ -115,7 +115,7 @@ class t_function final : public t_named {
   std::vector<t_type_ref> return_types_;
   std::unique_ptr<t_paramlist> paramlist_;
   std::unique_ptr<t_throws> exceptions_;
-  t_function_qualifier qualifier_;
+  t_function_qualifier qualifier_{t_function_qualifier::unspecified};
   int8_t returned_interaction_pos_{-1};
   int8_t response_pos_{-1};
   bool isInteractionConstructor_{false};
